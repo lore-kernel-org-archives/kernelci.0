@@ -1,13 +1,16 @@
 Subject: Re: [kernelci] proposal to build Debian images for every test suite (pull #24/kernelci-build-staging)
 References: <99070f63-f2df-ae30-7885-a6e4ceb8c21a@collabora.com>
  <7h4ljjhxle.fsf@baylibre.com>
- <8b6f78ca-17bb-45bf-91c7-0a52a8e5d875@collabora.com>
- <7hmux8wbsv.fsf@baylibre.com>
+ <7087cdfb-5577-eec1-7d3d-9408db4d240f@collabora.com>
+ <7h603wxqvn.fsf@baylibre.com>
+ <4d04dcdb-dd9b-3c59-5391-378e4e4f28b9@collabora.com>
+ <7hlgcr34ce.fsf@baylibre.com>
+ <91a30108-36a6-e39d-2ac9-396b1115099d@collabora.com>
 From: "Ana Guerrero Lopez" <ana.guerrero@collabora.com>
-Message-ID: <0be798a8-c08d-868f-6d3e-ef51ea491fc4@collabora.com>
-Date: Wed, 16 May 2018 17:56:38 +0200
+Message-ID: <ff773c4b-a070-d2bc-e61b-5871b6ce89e0@collabora.com>
+Date: Wed, 16 May 2018 18:46:21 +0200
 MIME-Version: 1.0
-In-Reply-To: <7hmux8wbsv.fsf@baylibre.com>
+In-Reply-To: <91a30108-36a6-e39d-2ac9-396b1115099d@collabora.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
@@ -16,79 +19,143 @@ To: kernelci@groups.io
 
 
 
-On 10/05/18 03:15, Kevin Hilman wrote:
- > "Ana Guerrero Lopez" <ana.guerrero@collabora.com> writes:
- >
- >> I have made a new pull request (PR#25), more details below.
 
-I updated the PR, a couple of comments below for those not following
-closely in GitHub.
-
-[...]
- >> I have changed armel to arm to be more consistent with the linux/arch=
-/XX
- >> naming. If you happen to be using already armel in kernelci, please t=
-ell
- >> me and I'll rename it back to armel.
- >
- > We're already using armel in kernelCI on purpose, because we still hav=
-e
- > a handful of ARMv5 boards.=C2=A0 As I suggested on your PR, maybe we c=
-ould
- > build armel and armhf so both are available.
-
-We have now 5 architectures with the following mapping:
-
- =C2=A0=C2=A0=C2=A0 def debian_arch =3D=C2=A0 ["armhf": "armhf",
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "armel=
-": "armel",
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "arm64=
-": "arm64",
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "x86":=
- "i386",
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "x86_6=
-4": "amd64"]
-
-producing 5 different images for every arch!
-
-
-[...]
- >> You can see I kept the 3 lines in the top of Jenkinsfile_basic import=
-ing
- >> the library from the same repository. This step is necessary unless
- >> we declare the library in Jenkins (globally or when creating the=20
-pipeline).
- >> This article has a example very similar to what we're doing and
- >> explain how to do it:
- >>=20
-https://dev.to/jalogut/centralise-jenkins-pipelines-configuration-using-s=
-hared-libraries
- >> We don't need to do it now, but I wanted to mention it because most
- >> of the examples you'll find use this method and use the call @Library=
-..
- >> in the Jenkinsfile.
- >
- > OK, when we start doing it that way, please include that in link in th=
-e
- > changelog as background.
- >
- > And, while you're fixing the changelog, s/var/vars/. (I couldn't figur=
-e
- > out how to comment on the changelog in github.)
-
-I fixed the typo in the changelog and updated var/README.md with the
-information on how to use the shared libraries.
-
-
-Finally, I've added a last commit with a new stage to upload the generate=
+On 11/05/18 07:23, Tomeu Vizoso wrote:
+ > On 05/10/2018 05:41 PM, Kevin Hilman wrote:
+ >> Tomeu Vizoso <tomeu.vizoso@collabora.com> writes:
+ >>
+ >>> On 05/10/2018 03:04 AM, Kevin Hilman wrote:
+ >>>> "Tomeu Vizoso" <tomeu.vizoso@collabora.com> writes:
+ >>>>
+ >>>>> Hi,
+ >>>>>
+ >>>>> below I give my opinion on a few comments, but it's Ana who is=20
+leading
+ >>>>> now this work.
+ >>>>>
+ >>>>> On 05/08/2018 01:09 AM, Kevin Hilman wrote:
+ >>>>>> "Ana Guerrero Lopez" <ana.guerrero@collabora.com> writes:
+ >>>>>
+ >>>>>> IMO, what I think would be very helpful at least for initial=20
+review and
+ >>>>>> discussion, is to see an initial PR that only has the "basic"=20
+build, and
+ >>>>>> ideally also generates a minimal, tiny ramdisk from the same buil=
 d
-images to kernelci.org. Apart from any other problem that needs fixing,
-I consider the pull request ready to be merged.
+ >>>>>> (e.g. with 'update-initramfs -c -k min' )
+ >>>>>>
+ >>>>>>> The pull requests includes three things: three jenkinsfiles,=20
+debos files
+ >>>>>>> and two Dockerfiles.
+ >>>>>>>
+ >>>>>>> The jenkinsfiles are the smallest possible since all the code=20
+creating
+ >>>>>>> the pipeline is in the shared library. There are two parts: one=20
+with the
+ >>>>>>> job name - that will be used by the resulting images, the
+ >>>>>>> destination
+ >>>>> arches
+ >>>>>>> and the run-time dependencies that need to be added to the image=
+.
+ >>>>>>> There is also the debos file name but this should be removed if=20
+we always
+ >>>>>>> use the same debos configuration.
+ >>>>>>> The second part "build_test_suite" is for building the test=20
+suite code.
+ >>>>>>> This is on purpose a shell script that must create a cpio.gz=20
+tarball
+ >>>>>>> with the name rootfs-built-${NAME}-${ARCH}.cpio.gz
+ >>>>>>> The idea is to be able to add and modify quickly test suites=20
+without
+ >>>>>>> knowing too much about jenkins.
+ >>>>>>
+ >>>>>> I'm not sure about the "build_test_suite" approach.
+ >>>>>>
+ >>>>>> AFAICT, both the _igt and _v4l2 jobs are basically doing the=20
+same thing
+ >>>>>> as "basic", and then essentially installing a bunch more files=20
+on top.
+ >>>>>
+ >>>>> The difference is only in the dependencies. Both test suites are i=
+n
+ >>>>> the fat side and have several dependencies that otherwise aren't
+ >>>>> needed. That said, a basic image that contains all of them might=20
+still
+ >>>>> not be too big.
+ >>>>
+ >>>> IMO, it's better to go for a single, shared base image with
+ >>>> dependencies.=C2=A0 Building a new rootfs for every test suite soun=
+ds=20
+like a
+ >>>> scalability problem to me.
+ >>>
+ >>> Well, only the fatter test suites would need their own rootfs. So fa=
+r
+ >>> only IGT and V4L2 have a fair amount of dependencies. But still we
+ >>> could probably build a single image for both that isn't too big to b=
+e
+ >>> used as a ramdisk.
+ >>
+ >> OK, I think we should start with that.
+ >
+ > What do you think about that, Ana?
+
+I'm fine having a single image with these two test suites, if eventually
+this not convenient we can always change it. However, now we have more
+or less agreed on a job creating the "basic" images, how do you envisage
+we should be creating the images with the test suites?
+
+My proposal is installing the build and run dependencies via extra_packag=
+es
+in the Jenkinsfile and then building the test suite directly against the
+new created image with script run by debos directly. This will avoid
+the merge step, although the strip/crush might need a bit of work
+for making sure the resulting ramdisk is still small.
+The advantage is adding/modifying the test suites doesn't require a lot
+of knowledge of jenkins or even debos.
+
+[...]
+ >> But I agree, for scalability, secondary storage is a major PITA.
+ >> However, maybe for a subset of devices that we want to test that way,=
+ we
+ >> should make it easy.
+ >>
+ >> So, what about this: From a single base debian image, we create
+ >>
+ >> 1) minimal (~2M) initramfs
+ >>
+ >> This should have pivot capabilities, and this is what Ana is doing to=
+day
+ >> with 'update-initramfs -c -k min'
+ >>
+ >> 2) small "basic" ramdisk
+ >>
+ >> This is the base image *after* the strip/crush steps.=C2=A0 Basically=
+, the
+ >> "basic" that Ana is building today.
+ >>
+ >> 3) full rootfs for secondary storage (e.g. MMC, NFS, NBD)
+ >>
+ >> The base image without all the strip/crush removed, so it still has t=
+he
+ >> ability to install packages etc.
+ >>
+ >> This should be available in a few formats: .cpio.gz, .tar.xz, .ext4.x=
+z
+ >>
+ >> This would also be the pivot destination when using an initramfs.
+ >
+ > Sounds good!
+
+Yup. I added the images listed in 3). So right now we have for every arch=
+:
+1) minimal initramfs: initrd.cpio.gz
+2) small basic ramdisk:=C2=A0 rootfs.cpio.gz
+3) full rootfs in several formats:=C2=A0 full.rootfs.cpio.gz ,
+full.rootfs.tar.xz=C2=A0 and=C2=A0 rootfs.ext4.xz
 
 Cheers,
 Ana
+
+
 
