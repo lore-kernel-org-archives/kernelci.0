@@ -1,36 +1,31 @@
-Date: Fri, 1 Jun 2018 14:32:56 +0200
-From: "Ana Guerrero Lopez" <ana.guerrero@collabora.com>
-Subject: Re: [kernelci] New pipeline to build images with the test suites
-Message-ID: <20180601123255.GA4784@delenn>
-References: <20180528115539.GA14389@delenn>
- <7h8t7znyad.fsf@baylibre.com>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: debian rootfs for ramdisk and NFS
+Date: Mon, 04 Jun 2018 13:33:58 -0700
+Message-ID: <7hy3fumguh.fsf@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <7h8t7znyad.fsf@baylibre.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
+Cc: matthew.hart@linaro.org
 
+Hi Ana,
 
-Hi!
+In testing the debian rootfs images for NFS, Matt Hart and I both
+noticed that the full.rootfs.tar.xz images don't work for NFS because
+the systemd network init causes a (re)init of networking while actively
+using an NFSroot.  This causes things to grind to a halt.
 
-On Thu, May 31, 2018 at 05:30:34PM -0700, Kevin Hilman wrote:
+So the first question is whether anyone knows if systemd can be made
+pursuaded to not try to reconfigure networking.
 
-[...]
-> Anyways, after that, I re-ran your "Debian testsuites rootfs builder"
-> and worked well, so I merged your PR.
+Ideally, we'd like a single rootfs image to be either a ramdisk, where
+it might need to (re)configure networking and an NFSroot where it
+definitely should not reconfigure networking.
 
-Thanks for looking at this Kevin. 
+It would be a shame to have to have different images for ramdisk vs. NFS
+just for network init.
 
-> I still don't like the name "squeezetests" but I don't want that kind of
-> bikeshedding to stop this from getting merged, but IMO that needs a
-> different name.
-> 
-> Maybe tests_min? 
+Ideas?
 
-It should have been stretchtests, I sent a fixup PR.
-In any case, I don't have any strong preference about naming, so I'm fine
-if others want to change it to something else. 
-
-Cheers,
-Ana
+Kevin
