@@ -1,37 +1,35 @@
-Return-Path: <khilman@baylibre.com>
-From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: debian rootfs: failed networking (without initramfs)
-Date: Wed, 06 Jun 2018 15:49:33 -0700
-Message-ID: <7hzi07h6o2.fsf@baylibre.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: Testing with distros
+Message-ID: <82611570-bbc6-cfaf-e4bc-9b99a899ccb8@collabora.com>
+Date: Fri, 22 Jun 2018 13:34:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-In testing the new debian rootfs images, the initrd + full.rootfs seem
-to work just fine.
+Hi,
 
-However, when trying the stripped down rootfs.cpio.gz as a ramdisk, it
-fails to do any network init if the network drivers are built as
-modules.
+One subject that comes up regularly is about testing distributions
+against upstream kernels in KernelCI.  We've been historically using a
+bare buildroot user-space to do boot testing and run very low-level test
+cases.  We're now starting to produce Debian root file systems for more
+advanced test plans and extend the coverage of kernel-user interfaces
+(DRM, V4L2...).
 
-According to the logs[1], it looks like systemd tries to setup the
-networking before all the modules are acutally loaded.  Even though the
-logs indicate that both "Started" and "Starting" of kernel modules
-happen earlier, I don't see kernel logs for the modules until well after
-systemd has tried to init networking.
+It seems like there would also be some value in having tests that
+capture distro user-space breakages due to kernel changes.  This may
+mean building upstream kernels with a distro config, booting with a
+fixed stable user-space from that distro and detecting new failures.
 
-Even more fun, the rootfs doesn't have ifconfig or ip tools, so you
-can't (re)configure networking manually.
+The next part to be defined would be what tests to run with these
+distros, as even booting means choosing which services to start etc...
+The point being to increase kernel test coverage without ending up
+testing the user-space itself as this would seem outside of the scope of
+KernelCI.
 
-Any ideas why systemd doesn't get the modules loaded in time to init
-networking?
+Does this sound like a path worth exploring?
 
-Also for reference, here's a full boot log with the initrd + pivot to
-NFS[2] where you can see the modules and network init are done by the
-initrd.
-
-Kevin
-
-[1] http://termbin.com/7ifl
-[2] http://termbin.com/d960
+Best wishes,
+Guillaume
