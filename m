@@ -1,35 +1,25 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: Testing with distros
-Message-ID: <82611570-bbc6-cfaf-e4bc-9b99a899ccb8@collabora.com>
-Date: Fri, 22 Jun 2018 13:34:00 +0100
+Subject: getting started?
+References: <82611570-bbc6-cfaf-e4bc-9b99a899ccb8@collabora.com>
+From: micah.parrish@hpe.com
+Message-ID: <27efc07a-244a-653a-2143-b2b7960ed4a2@hpe.com>
+Date: Fri, 22 Jun 2018 12:35:00 -0600
 MIME-Version: 1.0
+In-Reply-To: <82611570-bbc6-cfaf-e4bc-9b99a899ccb8@collabora.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-Hi,
+I really like what you've done with kernelci.org, and I'm interested in=20
+running it in a semi-isolated x86 test lab.=C2=A0 Do you have a recipe I =
+can=20
+follow for doing this?=C2=A0 It seems like there are a lot of moving part=
+s,=20
+but I don't quite see how they all fit together yet.
 
-One subject that comes up regularly is about testing distributions
-against upstream kernels in KernelCI.  We've been historically using a
-bare buildroot user-space to do boot testing and run very low-level test
-cases.  We're now starting to produce Debian root file systems for more
-advanced test plans and extend the coverage of kernel-user interfaces
-(DRM, V4L2...).
+Regards,
 
-It seems like there would also be some value in having tests that
-capture distro user-space breakages due to kernel changes.  This may
-mean building upstream kernels with a distro config, booting with a
-fixed stable user-space from that distro and detecting new failures.
-
-The next part to be defined would be what tests to run with these
-distros, as even booting means choosing which services to start etc...
-The point being to increase kernel test coverage without ending up
-testing the user-space itself as this would seem outside of the scope of
-KernelCI.
-
-Does this sound like a path worth exploring?
-
-Best wishes,
-Guillaume
+Micah Parrish
+Linux OS Engineer
+Hewlett-Packard Enterprise
