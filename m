@@ -1,64 +1,56 @@
-Subject: Re: [kernelci] getting started?
+Subject: Re: [kernelci] Testing with distros
 References: <82611570-bbc6-cfaf-e4bc-9b99a899ccb8@collabora.com>
- <27efc07a-244a-653a-2143-b2b7960ed4a2@hpe.com>
- <CAH+k93Hn6wDEPU6qMsRfSFS0_ApdzxR6kGumnho9iDNWqvxfFg@mail.gmail.com>
-From: "Micah Parrish" <micah.parrish@hpe.com>
-Message-ID: <4f4fcc85-f40e-08d7-07da-bc0ed619efcb@hpe.com>
-Date: Thu, 28 Jun 2018 11:53:35 -0600
+ <7hd0wbkeyj.fsf@baylibre.com>
+From: "Tomeu Vizoso" <tomeu.vizoso@collabora.com>
+Message-ID: <502ea174-4e44-8e2f-33a2-3c6db85949a1@collabora.com>
+Date: Mon, 2 Jul 2018 10:07:20 +0200
 MIME-Version: 1.0
-In-Reply-To: <CAH+k93Hn6wDEPU6qMsRfSFS0_ApdzxR6kGumnho9iDNWqvxfFg@mail.gmail.com>
+In-Reply-To: <7hd0wbkeyj.fsf@baylibre.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
 
-I'm trying to redeploy a mix of prototypes and production systems as a=20
-very low touch "top of tree kernel test" farm.=C2=A0 This give us early=20
-warning when an kernel change has affected our HW or FW.=C2=A0 Kernelci.or=
-g=20
-does almost exactly what I'd like to do, but I need to keep an instance=20
-in-house because of prototype confidentiality requirements.=C2=A0 If that=
-=20
-works out I'm open to putting some production servers in the main pool=20
-somehow.
+On 06/28/2018 01:05 AM, Kevin Hilman wrote:
+> "Guillaume Tucker" <guillaume.tucker@gmail.com> writes:
+> 
+>> One subject that comes up regularly is about testing distributions
+>> against upstream kernels in KernelCI.  We've been historically using a
+>> bare buildroot user-space to do boot testing and run very low-level test
+>> cases.  We're now starting to produce Debian root file systems for more
+>> advanced test plans and extend the coverage of kernel-user interfaces
+>> (DRM, V4L2...).
+>>
+>> It seems like there would also be some value in having tests that
+>> capture distro user-space breakages due to kernel changes.  This may
+>> mean building upstream kernels with a distro config, booting with a
+>> fixed stable user-space from that distro and detecting new failures.
+>>
+>> The next part to be defined would be what tests to run with these
+>> distros, as even booting means choosing which services to start etc...
+>> The point being to increase kernel test coverage without ending up
+>> testing the user-space itself as this would seem outside of the scope of
+>> KernelCI.
+>>
+>> Does this sound like a path worth exploring?
+> 
+> It definitely sounds like a path worth exploring, but personally, I'd
+> rather get our kernel-focused testing (and reporting!) figured out using
+> our debian baseline before tackling distros.
 
-Is there a diagram of how all the parts fit together?
+I would prefer if distros ran mainline kernels in their own CI, then 
+reported the bugs upstream after triage. And ideally, added tests against 
+the kernel ABI to kernelci.
 
--Micah
+Regards,
 
+Tomeu
 
-On 06/28/2018 07:11 AM, Matt Hart wrote:
-> Hi Micah
->
-> There are indeed a lot of moving parts. You could run your own web UI=20
-> and API fairly easily but there's no guides to setup the build system=20
-> and the boot testing (LAVA) lab.
-> What are you trying to achieve? Could it be with KernelCI rather than=20
-> your own setup?
->
-> Matt
->
-> On 22 June 2018 at 19:35, Micah Parrish <micah.parrish@hpe.com=20
-> <mailto:micah.parrish@hpe.com>> wrote:
->
->     I really like what you've done with kernelci.org
->     <http://kernelci.org>, and I'm interested in running it in a
->     semi-isolated x86 test lab.=C2=A0 Do you have a recipe I can follow =
-for
->     doing this?=C2=A0 It seems like there are a lot of moving parts, but=
- I
->     don't quite see how they all fit together yet.
->
->     Regards,
->
->     Micah Parrish
->     Linux OS Engineer
->     Hewlett-Packard Enterprise
->
->
->
->
->=20
-
-
+> In particular, I think a kselftest and/or LTP testplan should probably
+> be next on the list.
+> 
+> Kevin
+> 
+> 
+> 
