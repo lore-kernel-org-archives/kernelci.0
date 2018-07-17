@@ -1,76 +1,99 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: Dealing with test results
+Message-ID: <4333af11-ae7f-d8f2-ce36-4d2df411ac67@collabora.com>
+Date: Tue, 17 Jul 2018 14:39:15 +0100
 MIME-Version: 1.0
-In-Reply-To: <f13a8d10-e4ca-25e9-859a-b71329983a3c@collabora.com>
-References: <f13a8d10-e4ca-25e9-859a-b71329983a3c@collabora.com>
-From: "Matt Hart" <matthew.hart@linaro.org>
-Date: Fri, 6 Jul 2018 17:21:44 +0100
-Message-ID: <CAH+k93HgF7ui2khCTTCf4yGCGs8xNyd2LUm4CA6ZHLxKAG_MqQ@mail.gmail.com>
-Subject: Re: [kernelci] wiki documentation
-Content-Type: multipart/alternative; boundary="0000000000008091210570571043"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
---0000000000008091210570571043
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-On 6 July 2018 at 14:46, Ana Guerrero Lopez <ana.guerrero@collabora.com>
-wrote:
+As we're expanding the number of tests being run, one crucial point
+to consider is how to store the results in the backend.  It needs to
+be designed in such a way to enable relevant reports, searches,
+visualisation and a remote API.  It's also important to be able to
+detect regressions and run bisections with the correct data set.
 
-> Hi everybody,
->
-> I started to add some bits of documentation in a GitHub wiki at:
->     https://github.com/kernelci/kernelci-doc/wiki
->
-> There is a lot information missing and I don't expect we have everything
-> documented anytime soon,
-> but hopefully we can improve the current situation. It's a public wiki, so
-> everybody can edit ;)
+So on one hand, I think we can start revisiting what we have in our
+database model.  Then on the other hand, we need to think about
+useful information we want to be able to extract from the database.
 
 
-Thanks for starting this, I'll try to add more info on the build system and
-LAVA parts when I can
+At the moment, we have 3 collections to store these results.  Here's
+a simplified model:
+
+test suite
+* suite name
+* build info (revision, defconfig...)
+* lab name
+* test sets
+* test cases
+
+test set
+* set name
+* test cases
+
+test case
+* case name
+* status
+* measurements
+
+Here's an example:
+
+   https://staging.kernelci.org/test/suite/5b489cc8cf3a0fe42f9d9145/
+
+The first thing I can see here is that we don't actually use the test
+sets: each test suite has exactly one test set called "default", with
+all the test cases stored both in the suite and the set.  So I think
+we could simplify things by having only 2 collections: test suite and
+test case.  Does anyone know what the test sets were intended for?
 
 
->
+Then the next thing to look into is actually about the results
+themselves.  They are currently stored as "status" and
+"measurements".  Status can take one of 4 values: error, fail, pass
+or skip.  Measurements are an arbitrary dictionary.  This works fine
+when the test case has an absolute pass/fail result, and when the
+measurement is only additional information such as the time it took
+to run it.
 
-> Cheers,
-> Ana
->
-> 
->
->
+It's not that simple for test results which use the measurement to
+determine the pass/fail criteria.  For these, there needs to be some
+logic with some thresholds stored somewhere to determine whether the
+measurement results in pass or fail.  This could either be done as
+part of the test case, or in the backend.  Then some similar logic
+needs to be run to detect regressions, as some tests don't have an
+absolute threshold but must not be giving lower scores than previous
+runs.
 
---0000000000008091210570571043
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+It seems to me that having all the logic related to the test case
+stored in the test definition would be ideal, to keep it
+self-contained.  For example, previous test results could be fetched
+from the backend API and passed as meta-data to the LAVA job to
+determine whether the new result is a pass or fail.  The concept of
+pass/fail in this case may actually not be too accurate, rather that
+a score drop needs to be detected as a regression.  The advantage of
+this approach is that there is no need for any test-specific logic in
+the backend, regressions would still just be based on the status
+field.
 
-<div dir=3D"ltr"><br><div class=3D"gmail_extra"><br><div class=3D"gmail_quo=
-te">On 6 July 2018 at 14:46, Ana Guerrero Lopez <span dir=3D"ltr">&lt;<a hr=
-ef=3D"mailto:ana.guerrero@collabora.com" target=3D"_blank">ana.guerrero@col=
-labora.com</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" style=
-=
-=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">Hi ever=
-ybody,<br>
-<br>
-I started to add some bits of documentation in a GitHub wiki at:<br>
-=C2=A0=C2=A0=C2=A0 <a href=3D"https://github.com/kernelci/kernelci-doc/wik=
-i" rel=3D"noreferrer" target=3D"_blank">https://github.com/kernelci/ke<wbr>=
-rnelci-doc/wiki</a><br>
-<br>
-There is a lot information missing and I don&#39;t expect we have everythi=
-ng documented anytime soon,<br>
-but hopefully we can improve the current situation. It&#39;s a public wiki=
-, so everybody can edit ;)</blockquote><div><br></div><div>Thanks for start=
-ing this, I&#39;ll try to add more info on the build system and LAVA parts =
-when I can</div><div><br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">=C2=A0<br></b=
-lockquote><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bord=
-er-left:1px #ccc solid;padding-left:1ex">
-<br>
-Cheers,<br>
-Ana<br>
-<br>
-<br>
-<br>
-</blockquote></div><br></div></div>
+How does that all sound?
 
---0000000000008091210570571043--
+
+It is only a starting point, as Kevin mentioned we should probably
+get some advice from experts in the field of data in general.  This
+thread could easily split into several to discus the different
+aspects of this issue.  Still reviewing what we have and making basic
+changes should help us scale to the extent of what we're aiming for
+at the moment with small test suites.
+
+Then the second part of this discussion would be, what do we want to
+get out of the database? (emails, visualisation, post-processing...)
+It seems worth gathering people's thoughts on this and look for some
+common ground.
+
+Best wishes,
+Guillaume
