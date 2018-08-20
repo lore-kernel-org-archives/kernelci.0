@@ -1,195 +1,103 @@
-Subject: Re: [kernelci] Compilers from.. debian?
-References: <CAH+k93God7SdCeet-S=n4iUmLvyJr4+hORa=W852N_tKWFo8Qw@mail.gmail.com>
- <7hefezlkoi.fsf@baylibre.com>
- <CACNq6_a4fBc3Q8H4rDZwOSNsWLCZ9tJ-_oi+iKs_=gkkZHGf+A@mail.gmail.com>
- <CAH+k93F_04KY43aUDaOuen8heG6-UVVgpbrgcW6DGXtNSEyLQw@mail.gmail.com>
- <CACNq6_Zuf+5cJXj41ZtALdKt3WtRUOurjCssL6FgfoDRXykETQ@mail.gmail.com>
-From: "Ana Guerrero Lopez" <ana.guerrero@collabora.com>
-Message-ID: <267c7d8f-29e7-c99c-637e-df2c9d4ae205@collabora.com>
-Date: Mon, 20 Aug 2018 15:36:38 +0200
+Return-Path: <dan.rue@linaro.org>
+Date: Mon, 20 Aug 2018 11:28:51 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Meeting Minutes for 2018-08-20
+Message-ID: <20180820162851.saybq7xfvkz7m2v2@xps.therub.org>
 MIME-Version: 1.0
-In-Reply-To: <CACNq6_Zuf+5cJXj41ZtALdKt3WtRUOurjCssL6FgfoDRXykETQ@mail.gmail.com>
-Content-Type: multipart/alternative;
- boundary="------------62940441888BE6CA8400752E"
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
---------------62940441888BE6CA8400752E
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+- Attendees: Ana, Guillaume, Matt, Milosz, Rafael, Dan, Mark
 
+- Guillaume
+  - Dealing with test results:
+    - We currently have test suites/sets/cases, but test sets aren’t
+      used and their implementation is broken.  They are mostly a side
+      effect of parsing LAVA callback data, they are not meaningful from
+      a user point of view.
+    - Suggestion: Remove test sets to simplify things.  If we need a
+      better backend solution, we should consider SQUAD and rethink this
+      from a global point of view.
+    - If some test suites need to be broken down, then we can have
+      several smaller test plans.  We could also consider running
+      several test plans in a row with a single LAVA job. Example:
+      https://lava.collabora.co.uk/results/1240317
+      - [drue/Mark] - In LKFT we run LTP across several test runs, and
+        they end up getting called “suite” LTP-subsetA, LTP-subsetB,
+        etc, because squad doesn’t support sets.
+        - [broonie] The goal here is to both get faster runs when
+          there’s multiple boards and to improve robustness against test
+          runs crashing and losing a lot of results on larger
+          testsuites.
+      - [ana] I would like to remove it because what we currently have
+        doesn’t work and we don’t use it
+      - [matt] this was all designed a while ago. A test set is supposed
+        to be a part of a bigger test suite. If it’s not useful now, we
+        can scrap it. There are performance issues too that you can see
+        when viewing the test data. +1 remove
+    - Decision: No objections to removing test sets
+  - Reshaping test configurations:
+    - YAML-based description now being tested
+    - In the process of adding all the devices and test plans to achieve
+      same test coverage as we currently have with the “device_map”
+    - Removing dead LAVA v1 code
+    - Aiming at eventually merging kernelci-build and lava-ci.
+    - Looking for feedback on
+      https://github.com/kernelci/lava-ci-staging/pull/96
+  - Multiple bisections run for single regression: investigating...
 
+- Ana
+  - Reporting test suite results:
+    - Sent v2 of mail reports last week
+      https://github.com/kernelci/kernelci-backend/pull/70 Comments
+      welcome. This is a first step to start getting the results of the
+      test suites by mail.
+    - Sent small PR fixing a problem with the template for sending
+      duplicate mails
+  - Start reporting on regressions: this is blocked by the point
+    mentioned above about test suites/sets/cases. I would like to send a
+    PR to the backend for tracking and reporting test suites regressions
+    in the test suites but If we want to use test sets, some code needs
+    to be added to fix its usage in the backend.
+  - Documentations update
+    - Added 2 new pages documenting the test suites (on-going) and the
+      rootfs images used by the test suites.
+    - http://wiki.kernelci.org now tell readers about the github wiki.
+    - Help welcome savaging the useful parts from wiki.kci.o
+    - Diagrams and other graphics can be added in the github wiki via
+      git : git@github.com:kernelci/kernelci-doc.wiki.git
+    - [drue] it looks like you can’t host a github wiki at its own url,
+      can you? I looked.
+      - [ana] no, but it’s stored in markdown in a git repo and we could
+        use something else to render and host it in the future.
+    - Github permissions - right now I can’t ask people to review
+      kernelci related pull requests
+      - [matt] https://github.com/orgs/kernelci/teams exists but needs
+        to be made better
 
-On 15/08/18 18:27, Mark Brown wrote:
->
->
-> On Wed, 15 Aug 2018, 5:05 pm Matt Hart, <matthew.hart@linaro.org 
-> <mailto:matthew.hart@linaro.org>> wrote:
->
->     On 15 August 2018 at 16:39, Mark Brown <broonie@kernel.org
->     <mailto:broonie@kernel.org>> wrote:
->     >
->     >
->     > On Wed, 15 Aug 2018, 4:21 pm Kevin Hilman, <khilman@baylibre.com
->     <mailto:khilman@baylibre.com>> wrote:
->     >>
->     >> "Matt Hart" <matthew.hart@linaro.org
->     <mailto:matthew.hart@linaro.org>> writes:
->     >>
->     >> > Does anyone have a strong opinion about where we get our compiler
->     >> > releases from?
->     >>
->     >> I think the current tarball way is a hack and not scalable, so...
->     >>
->     >> > Currently it's a mash up of Linaro for ARM(32/64), MIPS from
->     unknown,
->     >> > and X86 from whatever ubuntu is installed on the builder
->     >> >
->     >> > As part of my work to start building with multiple compiler
->     versions,
->     >> > I've been creating Dockerfiles for the builders with different
->     >> > compiler versions installed in them. As I've been doing this,
->     it's
->     >> > been really easy to just install the various compilers
->     packages from
->     >> > Debian. They also cover a lot of architectures we're hoping
->     to add in
->     >> > the future.
->     >> >
->     >> > Anyone mind if we start using Debian toolchain releases in
->     future?
->     >> > I'm no toolchain expert, so I'm looking for some opinions.
->     >>
->     >> It's better than what we're doing today, and has a much clearer
->     >> upgrade/migration path, so I say go for it!
->     >
->     >
->     > The only concern I can think of is that it's going to be a bit
->     harder for
->     > those not fortunate enough to run Debian to get the toolchains
->     if there's
->     > some reason to reproduce things. On the other hand that's a rare
->     occurrence
->     > and with moving the builders more to Docker there's always the
->     option of
->     > using the container to get the compilers on other OSs.
->
->     I've been thinking about adding a section to the build page of "repeat
->     this build" and a link to either a dockerfile or image which runs the
->     identical steps in the same environment, it could be a really nice
->     feature to add.
->
->
-> That'd be a neat thing to have!
->
-+1 and thank you for taking care of this.
-
-Ana
-
---------------62940441888BE6CA8400752E
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <p><br>
-    </p>
-    <br>
-    <div class="moz-cite-prefix">On 15/08/18 18:27, Mark Brown wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CACNq6_Zuf+5cJXj41ZtALdKt3WtRUOurjCssL6FgfoDRXykETQ@mail.gmail.com">
-      <meta http-equiv="content-type" content="text/html; charset=utf-8">
-      <br>
-      <br>
-      <div class="gmail_quote">
-        <div dir="ltr">On Wed, 15 Aug 2018, 5:05 pm Matt Hart, &lt;<a
-            href="mailto:matthew.hart@linaro.org" moz-do-not-send="true">matthew.hart@linaro.org</a>&gt;
-          wrote:<br>
-        </div>
-        <blockquote class="gmail_quote" style="margin:0 0 0
-          .8ex;border-left:1px #ccc solid;padding-left:1ex">On 15 August
-          2018 at 16:39, Mark Brown &lt;<a
-            href="mailto:broonie@kernel.org" target="_blank"
-            moz-do-not-send="true">broonie@kernel.org</a>&gt; wrote:<br>
-          &gt;<br>
-          &gt;<br>
-          &gt; On Wed, 15 Aug 2018, 4:21 pm Kevin Hilman, &lt;<a
-            href="mailto:khilman@baylibre.com" target="_blank"
-            moz-do-not-send="true">khilman@baylibre.com</a>&gt; wrote:<br>
-          &gt;&gt;<br>
-          &gt;&gt; "Matt Hart" &lt;<a
-            href="mailto:matthew.hart@linaro.org" target="_blank"
-            moz-do-not-send="true">matthew.hart@linaro.org</a>&gt;
-          writes:<br>
-          &gt;&gt;<br>
-          &gt;&gt; &gt; Does anyone have a strong opinion about where we
-          get our compiler<br>
-          &gt;&gt; &gt; releases from?<br>
-          &gt;&gt;<br>
-          &gt;&gt; I think the current tarball way is a hack and not
-          scalable, so...<br>
-          &gt;&gt;<br>
-          &gt;&gt; &gt; Currently it's a mash up of Linaro for
-          ARM(32/64), MIPS from unknown,<br>
-          &gt;&gt; &gt; and X86 from whatever ubuntu is installed on the
-          builder<br>
-          &gt;&gt; &gt;<br>
-          &gt;&gt; &gt; As part of my work to start building with
-          multiple compiler versions,<br>
-          &gt;&gt; &gt; I've been creating Dockerfiles for the builders
-          with different<br>
-          &gt;&gt; &gt; compiler versions installed in them. As I've
-          been doing this, it's<br>
-          &gt;&gt; &gt; been really easy to just install the various
-          compilers packages from<br>
-          &gt;&gt; &gt; Debian. They also cover a lot of architectures
-          we're hoping to add in<br>
-          &gt;&gt; &gt; the future.<br>
-          &gt;&gt; &gt;<br>
-          &gt;&gt; &gt; Anyone mind if we start using Debian toolchain
-          releases in future?<br>
-          &gt;&gt; &gt; I'm no toolchain expert, so I'm looking for some
-          opinions.<br>
-          &gt;&gt;<br>
-          &gt;&gt; It's better than what we're doing today, and has a
-          much clearer<br>
-          &gt;&gt; upgrade/migration path, so I say go for it!<br>
-          &gt;<br>
-          &gt;<br>
-          &gt; The only concern I can think of is that it's going to be
-          a bit harder for<br>
-          &gt; those not fortunate enough to run Debian to get the
-          toolchains if there's<br>
-          &gt; some reason to reproduce things. On the other hand that's
-          a rare occurrence<br>
-          &gt; and with moving the builders more to Docker there's
-          always the option of<br>
-          &gt; using the container to get the compilers on other OSs.<br>
-          <br>
-          I've been thinking about adding a section to the build page of
-          "repeat<br>
-          this build" and a link to either a dockerfile or image which
-          runs the<br>
-          identical steps in the same environment, it could be a really
-          nice<br>
-          feature to add.<br>
-        </blockquote>
-      </div>
-      <div><br>
-      </div>
-      <div>That'd be a neat thing to have!</div>
-      <div><br>
-      </div>
-    </blockquote>
-    +1 and thank you for taking care of this.<br>
-    <br>
-    Ana<br>
-  </body>
-</html>
-
---------------62940441888BE6CA8400752E--
+- Milosz
+  - Kernelci testing data presentation in SQUAD:
+    https://staging-qa-reports.linaro.org/kernelci/
+  - [ana] can results be filtered by date?
+    - [milosz] you can use the API to get that. In the UI it’s sorted by
+      date, but you can’t filter by date
+  - [matt] it looks better than kernelci’s views. Some of the sorting
+    and mapping can be improved
+    - https://staging-qa-reports.linaro.org/kernelci/ shows it by
+      branch, but what if someone wants to see it by board or by
+      architecture/defconfig
+    - [milosz] i’m working on filtering by environment (architecture,
+      board), so that users can view results by board, or by config
+      - [milosz] I’m currently working on
+        https://github.com/Linaro/squad/issues/245
+    - [guill] custom views would be really nice so that an individual
+      could have a search for what they’re interested in that could be
+      saved in a link, and shared that way
+      - [milosz] this is a nice idea
+      - [matt] here’s an example of a multi-field search in kernelci
+        https://kernelci.org/boot/?apq8016-sbc%20lab-mhart%20master%20next
+        - lava/squad doesn’t do that because of django’s default filter
+          implementation
