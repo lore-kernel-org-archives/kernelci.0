@@ -1,48 +1,40 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Thu, 30 Aug 2018 13:43:04 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Meeting Minutes for 2018-08-30
-Message-ID: <20180830184304.75ai3ecfuf23ip6w@xps.therub.org>
+Date: Fri, 31 Aug 2018 01:32:12 +0200
+From: "Ana Guerrero Lopez" <ana.guerrero@collabora.com>
+Subject: New images and possible arch rename
+Message-ID: <20180830233212.GA19856@delenn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-- Attendees: Milosz, Dan, Ana, Mark, Matt, Guillaume, Guenter
+Hi,
 
-- Matt
-  - LAVA ConfigurationError should be parsed as unknown result rather than fail
-    - Assigned to Matt
+After the PR for adding MIPS got accepted, I have built new debian rootfs images in staging.
+They are available at http://staging-storage.kernelci.org/images/rootfs/debian/stretch/20180830.2/
+and http://staging-storage.kernelci.org/images/rootfs/debian/stretchtests/20180830.1/
 
-- Agenda items from Collabora:
-  - YAML test configuration
-    - https://github.com/kernelci/lava-ci-staging/pull/96
-    - Tested on staging, polishing documentation now.
-    - Merged, working fine
-  - Staging update pull request https://github.com/kernelci/lava-ci/pull/122
-    - usb: add test cases after suspend/resume
-    - usb, sleep: use the Debian file system rather than buildroot
-    - remove all LAVA v1 and other various stale code and configuration data
-    - replace lib.device_map with YAML-based lib.test_configs and 
-      test-configs.yaml
-  - Test results backend refactoring
-    - Based on the outcome of past discussions, we suggest that we replace the
-      current backend test models implementation (suite, sets, cases) with more
-      flexible ones (group, cases) in order to allow more flexibility in terms
-      of hierarchy.  This would seem like a starting point with the minimal
-      changes required to be able to store test results from any test suite.
-  - Reporting test suites results v3 was merged. No mails sent yet.
-    - Ana will send mail to the list
-  - MIPS pull request 
-    https://github.com/kernelci/kernelci-build-staging/pull/53
-    - Matt will merge
+The stretchtest images have been built with this patch https://github.com/kernelci/kernelci-build-staging/pull/54
+needed to fix the build of IGT GPU tools from git. Merge welcome!
 
-- Azure builder issue
-  - Not clear what’s going on, but lose connection to build host
-  - Could be firewall configuration
-  - [matt] i’ll try changing the configuration to connect directly to the
-    host/port22 so that we aren’t connecting to a container on a high port
-    number, which might be contributing to the problem
 
+We have now images for 8 architectures:
+
+- armhf, 32 bits ARM v7 with floating point, little endian.
+- armel, 32 bits ARM v4t, little endian.
+- arm64, 64 bits ARM v8, little endian. Also known as AArch64.
+- x86, 32 bits. Also known as i386.
+- x86_64, 64 bits x86. Also known as amd64.
+- mips, 32 bits, big endian.
+- mipsel, 32 bits, little endian.
+- mips64el, 64 bits little endian.
+
+Except for x86 and x86_64, we're using the names used in debian for the archs.
+Any objection against renaming them in the future as i386 and amd64? Or at the very least to name
+x86 as i386? Guillaume has pointed to me that currently in the kernelci x86 means only x86 on 32 bits
+and we would need to introduce x86_64 (or amd64). So for avoiding confusion with x86 and x86_64,
+the rename would be a good idea.
+
+Cheers,
+
+Ana
