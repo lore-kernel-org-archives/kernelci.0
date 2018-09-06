@@ -1,49 +1,35 @@
-Return-Path: <khilman@baylibre.com>
-From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: [kernelci] merging kernelci-build with lava-ci
-References: <20180906194726.GA16832@delenn>
-Date: Thu, 06 Sep 2018 15:13:42 -0700
-In-Reply-To: <20180906194726.GA16832@delenn> (Ana Guerrero Lopez's message of
-	"Thu, 6 Sep 2018 21:47:26 +0200")
-Message-ID: <7hva7i6zqh.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: "Kevin Hilman" <khilman@baylibre.com>
+Date: Thu, 6 Sep 2018 15:36:03 -0700
+Message-ID: <CAOi56cX+13EOOC-COoxaJ6P981cqzU8xDxyn-t=5DB9y6Q+Lqw@mail.gmail.com>
+Subject: kernelci-frontend: limitation on X days of data
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Ana Guerrero Lopez <ana.guerrero@collabora.com>
+To: Milo Casagrande <milo@foundries.io>
 Cc: kernelci@groups.io
 
-"Ana Guerrero Lopez" <ana.guerrero@collabora.com> writes:
+Hi Milo,
 
-> We discussed in one of the weekly meetings the idea of merging kernelci-build 
-> with lava-ci. I took a quick look at this and as hoped, they can be both merged 
-> easily.
->
-> The easiest seems to merge kernelci-build (~200 commits) into lava-ci (~800 commits),
-> the only conflict is the README.md file so this file needs to be removed 
-> from kernelci-build before the merge. Then both repositories can be merged
-> with merge  --allow-unrelated-histories.
->
-> The steps I followed:
->
-> $ git clone https://github.com/kernelci/lava-ci-staging && cd lava-ci-staging
-> $ git remote add kernelci-build https://github.com/kernelci/kernelci-build-staging.git
-> $ git fetch kernelci-build/master
-> $ git merge --allow-unrelated-histories kernelci-build/master
->
-> And exactly the same procedure works for the staging repositories kernelci-build-staging 
-> and lava-ci-staging. You can browse the resulting repositories at:
->
-> https://gitlab.collabora.com/ana/kci.lava-ci-staging
-> https://gitlab.collabora.com/ana/kci.lava-ci
->
->
-> Is there any objection against doing the merge of this two repositories next week? 
+I have some questions on the front-end limitation we have around a max
+number of days we load data from the backend (default: 14 days, using
+the `date_range` option when querying the backend.)
 
-No objection from me.
+>From my primitive understanding of the current javascript, this is
+primarily because current tables basically pre-load all the data. IOW,
+even if it's configured to only show the first 25 elements, the
+javascript will actually load all the data on the first load, then
+when paging, it's just showing already loaded data.  Obviously, if
+there is lots of data to load, this would be very slow for the first
+view if/when there is lots of data.
 
-> Do you have any preference for the name of the new resulting repository? For the sake
-> of suggesting something, what about just "kernelci" or maybe "kernelci-core"?
+However, I was recently pointed to dataTables.net and told that if we
+switched to a recent version of dataTables, we could easily configure
+it to only query/load the backend for the visible values (e.g. first
+25 elements of table) and load the others on demand only when clicking
+on the next page.
 
-I like kernelci-core.
+First, is that true?
+Second, would it be a big project to migrate the current tables to a
+recent dataTables?
 
 Kevin
