@@ -1,84 +1,55 @@
 MIME-Version: 1.0
-References: <CAOi56cX+13EOOC-COoxaJ6P981cqzU8xDxyn-t=5DB9y6Q+Lqw@mail.gmail.com>
-In-Reply-To: <CAOi56cX+13EOOC-COoxaJ6P981cqzU8xDxyn-t=5DB9y6Q+Lqw@mail.gmail.com>
-From: Milo Casagrande <milo@foundries.io>
-Date: Fri, 7 Sep 2018 09:50:42 +0200
-Message-ID: <CAEFW_ihUV+Cs_jHH3vmzaxjN5dOY1h05bSzqHuxR_Fxa+m1Cag@mail.gmail.com>
-Subject: Re: kernelci-frontend: limitation on X days of data
+In-Reply-To: <7hva7i6zqh.fsf@baylibre.com>
+References: <20180906194726.GA16832@delenn> <7hva7i6zqh.fsf@baylibre.com>
+From: "Matt Hart" <matthew.hart@linaro.org>
+Date: Fri, 7 Sep 2018 09:49:24 +0100
+Message-ID: <CAH+k93HiwE3CJvF2tkRQE-XK0XYwJOp44xuatwOhWycx25py9A@mail.gmail.com>
+Subject: Re: [kernelci] merging kernelci-build with lava-ci
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: khilman@baylibre.com
-Cc: kernelci@groups.io
+To: kernelci@groups.io
+Cc: Ana Guerrero Lopez <ana.guerrero@collabora.com>
 
-On Fri, Sep 7, 2018 at 12:36 AM Kevin Hilman <khilman@baylibre.com> wrote:
+On 6 September 2018 at 23:13, Kevin Hilman <khilman@baylibre.com> wrote:
+> "Ana Guerrero Lopez" <ana.guerrero@collabora.com> writes:
 >
-> Hi Milo,
+>> We discussed in one of the weekly meetings the idea of merging kernelci-build
+>> with lava-ci. I took a quick look at this and as hoped, they can be both merged
+>> easily.
+>>
+>> The easiest seems to merge kernelci-build (~200 commits) into lava-ci (~800 commits),
+>> the only conflict is the README.md file so this file needs to be removed
+>> from kernelci-build before the merge. Then both repositories can be merged
+>> with merge  --allow-unrelated-histories.
+>>
+>> The steps I followed:
+>>
+>> $ git clone https://github.com/kernelci/lava-ci-staging && cd lava-ci-staging
+>> $ git remote add kernelci-build https://github.com/kernelci/kernelci-build-staging.git
+>> $ git fetch kernelci-build/master
+>> $ git merge --allow-unrelated-histories kernelci-build/master
+>>
+>> And exactly the same procedure works for the staging repositories kernelci-build-staging
+>> and lava-ci-staging. You can browse the resulting repositories at:
+>>
+>> https://gitlab.collabora.com/ana/kci.lava-ci-staging
+>> https://gitlab.collabora.com/ana/kci.lava-ci
+>>
+>>
+>> Is there any objection against doing the merge of this two repositories next week?
 >
-> I have some questions on the front-end limitation we have around a max
-> number of days we load data from the backend (default: 14 days, using
-> the `date_range` option when querying the backend.)
+> No objection from me.
 >
-> From my primitive understanding of the current javascript, this is
-> primarily because current tables basically pre-load all the data. IOW,
-> even if it's configured to only show the first 25 elements, the
-> javascript will actually load all the data on the first load, then
-> when paging, it's just showing already loaded data.  Obviously, if
-> there is lots of data to load, this would be very slow for the first
-> view if/when there is lots of data.
-
-True.
-For the "big" views (/build/ and /boot/) the results are loaded in
-batch (I think 1024 at the time), but it's not leveraging dataTables
-server side logic to do so.
-It's sort of a "hack" around the dataTables logic in order to keep the
-client side search function.
-
-> However, I was recently pointed to dataTables.net and told that if we
-> switched to a recent version of dataTables, we could easily configure
-> it to only query/load the backend for the visible values (e.g. first
-> 25 elements of table) and load the others on demand only when clicking
-> on the next page.
+>> Do you have any preference for the name of the new resulting repository? For the sake
+>> of suggesting something, what about just "kernelci" or maybe "kernelci-core"?
 >
-> First, is that true?
+> I like kernelci-core.
 
-It's true, and it should be possible to use that even with the
-dataTables version running on kernelci.
++1, and I'm fine with the merge. I've got a PR coming up to change the
+builds into docker containers but it will be easy to rebase.
 
-I didn't check the new/updated features in the latest dataTables, but
-there was a drawback with the version currently in use: you would have
-to do everything server side [1].
-
-That means you have to handle the pagination logic (that should be
-already done, although it might have to be tweaked, IIRC dataTables
-had a special way of doing it), but you also have to handle the
-"search" part.
-To support that, we need to have a text index to perform searches on.
-mongodb support text indexes, but it's not optimal (it's nowhere near
-Lucene/Elastic) and you might not find exactly everything you are
-looking for (or you have to be very explicit with your search terms).
-mongodb text indexes tends to be "expensive" as well.
-
-At that time, not to complicate the architecture/deployment, I decided
-to leverage the client side search limiting the results shown.
-
-Ideally, has was also my initial idea, text searches should be handled
-by something like Lucene/Elastic exposing them through
-api.kernelci.org and to the web UI.
-
-> Second, would it be a big project to migrate the current tables to a
-> recent dataTables?
-
-It depends on what we really want to do. :-)
-What's more important? Show more results, but with a potentially
-limited search logic [2], or be able to perform searches "quickly"?
-
-It could be a big project...
-
-[1] Quick check on dataTables web site: the latest version is 1.10.18,
-we are using 1.10.11, so it should be easy to just switch to that
-version, as there shouldn't be major API changes.
-[2] It could also be just OK for our use cases, but we still need to
-measure the impact on server side.
-
--- 
-Milo Casagrande <milo@foundries.io>
+>
+> Kevin
+>
+> 
+>
