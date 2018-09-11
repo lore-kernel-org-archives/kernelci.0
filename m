@@ -1,55 +1,37 @@
+Date: Tue, 11 Sep 2018 15:01:27 +0200
+From: "Ana Guerrero Lopez" <ana.guerrero@collabora.com>
+Subject: Re: [kernelci] merging kernelci-build with lava-ci (DONE)
+Message-ID: <20180911130127.GA9601@delenn>
+References: <1551E749E71DE356.30399@groups.io>
 MIME-Version: 1.0
-In-Reply-To: <7hva7i6zqh.fsf@baylibre.com>
-References: <20180906194726.GA16832@delenn> <7hva7i6zqh.fsf@baylibre.com>
-From: "Matt Hart" <matthew.hart@linaro.org>
-Date: Fri, 7 Sep 2018 09:49:24 +0100
-Message-ID: <CAH+k93HiwE3CJvF2tkRQE-XK0XYwJOp44xuatwOhWycx25py9A@mail.gmail.com>
-Subject: Re: [kernelci] merging kernelci-build with lava-ci
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1551E749E71DE356.30399@groups.io>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
-Cc: Ana Guerrero Lopez <ana.guerrero@collabora.com>
 
-On 6 September 2018 at 23:13, Kevin Hilman <khilman@baylibre.com> wrote:
-> "Ana Guerrero Lopez" <ana.guerrero@collabora.com> writes:
->
->> We discussed in one of the weekly meetings the idea of merging kernelci-build
->> with lava-ci. I took a quick look at this and as hoped, they can be both merged
->> easily.
->>
->> The easiest seems to merge kernelci-build (~200 commits) into lava-ci (~800 commits),
->> the only conflict is the README.md file so this file needs to be removed
->> from kernelci-build before the merge. Then both repositories can be merged
->> with merge  --allow-unrelated-histories.
->>
->> The steps I followed:
->>
->> $ git clone https://github.com/kernelci/lava-ci-staging && cd lava-ci-staging
->> $ git remote add kernelci-build https://github.com/kernelci/kernelci-build-staging.git
->> $ git fetch kernelci-build/master
->> $ git merge --allow-unrelated-histories kernelci-build/master
->>
->> And exactly the same procedure works for the staging repositories kernelci-build-staging
->> and lava-ci-staging. You can browse the resulting repositories at:
->>
->> https://gitlab.collabora.com/ana/kci.lava-ci-staging
->> https://gitlab.collabora.com/ana/kci.lava-ci
->>
->>
->> Is there any objection against doing the merge of this two repositories next week?
->
-> No objection from me.
->
->> Do you have any preference for the name of the new resulting repository? For the sake
->> of suggesting something, what about just "kernelci" or maybe "kernelci-core"?
->
-> I like kernelci-core.
-
-+1, and I'm fine with the merge. I've got a PR coming up to change the
-builds into docker containers but it will be easy to rebase.
-
->
-> Kevin
->
+On Thu, Sep 06, 2018 at 09:47:26PM +0200, Ana Guerrero Lopez wrote:
 > 
->
+> Hi!
+> 
+> We discussed in one of the weekly meetings the idea of merging kernelci-build 
+> with lava-ci. I took a quick look at this and as hoped, they can be both merged 
+> easily.
+
+I've merged the repositories today. Now we have kernelci-core and
+kernelci-core-staging:
+
+https://github.com/kernelci/kernelci-core
+https://github.com/kernelci/kernelci-core-staging
+
+Some notes:
+- I have carried all the tags. The ones coming from lava-ci-staging got
+  the suffix "lavaci-" and the ones from kernelci-build-staging "build-"
+- branchs haven't been carried on
+- I added a "DEPRECATED" note in the description of the four old
+  repositories. In a few weeks, we should consider archiving them:
+  https://blog.github.com/2017-11-08-archiving-repositories/
+
+Cheers,
+Ana
+
