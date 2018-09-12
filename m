@@ -1,44 +1,26 @@
-Message-ID: <08bfc4b338de935228efd1fec342caef57d45f3f.camel@collabora.com>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
 Subject: Re: [kernelci] media subsystem test pilot
-From: Ezequiel Garcia <ezequiel@collabora.com>
-Date: Wed, 12 Sep 2018 12:55:04 -0300
-In-Reply-To: <CAJrz+7KR0x51xK=4bHH2i_OzGgrK6BdyiJE5vhs0gOdNx1YcAw@mail.gmail.com>
 References: <d0113fd0-801a-feff-af96-12a71ca27dc7@collabora.com>
-	 <CAJrz+7KR0x51xK=4bHH2i_OzGgrK6BdyiJE5vhs0gOdNx1YcAw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Date: Wed, 12 Sep 2018 13:15:14 -0700
+In-Reply-To: <d0113fd0-801a-feff-af96-12a71ca27dc7@collabora.com> (Guillaume
+	Tucker's message of "Wed, 12 Sep 2018 09:13:23 +0100")
+Message-ID: <7h4leuzd4d.fsf@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: Milosz Wasilewski <milosz.wasilewski@linaro.org>, kernelci@groups.io
-Cc: Gustavo Padovan <gustavo.padovan@collabora.com>, Chase Qi <chase.qi@linaro.org>, Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>, Mark Brown <broonie@kernel.org>, Guillaume Tucker <guillaume.tucker@collabora.com>, Ana Guerrero Lopez <ana.guerrero@collabora.co.uk>
+To: Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: kernelci@groups.io, ezequiel Garcia <ezequiel@collabora.com>, Gustavo Padovan <gustavo.padovan@collabora.com>
 
-On Wed, 2018-09-12 at 09:51 +0100, Milosz Wasilewski wrote:
-> On 12 September 2018 at 09:13, Guillaume Tucker
-> <guillaume.tucker@gmail.com> wrote:
-> > 
-> > * add config fragment (similar to the kselftest one) with virtual
-> >   video drivers enabled to test v4l2 framework on QEMU and get
-> >   reference test results
-> 
-> Last week I asked Chase (CCed) to try to create a 'test definition'
-> for v4l for LAVA. I can see the v4l template in the repo now [1] but
-> it looks like bound to LAVA environment. Do you possibly have some
-> different implementation that allows for local execution?
-> 
-> 
+"Guillaume Tucker" <guillaume.tucker@gmail.com> writes:
 
-(+Nicolas)
+[...]
 
-v4l2-compliance is a decent test for simple capture devices
-(simple means, those that function thru the V4L API).
+> Does this sound like a good plan?  If so, it would be good to start
+> working on it next week if we want to get something done in time for
+> ELCE and give a chance to developers to provide some feedback on the
+> test results.
 
-However, I am not so sure it's the right tool for codecs,
-which go thru the stateful or stateless codec API.
+Yes!
 
-Nicolas and I have been talking about using gstreamer for that,
-via gst-validate, which allows very interesting tests.
-
-Regards,
-Ezequiel
-
-
+Kevin
