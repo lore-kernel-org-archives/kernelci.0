@@ -1,27 +1,59 @@
+Date: Wed, 12 Sep 2018 11:34:27 +0100
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: [kernelci] media subsystem test pilot
+Message-ID: <20180912103427.GD6062@sirena.org.uk>
+References: <d0113fd0-801a-feff-af96-12a71ca27dc7@collabora.com>
 MIME-Version: 1.0
 In-Reply-To: <d0113fd0-801a-feff-af96-12a71ca27dc7@collabora.com>
-References: <d0113fd0-801a-feff-af96-12a71ca27dc7@collabora.com>
-From: "Milosz Wasilewski" <milosz.wasilewski@linaro.org>
-Date: Wed, 12 Sep 2018 09:51:26 +0100
-Message-ID: <CAJrz+7KR0x51xK=4bHH2i_OzGgrK6BdyiJE5vhs0gOdNx1YcAw@mail.gmail.com>
-Subject: Re: [kernelci] media subsystem test pilot
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="SO98HVl1bnMOfKZd"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
-Cc: ezequiel Garcia <ezequiel@collabora.com>, Gustavo Padovan <gustavo.padovan@collabora.com>, Chase Qi <chase.qi@linaro.org>
+Cc: ezequiel Garcia <ezequiel@collabora.com>, Gustavo Padovan <gustavo.padovan@collabora.com>, anders.roxell@linaro.org
 
-On 12 September 2018 at 09:13, Guillaume Tucker
-<guillaume.tucker@gmail.com> wrote:
->
+--SO98HVl1bnMOfKZd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Sep 12, 2018 at 09:13:23AM +0100, Guillaume Tucker wrote:
+
 > * add config fragment (similar to the kselftest one) with virtual
 >   video drivers enabled to test v4l2 framework on QEMU and get
 >   reference test results
 
-Last week I asked Chase (CCed) to try to create a 'test definition'
-for v4l for LAVA. I can see the v4l template in the repo now [1] but
-it looks like bound to LAVA environment. Do you possibly have some
-different implementation that allows for local execution?
+Semi-orthogonal (and definitely not a blocker) but Anders Roxell (CCed)
+was looking at proposing a config fragment for inclusion upstream which
+would enable all the config options that add ABIs, mainly for use with
+testsuites.  The idea was that with such a fragment enabled there'd be a
+good chance that any random testsuite would have what it needs from the
+kernel without needing to maintain lots of testsuite specific fragments,=20
+especially if the config options change with kernel versions.  I wonder
+if it's also a good idea to have a fragment which enables all test/virtual=
+=20
+drivers for similar reasons.
 
-[1] https://github.com/kernelci/kernelci-core-staging/blob/master/templates/v4l2/v4l2.jinja2
+> Does this sound like a good plan?  If so, it would be good to start
+> working on it next week if we want to get something done in time for
+> ELCE and give a chance to developers to provide some feedback on the
+> test results.
 
-milosz
+Makes sense to me.
+
+--SO98HVl1bnMOfKZd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluY67MACgkQJNaLcl1U
+h9C1IQf/XWx2jSVaCtcLp4ks+tZrJEMzzu5x1diahg7gYvRqKOhjzZB1PNnPAvj8
+5Js0jQ5EuinOddKF81Hb62pRxMhwFhJzhhwCxSCtMNrYBlOZN/4t0J0WDYkV6nNM
+qzGlDCqm5kz4GaId2m5ea8DI0djRpgd9/jcc/m5oelmKfEF/0nLXtPgi9dqG0piy
+3gkWwWCfWWwMLpkkAkHGQTevmORZslGQXkK1dXPpV7QRGzFkqyNtJ5WbS6nsq3+y
+xL+70qGIDowYcESPhNOSDKmgOeZUnsjP3QXUSeu+OVK1s/ScOnU+G3PIP5/SkIfg
+k+WFlhUTHDn422SMU36Vdj0RkY/yLQ==
+=b0By
+-----END PGP SIGNATURE-----
+
+--SO98HVl1bnMOfKZd--
