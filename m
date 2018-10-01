@@ -1,42 +1,39 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Mon, 1 Oct 2018 08:47:42 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Meeting Minutes for 2018-10-01
+Message-ID: <20181001134742.psppadjjrgtrrvsn@xps.therub.org>
 MIME-Version: 1.0
-References: <CAH+k93Fy_1WKOnsXqOORs05PBnv-vQAs7KwEzhLZ2AGi-1swNg@mail.gmail.com>
- <CABXOdTdxXquF=ASeyjjPMGJMVLRN+QOeONBv3h9Xm5MtGrXynQ@mail.gmail.com> <CAH+k93HCOni-1R15t5rjgt8Dwf4kJZcuuNk_9ocBPF6nhfv94w@mail.gmail.com>
-In-Reply-To: <CAH+k93HCOni-1R15t5rjgt8Dwf4kJZcuuNk_9ocBPF6nhfv94w@mail.gmail.com>
-From: "Guenter Roeck" <groeck@google.com>
-Date: Tue, 18 Sep 2018 10:45:10 -0700
-Message-ID: <CABXOdTexEwdEpxbm2aqyqqChGtRnXJE2GCA4CvU+b9hiEJsnPQ@mail.gmail.com>
-Subject: Re: [kernelci] stable review emails
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-On Tue, Sep 18, 2018 at 10:36 AM Matt Hart <matthew.hart@linaro.org> wrote:
->
-> On 18 September 2018 at 10:31, Guenter Roeck via Groups.Io
-> <groeck=google.com@groups.io> wrote:
-> > On Tue, Sep 18, 2018 at 9:35 AM Matt Hart <matthew.hart@linaro.org> wrote:
-> >>
-> >> Hi all,
-> >>
-> >> I've not seen Kernelci reply to Greg stable review emails for a while,
-> >> are we still expecting this to work? Have I just missed the emails?
-> >> I'm happy to take a look into it but I don't know much about how it
-> >> works, where is the code?
-> >>
-> >
-> > I am quite sure I saw e-mails from kernelci early today, but it seems
-> > they are not sent to the stable mailing list. Is that possible ?
->
-> The normal email reports are working fine, but there is a special case
-> to reply to Gregs stable review announcements with the boot results,
-> and I've not seen one of those emails for a while.
->
-Actually, I thought that is what I saw. I'll have to check tonight on
-my e-mail server at home.
+- Attendees: Ana, Anmar, Mark, Milosz, Dan
 
-However, I don't see my own replies to Greg's announcements on the
-stable mailing list either. Given that, I wonder if it considers me
-(and maybe kernelci) to be a spammer. That would not be the first
-time.
+- [milosz] KernelCI-NG
+  - Discussed with Kevin and Carlos at Connect
+  - Using “search engine” approach as backend (elastic search as
+    example)
+  - Adjust current frontend to use the new backend
+  - Support for new-great frontends (like ES Kibana) - Kevin’s example:
+    https://goo.gl/yfZ6VK
+    - [Dan] is worried about usability as a public website, performance
+      given a heavy load. Would be nice to have use case out in the
+      field we can look at.
+  - Work on that solution to be parallel to the currently working
+    solution
+  - AI: Milosz will propose a study of how to use ELK for kernelCI on
+    the mailing list
+    - Milosz’s team has an engineer who will investigate this further.
 
-Guenter
+- [Matt] Not attending, unwell
+  - Plan to split the mips and x86 architectures this week as agreed,
+    which unblocks changing production builds to use containers
+
+- [Ana]
+  - Backend: now merged and available in staging: update format for the
+    test reports and possibility to select the tests suites to be
+    included in the mail
+  - Media subsystem pilot
