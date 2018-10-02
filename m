@@ -1,55 +1,60 @@
-Date: Tue, 2 Oct 2018 19:45:34 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: [kernelci] Rolling out the docker builds
-Message-ID: <20181002184534.GD6338@sirena.org.uk>
-References: <CAH+k93HMWWgyUe0aZYvHBC=eykHPT_EZpFeMPT=u0hQjcrdS7A@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAH+k93HMWWgyUe0aZYvHBC=eykHPT_EZpFeMPT=u0hQjcrdS7A@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zS7rBR6csb6tI2e1"
-Content-Disposition: inline
+References: <CA+_AqiuE9EmTruc7-G0pH-2hXzDjc5VPQn4-qoN4+47Oqf0djQ@mail.gmail.com>
+In-Reply-To: <CA+_AqiuE9EmTruc7-G0pH-2hXzDjc5VPQn4-qoN4+47Oqf0djQ@mail.gmail.com>
+From: Fathi Boudra <fathi.boudra@linaro.org>
+Date: Tue, 2 Oct 2018 21:54:54 +0300
+Message-ID: <CAGNsrLBmTZhVtkLEYXweL34eHbGLpoJoOexz4ozgLDpwz7QKMQ@mail.gmail.com>
+Subject: Re: KernelCI API Auth Token
+Content-Type: multipart/alternative; boundary="000000000000df9c680577437577"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Anibal Limon <anibal.limon@linaro.org>
+Cc: kernelci@groups.io, Nicolas Dechesne <nicolas.dechesne@linaro.org>, "anmar.oueja@linaro.org" <anmar.oueja@linaro.org>
 
---zS7rBR6csb6tI2e1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--000000000000df9c680577437577
+Content-Type: text/plain; charset="UTF-8"
+
+Hi,
+
+On Tue, 2 Oct 2018 at 21:46, Anibal Limon <anibal.limon@linaro.org> wrote:
+
+> Hi,
+>
+> I want to access the KernelCI API to get information about the QCOMLT
+> builds, I have a couple of questions,
+>
+> What is the process to get a KernelCI API  auth token?
+>
+> Fathi, Anmar,
+> Do we have a KernelCI auth token available on LinaroCI?
+>
+
+No, we don't have a KernelCI auth token in our side of the infra.
+
+
+> Regards,
+> Anibal
+>
+
+Cheers,
+Fathi
+
+--000000000000df9c680577437577
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 02, 2018 at 05:37:43PM +0100, Matt Hart wrote:
+<div dir=3D"ltr">Hi,<br><br><div class=3D"gmail_quote"><div dir=3D"ltr">On =
+Tue, 2 Oct 2018 at 21:46, Anibal Limon &lt;<a href=3D"mailto:anibal.limon@l=
+inaro.org">anibal.limon@linaro.org</a>&gt; wrote:<br></div><blockquote clas=
+s=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;pad=
+ding-left:1ex"><div dir=3D"ltr">Hi,<div><br></div><div>I want to access the=
+ KernelCI API to get information about the QCOMLT builds, I have a couple o=
+f questions,</div><div><br></div><div>What is the process to get a KernelCI=
+ API=C2=A0 auth token?</div><div><br></div><div>Fathi, Anmar,</div><div>Do =
+we have a KernelCI auth token available on LinaroCI?</div></div></blockquot=
+e><div><br></div><div>No, we don&#39;t have a KernelCI auth token in our si=
+de of the infra.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div =
+dir=3D"ltr"><div>Regards,</div><div>Anibal</div></div>
+</blockquote></div><div><br></div><div>Cheers,</div><div>Fathi</div></div>
 
-> As the garage builders seem to be down again, and we weren't really
-> sure they were running the latest ansible changes anyway, I'm planning
-> to spend tomorrow..
-
-> - updating our ansible config to just install and configure docker
-> - adding a patch to staging to split x86 and x64
-> - merging the staging kernelci-core so that production can start using do=
-cker
->=20
-> This will allow me to move all the Azure builders to production, and
-> remove any concerns that any builder hasn't been configured recently.
-
-\o/
-
-> A side effect will mean bumping the GCC versions for x86, arm and
-> arm64 to at least GCC-7. If anyone thinks we should be using GCC-8,
-> let me know.
-> Otherwise, please speak up if you don't want me to do any of this.
-
---zS7rBR6csb6tI2e1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAluzvM0ACgkQJNaLcl1U
-h9D1hQf9HCVwcQcQ65BJkk5sI8T8qACXPympeWifRYjPAyGT6KsfWXDzdc9K07ad
-2m2bJxrhgPW55GcLpFeo2wdp0zhB/QykdBV2977CTo6/a7IVxHPs+5iWu/7hlOxK
-qPzUPOK0OgkbdzF6ndbjzP2UN/caJYVpX5SIX2QqxfLLv3afKqezlo6Za59Bp6YR
-6cjFU8LCGaX7dPgeVM0hB/US7xIKx2ch/UJIOEVjTuxTksS5m646+mOOh/BlmxNw
-3sbcZsHbrYweNE6ORWVKx0snK3pPztNfyGjbUE2W/QBZB2oNiyUHXr8oFJahsjIk
-o4pmfMHcyrAbfkCBn+tmZZaQAdQ39A==
-=HJzD
------END PGP SIGNATURE-----
-
---zS7rBR6csb6tI2e1--
+--000000000000df9c680577437577--
