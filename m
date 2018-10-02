@@ -1,39 +1,28 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Mon, 1 Oct 2018 08:47:42 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Meeting Minutes for 2018-10-01
-Message-ID: <20181001134742.psppadjjrgtrrvsn@xps.therub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+From: "Matt Hart" <matthew.hart@linaro.org>
+Date: Tue, 2 Oct 2018 17:37:43 +0100
+Message-ID: <CAH+k93HMWWgyUe0aZYvHBC=eykHPT_EZpFeMPT=u0hQjcrdS7A@mail.gmail.com>
+Subject: Rolling out the docker builds
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-- Attendees: Ana, Anmar, Mark, Milosz, Dan
+Hi all,
 
-- [milosz] KernelCI-NG
-  - Discussed with Kevin and Carlos at Connect
-  - Using “search engine” approach as backend (elastic search as
-    example)
-  - Adjust current frontend to use the new backend
-  - Support for new-great frontends (like ES Kibana) - Kevin’s example:
-    https://goo.gl/yfZ6VK
-    - [Dan] is worried about usability as a public website, performance
-      given a heavy load. Would be nice to have use case out in the
-      field we can look at.
-  - Work on that solution to be parallel to the currently working
-    solution
-  - AI: Milosz will propose a study of how to use ELK for kernelCI on
-    the mailing list
-    - Milosz’s team has an engineer who will investigate this further.
+As the garage builders seem to be down again, and we weren't really
+sure they were running the latest ansible changes anyway, I'm planning
+to spend tomorrow..
 
-- [Matt] Not attending, unwell
-  - Plan to split the mips and x86 architectures this week as agreed,
-    which unblocks changing production builds to use containers
+- updating our ansible config to just install and configure docker
+- adding a patch to staging to split x86 and x64
+- merging the staging kernelci-core so that production can start using docker
 
-- [Ana]
-  - Backend: now merged and available in staging: update format for the
-    test reports and possibility to select the tests suites to be
-    included in the mail
-  - Media subsystem pilot
+This will allow me to move all the Azure builders to production, and
+remove any concerns that any builder hasn't been configured recently.
+
+A side effect will mean bumping the GCC versions for x86, arm and
+arm64 to at least GCC-7. If anyone thinks we should be using GCC-8,
+let me know.
+Otherwise, please speak up if you don't want me to do any of this.
+
+Cheers!
