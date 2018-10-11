@@ -1,214 +1,147 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: [kernelci] KernelCI NG master plan
+References: <CAJrz+7+ey-o8xEa9G_dkKzCz+HjGPLvf+jP9gC4ntt5VN8WFXw@mail.gmail.com>
+	<CAH1_8nDQ7D77QHtHkKiBLNkwaS5TgMOWB=HOAzJ3ayzC9QDv4Q@mail.gmail.com>
+Date: Thu, 11 Oct 2018 13:49:26 +0200
+In-Reply-To: <CAH1_8nDQ7D77QHtHkKiBLNkwaS5TgMOWB=HOAzJ3ayzC9QDv4Q@mail.gmail.com>
+	(Guillaume Tucker's message of "Thu, 11 Oct 2018 09:31:16 +0100")
+Message-ID: <7h7eioput5.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <419a4e9b-4b03-d717-688b-bbc409369a97@collabora.com>
- <a69dc0ac-2108-ab30-ab50-2d27b5378fa6@collabora.com> <20181031102654.GC1761@sirena.org.uk>
-In-Reply-To: <20181031102654.GC1761@sirena.org.uk>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Fri, 9 Nov 2018 16:59:17 +0000
-Message-ID: <CAH1_8nBApbn08CozDTvpWZJvWGcf8RnvbdVXpyAB3sE+EnQO0g@mail.gmail.com>
-Subject: Re: [kernelci] Bisection email recipients
-Content-Type: multipart/alternative; boundary="000000000000473911057a3e4674"
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
-Cc: tomeu.vizoso@collabora.com
+To: Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: kernelci@groups.io, charles.oliveira@linaro.org
 
---000000000000473911057a3e4674
-Content-Type: text/plain; charset="UTF-8"
+"Guillaume Tucker" <guillaume.tucker@gmail.com> writes:
 
-On Wed, Oct 31, 2018 at 10:26 AM Mark Brown <broonie@kernel.org> wrote:
-
-> On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:
-> > On 10/30/18 6:08 PM, Guillaume Tucker wrote:
+> On Fri, Oct 5, 2018 at 1:19 PM Milosz Wasilewski <
+> milosz.wasilewski@linaro.org> wrote:
 >
-> > > * author of the commit
-> > > * committer
-> > > * Signed-off-by
-> > > * Acked-by
-> > > * Reported-by
+>> Hi,
+>>
+>> This is follow up to the discussion we had on Monday meeting. The idea
+>> was also discussed at Linaro Connect in Vancouver so should not come
+>> as a surprise.
+>>
+>> The problem:
+>> As we want to present test results filtering becomes an issue. There
+>> are different users with different filtering needs. Current
+>> implementation at kernelci.org sorts tests results by board.
+>>
+>> Alternative implementation by Baylibre [1] sorts by build. There can
+>> be countless other options for filtering tests and for each of them
+>> someone would have to code that in the backend and frontend.
+>>
+>> Proposed solution:
+>> Replace backend with 'search engine'. Current proposals for the search
+>> engines are: elastic search, graylog. But we're not limited to them.
+>> One of the frontends should be a configurable dashboard (like Kibana
+>> for ES).
+>>
 >
-> I'd just include any e-mail address in the tags for the mail - tested-by
+> Following what I mentioned during the meeting this Monday, it
+> would seem worthwhile separating the logic that processes
+> incoming test results from the actual data storage in our current
+> kernelci-backend.  This would make it possible to keep using the
+> same code to parse LAVA callback data, generate email reports,
+> trigger automated bisections and keep developing this while other
+> parts of the system are moving.
 >
+> Essentially, rather than storing data in MongoDB, it would be
+> abstracted in order to be able to replace it with an arbitrary
+> data storage service which may be remote (Elasticsearch,
+> SQUAD...).
 
-Do you mean, to get the same as what "git send-email" would give?
-I had a look and it doesn't seem easy to extract this
-information, maybe you have a tip for that.  Otherwise, I've
-added a simple Python function with a regex to the script I have
-that triggers the bisection email (PR coming soon with details).
+This is what I was thinking too.
 
+But, I think we should take it one step further and use some existing
+open-source tooling for this rather than come up with our own
+abstraction.
 
-> is definitely fair game (there's a decent chance they'll want to be
-> involved in testing further fixes), and it's a fairly common practice
-> for other kinds of reporting to just include everyone rather than
-> explicitly learning all the random tags different maintainers use.
->
-> > > * mailing list associated with the tree (like for test reports)
-> > > * maintainers of the parts of the code touched (using
-> > >    scripts/get_maintainer.pl and diff stat)
->
-> If you're using get_maintainer I'd make sure to use --nogit so that you
-> don't get false positives for people doing cleanup patches.  You can
-> probably just format the patch with git format-patch and then use
-> get_maintainer normally.
->
+I've been looking closely at fluentd[1] since it seems widely used in
+distributed web apps and the kubernetes universe, and is also an
+official project of the LF cloud-native compute foundation (CNCF).  It
+also already supports a bunch of storage/search (including mongodb,
+elasticsearch, hadoop, etc.)  The Elastic ecosystem also has somethingy
+they call "beats" that's similar to fluentd, but I'm not sure how
+broadly that's used outside of their ecosystem.
 
-Great tip, I'm using it with "--nogit" on the output of "git
-show" and that seems to be doing a good job.
+One thing I really like about fluentd, is that there's also "fluent bit"
+which is a tiny client we could even run directly on the DUTs and
+collect a lot more data than what we get from just LAVA (e.g
+CPU/memory/disk usage, network stats, /proc, syslog, systemd, etc[3])
 
-> > I also think it would be worth sending an email to the stable
-> > > mailing list, and probably also lkml to explain what we're doing
-> > > and warn people that we're turning this on.
->
-> Seems sensible.  It's a shame that we can't turn this on for -next yet,
-> but obviously the way that's built isn't super helpful.
->
+To add LAVA support to all of that nice stuff, To support LAVA jobs in
+fluentd, we'd simply need to write a plugin that knows about LAVA
+formats (and lava-test-shell), but we could take advantage of the rest
+of the fluentd universe "for free."
 
-Bisections on linux-next are coming soon, we just have to get the
-basics all sorted out for mainline and stable first.
-
-> I think that regardless of how well it's working already, it could make
-> > sense to increase the list of recipients incrementally, starting with
-> those
-> > most likely to appreciate the email, and growing towards those less
-> likely.
-> > Maybe I'm being overly cautious, but from past experiences I don't think
-> we
-> > want to risk too much antagonizing people.
+> We're already using abstract model classes in the
+> backend, so I think it's mostly the case of implementing
+> alternative database I/O handlers.  The assumption is that data
+> exchanges would only occur when receiving new data, so there
+> shouldn't be too much traffic.  It would however be quite
+> inefficient if a client service was still going through the
+> existing kernelci-backend API to retrieve data as each request
+> would generate more traffic with the actual storage service.
 >
-> > Once we have a feeling that the recipients in a stage are happy with
-> getting
-> > the emails, we can expand to other recipients in the next stage.
 >
-> > So, to illustrate the point, we could start with the author and
-> > kernel-build-reports@lists.linaro.org, then include ackers, reviewers,
-> > reporter and sobers, then mailing lists.
+>> Current frontend will have to stay, so it needs to be migrated to new
+>> backend. If we move from redis-mongo to ES for example this would only
+>> require changing search criteria (they're most likely not compatible).
+>>
+>> Scope of the project:
+>> 1. get the list of possible backends (search engines)
+>> 2. get the list of possible configurable dashboards (Kibana etc.)
+>> 3. create proof of concept for new solution (with existing data) and
+>> present for discussion
+
+A while ago, I've done a (very) basic PoC using ELK (more on that
+below.)  But before we go too much further down that path, I think step
+0.5 is to rethink the data abstraction and tooling as I mentioned above.
+
+Using someting like fluentd also means we don't have to come up with our
+own data formats/structure and abstractions that suit the various
+storage backends because that's already taken care of.
+
+> How about listing pros and cons with each option to justify which
+> ones were chosen and maybe open this for discussion?
 >
-> Not copying enough people can also cause issues as people will expect
-> other relevant people to be copied in and be annoyed about having to do
-> it themselves or possibly even just miss handling the report if they
-> expect someone has been CCed who hasn't - for example if we only send to
-> the patch author then maintainers might be annoyed if they later find
-> out there was a problem we didn't tell them about.  People will
-> definitely get annoyed about reports being off list because then the
-> discussion of the problem doesn't get archived for other people who
-> might benefit from it in future.
+> Once we get here, following steps might be:
+>>
+>> 4. select search engine to be used
+>> 5. start pushing data to both old and new backends
+>>
 >
-> It is already common practice for people doing testing to copy fairly
-> widely so it shouldn't be that much of a surprise.
->
+> This may be done by still writing results in a local MongoDB and
+> forwarding them to another storage engine from the code that
+> handlers test results, rather than posting the results
+> twice (based on what I explained earlier with splitting the
+> kernelci-backend code).
 
-As we're only bisecting boot on mainline and stable, the number
-of emails is actually pretty low at the moment.  There's a valid
-result only about once a month.  That will definitely change as
-we start bisecting -next and other tests than plain boot, which I
-think should give us a natural progressive ramp-up.  We'll also
-have a chance to tune things along the way.
+FWIW, the backend already dumps the "raw" JSON that comes from the LAVA
+callbacks (e.g. see the lava-json*.json) files[4], so it's already
+pretty easy to forward the raw data to another engine.
 
-Guillaume
+I've already been using that raw data and ingesting that into
+elasticsearch (via logstash) in order to do some basic experiments with
+Kibana dashboards.  For example, knowing very little about kibana, it
+only took me ~1h to write this basic dashboard:
+http://kernelci.dev.baylibre.com:5601/goto/ff8bb29fd1479a7aaf23d5e4436badc2
+That's a *lot* faster than it would take anyone to write a new UI for
+the current frontend.
 
---000000000000473911057a3e4674
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Doing this has convinced me that elasticsearch + kibana are quite
+powerful, but it still requires having a good data abstraction before
+ingesting the data.  The current way I did it is a hack, and limits the
+ways I can handle the data, so I really think it's worth investing in
+existing, open-source tooling for collecting (and forwarding) our raw
+data.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div di=
-r=3D"ltr"><br><div class=3D"gmail_quote"><div dir=3D"ltr">On Wed, Oct 31, 2=
-018 at 10:26 AM Mark Brown &lt;<a href=3D"mailto:broonie@kernel.org">brooni=
-e@kernel.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:<b=
-r>
-&gt; On 10/30/18 6:08 PM, Guillaume Tucker wrote:<br>
-<br>
-&gt; &gt; * author of the commit<br>
-&gt; &gt; * committer<br>
-&gt; &gt; * Signed-off-by<br>
-&gt; &gt; * Acked-by<br>
-&gt; &gt; * Reported-by<br>
-<br>
-I&#39;d just include any e-mail address in the tags for the mail - tested-b=
-y<br></blockquote><div><br></div><div><div>Do you mean, to get the same as =
-what &quot;git send-email&quot; would give?</div><div>I had a look and it d=
-oesn&#39;t seem easy to extract this</div><div>information, maybe you have =
-a tip for that.=C2=A0 Otherwise, I&#39;ve</div><div>added a simple Python f=
-unction with a regex to the script I have</div><div>that triggers the bisec=
-tion email (PR coming soon with details).</div></div><div>=C2=A0</div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">
-is definitely fair game (there&#39;s a decent chance they&#39;ll want to be=
-<br>
-involved in testing further fixes), and it&#39;s a fairly common practice<b=
-r>
-for other kinds of reporting to just include everyone rather than<br>
-explicitly learning all the random tags different maintainers use.<br>
-<br>
-&gt; &gt; * mailing list associated with the tree (like for test reports)<b=
-r>
-&gt; &gt; * maintainers of the parts of the code touched (using<br>
-&gt; &gt;=C2=A0 =C2=A0 scripts/<a href=3D"http://get_maintainer.pl" rel=3D"=
-noreferrer" target=3D"_blank">get_maintainer.pl</a> and diff stat)<br>
-<br>
-If you&#39;re using get_maintainer I&#39;d make sure to use --nogit so that=
- you<br>
-don&#39;t get false positives for people doing cleanup patches.=C2=A0 You c=
-an<br>
-probably just format the patch with git format-patch and then use<br>
-get_maintainer normally.<br></blockquote><div>=C2=A0</div><div><div>Great t=
-ip, I&#39;m using it with &quot;--nogit&quot; on the output of &quot;git</d=
-iv><div>show&quot; and that seems to be doing a good job.</div></div><div><=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt; &gt; I also think it would be worth sending an email to the stable<br>
-&gt; &gt; mailing list, and probably also lkml to explain what we&#39;re do=
-ing<br>
-&gt; &gt; and warn people that we&#39;re turning this on.<br>
-<br>
-Seems sensible.=C2=A0 It&#39;s a shame that we can&#39;t turn this on for -=
-next yet,<br>
-but obviously the way that&#39;s built isn&#39;t super helpful.<br></blockq=
-uote><div><br></div><div>Bisections on linux-next are coming soon, we just =
-have to get the<br></div><div>basics all sorted out for mainline and stable=
- first.=C2=A0</div><div><br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">
-&gt; I think that regardless of how well it&#39;s working already, it could=
- make<br>
-&gt; sense to increase the list of recipients incrementally, starting with =
-those<br>
-&gt; most likely to appreciate the email, and growing towards those less li=
-kely.<br>
-&gt; Maybe I&#39;m being overly cautious, but from past experiences I don&#=
-39;t think we<br>
-&gt; want to risk too much antagonizing people.<br>
-<br>
-&gt; Once we have a feeling that the recipients in a stage are happy with g=
-etting<br>
-&gt; the emails, we can expand to other recipients in the next stage.<br>
-<br>
-&gt; So, to illustrate the point, we could start with the author and<br>
-&gt; <a href=3D"mailto:kernel-build-reports@lists.linaro.org" target=3D"_bl=
-ank">kernel-build-reports@lists.linaro.org</a>, then include ackers, review=
-ers,<br>
-&gt; reporter and sobers, then mailing lists.<br>
-<br>
-Not copying enough people can also cause issues as people will expect<br>
-other relevant people to be copied in and be annoyed about having to do<br>
-it themselves or possibly even just miss handling the report if they<br>
-expect someone has been CCed who hasn&#39;t - for example if we only send t=
-o<br>
-the patch author then maintainers might be annoyed if they later find<br>
-out there was a problem we didn&#39;t tell them about.=C2=A0 People will<br=
->
-definitely get annoyed about reports being off list because then the<br>
-discussion of the problem doesn&#39;t get archived for other people who<br>
-might benefit from it in future.<br>
-<br>
-It is already common practice for people doing testing to copy fairly<br>
-widely so it shouldn&#39;t be that much of a surprise.<br></blockquote><div=
->=C2=A0</div><div><div>As we&#39;re only bisecting boot on mainline and sta=
-ble, the number</div><div>of emails is actually pretty low at the moment.=
-=C2=A0 There&#39;s a valid</div><div>result only about once a month.=C2=A0 =
-That will definitely change as</div><div>we start bisecting -next and other=
- tests than plain boot, which I</div><div>think should give us a natural pr=
-ogressive ramp-up.=C2=A0 We&#39;ll also</div><div>have a chance to tune thi=
-ngs along the way.</div></div><div><br></div><div>Guillaume</div></div></di=
-v></div></div></div></div>
+Kevin
 
---000000000000473911057a3e4674--
+[1] https://www.fluentd.org/
+[2] https://fluentbit.io/
+[3] https://docs.fluentbit.io/manual/input
+[4] e.g. https://storage.kernelci.org/mainline/master/v4.19-rc7/arm64/defconfig/lab-baylibre/lava-json-meson-gxbb-p200.json
