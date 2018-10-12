@@ -1,92 +1,67 @@
-Date: Wed, 31 Oct 2018 10:26:54 +0000
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: [kernelci] Bisection email recipients
-Message-ID: <20181031102654.GC1761@sirena.org.uk>
-References: <419a4e9b-4b03-d717-688b-bbc409369a97@collabora.com>
- <a69dc0ac-2108-ab30-ab50-2d27b5378fa6@collabora.com>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: [kernelci] add a new config fragment to kernel/configs
+References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
+Date: Fri, 12 Oct 2018 14:57:47 +0200
+In-Reply-To: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
+	(Anders Roxell's message of "Fri, 12 Oct 2018 11:28:30 +0200")
+Message-ID: <7hin27fhkk.fsf@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <a69dc0ac-2108-ab30-ab50-2d27b5378fa6@collabora.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1SQmhf2mF2YjsYvc"
-Content-Disposition: inline
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+To: Anders Roxell <anders.roxell@linaro.org>
 Cc: kernelci@groups.io
 
---1SQmhf2mF2YjsYvc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Anders Roxell <anders.roxell@linaro.org> writes:
 
-On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:
-> On 10/30/18 6:08 PM, Guillaume Tucker wrote:
+> I've seen some confusion about what I'm trying to do with all_abi.config (maybe
+> not the best name, suggestions are more than welcome).  I should of course
+> reach out before I started to do this to see if it makes sense to do in the
+> first place, but forgot about it, sorry.
+>
+> Let me try to explain what the idea with this new fragment is about.  Adding a
+> fragment called all_abi.config (lets stick with this name throughout this
+> email) in kernel/configs would be to enable as much as possible. Then we would
+> be able to run any test suite with one kernel image.
 
-> > * author of the commit
-> > * committer
-> > * Signed-off-by
-> > * Acked-by
-> > * Reported-by
+Thanks for clarifing.  To me, that doesn't sound like ABI, and
+especially not *all* ABIs.  It's just a set of interfaces used by common
+test suites.  IMO, using ABI is misleading, as when people see that,
+they think of all the userspace/kernel interfaces.
 
-I'd just include any e-mail address in the tags for the mail - tested-by
-is definitely fair game (there's a decent chance they'll want to be
-involved in testing further fixes), and it's a fairly common practice
-for other kinds of reporting to just include everyone rather than
-explicitly learning all the random tags different maintainers use.
+> There have been two different paths I've tried:
+> 1. add fragments that is needed for kselftest, LTP and libhugetlbfs to the
+> all_abi.config to be able to have the same test coverage as we have today in
+> LKFT.
+>
+> 2. do allmodconfig and boot that, sadly that doesn't boot. I've tried to bisect
+> the .config file and ended up with a pile of CONFIG_* options that has to be
+> enabled/disabled so it booted. The idea was to add these options into the
+> all_abi.config so we could do 'make allmodconfig all_abi.config'. There are
+> different options that needs to be enabled/disabled between arm64 and x86
+> (those are the architectures I've tried on so far).
 
-> > * mailing list associated with the tree (like for test reports)
-> > * maintainers of the parts of the code touched (using
-> >    scripts/get_maintainer.pl and diff stat)
+Having this "minimal boot" defconfig sounds like a good thing to have
+independently of the test fragments.
 
-If you're using get_maintainer I'd make sure to use --nogit so that you
-don't get false positives for people doing cleanup patches.  You can
-probably just format the patch with git format-patch and then use
-get_maintainer normally.
+> If we don't think its doable to enable everything into one big kernel, maybe we
+> can split up the fragments into different testing fragments like:
+> kselftest.config (that should essentially be todays kselftest-merge, but in a
+> more visible way), ltp.config, libhugetlbfs.config and so on. The downside here
+> would be that random test-suites need to send a patch with the fragments that
+> they have to enable for their test suite.
 
-> > I also think it would be worth sending an email to the stable
-> > mailing list, and probably also lkml to explain what we're doing
-> > and warn people that we're turning this on.
+IMO, per test-suite fragments make the most sense, and will much easier
+to maintain than one big fragment.  It's also more self-documenting, and
+test-suite maintainers might be more motivated to keep things up to
+date.   With one massive fragment, it would have to be well documented
+(and kept that way) to understand why various options are present, and
+which test suites required them etc.
 
-Seems sensible.  It's a shame that we can't turn this on for -next yet,
-but obviously the way that's built isn't super helpful.
+Kevin
 
-> I think that regardless of how well it's working already, it could make
-> sense to increase the list of recipients incrementally, starting with those
-> most likely to appreciate the email, and growing towards those less likely.
-> Maybe I'm being overly cautious, but from past experiences I don't think we
-> want to risk too much antagonizing people.
 
-> Once we have a feeling that the recipients in a stage are happy with getting
-> the emails, we can expand to other recipients in the next stage.
 
-> So, to illustrate the point, we could start with the author and
-> kernel-build-reports@lists.linaro.org, then include ackers, reviewers,
-> reporter and sobers, then mailing lists.
 
-Not copying enough people can also cause issues as people will expect
-other relevant people to be copied in and be annoyed about having to do
-it themselves or possibly even just miss handling the report if they
-expect someone has been CCed who hasn't - for example if we only send to
-the patch author then maintainers might be annoyed if they later find
-out there was a problem we didn't tell them about.  People will
-definitely get annoyed about reports being off list because then the
-discussion of the problem doesn't get archived for other people who
-might benefit from it in future.
 
-It is already common practice for people doing testing to copy fairly
-widely so it shouldn't be that much of a surprise.
 
---1SQmhf2mF2YjsYvc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvZg20ACgkQJNaLcl1U
-h9BHxAf+PEEWtFaKWd0rcE7RHF4cwAmkDwPZM8b0N7yB52ABNHc1NmSkIzCTfGtj
-Nmy0aXl3yTJbEhFJttfdZG5QkJe1bYvN/OOj9pF7WY4CKD78x9F00Ip4BwsrCx0z
-pYAaT2Eto00oAPZvCR+egdduk92SiFI/yTVsdC3BwETkOJKyUNt5mDZqYaqhEmwm
-+8i1y3EAuzX9ifwvbWSVcnp1vSL1qT9kCL8MhRn3swwi13vJDN/gE0SBzEbZelxR
-7I72XILvX1fcVarwWz7n17NiGM82yZUC1rD7qi/e6m5GlPvN6qc1bsd6fLQtwcor
-2l7bs3YjC6T9HisJWwTBE+GmoZXvuQ==
-=z5cH
------END PGP SIGNATURE-----
-
---1SQmhf2mF2YjsYvc--
