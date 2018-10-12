@@ -1,61 +1,93 @@
-From: Alexey Brodkin <alexey.brodkin@synopsys.com>
-Subject: Re: failing ARC builds in kernelCI
-Date: Tue, 27 Nov 2018 15:45:14 +0000
-Message-ID: <04dd1f535c69e36177595ed823b70d5225385dc0.camel@synopsys.com>
-References: <CAOi56cX4sV=jD0ctuQROh3r8JtcL4285i-g8k7Ew3knnD3v8Ww@mail.gmail.com>
-	 <2b7adbb0eeef90de6895889be814fd632e20a22f.camel@synopsys.com>
-In-Reply-To: <2b7adbb0eeef90de6895889be814fd632e20a22f.camel@synopsys.com>
+Date: Fri, 12 Oct 2018 18:39:39 +0200
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: [kernelci] add a new config fragment to kernel/configs
+Message-ID: <20181012163939.GD2340@sirena.org.uk>
+References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
+ <7hin27fhkk.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4D26BB72A110494E83B52CC463897090@internal.synopsys.com>
-Content-Transfer-Encoding: base64
+In-Reply-To: <7hin27fhkk.fsf@baylibre.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jCrbxBqMcLqd4mOl"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Vineet Gupta <vineet.gupta1@synopsys.com>, "khilman@baylibre.com" <khilman@baylibre.com>
-Cc: "kernelci@groups.io" <kernelci@groups.io>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: Anders Roxell <anders.roxell@linaro.org>, kernelci@groups.io
 
-QlRXIGp1ZGdpbmcgYnkgdGhlIGVycm9yIFsxXSAiYXJjLWxpbnV4LWxkOiBlcnJvcjogdm1saW51
-eC5vOiB1bmFibGUgdG8gbWVyZ2UgSVNBIGV4dGVuc2lvbiBhdHRyaWJ1dGVzIGNvZGUtZGVuc2l0
-eS4iDQpJIG1heSBhc3N1bWUgd2UgYWdhaW4gYnVtcCBpbnRvIHNpdHVhdGlvbiBvZiBidWlsZGlu
-ZyBBUkNvbXBhY3Qga2VybmVsIHdpdGggQVJDdjIgdG9vbGNoYWluLg0KDQpBbHNvIHdoYXQgaGlu
-dHMgdG8gdGhhdCBwcm9ibGVtIGlzIG91ciBkZWZhdWx0IGRlZmNvbmZpZyBpcyAibnNpbV83MDBf
-ZGVmY29uZmlnIiB3aGljaA0Kb2J2aW91c2x5IEFSQ29tcGFjdCwgc2VlIGh0dHBzOi8vZ2l0Lmtl
-cm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4LmdpdC90cmVl
-L2FyY2gvYXJjL01ha2VmaWxlI245DQoNClRodXMgSSB0aGluayB0aGUgc2ltcGxlc3Qgb3B0aW9u
-IHdvdWxkIGJlIHRvIHN3aXRjaCB0byBzYXkgIm5zaW1faHNfZGVmY29uZmlnIiBmb3INCmRlZmF1
-bHQgb25lLCBidXQgdGhhdCByZXF1aXJlcyBWaW5lZXQncyBhY2suDQoNCi1BbGV4ZXkNCg0KWzFd
-IGh0dHBzOi8va2VybmVsY2kub3JnL2J1aWxkL2lkLzViZmQ1Y2JlNTliNTE0MTMxMzhiNmRhMC9s
-b2dzLw0KDQpPbiBUdWUsIDIwMTgtMTEtMjcgYXQgMTU6MzggKzAwMDAsIEFsZXhleSBCcm9ka2lu
-IHdyb3RlOg0KPiBIaSBLZXZpbiwNCj4gDQo+IE9uIFR1ZSwgMjAxOC0xMS0yNyBhdCAwNzoyMyAt
-MDgwMCwgS2V2aW4gSGlsbWFuIHdyb3RlOg0KPiA+IEhpIEFsZXhleSwNCj4gPiANCj4gPiBZb3Ug
-bWF5IGhhdmUgbm90aWNlZCB0aGF0IHNvbWUgZGVmY29uZmlncyBhcmUgZmFpbGluZyB0byBidWls
-ZA0KPiA+IHVwc3RyZWFtIGZvciBBUkMuICBGb3IgZXhhbXBsZSwgb24gbWFpbmxpbmUsIGJvdGgg
-YWxsbm9jb25maWcgYW5kDQo+ID4gdGlueWNvbmZpZyBmYWlsIHRvIGJ1aWxkWzFdLg0KPiANCj4g
-QWN0dWFsbHkgSSBoYXZlbid0IHNlZW4gdGhhdCENCj4gIDEuIEkgdXNlZCB0byBjaGVjayANCj4g
-aHR0cHM6Ly91cmxkZWZlbnNlLnByb29mcG9pbnQuY29tL3YyL3VybD91PWh0dHBzLTNBX19rZXJu
-ZWxjaS5vcmdfc29jXyZkPUR3SUNBZyZjPURQTDZfWF82SmtYRng3QVhXcUIwdGcmcj1scWRlZVNT
-RWVzMEdGRERsNjU2ZVZpWE83YnJlUzU1eXRXa2hwazVSODFJJm09WXQtVWduUTVzcC1fZEVjMk10
-R1pnMFFxZG5oWEJvNVh3dncxdGJfYTZnQSZzPUtYR1BMM1E3bHNQeEkxdkgtTTVtX0pEVFE1Y3pj
-Zk83aFROZEdYSnNxZlUmZT0NCj4gYnV0IHRoZXJlJ3Mgc3RpbGwgbm8gbWVudGlvbg0KPiAgICAg
-b2YgQVJDIHNvIEkgdGhvdWdodCBidWlsZHMgZm9yIEFSQyBhcmUgbm90IGVuYWJsZWQgc3RpbGwu
-DQo+ICAyLiBJIGhhdmVuJ3Qgc2VlbiBhbnkgZW1haWwgbm90aWZpY2F0aW9ucyBhcyB3ZWxsIGlm
-IHRoZXkgZXhpc3QgYXQgYWxsLg0KPiANCj4gVGhhdCBzYWlkIGl0IHdvdWxkIGJlIGdvb2QgaWYg
-d2FybmluZyBlbWFpbHMgYXJlIHNlbnQgdG8gb3VyIG1haWxpbmctbGlzdA0KPiBsaW51eC1zbnBz
-LWFyY0BsaXN0cy5pbmZyYWRlYWQub3JnIChzZWUgaW4gQ2MgYXMgd2VsbCkgc28gc29tZWJvZHkg
-cmVhY3RzIG9uIHRoZW0uDQo+IA0KPiANCj4gPiBEbyB5b3UgZ3V5cyBoYXZlIGFueSBwbGFucyB0
-byBmaXggdGhlc2UsIG9yIHNob3VsZCB3ZSBkaXNhYmxlIHRoZW0/DQo+ID4gV2UgY3VycmVudGx5
-IGJ1aWxkIHRoZXNlIGZvciBhbGwgdGhlIG90aGVyIGFyY2hlcy4sDQo+IA0KPiBTdXJlLCBsZXQg
-bWUgdGFrZSBhIGxvb2sgcmlnaHQgbm93Lg0KPiANCj4gPiBLZXZpbg0KPiA+IA0KPiA+IFsxXSAN
-Cj4gPiBodHRwczovL3VybGRlZmVuc2UucHJvb2Zwb2ludC5jb20vdjIvdXJsP3U9aHR0cHMtM0Ff
-X2tlcm5lbGNpLm9yZ19idWlsZF9tYWlubGluZV9icmFuY2hfbWFzdGVyX2tlcm5lbF92NC4yMC0y
-RHJjNC0yRDctMkRnZWY3OGU1ZWM5MjE0XyZkPUR3SUNBZyZjPURQTDZfWF82SmtYRng3QVhXcUIw
-dGcmcj1scWRlZVNTRWVzMEdGRERsNjU2ZVZpWE83YnJlUzU1eXRXa2hwazVSODFJJm09WXQtVWdu
-UTVzcC1fZEVjMk10R1pnMFFxZG5oWEJvNVh3dncxdGJfYTZnQSZzPW1BT2djODIzang5UjlONHQ2
-blE0QVc5RThrZGV4VS1ZM1Y1LXQ1MEN3Sm8mZT0NCj4gDQo+IC1BbGV4ZXkNCj4gX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gbGludXgtc25wcy1hcmMg
-bWFpbGluZyBsaXN0DQo+IGxpbnV4LXNucHMtYXJjQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gaHR0
-cHM6Ly91cmxkZWZlbnNlLnByb29mcG9pbnQuY29tL3YyL3VybD91PWh0dHAtM0FfX2xpc3RzLmlu
-ZnJhZGVhZC5vcmdfbWFpbG1hbl9saXN0aW5mb19saW51eC0yRHNucHMtMkRhcmMmZD1Ed0lDQWcm
-Yz1EUEw2X1hfNkprWEZ4N0FYV3FCMHRnJnI9bHFkZWVTU0VlczBHRkREbDY1NmVWaVhPN2JyZVM1
-NXl0V2tocGs1UjgxSSZtPVl0LVVnblE1c3AtX2RFYzJNdEdaZzBRcWRuaFhCbzVYd3Z3MXRiX2E2
-Z0Emcz1DakZjRDZMVjBVY3RwSHBQRzVzRVRyUnlFTXpaZHU0SE5FZm9vemwteTJjJmU9DQo=
+--jCrbxBqMcLqd4mOl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Oct 12, 2018 at 02:57:47PM +0200, Kevin Hilman wrote:
+> Anders Roxell <anders.roxell@linaro.org> writes:
+
+> > Let me try to explain what the idea with this new fragment is about.  Adding a
+> > fragment called all_abi.config (lets stick with this name throughout this
+> > email) in kernel/configs would be to enable as much as possible. Then we would
+> > be able to run any test suite with one kernel image.
+
+> Thanks for clarifing.  To me, that doesn't sound like ABI, and
+> especially not *all* ABIs.  It's just a set of interfaces used by common
+> test suites.  IMO, using ABI is misleading, as when people see that,
+> they think of all the userspace/kernel interfaces.
+
+Right, so when we were discussing this internally the thinking was that
+we could meet the need for a config fragement that enabled interfaces
+for testsuites by enabling all the ABIs that the kernel offers.  This is
+a useful thing to do anyway I think and it provides a concrete rule for
+what to put in there which is easy to follow and avoids debate about
+some of the tuning options that people like to twiddle.  There was also
+some thought that we could have other config fragments like one to
+enable useful and cheap debug features which could be useful separately.
+
+I do agree that if it is just a "stuff people might want for testing"
+config then we shouldn't call it all_abi.
+
+> > 2. do allmodconfig and boot that, sadly that doesn't boot. I've tried to bisect
+> > the .config file and ended up with a pile of CONFIG_* options that has to be
+> > enabled/disabled so it booted. The idea was to add these options into the
+> > all_abi.config so we could do 'make allmodconfig all_abi.config'. There are
+> > different options that needs to be enabled/disabled between arm64 and x86
+> > (those are the architectures I've tried on so far).
+
+> Having this "minimal boot" defconfig sounds like a good thing to have
+> independently of the test fragments.
+
+Definitely.
+
+> IMO, per test-suite fragments make the most sense, and will much easier
+> to maintain than one big fragment.  It's also more self-documenting, and
+> test-suite maintainers might be more motivated to keep things up to
+> date.   With one massive fragment, it would have to be well documented
+> (and kept that way) to understand why various options are present, and
+> which test suites required them etc.
+
+The idea with having this all_abi config which literally only has things
+that are ABIs was to have a simple, clear rule about what goes in which
+doesn't need input from most testsuite maintainers or particularly
+reference any individual testsuites but will do what's needed for most
+of them.  If something's an ABI it should be enabled, if it's not an ABI
+then it should be in some other fragment.  That sidesteps the issues
+with documentation.
+
+Per testsuite configs have the disadvantage that you've got to work with
+every single testsuite to add them (or maintain them separately) and
+deal with any churn in kernel config requirements as you move between
+kernels with new options or whatever somehow.  Some of the testsuites
+will doubtless still end up needing them but hopefully most won't.
+
+--jCrbxBqMcLqd4mOl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvAzkgACgkQJNaLcl1U
+h9DSSgf/ainJPAOiIu9Pxfl+dVLOyodCxIwVqye/wgQb6S4JLxxf2BsaNMv23Y9l
+rGYb7u73YIM4anGBjQBo66ypW8n2afcTqVQMc5sbO/aATvXAcGU0wQKSiMrXWHM3
+08oOvp8SC0OO4O9T6mKDar9mgVL1U8EdSR8927MNewdIHFBbX/CwIXPdbicXqROe
+wgju8pRBhw+FvFAbK5TbxwgJKUNgxaQBCIGcU/UqfMvD+10li1q1QRHR8oH7NiN4
+wHPOn0qwczbKGU8sqbpRL696ppQ6qRH5xQ0be7Jdi1UJ09JZCo1Kj3+IuferRcq8
+CFdU6bXOFnREqSc6a+KJ+0+z35hJ2w==
+=FEfz
+-----END PGP SIGNATURE-----
+
+--jCrbxBqMcLqd4mOl--
