@@ -1,184 +1,254 @@
-Return-Path: <broonie@gmail.com>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [kernelci] Bisection email recipients
-From: "Mark Brown" <broonie@gmail.com>
-In-Reply-To: <CAH1_8nBApbn08CozDTvpWZJvWGcf8RnvbdVXpyAB3sE+EnQO0g@mail.gmail.com>
-Date: Fri, 9 Nov 2018 20:38:53 +0000
-Message-Id: <66E010CF-FD91-4632-99B7-20FCA93D58A3@gmail.com>
-References: <419a4e9b-4b03-d717-688b-bbc409369a97@collabora.com> <a69dc0ac-2108-ab30-ab50-2d27b5378fa6@collabora.com> <20181031102654.GC1761@sirena.org.uk> <CAH1_8nBApbn08CozDTvpWZJvWGcf8RnvbdVXpyAB3sE+EnQO0g@mail.gmail.com>
-Content-Type: multipart/alternative;
-	boundary=Apple-Mail-2D4159CD-D7CE-4517-B9DB-FEAB7644B1FF
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20181011152429.l2q6d43zzzqoc3df@xps.therub.org>
+In-Reply-To: <20181011152429.l2q6d43zzzqoc3df@xps.therub.org>
+From: "Anibal Limon" <anibal.limon@linaro.org>
+Date: Fri, 12 Oct 2018 09:57:31 -0500
+Message-ID: <CA+_AqivsE3FKx2MFaUy+xGL7y0Pz7drooLr4zz_RQNTVdZhMXA@mail.gmail.com>
+Subject: Re: [kernelci] LKFT + KernelCI
+Content-Type: multipart/alternative; boundary="0000000000003cb9860578094fa4"
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
-Cc: tomeu.vizoso@collabora.com
+Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>, Fathi Boudra <fathi.boudra@linaro.org>, Dan Rue <dan.rue@linaro.org>
 
---Apple-Mail-2D4159CD-D7CE-4517-B9DB-FEAB7644B1FF
-Content-Type: text/plain;
-	charset=us-ascii
+--0000000000003cb9860578094fa4
+Content-Type: text/plain; charset="UTF-8"
+
+On Thu, 11 Oct 2018 at 10:24, Dan Rue <dan.rue@linaro.org> wrote:
+
+> Hi All,
+>
+> This is probably overdue, but I wanted to write out and get feedback on
+> the plans that I've been working on with regard to linux kernel
+> functional testing (LKFT).
+>
+> LKFT consists of the following components:
+> - jenkins
+> - openembedded
+> - lava
+> - squad
+>
+> It uses the following boards:
+> - hikey
+> - x15
+> - juno-r2
+> - dragonboard 410c
+> - qemu
+> - x86
+>
+> This model has been successful for us so far, and allowed us to meet the
+> requirements that we've had. I think the gaps that we have currently are
+> related to test coverage, reporting, and visualization.
+>
+> However, instead of continuing to improve LKFT, what we'd prefer to do
+> is work hand in hand with kernelci. Then the question becomes, how do we
+> do that without throwing away everything that we already have (and that
+> we have to keep running)?
+>
+> So I've been considering how we can start to move LKFT towards kernelci,
+> so that at some point in the future it is indistinguishable from
+> and a part of kernelci.
+>
+> Milosz is looking at the front end and database pieces - see his earlier
+> email on that topic with subject "KernelCI NG master plan".
+>
+> My interest is to start by changing the way LKFT does builds to be more
+> compatible with kernelci. We would like to stick with openembedded for a
+> variety of reasons, and I think that it would be good if kernelci
+> supported multiple user spaces.
+>
+> Right now our OE build uses a series of recipes and builds a complete
+> kernel and user space for every build, every time. This is problematic
+> for a couple reasons:
+> - Kernel config consists of defconfig plus some extra configs, all
+>   coming from OE recipes. This makes the kernel builds hard to reproduce
+>   outside of OE.
+> - OE rebuilds userspace every time. My understanding is this is best
+>   practice from an OE perspective, but I don't think it's desirable from
+>   a kernelci or testing perspective.
+
+
+> If, however, we had a kernel config fragment upstream, then we could use
+> a well-defined kernel config that is easily reproducible by anyone. This
+> is something that Anders Roxell and Mark Brown are working on.
+>
+> The second part is to be able to actually consume a kernelci built
+> kernel, rather than re-building the kernel every time. I think it would
+> be best to be able to take an existing OE userspace and combine it with
+> an existing kernelci built kernel. Some people are already doing this or
+> similar, but it would be best if this was supported in OE upstream.
+>
+
+Right, in Linaro QCLT we have this approach, We use OE to generate a
+ramdisk and publish in Linaro snapshots and then pull the OE ramdisk and
+the Kernel, Modules, DTB from
+KernelCI in our case we build an Android boot Image for
+Dragonboard{410,820}c. This implies,
+
+- The OE userspace ramdisk is generated only when a change is made to the
+userspace.
+- The Kernel binaries are taken from KernelCI that has a consolidated
+kernel configuration.
+
+Currently We have a LinaroCI job that does this task (last build [1]),
+talking with Fathi and Nico suggested to implement this logic inside OE
+RPB, so further work is needed to scale if we want to support more boards.
+
+[1] https://ci.linaro.org/job/lt-qcom-linux-integration/134/
+
+
+> So our short term plans are something like:
+> - Get a config fragment upstreamed and backported, that can be used for
+>   testing
+> - Get kernelci building said fragment
+> - Determine how to produce OE images from an existing kernel and
+>   existing OE build in an OE-supportable way.
+>
+> Once we have that, we think we can start submitting test results into
+> kernelci - making the data more widely available to the community. After
+> that, it gets exciting because we would be working on top of the same
+> reporting and analytics stack. This may also bring opportunities here,
+> for example, to support boot testing on fastboot devices.
+>
+> Please let me know what you think -
+>
+> Dan
+>
+> 
+>
+>
+
+--0000000000003cb9860578094fa4
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-
-> On 9 Nov 2018, at 16:59, Guillaume Tucker <guillaume.tucker@gmail.com> w=
-rote:
->=20
->=20
->> On Wed, Oct 31, 2018 at 10:26 AM Mark Brown <broonie@kernel.org> wrote:
->> On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:
->> > On 10/30/18 6:08 PM, Guillaume Tucker wrote:
->>=20
->> > > * author of the commit
->> > > * committer
->> > > * Signed-off-by
->> > > * Acked-by
->> > > * Reported-by
->>=20
->> I'd just include any e-mail address in the tags for the mail - tested-b=
-y
->=20
-> Do you mean, to get the same as what "git send-email" would give?
-> I had a look and it doesn't seem easy to extract this
-> information, maybe you have a tip for that.  Otherwise, I've
-> added a simple Python function with a regex to the script I have
-> that triggers the bisection email (PR coming soon with details).
-
-Yes, roughly - a good first step would be something like ^.*: .*@ (ie, any=
-thing with a colon/space sequence followed by an @).
-
->  
->> is definitely fair game (there's a decent chance they'll want to be
->> involved in testing further fixes), and it's a fairly common practice
->> for other kinds of reporting to just include everyone rather than
->> explicitly learning all the random tags different maintainers use.
->>=20
->> > > * mailing list associated with the tree (like for test reports)
->> > > * maintainers of the parts of the code touched (using
->> > >    scripts/get_maintainer.pl and diff stat)
->>=20
->> If you're using get_maintainer I'd make sure to use --nogit so that you
->> don't get false positives for people doing cleanup patches.  You can
->> probably just format the patch with git format-patch and then use
->> get_maintainer normally.
->  
-> Great tip, I'm using it with "--nogit" on the output of "git
-> show" and that seems to be doing a good job.
->=20
->> > > I also think it would be worth sending an email to the stable
->> > > mailing list, and probably also lkml to explain what we're doing
->> > > and warn people that we're turning this on.
->>=20
->> Seems sensible.  It's a shame that we can't turn this on for -next yet,
->> but obviously the way that's built isn't super helpful.
->=20
-> Bisections on linux-next are coming soon, we just have to get the
-> basics all sorted out for mainline and stable first.=20
->=20
->> > I think that regardless of how well it's working already, it could ma=
-ke
->> > sense to increase the list of recipients incrementally, starting with=
- those
->> > most likely to appreciate the email, and growing towards those less l=
-ikely.
->> > Maybe I'm being overly cautious, but from past experiences I don't th=
-ink we
->> > want to risk too much antagonizing people.
->>=20
->> > Once we have a feeling that the recipients in a stage are happy with =
-getting
->> > the emails, we can expand to other recipients in the next stage.
->>=20
->> > So, to illustrate the point, we could start with the author and
->> > kernel-build-reports@lists.linaro.org, then include ackers, reviewers=
-,
->> > reporter and sobers, then mailing lists.
->>=20
->> Not copying enough people can also cause issues as people will expect
->> other relevant people to be copied in and be annoyed about having to do
->> it themselves or possibly even just miss handling the report if they
->> expect someone has been CCed who hasn't - for example if we only send t=
-o
->> the patch author then maintainers might be annoyed if they later find
->> out there was a problem we didn't tell them about.  People will
->> definitely get annoyed about reports being off list because then the
->> discussion of the problem doesn't get archived for other people who
->> might benefit from it in future.
->>=20
->> It is already common practice for people doing testing to copy fairly
->> widely so it shouldn't be that much of a surprise.
->  
-> As we're only bisecting boot on mainline and stable, the number
-> of emails is actually pretty low at the moment.  There's a valid
-> result only about once a month.  That will definitely change as
-> we start bisecting -next and other tests than plain boot, which I
-> think should give us a natural progressive ramp-up.  We'll also
-> have a chance to tune things along the way.
->=20
-> Guillaume
->=20
-
---Apple-Mail-2D4159CD-D7CE-4517-B9DB-FEAB7644B1FF
-Content-Type: text/html;
-	charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body dir="auto"><div dir="ltr"></div><div dir="ltr"><br></div><div dir="ltr"><br>On 9 Nov 2018, at 16:59, Guillaume Tucker &lt;<a href="mailto:guillaume.tucker@gmail.com">guillaume.tucker@gmail.com</a>&gt; wrote:<br><br></div><blockquote type="cite"><div dir="ltr"><div dir="ltr"><div dir="ltr"><div dir="ltr"><div dir="ltr"><div dir="ltr"><br><div class="gmail_quote"><div dir="ltr">On Wed, Oct 31, 2018 at 10:26 AM Mark Brown &lt;<a href="mailto:broonie@kernel.org">broonie@kernel.org</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:<br>
-&gt; On 10/30/18 6:08 PM, Guillaume Tucker wrote:<br>
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br><br><div class=3D"gm=
+ail_quote"><div dir=3D"ltr">On Thu, 11 Oct 2018 at 10:24, Dan Rue &lt;<a hr=
+ef=3D"mailto:dan.rue@linaro.org">dan.rue@linaro.org</a>&gt; wrote:<br></div=
+><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
+-left:1px solid rgb(204,204,204);padding-left:1ex">Hi All,<br>
 <br>
-&gt; &gt; * author of the commit<br>
-&gt; &gt; * committer<br>
-&gt; &gt; * Signed-off-by<br>
-&gt; &gt; * Acked-by<br>
-&gt; &gt; * Reported-by<br>
+This is probably overdue, but I wanted to write out and get feedback on<br=
+>
+the plans that I&#39;ve been working on with regard to linux kernel<br>
+functional testing (LKFT).<br>
 <br>
-I'd just include any e-mail address in the tags for the mail - tested-by<br></blockquote><div><br></div><div><div>Do you mean, to get the same as what "git send-email" would give?</div><div>I had a look and it doesn't seem easy to extract this</div><div>information, maybe you have a tip for that.&nbsp; Otherwise, I've</div><div>added a simple Python function with a regex to the script I have</div><div>that triggers the bisection email (PR coming soon with details).</div></div></div></div></div></div></div></div></div></blockquote><div><br></div><div>Yes, roughly - a good first step would be something like ^.*: .*@ (ie, anything with a colon/space sequence followed by an @).</div><br><blockquote type="cite"><div dir="ltr"><div dir="ltr"><div dir="ltr"><div dir="ltr"><div dir="ltr"><div dir="ltr"><div class="gmail_quote"><div>&nbsp;</div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-is definitely fair game (there's a decent chance they'll want to be<br>
-involved in testing further fixes), and it's a fairly common practice<br>
-for other kinds of reporting to just include everyone rather than<br>
-explicitly learning all the random tags different maintainers use.<br>
+LKFT consists of the following components:<br>
+- jenkins<br>
+- openembedded<br>
+- lava<br>
+- squad<br>
 <br>
-&gt; &gt; * mailing list associated with the tree (like for test reports)<br>
-&gt; &gt; * maintainers of the parts of the code touched (using<br>
-&gt; &gt;&nbsp; &nbsp; scripts/<a href="http://get_maintainer.pl" rel="noreferrer" target="_blank">get_maintainer.pl</a> and diff stat)<br>
+It uses the following boards:<br>
+- hikey<br>
+- x15<br>
+- juno-r2<br>
+- dragonboard 410c<br>
+- qemu<br>
+- x86<br>
 <br>
-If you're using get_maintainer I'd make sure to use --nogit so that you<br>
-don't get false positives for people doing cleanup patches.&nbsp; You can<br>
-probably just format the patch with git format-patch and then use<br>
-get_maintainer normally.<br></blockquote><div>&nbsp;</div><div><div>Great tip, I'm using it with "--nogit" on the output of "git</div><div>show" and that seems to be doing a good job.</div></div><div><br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt; &gt; I also think it would be worth sending an email to the stable<br>
-&gt; &gt; mailing list, and probably also lkml to explain what we're doing<br>
-&gt; &gt; and warn people that we're turning this on.<br>
+This model has been successful for us so far, and allowed us to meet the<b=
+r>
+requirements that we&#39;ve had. I think the gaps that we have currently a=
+re<br>
+related to test coverage, reporting, and visualization.<br>
 <br>
-Seems sensible.&nbsp; It's a shame that we can't turn this on for -next yet,<br>
-but obviously the way that's built isn't super helpful.<br></blockquote><div><br></div><div>Bisections on linux-next are coming soon, we just have to get the<br></div><div>basics all sorted out for mainline and stable first.&nbsp;</div><div><br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt; I think that regardless of how well it's working already, it could make<br>
-&gt; sense to increase the list of recipients incrementally, starting with those<br>
-&gt; most likely to appreciate the email, and growing towards those less likely.<br>
-&gt; Maybe I'm being overly cautious, but from past experiences I don't think we<br>
-&gt; want to risk too much antagonizing people.<br>
+However, instead of continuing to improve LKFT, what we&#39;d prefer to do=
 <br>
-&gt; Once we have a feeling that the recipients in a stage are happy with getting<br>
-&gt; the emails, we can expand to other recipients in the next stage.<br>
+is work hand in hand with kernelci. Then the question becomes, how do we<b=
+r>
+do that without throwing away everything that we already have (and that<br=
+>
+we have to keep running)?<br>
 <br>
-&gt; So, to illustrate the point, we could start with the author and<br>
-&gt; <a href="mailto:kernel-build-reports@lists.linaro.org" target="_blank">kernel-build-reports@lists.linaro.org</a>, then include ackers, reviewers,<br>
-&gt; reporter and sobers, then mailing lists.<br>
+So I&#39;ve been considering how we can start to move LKFT towards kernelc=
+i,<br>
+so that at some point in the future it is indistinguishable from<br>
+and a part of kernelci.<br>
 <br>
-Not copying enough people can also cause issues as people will expect<br>
-other relevant people to be copied in and be annoyed about having to do<br>
-it themselves or possibly even just miss handling the report if they<br>
-expect someone has been CCed who hasn't - for example if we only send to<br>
-the patch author then maintainers might be annoyed if they later find<br>
-out there was a problem we didn't tell them about.&nbsp; People will<br>
-definitely get annoyed about reports being off list because then the<br>
-discussion of the problem doesn't get archived for other people who<br>
-might benefit from it in future.<br>
+Milosz is looking at the front end and database pieces - see his earlier<b=
+r>
+email on that topic with subject &quot;KernelCI NG master plan&quot;.<br>
 <br>
-It is already common practice for people doing testing to copy fairly<br>
-widely so it shouldn't be that much of a surprise.<br></blockquote><div>&nbsp;</div><div><div>As we're only bisecting boot on mainline and stable, the number</div><div>of emails is actually pretty low at the moment.&nbsp; There's a valid</div><div>result only about once a month.&nbsp; That will definitely change as</div><div>we start bisecting -next and other tests than plain boot, which I</div><div>think should give us a natural progressive ramp-up.&nbsp; We'll also</div><div>have a chance to tune things along the way.</div></div><div><br></div><div>Guillaume</div></div></div></div></div></div></div>
+My interest is to start by changing the way LKFT does builds to be more<br=
+>
+compatible with kernelci. We would like to stick with openembedded for a<b=
+r>
+variety of reasons, and I think that it would be good if kernelci<br>
+supported multiple user spaces.<br>
+<br>
+Right now our OE build uses a series of recipes and builds a complete<br>
+kernel and user space for every build, every time. This is problematic<br>
+for a couple reasons:<br>
+- Kernel config consists of defconfig plus some extra configs, all<br>
+=C2=A0 coming from OE recipes. This makes the kernel builds hard to reprod=
+uce<br>
+=C2=A0 outside of OE.<br>
+- OE rebuilds userspace every time. My understanding is this is best<br>
+=C2=A0 practice from an OE perspective, but I don&#39;t think it&#39;s des=
+irable from<br>
+=C2=A0 a kernelci or testing perspective.</blockquote><blockquote class=3D=
+"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
+04,204,204);padding-left:1ex">
+<br>
+If, however, we had a kernel config fragment upstream, then we could use<b=
+r>
+a well-defined kernel config that is easily reproducible by anyone. This<b=
+r>
+is something that Anders Roxell and Mark Brown are working on.<br>
+<br>
+The second part is to be able to actually consume a kernelci built<br>
+kernel, rather than re-building the kernel every time. I think it would<br=
+>
+be best to be able to take an existing OE userspace and combine it with<br=
+>
+an existing kernelci built kernel. Some people are already doing this or<b=
+r>
+similar, but it would be best if this was supported in OE upstream.<br></b=
+lockquote><div><br></div><div><div style=3D"font-size:small;background-colo=
+r:rgb(255,255,255);text-decoration-style:initial;text-decoration-color:init=
+ial">Right, in Linaro QCLT we have this approach, We use OE to generate a r=
+amdisk and publish in Linaro snapshots and then pull the OE ramdisk and the=
+ Kernel, Modules, DTB from</div><div style=3D"font-size:small;background-co=
+lor:rgb(255,255,255);text-decoration-style:initial;text-decoration-color:in=
+itial">KernelCI in our case we build an Android boot Image for Dragonboard{=
+410,820}c. This implies,</div><div style=3D"font-size:small;background-colo=
+r:rgb(255,255,255);text-decoration-style:initial;text-decoration-color:init=
+ial"><br></div><div style=3D"font-size:small;background-color:rgb(255,255,2=
+55);text-decoration-style:initial;text-decoration-color:initial">- The OE u=
+serspace ramdisk is generated only when a change is made to the userspace.<=
+/div><div style=3D"font-size:small;background-color:rgb(255,255,255);text-d=
+ecoration-style:initial;text-decoration-color:initial">- The Kernel binarie=
+s are taken from KernelCI that has a consolidated kernel configuration.</di=
+v><br></div><div>Currently We have a LinaroCI job that does this task (last=
+ build [1]), talking with Fathi and Nico suggested to implement this logic =
+inside OE RPB, so further work is needed to scale if we want to support mor=
+e boards.</div><div><br></div><div>[1]=C2=A0<a href=3D"https://ci.linaro.or=
+g/job/lt-qcom-linux-integration/134/">https://ci.linaro.org/job/lt-qcom-lin=
+ux-integration/134/</a></div><div><br></div><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
+;padding-left:1ex">
+<br>
+So our short term plans are something like:<br>
+- Get a config fragment upstreamed and backported, that can be used for<br=
+>
+=C2=A0 testing<br>
+- Get kernelci building said fragment<br>
+- Determine how to produce OE images from an existing kernel and<br>
+=C2=A0 existing OE build in an OE-supportable way.<br>
+<br>
+Once we have that, we think we can start submitting test results into<br>
+kernelci - making the data more widely available to the community. After<b=
+r>
+that, it gets exciting because we would be working on top of the same<br>
+reporting and analytics stack. This may also bring opportunities here,<br>
+for example, to support boot testing on fastboot devices.<br>
+<br>
+Please let me know what you think -<br>
+<br>
+Dan<br>
+<br>
+<br>
+<br>
+</blockquote></div></div></div></div>
 
-
-
-</div></blockquote></body></html>
-
---Apple-Mail-2D4159CD-D7CE-4517-B9DB-FEAB7644B1FF--
+--0000000000003cb9860578094fa4--
