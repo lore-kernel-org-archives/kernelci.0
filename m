@@ -1,172 +1,115 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: Re: next/master boot bisection: next-20190215 on beaglebone-black
-References: <5c6702da.1c69fb81.12a14.4ece@mx.google.com>
- <20190215104325.039dbbd9c3bfb35b95f9247b@linux-foundation.org>
- <20190215185151.GG7897@sirena.org.uk>
- <20190226155948.299aa894a5576e61dda3e5aa@linux-foundation.org>
- <CAPcyv4ivjC8fNkfjdFyaYCAjGh7wtvFQnoPpOcR=VNZ=c6d6Rg@mail.gmail.com>
- <20190228151438.fc44921e66f2f5d393c8d7b4@linux-foundation.org>
- <CAPcyv4hDmmK-L=0txw7L9O8YgvAQxZfVFiSoB4LARRnGQ3UC7Q@mail.gmail.com>
- <026b5082-32f2-e813-5396-e4a148c813ea@collabora.com>
- <20190301124100.62a02e2f622ff6b5f178a7c3@linux-foundation.org>
- <3fafb552-ae75-6f63-453c-0d0e57d818f3@collabora.com>
- <CAPcyv4hMNiiM11ULjbOnOf=9N=yCABCRsAYLpjXs+98bRoRpCA@mail.gmail.com>
-Message-ID: <36faea07-139c-b97d-3585-f7d6d362abc3@collabora.com>
-Date: Wed, 6 Mar 2019 10:14:47 +0000
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: [kernelci] LKFT + KernelCI
+References: <20181011152429.l2q6d43zzzqoc3df@xps.therub.org>
+Date: Fri, 12 Oct 2018 09:07:43 +0200
+In-Reply-To: <20181011152429.l2q6d43zzzqoc3df@xps.therub.org> (Dan Rue's
+	message of "Thu, 11 Oct 2018 10:24:29 -0500")
+Message-ID: <7hwoqnfxs0.fsf@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4hMNiiM11ULjbOnOf=9N=yCABCRsAYLpjXs+98bRoRpCA@mail.gmail.com>
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Mark Brown <broonie@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Matt Hart <matthew.hart@linaro.org>, Stephen Rothwell <sfr@canb.auug.org.au>, khilman@baylibre.com, enric.balletbo@collabora.com, Nicholas Piggin <npiggin@gmail.com>, Dominik Brodowski <linux@dominikbrodowski.net>, Masahiro Yamada <yamada.masahiro@socionext.com>, Kees Cook <keescook@chromium.org>, Adrian Reber <adrian@lisas.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Linux MM <linux-mm@kvack.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Richard Guy Briggs <rgb@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, info@kernelci.org
+To: Dan Rue <dan.rue@linaro.org>
+Cc: kernelci@groups.io
 
-On 01/03/2019 23:23, Dan Williams wrote:
-> On Fri, Mar 1, 2019 at 1:05 PM Guillaume Tucker
-> <guillaume.tucker@collabora.com> wrote:
->>
->> On 01/03/2019 20:41, Andrew Morton wrote:
->>> On Fri, 1 Mar 2019 09:25:24 +0100 Guillaume Tucker <guillaume.tucker@collabora.com> wrote:
->>>
->>>>>>> Michal had asked if the free space accounting fix up addressed this
->>>>>>> boot regression? I was awaiting word on that.
->>>>>>
->>>>>> hm, does bot@kernelci.org actually read emails?  Let's try info@ as well..
->>>>
->>>> bot@kernelci.org is not person, it's a send-only account for
->>>> automated reports.  So no, it doesn't read emails.
->>>>
->>>> I guess the tricky point here is that the authors of the commits
->>>> found by bisections may not always have the hardware needed to
->>>> reproduce the problem.  So it needs to be dealt with on a
->>>> case-by-case basis: sometimes they do have the hardware,
->>>> sometimes someone else on the list or on CC does, and sometimes
->>>> it's better for the people who have access to the test lab which
->>>> ran the KernelCI test to deal with it.
->>>>
->>>> This case seems to fall into the last category.  As I have access
->>>> to the Collabora lab, I can do some quick checks to confirm
->>>> whether the proposed patch does fix the issue.  I hadn't realised
->>>> that someone was waiting for this to happen, especially as the
->>>> BeagleBone Black is a very common platform.  Sorry about that,
->>>> I'll take a look today.
->>>>
->>>> It may be a nice feature to be able to give access to the
->>>> KernelCI test infrastructure to anyone who wants to debug an
->>>> issue reported by KernelCI or verify a fix, so they won't need to
->>>> have the hardware locally.  Something to think about for the
->>>> future.
->>>
->>> Thanks, that all sounds good.
->>>
->>>>>> Is it possible to determine whether this regression is still present in
->>>>>> current linux-next?
->>>>
->>>> I'll try to re-apply the patch that caused the issue, then see if
->>>> the suggested change fixes it.  As far as the current linux-next
->>>> master branch is concerned, KernelCI boot tests are passing fine
->>>> on that platform.
->>>
->>> They would, because I dropped
->>> mm-shuffle-default-enable-all-shuffling.patch, so your tests presumably
->>> now have shuffling disabled.
->>>
->>> Is it possible to add the below to linux-next and try again?
->>
->> I've actually already done that, and essentially the issue can
->> still be reproduced by applying that patch.  See this branch:
->>
->>   https://gitlab.collabora.com/gtucker/linux/commits/next-20190301-beaglebone-black-debug
->>
->> next-20190301 boots fine but the head fails, using
->> multi_v7_defconfig + SMP=n in both cases and
->> SHUFFLE_PAGE_ALLOCATOR=y enabled in the 2nd case as a result
->> of the change in the default value.
->>
->> The change suggested by Michal Hocko on Feb 15th has now been
->> applied in linux-next, it's part of this commit but as
->> explained above it does not actually resolve the boot failure:
->>
->>   98cf198ee8ce mm: move buddy list manipulations into helpers
->>
->> I can send more details on Monday and do a bit of debugging to
->> help narrowing down the problem.  Please let me know if
->> there's anything in particular that would seem be worth
->> trying.
->>
-> 
-> Thanks for taking a look!
-> 
-> Some questions when you get a chance:
-> 
-> Is there an early-printk facility that can be turned on to see how far
-> we get in the boot?
+"Dan Rue" <dan.rue@linaro.org> writes:
 
-Yes, I've done that now by enabling CONFIG_DEBUG_AM33XXUART1 and
-earlyprintk in the command line.  Here's the result, with the
-commit cherry picked on top of next-20190304:
+> Hi All,
+>
+> This is probably overdue, but I wanted to write out and get feedback on
+> the plans that I've been working on with regard to linux kernel
+> functional testing (LKFT).
+>
+> LKFT consists of the following components:
+> - jenkins
+> - openembedded
+> - lava
+> - squad
+>
+> It uses the following boards:
+> - hikey
+> - x15
+> - juno-r2
+> - dragonboard 410c
+> - qemu
+> - x86
+>
+> This model has been successful for us so far, and allowed us to meet the
+> requirements that we've had. I think the gaps that we have currently are
+> related to test coverage, reporting, and visualization.
+>
+> However, instead of continuing to improve LKFT, what we'd prefer to do
+> is work hand in hand with kernelci. Then the question becomes, how do we
+> do that without throwing away everything that we already have (and that
+> we have to keep running)?
+>
+> So I've been considering how we can start to move LKFT towards kernelci,
+> so that at some point in the future it is indistinguishable from
+> and a part of kernelci.
+>
+> Milosz is looking at the front end and database pieces - see his earlier
+> email on that topic with subject "KernelCI NG master plan".
+>
+> My interest is to start by changing the way LKFT does builds to be more
+> compatible with kernelci. We would like to stick with openembedded for a
+> variety of reasons, and I think that it would be good if kernelci
+> supported multiple user spaces.
 
-  https://lava.collabora.co.uk/scheduler/job/1526326
+For what we call "boot" tests, we'd like to keep it simple and use a
+common, minimal ramdisk for just testing basic boot sanity.  This allows
+us the broadest possible boot coverage, including boards without lots of
+memory, storage, networking etc.
 
-[    1.379522] ti-sysc 4804a000.target-module: sysc_flags 00000222 != 00000022
-[    1.396718] Unable to handle kernel paging request at virtual address 77bb4003
-[    1.404203] pgd = (ptrval)
-[    1.406971] [77bb4003] *pgd=00000000
-[    1.410650] Internal error: Oops: 5 [#1] ARM
-[...]
-[    1.672310] [<c07051a0>] (clk_hw_create_clk.part.21) from [<c06fea34>] (devm_clk_get+0x4c/0x80)
-[    1.681232] [<c06fea34>] (devm_clk_get) from [<c064253c>] (sysc_probe+0x28c/0xde4)
+However, for tqhe rest of the tests, we can (and should) support
+multiple user spaces.  Our primary efforts are focused on using debian
+for this[1], and very recently started creating a manifset JSON[2] to
+describe the rootfs.
 
-It's always failing at that point in the code.  Also when
-enabling "debug" on the kernel command line, the issue goes
-away (exact same binaries etc..):
+We're not yet using this info anywhere in the backend/frontend yet, so
+probably the first step is to generalize this description/schema for
+other userspaces.
 
-  https://lava.collabora.co.uk/scheduler/job/1526327
+> Right now our OE build uses a series of recipes and builds a complete
+> kernel and user space for every build, every time. This is problematic
+> for a couple reasons:
+> - Kernel config consists of defconfig plus some extra configs, all
+>   coming from OE recipes. This makes the kernel builds hard to reproduce
+>   outside of OE.
+> - OE rebuilds userspace every time. My understanding is this is best
+>   practice from an OE perspective, but I don't think it's desirable from
+>   a kernelci or testing perspective.
+>
+> If, however, we had a kernel config fragment upstream, then we could use
+> a well-defined kernel config that is easily reproducible by anyone. This
+> is something that Anders Roxell and Mark Brown are working on.
 
-For the record, here's the branch I've been using:
+Sounds great!
 
-  https://gitlab.collabora.com/gtucker/linux/tree/beaglebone-black-next-20190304-debug
+> The second part is to be able to actually consume a kernelci built
+> kernel, rather than re-building the kernel every time. I think it would
+> be best to be able to take an existing OE userspace and combine it with
+> an existing kernelci built kernel. Some people are already doing this or
+> similar, but it would be best if this was supported in OE upstream.
+>
+> So our short term plans are something like:
+> - Get a config fragment upstreamed and backported, that can be used for
+>   testing
+> - Get kernelci building said fragment
+> - Determine how to produce OE images from an existing kernel and
+>   existing OE build in an OE-supportable way.
+>
+> Once we have that, we think we can start submitting test results into
+> kernelci - making the data more widely available to the community. After
+> that, it gets exciting because we would be working on top of the same
+> reporting and analytics stack. This may also bring opportunities here,
+> for example, to support boot testing on fastboot devices.
+>
+> Please let me know what you think -
 
-The board otherwise boots fine with next-20190304 (SMP=n), and
-also with the patch applied but the shuffle configs set to n.
+Really glad to hear you're working towards close collaboration,
 
-> Do any of the QEMU machine types [1] approximate this board? I.e. so I
-> might be able to independently debug.
+Kevin
 
-Unfortunately there doesn't appear to be any QEMU machine
-emulating the TI AM335x SoC or the BeagleBone Black board.
-
-> Were there any boot *successes* on ARM with shuffling enabled? I.e.
-> clues about what's different about the specific memory setup for
-> beagle-bone-black.
-
-Looking at the KernelCI results from next-20190215, it looks like
-only the BeagleBone Black with SMP=n failed to boot:
-
-  https://kernelci.org/boot/all/job/next/branch/master/kernel/next-20190215/
-
-Of course that's not all the ARM boards that exist out there, but
-it's a fairly large coverage already.
-
-As the kernel panic always seems to originate in ti-sysc.c,
-there's a chance it's only visible on that platform...  I'm doing
-a KernelCI run now with my test branch to double check that,
-it'll take a few hours so I'll send an update later if I get
-anything useful out of it.
-
-In the meantime, I'm happy to try out other things with more
-debug configs turned on or any potential fixes someone might
-have.
-
-Thanks,
-Guillaume
-
-> Thanks for the help!
-> 
-> [1]: https://wiki.qemu.org/Documentation/Platforms/ARM
-
+[1] https://github.com/kernelci/kernelci-core-staging/tree/master/jenkins/debian
+[2] https://github.com/kernelci/kernelci-core-staging/blob/master/jenkins/debian/debos/scripts/create_manifest.sh
 
