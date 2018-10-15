@@ -1,255 +1,89 @@
-MIME-Version: 1.0
-References: <5c0ef32c.1c69fb81.72744.44d8@mx.google.com>
-In-Reply-To: <5c0ef32c.1c69fb81.72744.44d8@mx.google.com>
+Return-Path: <khilman@baylibre.com>
 From: "Kevin Hilman" <khilman@baylibre.com>
-Date: Mon, 10 Dec 2018 15:38:42 -0800
-Message-ID: <CAOi56cV9NL2bVnALDEs_XOv96Y=bFiVcsNJ3E0KPC+n1uXNcjw@mail.gmail.com>
-Subject: Re: next/master boot bisection: next-20181210 on meson-gxl-s905x-libretech-cc
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [kernelci] add a new config fragment to kernel/configs
+References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
+	<7hin27fhkk.fsf@baylibre.com> <20181012163939.GD2340@sirena.org.uk>
+Date: Mon, 15 Oct 2018 15:01:34 +0200
+In-Reply-To: <20181012163939.GD2340@sirena.org.uk> (Mark Brown's message of
+	"Fri, 12 Oct 2018 18:39:39 +0200")
+Message-ID: <7h5zy3fjo1.fsf@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: kernelci@groups.io
+To: Mark Brown <broonie@kernel.org>
+Cc: Anders Roxell <anders.roxell@linaro.org>, kernelci@groups.io
 
-[ removed developer lists ]
+Mark Brown <broonie@kernel.org> writes:
 
-Guillaume,
+> On Fri, Oct 12, 2018 at 02:57:47PM +0200, Kevin Hilman wrote:
+>> Anders Roxell <anders.roxell@linaro.org> writes:
+>
+>> > Let me try to explain what the idea with this new fragment is about.  Adding a
+>> > fragment called all_abi.config (lets stick with this name throughout this
+>> > email) in kernel/configs would be to enable as much as possible. Then we would
+>> > be able to run any test suite with one kernel image.
+>
+>> Thanks for clarifing.  To me, that doesn't sound like ABI, and
+>> especially not *all* ABIs.  It's just a set of interfaces used by common
+>> test suites.  IMO, using ABI is misleading, as when people see that,
+>> they think of all the userspace/kernel interfaces.
+>
+> Right, so when we were discussing this internally the thinking was that
+> we could meet the need for a config fragement that enabled interfaces
+> for testsuites by enabling all the ABIs that the kernel offers.  This is
+> a useful thing to do anyway I think and it provides a concrete rule for
+> what to put in there which is easy to follow and avoids debate about
+> some of the tuning options that people like to twiddle.  There was also
+> some thought that we could have other config fragments like one to
+> enable useful and cheap debug features which could be useful separately.
+>
+> I do agree that if it is just a "stuff people might want for testing"
+> config then we shouldn't call it all_abi.
+>
+>> > 2. do allmodconfig and boot that, sadly that doesn't boot. I've tried to bisect
+>> > the .config file and ended up with a pile of CONFIG_* options that has to be
+>> > enabled/disabled so it booted. The idea was to add these options into the
+>> > all_abi.config so we could do 'make allmodconfig all_abi.config'. There are
+>> > different options that needs to be enabled/disabled between arm64 and x86
+>> > (those are the architectures I've tried on so far).
+>
+>> Having this "minimal boot" defconfig sounds like a good thing to have
+>> independently of the test fragments.
+>
+> Definitely.
+>
+>> IMO, per test-suite fragments make the most sense, and will much easier
+>> to maintain than one big fragment.  It's also more self-documenting, and
+>> test-suite maintainers might be more motivated to keep things up to
+>> date.   With one massive fragment, it would have to be well documented
+>> (and kept that way) to understand why various options are present, and
+>> which test suites required them etc.
+>
+> The idea with having this all_abi config which literally only has things
+> that are ABIs was to have a simple, clear rule about what goes in which
+> doesn't need input from most testsuite maintainers or particularly
+> reference any individual testsuites but will do what's needed for most
+> of them.  If something's an ABI it should be enabled, if it's not an ABI
+> then it should be in some other fragment.  That sidesteps the issues
+> with documentation.
 
-A minor nit about the reporting that's a bit confusing... the "Good"
-tag shows  next-20181206, but the bisect log shows that it started at
-v4.20-rc6
+If it's focused on ABI, that sounds fine to me.   However...
 
-Also, it might be helpful for folks not familiar with kCI to know what
-this "bisection report" is about.  It's not obvious that what's being
-bisected is a boot failure.  It might be useful to show the boot
-failure, and have a link to a full boot log for the original failure.
+> Per testsuite configs have the disadvantage that you've got to work with
+> every single testsuite to add them (or maintain them separately) and
+> deal with any churn in kernel config requirements as you move between
+> kernels with new options or whatever somehow.  Some of the testsuites
+> will doubtless still end up needing them but hopefully most won't.
+
+I don't have any proof of this, but I suspect there will testsuites that
+are testing things that are not formally ABI, and we'll end up with
+per-testsuite defconfigs anyways, which may need to duplicate stuff in
+all_abi.config (or specify they need to be combined with all_abi.config)
+
+Personally, I think we should first try the "allmodconfig +
+min_boot.config" approach.
+
+If that works, would we still need all_abi.config?
 
 Kevin
 
-On Mon, Dec 10, 2018 at 3:13 PM kernelci.org bot <bot@kernelci.org> wrote:
->
-> This automated bisection report was sent to you on the basis that you may be involved with the breaking commit it has found. No manual investigation has been done to verify it, and the root cause of the problem may be somewhere else.
->
-> Hope this helps!
->
-> Bisection result for next/master (next-20181210) on meson-gxl-s905x-libretech-cc
->
-> Good
->
-> 4c92b7b3080d Add linux-next specific files for 20181206
->
-> Bad
->
-> 14cf8c1d5b90 Add linux-next specific files for 20181210
->
-> Found
->
-> 396244692232 arm64: preempt: Provide our own implementation of asm/preempt.h
->
-> Details:
->
-> Goodnext-20181206
-> Badnext-20181210
->
-> Checks:
->
-> revertPASS
-> verifyPASS
->
-> Parameters:
->
-> Treenext
-> URLhttp://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> Branchmaster
-> Targetmeson-gxl-s905x-libretech-cc
-> Lablab-baylibre
-> Configdefconfig+CONFIG_CPU_BIG_ENDIAN=y
-> Planboot
->
-> Breaking commit found:
->
-> commit 396244692232fcf0881cb6ba2404be2906f47681
-> Author: Will Deacon
-> Date:   Thu Sep 20 10:26:40 2018 +0100
->
->     arm64: preempt: Provide our own implementation of asm/preempt.h
->
->     The asm-generic/preempt.h implementation doesn't make use of the
->     PREEMPT_NEED_RESCHED flag, since this can interact badly with load/store
->     architectures which rely on the preempt_count word being unchanged across
->     an interrupt.
->
->     However, since we're a 64-bit architecture and the preempt count is
->     only 32 bits wide, we can simply pack it next to the resched flag and
->     load the whole thing in one go, so that a dec-and-test operation doesn't
->     need to load twice.
->
->     Acked-by: Peter Zijlstra (Intel)
->     Reviewed-by: Ard Biesheuvel
->     Signed-off-by: Will Deacon
->
-> diff --git a/arch/arm64/include/asm/Kbuild b/arch/arm64/include/asm/Kbuild
-> index 1877f29f6d97..1e17ea5c372b 100644
-> --- a/arch/arm64/include/asm/Kbuild
-> +++ b/arch/arm64/include/asm/Kbuild
-> @@ -14,7 +14,6 @@ generic-y += local64.h
->  generic-y += mcs_spinlock.h
->  generic-y += mm-arch-hooks.h
->  generic-y += msi.h
-> -generic-y += preempt.h
->  generic-y += qrwlock.h
->  generic-y += qspinlock.h
->  generic-y += rwsem.h
-> diff --git a/arch/arm64/include/asm/preempt.h b/arch/arm64/include/asm/preempt.h
-> new file mode 100644
-> index 000000000000..d49951647014
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/preempt.h
-> @@ -0,0 +1,89 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __ASM_PREEMPT_H
-> +#define __ASM_PREEMPT_H
-> +
-> +#include
-> +
-> +#define PREEMPT_NEED_RESCHED BIT(32)
-> +#define PREEMPT_ENABLED (PREEMPT_NEED_RESCHED)
-> +
-> +static inline int preempt_count(void)
-> +{
-> + return READ_ONCE(current_thread_info()->preempt.count);
-> +}
-> +
-> +static inline void preempt_count_set(u64 pc)
-> +{
-> + /* Preserve existing value of PREEMPT_NEED_RESCHED */
-> + WRITE_ONCE(current_thread_info()->preempt.count, pc);
-> +}
-> +
-> +#define init_task_preempt_count(p) do { \
-> + task_thread_info(p)->preempt_count = FORK_PREEMPT_COUNT; \
-> +} while (0)
-> +
-> +#define init_idle_preempt_count(p, cpu) do { \
-> + task_thread_info(p)->preempt_count = PREEMPT_ENABLED; \
-> +} while (0)
-> +
-> +static inline void set_preempt_need_resched(void)
-> +{
-> + current_thread_info()->preempt.need_resched = 0;
-> +}
-> +
-> +static inline void clear_preempt_need_resched(void)
-> +{
-> + current_thread_info()->preempt.need_resched = 1;
-> +}
-> +
-> +static inline bool test_preempt_need_resched(void)
-> +{
-> + return !current_thread_info()->preempt.need_resched;
-> +}
-> +
-> +static inline void __preempt_count_add(int val)
-> +{
-> + u32 pc = READ_ONCE(current_thread_info()->preempt.count);
-> + pc += val;
-> + WRITE_ONCE(current_thread_info()->preempt.count, pc);
-> +}
-> +
-> +static inline void __preempt_count_sub(int val)
-> +{
-> + u32 pc = READ_ONCE(current_thread_info()->preempt.count);
-> + pc -= val;
-> + WRITE_ONCE(current_thread_info()->preempt.count, pc);
-> +}
-> +
-> +static inline bool __preempt_count_dec_and_test(void)
-> +{
-> + struct thread_info *ti = current_thread_info();
-> + u64 pc = READ_ONCE(ti->preempt_count);
-> +
-> + /* Update only the count field, leaving need_resched unchanged */
-> + WRITE_ONCE(ti->preempt.count, --pc);
-> +
-> + /*
-> + * If we wrote back all zeroes, then we're preemptible and in
-> + * need of a reschedule. Otherwise, we need to reload the
-> + * preempt_count in case the need_resched flag was cleared by an
-> + * interrupt occurring between the non-atomic READ_ONCE/WRITE_ONCE
-> + * pair.
-> + */
-> + return !pc || !READ_ONCE(ti->preempt_count);
-> +}
-> +
-> +static inline bool should_resched(int preempt_offset)
-> +{
-> + u64 pc = READ_ONCE(current_thread_info()->preempt_count);
-> + return pc == preempt_offset;
-> +}
-> +
-> +#ifdef CONFIG_PREEMPT
-> +void preempt_schedule(void);
-> +#define __preempt_schedule() preempt_schedule()
-> +void preempt_schedule_notrace(void);
-> +#define __preempt_schedule_notrace() preempt_schedule_notrace()
-> +#endif /* CONFIG_PREEMPT */
-> +
-> +#endif /* __ASM_PREEMPT_H */
-> diff --git a/arch/arm64/include/asm/thread_info.h b/arch/arm64/include/asm/thread_info.h
-> index cb2c10a8f0a8..bbca68b54732 100644
-> --- a/arch/arm64/include/asm/thread_info.h
-> +++ b/arch/arm64/include/asm/thread_info.h
-> @@ -42,7 +42,18 @@ struct thread_info {
->  #ifdef CONFIG_ARM64_SW_TTBR0_PAN
->   u64 ttbr0; /* saved TTBR0_EL1 */
->  #endif
-> - int preempt_count; /* 0 => preemptable, <0 => bug */
-> + union {
-> + u64 preempt_count; /* 0 => preemptible, <0 => bug */
-> + struct {
-> +#ifdef CONFIG_CPU_BIG_ENDIAN
-> + u32 need_resched;
-> + u32 count;
-> +#else
-> + u32 count;
-> + u32 need_resched;
-> +#endif
-> + } preempt;
-> + };
->  };
->
->  #define thread_saved_pc(tsk) \
->
-> Git bisection log:
->
-> git bisect start
-> # good: [40e020c129cfc991e8ab4736d2665351ffd1468d] Linux 4.20-rc6
-> git bisect good 40e020c129cfc991e8ab4736d2665351ffd1468d
-> # bad: [14cf8c1d5b90a0cf6a8ba51ef59db8da8c7a2622] Add linux-next specific files for 20181210
-> git bisect bad 14cf8c1d5b90a0cf6a8ba51ef59db8da8c7a2622
-> # bad: [6930775c0c29503062fc599dc9034e1dfa19152e] Merge remote-tracking branch 'spi-nor/spi-nor/next'
-> git bisect bad 6930775c0c29503062fc599dc9034e1dfa19152e
-> # bad: [02a9283641cffcfa9478945f5c50f454a98c38ff] Merge remote-tracking branch 'pci/next'
-> git bisect bad 02a9283641cffcfa9478945f5c50f454a98c38ff
-> # good: [56efa381ba5b6329c92cf8b8c44c87ac2a8e7c58] Merge remote-tracking branch 'samsung-krzk/for-next'
-> git bisect good 56efa381ba5b6329c92cf8b8c44c87ac2a8e7c58
-> # bad: [86d9212f9434a74dd9281eca70f210f39ed45d77] Merge remote-tracking branch 'nds32/next'
-> git bisect bad 86d9212f9434a74dd9281eca70f210f39ed45d77
-> # bad: [52e22b685b0e4269814f241d5ee1125e98b9e532] Merge remote-tracking branch 'arm64/for-next/core'
-> git bisect bad 52e22b685b0e4269814f241d5ee1125e98b9e532
-> # good: [9858c7196f505b5c50f381ac27f34a3abad46490] Merge branch 'sunxi/clk-for-4.21' into sunxi/for-next
-> git bisect good 9858c7196f505b5c50f381ac27f34a3abad46490
-> # good: [2731820ce27bfd6e6d26f99f558c40f8ff617c9f] Merge branch for-4.21/clk into for-next
-> git bisect good 2731820ce27bfd6e6d26f99f558c40f8ff617c9f
-> # good: [230df6835adcbc4eedf1475263d51e0ed40c6227] Merge branches 'sunxi/dt-for-4.21' and 'sunxi/dt64-for-4.21' into sunxi/for-next
-> git bisect good 230df6835adcbc4eedf1475263d51e0ed40c6227
-> # good: [3bbd3db86470c701091fb1d67f1fab6621debf50] arm64: relocatable: fix inconsistencies in linker script and options
-> git bisect good 3bbd3db86470c701091fb1d67f1fab6621debf50
-> # good: [8cb3451b1f240ec4d36a9bfcd39cb6d59769a5b3] arm64: entry: Remove confusing comment
-> git bisect good 8cb3451b1f240ec4d36a9bfcd39cb6d59769a5b3
-> # bad: [396244692232fcf0881cb6ba2404be2906f47681] arm64: preempt: Provide our own implementation of asm/preempt.h
-> git bisect bad 396244692232fcf0881cb6ba2404be2906f47681
-> # good: [cc9f8349cb33965120a96c12e05d00676162eb7f] arm64: crypto: add NEON accelerated XOR implementation
-> git bisect good cc9f8349cb33965120a96c12e05d00676162eb7f
-> # good: [08861d33d680838753f1f9d3ba9480d3651b764d] preempt: Move PREEMPT_NEED_RESCHED definition into arch code
-> git bisect good 08861d33d680838753f1f9d3ba9480d3651b764d
-> # first bad commit: [396244692232fcf0881cb6ba2404be2906f47681] arm64: preempt: Provide our own implementation of asm/preempt.h
