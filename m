@@ -1,57 +1,65 @@
-Date: Thu, 13 Dec 2018 12:34:57 +0000
+Date: Mon, 15 Oct 2018 14:29:21 +0100
 From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: [kernelci] Some suggestions and questions
-Message-ID: <20181213123457.GF10669@sirena.org.uk>
-References: <20181212213831.xnw3ugwvpw4o365o@xps.therub.org>
- <20181213114903.GB10669@sirena.org.uk>
- <CADz3at1pRKih+JD2FerjgjKrU+p2RrnTfYoUadNAmXSi_Gp3UQ@mail.gmail.com>
+Subject: Re: [kernelci] add a new config fragment to kernel/configs
+Message-ID: <20181015132921.GB12949@sirena.org.uk>
+References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
+ <7hin27fhkk.fsf@baylibre.com>
+ <20181012163939.GD2340@sirena.org.uk>
+ <7h5zy3fjo1.fsf@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <CADz3at1pRKih+JD2FerjgjKrU+p2RrnTfYoUadNAmXSi_Gp3UQ@mail.gmail.com>
+In-Reply-To: <7h5zy3fjo1.fsf@baylibre.com>
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+jhVVhN62yS6hEJ8"
+	protocol="application/pgp-signature"; boundary="SkvwRMAIpAhPCcCJ"
 Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: Anders Roxell <anders.roxell@linaro.org>, kernelci@groups.io
 
---+jhVVhN62yS6hEJ8
+--SkvwRMAIpAhPCcCJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Dec 13, 2018 at 07:14:34AM -0500, Mike Holmes wrote:
-> Mobile
+On Mon, Oct 15, 2018 at 03:01:34PM +0200, Kevin Hilman wrote:
+> Mark Brown <broonie@kernel.org> writes:
 
-Desktop.
+> > Per testsuite configs have the disadvantage that you've got to work with
+> > every single testsuite to add them (or maintain them separately) and
+> > deal with any churn in kernel config requirements as you move between
+> > kernels with new options or whatever somehow.  Some of the testsuites
+> > will doubtless still end up needing them but hopefully most won't.
 
-> On Thu, Dec 13, 2018, 6:49 AM Mark Brown <broonie@kernel.org wrote:
+> I don't have any proof of this, but I suspect there will testsuites that
+> are testing things that are not formally ABI, and we'll end up with
+> per-testsuite defconfigs anyways, which may need to duplicate stuff in
+> all_abi.config (or specify they need to be combined with all_abi.config)
 
-> > E-mail doesn't support hashtags though :(
+Oh, there definitely are.
 
-> What extra support bis needed ?
+> Personally, I think we should first try the "allmodconfig +
+> min_boot.config" approach.
 
-> I assumed adding the tag to the subject was all E-mailed needed to support,
-> it will then pull in all replies I think, but it has to be in the first
-> message, but I am not an expert.
+> If that works, would we still need all_abi.config?
 
-It'll get passed through but clients don't know to do anything with it,
-you either get noise characters in the subject if people hashtag words
-that are already there (which is a common way of doing these things),
-it's less of an issue if they just get added to the end of the subject
-line but still looks weird.  It's like when people start randomly adding
-@ to people's names in e-mail.
+Possibly not, the concerns I guess would be size of the image (though we
+could probably arrange to not actually ship all the modules to all the
+boards if it was getting in the way) and if all the random debug options
+that allmodconfig turns on might be too disruptive (I'm not sure if we'd
+be able to turn them off with just a straight min_boot fragment, though
+you could extend merge_config).
 
---+jhVVhN62yS6hEJ8
+--SkvwRMAIpAhPCcCJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwSUfEACgkQJNaLcl1U
-h9AnTAf9Epl+S6taClRdcaD1aE6Q1k94TiCTIaeNEkz6jdcXUTT8tWYXlCrTvzg+
-cFXn1GbmOKw9HIchma704j/X96Eql7Urmfw2RPuXDgfvFfTXRmvzJHakBpULVdrE
-onGV42WR/rMkSUjOPclNmCFnsv2OjyPDTRXHVTfs5cE/iGguRCULD6+F8MX5hhqj
-e0hEc5gVw4vXl82+dtzCIdoJIdy1uYXz+NS28ru2+G0CtnmBixk9Z7R7k59Kvp6q
-X8LtXGOZWsyk9DTJx9IYesAcwrWiNL1Hnr2444yzcfOUfMpoGz1ibZHERZYoL4vi
-dzYnEnreYNOvFwC1JsUGeXKD+8qgSA==
-=Ysco
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlvEljAACgkQJNaLcl1U
+h9ApZwf+MZYvJ0YY9XsXcw+S7nBWmLOv0tyrzKalDDs5LpT30XU3d1dQVRNbfMzP
+8e6LGxSq0yA+sqR9YuimARvib6rSxlZHpQlu//hgaAtlNNSxFUi7MhQ0hSqq9hin
+pyD+NH8RCpKCuyz+8A4ZrLbzcAbumIXsn84oygmTzbH7iVigUnHC3MbagCNJij7O
+w47bbZ7ZcS1KApiY90ipyCiwS8gtA+Qu8/c9hRWnIOWQ3a92O9SXPVlRChsCW5Jt
+V8OPs5PX4aTf6zLIUoYHSC52sNsCU0xknspSZ5mvw5q+uzMLFJFpZ4pFB7YL2qVv
+ce/oUdP6gOtrkmKovaNIS0431+wy5Q==
+=hrcO
 -----END PGP SIGNATURE-----
 
---+jhVVhN62yS6hEJ8--
+--SkvwRMAIpAhPCcCJ--
