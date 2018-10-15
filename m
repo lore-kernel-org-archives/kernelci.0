@@ -1,34 +1,39 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Mon, 15 Oct 2018 11:03:01 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Meeting Minutes for 2018-10-15
+Message-ID: <20181015160301.azhyrfcngeugnzoz@xps.therub.org>
 MIME-Version: 1.0
-References: <CAH+k93ESzNrC65JreCxH5NocED8xpu7aApGgFb7bwhqF_7prwA@mail.gmail.com>
- <CAH=dhFS6TtEu5nFHQm-BA+zLVvBm-vGKhTm18qGKtQCrYLqxfw@mail.gmail.com> <20190107161142.GJ9570@sirena.org.uk>
-In-Reply-To: <20190107161142.GJ9570@sirena.org.uk>
-From: Tyler Baker <tyler@foundries.io>
-Date: Mon, 7 Jan 2019 08:18:54 -0800
-Message-ID: <CAH=dhFTSAfVWX+jKiUFFKEY82Zqe5bp1maXed2zVYByFKHqPbQ@mail.gmail.com>
-Subject: Re: patches@kernelci.org email account
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Mark Brown <broonie@kernel.org>
-Cc: Matt Hart <matthew.hart@linaro.org>, fellows@kernelci.org, info@kernelci.org, Tyler Baker <tyler@opensourcefoundries.com>, Milo Casagrande <milo@opensourcefoundries.com>
+To: kernelci@groups.io
 
-On Mon, Jan 7, 2019 at 8:11 AM Mark Brown <broonie@kernel.org> wrote:
->
-> On Mon, Jan 07, 2019 at 08:09:23AM -0800, Tyler Baker wrote:
-> > On Mon, Jan 7, 2019 at 7:28 AM Matt Hart <matthew.hart@linaro.org> wrote:
->
-> > > Any chance we can get it turned back on? Or can we use
-> > > bot@kernelci.org for the same thing? Tyler? Milo?
->
-> > Should be back on as of a few weeks ago. Is the backend throwing an
-> > error? I reset the password to use the one we were using in
-> > production.
->
-> Is the backend using the password directly or is it using an application
-> specific password (which is the recommended thing)?  If it's the latter
-> it'll need a new one regenerating.
+Attendees: broonie, dan, gtucker, milosz, Kevin, Ana, matt
 
-IIRC it was setup to use the password directly. I can switch it to the
-application key if needed.
+- [khilman] more upstream kernel trees (Vinod K)
+  - new GCE builders coming online soon(ish) -- Matt has the credentials
+  - Kevin will follow-up with Vinod: proposing to start with 1 branch
+
+- Fluentd - is there an existing framework that will work for us?
+  - Could have fluentd running on the DUT and the dispatcher to relay logs
+  - Would require networking
+  - Fluentbitd is a couple hundred k
+
+- Tests using lava-test-case scripting is a bit inconvenient - is this our
+  plan? Hard to reproduce locally
+  - Using lava-test-shell solves some parsing problems - getting the test
+    output per test out of the logs.
+
+- If test suites can create an output artifact, we can just use that
+  - Getting them out of lava isn’t easy. Need another service to host them,
+    such as artifactorial (LKFT is using artifactorial)
+
+- Wiki.kernelci.org is still a problem. Ana will move over the last bits to the
+  new wiki. Dan changed mailing list link to the correct location, anyway.
+  - Imported images
+    https://github.com/kernelci/kernelci-doc/wiki/Architecture-Overview
+
+- Adding firmware to modules tarball is needed
+
