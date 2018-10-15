@@ -1,52 +1,56 @@
-Date: Fri, 14 Dec 2018 18:06:44 +0000
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: [kernelci] Some suggestions and questions
-Message-ID: <20181214180644.GE6467@sirena.org.uk>
-References: <20181212213831.xnw3ugwvpw4o365o@xps.therub.org>
- <7ha7l8ng3d.fsf@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <7ha7l8ng3d.fsf@baylibre.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+SfteS7bOf3dGlBC"
-Content-Disposition: inline
+References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
+ <7hin27fhkk.fsf@baylibre.com> <20181012163939.GD2340@sirena.org.uk>
+ <7h5zy3fjo1.fsf@baylibre.com> <20181015132921.GB12949@sirena.org.uk>
+In-Reply-To: <20181015132921.GB12949@sirena.org.uk>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Mon, 15 Oct 2018 15:40:20 +0200
+Message-ID: <CAP71WjywZ=iqwZCTEYB7XjhO=r+hXhVzzjiS+XjztgGrK9HOOg@mail.gmail.com>
+Subject: Re: [kernelci] add a new config fragment to kernel/configs
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, khilman@baylibre.com
-Cc: Dan Rue <dan.rue@linaro.org>
+To: kernelci@groups.io
+Cc: Kevin Hilman <khilman@baylibre.com>, Anders Roxell <anders.roxell@linaro.org>
 
---+SfteS7bOf3dGlBC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, Oct 15, 2018 at 3:29 PM Mark Brown <broonie@kernel.org> wrote:
+>
+> On Mon, Oct 15, 2018 at 03:01:34PM +0200, Kevin Hilman wrote:
+> > Mark Brown <broonie@kernel.org> writes:
+>
+> > > Per testsuite configs have the disadvantage that you've got to work with
+> > > every single testsuite to add them (or maintain them separately) and
+> > > deal with any churn in kernel config requirements as you move between
+> > > kernels with new options or whatever somehow.  Some of the testsuites
+> > > will doubtless still end up needing them but hopefully most won't.
+>
+> > I don't have any proof of this, but I suspect there will testsuites that
+> > are testing things that are not formally ABI, and we'll end up with
+> > per-testsuite defconfigs anyways, which may need to duplicate stuff in
+> > all_abi.config (or specify they need to be combined with all_abi.config)
+>
+> Oh, there definitely are.
+>
+> > Personally, I think we should first try the "allmodconfig +
+> > min_boot.config" approach.
+>
+> > If that works, would we still need all_abi.config?
 
-On Fri, Dec 14, 2018 at 10:00:38AM -0800, Kevin Hilman wrote:
-> "Dan Rue" <dan.rue@linaro.org> writes:
+how about making a new tree (in kernelci.org?) that contains "test"
+config fragments and maintain them outside of linux master?
+kernelci.org could decide which fragment to use for which 'build'. If
+some fragments are good enough for mainline, then we might end up
+trying to upstream them at some point. That would at least ensure that
+everything is properly archived and reproducible. We can mimic what
+AOSP is doing for their custom config fragments
+(https://android.googlesource.com/kernel/configs/+/master).
 
-> > In the interest of transparency, can we disclose how emails sent to
-> > info@kernelci.org are handled?
-
-> This predates the list, so any new mails (of which there are almost
-> none) are redirected to the mailing list.=20
-
-> I think to fix this, we need to fix the /contact page to point to the
-> groups.io list instead of the info alias.
-
-Could we just point the alias at the list perhaps?  It's kind of nice
-that it's an @kernelci.org mail (and we might want to reorganize that
-again when the LF project launches anyway).
-
---+SfteS7bOf3dGlBC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwT8TQACgkQJNaLcl1U
-h9BXyQf/RsYJkBOSDTP+JoaTRFRy+ZJu0t6WW11ACGmHJz5JcEC6su0k+4Q7ScxH
-Xd6WyOQOUgLPCH5yT4uS3kI6eqoilXY6DU+R6S5qNGKnluxG7VLq1TvFotBd9E7c
-GoZzxtd0f6xWuV3/iqBt1zqtmAlkjU2q4kF7K0f8LA8Shy14A5BA4w4UD03o3mKE
-ZHwXagdBy/HHMtNWIcLWSsomrDP5G/EeVNe8781se83KfFAf7fdz6kdO0gsdv5qS
-eLbmsoO1oVT6K5H7NKr14YH/gYFRZdZWv0mJY+IClkEZycXhdii5yLojk+dkqVid
-WEtBsY9xAj5/RlTUwhRhdVllR2zY0g==
-=Z+Bf
------END PGP SIGNATURE-----
-
---+SfteS7bOf3dGlBC--
+>
+> Possibly not, the concerns I guess would be size of the image (though we
+> could probably arrange to not actually ship all the modules to all the
+> boards if it was getting in the way) and if all the random debug options
+> that allmodconfig turns on might be too disruptive (I'm not sure if we'd
+> be able to turn them off with just a straight min_boot fragment, though
+> you could extend merge_config).
+>
+> 
+>
