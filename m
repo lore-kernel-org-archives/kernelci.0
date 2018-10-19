@@ -1,41 +1,63 @@
-Date: Wed, 6 Mar 2019 15:01:34 +0000
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: branches not building?
-Message-ID: <20190306150134.GB21220@sirena.org.uk>
-References: <CAHRSSEzE-foFJaS4mmaosksXofwg8TaK=6ro8HFPGMV_d6=8sg@mail.gmail.com>
- <CABXOdTerkt85X856TDx9RGEymxm6yrqkkbyPUssJJp8Sm37J2A@mail.gmail.com>
-MIME-Version: 1.0
-In-Reply-To: <CABXOdTerkt85X856TDx9RGEymxm6yrqkkbyPUssJJp8Sm37J2A@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6sX45UoQRIJXqkqR"
-Content-Disposition: inline
+Message-ID: <53924f64785c3469915b19d32cefd36ed244cecd.camel@collabora.com>
+Subject: Re: RFC: kernelCI media subsystem pilot (Test results for gtucker/kernelci-media - gtucker-kernelci-media-001-6-g1b2c6e5844d8)
+From: Ezequiel Garcia <ezequiel@collabora.com>
+Date: Fri, 19 Oct 2018 10:30:08 -0300
+In-Reply-To: <bea38cb8-5e1b-32b1-2d81-e6038b8d6c68@xs4all.nl>
+References: <b569d756-5c4a-d0b4-e077-27a2e2ebb19d@collabora.com>
+	 <1f439267adf9a492a5d178808ba23682338d7e58.camel@collabora.com>
+	 <bea38cb8-5e1b-32b1-2d81-e6038b8d6c68@xs4all.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, groeck@google.com
-Cc: info@kernelci.org
+To: Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org, kernelci@groups.io
+Cc: Tomeu Vizoso <tomeu.vizoso@collabora.co.uk>, Gustavo Padovan <gustavo.padovan@collabora.co.uk>, Ana Guerrero Lopez <ana.guerrero@collabora.co.uk>, Guillaume Charles Tucker <guillaume.tucker@collabora.co.uk>
 
---6sX45UoQRIJXqkqR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, 2018-10-19 at 09:06 +0200, Hans Verkuil wrote:
+> On 10/18/2018 09:23 PM, Ezequiel Garcia wrote:
+> > Hi everyone,
+> > 
+> > In Collabora, and as part of our kernelci work, we are doing
+> > research on kernel functional testing with kernelci.
+> > 
+> > For those new to kernelci, see https://github.com/kernelci/kernelci-doc/wiki/KernelCI 
+> > and https://kernelci.org/.
+> > 
+> > The goal is to lay down the infrastructure required to make
+> > automated test coverage an integral part of our feature
+> > and bugfix development process.
+> > 
+> > So, as a first attempt, we've decided to extend kernelci test
+> > v4l2 plan support, leading the way to extending
+> > other subsystems' test plans.
+> > 
+> > Currently, kernelci looks for a list of branches every hour and
+> > see if anything changed. For any branch that has changed, it triggers
+> > builds, boots, tests and reports for each branch that had some changes
+> > since last time it ran.
+> > 
+> > For this pilot, we've decided to target just a few devices:
+> > qemu with vivid, rk3399-gru-kevin and rk3288-veyron-jaq
+> > with uvc.
+> 
+> It's running v4l2-compliance, right?
+> 
 
-On Tue, Mar 05, 2019 at 09:06:12AM -0800, Guenter Roeck via Groups.Io wrote:
-> https://kernelci.org/job/ suggests that there have been several builds
-> since yesterday. Maybe the build system was busy.
+Exactly.
 
-Yes, there was a fairly large backlog for a good chunk of yesterday.
+> Looking at the test cases, they appear in the reverse order that v4l2-compliance
+> performs them, that's a bit odd.
+> 
 
---6sX45UoQRIJXqkqR
-Content-Type: application/pgp-signature; name="signature.asc"
+That's something to check in the parser. I'm sure it's fixable if you
+find it annoying.
 
------BEGIN PGP SIGNATURE-----
+> And if we include uvc in the testing, then I need to prioritize the work I
+> started for uvc to remove the last FAILs.
+> 
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlx/4M0ACgkQJNaLcl1U
-h9CasQf/c214BWrRHzM6Q4eNbEI/n3qTi+JviqgjtCLxPkuyAmFxo0po9RV2TiTL
-f+0haMVNLATJb280Yv0SW6DwG+7ha2Uf3WeTRgDdi1uTRiZIR367GG2zb4Lx6ygP
-4pMQfnYjfZ+bsrmA9FYkKa0hmMj97UR/hZghILL2MeIxvQMoCAlNPWYfIB3i+MrE
-0vL6uj2NtvM0OM4qpEtV3DfhC0c4QZ/piD/DlADKud+G9ga4sEzLWpS3NhJpSakj
-DXNXdNPrSZ7FjW7m8Ea1l4BAZt55zbc9MCP+4VDTiP2JdguhFGQaTHgwyyJejMaf
-FLAcA2Z3UHIsXzIgxQIqwC9Xj2XVbQ==
-=E7sE
------END PGP SIGNATURE-----
+Well, we can run anything. We decided to go for uvc and vivid, just too pick
+two popular examples, but there are really no restrictions.
 
---6sX45UoQRIJXqkqR--
+Thanks,
+Ezequiel
