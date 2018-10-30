@@ -1,64 +1,69 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: Bisection email recipients
-Message-ID: <419a4e9b-4b03-d717-688b-bbc409369a97@collabora.com>
-Date: Tue, 30 Oct 2018 17:08:44 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
+ <7hin27fhkk.fsf@baylibre.com> <20181012163939.GD2340@sirena.org.uk>
+ <7h5zy3fjo1.fsf@baylibre.com> <20181015132921.GB12949@sirena.org.uk>
+ <CAP71WjywZ=iqwZCTEYB7XjhO=r+hXhVzzjiS+XjztgGrK9HOOg@mail.gmail.com> <20181015140536.GC12949@sirena.org.uk>
+In-Reply-To: <20181015140536.GC12949@sirena.org.uk>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Tue, 30 Oct 2018 17:21:04 +0000
+Message-ID: <CAH1_8nC9er4UhA1m9MEHwiQ370uaUyr9BtMxoxcxJMuiiUa9Rw@mail.gmail.com>
+Subject: Re: [kernelci] add a new config fragment to kernel/configs
+Content-Type: multipart/alternative; boundary="000000000000bdac2705797569c3"
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
+Cc: khilman@baylibre.com, anders.roxell@linaro.org
 
-As you know, we're now running automated bisections for all boot
-regressions found in mainline and stable trees.  The email reports
-are currently only sent to a fixed list of recipients who manually
-check them and report the result as needed.  As it turns out, there
-haven't been any real false positives[1] thanks to the checks
-(verify breaking commit, then revert in-place).  Some lab issues
-can mislead bisections but the odds for all the checks to pass with
-a false positive are really low, and I've got a task to better
-handle infrastructure errors in the bisection job to further reduce
-that.
+--000000000000bdac2705797569c3
+Content-Type: text/plain; charset="UTF-8"
 
-So unless anyone disagrees, I think it's now mature enough to start
-sending the report automatically to some relevant recipients.  I
-would first add a paragraph to give some context regarding the
-automated bisection so when people receive one out of the blue they
-get a clue as to where this is coming from.  I'll make a PR to
-update the template for this.
+On Mon, Oct 15, 2018 at 3:05 PM Mark Brown <broonie@kernel.org> wrote:
 
-Here's a list of potential recipients that could be automatically
-added, using the "breaking" commit found and other metadata:
+> On Mon, Oct 15, 2018 at 03:40:20PM +0200, Nicolas Dechesne wrote:
+> > On Mon, Oct 15, 2018 at 3:29 PM Mark Brown <broonie@kernel.org> wrote:
+> > > On Mon, Oct 15, 2018 at 03:01:34PM +0200, Kevin Hilman wrote:
+> > > > Mark Brown <broonie@kernel.org> writes:
+>
+> > > > Personally, I think we should first try the "allmodconfig +
+> > > > min_boot.config" approach.
+>
+> > > > If that works, would we still need all_abi.config?
+>
 
-* author of the commit
-* committer
-* Signed-off-by
-* Acked-by
-* Reported-by
-* mailing list associated with the tree (like for test reports)
-* maintainers of the parts of the code touched (using
-  scripts/get_maintainer.pl and diff stat)
-* kernel-build-reports@lists.linaro.org
-* as well as a fixed list of recipients configured in Jenkins like
-  we already do now
+Can we now drop the patch on staging which looks for the
+all_abi.config fragment?
 
-It would also be good to send the report as a reply to either the
-boot report showing the regression, or the original patch on a
-mailing list if that can be found in the archives.  I'll see if it
-can be done easily to directly do this as well as enabling more
-recipients.
 
-I also think it would be worth sending an email to the stable
-mailing list, and probably also lkml to explain what we're doing
-and warn people that we're turning this on.
+https://github.com/kernelci/kernelci-core-staging/commit/7ee5f44800a5b20ae7f3af308e16ae1502a643f2
 
-Please let me know your thoughts; I'm planning to start working on
-it this week and have a first version to try out and review for
-next week.
-
-Best wishes,
 Guillaume
 
+--000000000000bdac2705797569c3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[1] except for one single case in lab-baylibre :)
-http://lava.baylibre.com:10080/scheduler/alljobs?length=25&search=lava-bisect-9339#table
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br><div class=3D"gmail_=
+quote"><div dir=3D"ltr">On Mon, Oct 15, 2018 at 3:05 PM Mark Brown &lt;<a h=
+ref=3D"mailto:broonie@kernel.org">broonie@kernel.org</a>&gt; wrote:<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
+r-left:1px solid rgb(204,204,204);padding-left:1ex">On Mon, Oct 15, 2018 at=
+ 03:40:20PM +0200, Nicolas Dechesne wrote:<br>
+&gt; On Mon, Oct 15, 2018 at 3:29 PM Mark Brown &lt;<a href=3D"mailto:broon=
+ie@kernel.org" target=3D"_blank">broonie@kernel.org</a>&gt; wrote:<br>
+&gt; &gt; On Mon, Oct 15, 2018 at 03:01:34PM +0200, Kevin Hilman wrote:<br>
+&gt; &gt; &gt; Mark Brown &lt;<a href=3D"mailto:broonie@kernel.org" target=
+=3D"_blank">broonie@kernel.org</a>&gt; writes:<br>
+<br>
+&gt; &gt; &gt; Personally, I think we should first try the &quot;allmodconf=
+ig +<br>
+&gt; &gt; &gt; min_boot.config&quot; approach.<br>
+<br>
+&gt; &gt; &gt; If that works, would we still need all_abi.config?<br></bloc=
+kquote><div><br></div><div><div><div>Can we now drop the patch on staging w=
+hich looks for the</div><div>all_abi.config fragment?</div></div><div><br><=
+/div><div>=C2=A0 =C2=A0 <a href=3D"https://github.com/kernelci/kernelci-cor=
+e-staging/commit/7ee5f44800a5b20ae7f3af308e16ae1502a643f2">https://github.c=
+om/kernelci/kernelci-core-staging/commit/7ee5f44800a5b20ae7f3af308e16ae1502=
+a643f2</a></div></div><div><br></div><div>Guillaume</div></div></div></div>=
+</div>
+
+--000000000000bdac2705797569c3--
