@@ -1,67 +1,149 @@
-Return-Path: <khilman@baylibre.com>
-From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: [kernelci] add a new config fragment to kernel/configs
-References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
-Date: Fri, 12 Oct 2018 14:57:47 +0200
-In-Reply-To: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
-	(Anders Roxell's message of "Fri, 12 Oct 2018 11:28:30 +0200")
-Message-ID: <7hin27fhkk.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: "Kevin Hilman" <khilman@baylibre.com>
+Date: Mon, 5 Nov 2018 09:18:11 -0800
+Message-ID: <CAOi56cVeis2079Fe_Kn9zRf5AZcZf0rRz+z_5xYM81hB_6P6eA@mail.gmail.com>
+Subject: kernelCI: kernel builds for ARCH=arc
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Anders Roxell <anders.roxell@linaro.org>
+To: Alexey Brodkin <Alexey.Brodkin@synopsys.com>
 Cc: kernelci@groups.io
 
-Anders Roxell <anders.roxell@linaro.org> writes:
+Hi Alexy,
 
-> I've seen some confusion about what I'm trying to do with all_abi.config (maybe
-> not the best name, suggestions are more than welcome).  I should of course
-> reach out before I started to do this to see if it makes sense to do in the
-> first place, but forgot about it, sorry.
->
-> Let me try to explain what the idea with this new fragment is about.  Adding a
-> fragment called all_abi.config (lets stick with this name throughout this
-> email) in kernel/configs would be to enable as much as possible. Then we would
-> be able to run any test suite with one kernel image.
+I'm working on the kernelCI build side for ARCH=arc, and running into
+some basic build issues with the compilers you pointed me to.
 
-Thanks for clarifing.  To me, that doesn't sound like ABI, and
-especially not *all* ABIs.  It's just a set of interfaces used by common
-test suites.  IMO, using ABI is misleading, as when people see that,
-they think of all the userspace/kernel interfaces.
+First, on some of the builds, we're seeing:
 
-> There have been two different paths I've tried:
-> 1. add fragments that is needed for kselftest, LTP and libhugetlbfs to the
-> all_abi.config to be able to have the same test coverage as we have today in
-> LKFT.
->
-> 2. do allmodconfig and boot that, sadly that doesn't boot. I've tried to bisect
-> the .config file and ended up with a pile of CONFIG_* options that has to be
-> enabled/disabled so it booted. The idea was to add these options into the
-> all_abi.config so we could do 'make allmodconfig all_abi.config'. There are
-> different options that needs to be enabled/disabled between arm64 and x86
-> (those are the architectures I've tried on so far).
+arch/arc/Makefile:27: *** Toolchain not configured for ARCompact builds.  Stop.
 
-Having this "minimal boot" defconfig sounds like a good thing to have
-independently of the test fragments.
+In an earlier thread, you mentioned only focusing on ARCv2 ISA.
+Are some of the upstream defconfigs configured for ARCompact?  If so,
+could you tell us which defconfigs we should enable?
 
-> If we don't think its doable to enable everything into one big kernel, maybe we
-> can split up the fragments into different testing fragments like:
-> kselftest.config (that should essentially be todays kselftest-merge, but in a
-> more visible way), ltp.config, libhugetlbfs.config and so on. The downside here
-> would be that random test-suites need to send a patch with the fragments that
-> they have to enable for their test suite.
+Also, I tried the latest release from here:
+https://github.com/foss-for-synopsys-dwc-arc-processors/toolchain/releases/
 
-IMO, per test-suite fragments make the most sense, and will much easier
-to maintain than one big fragment.  It's also more self-documenting, and
-test-suite maintainers might be more motivated to keep things up to
-date.   With one massive fragment, it would have to be well documented
-(and kept that way) to understand why various options are present, and
-which test suites required them etc.
+And specifically, I tried the 2018.09-rc1 prebuilt_glibc release, and
+I'm getting a bunch of link failures at the end due to mismatch
+architectures.   I get the same results with the 2018.03 release
+whether I try the glibc or the uclibc release.
+
+Below is a log from an attempt with the v4.19 kernel, but I see the
+same thing with the latest mainline (v4.20-rc1).
+
+Any suggestions on what I'm doing wrong here with the toolchain setup?
+
+Thanks,
 
 Kevin
 
 
-
-
-
-
+root@197bf8f33695:~/linux-4.19.1# arc-linux-gcc -v
+Using built-in specs.
+COLLECT_GCC=arc-linux-gcc
+COLLECT_LTO_WRAPPER=/usr/bin/../libexec/gcc/arc-snps-linux-gnu/8.2.1/lto-wrapper
+Target: arc-snps-linux-gnu
+Configured with:
+/SCRATCH/arcjenkins/custom-ru20-arcgnu2/workspace/arc_gnu_toolchain_release/gcc/configure
+--target=arc-snps-linux-gnu --with-cpu=hs38 --disable-multilib
+--with-pkgversion='ARC HS GNU/Linux glibc toolchain 2018.09-rc1'
+--with-bugurl=https://github.com/foss-for-synopsys-dwc-arc-processors/toolchain/issues
+--enable-fast-install=N/A --with-endian=little --disable-werror
+--enable-languages=c,c++
+--prefix=/SCRATCH/arcjenkins/custom-ru20-arcgnu2/workspace/arc_gnu_toolchain_release/toolchain/../release_output/arc_gnu_2018.09-rc1_prebuilt_glibc_le_archs_linux_install
+--enable-shared --without-newlib --disable-libgomp --with-gnu-as
+--with-gnu-ld --with-python=no
+--with-sysroot=/SCRATCH/arcjenkins/custom-ru20-arcgnu2/workspace/arc_gnu_toolchain_release/toolchain/../release_output/arc_gnu_2018.09-rc1_prebuilt_glibc_le_archs_linux_install/arc-snps-linux-gnu/sysroot
+Thread model: posix
+gcc version 8.2.1 20180814 (ARC HS GNU/Linux glibc toolchain 2018.09-rc1)
+root@197bf8f33695:~/linux-4.19.1# ARCH=arc CROSS_COMPILE=arc-linux- make -j40
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  AR      built-in.a
+  LD      vmlinux.o
+arc-linux-ld: error: vmlinux.o: unable to merge ISA extension
+attributes code-density
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_muldi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_udivsi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_udivsi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_divsi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_divsi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_umodsi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_umodsi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_modsi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_modsi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_divmod_tools.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_divmod_tools.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_lshrdi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_lshrdi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_ashldi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_ashldi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_ashrdi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_ashrdi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_cmpdi2.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_cmpdi2.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_ucmpdi2.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_ucmpdi2.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_udivdi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_udivdi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(fp-bit.o) with
+a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(fp-bit.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(dp-bit.o) with
+a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(dp-bit.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_mulsi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_mulsi3.o)
+arc-linux-ld: error: attempting to link
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_umulsidi3.o)
+with a binary vmlinux.o of different architecture
+arc-linux-ld: failed to merge target specific data of file
+/usr/bin/../arc-snps-linux-gnu/sysroot/usr/lib/libgcc.a(_umulsidi3.o)
+make: *** [Makefile:1032: vmlinux] Error 1
