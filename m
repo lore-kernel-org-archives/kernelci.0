@@ -1,89 +1,214 @@
-From: Alexey Brodkin <alexey.brodkin@synopsys.com>
-Subject: Re: [kernelci] kernelCI: kernel builds for ARCH=arc
-Date: Fri, 9 Nov 2018 16:21:40 +0000
-Message-ID: <d654d4a487e462812b7f053dd45335dbee702ad4.camel@synopsys.com>
-References: <CAOi56cVeis2079Fe_Kn9zRf5AZcZf0rRz+z_5xYM81hB_6P6eA@mail.gmail.com>
-	 <4aeb14c51ed09fffc4273795eb3c3fb7958c522f.camel@synopsys.com>
-	 <7hefbz3y8e.fsf@baylibre.com>
-	 <CAOi56cVGJbLAiCu-fP+hCb0V9r8eJUoE+9X98ffefUs2RQM-1Q@mail.gmail.com>
-	 <C2D7FE5348E1B147BCA15975FBA23075013A590E26@us01wembx1.internal.synopsys.com>
-	 <CAH1_8nB94WgA4Wc0VdKDKxT=wSm+7+vdpfri175UxpEdsAf6+Q@mail.gmail.com>
-In-Reply-To: <CAH1_8nB94WgA4Wc0VdKDKxT=wSm+7+vdpfri175UxpEdsAf6+Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: multipart/alternative;
-	boundary="_000_d654d4a487e462812b7f053dd45335dbee702ad4camelsynopsysco_"
+References: <419a4e9b-4b03-d717-688b-bbc409369a97@collabora.com>
+ <a69dc0ac-2108-ab30-ab50-2d27b5378fa6@collabora.com> <20181031102654.GC1761@sirena.org.uk>
+In-Reply-To: <20181031102654.GC1761@sirena.org.uk>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Fri, 9 Nov 2018 16:59:17 +0000
+Message-ID: <CAH1_8nBApbn08CozDTvpWZJvWGcf8RnvbdVXpyAB3sE+EnQO0g@mail.gmail.com>
+Subject: Re: [kernelci] Bisection email recipients
+Content-Type: multipart/alternative; boundary="000000000000473911057a3e4674"
 List-ID: <kernelci.groups.io>
-To: "guillaume.tucker@gmail.com" <guillaume.tucker@gmail.com>
-Cc: Vineet Gupta <vineet.gupta1@synopsys.com>, "khilman@baylibre.com" <khilman@baylibre.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: kernelci@groups.io
+Cc: tomeu.vizoso@collabora.com
 
---_000_d654d4a487e462812b7f053dd45335dbee702ad4camelsynopsysco_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+--000000000000473911057a3e4674
+Content-Type: text/plain; charset="UTF-8"
 
-SGkgR3VpbGxhdW1lLA0KDQpTd2VldCEgVGhhdCBsb29rcyBhd2Vzb21lIQ0KTG9va2luZyBmb3J3
-YXJkIHRvIHNlZWluZyBpdCBpbiBwcm9kdWN0aW9uIEtlcm5lbENpIGFuZCB0aGVuIGF0IHNvbWUg
-cG9pbnQgYm9vdCB0ZXN0aW5nIG9uIEhTREsgYm9hcmQuDQoNClRoYW5rcyBmb3IgZG9pbmcgYWxs
-IHRoYXQhDQoNCi1BbGV4ZXkNCg0KT24gRnJpLCAyMDE4LTExLTA5IGF0IDE2OjE3ICswMDAwLCBH
-dWlsbGF1bWUgVHVja2VyIHdyb3RlOg0KR290IHNvbWUgYnVpbGRzIG9uIHN0YWdpbmc6DQpodHRw
-czovL3N0YWdpbmcua2VybmVsY2kub3JnL2J1aWxkL2d0dWNrZXIvYnJhbmNoL2tlcm5lbGNpLXRl
-c3Qva2VybmVsL2tlcm5lbGNpLXRlc3QtMDgyLzxodHRwczovL3VybGRlZmVuc2UucHJvb2Zwb2lu
-dC5jb20vdjIvdXJsP3U9aHR0cHMtM0FfX3N0YWdpbmcua2VybmVsY2kub3JnX2J1aWxkX2d0dWNr
-ZXJfYnJhbmNoX2tlcm5lbGNpLTJEdGVzdF9rZXJuZWxfa2VybmVsY2ktMkR0ZXN0LTJEMDgyXyZk
-PUR3TUZhUSZjPURQTDZfWF82SmtYRng3QVhXcUIwdGcmcj1scWRlZVNTRWVzMEdGRERsNjU2ZVZp
-WE83YnJlUzU1eXRXa2hwazVSODFJJm09ZlBueWFrMWYzWENpZGNpYnZJMGlTdHh5WHhEaHg4dE1X
-ZHVpREFSX1NZbyZzPWhEZFgyc3l0bEtfcldkMGdFQW5LbEZMeVpZM19ZamtOWkVVSDFqN2tmN3cm
-ZT0+DQoNCmFuZCBtZXJnZWQgdGhlIFBSLiAgU28gdGhpcyBzaG91bGQgYmUgbGFuZGluZyBpbiBw
-cm9kdWN0aW9uIHNvbWV0aW1lIG5leHQgd2Vlay4NCg0KR3VpbGxhdW1lDQoNCk9uIFR1ZSwgTm92
-IDYsIDIwMTggYXQgOTozNCBBTSBWaW5lZXQgR3VwdGEgPHZpbmVldC5ndXB0YTFAc3lub3BzeXMu
-Y29tPG1haWx0bzp2aW5lZXQuZ3VwdGExQHN5bm9wc3lzLmNvbT4+IHdyb3RlOg0KT24gMTEvNS8x
-OCAzOjM2IFBNLCBLZXZpbiBIaWxtYW4gd3JvdGU6DQoNCkJ1dCwgdGhhdCBkb2VzIHJhaXNlIGFu
-b3RoZXIgcXVlc3Rpb24uICBIb3cgZmFyIGJhY2sgc2hvdWxkIHdlIGV4cGVjdA0KDQpBUkMgYnVp
-bGRzIHRvIHdvcmssIGFuZCBiZSBib290YWJsZSBvbiB0aGUgSFNESy4/DQoNCkhTREsgc3VwcG9y
-dCB3YXMgaW50cm9kdWNlZCBpbiB2NC4xNA0KDQo=
+On Wed, Oct 31, 2018 at 10:26 AM Mark Brown <broonie@kernel.org> wrote:
 
---_000_d654d4a487e462812b7f053dd45335dbee702ad4camelsynopsysco_
-Content-Type: text/html; charset="utf-8"
-Content-ID: <646BCC13E0E2544E9D15994D622104D1@internal.synopsys.com>
-Content-Transfer-Encoding: base64
+> On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:
+> > On 10/30/18 6:08 PM, Guillaume Tucker wrote:
+>
+> > > * author of the commit
+> > > * committer
+> > > * Signed-off-by
+> > > * Acked-by
+> > > * Reported-by
+>
+> I'd just include any e-mail address in the tags for the mail - tested-by
+>
 
-PGh0bWwgZGlyPSJsdHIiPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUi
-IGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD11dGYtOCI+DQo8L2hlYWQ+DQo8Ym9keSBzdHls
-ZT0idGV4dC1hbGlnbjpsZWZ0OyBkaXJlY3Rpb246bHRyOyI+DQo8ZGl2PkhpIEd1aWxsYXVtZSw8
-L2Rpdj4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8ZGl2PlN3ZWV0ISBUaGF0IGxvb2tzIGF3ZXNvbWUh
-PC9kaXY+DQo8ZGl2Pkxvb2tpbmcgZm9yd2FyZCB0byBzZWVpbmcgaXQgaW4gcHJvZHVjdGlvbiBL
-ZXJuZWxDaSBhbmQgdGhlbiBhdCBzb21lIHBvaW50IGJvb3QgdGVzdGluZyBvbiBIU0RLIGJvYXJk
-LjwvZGl2Pg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+VGhhbmtzIGZvciBkb2luZyBhbGwgdGhh
-dCE8L2Rpdj4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8ZGl2Pi1BbGV4ZXk8L2Rpdj4NCjxkaXY+PGJy
-Pg0KPC9kaXY+DQo8ZGl2Pk9uIEZyaSwgMjAxOC0xMS0wOSBhdCAxNjoxNyAmIzQzOzAwMDAsIEd1
-aWxsYXVtZSBUdWNrZXIgd3JvdGU6PC9kaXY+DQo8YmxvY2txdW90ZSB0eXBlPSJjaXRlIiBzdHls
-ZT0ibWFyZ2luOjAgMCAwIC44ZXg7IGJvcmRlci1sZWZ0OjJweCAjNzI5ZmNmIHNvbGlkO3BhZGRp
-bmctbGVmdDoxZXgiPg0KPGRpdiBkaXI9Imx0ciI+DQo8ZGl2IGRpcj0ibHRyIj5Hb3Qgc29tZSBi
-dWlsZHMgb24gc3RhZ2luZzo8YnI+DQo8YSBocmVmPSJodHRwczovL3VybGRlZmVuc2UucHJvb2Zw
-b2ludC5jb20vdjIvdXJsP3U9aHR0cHMtM0FfX3N0YWdpbmcua2VybmVsY2kub3JnX2J1aWxkX2d0
-dWNrZXJfYnJhbmNoX2tlcm5lbGNpLTJEdGVzdF9rZXJuZWxfa2VybmVsY2ktMkR0ZXN0LTJEMDgy
-XyZhbXA7ZD1Ed01GYVEmYW1wO2M9RFBMNl9YXzZKa1hGeDdBWFdxQjB0ZyZhbXA7cj1scWRlZVNT
-RWVzMEdGRERsNjU2ZVZpWE83YnJlUzU1eXRXa2hwazVSODFJJmFtcDttPWZQbnlhazFmM1hDaWRj
-aWJ2STBpU3R4eVh4RGh4OHRNV2R1aURBUl9TWW8mYW1wO3M9aERkWDJzeXRsS19yV2QwZ0VBbkts
-Rkx5WlkzX1lqa05aRVVIMWo3a2Y3dyZhbXA7ZT0iPmh0dHBzOi8vc3RhZ2luZy5rZXJuZWxjaS5v
-cmcvYnVpbGQvZ3R1Y2tlci9icmFuY2gva2VybmVsY2ktdGVzdC9rZXJuZWwva2VybmVsY2ktdGVz
-dC0wODIvPC9hPjxicj4NCjxicj4NCmFuZCBtZXJnZWQgdGhlIFBSLiZuYnNwOyBTbyB0aGlzIHNo
-b3VsZCBiZSBsYW5kaW5nIGluIHByb2R1Y3Rpb24gc29tZXRpbWUgbmV4dCB3ZWVrLjxicj4NCjxi
-cj4NCkd1aWxsYXVtZTwvZGl2Pg0KPC9kaXY+DQo8YnI+DQo8ZGl2IGNsYXNzPSJnbWFpbF9xdW90
-ZSI+DQo8ZGl2IGRpcj0ibHRyIj5PbiBUdWUsIE5vdiA2LCAyMDE4IGF0IDk6MzQgQU0gVmluZWV0
-IEd1cHRhICZsdDs8YSBocmVmPSJtYWlsdG86dmluZWV0Lmd1cHRhMUBzeW5vcHN5cy5jb20iPnZp
-bmVldC5ndXB0YTFAc3lub3BzeXMuY29tPC9hPiZndDsgd3JvdGU6PGJyPg0KPC9kaXY+DQo8Ymxv
-Y2txdW90ZSB0eXBlPSJjaXRlIiBzdHlsZT0ibWFyZ2luOjAgMCAwIC44ZXg7IGJvcmRlci1sZWZ0
-OjJweCAjNzI5ZmNmIHNvbGlkO3BhZGRpbmctbGVmdDoxZXgiPg0KPGRpdiB0ZXh0PSIjMDAwMDAw
-IiBiZ2NvbG9yPSIjRkZGRkZGIj4NCjxkaXYgY2xhc3M9Im1fODAzMTI2MDQxMjc4ODc1OTIzMG1v
-ei1jaXRlLXByZWZpeCI+T24gMTEvNS8xOCAzOjM2IFBNLCBLZXZpbiBIaWxtYW4gd3JvdGU6PGJy
-Pg0KPC9kaXY+DQo8YmxvY2txdW90ZSB0eXBlPSJjaXRlIiBzdHlsZT0ibWFyZ2luOjAgMCAwIC44
-ZXg7IGJvcmRlci1sZWZ0OjJweCAjNzI5ZmNmIHNvbGlkO3BhZGRpbmctbGVmdDoxZXgiPg0KPHBy
-ZT5CdXQsIHRoYXQgZG9lcyByYWlzZSBhbm90aGVyIHF1ZXN0aW9uLiAgSG93IGZhciBiYWNrIHNo
-b3VsZCB3ZSBleHBlY3Q8L3ByZT4NCjxwcmU+QVJDIGJ1aWxkcyB0byB3b3JrLCBhbmQgYmUgYm9v
-dGFibGUgb24gdGhlIEhTREsuPzwvcHJlPg0KPC9ibG9ja3F1b3RlPg0KPGJyPg0KPGZvbnQgZmFj
-ZT0iRGVqYVZ1IFNhbnMiPkhTREsgc3VwcG9ydCB3YXMgaW50cm9kdWNlZCBpbiB2NC4xNDwvZm9u
-dD48YnI+DQo8L2Rpdj4NCg0KPHA+PC9wPg0KPHA+PC9wPg0KPC9ibG9ja3F1b3RlPg0KPC9kaXY+
-DQo8L2Jsb2NrcXVvdGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+Do you mean, to get the same as what "git send-email" would give?
+I had a look and it doesn't seem easy to extract this
+information, maybe you have a tip for that.  Otherwise, I've
+added a simple Python function with a regex to the script I have
+that triggers the bisection email (PR coming soon with details).
 
---_000_d654d4a487e462812b7f053dd45335dbee702ad4camelsynopsysco_--
+
+> is definitely fair game (there's a decent chance they'll want to be
+> involved in testing further fixes), and it's a fairly common practice
+> for other kinds of reporting to just include everyone rather than
+> explicitly learning all the random tags different maintainers use.
+>
+> > > * mailing list associated with the tree (like for test reports)
+> > > * maintainers of the parts of the code touched (using
+> > >    scripts/get_maintainer.pl and diff stat)
+>
+> If you're using get_maintainer I'd make sure to use --nogit so that you
+> don't get false positives for people doing cleanup patches.  You can
+> probably just format the patch with git format-patch and then use
+> get_maintainer normally.
+>
+
+Great tip, I'm using it with "--nogit" on the output of "git
+show" and that seems to be doing a good job.
+
+> > I also think it would be worth sending an email to the stable
+> > > mailing list, and probably also lkml to explain what we're doing
+> > > and warn people that we're turning this on.
+>
+> Seems sensible.  It's a shame that we can't turn this on for -next yet,
+> but obviously the way that's built isn't super helpful.
+>
+
+Bisections on linux-next are coming soon, we just have to get the
+basics all sorted out for mainline and stable first.
+
+> I think that regardless of how well it's working already, it could make
+> > sense to increase the list of recipients incrementally, starting with
+> those
+> > most likely to appreciate the email, and growing towards those less
+> likely.
+> > Maybe I'm being overly cautious, but from past experiences I don't think
+> we
+> > want to risk too much antagonizing people.
+>
+> > Once we have a feeling that the recipients in a stage are happy with
+> getting
+> > the emails, we can expand to other recipients in the next stage.
+>
+> > So, to illustrate the point, we could start with the author and
+> > kernel-build-reports@lists.linaro.org, then include ackers, reviewers,
+> > reporter and sobers, then mailing lists.
+>
+> Not copying enough people can also cause issues as people will expect
+> other relevant people to be copied in and be annoyed about having to do
+> it themselves or possibly even just miss handling the report if they
+> expect someone has been CCed who hasn't - for example if we only send to
+> the patch author then maintainers might be annoyed if they later find
+> out there was a problem we didn't tell them about.  People will
+> definitely get annoyed about reports being off list because then the
+> discussion of the problem doesn't get archived for other people who
+> might benefit from it in future.
+>
+> It is already common practice for people doing testing to copy fairly
+> widely so it shouldn't be that much of a surprise.
+>
+
+As we're only bisecting boot on mainline and stable, the number
+of emails is actually pretty low at the moment.  There's a valid
+result only about once a month.  That will definitely change as
+we start bisecting -next and other tests than plain boot, which I
+think should give us a natural progressive ramp-up.  We'll also
+have a chance to tune things along the way.
+
+Guillaume
+
+--000000000000473911057a3e4674
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div di=
+r=3D"ltr"><br><div class=3D"gmail_quote"><div dir=3D"ltr">On Wed, Oct 31, 2=
+018 at 10:26 AM Mark Brown &lt;<a href=3D"mailto:broonie@kernel.org">brooni=
+e@kernel.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex">On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:<b=
+r>
+&gt; On 10/30/18 6:08 PM, Guillaume Tucker wrote:<br>
+<br>
+&gt; &gt; * author of the commit<br>
+&gt; &gt; * committer<br>
+&gt; &gt; * Signed-off-by<br>
+&gt; &gt; * Acked-by<br>
+&gt; &gt; * Reported-by<br>
+<br>
+I&#39;d just include any e-mail address in the tags for the mail - tested-b=
+y<br></blockquote><div><br></div><div><div>Do you mean, to get the same as =
+what &quot;git send-email&quot; would give?</div><div>I had a look and it d=
+oesn&#39;t seem easy to extract this</div><div>information, maybe you have =
+a tip for that.=C2=A0 Otherwise, I&#39;ve</div><div>added a simple Python f=
+unction with a regex to the script I have</div><div>that triggers the bisec=
+tion email (PR coming soon with details).</div></div><div>=C2=A0</div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
+1px solid rgb(204,204,204);padding-left:1ex">
+is definitely fair game (there&#39;s a decent chance they&#39;ll want to be=
+<br>
+involved in testing further fixes), and it&#39;s a fairly common practice<b=
+r>
+for other kinds of reporting to just include everyone rather than<br>
+explicitly learning all the random tags different maintainers use.<br>
+<br>
+&gt; &gt; * mailing list associated with the tree (like for test reports)<b=
+r>
+&gt; &gt; * maintainers of the parts of the code touched (using<br>
+&gt; &gt;=C2=A0 =C2=A0 scripts/<a href=3D"http://get_maintainer.pl" rel=3D"=
+noreferrer" target=3D"_blank">get_maintainer.pl</a> and diff stat)<br>
+<br>
+If you&#39;re using get_maintainer I&#39;d make sure to use --nogit so that=
+ you<br>
+don&#39;t get false positives for people doing cleanup patches.=C2=A0 You c=
+an<br>
+probably just format the patch with git format-patch and then use<br>
+get_maintainer normally.<br></blockquote><div>=C2=A0</div><div><div>Great t=
+ip, I&#39;m using it with &quot;--nogit&quot; on the output of &quot;git</d=
+iv><div>show&quot; and that seems to be doing a good job.</div></div><div><=
+br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; &gt; I also think it would be worth sending an email to the stable<br>
+&gt; &gt; mailing list, and probably also lkml to explain what we&#39;re do=
+ing<br>
+&gt; &gt; and warn people that we&#39;re turning this on.<br>
+<br>
+Seems sensible.=C2=A0 It&#39;s a shame that we can&#39;t turn this on for -=
+next yet,<br>
+but obviously the way that&#39;s built isn&#39;t super helpful.<br></blockq=
+uote><div><br></div><div>Bisections on linux-next are coming soon, we just =
+have to get the<br></div><div>basics all sorted out for mainline and stable=
+ first.=C2=A0</div><div><br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+&gt; I think that regardless of how well it&#39;s working already, it could=
+ make<br>
+&gt; sense to increase the list of recipients incrementally, starting with =
+those<br>
+&gt; most likely to appreciate the email, and growing towards those less li=
+kely.<br>
+&gt; Maybe I&#39;m being overly cautious, but from past experiences I don&#=
+39;t think we<br>
+&gt; want to risk too much antagonizing people.<br>
+<br>
+&gt; Once we have a feeling that the recipients in a stage are happy with g=
+etting<br>
+&gt; the emails, we can expand to other recipients in the next stage.<br>
+<br>
+&gt; So, to illustrate the point, we could start with the author and<br>
+&gt; <a href=3D"mailto:kernel-build-reports@lists.linaro.org" target=3D"_bl=
+ank">kernel-build-reports@lists.linaro.org</a>, then include ackers, review=
+ers,<br>
+&gt; reporter and sobers, then mailing lists.<br>
+<br>
+Not copying enough people can also cause issues as people will expect<br>
+other relevant people to be copied in and be annoyed about having to do<br>
+it themselves or possibly even just miss handling the report if they<br>
+expect someone has been CCed who hasn&#39;t - for example if we only send t=
+o<br>
+the patch author then maintainers might be annoyed if they later find<br>
+out there was a problem we didn&#39;t tell them about.=C2=A0 People will<br=
+>
+definitely get annoyed about reports being off list because then the<br>
+discussion of the problem doesn&#39;t get archived for other people who<br>
+might benefit from it in future.<br>
+<br>
+It is already common practice for people doing testing to copy fairly<br>
+widely so it shouldn&#39;t be that much of a surprise.<br></blockquote><div=
+>=C2=A0</div><div><div>As we&#39;re only bisecting boot on mainline and sta=
+ble, the number</div><div>of emails is actually pretty low at the moment.=
+=C2=A0 There&#39;s a valid</div><div>result only about once a month.=C2=A0 =
+That will definitely change as</div><div>we start bisecting -next and other=
+ tests than plain boot, which I</div><div>think should give us a natural pr=
+ogressive ramp-up.=C2=A0 We&#39;ll also</div><div>have a chance to tune thi=
+ngs along the way.</div></div><div><br></div><div>Guillaume</div></div></di=
+v></div></div></div></div>
+
+--000000000000473911057a3e4674--
