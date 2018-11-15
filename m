@@ -1,191 +1,164 @@
 MIME-Version: 1.0
-References: <787f38db-ee04-071a-ee79-8bee6c78fe7c@collabora.com>
-In-Reply-To: <787f38db-ee04-071a-ee79-8bee6c78fe7c@collabora.com>
-From: "Milosz Wasilewski" <milosz.wasilewski@linaro.org>
-Date: Mon, 12 Nov 2018 14:47:40 +0000
-Message-ID: <CAJrz+7+YGrzKRYVA_MaTgQqZTmUZyJU=EDTdqR0uqusyC3bKpQ@mail.gmail.com>
-Subject: Re: [kernelci] Dealing with test results
-Content-Type: text/plain; charset="UTF-8"
+References: <419a4e9b-4b03-d717-688b-bbc409369a97@collabora.com>
+ <a69dc0ac-2108-ab30-ab50-2d27b5378fa6@collabora.com> <20181031102654.GC1761@sirena.org.uk>
+ <CAH1_8nBApbn08CozDTvpWZJvWGcf8RnvbdVXpyAB3sE+EnQO0g@mail.gmail.com> <66E010CF-FD91-4632-99B7-20FCA93D58A3@gmail.com>
+In-Reply-To: <66E010CF-FD91-4632-99B7-20FCA93D58A3@gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Thu, 15 Nov 2018 15:43:20 +0000
+Message-ID: <CAH1_8nAdTOEiD5UA5M69DSD30Fu41JJ645X0BJQdPDRG4jjoXw@mail.gmail.com>
+Subject: Re: [kernelci] Bisection email recipients
+Content-Type: multipart/alternative; boundary="000000000000b21920057ab5e983"
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
+Cc: tomeu.vizoso@collabora.com
 
-On Mon, 12 Nov 2018 at 13:58, Guillaume Tucker
-<guillaume.tucker@gmail.com> wrote:
->
-> A recurring topic is how to deal with test results, from the
-> point in the test code where they're generated to how the result
-> is stored in a database.  This was brought up again during last
-> week's meeting while discussing kernel warnings in boot tests, so
-> let's take another look at it and try to break it down into
-> smaller problems to solve:
->
->
-> * generating the test results
->
-> Each test suite currently has its own way of generating test
-> results, typically with some arbitrary format on stdout.  This
-> means a custom parser for each test suite, which is tedious to
-> maintain and error-prone, but a first step at getting results.
-> In some cases, such as boot testing, there isn't any real
-> alternative.
->
-> There are however several standards for encoding test results, I
-> think this is being discussed quite a lot already (LKFT people?).
+--000000000000b21920057ab5e983
+Content-Type: text/plain; charset="UTF-8"
 
-from my experience there are as many formats as test suites out there :)
-However it might be a good idea to try to output in some 'standard'
-way. TAP13 seems to be a fairly well defined format that is both human
-and machine readable. IIUC there were some efforts to enable TAP13 in
-kselftets. It would also make offline parsing a bit easier.
-
-> There's also a thread on linux-media about this, following the
-> work we've done with them to improve testing in that area of the
-> kernel:
->
->   https://www.spinics.net/lists/linux-media/msg142520.html
->
-> The bottom line is: we need a good machine-readable test output
-> format try to align test suites to be compatible with it.
->
->
-> * handling the test results
->
-> The next step is about writing the results somewhere: on the
-> console, in a file, or even directly to a remote API.  Some
-> devices may not have a functionarl network interface with access
-> to the internet, so it's hard to require the devices to push
-> results directly.  The least common denominator is that the
-> results need to eventually land in the database, so how they get
-> there isn't necessarily relevant.  It is useful though to store
-> the full log of the job to do some manual investigation later on.
->
-
-I would go with console or file as other media might not be available
-for all use cases.
-
->
-> * importing the results
->
-> This is the crucial part here in my opinion: turning the output
-> of a test suite into results that can be stored into the
-> database.  It can be done in several places, and how to do it is
-> often directly linked to the definition of the test: the format
-> of the results may depend on options passed when calling the test
-> etc...
->
-> The standard way to do this with LAVA is to call "lava-test-case"
-> and "lava-test-set" while the test is running on the device, then
-> have the resulting data sent to a remote API via the callback
-> mechanism.  This seems to be working rather well, with some
-> things that can probably be improved (sub-groups limited to 1
-> level, noise in the log with LAVA messages...).
-
-using lava-test-case locks you into LAVA and makes it hard for others
-to reproduce your results.
-
->
-> Another place where this could be done is on a test server,
-> between the device and the database API.  In the case of LAVA,
-> this may be the dispatcher which has direct access to the device.
-> I believe this is how the "regex" pattern approach works.  The
-> inconvenient here is that the test server needs to have the
-> capability to parse the results, so doing custom things may not
-> always be possible.
->
-> Then it's also possible in principle to send all the raw results
-> as-is to a remote API which will parse it itself and store it in
-> the database directly.  The difference with what we're doing with
-> the LAVA callback is that it provides the pass/fail data for each
-> test case already populated.  It seems to me that adding more
-> parsing capability in the backend is only sustainable if the
-> results are provided in a structured format, as having test-suite
-> specific parsers in the backend is bound to break when the test
-> suites change.
-
-I would go with processing the results 'offline' after all logs were
-collected. This means that result processing is done somewhere in
-kernelCI backend. The workflow would look sth like:
-1. execute the test and collect the raw logs (output files)
-2. save the raw logs/output files somewhere (kernelCI db?)
-3. process the results using the parser obtained from the test suite
-
-This approach assumes that each test suite contains some parser that
-allows to translate from log or human readable output to machine
-readable format. Again TAP13 seems a handy approach. Also this kind of
-approach was recently discussed at ELC-E (automated testing summit).
-Current default parser can be defined as 'LAVA' and use the <LAVA_...>
-markers in the log.
+On Fri, Nov 9, 2018 at 8:38 PM Mark Brown <broonie@gmail.com> wrote:
 
 >
 >
-> * determining pass / fail based on measurements
+> On 9 Nov 2018, at 16:59, Guillaume Tucker <guillaume.tucker@gmail.com>
+> wrote:
 >
-> While it's not something we've been doing much yet, we can't
-> ignore this aspect as well.  Things like power consumption, CPU
-> cycles and memory usage don't have an absolute pass/fail criteria
-> but are based on previous results.  We need to be able to access
-> at least the last results for the same test configuration to
-> determine whether a new result is pass or fail.
 >
-> To keep all the test logic self-contained, it could also be done
-> on the device as long as it has access to the required
-> data (i.e. last result and relative thresholds).  With LAVA, the
-> part doing the test generation (Python script in Jenkins) could
-> be querying the database API for this and pass it to the test
-> suite via the job definition.
+> On Wed, Oct 31, 2018 at 10:26 AM Mark Brown <broonie@kernel.org> wrote:
 >
-> Just like for importing the results, this could be done
-> elsewhere (test server, database API...) but I think it would
-> also mean fragmenting the test suite definition.
+>> On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:
+>> > On 10/30/18 6:08 PM, Guillaume Tucker wrote:
+>>
+>> > > * author of the commit
+>> > > * committer
+>> > > * Signed-off-by
+>> > > * Acked-by
+>> > > * Reported-by
+>>
+>> I'd just include any e-mail address in the tags for the mail - tested-by
+>>
+>
+> Do you mean, to get the same as what "git send-email" would give?
+> I had a look and it doesn't seem easy to extract this
+> information, maybe you have a tip for that.  Otherwise, I've
+> added a simple Python function with a regex to the script I have
+> that triggers the bisection email (PR coming soon with details).
+>
+>
+> Yes, roughly - a good first step would be something like ^.*: .*@ (ie,
+> anything with a colon/space sequence followed by an @).
+>
 
-I don't have any strong opinion here. Parsing offline (not during
-execution) seems a bit more flexible. Also bear in mind that some
-benchmarks are 'less is better' (i.e. latency) while other are 'more
-is better' (i.e. FLOPS)
+Got delayed while chasing up other issues, but here's the PR:
+
+    https://github.com/kernelci/kernelci-core-staging/pull/47
+
+[...]
+
+> If you're using get_maintainer I'd make sure to use --nogit so that you
+>> don't get false positives for people doing cleanup patches.  You can
+>> probably just format the patch with git format-patch and then use
+>> get_maintainer normally.
+>>
+>
+> Great tip, I'm using it with "--nogit" on the output of "git
+> show" and that seems to be doing a good job.
+>
+> > > I also think it would be worth sending an email to the stable
+>> > > mailing list, and probably also lkml to explain what we're doing
+>> > > and warn people that we're turning this on.
+>>
+>> Seems sensible.  It's a shame that we can't turn this on for -next yet,
+>> but obviously the way that's built isn't super helpful.
+>>
+>
+> Bisections on linux-next are coming soon, we just have to get the
+> basics all sorted out for mainline and stable first.
+>
+> There's also a PR to add a "disclaimer" paragraph in the email
+report:
+
+    https://github.com/kernelci/kernelci-backend/pull/89
+
+Guillaume
 
 >
->
-> * storing the results
->
-> Right now the kernelci-backend API has a built-in Mongo database.
-> As previously discussed, it would seem good to be able to replace
-> the database with any engine and keep the logic we have as a
-> separate service.  That way, we could still use our
-> kernelci-specific code that tracks regressions, triggers
-> bisections, sends emails etc... but also enable arbitrary
-> searches and direct access to the test data.
 
-Working on it now. As I mentioned above I'm trying to asynchronously
-run parsers on raw logs based on 'insert' events. Let's see if that
-approach works. It would also allow to keep the current logic
-(regressions, bisections, emails, etc) almost intact.
+--000000000000b21920057ab5e983
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->
->
-> I think that covers the main aspects of the problem, now we
-> probably have a few solutions to look for.  Overall, it would
-> seem like a good idea to describe a "reference" workflow based on
-> LAVA with a standard format for test results etc...  Still we
-> have to allow non-LAVA labs and other test frameworks to
-> contribute to KernelCI especially as new members are likely to be
-> joining the LF project with their own mature test infrastructure.
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_quot=
+e"><div dir=3D"ltr">On Fri, Nov 9, 2018 at 8:38 PM Mark Brown &lt;<a href=
+=3D"mailto:broonie@gmail.com">broonie@gmail.com</a>&gt; wrote:<br></div><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"auto"><div dir=
+=3D"ltr"></div><div dir=3D"ltr"><br></div><div dir=3D"ltr"><br>On 9 Nov 201=
+8, at 16:59, Guillaume Tucker &lt;<a href=3D"mailto:guillaume.tucker@gmail.=
+com" target=3D"_blank">guillaume.tucker@gmail.com</a>&gt; wrote:<br><br></d=
+iv><blockquote type=3D"cite"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"=
+ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br><div class=3D"g=
+mail_quote"><div dir=3D"ltr">On Wed, Oct 31, 2018 at 10:26 AM Mark Brown &l=
+t;<a href=3D"mailto:broonie@kernel.org" target=3D"_blank">broonie@kernel.or=
+g</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
+:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
+>On Wed, Oct 31, 2018 at 08:37:13AM +0100, Tomeu Vizoso wrote:<br>
+&gt; On 10/30/18 6:08 PM, Guillaume Tucker wrote:<br>
+<br>
+&gt; &gt; * author of the commit<br>
+&gt; &gt; * committer<br>
+&gt; &gt; * Signed-off-by<br>
+&gt; &gt; * Acked-by<br>
+&gt; &gt; * Reported-by<br>
+<br>
+I&#39;d just include any e-mail address in the tags for the mail - tested-b=
+y<br></blockquote><div><br></div><div><div>Do you mean, to get the same as =
+what &quot;git send-email&quot; would give?</div><div>I had a look and it d=
+oesn&#39;t seem easy to extract this</div><div>information, maybe you have =
+a tip for that.=C2=A0 Otherwise, I&#39;ve</div><div>added a simple Python f=
+unction with a regex to the script I have</div><div>that triggers the bisec=
+tion email (PR coming soon with details).</div></div></div></div></div></di=
+v></div></div></div></blockquote><div><br></div><div>Yes, roughly - a good =
+first step would be something like ^.*: .*@ (ie, anything with a colon/spac=
+e sequence followed by an @).</div></div></blockquote><div><br></div><div><=
+div>Got delayed while chasing up other issues, but here&#39;s the PR:</div>=
+<div><br></div><div>=C2=A0 =C2=A0 <a href=3D"https://github.com/kernelci/ke=
+rnelci-core-staging/pull/47">https://github.com/kernelci/kernelci-core-stag=
+ing/pull/47</a></div></div><div><br></div><div>[...]=C2=A0</div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex"><div dir=3D"auto"><blockquote type=
+=3D"cite"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"lt=
+r"><div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_quote"><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
 
-I think this nails down to the fact that currently kernelCI goes in
-the direction of 'scheduling test jobs runs on remote labs'. IMHO this
-isn't best approach as we're excluding any other types of executors
-(fuego, slav to name a few). I would much prefer kernelCI offers
-build, notification and data (result) sharing service leaving the
-details of execution (boot and test) to the subscribers.
+If you&#39;re using get_maintainer I&#39;d make sure to use --nogit so that=
+ you<br>
+don&#39;t get false positives for people doing cleanup patches.=C2=A0 You c=
+an<br>
+probably just format the patch with git format-patch and then use<br>
+get_maintainer normally.<br></blockquote><div>=C2=A0</div><div><div>Great t=
+ip, I&#39;m using it with &quot;--nogit&quot; on the output of &quot;git</d=
+iv><div>show&quot; and that seems to be doing a good job.</div></div><div><=
+br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; &gt; I also think it would be worth sending an email to the stable<br>
+&gt; &gt; mailing list, and probably also lkml to explain what we&#39;re do=
+ing<br>
+&gt; &gt; and warn people that we&#39;re turning this on.<br>
+<br>
+Seems sensible.=C2=A0 It&#39;s a shame that we can&#39;t turn this on for -=
+next yet,<br>
+but obviously the way that&#39;s built isn&#39;t super helpful.<br></blockq=
+uote><div><br></div><div>Bisections on linux-next are coming soon, we just =
+have to get the<br></div><div>basics all sorted out for mainline and stable=
+ first.=C2=A0</div></div></div></div></div></div></div></div></blockquote><=
+/div></blockquote><div>There&#39;s also a PR to add a &quot;disclaimer&quot=
+; paragraph in the email</div><div>report:</div><div><br></div><div>=C2=A0 =
+=C2=A0 <a href=3D"https://github.com/kernelci/kernelci-backend/pull/89">htt=
+ps://github.com/kernelci/kernelci-backend/pull/89</a></div><div><br></div><=
+div>Guillaume<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0p=
+x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
 
-milosz
+<p></p><p></p></blockquote></div></div></div></div>
 
->
-> Does anyone see anything important missing here?  We could start
-> a wiki page to explain what the reference workflow would look
-> like.
->
-> Cheers,
-> Guillaume
->
-> 
->
+--000000000000b21920057ab5e983--
