@@ -1,68 +1,42 @@
-Subject: kernelci, functional testing and Android
-From: "Tom Gall" <tom.gall@linaro.org>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org automated boot bisection reports
+Message-ID: <49681fa7-cd31-89e5-5986-ebe8691ead9a@collabora.com>
+Date: Fri, 23 Nov 2018 10:22:30 +0000
 MIME-Version: 1.0
-Date: Mon, 19 Nov 2018 14:15:03 -0800
-Message-ID: <16817.1542665703675183029@groups.io>
-Content-Type: multipart/alternative; boundary="zgPFANE0JpBhnAcWEI9M"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: stable@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: kernelci@groups.io, kernel@collabora.com, Mark Brown <broonie@kernel.org>
 
---zgPFANE0JpBhnAcWEI9M
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+tl;dr automatic bisection reports are enabled for mainline and stable
 
-One of the things that we do today within Linaro through LKFT is validate L=
-TS+AndroidCommon kernels on a set of boards utilizing Android as the host o=
-perating system as well as a subset of CTS and VTS which are two automated =
-test suites. Works pretty well and has the benefit putting the kernel throu=
-gh a good battery of tests. As with anything, it's not perfect, etc etc.=C2=
-=
-=A0
+In case you're not already familiar with it, the kernelci.org project
+is a community effort to build and test upstream kernel trees on a
+variety of hardware platforms.  Reports are mostly sent to the
+kernel-build-reports mailing list[1] and all the results can be seen
+on https://kernelci.org.
 
-There is a bit more than a passing interest to boot Android on mainline ke=
-rnels [0] =C2=A0and as that starts to happen that this could allow for some=
- amount of Linux kernel validation utilizing Android with KernelCI in the f=
-uture. I think this is a good goal to strive for and would be complementary=
- to functional testing efforts on Linux. It's what we do already within Lin=
-aro in LKFT after all through something called Project Sharp [1]. I suspect=
- there's a number of things that would need to be worked out to make that h=
-appen, but that's the point of the email, understand what's problematic, ho=
-w one might start to kick the tires and seeing if anyone else is interested=
-.=C2=A0
+When a boot test regression is detected on mainline or stable
+branches, a bisection is automatically run.  Starting from today, an
+email report will be automatically sent to a list of recipients based
+on the commit the bisection has found (author, trailers, maintainers
+and lists associated with the code changed by the commit).  Until
+now, the results were manually curated and only reported more widely
+when they seemed valid.  Some automated checks are now used, they
+have been showing good results for a while with no false positives.
 
-The kernelci.org FAQ doesn't have much about getting started, so forgive m=
-e if I didn't look in an obvious place I should have.
+There shouldn't be many bisection reports yet, typically one or two
+every month.  As we'll start bisecting other trees such as linux-next
+and other test results than just plain boots, the volume may start
+increasing gradually over the coming months.
 
-Thanks!
-Tom=C2=A0
+Please let us know if you would like the report format to be changed
+when you get one, or if you have any suggestions at all.
 
-[0] -=C2=A0https://lwn.net/Articles/771974/
-[1] -=C2=A0https://elciotna18.sched.com/event/DXnC/keeping-up-with-lts-lin=
-ux-kernel-functional-testing-lkft-on-devices-thomas-gall-linaro
+Hope this helps!
 
---zgPFANE0JpBhnAcWEI9M
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Guillaume
 
-One of the things that we do today within Linaro through LKFT is validate L=
-TS+AndroidCommon kernels on a set of boards utilizing Android as the host o=
-perating system as well as a subset of CTS and VTS which are two automated =
-test suites. Works pretty well and has the benefit putting the kernel throu=
-gh a good battery of tests. As with anything, it's not perfect, etc etc.&nb=
-sp;<br /><br />There is a bit more than a passing interest to boot Android =
-on mainline kernels [0] &nbsp;and as that starts to happen that this could =
-allow for some amount of Linux kernel validation utilizing Android with Ker=
-nelCI in the future. I think this is a good goal to strive for and would be=
- complementary to functional testing efforts on Linux. It's what we do alre=
-ady within Linaro in LKFT after all through something called Project Sharp =
-[1]. I suspect there's a number of things that would need to be worked out =
-to make that happen, but that's the point of the email, understand what's p=
-roblematic, how one might start to kick the tires and seeing if anyone else=
- is interested.&nbsp;<br /><br />The kernelci.org FAQ doesn't have much abo=
-ut getting started, so forgive me if I didn't look in an obvious place I sh=
-ould have.<br /><br />Thanks!<br />Tom&nbsp;<br /><br />[0] -&nbsp;https://=
-lwn.net/Articles/771974/<br />[1] -&nbsp;https://elciotna18.sched.com/event=
-/DXnC/keeping-up-with-lts-linux-kernel-functional-testing-lkft-on-devices-t=
-homas-gall-linaro<br />
-
---zgPFANE0JpBhnAcWEI9M--
+[1] https://lists.linaro.org/mailman/listinfo/kernel-build-reports
