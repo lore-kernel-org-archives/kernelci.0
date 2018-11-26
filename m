@@ -1,43 +1,60 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Mon, 26 Nov 2018 13:37:12 -0600
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Meeting Minutes for 2018-11-26
+Message-ID: <20181126193712.3ugwrtwmm2jk5vnc@xps.therub.org>
 MIME-Version: 1.0
-References: <20181110123954.GR32077@e119886-lin.cambridge.arm.com>
-In-Reply-To: <20181110123954.GR32077@e119886-lin.cambridge.arm.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Fri, 23 Nov 2018 11:01:24 +0000
-Message-ID: <CAH1_8nAofAH-keH5H-S84R_Y3qufMTD=US0MOZzT3aOJ_vaE=w@mail.gmail.com>
-Subject: Re: [kernelci] API token request
-Content-Type: multipart/alternative; boundary="0000000000001c0b31057b52e8d6"
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
---0000000000001c0b31057b52e8d6
-Content-Type: text/plain; charset="UTF-8"
+- Attendees: Ana, Anders, Charles, Dan Rue, Daniel, Guenter, Guillaume,
+  Mark, Matt, Milosz
+- [gtucker]
+  - Infrastructure issues:
+    - Tyler’s garage builders have been put offline because bandwidth
+      was so slow it would cause build failures timing out while
+      downloading the source tarball
+      - [matt] Leave them off
+    - Some Azure servers are down simply because of SSH port
+      configuration issues - this has a big impact on our build capacity
+      (kernelci3.westeurope.cloudapp.azure.com,
+      kernelci5.westeurope.cloudapp.azure.com)
+      - [matt] SSH ports being changed now
+    - The kernelci.org server is starting to show its limits - while we
+      surely can optimise the MongoDB transactions when saving test
+      cases, we should really upgrade.  Should we wait for the LF
+      project to fund this?
+      - [milosz] is this HA issue on frontend or scaling of backend?
+    - Both staging.kernelci.org and kernelci.org are running old Debian
+      Jessie and should really be upgraded to Debian Stretch.  The
+      Ansible config would first need to be tested on a temporary test
+      server instance (local VM?) to check it actually works from
+      scratch on Stretch.
+      - [ana] I installed backend/frontend in stretch using ansible 2
+        months ago and it worked OK
+      - Matt to check with costs/time for upgrading services to stretch
+        (and newer hardware)
+    - There are still occasional issues with Jenkins build jobs not
+      propagating errors correctly since the move to Docker containers.
+       The LTS release we’re using (2.138) is showing this but not more
+      recent version such as 2.148 which I’ve tested locally. Should we
+      stick to LTS and report this, or use a more recent version in
+      staging and production?
+      - [matt] will try the latest jenkins version
+  - Some trees failed to get their build and boot/test data imported
+    correctly into the database on Friday.  I’ve restarted the Celery
+    service and it now seems fine, not sure what the root cause was but
+    may be due to lack of RAM or the server CPUs can’t keep up with the
+    load (see point above about the server showing its limits)
+    - [milosz] I see similar issues in SQUAD - tasks on Rabbit/Celery
+      eating a lot of memory and stalling the whole service. The
+      “solution” is to restart the worker when it reaches certain amount
+      of allocated memory. Restart takes effect after the current tasks
+      were completed (not mid task kill).
+    - http://docs.celeryproject.org/en/latest/userguide/workers.html#max-memory-per-child-setting
+  - Starting to work on bisecting “snapshot” trees such as linux-next
+    this week.
 
-On Sat, Nov 10, 2018 at 12:44 PM Andrew Murray <andrew.murray@arm.com>
-wrote:
-
-> Hello,
->
-> Can I request an API token so that I can obtain boot reports to look
-> at historic kernel boot times?
->
-
-FYI I've created a read-only token for Andrew and sent it to him privately.
-
-Guillaume
-
---0000000000001c0b31057b52e8d6
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br><div class=3D"gmail_quote"><div dir=
-=3D"ltr">On Sat, Nov 10, 2018 at 12:44 PM Andrew Murray &lt;<a href=3D"mail=
-to:andrew.murray@arm.com">andrew.murray@arm.com</a>&gt; wrote:<br></div><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
-t:1px solid rgb(204,204,204);padding-left:1ex">Hello,<br>
-<br>
-Can I request an API token so that I can obtain boot reports to look<br>
-at historic kernel boot times?<br></blockquote><div>=C2=A0</div><div><div>F=
-YI I&#39;ve created a read-only token for Andrew and sent it to him private=
-ly.</div><div><br></div><div>Guillaume</div></div></div></div></div>
-
---0000000000001c0b31057b52e8d6--
