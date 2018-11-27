@@ -1,39 +1,60 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: failing ARC builds in kernelCI
+In-Reply-To: <2b7adbb0eeef90de6895889be814fd632e20a22f.camel@synopsys.com>
+References: <CAOi56cX4sV=jD0ctuQROh3r8JtcL4285i-g8k7Ew3knnD3v8Ww@mail.gmail.com> <2b7adbb0eeef90de6895889be814fd632e20a22f.camel@synopsys.com>
+Date: Tue, 27 Nov 2018 14:02:20 -0800
+Message-ID: <7h8t1ekwlv.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <156B05B433F3FE31.13312@groups.io>
-In-Reply-To: <156B05B433F3FE31.13312@groups.io>
-From: "Matt Hart" <matthew.hart@linaro.org>
-Date: Tue, 27 Nov 2018 18:50:05 +0000
-Message-ID: <CAH+k93HC1tC+2rzzR_nkWN1XjQ-fC+ubRR33nnR6i5SibCEboQ@mail.gmail.com>
-Subject: Re: [kernelci] Backend troubles - temporarily refusing to accept test results
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Alexey Brodkin <alexey.brodkin@synopsys.com>
+Cc: Vineet Gupta <vineet.gupta1@synopsys.com>, "kernelci@groups.io" <kernelci@groups.io>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>
 
-This has now been done, and the backend load average is much improved.
-If anyone continues to see an unresponsive part of the frontend
-(https://kernelci.org) please let me know.
+Alexey Brodkin <alexey.brodkin@synopsys.com> writes:
 
-On Tue, 27 Nov 2018 at 15:46, Matt Hart <matthew.hart@linaro.org> wrote:
+> Hi Kevin,
 >
-> Hi all,
+> On Tue, 2018-11-27 at 07:23 -0800, Kevin Hilman wrote:
+>> Hi Alexey,
+>> 
+>> You may have noticed that some defconfigs are failing to build
+>> upstream for ARC.  For example, on mainline, both allnoconfig and
+>> tinyconfig fail to build[1].
 >
-> The kernelci API has been struggling since last week, to the point
-> that the celery service grinds to a halt and stops processing some
-> requests. This causes the website to hang, the API to start timing
-> out, and general failures in the service.
+> Actually I haven't seen that!
+>  1. I used to check https://kernelci.org/soc/ but there's still no mention
+>     of ARC so I thought builds for ARC are not enabled still.
+
+Yeah, the /soc/ page is currently for boot results, not build results
+
+>  2. I haven't seen any email notifications as well if they exist at all.
+
+The list where all the general build/boot reports go is here[1], and
+here's an example[2] showing the warnings/errors.
+
+> That said it would be good if warning emails are sent to our mailing-list
+> linux-snps-arc@lists.infradead.org (see in Cc as well) so somebody reacts on them.
+
+Unfortunately, we don't have a way of sending arch-specific mails at the
+moment.
+
 >
-> For reasons we (Guillaume and I) have not yet been able to fully
-> understand, the importing of test results takes much longer than other
-> tasks and causes the highest load. We are now running more test jobs
-> than before and the data structures will likely need tuning in the
-> future.
+>> Do you guys have any plans to fix these, or should we disable them?
+>> We currently build these for all the other arches.,
 >
-> As the service failures are becoming more and more frequent, in an
-> attempt to keep the core service up and running, we have decided to
-> make a quick patch to production to temporarily stop processing test
-> results, until such time as the problem is better understood.
+> Sure, let me take a look right now.
+
+Thanks,
+
+Kevin
+
+>> 
+>> Kevin
+>> 
+>> [1] https://kernelci.org/build/mainline/branch/master/kernel/v4.20-rc4-7-gef78e5ec9214/
 >
-> Matt
->
-> 
->
+> -Alexey
+
+[1] https://lists.linaro.org/mailman/listinfo/kernel-build-reports
+[2] https://lists.linaro.org/pipermail/kernel-build-reports/2018-November/039387.html
