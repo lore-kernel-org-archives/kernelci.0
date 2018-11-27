@@ -1,22 +1,32 @@
+From: Alexey Brodkin <alexey.brodkin@synopsys.com>
+Subject: Re: failing ARC builds in kernelCI
+Date: Tue, 27 Nov 2018 15:38:51 +0000
+Message-ID: <2b7adbb0eeef90de6895889be814fd632e20a22f.camel@synopsys.com>
+References: <CAOi56cX4sV=jD0ctuQROh3r8JtcL4285i-g8k7Ew3knnD3v8Ww@mail.gmail.com>
+In-Reply-To: <CAOi56cX4sV=jD0ctuQROh3r8JtcL4285i-g8k7Ew3knnD3v8Ww@mail.gmail.com>
 MIME-Version: 1.0
-From: "Kevin Hilman" <khilman@baylibre.com>
-Date: Tue, 27 Nov 2018 07:23:45 -0800
-Message-ID: <CAOi56cX4sV=jD0ctuQROh3r8JtcL4285i-g8k7Ew3knnD3v8Ww@mail.gmail.com>
-Subject: failing ARC builds in kernelCI
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <10CF42CD9913BF4EA12E8052D14373F6@internal.synopsys.com>
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Alexey Brodkin <Alexey.Brodkin@synopsys.com>
-Cc: kernelci@groups.io
+To: "khilman@baylibre.com" <khilman@baylibre.com>
+Cc: Vineet Gupta <vineet.gupta1@synopsys.com>, "kernelci@groups.io" <kernelci@groups.io>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>
 
-Hi Alexey,
-
-You may have noticed that some defconfigs are failing to build
-upstream for ARC.  For example, on mainline, both allnoconfig and
-tinyconfig fail to build[1].
-
-Do you guys have any plans to fix these, or should we disable them?
-We currently build these for all the other arches.,
-
-Kevin
-
-[1] https://kernelci.org/build/mainline/branch/master/kernel/v4.20-rc4-7-gef78e5ec9214/
+SGkgS2V2aW4sDQoNCk9uIFR1ZSwgMjAxOC0xMS0yNyBhdCAwNzoyMyAtMDgwMCwgS2V2aW4gSGls
+bWFuIHdyb3RlOg0KPiBIaSBBbGV4ZXksDQo+IA0KPiBZb3UgbWF5IGhhdmUgbm90aWNlZCB0aGF0
+IHNvbWUgZGVmY29uZmlncyBhcmUgZmFpbGluZyB0byBidWlsZA0KPiB1cHN0cmVhbSBmb3IgQVJD
+LiAgRm9yIGV4YW1wbGUsIG9uIG1haW5saW5lLCBib3RoIGFsbG5vY29uZmlnIGFuZA0KPiB0aW55
+Y29uZmlnIGZhaWwgdG8gYnVpbGRbMV0uDQoNCkFjdHVhbGx5IEkgaGF2ZW4ndCBzZWVuIHRoYXQh
+DQogMS4gSSB1c2VkIHRvIGNoZWNrIGh0dHBzOi8va2VybmVsY2kub3JnL3NvYy8gYnV0IHRoZXJl
+J3Mgc3RpbGwgbm8gbWVudGlvbg0KICAgIG9mIEFSQyBzbyBJIHRob3VnaHQgYnVpbGRzIGZvciBB
+UkMgYXJlIG5vdCBlbmFibGVkIHN0aWxsLg0KIDIuIEkgaGF2ZW4ndCBzZWVuIGFueSBlbWFpbCBu
+b3RpZmljYXRpb25zIGFzIHdlbGwgaWYgdGhleSBleGlzdCBhdCBhbGwuDQoNClRoYXQgc2FpZCBp
+dCB3b3VsZCBiZSBnb29kIGlmIHdhcm5pbmcgZW1haWxzIGFyZSBzZW50IHRvIG91ciBtYWlsaW5n
+LWxpc3QNCmxpbnV4LXNucHMtYXJjQGxpc3RzLmluZnJhZGVhZC5vcmcgKHNlZSBpbiBDYyBhcyB3
+ZWxsKSBzbyBzb21lYm9keSByZWFjdHMgb24gdGhlbS4NCg0KDQo+IERvIHlvdSBndXlzIGhhdmUg
+YW55IHBsYW5zIHRvIGZpeCB0aGVzZSwgb3Igc2hvdWxkIHdlIGRpc2FibGUgdGhlbT8NCj4gV2Ug
+Y3VycmVudGx5IGJ1aWxkIHRoZXNlIGZvciBhbGwgdGhlIG90aGVyIGFyY2hlcy4sDQoNClN1cmUs
+IGxldCBtZSB0YWtlIGEgbG9vayByaWdodCBub3cuDQoNCj4gDQo+IEtldmluDQo+IA0KPiBbMV0g
+aHR0cHM6Ly9rZXJuZWxjaS5vcmcvYnVpbGQvbWFpbmxpbmUvYnJhbmNoL21hc3Rlci9rZXJuZWwv
+djQuMjAtcmM0LTctZ2VmNzhlNWVjOTIxNC8NCg0KLUFsZXhleQ0K
