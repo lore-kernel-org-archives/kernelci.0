@@ -1,44 +1,53 @@
+Date: Thu, 13 Dec 2018 11:49:03 +0000
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: [kernelci] Some suggestions and questions
+Message-ID: <20181213114903.GB10669@sirena.org.uk>
+References: <20181212213831.xnw3ugwvpw4o365o@xps.therub.org>
 MIME-Version: 1.0
-References: <CAHRSSEw4VGGKjTKG7aWv=bSuhTNGEOKpbtxO4niogBoLSb=O=Q@mail.gmail.com>
- <CAOi56cUEw6f9UXodgFkATZhwt443eVgNka2mH=R1gAyaEMYggQ@mail.gmail.com>
-In-Reply-To: <CAOi56cUEw6f9UXodgFkATZhwt443eVgNka2mH=R1gAyaEMYggQ@mail.gmail.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Wed, 12 Dec 2018 15:57:04 -0800
-Message-ID: <CAHRSSEytOOdAZaDzNJfo6LKZnpf23wB7TkZERuth2YTJBY2YoA@mail.gmail.com>
-Subject: Re: arc builds for older android kernels?
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20181212213831.xnw3ugwvpw4o365o@xps.therub.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0eh6TmSyL6TZE2Uz"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: khilman@kernel.org
-Cc: Alistair Strachan <astrachan@google.com>, kernelci@groups.io
+To: kernelci@groups.io
 
-Ah, yes, I should have looked at the upstream branches. Glad to see
-that fixes are on the way. Thanks.
-On Wed, Dec 12, 2018 at 3:36 PM Kevin Hilman <khilman@kernel.org> wrote:
->
-> Hi Todd,
->
-> On Wed, Dec 12, 2018 at 9:20 AM 'Todd Kjos' via info <info@kernelci.org> wrote:
-> >
-> > I noticed that some of the arc builds for android kernels are working now (yay), however there are still lots of broken builds for older kernels. Any ideas how to fix these?
-> >
-> > android-4.9 (zebu_hs_*):
-> > android-4.4 (axs103_*, nsim*, tinyconfig):
-> >   ../scripts/gen_initramfs_list.sh: Cannot open '../../arc_initramfs_hs/'
->
-> I think this one should be fixed int stable/linux-4.9.y now (or very soon):
-> http://lists.infradead.org/pipermail/linux-snps-arc/2018-December/004980.html
->
-> > android-4.4 (allnoconfig):
-> > arc-linux-ld: error: vmlinux.o: unable to merge ISA extension attributes code-density.arc-linux-ld: failed to merge target specific data of file /usr/bin/../arc-snps-linux-uclibc/sysroot/usr/lib/libgcc.a(_mulsi3.o)
-> > arc-linux-ld: ERROR: Attempting to link /usr/bin/../arc-snps-linux-uclibc/sysroot/usr/lib/libgcc.a(_umulsidi3.o) with a binary vmlinux.o of different architecture
->
-> Hmm, this was also fixed upstream and stable, but it appears didn't
-> auto-apply to stable 4.9 or 4.4, but is being discussed:
-> http://lists.infradead.org/pipermail/linux-snps-arc/2018-December/004897.html
->
-> Also,just curious, I'm assuming you are comparing the android-4.x
-> builds to the stable-rc/linux-4.x equivalents?  That would probably
-> also tell you whether the android tree is missing a patch from stable
-> or not.
->
-> Kevin
+--0eh6TmSyL6TZE2Uz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Dec 12, 2018 at 03:38:31PM -0600, Dan Rue wrote:
+
+> Can we make the meeting minutes doc public?
+
+There's no meaningful anti-spam facilties if people get edit access to
+the document so we'd need to lock it down to only specific people being
+able to edit which in turn would mean that everyone would need to
+explicitly add themselves as editors of the document, or be added.
+That's doable (probably everyone has a Google account, though we do get
+a bunch of people editing as anonymous users usually so perhaps not).
+
+Given that the meeting minutes are just a dump of the conents of the
+document it might not be worth the effort.
+
+> Lastly, groups.io supports hashtags. If we added something like #minutes
+> to the 'meeting minutes' email subjects, they'd show up under
+> https://groups.io/g/kernelci/hashtags.
+
+E-mail doesn't support hashtags though :(
+
+--0eh6TmSyL6TZE2Uz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwSRy4ACgkQJNaLcl1U
+h9CpBAf/UleNXGN0AeEgWHlcGnHydOLYibEYbonWDY+2IBB1Ihy2kWy+Oil7DwKB
+m7Uudz7FuEttZGfnhQlWj9U/TVckthkkIUkECfmyHcBdQHFQKghEB8Pc3731u/ff
+Xw/1KV1VpxKepvjfBHwml6h5iDlyjH7GQ8zdDAYEsg+4LqtpA1oooq77oTSBZ+YS
+uwXQJOrG2eEdP1mEHaF9gi+54ZK80UUXlO2Tw+d5lDA3f35ogRl4kmFKZ+LvSlCc
+f7Ppl8gBHhmeHK+6vDzAQ29/KumwWdXHvMcXTHzrGcb5TNHs7gf2wZSbiZ4iXe7K
+7Kc9hqWMZoocg89IMRElWIHQwgZr1w==
+=SCx5
+-----END PGP SIGNATURE-----
+
+--0eh6TmSyL6TZE2Uz--
