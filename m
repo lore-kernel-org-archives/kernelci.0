@@ -1,56 +1,54 @@
+Date: Fri, 14 Dec 2018 18:19:10 +0000
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: [kernelci] Multiple compiler support in the backend
+Message-ID: <20181214181910.GF6467@sirena.org.uk>
+References: <CAH+k93Fy4sFGYMPVBuOcXwh4_ANt2qdCLMSCRzEjeEihJ1_Ekw@mail.gmail.com>
+ <CAH1_8nAj1h9ooiAOdmSWdP9TAGA_QnYx_-2UM2YrXV+4ACqh5w@mail.gmail.com>
 MIME-Version: 1.0
-References: <CADYN=9KyT05X_SUPNacmNEkgPi=6Ya9oQB9XRRHOMpAp=tkbgg@mail.gmail.com>
- <7hin27fhkk.fsf@baylibre.com> <20181012163939.GD2340@sirena.org.uk>
- <7h5zy3fjo1.fsf@baylibre.com> <20181015132921.GB12949@sirena.org.uk>
-In-Reply-To: <20181015132921.GB12949@sirena.org.uk>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Mon, 15 Oct 2018 15:40:20 +0200
-Message-ID: <CAP71WjywZ=iqwZCTEYB7XjhO=r+hXhVzzjiS+XjztgGrK9HOOg@mail.gmail.com>
-Subject: Re: [kernelci] add a new config fragment to kernel/configs
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAH1_8nAj1h9ooiAOdmSWdP9TAGA_QnYx_-2UM2YrXV+4ACqh5w@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Bqc0IY4JZZt50bUr"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
-Cc: Kevin Hilman <khilman@baylibre.com>, Anders Roxell <anders.roxell@linaro.org>
+To: kernelci@groups.io, guillaume.tucker@gmail.com
+Cc: Matt Hart <matthew.hart@linaro.org>
 
-On Mon, Oct 15, 2018 at 3:29 PM Mark Brown <broonie@kernel.org> wrote:
->
-> On Mon, Oct 15, 2018 at 03:01:34PM +0200, Kevin Hilman wrote:
-> > Mark Brown <broonie@kernel.org> writes:
->
-> > > Per testsuite configs have the disadvantage that you've got to work with
-> > > every single testsuite to add them (or maintain them separately) and
-> > > deal with any churn in kernel config requirements as you move between
-> > > kernels with new options or whatever somehow.  Some of the testsuites
-> > > will doubtless still end up needing them but hopefully most won't.
->
-> > I don't have any proof of this, but I suspect there will testsuites that
-> > are testing things that are not formally ABI, and we'll end up with
-> > per-testsuite defconfigs anyways, which may need to duplicate stuff in
-> > all_abi.config (or specify they need to be combined with all_abi.config)
->
-> Oh, there definitely are.
->
-> > Personally, I think we should first try the "allmodconfig +
-> > min_boot.config" approach.
->
-> > If that works, would we still need all_abi.config?
+--Bqc0IY4JZZt50bUr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-how about making a new tree (in kernelci.org?) that contains "test"
-config fragments and maintain them outside of linux master?
-kernelci.org could decide which fragment to use for which 'build'. If
-some fragments are good enough for mainline, then we might end up
-trying to upstream them at some point. That would at least ensure that
-everything is properly archived and reproducible. We can mimic what
-AOSP is doing for their custom config fragments
-(https://android.googlesource.com/kernel/configs/+/master).
+On Fri, Dec 14, 2018 at 03:01:04PM +0000, Guillaume Tucker wrote:
 
->
-> Possibly not, the concerns I guess would be size of the image (though we
-> could probably arrange to not actually ship all the modules to all the
-> boards if it was getting in the way) and if all the random debug options
-> that allmodconfig turns on might be too disruptive (I'm not sure if we'd
-> be able to turn them off with just a straight min_boot fragment, though
-> you could extend merge_config).
->
-> 
->
+> Potentially, we could have different flavours of the same
+> compiler version from different build environments.  Say, maybe
+> Linaro's GCC 8 will be different from Debian's etc...  Will the
+> build environment be shown in the email reports, or will there
+> still just be the compiler version as we do now?
+
+At least for GCC based toolchains the convention is for vendors to
+modify the version number of the compiler to indicate that they've added
+stuff - for example, on my desktop right now GCC reports that it is "gcc
+(Debian 8.2.0-6) 8.2.0", the Linaro toolchains do the same as do other
+binary toolchains I've looked at in the past.  That's probably enough I
+think?
+
+Sadly the clang-7 packages for Debian don't seem to have anything like
+that but my locally built copies of clang-8 have the git hash and repo
+URL for everything in the build.
+
+--Bqc0IY4JZZt50bUr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlwT9B0ACgkQJNaLcl1U
+h9Bjwgf+MNZV6hh7cRRkU5SEPK+5yLi32qmW4VTLCPySkq7rIH01CMXJ89V8sdWV
+eGFkBAVz0K3QV7SCTJvfz8FetN19JeLkTMhzQRj68GxF4Fvbc8fKE28tutJrnUG8
+lPEL3pLnEtVfyrVbNGMqonMOk1p74c8HeRcV1+gHzfn4J6ToEiTwGH2zsrmAI+iv
+dTJG/EEHyWCLCq5cXd8wlZ19g6ABVk5UjaZGlEOux/F+zkB0PGpkfOS52lUD9mMs
+Mcw99ubwneR1uzDtak+H9i5xX7+eOxKhmNTx44kO3wkTouyIrCBrsdpim9nMNKe6
+aTtDnCgS2QzFb8kVU0QU/2JeLUdRVg==
+=chCZ
+-----END PGP SIGNATURE-----
+
+--Bqc0IY4JZZt50bUr--
