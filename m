@@ -1,124 +1,117 @@
-In-Reply-To: <7h5zvxorrd.fsf@baylibre.com>
-From: "Ezequiel Garcia" <ezequiel.garcia@collabora.com>
-Date: Fri, 14 Dec 2018 04:43:09 +0000
 MIME-Version: 1.0
-Message-ID: <997-5c133500-1-763d5380@188620748>
-Subject: Re: MIPS test results
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+References: <156B05B433F3FE31.13312@groups.io> <156B0FC1529DA050.14370@groups.io>
+ <CAH+k93GfA+iH65v=1Pae50UyTk8bjgG_5VHWqNF=ALCd+TC5ZA@mail.gmail.com>
+In-Reply-To: <CAH+k93GfA+iH65v=1Pae50UyTk8bjgG_5VHWqNF=ALCd+TC5ZA@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Fri, 14 Dec 2018 14:50:45 +0000
+Message-ID: <CAH1_8nCbPswTR84pGYQeXc7V2geKRcpaOret5=bfNUdierho1w@mail.gmail.com>
+Subject: Re: [kernelci] Backend troubles - temporarily refusing to accept test results
+Content-Type: multipart/alternative; boundary="00000000000006e844057cfc8fdd"
 List-ID: <kernelci.groups.io>
-To: Kevin Hilman <khilman@baylibre.com>
-Cc: Paul Burton <paul.burton@mips.com>, =?utf-8?q?kernelci=40groups=2Eio?= <kernelci@groups.io>
+To: kernelci@groups.io
 
-On Thursday, December 13, 2018 21:51 -03, Kevin Hilman <khilman@baylibr=
-e.com> wrote: 
- 
-> Paul Burton <paul.burton@mips.com> writes:
-> 
-> [...]
-> 
-> > For the Ci20 there are 2 main options:
+--00000000000006e844057cfc8fdd
+Content-Type: text/plain; charset="UTF-8"
+
+On Wed, Nov 28, 2018 at 12:53 PM Matt Hart <matthew.hart@linaro.org> wrote:
+
+> We've also had to disable the test views on the website, for the same
+> reason, so all views of https://kernelci.org/test will get a 404.
+>
+
+This was all re-enabled last week after addressing some
+performance problems in kernelci-backend.
+
+Guillaume
+
+
+> On Tue, 27 Nov 2018 at 18:50, Matt Hart <matthew.hart@linaro.org> wrote:
 > >
-> >   1) Use a U-Boot uImage.
+> > This has now been done, and the backend load average is much improved.
+> > If anyone continues to see an unresponsive part of the frontend
+> > (https://kernelci.org) please let me know.
 > >
-> >      The Ci20 ships with the U-Boot bootloader by default, and expe=
-cts
-> >      to load kernels packages in the legacy U-Boot uImage format. W=
-hen
-> >      you build the kernel, if you have the U-Boot mkimage tool in y=
-our
-> >      $PATH, you should get a arch/mips/boot/uImage.gz file. You the=
-n
-> >      load this into DDR using U-Boot, for example using the tftp
-> >      command, and run the bootm command to boot the kernel.
-> >
-> >      Of note is that Ezequiel Garcia, CC'd, is currently working on=
+> > On Tue, 27 Nov 2018 at 15:46, Matt Hart <matthew.hart@linaro.org> wrote:
+> > >
+> > > Hi all,
+> > >
+> > > The kernelci API has been struggling since last week, to the point
+> > > that the celery service grinds to a halt and stops processing some
+> > > requests. This causes the website to hang, the API to start timing
+> > > out, and general failures in the service.
+> > >
+> > > For reasons we (Guillaume and I) have not yet been able to fully
+> > > understand, the importing of test results takes much longer than other
+> > > tasks and causes the highest load. We are now running more test jobs
+> > > than before and the data structures will likely need tuning in the
+> > > future.
+> > >
+> > > As the service failures are becoming more and more frequent, in an
+> > > attempt to keep the core service up and running, we have decided to
+> > > make a quick patch to production to temporarily stop processing test
+> > > results, until such time as the problem is better understood.
+> > >
+> > > Matt
+>
 
-> >      upstreaming Ci20 support in U-Boot.
-> 
-> u-boot is the preferred option, and I just tried it on my Ci20, but i=
-t
-> seems the u-boot on this board doesn't find the network, so I can't
-> DHCP/TFTP (log below[1]).
-> 
-> If I just let the kernel boot that is flashed on the board, it boots =
-up
-> an OpenWRT image and is able to DHCP and get an IP address, so I know=
+--00000000000006e844057cfc8fdd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> the network interface is working.
-> 
-> Maybe Ezequiel has a newer version of u-boot with working network
-> support I could try?  If so, please also send instructions for how to=
+<div dir=3D"ltr"><div dir=3D"ltr"><br><div class=3D"gmail_quote"><div dir=
+=3D"ltr">On Wed, Nov 28, 2018 at 12:53 PM Matt Hart &lt;<a href=3D"mailto:m=
+atthew.hart@linaro.org">matthew.hart@linaro.org</a>&gt; wrote:<br></div><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex">We&#39;ve also had to disabl=
+e the test views on the website, for the same<br>
+reason, so all views of <a href=3D"https://kernelci.org/test" rel=3D"norefe=
+rrer" target=3D"_blank">https://kernelci.org/test</a> will get a 404.<br></=
+blockquote><div>=C2=A0</div><div>This was all re-enabled last week after ad=
+dressing some</div><div>performance problems in kernelci-backend.</div><div=
+><br></div><div>Guillaume=C2=A0</div><div>=C2=A0</div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
+4,204,204);padding-left:1ex">
+On Tue, 27 Nov 2018 at 18:50, Matt Hart &lt;<a href=3D"mailto:matthew.hart@=
+linaro.org" target=3D"_blank">matthew.hart@linaro.org</a>&gt; wrote:<br>
+&gt;<br>
+&gt; This has now been done, and the backend load average is much improved.=
+<br>
+&gt; If anyone continues to see an unresponsive part of the frontend<br>
+&gt; (<a href=3D"https://kernelci.org" rel=3D"noreferrer" target=3D"_blank"=
+>https://kernelci.org</a>) please let me know.<br>
+&gt;<br>
+&gt; On Tue, 27 Nov 2018 at 15:46, Matt Hart &lt;<a href=3D"mailto:matthew.=
+hart@linaro.org" target=3D"_blank">matthew.hart@linaro.org</a>&gt; wrote:<b=
+r>
+&gt; &gt;<br>
+&gt; &gt; Hi all,<br>
+&gt; &gt;<br>
+&gt; &gt; The kernelci API has been struggling since last week, to the poin=
+t<br>
+&gt; &gt; that the celery service grinds to a halt and stops processing som=
+e<br>
+&gt; &gt; requests. This causes the website to hang, the API to start timin=
+g<br>
+&gt; &gt; out, and general failures in the service.<br>
+&gt; &gt;<br>
+&gt; &gt; For reasons we (Guillaume and I) have not yet been able to fully<=
+br>
+&gt; &gt; understand, the importing of test results takes much longer than =
+other<br>
+&gt; &gt; tasks and causes the highest load. We are now running more test j=
+obs<br>
+&gt; &gt; than before and the data structures will likely need tuning in th=
+e<br>
+&gt; &gt; future.<br>
+&gt; &gt;<br>
+&gt; &gt; As the service failures are becoming more and more frequent, in a=
+n<br>
+&gt; &gt; attempt to keep the core service up and running, we have decided =
+to<br>
+&gt; &gt; make a quick patch to production to temporarily stop processing t=
+est<br>
+&gt; &gt; results, until such time as the problem is better understood.<br>
+&gt; &gt;<br>
+&gt; &gt; Matt<br></blockquote></div></div></div>
 
-> (re)flash u-boot, (or maybe boot a new u-boot from the SD card?)
-> 
-
-Hey Kevin,
-
-Yes, I have. I will push a branch for you and let you know,
-so you can test with some recent U-Boot.
-
-However... this log you have here is not from the CI20 board,
-which is JZ4780 SoC, but from some development board
-with a Pistachio SoC!
-
-I thought those were dead, but it seems there are
-some Pistachio boards around ?
-
-
-Ezequiel
-
-> Kevin
-> 
-> [1]
-> U-Boot SPL 2015.07-rc2 (Jul 14 2016 - 12:16:30)
-> 
-> 
-> U-Boot 2015.07-rc2 (Jul 14 2016 - 12:16:30 +0000)
-> 
-> MIPS(interAptiv): IMG Pistachio 546MHz.
-> Model: IMG Marduk
-> DRAM:  256 MiB
-> NAND:  512 MiB
-> MMC:   Synopsys Mobile storage: 0
-> SF: Detected W25Q16CL with page size 256 Bytes, erase size 4 KiB, tot=
-al 2 MiB
-> *** Warning - bad CRC, using default environment
-> 
-> In:    uart@18101500
-> Out:   uart@18101500
-> Err:   uart@18101500
-> Net:   No valid Mac-addr found from dtb
-> 
-> Error: ethernet@18140000 address not set.
-> No ethernet found.
-> Hit any key to stop autoboot:  0 
-> pistachio # dhcp
-> mdio=5Fregister: non unique device name 'ethernet@18140000'
-> ethernet@18140000:0 is connected to ethernet@18140000.  Reconnecting =
-to ethernet@18140000
-> 
-> Error: ethernet@18140000 address not set.
-> mdio=5Fregister: non unique device name 'ethernet@18140000'
-> ethernet@18140000:0 is connected to ethernet@18140000.  Reconnecting =
-to ethernet@18140000
-> 
-> Error: ethernet@18140000 address not set.
-> mdio=5Fregister: non unique device name 'ethernet@18140000'
-> ethernet@18140000:0 is connected to ethernet@18140000.  Reconnecting =
-to ethernet@18140000
-> 
-> Error: ethernet@18140000 address not set.
-> mdio=5Fregister: non unique device name 'ethernet@18140000'
-> ethernet@18140000:0 is connected to ethernet@18140000.  Reconnecting =
-to ethernet@18140000
-> 
-> Error: ethernet@18140000 address not set.
-> No ethernet found.
-> mdio=5Fregister: non unique device name 'ethernet@18140000'
-> ethernet@18140000:0 is connected to ethernet@18140000.  Reconnecting =
-to ethernet@18140000
-> 
-> Error: ethernet@18140000 address not set.
-> pistachio #
-
+--00000000000006e844057cfc8fdd--
