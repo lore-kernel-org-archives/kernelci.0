@@ -1,117 +1,161 @@
 MIME-Version: 1.0
-References: <156B05B433F3FE31.13312@groups.io> <156B0FC1529DA050.14370@groups.io>
- <CAH+k93GfA+iH65v=1Pae50UyTk8bjgG_5VHWqNF=ALCd+TC5ZA@mail.gmail.com>
-In-Reply-To: <CAH+k93GfA+iH65v=1Pae50UyTk8bjgG_5VHWqNF=ALCd+TC5ZA@mail.gmail.com>
+References: <CAH+k93Fy4sFGYMPVBuOcXwh4_ANt2qdCLMSCRzEjeEihJ1_Ekw@mail.gmail.com>
+In-Reply-To: <CAH+k93Fy4sFGYMPVBuOcXwh4_ANt2qdCLMSCRzEjeEihJ1_Ekw@mail.gmail.com>
 From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Fri, 14 Dec 2018 14:50:45 +0000
-Message-ID: <CAH1_8nCbPswTR84pGYQeXc7V2geKRcpaOret5=bfNUdierho1w@mail.gmail.com>
-Subject: Re: [kernelci] Backend troubles - temporarily refusing to accept test results
-Content-Type: multipart/alternative; boundary="00000000000006e844057cfc8fdd"
+Date: Fri, 14 Dec 2018 15:01:04 +0000
+Message-ID: <CAH1_8nAj1h9ooiAOdmSWdP9TAGA_QnYx_-2UM2YrXV+4ACqh5w@mail.gmail.com>
+Subject: Re: [kernelci] Multiple compiler support in the backend
+Content-Type: multipart/alternative; boundary="000000000000e45811057cfcb3cd"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Matt Hart <matthew.hart@linaro.org>
+Cc: kernelci@groups.io
 
---00000000000006e844057cfc8fdd
+--000000000000e45811057cfcb3cd
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Nov 28, 2018 at 12:53 PM Matt Hart <matthew.hart@linaro.org> wrote:
+On Fri, Nov 16, 2018 at 12:52 PM Matt Hart <matthew.hart@linaro.org> wrote:
 
-> We've also had to disable the test views on the website, for the same
-> reason, so all views of https://kernelci.org/test will get a 404.
+> Hi all,
+>
+> Just wanted to clear up what my kernelci-backend PR [1] is for.
+>
+> It introduces a build-environment variable to the build document,
+> which will allow the backend to distinguish between builds of the same
+> defconfig, but in a different environment. This variable is required
+> and requests without it will be dropped, to stop builds from
+> overwriting each other on the storage filesystem.
+>
+> For kernelci.org usage, the environment difference will the compiler,
+> allowing our builders to push builds from our different docker images,
+> but as it's just a string, I'm hoping that the name build-environment
+> will work for other use cases.
+> There is already a compiler field which is populated by the backend
+> from the build.json and some simple parsing.
+>
+> There is a matching PR [2] to kernelci-core-staging to add a
+> build-environment string to our builds (example:
+> docker-kernelci/build-gcc-7_arm64) but it has been suggested this
+> could be shortened to 'gcc-7' which I'm happy to change.
 >
 
-This was all re-enabled last week after addressing some
-performance problems in kernelci-backend.
+It sounds like the 2 PRs work hand-in-hand, so they'll need to be
+tested and merged together.
+
+Potentially, we could have different flavours of the same
+compiler version from different build environments.  Say, maybe
+Linaro's GCC 8 will be different from Debian's etc...  Will the
+build environment be shown in the email reports, or will there
+still just be the compiler version as we do now?
+
+
+> For the frontend, this change "just works", because build.py is now
+> populating the file_server_resource field, all the URLs on the build
+> information pages will be correct.
+>
+
+Great, let's take this opportunity to try and avoid having to
+repeat the magic URL format everywhere.
+
+Same question as with the email reports though, will the build
+environment information be visible anywhere or will we solely
+rely on the compiler version?
+
+I would really like to get this deployed to staging for testing and
+> then rolled out ASAP as it's a requirement for starting builds with
+> compilers other than GCC, and multiple versions of GCC.
+>
+
+Sounds like something to look at next week now that all fixes
+seem to be available in PRs.
+
+I guess one extra change would be to iterate over several build
+environments for each architecture, but that would probably rely
+on proper build configurations (i.e. using a build-configs.yaml
+like we do with test-configs.yaml).
 
 Guillaume
 
-
-> On Tue, 27 Nov 2018 at 18:50, Matt Hart <matthew.hart@linaro.org> wrote:
-> >
-> > This has now been done, and the backend load average is much improved.
-> > If anyone continues to see an unresponsive part of the frontend
-> > (https://kernelci.org) please let me know.
-> >
-> > On Tue, 27 Nov 2018 at 15:46, Matt Hart <matthew.hart@linaro.org> wrote:
-> > >
-> > > Hi all,
-> > >
-> > > The kernelci API has been struggling since last week, to the point
-> > > that the celery service grinds to a halt and stops processing some
-> > > requests. This causes the website to hang, the API to start timing
-> > > out, and general failures in the service.
-> > >
-> > > For reasons we (Guillaume and I) have not yet been able to fully
-> > > understand, the importing of test results takes much longer than other
-> > > tasks and causes the highest load. We are now running more test jobs
-> > > than before and the data structures will likely need tuning in the
-> > > future.
-> > >
-> > > As the service failures are becoming more and more frequent, in an
-> > > attempt to keep the core service up and running, we have decided to
-> > > make a quick patch to production to temporarily stop processing test
-> > > results, until such time as the problem is better understood.
-> > >
-> > > Matt
+[1] https://github.com/kernelci/kernelci-backend/pull/86
+> [2] https://github.com/kernelci/kernelci-core-staging/pull/43
+>
+> 
+>
 >
 
---00000000000006e844057cfc8fdd
+--000000000000e45811057cfcb3cd
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br><div class=3D"gmail_quote"><div dir=
-=3D"ltr">On Wed, Nov 28, 2018 at 12:53 PM Matt Hart &lt;<a href=3D"mailto:m=
-atthew.hart@linaro.org">matthew.hart@linaro.org</a>&gt; wrote:<br></div><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
-t:1px solid rgb(204,204,204);padding-left:1ex">We&#39;ve also had to disabl=
-e the test views on the website, for the same<br>
-reason, so all views of <a href=3D"https://kernelci.org/test" rel=3D"norefe=
-rrer" target=3D"_blank">https://kernelci.org/test</a> will get a 404.<br></=
-blockquote><div>=C2=A0</div><div>This was all re-enabled last week after ad=
-dressing some</div><div>performance problems in kernelci-backend.</div><div=
-><br></div><div>Guillaume=C2=A0</div><div>=C2=A0</div><blockquote class=3D"=
-gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
-4,204,204);padding-left:1ex">
-On Tue, 27 Nov 2018 at 18:50, Matt Hart &lt;<a href=3D"mailto:matthew.hart@=
-linaro.org" target=3D"_blank">matthew.hart@linaro.org</a>&gt; wrote:<br>
-&gt;<br>
-&gt; This has now been done, and the backend load average is much improved.=
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div cl=
+ass=3D"gmail_quote"><div dir=3D"ltr">On Fri, Nov 16, 2018 at 12:52 PM Matt =
+Hart &lt;<a href=3D"mailto:matthew.hart@linaro.org">matthew.hart@linaro.org=
+</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
+Hi all,<br>
 <br>
-&gt; If anyone continues to see an unresponsive part of the frontend<br>
-&gt; (<a href=3D"https://kernelci.org" rel=3D"noreferrer" target=3D"_blank"=
->https://kernelci.org</a>) please let me know.<br>
-&gt;<br>
-&gt; On Tue, 27 Nov 2018 at 15:46, Matt Hart &lt;<a href=3D"mailto:matthew.=
-hart@linaro.org" target=3D"_blank">matthew.hart@linaro.org</a>&gt; wrote:<b=
-r>
-&gt; &gt;<br>
-&gt; &gt; Hi all,<br>
-&gt; &gt;<br>
-&gt; &gt; The kernelci API has been struggling since last week, to the poin=
-t<br>
-&gt; &gt; that the celery service grinds to a halt and stops processing som=
-e<br>
-&gt; &gt; requests. This causes the website to hang, the API to start timin=
-g<br>
-&gt; &gt; out, and general failures in the service.<br>
-&gt; &gt;<br>
-&gt; &gt; For reasons we (Guillaume and I) have not yet been able to fully<=
-br>
-&gt; &gt; understand, the importing of test results takes much longer than =
-other<br>
-&gt; &gt; tasks and causes the highest load. We are now running more test j=
-obs<br>
-&gt; &gt; than before and the data structures will likely need tuning in th=
-e<br>
-&gt; &gt; future.<br>
-&gt; &gt;<br>
-&gt; &gt; As the service failures are becoming more and more frequent, in a=
-n<br>
-&gt; &gt; attempt to keep the core service up and running, we have decided =
-to<br>
-&gt; &gt; make a quick patch to production to temporarily stop processing t=
-est<br>
-&gt; &gt; results, until such time as the problem is better understood.<br>
-&gt; &gt;<br>
-&gt; &gt; Matt<br></blockquote></div></div></div>
+Just wanted to clear up what my kernelci-backend PR [1] is for.<br>
+<br>
+It introduces a build-environment variable to the build document,<br>
+which will allow the backend to distinguish between builds of the same<br>
+defconfig, but in a different environment. This variable is required<br>
+and requests without it will be dropped, to stop builds from<br>
+overwriting each other on the storage filesystem.<br>
+<br>
+For <a href=3D"http://kernelci.org" rel=3D"noreferrer" target=3D"_blank">k=
+ernelci.org</a> usage, the environment difference will the compiler,<br>
+allowing our builders to push builds from our different docker images,<br>
+but as it&#39;s just a string, I&#39;m hoping that the name build-environm=
+ent<br>
+will work for other use cases.<br>
+There is already a compiler field which is populated by the backend<br>
+from the build.json and some simple parsing.<br>
+<br>
+There is a matching PR [2] to kernelci-core-staging to add a<br>
+build-environment string to our builds (example:<br>
+docker-kernelci/build-gcc-7_arm64) but it has been suggested this<br>
+could be shortened to &#39;gcc-7&#39; which I&#39;m happy to change.<br></=
+blockquote><div><br></div><div><div>It sounds like the 2 PRs work hand-in-h=
+and, so they&#39;ll need to be</div><div>tested and merged together.</div><=
+div><br></div><div>Potentially, we could have different flavours of the sam=
+e</div><div>compiler version from different build environments.=C2=A0 Say, =
+maybe</div><div>Linaro&#39;s GCC 8 will be different from Debian&#39;s etc.=
+..=C2=A0 Will the</div><div>build environment be shown in the email reports=
+, or will there</div><div>still just be the compiler version as we do now?<=
+/div></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">
+For the frontend, this change &quot;just works&quot;, because build.py is =
+now<br>
+populating the file_server_resource field, all the URLs on the build<br>
+information pages will be correct.<br></blockquote><div>=C2=A0</div><div><=
+div>Great, let&#39;s take this opportunity to try and avoid having to</div>=
+<div>repeat the magic URL format everywhere.</div><div><br></div><div>Same =
+question as with the email reports though, will the build</div><div>environ=
+ment information be visible anywhere or will we solely</div><div>rely on th=
+e compiler version?</div></div><div><br></div><blockquote class=3D"gmail_qu=
+ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
+4);padding-left:1ex">
+I would really like to get this deployed to staging for testing and<br>
+then rolled out ASAP as it&#39;s a requirement for starting builds with<br=
+>
+compilers other than GCC, and multiple versions of GCC.<br></blockquote><d=
+iv>=C2=A0</div><div><div>Sounds like something to look at next week now tha=
+t all fixes</div><div>seem to be available in PRs.</div><div><br></div><div=
+>I guess one extra change would be to iterate over several build</div><div>=
+environments for each architecture, but that would probably rely</div><div>=
+on proper build configurations (i.e. using a build-configs.yaml</div><div>l=
+ike we do with test-configs.yaml).</div></div><div><br></div><div>Guillaume=
+</div><div><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+[1] <a href=3D"https://github.com/kernelci/kernelci-backend/pull/86" rel=
+=3D"noreferrer" target=3D"_blank">https://github.com/kernelci/kernelci-bac=
+kend/pull/86</a><br>
+[2] <a href=3D"https://github.com/kernelci/kernelci-core-staging/pull/43" =
+rel=3D"noreferrer" target=3D"_blank">https://github.com/kernelci/kernelci-c=
+ore-staging/pull/43</a><br>
+<br>
+<br>
+<br>
+</blockquote></div></div></div></div></div>
 
---00000000000006e844057cfc8fdd--
+--000000000000e45811057cfcb3cd--
