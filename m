@@ -1,50 +1,35 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Mon, 17 Dec 2018 09:49:26 -0600
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Weekly Meeting 2018-12-17 #minutes
-Message-ID: <20181217154926.6qyfw2a6y5oidkny@xps.therub.org>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: Weekly Meeting 2018-12-17 #minutes
+In-Reply-To: <20181217154926.6qyfw2a6y5oidkny@xps.therub.org>
+References: <20181217154926.6qyfw2a6y5oidkny@xps.therub.org>
+Date: Mon, 17 Dec 2018 12:27:18 -0800
+Message-ID: <7hpntzlx09.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, dan.rue@linaro.org, kernelci@groups.io
 
-- Attendees: Charles Oliveira, Daniel Díaz, Guenter Roeck, Guillaume
-  Tucker, Milosz Wasilewski, Dan Rue, Mark Brown
+"Dan Rue" <dan.rue@linaro.org> writes:
 
-- [drue] I received this when replying to -stable RCs on Saturday: “Your
-  message wasn't delivered to patches@kernelci.org because the address
-  couldn't be found, or is unable to receive mail.”
-  - Tyler deleted it as it’s not used for anything and he’s still paying
-    out of pocket for hosting the domain
-    - Greg will need to remove this from the list of recipients for
-      stable-rc
+> - Attendees: Charles Oliveira, Daniel D=C3=ADaz, Guenter Roeck, Guillaume
+>   Tucker, Milosz Wasilewski, Dan Rue, Mark Brown
+>
+> - [drue] I received this when replying to -stable RCs on Saturday: =E2=80=
+=9CYour
+>   message wasn't delivered to patches@kernelci.org because the address
+>   couldn't be found, or is unable to receive mail.=E2=80=9D
+>   - Tyler deleted it as it=E2=80=99s not used for anything and he=E2=80=
+=99s still paying
+>     out of pocket for hosting the domain
+>     - Greg will need to remove this from the list of recipients for
+>       stable-rc
 
-- [chaws] any comments on this PR?
-  https://github.com/kernelci/kernelci-core-staging/pull/68
-  - [drue] I spoke to Kevin about this.. You can get all the historical
-    callbacks from kernelci
-    - [Milosz] we have that for the prototype - This will give us a more
-      live view
-  - [guillaume] Have you looked at supporting elasticsearch as a backend
-    instead of or in addition to mongodb?
-    - [milosz] we haven’t considered that yet
-    - [guillaume] It would be good to compare our current system with
-      the ES-powered one you’re trying out now, for each feature that we
-      have: creating data on one hand (importing logs, importing test
-      results, tracking regressions, sending email reports, triggering
-      bisections) and searching the results on the other hand.  Also
-      making the very kernelci-specific code we have independent of the
-      backend would make it more sustainable (i.e. a portable Python
-      package).
+Hmm, this might break the backend code which is replying to the
+stable-rc mails.
 
-- [mark] let’s cancel christmas eve and new year’s eve meetings.
+We may have deleted that alias too soon (my fault, I told Tyler I didn't
+hink it was being used.)
 
-- [gtucker] I’m starting to look into build configurations this week,
-  the idea being to have a build-configs.yaml in the same way that we
-  have test-configs.yaml.  The file would contain all the kernel trees,
-  with associated configurations to build using filters, reference trees
-  and branches to use in bisections and the list of recipients for the
-  various email reports.
-
+Kevin
