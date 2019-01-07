@@ -1,39 +1,47 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: HTML test email reports
-Message-ID: <e093b4cd-c5e9-88c1-1974-3fbc927e64e4@collabora.com>
-Date: Mon, 7 Jan 2019 17:23:09 +0000
+Return-Path: <dan.rue@linaro.org>
+Date: Mon, 7 Jan 2019 11:41:06 -0600
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Re: patches@kernelci.org email account
+Message-ID: <20190107174106.y72qe2zawayvdcna@xps.therub.org>
+References: <CAH+k93ESzNrC65JreCxH5NocED8xpu7aApGgFb7bwhqF_7prwA@mail.gmail.com>
+ <CAH=dhFS6TtEu5nFHQm-BA+zLVvBm-vGKhTm18qGKtQCrYLqxfw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAH=dhFS6TtEu5nFHQm-BA+zLVvBm-vGKhTm18qGKtQCrYLqxfw@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, tyler@foundries.io
+Cc: Matt Hart <matthew.hart@linaro.org>, fellows@kernelci.org, info@kernelci.org, Tyler Baker <tyler@opensourcefoundries.com>, Milo Casagrande <milo@opensourcefoundries.com>
 
-Part of the work I'm doing to complete test case regressions
-tracking is to update the email report format accordingly.  I
-found that the current HTML version isn't in a very good shape,
-it's not sent to anyone and I believe it's not adding much value.
-So I made this PR to drop support for HTML test email reports
-rather than spend time to maintain it in its half-broken state:
+On Mon, Jan 07, 2019 at 08:09:23AM -0800, Tyler Baker wrote:
+> On Mon, Jan 7, 2019 at 7:28 AM Matt Hart <matthew.hart@linaro.org> wrote:
+> >
+> > So, I hear the email account "patches@kernelci.org" was deleted.
+> 
+> It was, then it added back after Kevin told me it was a mistake.
 
-    https://github.com/kernelci/kernelci-backend/pull/102
+Daniel Diaz reports it's still bouncing as of this morning:
 
-This was also discussed on IRC and in today's meeting; it seems
-to be the general consensus that concise plain text email reports
-are all we need to notify kernel developers of regressions in the
-code.  This PR #102 is only for test results, but if we all agree
-then we may also drop HTML emails for builds and boots.
+09:15 < mrc3> "Address not found / Your message wasn't delivered to
+patches@kernelci.org because the address couldn't be found or is unable
+to receive email."
 
-If we need anything more fancy showing tables, graphs and more
-information, a web-based dashboard with a search feature or some
-kind of dedicated application would seem more appropriate.  Maybe
-an HTML email report could be sent periodically with a summary of
-all the test cases on a given platform, but I think that would be
-serving a different purpose and addressing a different audience.
-
-So, please shout if you really care about regular test regression
-email reports in HTML format - and if you do then it would also
-be great to also help by fixing them.  If I don't hear anything
-in favour of them by Friday then I guess the PR will get merged!
-
-Guillaume
+> 
+> > The problem is, that account is used by the kernelci-reports service
+> > which checks the stable review emails and sends the responses.
+> > I found it in the config file /etc/linaro/kernelci-reports.cfg, on the
+> > kernelci.org master server.
+> >
+> > It's also what we've previously told Greg to CC for his stable
+> > reports, and according to a recent meeting minutes someone is going to
+> > tell him to stop using it.
+> >
+> > Any chance we can get it turned back on? Or can we use
+> > bot@kernelci.org for the same thing? Tyler? Milo?
+> 
+> Should be back on as of a few weeks ago. Is the backend throwing an
+> error? I reset the password to use the one we were using in
+> production.
+> 
+> 
+> 
