@@ -1,42 +1,36 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Thu, 10 Jan 2019 09:42:22 -0600
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Re: [Help] How to use kernelci to eastablish a local CI lab?
-Message-ID: <20190110154222.atzjtmmjbkcxl3zx@xps.therub.org>
+From: "Li, Xiaoming" <lixm.fnst@cn.fujitsu.com>
+Subject: =?UTF-8?B?562U5aSNOiBbSGVscF0gSG93IHRvIHVzZSBrZXJuZWxjaSB0byBlYXN0YWJsaXNoIGEgbG9jYWwgQ0kgbGFiPw==?=
+Date: Fri, 11 Jan 2019 02:08:54 +0000
+Message-ID: <62079D2F712F7747B0BDCC6821B8DF0D013FB32B@G08CNEXMBPEKD02.g08.fujitsu.local>
 References: <11625.1547100077211683125@groups.io>
+ <20190110154222.atzjtmmjbkcxl3zx@xps.therub.org>
+In-Reply-To: <20190110154222.atzjtmmjbkcxl3zx@xps.therub.org>
 MIME-Version: 1.0
-In-Reply-To: <11625.1547100077211683125@groups.io>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Language: zh-CN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, lixm.fnst@cn.fujitsu.com
+To: "kernelci@groups.io" <kernelci@groups.io>, "dan.rue@linaro.org" <dan.rue@linaro.org>
 
-On Wed, Jan 09, 2019 at 10:01:17PM -0800, Li, Xiaoming wrote:
-> hi,all
->=20
-> I am a rookie to kernelci.
-> I have already install kernelci-docker and lava, then what should=A0 I do=
-=A0 to connetc them together?
-> I have investigate the kernelci-wiki and kernelci related presentations, =
-but still got no clues.
-> Could anyone give some hints or link?
-> Thank you all.
-
-Hi Li Xiaoming!
-
-I'm working on something similar and so maybe we can work together on
-this.
-
-Do you have a lava instance online with boards attached already? It's
-not clear if you already have LAVA, and are trying to add it as a
-kernelci lab, or if you're asking how to set up LAVA.
-
-As a side note, do you work with Liu Wenlong? I was reviewing his work
-on LAVA+Fuego yesterday, which may be related.
-
-Thanks,
-Dan
-
---=20
-Linaro - Kernel Validation
+UmVwbHkgaXMgaW5saW5lDQoNCj4gT24gV2VkLCBKYW4gMDksIDIwMTkgYXQgMTA6MDE6MTdQTSAt
+MDgwMCwgTGksIFhpYW9taW5nIHdyb3RlOg0KPiA+IGhpLGFsbA0KPiA+DQo+ID4gSSBhbSBhIHJv
+b2tpZSB0byBrZXJuZWxjaS4NCj4gPiBJIGhhdmUgYWxyZWFkeSBpbnN0YWxsIGtlcm5lbGNpLWRv
+Y2tlciBhbmQgbGF2YSwgdGhlbiB3aGF0IHNob3VsZMKgIEkgZG/CoCB0bw0KPiBjb25uZXRjIHRo
+ZW0gdG9nZXRoZXI/DQo+ID4gSSBoYXZlIGludmVzdGlnYXRlIHRoZSBrZXJuZWxjaS13aWtpIGFu
+ZCBrZXJuZWxjaSByZWxhdGVkIHByZXNlbnRhdGlvbnMsIGJ1dCBzdGlsbA0KPiBnb3Qgbm8gY2x1
+ZXMuDQo+ID4gQ291bGQgYW55b25lIGdpdmUgc29tZSBoaW50cyBvciBsaW5rPw0KPiA+IFRoYW5r
+IHlvdSBhbGwuDQo+IA0KPiBIaSBMaSBYaWFvbWluZyENCj4gDQo+IEknbSB3b3JraW5nIG9uIHNv
+bWV0aGluZyBzaW1pbGFyIGFuZCBzbyBtYXliZSB3ZSBjYW4gd29yayB0b2dldGhlciBvbiB0aGlz
+Lg0KPiANCj4gRG8geW91IGhhdmUgYSBsYXZhIGluc3RhbmNlIG9ubGluZSB3aXRoIGJvYXJkcyBh
+dHRhY2hlZCBhbHJlYWR5PyBJdCdzIG5vdCBjbGVhcg0KPiBpZiB5b3UgYWxyZWFkeSBoYXZlIExB
+VkEsIGFuZCBhcmUgdHJ5aW5nIHRvIGFkZCBpdCBhcyBhIGtlcm5lbGNpIGxhYiwgb3IgaWYgeW91
+J3JlDQo+IGFza2luZyBob3cgdG8gc2V0IHVwIExBVkEuDQoNCkkga25vdyBob3cgdG8gaW5zdGFs
+bCBMQVZBLCBieSBsYXZhLWRvY2tlciBvciB0aGUgbGluYXJvJ3MgZGVmYXVsdCBtZXRob2QuDQpP
+dXIgbGFiIGhhcyBzZXJ2cmFsIGxhdmEgaW5zdGFuY2UsIHNvIEkgY2FuIGNvbm5lY3Qga2VybmVs
+Y2kgd2l0aCBsYXZhIGVpdGhlciBsb2NhbCBvciByZW1vdGUsIGlmIHBvc3NpYmxlLg0KWWVz77yM
+SSB3YW50IHRvIGtub3cgaG93IGFkZCBsYXZhIHRvIGtlcm5lbGNpIGxhYi4NCg0KDQo+IA0KPiBB
+cyBhIHNpZGUgbm90ZSwgZG8geW91IHdvcmsgd2l0aCBMaXUgV2VubG9uZz8gSSB3YXMgcmV2aWV3
+aW5nIGhpcyB3b3JrIG9uDQo+IExBVkErRnVlZ28geWVzdGVyZGF5LCB3aGljaCBtYXkgYmUgcmVs
+YXRlZC4NClllcywgTGl1IGlzIG15IGNvbGxlYWd1ZS4NCkFuZCBMaXUgaXMgbm90IGZhbWlsaWFy
+IHdpdGggaXQuDQoNCj4gDQo+IFRoYW5rcywNCj4gRGFuDQo+IA0KPiAtLQ0KPiBMaW5hcm8gLSBL
+ZXJuZWwgVmFsaWRhdGlvbg0KPiANCj4gDQo+IA0KPiANCg0KCgo=
