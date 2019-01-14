@@ -1,106 +1,96 @@
+Date: Mon, 14 Jan 2019 22:01:30 +0000
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: Weekly Meeting 2019-01-14 #minutes
+Message-ID: <20190114220130.GG11073@sirena.org.uk>
+References: <20190114155044.g2xy3a5e42ynivj7@xps.therub.org>
+ <7hfttukinm.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <CA+_AqiuE9EmTruc7-G0pH-2hXzDjc5VPQn4-qoN4+47Oqf0djQ@mail.gmail.com>
- <CAJrz+7+WWpkhFasJwqUsrN+h4eyMenNwg28t18cuNt1ssLzzog@mail.gmail.com> <CA+_AqivuXXgsHCNRn0mz752dojic61pLt--3pUL7bC3AnNDZdA@mail.gmail.com>
-In-Reply-To: <CA+_AqivuXXgsHCNRn0mz752dojic61pLt--3pUL7bC3AnNDZdA@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Tue, 16 Oct 2018 21:29:10 +0100
-Message-ID: <CAH1_8nBuwjnjHmwg3wsRK+BBABqt7tSuTCP4Twiti67XgmwBgw@mail.gmail.com>
-Subject: Re: [kernelci] KernelCI API Auth Token
-Content-Type: multipart/alternative; boundary="000000000000b31dfc05785e683b"
+In-Reply-To: <7hfttukinm.fsf@baylibre.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="c7hkjup166d4FzgN"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
-Cc: info@kernelci.org, milo@milo.name, nicolas.dechesne@linaro.org, anmar.oueja@linaro.org, Fathi Boudra <fathi.boudra@linaro.org>
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: kernelci@groups.io, dan.rue@linaro.org
 
---000000000000b31dfc05785e683b
-Content-Type: text/plain; charset="UTF-8"
-
-FYI I've sent an API token to Anibal with only HTTP GET permissions.
-
-On Wed, Oct 3, 2018 at 5:16 PM Anibal Limon <anibal.limon@linaro.org> wrote:
-
-> + Milo
-> + info at kernelci.org
->
-> On Wed, 3 Oct 2018 at 03:13, Milosz Wasilewski <
-> milosz.wasilewski@linaro.org> wrote:
->
->> On Wed, 3 Oct 2018 at 01:37, Anibal Limon <anibal.limon@linaro.org>
->> wrote:
->> >
->> > Hi,
->> >
->> > I want to access the KernelCI API to get information about the QCOMLT
->> builds, I have a couple of questions,
->> >
->> > What is the process to get a KernelCI API  auth token?
->>
->> I guess asking the ML is a good start. Back in the days when Milo was
->> working on the code I got one directly from him. I'm not sure who is
->> generating tokens these days.
->>
->> milosz
->>
->> >
->> > Fathi, Anmar,
->> > Do we have a KernelCI auth token available on LinaroCI?
->> >
->> > Regards,
->> > Anibal
->> >
->>
->>
->>
->> 
->
-
---000000000000b31dfc05785e683b
-Content-Type: text/html; charset="UTF-8"
+--c7hkjup166d4FzgN
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">FYI I&#39;ve sent an API token to Anibal with only HTTP GE=
-T permissions.</div><br><div class=3D"gmail_quote"><div dir=3D"ltr">On Wed,=
- Oct 3, 2018 at 5:16 PM Anibal Limon &lt;<a href=3D"mailto:anibal.limon@lin=
-aro.org" target=3D"_blank">anibal.limon@linaro.org</a>&gt; wrote:<br></div>=
-<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-x #ccc solid;padding-left:1ex"><div dir=3D"ltr">+ Milo=C2=A0<div>+ info at =
-<a href=3D"http://kernelci.org" target=3D"_blank">kernelci.org</a><br><br><=
-div class=3D"gmail_quote"><div dir=3D"ltr">On Wed, 3 Oct 2018 at 03:13, Mil=
-osz Wasilewski &lt;<a href=3D"mailto:milosz.wasilewski@linaro.org" target=
-=3D"_blank">milosz.wasilewski@linaro.org</a>&gt; wrote:<br></div><blockquo=
-te class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc so=
-lid;padding-left:1ex">On Wed, 3 Oct 2018 at 01:37, Anibal Limon &lt;<a href=
-=
-=3D"mailto:anibal.limon@linaro.org" target=3D"_blank">anibal.limon@linaro.=
-org</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Hi,<br>
-&gt;<br>
-&gt; I want to access the KernelCI API to get information about the QCOMLT=
- builds, I have a couple of questions,<br>
-&gt;<br>
-&gt; What is the process to get a KernelCI API=C2=A0 auth token?<br>
-<br>
-I guess asking the ML is a good start. Back in the days when Milo was<br>
-working on the code I got one directly from him. I&#39;m not sure who is<b=
-r>
-generating tokens these days.<br>
-<br>
-milosz<br>
-<br>
-&gt;<br>
-&gt; Fathi, Anmar,<br>
-&gt; Do we have a KernelCI auth token available on LinaroCI?<br>
-&gt;<br>
-&gt; Regards,<br>
-&gt; Anibal<br>
-&gt; <br>
-<br>
-<br>
-<br>
-</blockquote></div></div></div>
+On Mon, Jan 14, 2019 at 01:56:29PM -0800, Kevin Hilman wrote:
+> "Dan Rue" <dan.rue@linaro.org> writes:
 
+> >     - Very useful for testing
+> >       - [gtucker] Other way to do this is in build-configs.yaml with a=
+ll
+> >         the other build configuration settings (see initial work in
+> >         kernelci-core-staging PR #75)
 
+> We need flexibility in which defconfigs are built per tree, but also per
+> arch and probably per toolchain, so having this in a simple file in tree
+> is not sufficient.
 
-</p></p></blockquote></div>
+> IMO, the build-configs.yaml stuff that Guillaume is working on is the
+> way to go forward.
 
---000000000000b31dfc05785e683b--
+The suggestion was to allow trees to drop in something with the
+build-configs.yaml syntax so you could do anything you can do with that
+with the in tree file.
+
+>=20
+> > - [gtucker]
+> >   - Test regressions merged on staging, testing last changes to the te=
+st
+> >     reports
+> >   - Adding fix for MIPS (remove hacks and use gcc-7)
+>=20
+> Thanks!
+>=20
+> >   - V4l2 & dynamic metadata: adding a template parameter to the
+> >     test-configs.yaml test plans settings to specify the video driver =
+to
+> >     use in the test (discovering the driver name at runtime isn=E2=80=
+=99t
+> >     practical with current LAVA)
+> >
+> > - [drue]
+> >   - Next steps on =E2=80=98[Help] How to use kernelci to establish a l=
+ocal CI
+> >     lab?=E2=80=99?
+> >     - [chaws] I mentioned this repo:
+> >       https://github.com/kernelci/kernelci-core, but still unsure what
+> >       the next step is
+> >     - Li=E2=80=99s asking for support using kernelci-docker locally, n=
+ot adding
+> >       a lab to kernelci. There are a lot of versions of this repo in t=
+he
+> >       wild, so it=E2=80=99s not clear who should help him. Matt can sh=
+ow him how
+> >       he does it.
+>=20
+> I'm not sure about a lot of versions, but we (BayLibre) are working
+> primarily on this one, which is also deployed for AGL:
+> https://github.com/lucj/kernelci-docker
+>=20
+> Kevin
+>=20
+>=20
+>=20
+
+--c7hkjup166d4FzgN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlw9BrkACgkQJNaLcl1U
+h9CFfwf/fooD5YKdH1OYbvCYCB+BDSKyWPvuUfIiws65SkVU6bytJXlV2u148bhf
+LAtMt14jJ9aq0qTI+BT1ATWEx0Rg+5SoIXjtAmK6Q3AgHEqD6CKCFhWP4N8jJ5wA
+CDaD8MRBTf3DZUc/0cmxcBHYjzLgeQqcBUZUokcfq+Auo/uLMIGY+IBmUH09CZTm
+52kfrbsn7FcPnHseOtmBCDyHSL6Ohq5INjOM3i0jalAGe23014NoLlc+D4Od0iJE
+Xrtu9FzL0Y6sWrl4UBvaKVnrBtgq9PXlunhvRHsCEGuFcG6EcvAPApZlpCtiV1Or
+kVNu7LBTqWTXbSt3VmFwsLULRfUkBA==
+=tEvQ
+-----END PGP SIGNATURE-----
+
+--c7hkjup166d4FzgN--
