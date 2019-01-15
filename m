@@ -1,96 +1,91 @@
-Date: Mon, 14 Jan 2019 22:01:30 +0000
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: Weekly Meeting 2019-01-14 #minutes
-Message-ID: <20190114220130.GG11073@sirena.org.uk>
-References: <20190114155044.g2xy3a5e42ynivj7@xps.therub.org>
- <7hfttukinm.fsf@baylibre.com>
+From: "Li, Xiaoming" <lixm.fnst@cn.fujitsu.com>
+Subject: =?UTF-8?B?562U5aSNOiDnrZTlpI06IFtIZWxwXSBIb3cgdG8gdXNlIGtlcm5lbGNpIHRvIGVhc3RhYmxpc2ggYSBsb2NhbCBDSSBsYWI/?=
+Date: Tue, 15 Jan 2019 05:55:16 +0000
+Message-ID: <62079D2F712F7747B0BDCC6821B8DF0D013FB888@G08CNEXMBPEKD02.g08.fujitsu.local>
+References: <11625.1547100077211683125@groups.io>
+ <20190110154222.atzjtmmjbkcxl3zx@xps.therub.org>
+ <62079D2F712F7747B0BDCC6821B8DF0D013FB32B@G08CNEXMBPEKD02.g08.fujitsu.local>
+ <7hlg3mkipd.fsf@baylibre.com>
+In-Reply-To: <7hlg3mkipd.fsf@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <7hfttukinm.fsf@baylibre.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="c7hkjup166d4FzgN"
-Content-Disposition: inline
+Content-Language: zh-CN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Kevin Hilman <khilman@baylibre.com>
-Cc: kernelci@groups.io, dan.rue@linaro.org
+To: Kevin Hilman <khilman@baylibre.com>, "kernelci@groups.io" <kernelci@groups.io>, "kernelci@groups.io" <kernelci@groups.io>, "dan.rue@linaro.org" <dan.rue@linaro.org>, "charles.oliveira@linaro.org" <charles.oliveira@linaro.org>
 
---c7hkjup166d4FzgN
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jan 14, 2019 at 01:56:29PM -0800, Kevin Hilman wrote:
-> "Dan Rue" <dan.rue@linaro.org> writes:
-
-> >     - Very useful for testing
-> >       - [gtucker] Other way to do this is in build-configs.yaml with a=
-ll
-> >         the other build configuration settings (see initial work in
-> >         kernelci-core-staging PR #75)
-
-> We need flexibility in which defconfigs are built per tree, but also per
-> arch and probably per toolchain, so having this in a simple file in tree
-> is not sufficient.
-
-> IMO, the build-configs.yaml stuff that Guillaume is working on is the
-> way to go forward.
-
-The suggestion was to allow trees to drop in something with the
-build-configs.yaml syntax so you could do anything you can do with that
-with the in tree file.
-
->=20
-> > - [gtucker]
-> >   - Test regressions merged on staging, testing last changes to the te=
-st
-> >     reports
-> >   - Adding fix for MIPS (remove hacks and use gcc-7)
->=20
-> Thanks!
->=20
-> >   - V4l2 & dynamic metadata: adding a template parameter to the
-> >     test-configs.yaml test plans settings to specify the video driver =
-to
-> >     use in the test (discovering the driver name at runtime isn=E2=80=
-=99t
-> >     practical with current LAVA)
-> >
-> > - [drue]
-> >   - Next steps on =E2=80=98[Help] How to use kernelci to establish a l=
-ocal CI
-> >     lab?=E2=80=99?
-> >     - [chaws] I mentioned this repo:
-> >       https://github.com/kernelci/kernelci-core, but still unsure what
-> >       the next step is
-> >     - Li=E2=80=99s asking for support using kernelci-docker locally, n=
-ot adding
-> >       a lab to kernelci. There are a lot of versions of this repo in t=
-he
-> >       wild, so it=E2=80=99s not clear who should help him. Matt can sh=
-ow him how
-> >       he does it.
->=20
-> I'm not sure about a lot of versions, but we (BayLibre) are working
-> primarily on this one, which is also deployed for AGL:
-> https://github.com/lucj/kernelci-docker
->=20
-> Kevin
->=20
->=20
->=20
-
---c7hkjup166d4FzgN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlw9BrkACgkQJNaLcl1U
-h9CFfwf/fooD5YKdH1OYbvCYCB+BDSKyWPvuUfIiws65SkVU6bytJXlV2u148bhf
-LAtMt14jJ9aq0qTI+BT1ATWEx0Rg+5SoIXjtAmK6Q3AgHEqD6CKCFhWP4N8jJ5wA
-CDaD8MRBTf3DZUc/0cmxcBHYjzLgeQqcBUZUokcfq+Auo/uLMIGY+IBmUH09CZTm
-52kfrbsn7FcPnHseOtmBCDyHSL6Ohq5INjOM3i0jalAGe23014NoLlc+D4Od0iJE
-Xrtu9FzL0Y6sWrl4UBvaKVnrBtgq9PXlunhvRHsCEGuFcG6EcvAPApZlpCtiV1Or
-kVNu7LBTqWTXbSt3VmFwsLULRfUkBA==
-=tEvQ
------END PGP SIGNATURE-----
-
---c7hkjup166d4FzgN--
+SGksRGFuLENoYXJsZXMsS2V2aW4NCg0KVGhhbmsgeW91IGZvciB5b3VyIHJl
+cGx5Lg0KTXkgcmVwbHkgaXMgaW5saW5lLg0KDQo+IEhpIExpLA0KPiANCj4g
+IkxpLCBYaWFvbWluZyIgPGxpeG0uZm5zdEBjbi5mdWppdHN1LmNvbT4gd3Jp
+dGVzOg0KPiANCj4gPiBSZXBseSBpcyBpbmxpbmUNCj4gPg0KPiA+PiBPbiBX
+ZWQsIEphbiAwOSwgMjAxOSBhdCAxMDowMToxN1BNIC0wODAwLCBMaSwgWGlh
+b21pbmcgd3JvdGU6DQo+ID4+ID4gaGksYWxsDQo+ID4+ID4NCj4gPj4gPiBJ
+IGFtIGEgcm9va2llIHRvIGtlcm5lbGNpLg0KPiA+PiA+IEkgaGF2ZSBhbHJl
+YWR5IGluc3RhbGwga2VybmVsY2ktZG9ja2VyIGFuZCBsYXZhLCB0aGVuIHdo
+YXQgc2hvdWxkDQo+ID4+ID4gSSBkb8KgIHRvDQo+ID4+IGNvbm5ldGMgdGhl
+bSB0b2dldGhlcj8NCj4gPj4gPiBJIGhhdmUgaW52ZXN0aWdhdGUgdGhlIGtl
+cm5lbGNpLXdpa2kgYW5kIGtlcm5lbGNpIHJlbGF0ZWQNCj4gPj4gPiBwcmVz
+ZW50YXRpb25zLCBidXQgc3RpbGwNCj4gPj4gZ290IG5vIGNsdWVzLg0KPiA+
+PiA+IENvdWxkIGFueW9uZSBnaXZlIHNvbWUgaGludHMgb3IgbGluaz8NCj4g
+Pj4gPiBUaGFuayB5b3UgYWxsLg0KPiA+Pg0KPiA+PiBIaSBMaSBYaWFvbWlu
+ZyENCj4gPj4NCj4gPj4gSSdtIHdvcmtpbmcgb24gc29tZXRoaW5nIHNpbWls
+YXIgYW5kIHNvIG1heWJlIHdlIGNhbiB3b3JrIHRvZ2V0aGVyIG9uDQo+IHRo
+aXMuDQo+ID4+DQo+ID4+IERvIHlvdSBoYXZlIGEgbGF2YSBpbnN0YW5jZSBv
+bmxpbmUgd2l0aCBib2FyZHMgYXR0YWNoZWQgYWxyZWFkeT8gSXQncw0KPiA+
+PiBub3QgY2xlYXIgaWYgeW91IGFscmVhZHkgaGF2ZSBMQVZBLCBhbmQgYXJl
+IHRyeWluZyB0byBhZGQgaXQgYXMgYQ0KPiA+PiBrZXJuZWxjaSBsYWIsIG9y
+IGlmIHlvdSdyZSBhc2tpbmcgaG93IHRvIHNldCB1cCBMQVZBLg0KPiA+DQo+
+ID4gSSBrbm93IGhvdyB0byBpbnN0YWxsIExBVkEsIGJ5IGxhdmEtZG9ja2Vy
+IG9yIHRoZSBsaW5hcm8ncyBkZWZhdWx0IG1ldGhvZC4NCj4gPiBPdXIgbGFi
+IGhhcyBzZXJ2cmFsIGxhdmEgaW5zdGFuY2UsIHNvIEkgY2FuIGNvbm5lY3Qg
+a2VybmVsY2kgd2l0aCBsYXZhIGVpdGhlcg0KPiBsb2NhbCBvciByZW1vdGUs
+IGlmIHBvc3NpYmxlLg0KPiA+IFllc++8jEkgd2FudCB0byBrbm93IGhvdyBh
+ZGQgbGF2YSB0byBrZXJuZWxjaSBsYWIuDQo+IA0KPiBUaGVyZSBhcmUgc2V2
+ZXJhbCBzdGVwcyBpbiB0aGUgcHJvY2VzcywgYnV0IGl0J3Mgbm90IGNsZWFy
+ICh0byBtZSkgd2hpY2ggc3RlcHMNCj4geW91J3JlIGFza2luZyBhYm91dCwg
+c28gbGV0IG1lIGNydWRlbHkgc3VtbWFyaXplIHRoZSBzdGVwcywgYW5kIHNl
+ZSB3aGljaCBvbmVzDQo+IHlvdSdyZSBoYXZpbmcgcXVlc3Rpb25zIGFib3V0
+Og0KPiANCj4gLSBrZXJuZWxjaS1jb3JlOiBqZW5raW5zIGpvYnMgdG8gd2F0
+Y2gga2VybmVsIHRyZWVzIGZvciBjaGFuZ2VzDQoNClllcywgbWF5IGJlIEkg
+YW0gZG93biBoZXJlLg0KQWNjb3JkaW5nIHRvIENoYXJsZXMsICBnaXQgY2xv
+bmUga2VybmVsY2ktY29yZShodHRwczovL2dpdGh1Yi5jb20va2VybmVsY2kv
+a2VybmVsY2ktY29yZSkuDQoyIHF1ZXN0aW9uczoNCjFzdDoNClRoZW4gaG93
+IGNhbiBJIGFjY2VzcyB0aGUgSmVua2lucyBVST8gT1IgZG8gSSBuZWVkIHRv
+IGluc3RhbGwgSmVua2lucyBzZXBhcmF0ZWx577yfDQoyZWQ6DQpXaGVyZSBp
+cyBsYXZhLXN0cmVhbS1sb2cucHkgYW5kIGxhdmEtam9iLXJ1bm5lci5weSBp
+biBrZXJuZWxjaS1jb3JlJ3MgcmVhZG1lPw0KDQpUaGFua3MNCkxpDQoNCj4g
+DQo+IC0ga2VybmVsY2ktY29yZTogY3JlYXRlIExBVkEgam9icyBhbmQgc3Vi
+bWl0IHRvIG11bHRpcGxlIExBVkEgbGFicw0KPiAgIEFQSTogTEFWQSdzIFhN
+TC1SUEMgQVBJLg0KPiAgIEF1dGg6IHJlcXVpZXMgTEFWQSBhdXRoIHRva2Vu
+IHRvIGJlIHNoYXJlZCB3aXRoIGtlcm5lbGNpLWNvcmUgYWRtaW5zDQo+IA0K
+PiAtIExBVkEgbGFiczogcnVuIExBVkEgam9icyBvbiBoYXJkd2FyZS9WTXMg
+ZXRjLg0KPiANCj4gLSBMQVZBIGxhYnM6IHN1Ym1pdCByZXN1bHRzIHRvIGtl
+cm5lbGNpLWJhY2tlbmQNCj4gICAoTk9URTogdGhlIExBVkEgam9icyBpbmNs
+dWRlICJub3RpZnkiIHNlY3Rpb25zIHdoaWNoIHRlbGwgdGhlIExBVkENCj4g
+ICAgd2hlcmUgdG8gcG9zdCByZXN1bHRzIGFmdGVyIGVhY2ggTEFWQSBKb2Ip
+DQo+IA0KPiAgIEFQSTogUkVTVCBBUEkgKGFwaS5rZXJuZWxjaS5vcmcpLiAg
+SW4gcGFydGljdWxhciAvYm9vdCwgL3Rlc3QNCj4gICBBdXRoOiBrZXJuZWxj
+aS1iYWNrZW5kIGFkbWluIGdlbmVyYXRlcyB0b2tlbiB0byBiZSBzaGFyZWQg
+d2l0aCBMQVZBDQo+ICAgICAgICAgbGFiDQo+IA0KPiBGb3IgdGhlIG1haW4g
+a2VybmVsY2kub3JnIHNpdGUsIHRoZXJlIGlzIGEgbWFpbiBpbnN0YW5jZSBv
+ZiB0aGUga2VybmVsY2ktYmFja2VuZA0KPiBhbmQga2VybmVsY2ktZnJvbnRl
+bmQsIHNvIHlvdSBkb24ndCBoYXZlIHRvIHJ1biB0aG9zZSAodmlhIGtlcm5l
+bGNpLWRvY2tlcikgaWYNCj4geW91J3JlIGp1c3QgaG9waW5nIHRvIGNvbnRy
+aWJ1dGUgdG8gdGhlIG1haW4gc2l0ZS4gIEhvd2V2ZXIsIHlvdSBzdGlsbCBu
+ZWVkIHRvDQo+IGV4Y2hhbmdlIHRva2VucyBmb3IgYm90aCB0aGUgIkF1dGgi
+DQo+IHN0ZXBzIEkgbGlzdCBhYm92ZS4NCj4gDQo+IElmIGhvd2V2ZXIsIHlv
+dSB3YW50IHRvIHJ1biB5b3VyIG93biBrZXJuZWxjaS1iYWNrZW5kIGFuZCAt
+ZnJvbnRlbmQsIHdoaWNoIEkNCj4gZ2F0aGVyIHlvdSBkbyBzaW5jZSB5b3Un
+dmUgc2V0dXAga2VybmVsY2ktZG9ja2VyLCB0aGVuIHlvdSBjYW4gY3JlYXRl
+IGFuZCBzaGFyZQ0KPiBhbGwgdGhlIGF1dGggdG9rZW5zIHlvdXJzZWxmLg0K
+PiANCj4gSSBob3BlIHRoYXQgY2xhcmlmaWVzIHRoZSBwcm9jZXNzIGEgbGl0
+dGxlIGJpdC4gIFdoZW4gd2Uga25vdyB3aGljaCBzdGVwcyB5b3UncmUNCj4g
+c3RydWdnbGluZyB3aXRoLCB3ZSBjYW4gYW5zd2VyIG1vcmUgZGV0YWlsZWQg
+cXVlc3Rpb25zLg0KPiANCj4gQlRXLCBmb3Iga2VybmVsY2ktZG9ja2VyLCBJ
+IHN0cm9uZ2x5IHJlY29tbWVuZCB1c2luZyB0aGlzIGZvcmsgZm9yIG5vdzoN
+Cj4gaHR0cHM6Ly9naXRodWIuY29tL2x1Y2ova2VybmVsY2ktZG9ja2VyLiAg
+IFdlIChCYXlMaWJyZSkgaGF2ZSBiZWVuDQo+IHdvcmtpbmcgb24gdGhhdCBm
+b3JrIGFuZCBhcmUgdXNpbmcgaXQgcmVndWxhcmlseS4gIEkgcmVjb21tZW5k
+IHVzaW5nIHRoYXQgdW50aWwNCj4gd2UgZ2V0IHRob3NlIGVuaGFuY2VtZW50
+cyBtZXJnZWQgYmFjayBpbnRvIHRoZSBtYWluIHJlcG8uDQo+IA0KPiBUaGFu
+a3MsDQo+IA0KPiBLZXZpbg0KPiANCj4gDQo+IA0KPiANCg0KCgo=
