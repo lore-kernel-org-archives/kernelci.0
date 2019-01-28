@@ -1,46 +1,43 @@
 Return-Path: <khilman@baylibre.com>
 From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: Tests view in kernelci-frontend
-In-Reply-To: <ea54a553-c76a-7c8d-7247-a0fd0bdfff88@collabora.com>
-References: <ea54a553-c76a-7c8d-7247-a0fd0bdfff88@collabora.com>
-Date: Thu, 24 Jan 2019 02:53:27 -0800
-Message-ID: <7h7eeuz5qw.fsf@baylibre.com>
+Subject: MIPS build failures in kernelCI
+Date: Mon, 28 Jan 2019 15:44:02 +0100
+Message-ID: <7hpnsgrgel.fsf@baylibre.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, guillaume.tucker@gmail.com, kernelci@groups.io
+To: Paul Burton <paul.burton@mips.com>
+Cc: kernelci@groups.io
 
-"Guillaume Tucker" <guillaume.tucker@gmail.com> writes:
+Hi Paul,
 
-> The Tests view in kernelci-frontend is currently a bit behind:
->
->     https://kernelci.org/test/
->
-> As discussed previously, while it was interesting to try a new
-> design, it turns out to be somewhat confusing to have results
-> sorted by platforms instead of kernel revisions like for builds
-> and boots.  Also, since we've introduced recursive sub-groups in
-> the backend, the views haven't been updated to properly show the
-> results.  All the groups are shown in a flat list regardless of
-> their hierarchy.
->
-> While alternatives are being investigated using Elasticsearch and
-> Kibana, we should probably do something about the current
-> frontend as that's what's currently online.  It doesn't seem like
-> anyone is actively working on fixing it right now, so I would
-> suggest to remove the link from the navigation bar so visitors
-> are not encouraged to see this page until it's in a better shape.
-> Others agreed during this Monday's meeting.
->
-> If you need the Tests link to remain visible, or if you know
-> someone will have a fix for it in the coming days, then please
-> let us know.  Otherwise I think we could hide the link next week.
+We're having various build failures for a handful of defconfigs with
+linux-next and mainline:
 
-Removing the link from the navigation bar is fine, but I assume this
-means leaving the /test route and code in place so we can use it
-manually if needed?
+Go to one of these views, and click on "Failed":
+mainline: https://kernelci.org/build/mainline/branch/master/kernel/v5.0-rc4/
 
-When working on email reporting, even though the views aren't terribly
-useful, it's useful at least to see that (new) data has arrived.
+Some of those defconfig targets (decstation_defconfig,
+jmr3927_defconfig) are failing with:
+
+     cc1: error: '-march=r3900' requires '-mfp32'
+
+We're trying to use standard debian compilers for all targets, and for
+MIPS we're using: mips-linux-gnu-gcc (Debian 7.4.0-1) 7.4.0
+
+The other build failures seem to be failing because there is no make
+target for uImage.gz (which we set as the default target for MIPS.)
+
+We don't currently have a good way to have different make targets for
+different defconfigs.
+
+Switching to linux-next:
+ https://kernelci.org/build/next/branch/master/kernel/next-20190125/
+
+There are a few more build failures that seem to be missig some tools:
+
+   ./arch/mips/tools/elf-entry: Command not found
+
+This smells like a build step missing for the uImage.gz target?
 
 Kevin
