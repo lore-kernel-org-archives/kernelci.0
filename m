@@ -1,134 +1,61 @@
 MIME-Version: 1.0
-References: <CA+_AqiuE9EmTruc7-G0pH-2hXzDjc5VPQn4-qoN4+47Oqf0djQ@mail.gmail.com>
- <CAJrz+7+WWpkhFasJwqUsrN+h4eyMenNwg28t18cuNt1ssLzzog@mail.gmail.com>
- <CA+_AqivuXXgsHCNRn0mz752dojic61pLt--3pUL7bC3AnNDZdA@mail.gmail.com> <CAH1_8nBuwjnjHmwg3wsRK+BBABqt7tSuTCP4Twiti67XgmwBgw@mail.gmail.com>
-In-Reply-To: <CAH1_8nBuwjnjHmwg3wsRK+BBABqt7tSuTCP4Twiti67XgmwBgw@mail.gmail.com>
-From: "Anibal Limon" <anibal.limon@linaro.org>
-Date: Tue, 16 Oct 2018 15:31:12 -0500
-Message-ID: <CA+_AqivG7cdvABoRkTo9DkMnC+hHrzMqeqGOpEzQ7LRcs0SRCw@mail.gmail.com>
-Subject: Re: [kernelci] KernelCI API Auth Token
-Content-Type: multipart/alternative; boundary="000000000000f0de5e05785e6fd0"
+References: <CACRpkdYeSLVFT14W4QP_dx_F6nVRNR8aNeZV+8wQkQA3rmMiiQ@mail.gmail.com>
+In-Reply-To: <CACRpkdYeSLVFT14W4QP_dx_F6nVRNR8aNeZV+8wQkQA3rmMiiQ@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Thu, 31 Jan 2019 18:28:25 +0000
+Message-ID: <CAH1_8nC2G1xkapA4qNnSa5_wMSBGjFgs1VmYFwAAJ9duWk9Ciw@mail.gmail.com>
+Subject: Re: Adding tree to kernelci
+Content-Type: multipart/alternative; boundary="000000000000d6f6cc0580c531b3"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
-Cc: info <info@kernelci.org>, milo@milo.name, Nicolas Dechesne <nicolas.dechesne@linaro.org>, Anmar Oueja <anmar.oueja@linaro.org>, Fathi Boudra <fathi.boudra@linaro.org>
+To: kernelci@groups.io, linus.walleij@linaro.org
+Cc: Anders Roxell <anders.roxell@linaro.org>
 
---000000000000f0de5e05785e6fd0
+--000000000000d6f6cc0580c531b3
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 16 Oct 2018 at 15:29, Guillaume Tucker <guillaume.tucker@gmail.com>
+On Thu, Jan 31, 2019 at 12:50 PM Linus Walleij <linus.walleij@linaro.org>
 wrote:
 
-> FYI I've sent an API token to Anibal with only HTTP GET permissions.
+> Hi,
+>
+> could the GPIO tree:
+> https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio.git/
+>
+> Branches "devel", "fixes" and "for-next" (no others!) be added to
+> the kernelci loop?
 >
 
-Right, I tested it for my personal usage and works, thanks Guillaume.
+We have the capacity to build them so I'm in favour of it.
 
-I requested a token for read/write over qcom-lt/jobs.
+Out of interest, are there any existing tests that can be run to
+cover the GPIO subsystem and which we could consider adding to
+KernelCI?
 
-Regards,
-Anibal
+Guillaume
 
-
->
-> On Wed, Oct 3, 2018 at 5:16 PM Anibal Limon <anibal.limon@linaro.org>
-> wrote:
->
->> + Milo
->> + info at kernelci.org
->>
->> On Wed, 3 Oct 2018 at 03:13, Milosz Wasilewski <
->> milosz.wasilewski@linaro.org> wrote:
->>
->>> On Wed, 3 Oct 2018 at 01:37, Anibal Limon <anibal.limon@linaro.org>
->>> wrote:
->>> >
->>> > Hi,
->>> >
->>> > I want to access the KernelCI API to get information about the QCOMLT
->>> builds, I have a couple of questions,
->>> >
->>> > What is the process to get a KernelCI API  auth token?
->>>
->>> I guess asking the ML is a good start. Back in the days when Milo was
->>> working on the code I got one directly from him. I'm not sure who is
->>> generating tokens these days.
->>>
->>> milosz
->>>
->>> >
->>> > Fathi, Anmar,
->>> > Do we have a KernelCI auth token available on LinaroCI?
->>> >
->>> > Regards,
->>> > Anibal
->>> >
->>>
->>>
->>>
->>> 
->
->
-
---000000000000f0de5e05785e6fd0
+--000000000000d6f6cc0580c531b3
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">On Tue=
-, 16 Oct 2018 at 15:29, Guillaume Tucker &lt;<a href=3D"mailto:guillaume.tu=
-cker@gmail.com">guillaume.tucker@gmail.com</a>&gt; wrote:<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
-olid;padding-left:1ex"><div dir=3D"ltr">FYI I&#39;ve sent an API token to A=
-nibal with only HTTP GET permissions.</div></blockquote><div><br></div><div=
->Right, I tested it for my personal usage and works, thanks Guillaume.</div=
-><div><br></div><div>I requested a token for read/write over qcom-lt/jobs.<=
-/div><div><br></div><div>Regards,</div><div>Anibal</div><div>=C2=A0</div><b=
-lockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px =
-#ccc solid;padding-left:1ex"><br><div class=3D"gmail_quote"><div dir=3D"ltr=
-">On Wed, Oct 3, 2018 at 5:16 PM Anibal Limon &lt;<a href=3D"mailto:anibal.=
-limon@linaro.org" target=3D"_blank">anibal.limon@linaro.org</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;borde=
-r-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr">+ Milo=C2=A0<div>+=
- info at <a href=3D"http://kernelci.org" target=3D"_blank">kernelci.org</a>=
-<br><br><div class=3D"gmail_quote"><div dir=3D"ltr">On Wed, 3 Oct 2018 at 0=
-3:13, Milosz Wasilewski &lt;<a href=3D"mailto:milosz.wasilewski@linaro.org"=
- target=3D"_blank">milosz.wasilewski@linaro.org</a>&gt; wrote:<br></div><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #=
-ccc solid;padding-left:1ex">On Wed, 3 Oct 2018 at 01:37, Anibal Limon &lt;<=
-a href=3D"mailto:anibal.limon@linaro.org" target=3D"_blank">anibal.limon@li=
-naro.org</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Hi,<br>
-&gt;<br>
-&gt; I want to access the KernelCI API to get information about the QCOMLT=
- builds, I have a couple of questions,<br>
-&gt;<br>
-&gt; What is the process to get a KernelCI API=C2=A0 auth token?<br>
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br></d=
+iv><div class=3D"gmail_quote"><div dir=3D"ltr">On Thu, Jan 31, 2019 at 12:5=
+0 PM Linus Walleij &lt;<a href=3D"mailto:linus.walleij@linaro.org">linus.wa=
+lleij@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" =
+style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pa=
+dding-left:1ex">Hi,<br>
 <br>
-I guess asking the ML is a good start. Back in the days when Milo was<br>
-working on the code I got one directly from him. I&#39;m not sure who is<b=
-r>
-generating tokens these days.<br>
+could the GPIO tree:<br>
+<a href=3D"https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpi=
+o.git/" rel=3D"noreferrer" target=3D"_blank">https://git.kernel.org/pub/scm=
+/linux/kernel/git/linusw/linux-gpio.git/</a><br>
 <br>
-milosz<br>
-<br>
-&gt;<br>
-&gt; Fathi, Anmar,<br>
-&gt; Do we have a KernelCI auth token available on LinaroCI?<br>
-&gt;<br>
-&gt; Regards,<br>
-&gt; Anibal<br>
-&gt; <br>
-<br>
-<br>
-<br>
-</blockquote></div></div></div>
+Branches &quot;devel&quot;, &quot;fixes&quot; and &quot;for-next&quot; (no =
+others!) be added to<br>
+the kernelci loop?<br></blockquote><div>=C2=A0</div><div><div>We have the c=
+apacity to build them so I&#39;m in favour of it.</div><div><br></div><div>=
+<div>Out of interest, are there any existing tests that can be run to</div>=
+<div>cover the GPIO subsystem and which we could consider adding to</div><d=
+iv>KernelCI?</div></div></div><div><br></div><div>Guillaume</div></div></di=
+v></div></div>
 
-
-
-</blockquote></div>
-
-
-
-<p></p><p></p></blockquote></div></div>
-
---000000000000f0de5e05785e6fd0--
+--000000000000d6f6cc0580c531b3--
