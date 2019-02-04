@@ -2,23 +2,20 @@ MIME-Version: 1.0
 References: <CACRpkdYeSLVFT14W4QP_dx_F6nVRNR8aNeZV+8wQkQA3rmMiiQ@mail.gmail.com>
  <CAH1_8nC2G1xkapA4qNnSa5_wMSBGjFgs1VmYFwAAJ9duWk9Ciw@mail.gmail.com> <CACRpkdaHT1K22m2qHKwm9ZAw-HwupCTCYp7b+zFTqauJDs_buQ@mail.gmail.com>
 In-Reply-To: <CACRpkdaHT1K22m2qHKwm9ZAw-HwupCTCYp7b+zFTqauJDs_buQ@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 1 Feb 2019 13:31:30 +0100
-Message-ID: <CAMRc=McgppJXj3UTHO0yS0CyUyF1HdPDki1NnsOb4wR3x7p4fg@mail.gmail.com>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Mon, 4 Feb 2019 10:55:18 +0100
+Message-ID: <CADYN=9KyrivES_uaSN4Xq5LaHWC4g9dT-5uiQYxQCu_DrVZxWw@mail.gmail.com>
 Subject: Re: Adding tree to kernelci
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
 To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Guillaume Tucker <guillaume.tucker@gmail.com>, kernelci@groups.io, Anders Roxell <anders.roxell@linaro.org>
+Cc: Guillaume Tucker <guillaume.tucker@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, kernelci@groups.io
 
-pt., 1 lut 2019 o 13:15 Linus Walleij <linus.walleij@linaro.org> napisa=C5=
-=82(a):
+On Fri, 1 Feb 2019 at 13:15, Linus Walleij <linus.walleij@linaro.org> wrote:
 >
 > On Thu, Jan 31, 2019 at 7:28 PM Guillaume Tucker
 > <guillaume.tucker@gmail.com> wrote:
-> > On Thu, Jan 31, 2019 at 12:50 PM Linus Walleij <linus.walleij@linaro.or=
-g> wrote:
+> > On Thu, Jan 31, 2019 at 12:50 PM Linus Walleij <linus.walleij@linaro.org> wrote:
 > >>
 > >> could the GPIO tree:
 > >> https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio.git/
@@ -45,20 +42,8 @@ g> wrote:
 > is being refactored/improved.
 >
 > I think Anders is looking into enabling these tests.
->
 
-Hello,
+Yes, that's on my list.
 
-yes we have a set of userspace tests that can be run if you can enable
-the gpio-mockup testing module. I can help with building the suite -
-it requires udev and kmod to work.
-
-Also: Linus is right - we've had a fix applied to the gpiolib tree
-last release that broke a single test-case and we're now in progress
-of reworking the entire testing interface. I hope to get it in for
-v5.1 and then I'd need to rework the user-space part as well.
-
-Let me know if you need anything else.
-
-Best regards,
-Bartosz Golaszewski
+Cheers,
+Anders
