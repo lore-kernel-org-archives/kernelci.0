@@ -1,95 +1,53 @@
-Subject: gtucker/kernelci-test boot bisection: kernelci-test-080-7-g27ce98d1fbec on r8a7796-m3ulcb #7105-staging
-References: <5bc86345.1c69fb81.b7ce7.8d26@mx.google.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Message-ID: <4cd2591f-4c56-eecd-b599-051303d2b454@collabora.com>
-Date: Thu, 18 Oct 2018 11:48:07 +0100
 MIME-Version: 1.0
-In-Reply-To: <5bc86345.1c69fb81.b7ce7.8d26@mx.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Message-ID: <trinity-797bf1b5-df32-4a98-acc4-60a007157e7d-1549642801182@3c-app-gmx-bs20>
+From: =?UTF-8?Q?=22Jan-Simon_M=C3=B6ller=22?= <JanSimon.Moeller@gmx.de>
+Subject: Re: KernelCI modular pipeline design document
+Date: Fri, 8 Feb 2019 17:20:01 +0100
+In-Reply-To: <c7f519e5-1945-bbf6-69b3-6ded932ceb50@collabora.com>
+References: <c7f519e5-1945-bbf6-69b3-6ded932ceb50@collabora.com>
+Content-Type: text/html; charset=UTF-8
 List-ID: <kernelci.groups.io>
-To: Mark Brown <broonie@sirena.org.uk>
-Cc: kernelci@groups.io
+To: kernelci@groups.io, guillaume.tucker@gmail.com
 
-A while back, Mark suggested that we add links to the good/bad
-boot details on the front end like we do with boot reports.  I've
-now tested this on staging, see below.
+<html><head></head><body><div style="font-family: Verdana;font-size: 12.0px;"><div>
+<div>Please do not just think of &#39;building the kernel&#39; - ppl also want to test and record/visualize userspace tests (aka custom-built kernel+filesystem).</div>
 
-Related PR: https://github.com/kernelci/kernelci-backend/pull/82
+<div>Yes, the linux kernel is the main focus for kernelci.org . But let&#39;s keep the other possible use-cases in mind.</div>
 
-Cheers,
-Guillaume
+<div>&nbsp;</div>
 
+<div>Best,</div>
 
--------- Forwarded Message --------
-Subject: gtucker/kernelci-test boot bisection: kernelci-test-080-7-g27ce98d1fbec on r8a7796-m3ulcb #7105-staging
-Date: Thu, 18 Oct 2018 03:41:09 -0700 (PDT)
-From: kernelci.org bot <bot@kernelci.org>
-To: guillaume.tucker@collabora.com
+<div>Jan-Simon</div>
 
-Bisection result for gtucker/kernelci-test (kernelci-test-080-7-g27ce98d1fbec) on r8a7796-m3ulcb
+<div>&nbsp;
+<div name="quote" style="margin:10px 5px 5px 10px; padding: 10px 0 10px 10px; border-left:2px solid #C3D9E5; word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+<div style="margin:0 0 10px 0;"><b>Gesendet:</b>&nbsp;Donnerstag, 07. Februar 2019 um 18:57 Uhr<br/>
+<b>Von:</b>&nbsp;&quot;Guillaume Tucker&quot; &lt;guillaume.tucker@gmail.com&gt;<br/>
+<b>An:</b>&nbsp;kernelci@groups.io<br/>
+<b>Betreff:</b>&nbsp;KernelCI modular pipeline design document</div>
 
-  Good:       8292eaa HACK disable all{yes,no,mod}config and tinyconfig
-  Bad:        27ce98d NOISE Special cases aren't special enough...
-  Found:      ab29996 BREAK panic in initramfs
-
-Details:
-  Good:       https://staging.kernelci.org/boot/all/job/gtucker/branch/kernelci-test/kernel/kernelci-test-080/
-  Bad:        https://staging.kernelci.org/boot/all/job/gtucker/branch/kernelci-test/kernel/kernelci-test-080-7-g27ce98d1fbec/
-
-Checks:
-  revert:     PASS
-  verify:     PASS
-
-Parameters:
-  Tree:       gtucker
-  URL:        https://gitlab.collabora.com/gtucker/linux.git
-  Branch:     kernelci-test
-  Target:     r8a7796-m3ulcb
-  Lab:        lab-collabora-dev
-  Config:     defconfig
-  Plan:       boot
-
-Breaking commit found:
-
--------------------------------------------------------------------------------
-commit ab299966e33c6724a9e89970a2eadfbafb97bf14
-Author: Guillaume Tucker <guillaume.tucker@collabora.com>
-Date:   Wed Aug 23 08:42:33 2017 +0100
-
-    BREAK panic in initramfs
-
-diff --git a/init/initramfs.c b/init/initramfs.c
-index 1c021d5..3a89617 100644
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -609,6 +609,9 @@ static int __init populate_rootfs(void)
- 	printk(KERN_EMERG "Complex is better than complicated.\n");
- 	printk(KERN_EMERG "Flat is better than nested.\n");
- #endif
-+#if 1
-+	panic("THIS MUST FAIL");
-+#endif
- 	/* If available load the bootloader supplied initrd */
- 	if (initrd_start && !IS_ENABLED(CONFIG_INITRAMFS_FORCE)) {
- #ifdef CONFIG_BLK_DEV_RAM
--------------------------------------------------------------------------------
-
-
-Git bisection log:
-
--------------------------------------------------------------------------------
-git bisect start
-# good: [8292eaabafb50a6ce6e83d087a9e49d92a00e721] HACK disable all{yes,no,mod}config and tinyconfig
-git bisect good 8292eaabafb50a6ce6e83d087a9e49d92a00e721
-# bad: [27ce98d1fbec32c3632eee462bf396814cef6633] NOISE Special cases aren't special enough...
-git bisect bad 27ce98d1fbec32c3632eee462bf396814cef6633
-# good: [39688a625b377903604f0ccc58546a7e1fdda888] NOISE Flat is better than nested
-git bisect good 39688a625b377903604f0ccc58546a7e1fdda888
-# bad: [957613fc06941008b04c7568dea47a2e6db5fa2e] NOISE Sparse is better than dense
-git bisect bad 957613fc06941008b04c7568dea47a2e6db5fa2e
-# bad: [ab299966e33c6724a9e89970a2eadfbafb97bf14] BREAK panic in initramfs
-git bisect bad ab299966e33c6724a9e89970a2eadfbafb97bf14
-# first bad commit: [ab299966e33c6724a9e89970a2eadfbafb97bf14] BREAK panic in initramfs
--------------------------------------------------------------------------------
+<div name="quoted-content">Based on previous discussions around the topic of expanding<br/>
+KernelCI with alternatives to Jenkins, LAVA, our Mongo DB backend<br/>
+and current frontend, I&#39;ve made this first version of a document<br/>
+with design decisions as to how we can make it happen:<br/>
+<br/>
+<a href="https://docs.google.com/document/d/15F42HdHTO6NbSL53_iLl77lfe1XQKdWaHAf7XCNkKD8/edit?usp=sharing" target="_blank">https://docs.google.com/document/d/15F42HdHTO6NbSL53_iLl77lfe1XQKdWaHAf7XCNkKD8/edit?usp=sharing</a><br/>
+<br/>
+It doesn&#39;t cover all the details of how to actually implement<br/>
+things but sets some general lines which should be enough to keep<br/>
+us going towards a common objective. It would be great if we<br/>
+could adjust it whenever necessary and agree to use it as a<br/>
+reference.<br/>
+<br/>
+Please let me know what you think, and if you need to review or<br/>
+edit it so I&#39;ll give you permissions.<br/>
+<br/>
+Best wishes,<br/>
+Guillaume<br/>
+<br/>
+<br/>
+&nbsp;</div>
+</div>
+</div>
+</div></div></body></html>
