@@ -1,29 +1,81 @@
+Subject: Re: Baseline test plan and bootrr
+References: <e32f672f-da87-7f89-c9b3-93a0a56aaad0@collabora.com>
+From: "Tomeu Vizoso" <tomeu.vizoso@collabora.com>
+Message-ID: <df8ef2bb-b351-2003-5a1c-030a056d1d63@collabora.com>
+Date: Mon, 11 Feb 2019 14:16:21 +0100
 MIME-Version: 1.0
-References: <c7f519e5-1945-bbf6-69b3-6ded932ceb50@collabora.com> <trinity-797bf1b5-df32-4a98-acc4-60a007157e7d-1549642801182@3c-app-gmx-bs20>
-In-Reply-To: <trinity-797bf1b5-df32-4a98-acc4-60a007157e7d-1549642801182@3c-app-gmx-bs20>
-From: "Milosz Wasilewski" <milosz.wasilewski@linaro.org>
-Date: Mon, 11 Feb 2019 12:41:55 +0000
-Message-ID: <CAJrz+7L=iiJuhdYFU6YTytEGTpd_13E+BKYEqf1JEGq=7bmSSw@mail.gmail.com>
-Subject: Re: KernelCI modular pipeline design document
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <e32f672f-da87-7f89-c9b3-93a0a56aaad0@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, JanSimon.Moeller@gmx.de
-Cc: Guillaume Tucker <guillaume.tucker@gmail.com>
+To: kernelci@groups.io, guillaume.tucker@gmail.com
+Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 
-On Fri, 8 Feb 2019 at 16:33, "Jan-Simon M=C3=B6ller" <JanSimon.Moeller@gmx.=
-de> wrote:
->
-> Please do not just think of 'building the kernel' - ppl also want to test=
- and record/visualize userspace tests (aka custom-built kernel+filesystem).
-> Yes, the linux kernel is the main focus for kernelci.org . But let's keep=
- the other possible use-cases in mind.
->
+On 2/7/19 7:54 PM, Guillaume Tucker wrote:
+> Hi,
+> 
+> Currently, boot tests entirely rely on the LAVA logic to detect
+> when a login prompt has been reached.  While this mostly works,
+> it does not guarantee that the platform is actually usable or
+> that everything went smoothly during the boot.
+> 
+> For this reason, it would seem useful to introduce a "baseline"
+> test plan which would essentially boot and then do some fast
+> checks to verify that nothing is obviously broken.  This can
+> include things like grepping the kernel log for any errors and
+> checking that drivers have been initialised correctly.  There's a
+> lot that can be done in a few seconds with a basic ramdisk.
+> 
+> 
+> So we could have a list of regular expressions to detect any
+> issues in the kernel log and report a LAVA test case result for
+> each of them.  The log fragment associated with each match should
+> also be available to include the actual errors in a report.
+> Doing this on the device means we keep the test definition in the
+> same location as the other test plans, and we can run it like any
+> test suite.
+> 
+> 
+> Another useful tool is bootrr, which my colleague Enric has
+> started to use on some Chromebook devices.  It can check that
+> drivers have been loaded and devices probed correctly.  It's
+> entirely written in shell scripts so it can be run in our current
+> buildroot rootfs and can easily be extended to run other checks.
+> It looks up the device tree platform name and uses that to call a
+> platform-specific script with relevant drivers and devices.
+> Here's Enric's branch with such scripts for a few devices and a
+> LAVA test definition:
+> 
+>    https://github.com/eballetbo/bootrr/commits/master
+> 
+> and some sample runs with buildroot:
+> 
+>    https://lava.collabora.co.uk/scheduler/job/1478554
+>    https://lava.collabora.co.uk/scheduler/job/1478553
+> 
+> 
+> Does this look like something worth running in KernelCI?  Should
+> we just have a bootrr test plan or go for the "baseline" test
+> plan I'm suggesting, to be run on all devices and ultimately
+> instead of the current boot-to-login jobs?
 
-I don't think this is a good idea. Having other use cases in mind
-takes you down a very deep rabbit hole. Creating a general purpose
-result reporting tool is hard. Kernelci reports on kernel results and
-(as I understand) does it right. You can use these tools for other
-purposes but that's a different story.
+I think we could get a substantially part of the benefits that bootrr 
+provides by trivially checking that /sys/kernel/debug/devices_deferred is 
+empty after all modules have been loaded.
 
-milosz
+We probably want to do that even if we had bootrr, as I find unlikely 
+that people will maintain device-specific scripts for all the devices we 
+test on.
+
+Cheers,
+
+Tomeu
+
+
+
+> Best wishes,
+> Guillaume
+> 
+> 
+> 
