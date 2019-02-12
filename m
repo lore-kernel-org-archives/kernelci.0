@@ -1,387 +1,223 @@
-Message-ID: <1f439267adf9a492a5d178808ba23682338d7e58.camel@collabora.com>
-Subject: RFC: kernelCI media subsystem pilot (Test results for gtucker/kernelci-media - gtucker-kernelci-media-001-6-g1b2c6e5844d8)
-From: Ezequiel Garcia <ezequiel@collabora.com>
-Date: Thu, 18 Oct 2018 16:23:10 -0300
-References: <b569d756-5c4a-d0b4-e077-27a2e2ebb19d@collabora.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <c7f519e5-1945-bbf6-69b3-6ded932ceb50@collabora.com>
+ <trinity-797bf1b5-df32-4a98-acc4-60a007157e7d-1549642801182@3c-app-gmx-bs20>
+ <CAJrz+7L=iiJuhdYFU6YTytEGTpd_13E+BKYEqf1JEGq=7bmSSw@mail.gmail.com>
+ <7h1s4egozv.fsf@baylibre.com> <CAJrz+7Kpsq6u7CVQsfa57XiWTqEw4tAUcDXfsRUJmms9zZF-Jg@mail.gmail.com>
+ <7h4l99g650.fsf@baylibre.com>
+In-Reply-To: <7h4l99g650.fsf@baylibre.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Tue, 12 Feb 2019 13:36:03 +0000
+Message-ID: <CAH1_8nDnirNN8K=Du-tLgVo-GFnBSKoytnsRaKePwj8NGQ-sGQ@mail.gmail.com>
+Subject: Re: KernelCI modular pipeline design document
+Content-Type: multipart/alternative; boundary="0000000000005a79780581b28287"
 List-ID: <kernelci.groups.io>
-To: linux-media@vger.kernel.org, kernelci@groups.io
-Cc: Tomeu Vizoso <tomeu.vizoso@collabora.co.uk>, Gustavo Padovan <gustavo.padovan@collabora.co.uk>, Ana Guerrero Lopez <ana.guerrero@collabora.co.uk>, Guillaume Charles Tucker <guillaume.tucker@collabora.co.uk>
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: Milosz Wasilewski <milosz.wasilewski@linaro.org>, kernelci@groups.io, JanSimon.Moeller@gmx.de
 
-Hi everyone,
+--0000000000005a79780581b28287
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In Collabora, and as part of our kernelci work, we are doing
-research on kernel functional testing with kernelci.
+On Tue, Feb 12, 2019 at 1:14 AM Kevin Hilman <khilman@baylibre.com> wrote:
 
-For those new to kernelci, see https://github.com/kernelci/kernelci-doc/wiki/KernelCI 
-and https://kernelci.org/.
+> Milosz Wasilewski <milosz.wasilewski@linaro.org> writes:
+>
+> > On Mon, 11 Feb 2019 at 18:27, Kevin Hilman <khilman@baylibre.com> wrote=
+:
+> >>
+> >> "Milosz Wasilewski" <milosz.wasilewski@linaro.org> writes:
+> >>
+> >> > On Fri, 8 Feb 2019 at 16:33, "Jan-Simon M=C3=B6ller" <
+> JanSimon.Moeller@gmx.de> wrote:
+> >> >>
+> >> >> Please do not just think of 'building the kernel' - ppl also want t=
+o
+> test and record/visualize userspace tests (aka custom-built
+> kernel+filesystem).
+> >> >> Yes, the linux kernel is the main focus for kernelci.org . But
+> let's keep the other possible use-cases in mind.
+> >> >>
+> >> >
+> >> > I don't think this is a good idea. Having other use cases in mind
+> >> > takes you down a very deep rabbit hole. Creating a general purpose
+> >> > result reporting tool is hard. Kernelci reports on kernel results an=
+d
+> >> > (as I understand) does it right. You can use these tools for other
+> >> > purposes but that's a different story.
+> >>
+> >> Yes, we're focused on kernel-focused testing, but there are multiple
+> >> ways to test the kernel, most of which require a combination of kernel=
+ +
+> >> userspace/distro.
+> >>
+> >> I think Jan-Simon's point is that as we evolve, while we might focus o=
+n
+> >> buildroot/debian, we chould not design things in a way that prohibit
+> >> using the kernelCI code (and infra) for other types of kernel-focused
+> >> testing (e.g. Yocto, other distros, etc.)
+> >
+> > I guess 'kernel focused' is the key here. I read 'other possible use
+> > cases' as a request to build a general purpose reporting tool.
+> >
+> >>
+> >> Stated differently, the current *service* provided by kernelCI.org is
+> >> kernel-focused testing.  But, we could (and should, IMO) write the
+> >> *software* behind that service in a way that it could be used more
+> >> generically if desired.
+> >
+> > I've been trying to do that for last couple of years with no major
+> > success. It might be just me or the fact that it's really hard. Once
+> > you try to start reporting on android runtime or openstack things get
+> > really complicated.
+> >
+> > So if you consider running tests that exercise different parts of
+> > kernel (like graphics, scheduler...) as 'other use cases' than yes,
+> > KCI software should be able to do that. But I don't think going the
+> > route of 'general purpose reporting tool' is the right decision.
+>
+> Agreed.  We should stay focused on *kernel* CI.
+>
+> But, we don't want to (artificially) limit the types of
+> tools/distros/stacks we use to beat up on the kernel.
+>
 
-The goal is to lay down the infrastructure required to make
-automated test coverage an integral part of our feature
-and bugfix development process.
+So I think the key point is that root file systems may be coming
+from a dynamically generated URL on a per-job basis, and with the
+option to not include a ramdisk or a kernel image.  That would
+make it possible to replace the regular KernelCI build jobs with
+alternative ones that produce a full OS image or a Debian package
+or anything more than a plain kernel image, and then feed that
+into the reference implementation with LAVA etc...
 
-So, as a first attempt, we've decided to extend kernelci test
-v4l2 plan support, leading the way to extending
-other subsystems' test plans.
+In fact, I think it would just mean adding some template blocks
+around the deploy definitions in the base template.  Then anyone
+could crate a "downstream" test plan with alternative URLs using
+variables such as the kernel revision to point to a rootfs.
 
-Currently, kernelci looks for a list of branches every hour and
-see if anything changed. For any branch that has changed, it triggers
-builds, boots, tests and reports for each branch that had some changes
-since last time it ran.
+As far as the design document is concerned, it seems that we just
+need to state that we don't want to make it hard to achieve that.
 
-For this pilot, we've decided to target just a few devices:
-qemu with vivid, rk3399-gru-kevin and rk3288-veyron-jaq
-with uvc.
+On a related topic that has been discussed before, we may want to
+use more distros and user-space variants to test the kernel as
+part of KernelCI.  Say, to see whether the kernel doesn't hit any
+bugs when running an unusual init process or libc implementation
+etc...  That should be fine as long as the user-space is a means
+of testing a pure upstream kernel revision, so we're not actually
+testing the user-space itself or any downstream distro patches.
 
-We'd like to get some early feedback on this, so we are sending
-an example of how a kernelci report would look like, to trigger
-some discussion around
-the direction this should take.
+Guillaume
 
-Thanks!
+--0000000000005a79780581b28287
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-===
-Test results for:
-  Tree:    gtucker
-  Branch:  kernelci-media
-  Kernel:  gtucker-kernelci-media-002-2-gaa27eb0392c7
-  URL:     https://gitlab.collabora.com/gtucker/linux.git
-  Commit:  aa27eb0392c70adec713e911a9b5267a1d853624
-  Test plans: v4l2
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div di=
+r=3D"ltr"></div><br><div class=3D"gmail_quote"><div dir=3D"ltr">On Tue, Feb=
+ 12, 2019 at 1:14 AM Kevin Hilman &lt;<a href=3D"mailto:khilman@baylibre.co=
+m">khilman@baylibre.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
+204);padding-left:1ex">Milosz Wasilewski &lt;<a href=3D"mailto:milosz.wasil=
+ewski@linaro.org" target=3D"_blank">milosz.wasilewski@linaro.org</a>&gt; wr=
+ites:<br>
+<br>
+&gt; On Mon, 11 Feb 2019 at 18:27, Kevin Hilman &lt;<a href=3D"mailto:khilm=
+an@baylibre.com" target=3D"_blank">khilman@baylibre.com</a>&gt; wrote:<br>
+&gt;&gt;<br>
+&gt;&gt; &quot;Milosz Wasilewski&quot; &lt;<a href=3D"mailto:milosz.wasilew=
+ski@linaro.org" target=3D"_blank">milosz.wasilewski@linaro.org</a>&gt; writ=
+es:<br>
+&gt;&gt;<br>
+&gt;&gt; &gt; On Fri, 8 Feb 2019 at 16:33, &quot;Jan-Simon M=C3=B6ller&quot=
+; &lt;<a href=3D"mailto:JanSimon.Moeller@gmx.de" target=3D"_blank">JanSimon=
+.Moeller@gmx.de</a>&gt; wrote:<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; Please do not just think of &#39;building the kernel&#39;=
+ - ppl also want to test and record/visualize userspace tests (aka custom-b=
+uilt kernel+filesystem).<br>
+&gt;&gt; &gt;&gt; Yes, the linux kernel is the main focus for <a href=3D"ht=
+tp://kernelci.org" rel=3D"noreferrer" target=3D"_blank">kernelci.org</a> . =
+But let&#39;s keep the other possible use-cases in mind.<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; I don&#39;t think this is a good idea. Having other use cases=
+ in mind<br>
+&gt;&gt; &gt; takes you down a very deep rabbit hole. Creating a general pu=
+rpose<br>
+&gt;&gt; &gt; result reporting tool is hard. Kernelci reports on kernel res=
+ults and<br>
+&gt;&gt; &gt; (as I understand) does it right. You can use these tools for =
+other<br>
+&gt;&gt; &gt; purposes but that&#39;s a different story.<br>
+&gt;&gt;<br>
+&gt;&gt; Yes, we&#39;re focused on kernel-focused testing, but there are mu=
+ltiple<br>
+&gt;&gt; ways to test the kernel, most of which require a combination of ke=
+rnel +<br>
+&gt;&gt; userspace/distro.<br>
+&gt;&gt;<br>
+&gt;&gt; I think Jan-Simon&#39;s point is that as we evolve, while we might=
+ focus on<br>
+&gt;&gt; buildroot/debian, we chould not design things in a way that prohib=
+it<br>
+&gt;&gt; using the kernelCI code (and infra) for other types of kernel-focu=
+sed<br>
+&gt;&gt; testing (e.g. Yocto, other distros, etc.)<br>
+&gt;<br>
+&gt; I guess &#39;kernel focused&#39; is the key here. I read &#39;other po=
+ssible use<br>
+&gt; cases&#39; as a request to build a general purpose reporting tool.<br>
+&gt;<br>
+&gt;&gt;<br>
+&gt;&gt; Stated differently, the current *service* provided by kernelCI.org=
+ is<br>
+&gt;&gt; kernel-focused testing.=C2=A0 But, we could (and should, IMO) writ=
+e the<br>
+&gt;&gt; *software* behind that service in a way that it could be used more=
+<br>
+&gt;&gt; generically if desired.<br>
+&gt;<br>
+&gt; I&#39;ve been trying to do that for last couple of years with no major=
+<br>
+&gt; success. It might be just me or the fact that it&#39;s really hard. On=
+ce<br>
+&gt; you try to start reporting on android runtime or openstack things get<=
+br>
+&gt; really complicated.<br>
+&gt;<br>
+&gt; So if you consider running tests that exercise different parts of<br>
+&gt; kernel (like graphics, scheduler...) as &#39;other use cases&#39; than=
+ yes,<br>
+&gt; KCI software should be able to do that. But I don&#39;t think going th=
+e<br>
+&gt; route of &#39;general purpose reporting tool&#39; is the right decisio=
+n.<br>
+<br>
+Agreed.=C2=A0 We should stay focused on *kernel* CI.<br>
+<br>
+But, we don&#39;t want to (artificially) limit the types of<br>
+tools/distros/stacks we use to beat up on the kernel.<br></blockquote><div>=
+=C2=A0</div><div>So I think the key point is that root file systems may be =
+coming</div><div>from a dynamically generated URL on a per-job basis, and w=
+ith the</div><div>option to not include a ramdisk or a kernel image.=C2=A0 =
+That would</div><div>make it possible to replace the regular KernelCI build=
+ jobs with</div><div>alternative ones that produce a full OS image or a Deb=
+ian package</div><div>or anything more than a plain kernel image, and then =
+feed that</div><div>into the reference implementation with LAVA etc...</div=
+><div><br></div><div><div>In fact, I think it would just mean adding some t=
+emplate blocks</div><div>around the deploy definitions in the base template=
+.=C2=A0 Then anyone</div><div>could crate a &quot;downstream&quot; test pla=
+n with alternative URLs using</div><div>variables such as the kernel revisi=
+on to point to a rootfs.</div></div><div><br></div><div>As far as the desig=
+n document is concerned, it seems that we just</div><div>need to state that=
+ we don&#39;t want to make it hard to achieve that.</div><div><br></div><di=
+v><div>On a related topic that has been discussed before, we may want to</d=
+iv><div>use more distros and user-space variants to test the kernel as</div=
+><div>part of KernelCI.=C2=A0 Say, to see whether the kernel doesn&#39;t hi=
+t any</div><div>bugs when running an unusual init process or libc implement=
+ation</div><div>etc...=C2=A0 That should be fine as long as the user-space =
+is a means</div><div>of testing a pure upstream kernel revision, so we&#39;=
+re not actually</div><div>testing the user-space itself or any downstream d=
+istro patches.</div></div><div><br></div><div>Guillaume=C2=A0</div></div></=
+div></div></div></div>
 
-Summary
--------
-3 test groups results
-
-1  | v4l2       | rk3399-gru-kevin       | arm64 |  49 total:  17 PASS   4 FAIL  28 SKIP
-2  | v4l2       | rk3288-veyron-jaq      | arm   |  49 total:  17 PASS   4 FAIL  28 SKIP
-3  | v4l2       | qemu                   | arm64 | 168 total: 102 PASS   0 FAIL  66 SKIP
-
-
-Tests
------
-
-1  | v4l2       | rk3399-gru-kevin       | arm64 |  49 total:  17 PASS   4 FAIL  28 SKIP
-
-  Config:      defconfig
-  Lab Name:    lab-collabora-dev
-  Date:        2018-10-18 18:48:52.426000
-  TXT log:     http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig/lab-collabora-dev
-/v4l2-rk3399-gru-kevin.txt
-  HTML log:    http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig/lab-collabora-dev
-/v4l2-rk3399-gru-kevin.html
-  Rootfs:      http://staging-storage.kernelci.org/images/rootfs/debian/stretchv4l2/20181017.1//arm64/rootfs.cpio.gz
-  Test Git:    git://linuxtv.org/v4l-utils.git
-  Test Commit: e889b0d56757b9a74eb8c4c8cc2ebd5b18e228b2
-
-
-  Test cases:
-
-    * MMAP: FAIL
-    * blocking-wait: PASS
-    * read/write: SKIP
-    * read/write: SKIP
-    * read/write: SKIP
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: SKIP
-    * VIDIOC_G/S_PARM: FAIL
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: FAIL
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: FAIL
-    * VIDIOC_G/S_EDID: SKIP
-    * VIDIOC_DV_TIMINGS_CAP: SKIP
-    * VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: SKIP
-    * VIDIOC_ENUM/G/S/QUERY_STD: SKIP
-    * VIDIOC_G/S_AUDOUT: SKIP
-    * VIDIOC_G/S/ENUMOUTPUT: SKIP
-    * VIDIOC_ENUMAUDOUT: SKIP
-    * VIDIOC_G/S_FREQUENCY: SKIP
-    * VIDIOC_G/S_MODULATOR: SKIP
-    * VIDIOC_G/S_AUDIO: SKIP
-    * VIDIOC_G/S/ENUMINPUT: PASS
-    * VIDIOC_ENUMAUDIO: SKIP
-    * VIDIOC_S_HW_FREQ_SEEK: SKIP
-    * VIDIOC_G/S_FREQUENCY: SKIP
-    * VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: SKIP
-    * VIDIOC_LOG_STATUS: SKIP
-    * VIDIOC_DBG_G/S_REGISTER: SKIP
-    * for-unlimited-opens: PASS
-    * VIDIOC_G/S_PRIORITY: PASS
-    * VIDIOC_QUERYCAP: PASS
-    * second-/dev/video0-open: PASS
-    * VIDIOC_QUERYCAP: PASS
-    * MC-information-see-Media-Driver-Info-above: PASS
-
-
-
-2  | v4l2       | rk3288-veyron-jaq      | arm   |  49 total:  17 PASS   4 FAIL  28 SKIP
-
-  Config:      multi_v7_defconfig
-  Lab Name:    lab-collabora-dev
-  Date:        2018-10-18 17:00:41.724000
-  TXT log:     http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm/multi_v7_defconfig/lab-collab
-ora-dev/v4l2-rk3288-veyron-jaq.txt
-  HTML log:    http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm/multi_v7_defconfig/lab-collab
-ora-dev/v4l2-rk3288-veyron-jaq.html
-  Rootfs:      http://staging-storage.kernelci.org/images/rootfs/debian/stretchv4l2/20181017.1//armhf/rootfs.cpio.gz
-  Test Git:    git://linuxtv.org/v4l-utils.git
-  Test Commit: e889b0d56757b9a74eb8c4c8cc2ebd5b18e228b2
-
-
-  Test cases:
-
-    * MMAP: FAIL
-    * blocking-wait: PASS
-    * read/write: SKIP
-    * read/write: SKIP
-    * read/write: SKIP
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: SKIP
-    * VIDIOC_G/S_PARM: FAIL
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: FAIL
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: FAIL
-    * VIDIOC_G/S_EDID: SKIP
-    * VIDIOC_DV_TIMINGS_CAP: SKIP
-    * VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: SKIP
-    * VIDIOC_ENUM/G/S/QUERY_STD: SKIP
-    * VIDIOC_G/S_AUDOUT: SKIP
-    * VIDIOC_G/S/ENUMOUTPUT: SKIP
-    * VIDIOC_ENUMAUDOUT: SKIP
-    * VIDIOC_G/S_FREQUENCY: SKIP
-    * VIDIOC_G/S_MODULATOR: SKIP
-    * VIDIOC_G/S_AUDIO: SKIP
-    * VIDIOC_G/S/ENUMINPUT: PASS
-    * VIDIOC_ENUMAUDIO: SKIP
-    * VIDIOC_S_HW_FREQ_SEEK: SKIP
-    * VIDIOC_G/S_FREQUENCY: SKIP
-    * VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: SKIP
-    * VIDIOC_LOG_STATUS: SKIP
-    * VIDIOC_DBG_G/S_REGISTER: SKIP
-    * for-unlimited-opens: PASS
-    * VIDIOC_G/S_PRIORITY: PASS
-    * VIDIOC_QUERYCAP: PASS
-    * second-/dev/video0-open: PASS
-    * VIDIOC_QUERYCAP: PASS
-    * MC-information-see-Media-Driver-Info-above: PASS
-
-
-
-3  | v4l2       | qemu                   | arm64 | 168 total: 102 PASS   0 FAIL  66 SKIP
-
-  Config:      defconfig+virtualvideo
-  Lab Name:    lab-collabora-dev
-  Date:        2018-10-18 18:51:19.917000
-  TXT log:     http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig+virtualvideo/lab-
-collabora-dev/v4l2-qemu.txt
-  HTML log:    http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig+virtualvideo/lab-
-collabora-dev/v4l2-qemu.html
-  Rootfs:      http://staging-storage.kernelci.org/images/rootfs/debian/stretchv4l2/20181017.1//arm64/rootfs.cpio.gz
-  Test Git:    git://linuxtv.org/v4l-utils.git
-  Test Commit: e889b0d56757b9a74eb8c4c8cc2ebd5b18e228b2
-
-
-  Test cases:
-
-    * blocking-wait: PASS
-    * read/write: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: PASS
-    * VIDIOC_G/S_PARM: PASS
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * read/write: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: PASS
-    * VIDIOC_G/S_PARM: PASS
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * read/write: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: PASS
-    * VIDIOC_G/S_PARM: PASS
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: PASS
-    * VIDIOC_G/S_PARM: PASS
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: PASS
-    * VIDIOC_G/S_PARM: PASS
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
-    * VIDIOC_EXPBUF: PASS
-    * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
-    * VIDIOC_TRY_DECODER_CMD: SKIP
-    * VIDIOC_G_ENC_INDEX: SKIP
-    * VIDIOC_TRY_ENCODER_CMD: SKIP
-    * Scaling: SKIP
-    * Composing: SKIP
-    * Cropping: SKIP
-    * VIDIOC_G_SLICED_VBI_CAP: SKIP
-    * VIDIOC_S_FMT: PASS
-    * VIDIOC_TRY_FMT: PASS
-    * VIDIOC_G_FMT: PASS
-    * VIDIOC_G_FBUF: PASS
-    * VIDIOC_G/S_PARM: PASS
-    * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
-    * VIDIOC_G/S_JPEGCOMP: SKIP
-    * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
-    * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
-    * VIDIOC_G/S_CTRL: PASS
-    * VIDIOC_QUERYCTRL: PASS
-    * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
-    * VIDIOC_G/S_EDID: PASS
-    * VIDIOC_DV_TIMINGS_CAP: PASS
-    * VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: PASS
-    * VIDIOC_ENUM/G/S/QUERY_STD: PASS
-    * VIDIOC_G/S_AUDOUT: SKIP
-    * VIDIOC_G/S/ENUMOUTPUT: SKIP
-    * VIDIOC_ENUMAUDOUT: SKIP
-    * VIDIOC_G/S_FREQUENCY: PASS
-    * VIDIOC_G/S_MODULATOR: SKIP
-    * VIDIOC_G/S_AUDIO: PASS
-    * VIDIOC_G/S/ENUMINPUT: PASS
-    * VIDIOC_ENUMAUDIO: PASS
-    * VIDIOC_S_HW_FREQ_SEEK: SKIP
-    * VIDIOC_G/S_FREQUENCY: PASS
-    * VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: PASS
-    * VIDIOC_LOG_STATUS: PASS
-    * VIDIOC_DBG_G/S_REGISTER: SKIP
-    * for-unlimited-opens: PASS
-    * VIDIOC_G/S_PRIORITY: PASS
-    * VIDIOC_QUERYCAP: PASS
-    * second-/dev/video0-open: PASS
-    * VIDIOC_QUERYCAP: PASS
-
-
+--0000000000005a79780581b28287--
