@@ -1,88 +1,100 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: KernelCI modular pipeline design document
+In-Reply-To: <CAH1_8nDnirNN8K=Du-tLgVo-GFnBSKoytnsRaKePwj8NGQ-sGQ@mail.gmail.com>
+References: <c7f519e5-1945-bbf6-69b3-6ded932ceb50@collabora.com> <trinity-797bf1b5-df32-4a98-acc4-60a007157e7d-1549642801182@3c-app-gmx-bs20> <CAJrz+7L=iiJuhdYFU6YTytEGTpd_13E+BKYEqf1JEGq=7bmSSw@mail.gmail.com> <7h1s4egozv.fsf@baylibre.com> <CAJrz+7Kpsq6u7CVQsfa57XiWTqEw4tAUcDXfsRUJmms9zZF-Jg@mail.gmail.com> <7h4l99g650.fsf@baylibre.com> <CAH1_8nDnirNN8K=Du-tLgVo-GFnBSKoytnsRaKePwj8NGQ-sGQ@mail.gmail.com>
+Date: Tue, 12 Feb 2019 16:44:01 -0800
+Message-ID: <7hpnrwbjqm.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <158129CBC2E3B0B8.7959@groups.io>
-In-Reply-To: <158129CBC2E3B0B8.7959@groups.io>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Tue, 12 Feb 2019 13:46:26 +0000
-Message-ID: <CAH1_8nCtNfBQwO=o3GCLfcrCc2L9==zRafZaULRT-5kwo995Kw@mail.gmail.com>
-Subject: Re: Baseline test plan and bootrr
-Content-Type: multipart/alternative; boundary="00000000000086b0940581b2a798"
-List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-
---00000000000086b0940581b2a798
-Content-Type: text/plain; charset="UTF-8"
-
-On Thu, Feb 7, 2019 at 6:55 PM Guillaume Tucker via Groups.Io
-<guillaume.tucker=gmail.com@groups.io> wrote:
-
-> Hi,
->
-> Currently, boot tests entirely rely on the LAVA logic to detect
-> when a login prompt has been reached.  While this mostly works,
-> it does not guarantee that the platform is actually usable or
-> that everything went smoothly during the boot.
->
-> For this reason, it would seem useful to introduce a "baseline"
-> test plan which would essentially boot and then do some fast
-> checks to verify that nothing is obviously broken.  This can
-> include things like grepping the kernel log for any errors and
-> checking that drivers have been initialised correctly.  There's a
-> lot that can be done in a few seconds with a basic ramdisk.
->
->
-> So we could have a list of regular expressions to detect any
-> issues in the kernel log and report a LAVA test case result for
-> each of them.  The log fragment associated with each match should
-> also be available to include the actual errors in a report.
-> Doing this on the device means we keep the test definition in the
-> same location as the other test plans, and we can run it like any
-> test suite.
->
-
-Any thoughts on this part?  Does anyone see any issue with having
-a series of patterns to grep the kernel log and have a test case
-result for each of them in LAVA? (i.e. pass if pattern was not
-matched...)
-
-Guillaume
-
---00000000000086b0940581b2a798
-Content-Type: text/html; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+List-ID: <kernelci.groups.io>
+To: Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: Milosz Wasilewski <milosz.wasilewski@linaro.org>, kernelci@groups.io, JanSimon.Moeller@gmx.de
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr">On Thu, Feb 7, 2019 at 6:55 PM Guillaume =
-Tucker via Groups.Io &lt;guillaume.tucker=3D<a href=3D"mailto:gmail.com@gro=
-ups.io">gmail.com@groups.io</a>&gt; wrote:<br></div><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
-204,204);padding-left:1ex">Hi,<br>
-<br>
-Currently, boot tests entirely rely on the LAVA logic to detect<br>
-when a login prompt has been reached.=C2=A0 While this mostly works,<br>
-it does not guarantee that the platform is actually usable or<br>
-that everything went smoothly during the boot.<br>
-<br>
-For this reason, it would seem useful to introduce a &quot;baseline&quot;<b=
-r>
-test plan which would essentially boot and then do some fast<br>
-checks to verify that nothing is obviously broken.=C2=A0 This can<br>
-include things like grepping the kernel log for any errors and<br>
-checking that drivers have been initialised correctly.=C2=A0 There&#39;s a<=
-br>
-lot that can be done in a few seconds with a basic ramdisk.<br>
-<br>
-<br>
-So we could have a list of regular expressions to detect any<br>
-issues in the kernel log and report a LAVA test case result for<br>
-each of them.=C2=A0 The log fragment associated with each match should<br>
-also be available to include the actual errors in a report.<br>
-Doing this on the device means we keep the test definition in the<br>
-same location as the other test plans, and we can run it like any<br>
-test suite.<br></blockquote><div><br></div><div>Any thoughts on this part?=
-=C2=A0 Does anyone see any issue with having</div><div>a series of patterns=
- to grep the kernel log and have a test case</div><div>result for each of t=
-hem in LAVA? (i.e. pass if pattern was not</div><div>matched...)</div><div>=
-<br></div><div>Guillaume=C2=A0</div></div></div></div>
+Guillaume Tucker <guillaume.tucker@gmail.com> writes:
 
---00000000000086b0940581b2a798--
+> On Tue, Feb 12, 2019 at 1:14 AM Kevin Hilman <khilman@baylibre.com> wrote:
+>
+>> Milosz Wasilewski <milosz.wasilewski@linaro.org> writes:
+>>
+>> > On Mon, 11 Feb 2019 at 18:27, Kevin Hilman <khilman@baylibre.com> wrot=
+e:
+>> >>
+>> >> "Milosz Wasilewski" <milosz.wasilewski@linaro.org> writes:
+>> >>
+>> >> > On Fri, 8 Feb 2019 at 16:33, "Jan-Simon M=C3=B6ller" <
+>> JanSimon.Moeller@gmx.de> wrote:
+>> >> >>
+>> >> >> Please do not just think of 'building the kernel' - ppl also want =
+to
+>> test and record/visualize userspace tests (aka custom-built
+>> kernel+filesystem).
+>> >> >> Yes, the linux kernel is the main focus for kernelci.org . But
+>> let's keep the other possible use-cases in mind.
+>> >> >>
+>> >> >
+>> >> > I don't think this is a good idea. Having other use cases in mind
+>> >> > takes you down a very deep rabbit hole. Creating a general purpose
+>> >> > result reporting tool is hard. Kernelci reports on kernel results a=
+nd
+>> >> > (as I understand) does it right. You can use these tools for other
+>> >> > purposes but that's a different story.
+>> >>
+>> >> Yes, we're focused on kernel-focused testing, but there are multiple
+>> >> ways to test the kernel, most of which require a combination of kerne=
+l +
+>> >> userspace/distro.
+>> >>
+>> >> I think Jan-Simon's point is that as we evolve, while we might focus =
+on
+>> >> buildroot/debian, we chould not design things in a way that prohibit
+>> >> using the kernelCI code (and infra) for other types of kernel-focused
+>> >> testing (e.g. Yocto, other distros, etc.)
+>> >
+>> > I guess 'kernel focused' is the key here. I read 'other possible use
+>> > cases' as a request to build a general purpose reporting tool.
+>> >
+>> >>
+>> >> Stated differently, the current *service* provided by kernelCI.org is
+>> >> kernel-focused testing.  But, we could (and should, IMO) write the
+>> >> *software* behind that service in a way that it could be used more
+>> >> generically if desired.
+>> >
+>> > I've been trying to do that for last couple of years with no major
+>> > success. It might be just me or the fact that it's really hard. Once
+>> > you try to start reporting on android runtime or openstack things get
+>> > really complicated.
+>> >
+>> > So if you consider running tests that exercise different parts of
+>> > kernel (like graphics, scheduler...) as 'other use cases' than yes,
+>> > KCI software should be able to do that. But I don't think going the
+>> > route of 'general purpose reporting tool' is the right decision.
+>>
+>> Agreed.  We should stay focused on *kernel* CI.
+>>
+>> But, we don't want to (artificially) limit the types of
+>> tools/distros/stacks we use to beat up on the kernel.
+>>
+>
+> So I think the key point is that root file systems may be coming
+> from a dynamically generated URL on a per-job basis, and with the
+> option to not include a ramdisk or a kernel image.  That would
+> make it possible to replace the regular KernelCI build jobs with
+> alternative ones that produce a full OS image or a Debian package
+> or anything more than a plain kernel image, and then feed that
+> into the reference implementation with LAVA etc...
+>
+> In fact, I think it would just mean adding some template blocks
+> around the deploy definitions in the base template.  Then anyone
+> could crate a "downstream" test plan with alternative URLs using
+> variables such as the kernel revision to point to a rootfs.
+>
+> As far as the design document is concerned, it seems that we just
+> need to state that we don't want to make it hard to achieve that.
+
+We probably also need to flesh out a bit more of the metadata fields=20
+that would help describe a initramfs+rootfs environment so that our
+visualization and email reporting can show the basics of what was used.
+
+Kevin
