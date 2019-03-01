@@ -1,405 +1,55 @@
-Subject: Re: RFC: kernelCI media subsystem pilot (Test results for gtucker/kernelci-media - gtucker-kernelci-media-001-6-g1b2c6e5844d8)
-References: <b569d756-5c4a-d0b4-e077-27a2e2ebb19d@collabora.com>
- <1f439267adf9a492a5d178808ba23682338d7e58.camel@collabora.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Message-ID: <bea38cb8-5e1b-32b1-2d81-e6038b8d6c68@xs4all.nl>
-Date: Fri, 19 Oct 2018 09:06:37 +0200
+Date: Fri, 1 Mar 2019 11:49:58 +0000
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: next/master boot bisection: next-20190215 on beaglebone-black
+Message-ID: <20190301114958.GB7429@sirena.org.uk>
+References: <5c6702da.1c69fb81.12a14.4ece@mx.google.com>
+ <20190215104325.039dbbd9c3bfb35b95f9247b@linux-foundation.org>
+ <20190215185151.GG7897@sirena.org.uk>
+ <20190226155948.299aa894a5576e61dda3e5aa@linux-foundation.org>
+ <CAPcyv4ivjC8fNkfjdFyaYCAjGh7wtvFQnoPpOcR=VNZ=c6d6Rg@mail.gmail.com>
+ <20190228151438.fc44921e66f2f5d393c8d7b4@linux-foundation.org>
+ <CAPcyv4hDmmK-L=0txw7L9O8YgvAQxZfVFiSoB4LARRnGQ3UC7Q@mail.gmail.com>
+ <026b5082-32f2-e813-5396-e4a148c813ea@collabora.com>
+ <20190301104011.GB5156@rapoport-lnx>
 MIME-Version: 1.0
-In-Reply-To: <1f439267adf9a492a5d178808ba23682338d7e58.camel@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20190301104011.GB5156@rapoport-lnx>
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vGgW1X5XWziG23Ko"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Ezequiel Garcia <ezequiel@collabora.com>, linux-media@vger.kernel.org, kernelci@groups.io
-Cc: Tomeu Vizoso <tomeu.vizoso@collabora.co.uk>, Gustavo Padovan <gustavo.padovan@collabora.co.uk>, Ana Guerrero Lopez <ana.guerrero@collabora.co.uk>, Guillaume Charles Tucker <guillaume.tucker@collabora.co.uk>
+To: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, Dan Williams <dan.j.williams@intel.com>, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Matt Hart <matthew.hart@linaro.org>, Stephen Rothwell <sfr@canb.auug.org.au>, khilman@baylibre.com, enric.balletbo@collabora.com, Nicholas Piggin <npiggin@gmail.com>, Dominik Brodowski <linux@dominikbrodowski.net>, Masahiro Yamada <yamada.masahiro@socionext.com>, Kees Cook <keescook@chromium.org>, Adrian Reber <adrian@lisas.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Linux MM <linux-mm@kvack.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Richard Guy Briggs <rgb@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, info@kernelci.org
 
-On 10/18/2018 09:23 PM, Ezequiel Garcia wrote:
-> Hi everyone,
-> 
-> In Collabora, and as part of our kernelci work, we are doing
-> research on kernel functional testing with kernelci.
-> 
-> For those new to kernelci, see https://github.com/kernelci/kernelci-doc/wiki/KernelCI 
-> and https://kernelci.org/.
-> 
-> The goal is to lay down the infrastructure required to make
-> automated test coverage an integral part of our feature
-> and bugfix development process.
-> 
-> So, as a first attempt, we've decided to extend kernelci test
-> v4l2 plan support, leading the way to extending
-> other subsystems' test plans.
-> 
-> Currently, kernelci looks for a list of branches every hour and
-> see if anything changed. For any branch that has changed, it triggers
-> builds, boots, tests and reports for each branch that had some changes
-> since last time it ran.
-> 
-> For this pilot, we've decided to target just a few devices:
-> qemu with vivid, rk3399-gru-kevin and rk3288-veyron-jaq
-> with uvc.
+--vGgW1X5XWziG23Ko
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It's running v4l2-compliance, right?
+On Fri, Mar 01, 2019 at 12:40:11PM +0200, Mike Rapoport wrote:
 
-Looking at the test cases, they appear in the reverse order that v4l2-compliance
-performs them, that's a bit odd.
+> Another thing to consider is adding "earlyprintk debug" to the kernel
+> command line for the boot tests.
 
-And if we include uvc in the testing, then I need to prioritize the work I
-started for uvc to remove the last FAILs.
+We probably don't want to do that on all the tests since it does
+occasionally change timing enough to "fix" things but doing a final boot
+with the failing commit and earlyprintk turned on is definitely a good
+idea.
 
-Regards,
+--vGgW1X5XWziG23Ko
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	Hans
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> We'd like to get some early feedback on this, so we are sending
-> an example of how a kernelci report would look like, to trigger
-> some discussion around
-> the direction this should take.
-> 
-> Thanks!
-> 
-> ===
-> Test results for:
->   Tree:    gtucker
->   Branch:  kernelci-media
->   Kernel:  gtucker-kernelci-media-002-2-gaa27eb0392c7
->   URL:     https://gitlab.collabora.com/gtucker/linux.git
->   Commit:  aa27eb0392c70adec713e911a9b5267a1d853624
->   Test plans: v4l2
-> 
-> Summary
-> -------
-> 3 test groups results
-> 
-> 1  | v4l2       | rk3399-gru-kevin       | arm64 |  49 total:  17 PASS   4 FAIL  28 SKIP
-> 2  | v4l2       | rk3288-veyron-jaq      | arm   |  49 total:  17 PASS   4 FAIL  28 SKIP
-> 3  | v4l2       | qemu                   | arm64 | 168 total: 102 PASS   0 FAIL  66 SKIP
-> 
-> 
-> Tests
-> -----
-> 
-> 1  | v4l2       | rk3399-gru-kevin       | arm64 |  49 total:  17 PASS   4 FAIL  28 SKIP
-> 
->   Config:      defconfig
->   Lab Name:    lab-collabora-dev
->   Date:        2018-10-18 18:48:52.426000
->   TXT log:     http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig/lab-collabora-dev
-> /v4l2-rk3399-gru-kevin.txt
->   HTML log:    http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig/lab-collabora-dev
-> /v4l2-rk3399-gru-kevin.html
->   Rootfs:      http://staging-storage.kernelci.org/images/rootfs/debian/stretchv4l2/20181017.1//arm64/rootfs.cpio.gz
->   Test Git:    git://linuxtv.org/v4l-utils.git
->   Test Commit: e889b0d56757b9a74eb8c4c8cc2ebd5b18e228b2
-> 
-> 
->   Test cases:
-> 
->     * MMAP: FAIL
->     * blocking-wait: PASS
->     * read/write: SKIP
->     * read/write: SKIP
->     * read/write: SKIP
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: SKIP
->     * VIDIOC_G/S_PARM: FAIL
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: FAIL
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: FAIL
->     * VIDIOC_G/S_EDID: SKIP
->     * VIDIOC_DV_TIMINGS_CAP: SKIP
->     * VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: SKIP
->     * VIDIOC_ENUM/G/S/QUERY_STD: SKIP
->     * VIDIOC_G/S_AUDOUT: SKIP
->     * VIDIOC_G/S/ENUMOUTPUT: SKIP
->     * VIDIOC_ENUMAUDOUT: SKIP
->     * VIDIOC_G/S_FREQUENCY: SKIP
->     * VIDIOC_G/S_MODULATOR: SKIP
->     * VIDIOC_G/S_AUDIO: SKIP
->     * VIDIOC_G/S/ENUMINPUT: PASS
->     * VIDIOC_ENUMAUDIO: SKIP
->     * VIDIOC_S_HW_FREQ_SEEK: SKIP
->     * VIDIOC_G/S_FREQUENCY: SKIP
->     * VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: SKIP
->     * VIDIOC_LOG_STATUS: SKIP
->     * VIDIOC_DBG_G/S_REGISTER: SKIP
->     * for-unlimited-opens: PASS
->     * VIDIOC_G/S_PRIORITY: PASS
->     * VIDIOC_QUERYCAP: PASS
->     * second-/dev/video0-open: PASS
->     * VIDIOC_QUERYCAP: PASS
->     * MC-information-see-Media-Driver-Info-above: PASS
-> 
-> 
-> 
-> 2  | v4l2       | rk3288-veyron-jaq      | arm   |  49 total:  17 PASS   4 FAIL  28 SKIP
-> 
->   Config:      multi_v7_defconfig
->   Lab Name:    lab-collabora-dev
->   Date:        2018-10-18 17:00:41.724000
->   TXT log:     http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm/multi_v7_defconfig/lab-collab
-> ora-dev/v4l2-rk3288-veyron-jaq.txt
->   HTML log:    http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm/multi_v7_defconfig/lab-collab
-> ora-dev/v4l2-rk3288-veyron-jaq.html
->   Rootfs:      http://staging-storage.kernelci.org/images/rootfs/debian/stretchv4l2/20181017.1//armhf/rootfs.cpio.gz
->   Test Git:    git://linuxtv.org/v4l-utils.git
->   Test Commit: e889b0d56757b9a74eb8c4c8cc2ebd5b18e228b2
-> 
-> 
->   Test cases:
-> 
->     * MMAP: FAIL
->     * blocking-wait: PASS
->     * read/write: SKIP
->     * read/write: SKIP
->     * read/write: SKIP
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: SKIP
->     * VIDIOC_G/S_PARM: FAIL
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: FAIL
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: FAIL
->     * VIDIOC_G/S_EDID: SKIP
->     * VIDIOC_DV_TIMINGS_CAP: SKIP
->     * VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: SKIP
->     * VIDIOC_ENUM/G/S/QUERY_STD: SKIP
->     * VIDIOC_G/S_AUDOUT: SKIP
->     * VIDIOC_G/S/ENUMOUTPUT: SKIP
->     * VIDIOC_ENUMAUDOUT: SKIP
->     * VIDIOC_G/S_FREQUENCY: SKIP
->     * VIDIOC_G/S_MODULATOR: SKIP
->     * VIDIOC_G/S_AUDIO: SKIP
->     * VIDIOC_G/S/ENUMINPUT: PASS
->     * VIDIOC_ENUMAUDIO: SKIP
->     * VIDIOC_S_HW_FREQ_SEEK: SKIP
->     * VIDIOC_G/S_FREQUENCY: SKIP
->     * VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: SKIP
->     * VIDIOC_LOG_STATUS: SKIP
->     * VIDIOC_DBG_G/S_REGISTER: SKIP
->     * for-unlimited-opens: PASS
->     * VIDIOC_G/S_PRIORITY: PASS
->     * VIDIOC_QUERYCAP: PASS
->     * second-/dev/video0-open: PASS
->     * VIDIOC_QUERYCAP: PASS
->     * MC-information-see-Media-Driver-Info-above: PASS
-> 
-> 
-> 
-> 3  | v4l2       | qemu                   | arm64 | 168 total: 102 PASS   0 FAIL  66 SKIP
-> 
->   Config:      defconfig+virtualvideo
->   Lab Name:    lab-collabora-dev
->   Date:        2018-10-18 18:51:19.917000
->   TXT log:     http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig+virtualvideo/lab-
-> collabora-dev/v4l2-qemu.txt
->   HTML log:    http://staging-storage.kernelci.org/gtucker/kernelci-media/gtucker-kernelci-media-002-2-gaa27eb0392c7/arm64/defconfig+virtualvideo/lab-
-> collabora-dev/v4l2-qemu.html
->   Rootfs:      http://staging-storage.kernelci.org/images/rootfs/debian/stretchv4l2/20181017.1//arm64/rootfs.cpio.gz
->   Test Git:    git://linuxtv.org/v4l-utils.git
->   Test Commit: e889b0d56757b9a74eb8c4c8cc2ebd5b18e228b2
-> 
-> 
->   Test cases:
-> 
->     * blocking-wait: PASS
->     * read/write: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: PASS
->     * VIDIOC_G/S_PARM: PASS
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * read/write: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: PASS
->     * VIDIOC_G/S_PARM: PASS
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * read/write: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: PASS
->     * VIDIOC_G/S_PARM: PASS
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: PASS
->     * VIDIOC_G/S_PARM: PASS
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: PASS
->     * VIDIOC_G/S_PARM: PASS
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
->     * VIDIOC_EXPBUF: PASS
->     * VIDIOC_REQBUFS/CREATE_BUFS/QUERYBUF: PASS
->     * VIDIOC_TRY_DECODER_CMD: SKIP
->     * VIDIOC_G_ENC_INDEX: SKIP
->     * VIDIOC_TRY_ENCODER_CMD: SKIP
->     * Scaling: SKIP
->     * Composing: SKIP
->     * Cropping: SKIP
->     * VIDIOC_G_SLICED_VBI_CAP: SKIP
->     * VIDIOC_S_FMT: PASS
->     * VIDIOC_TRY_FMT: PASS
->     * VIDIOC_G_FMT: PASS
->     * VIDIOC_G_FBUF: PASS
->     * VIDIOC_G/S_PARM: PASS
->     * VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: PASS
->     * VIDIOC_G/S_JPEGCOMP: SKIP
->     * VIDIOC_UNSUBSCRIBE_EVENT/DQEVENT: PASS
->     * VIDIOC_G/S/TRY_EXT_CTRLS: PASS
->     * VIDIOC_G/S_CTRL: PASS
->     * VIDIOC_QUERYCTRL: PASS
->     * VIDIOC_QUERY_EXT_CTRL/QUERYMENU: PASS
->     * VIDIOC_G/S_EDID: PASS
->     * VIDIOC_DV_TIMINGS_CAP: PASS
->     * VIDIOC_ENUM/G/S/QUERY_DV_TIMINGS: PASS
->     * VIDIOC_ENUM/G/S/QUERY_STD: PASS
->     * VIDIOC_G/S_AUDOUT: SKIP
->     * VIDIOC_G/S/ENUMOUTPUT: SKIP
->     * VIDIOC_ENUMAUDOUT: SKIP
->     * VIDIOC_G/S_FREQUENCY: PASS
->     * VIDIOC_G/S_MODULATOR: SKIP
->     * VIDIOC_G/S_AUDIO: PASS
->     * VIDIOC_G/S/ENUMINPUT: PASS
->     * VIDIOC_ENUMAUDIO: PASS
->     * VIDIOC_S_HW_FREQ_SEEK: SKIP
->     * VIDIOC_G/S_FREQUENCY: PASS
->     * VIDIOC_G/S_TUNER/ENUM_FREQ_BANDS: PASS
->     * VIDIOC_LOG_STATUS: PASS
->     * VIDIOC_DBG_G/S_REGISTER: SKIP
->     * for-unlimited-opens: PASS
->     * VIDIOC_G/S_PRIORITY: PASS
->     * VIDIOC_QUERYCAP: PASS
->     * second-/dev/video0-open: PASS
->     * VIDIOC_QUERYCAP: PASS
-> 
-> 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlx5HGUACgkQJNaLcl1U
+h9BTkQf/VrjYWVkvN4y2fMqvKBsYfN7JSwOOYZywThA3uYBAEhgyQgEQU9gfCFZG
+GCArUfZPSoLF+QKmaRiH/otILLye8aZDOLfrye3mxgyjtGkOGGQ/MKg1ez+2tKJ5
+l/hD+wsMILytbH95oBmXw4GeCKc/7xnBNSAKMBf17X57IIgP5G8qdVxqEFxJc7N/
+W9cKcQInyoqMCv4zgu+A6H3cvtYPkArOyoXfaobPn08evl9nj2foLmaJ59jBB3fR
+Qsaf10R/O4Wj1lZQx6hLZGGHNIkBNmx1eNdKhCthLbsFs/isfEQo4IFkZ2t2B7ZT
+FhMt4KB/mtFOrf0uwjZXISDKJ8dGGQ==
+=owaE
+-----END PGP SIGNATURE-----
 
+--vGgW1X5XWziG23Ko--
