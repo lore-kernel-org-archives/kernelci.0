@@ -1,51 +1,53 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Tue, 5 Mar 2019 11:04:26 -0600
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Re: staging projects in github
+Message-ID: <20190305170426.4kuzc4fq7fmvoeud@xps.therub.org>
+References: <7himwxvr6m.fsf@baylibre.com>
+ <CAH+k93EBGwnAbwvCDF3PmaCvS+Fpk6FTVtgdB37h-twqZf4hvQ@mail.gmail.com>
 MIME-Version: 1.0
-From: "'Todd Kjos' via info" <info@kernelci.org>
-Date: Tue, 5 Mar 2019 08:46:31 -0800
-Message-ID: <CAHRSSEzE-foFJaS4mmaosksXofwg8TaK=6ro8HFPGMV_d6=8sg@mail.gmail.com>
-Subject: branches not building?
-Reply-To: Todd Kjos <tkjos@google.com>
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: multipart/alternative; boundary="00000000000032fbd905835b9ea0"
+In-Reply-To: <CAH+k93EBGwnAbwvCDF3PmaCvS+Fpk6FTVtgdB37h-twqZf4hvQ@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: kernelci@groups.io, matthew.hart@linaro.org
+Cc: Kevin Hilman <khilman@baylibre.com>
 
---00000000000032fbd905835b9ea0
-Content-Type: text/plain; charset="UTF-8"
+On Tue, Mar 05, 2019 at 04:48:52PM +0000, Matt Hart wrote:
+> On Tue, 5 Mar 2019 at 05:14, Kevin Hilman <khilman@baylibre.com> wrote:
+> >
+> > Can we consolidate the various "-staging" project in github with the
+> > originals?  I've never fully understood why we created separate github
+> > projects, when we should just be using a staging branch within the main
+> > project.
+> 
+> I *think* it was because you couldnt make a pull request against a branch,
+> however I think you can now set the default branch for PR on a project.
+> As long as that works, I'm all for it.
 
-A bunch of our Android branches were modified yesterday, but there were no
-kernelci builds... are they no longer being tested? Here's a list of
-branches that had changes yesterday and haven't been built:
+I'm not sure if I'm considering all of the use-cases, but in the past
+I've much preferred having staging == "master" and then tagging for
+production releases. This does make it difficult (but not impossible) to
+have things in staging that are not promoted to production.
 
-android-3.18-o-release
-android-3.18-o-mr1
-android-4.4-o-release
-android-4.4-o-mr1
-android-4.4-p-release
-android-4.9-o-release
-android-4.9-o-mr1
-android-4.9-p-release
-android-4.14-p-release
+As a user of kernelci, it does seem quite slow to get changes included
+into staging, and then also to wait for them get into production. I'm
+really interested in anything we can do to improve this turnaround time.
 
-They were changed at about 4pm PST yesterday (~16 hours ago) which is
-normally plenty of time to get kernelci results...
+Dan
 
--Todd
-
---00000000000032fbd905835b9ea0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">A bunch of our Android branches were modified yesterday, b=
-ut there were no kernelci builds... are they no longer being tested? Here&#=
-39;s a list of branches that had changes yesterday and haven&#39;t been bui=
-lt:<div><br></div><div>android-3.18-o-release</div><div>android-3.18-o-mr1<=
-/div><div>android-4.4-o-release</div><div>android-4.4-o-mr1</div><div>andro=
-id-4.4-p-release</div><div>android-4.9-o-release</div><div>android-4.9-o-mr=
-1</div><div>android-4.9-p-release</div><div>android-4.14-p-release</div><di=
-v><br></div><div>They were changed at about 4pm PST yesterday (~16 hours ag=
-o) which is normally plenty of time to get kernelci results...</div><div><b=
-r></div><div>-Todd</div><div><br></div></div>
-
---00000000000032fbd905835b9ea0--
+> 
+> >
+> > I've seen this come up a couple times now in causing confusion with new
+> > developers.
+> >
+> > Thanks,
+> >
+> > Kevin
+> >
+> >
+> > 
+> >
+> 
+> 
+> 
