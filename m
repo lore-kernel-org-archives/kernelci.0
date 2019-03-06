@@ -1,255 +1,172 @@
-MIME-Version: 1.0
-References: <1eb2fcf9-d08b-0d38-9aee-c0206089b5d7@collabora.com>
- <20190305121412.GA7513@sirena.org.uk> <20190305220439.bzmsdtpd5gvrr3t6@xps.therub.org>
-In-Reply-To: <20190305220439.bzmsdtpd5gvrr3t6@xps.therub.org>
 From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Wed, 6 Mar 2019 09:16:18 +0000
-Message-ID: <CAH1_8nAYcGBO61hsbe1-8tJpcBE5=QZ6XmLY81h7jhoVu9av4g@mail.gmail.com>
-Subject: Re: Hourly, daily, weekly monitoring
-Content-Type: multipart/alternative; boundary="000000000000e8bcf00583697151"
+Subject: Re: next/master boot bisection: next-20190215 on beaglebone-black
+References: <5c6702da.1c69fb81.12a14.4ece@mx.google.com>
+ <20190215104325.039dbbd9c3bfb35b95f9247b@linux-foundation.org>
+ <20190215185151.GG7897@sirena.org.uk>
+ <20190226155948.299aa894a5576e61dda3e5aa@linux-foundation.org>
+ <CAPcyv4ivjC8fNkfjdFyaYCAjGh7wtvFQnoPpOcR=VNZ=c6d6Rg@mail.gmail.com>
+ <20190228151438.fc44921e66f2f5d393c8d7b4@linux-foundation.org>
+ <CAPcyv4hDmmK-L=0txw7L9O8YgvAQxZfVFiSoB4LARRnGQ3UC7Q@mail.gmail.com>
+ <026b5082-32f2-e813-5396-e4a148c813ea@collabora.com>
+ <20190301124100.62a02e2f622ff6b5f178a7c3@linux-foundation.org>
+ <3fafb552-ae75-6f63-453c-0d0e57d818f3@collabora.com>
+ <CAPcyv4hMNiiM11ULjbOnOf=9N=yCABCRsAYLpjXs+98bRoRpCA@mail.gmail.com>
+Message-ID: <36faea07-139c-b97d-3585-f7d6d362abc3@collabora.com>
+Date: Wed, 6 Mar 2019 10:14:47 +0000
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4hMNiiM11ULjbOnOf=9N=yCABCRsAYLpjXs+98bRoRpCA@mail.gmail.com>
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Dan Rue <dan.rue@linaro.org>
-Cc: kernelci@groups.io, broonie@kernel.org, Linus Walleij <linus.walleij@linaro.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Mark Brown <broonie@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Matt Hart <matthew.hart@linaro.org>, Stephen Rothwell <sfr@canb.auug.org.au>, khilman@baylibre.com, enric.balletbo@collabora.com, Nicholas Piggin <npiggin@gmail.com>, Dominik Brodowski <linux@dominikbrodowski.net>, Masahiro Yamada <yamada.masahiro@socionext.com>, Kees Cook <keescook@chromium.org>, Adrian Reber <adrian@lisas.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Linux MM <linux-mm@kvack.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Richard Guy Briggs <rgb@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, info@kernelci.org
 
---000000000000e8bcf00583697151
-Content-Type: text/plain; charset="UTF-8"
+On 01/03/2019 23:23, Dan Williams wrote:
+> On Fri, Mar 1, 2019 at 1:05 PM Guillaume Tucker
+> <guillaume.tucker@collabora.com> wrote:
+>>
+>> On 01/03/2019 20:41, Andrew Morton wrote:
+>>> On Fri, 1 Mar 2019 09:25:24 +0100 Guillaume Tucker <guillaume.tucker@collabora.com> wrote:
+>>>
+>>>>>>> Michal had asked if the free space accounting fix up addressed this
+>>>>>>> boot regression? I was awaiting word on that.
+>>>>>>
+>>>>>> hm, does bot@kernelci.org actually read emails?  Let's try info@ as well..
+>>>>
+>>>> bot@kernelci.org is not person, it's a send-only account for
+>>>> automated reports.  So no, it doesn't read emails.
+>>>>
+>>>> I guess the tricky point here is that the authors of the commits
+>>>> found by bisections may not always have the hardware needed to
+>>>> reproduce the problem.  So it needs to be dealt with on a
+>>>> case-by-case basis: sometimes they do have the hardware,
+>>>> sometimes someone else on the list or on CC does, and sometimes
+>>>> it's better for the people who have access to the test lab which
+>>>> ran the KernelCI test to deal with it.
+>>>>
+>>>> This case seems to fall into the last category.  As I have access
+>>>> to the Collabora lab, I can do some quick checks to confirm
+>>>> whether the proposed patch does fix the issue.  I hadn't realised
+>>>> that someone was waiting for this to happen, especially as the
+>>>> BeagleBone Black is a very common platform.  Sorry about that,
+>>>> I'll take a look today.
+>>>>
+>>>> It may be a nice feature to be able to give access to the
+>>>> KernelCI test infrastructure to anyone who wants to debug an
+>>>> issue reported by KernelCI or verify a fix, so they won't need to
+>>>> have the hardware locally.  Something to think about for the
+>>>> future.
+>>>
+>>> Thanks, that all sounds good.
+>>>
+>>>>>> Is it possible to determine whether this regression is still present in
+>>>>>> current linux-next?
+>>>>
+>>>> I'll try to re-apply the patch that caused the issue, then see if
+>>>> the suggested change fixes it.  As far as the current linux-next
+>>>> master branch is concerned, KernelCI boot tests are passing fine
+>>>> on that platform.
+>>>
+>>> They would, because I dropped
+>>> mm-shuffle-default-enable-all-shuffling.patch, so your tests presumably
+>>> now have shuffling disabled.
+>>>
+>>> Is it possible to add the below to linux-next and try again?
+>>
+>> I've actually already done that, and essentially the issue can
+>> still be reproduced by applying that patch.  See this branch:
+>>
+>>   https://gitlab.collabora.com/gtucker/linux/commits/next-20190301-beaglebone-black-debug
+>>
+>> next-20190301 boots fine but the head fails, using
+>> multi_v7_defconfig + SMP=n in both cases and
+>> SHUFFLE_PAGE_ALLOCATOR=y enabled in the 2nd case as a result
+>> of the change in the default value.
+>>
+>> The change suggested by Michal Hocko on Feb 15th has now been
+>> applied in linux-next, it's part of this commit but as
+>> explained above it does not actually resolve the boot failure:
+>>
+>>   98cf198ee8ce mm: move buddy list manipulations into helpers
+>>
+>> I can send more details on Monday and do a bit of debugging to
+>> help narrowing down the problem.  Please let me know if
+>> there's anything in particular that would seem be worth
+>> trying.
+>>
+> 
+> Thanks for taking a look!
+> 
+> Some questions when you get a chance:
+> 
+> Is there an early-printk facility that can be turned on to see how far
+> we get in the boot?
 
-On Tue, Mar 5, 2019 at 10:04 PM Dan Rue <dan.rue@linaro.org> wrote:
+Yes, I've done that now by enabling CONFIG_DEBUG_AM33XXUART1 and
+earlyprintk in the command line.  Here's the result, with the
+commit cherry picked on top of next-20190304:
 
-> On Tue, Mar 05, 2019 at 12:14:12PM +0000, Mark Brown wrote:
-> > On Mon, Mar 04, 2019 at 01:20:25PM +0000, Guillaume Tucker wrote:
-> >
-> > > I'm not entirely sure how much flexibility Jenkins can offer in
-> > > that respect, but at least having 3 versions of the monitor job
-> > > that runs every hour, every day and every week should cover all
-> > > the cases.  If possible, we may be able to implement something
-> > > that dynamically schedules the next check for each branch.
-> >
-> > One big concern I have with this is latency.  One of the common cases
-> > where people don't need builds all the time is when they're mainly
-> > looking for checks before they submit pull requests.  For those if you
-> > might have to wait almost a day before we even queue the build it might
-> > be a bit of an issue.  If it was just a "skip this tree if we built it
-> > in the past X time" check that wouldn't be such an issue, it's just if
-> > the daily check runs at some fixed time each day or whatever that it
-> > might add huge extra latency.
-> >
-> > Another idea I just thought of but I'm not sure is practical would be to
-> > only check some trees if the Jenkins queue is less than some number of
-> > builds - that way if we're busy we won't add extra load, but it feels
-> > like it's more trouble than it's worth to implement fairly.
->
+  https://lava.collabora.co.uk/scheduler/job/1526326
 
-These are different use-cases, some people have said that they
-wanted their branches checked every morning (linusw) or every
-Monday (media).  For real-time feedback, we need to do something
-quite different indeed.  With the ability to whitelist some
-defconfigs and arches, we could have quick builds for some
-maintainers' trees to optimise the turnaround time / test
-coverage ratio.
+[    1.379522] ti-sysc 4804a000.target-module: sysc_flags 00000222 != 00000022
+[    1.396718] Unable to handle kernel paging request at virtual address 77bb4003
+[    1.404203] pgd = (ptrval)
+[    1.406971] [77bb4003] *pgd=00000000
+[    1.410650] Internal error: Oops: 5 [#1] ARM
+[...]
+[    1.672310] [<c07051a0>] (clk_hw_create_clk.part.21) from [<c06fea34>] (devm_clk_get+0x4c/0x80)
+[    1.681232] [<c06fea34>] (devm_clk_get) from [<c064253c>] (sysc_probe+0x28c/0xde4)
 
-And yes, a mechanism to skip builds on arbitrary criteria would
-seem to be quite hard to design with fair rules.  And at the end
-of the day, if we don't have enough build power to cope with the
-load, even the best rules would just be moving the problem
-somewhere else.
+It's always failing at that point in the code.  Also when
+enabling "debug" on the kernel command line, the issue goes
+away (exact same binaries etc..):
 
-What I think we should have is some kind of OOM system, to track
-that if the queue keeps increasing from one day to the next then
-some builds need to be killed, because there really isn't any
-choice in that situation.  We're still running at about 75% of
-our capacity and builds can be cancelled manually if anything
-goes very wrong, so it's not a practical concern right now.
+  https://lava.collabora.co.uk/scheduler/job/1526327
 
+For the record, here's the branch I've been using:
 
-> I wonder what happens when something doesn't fit in a
-> hourly/daily/weekly box. It could also cause a daily/weekly bottleneck
-> if they're all scheduled at the same time.
->
+  https://gitlab.collabora.com/gtucker/linux/tree/beaglebone-black-next-20190304-debug
 
-Everything kind of fits in an hourly box, because that's a small
-enough interval to start building things shortly after a new
-revision was pushed.  Having longer periods is useful for people
-who don't want intermediate versions to go through the test
-system, or don't want to set up a branch just for KernelCI.
+The board otherwise boots fine with next-20190304 (SMP=n), and
+also with the patch applied but the shuffle configs set to n.
 
-Perhaps each tree gets a cooling off period defined in e.g. seconds, and
-> it could be defaulted to current behavior of 1 hour. If a tree is
-> triggered but its cooling off period hasn't passed, the trigger is
-> either ignored or deferred. This would also let us increase the
-> frequency of the build trigger to something like every 5 minutes.
->
+> Do any of the QEMU machine types [1] approximate this board? I.e. so I
+> might be able to independently debug.
 
-If we want that kind of speed then we should be using git hooks
-to trigger builds directly rather than polling continuously.
+Unfortunately there doesn't appear to be any QEMU machine
+emulating the TI AM335x SoC or the BeagleBone Black board.
 
+> Were there any boot *successes* on ARM with shuffling enabled? I.e.
+> clues about what's different about the specific memory setup for
+> beagle-bone-black.
 
-> This way, load is evened out a bit (no spikes when 'weekly' or even
-> 'hourly' runs), kernelci is more realtime (to Mark's point), and
-> configuration is granular and per-tree (we can still offer standard
-> cool-off periods, of course).
->
+Looking at the KernelCI results from next-20190215, it looks like
+only the BeagleBone Black with SMP=n failed to boot:
 
-The issue here is that it would be doing the opposite of what
-some people want.  For example, when a branch gets updated
-several times during a day, some developers don't want the first
-ones to be tested but rather let the system wait until the
-evening before doing a build so they get the results the next
-morning (see Linus' comment on the GPIO thread).
+  https://kernelci.org/boot/all/job/next/branch/master/kernel/next-20190215/
 
-Also, periodic checks don't have to all be at the same time, they
-could be evened out within their polling period.
+Of course that's not all the ARM boards that exist out there, but
+it's a fairly large coverage already.
 
-The only state that has to be tracked is the time of the last build per
-> tree, though I have no idea about the ease of implementation.
->
+As the kernel panic always seems to originate in ti-sysc.c,
+there's a chance it's only visible on that platform...  I'm doing
+a KernelCI run now with my test branch to double check that,
+it'll take a few hours so I'll send an update later if I get
+anything useful out of it.
 
-The implementation will depend on a lot of things, i.e. the build
-automation tool (Jenkins or other) and the backend / storage
-server where previous builds are stored.  At the moment we're
-keeping a file containing the commit sha from last time a branch
-was sampled, it wouldn't be hard to add date and time information
-to that for example (or get the last modified date of that file).
+In the meantime, I'm happy to try out other things with more
+debug configs turned on or any potential fixes someone might
+have.
 
-The first thing to do imo is to have the ability to specify how
-often a tree should be checked in the YAML config file.  We could
-reuse cron's syntax for that, or have simple but rough values
-like "daily" to let the implentation decide at what to actually
-do the checks.
-
-As mentioned before, in some cases we could be using a hook to
-trigger a build directly from the git server every time a commit
-is pushed (like a real CI system).  We should also have a way to
-define that in the YAML config, probably by not setting any
-polling interval.
-
+Thanks,
 Guillaume
 
---000000000000e8bcf00583697151
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> Thanks for the help!
+> 
+> [1]: https://wiki.qemu.org/Documentation/Platforms/ARM
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div di=
-r=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"lt=
-r"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div=
- dir=3D"ltr"><br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" clas=
-s=3D"gmail_attr">On Tue, Mar 5, 2019 at 10:04 PM Dan Rue &lt;<a href=3D"mai=
-lto:dan.rue@linaro.org">dan.rue@linaro.org</a>&gt; wrote:<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">On Tue, Mar 05, 2019 at 12:14:12P=
-M +0000, Mark Brown wrote:<br>
-&gt; On Mon, Mar 04, 2019 at 01:20:25PM +0000, Guillaume Tucker wrote:<br>
-&gt; <br>
-&gt; &gt; I&#39;m not entirely sure how much flexibility Jenkins can offer =
-in<br>
-&gt; &gt; that respect, but at least having 3 versions of the monitor job<b=
-r>
-&gt; &gt; that runs every hour, every day and every week should cover all<b=
-r>
-&gt; &gt; the cases.=C2=A0 If possible, we may be able to implement somethi=
-ng<br>
-&gt; &gt; that dynamically schedules the next check for each branch.<br>
-&gt; <br>
-&gt; One big concern I have with this is latency.=C2=A0 One of the common c=
-ases<br>
-&gt; where people don&#39;t need builds all the time is when they&#39;re ma=
-inly<br>
-&gt; looking for checks before they submit pull requests.=C2=A0 For those i=
-f you<br>
-&gt; might have to wait almost a day before we even queue the build it migh=
-t<br>
-&gt; be a bit of an issue.=C2=A0 If it was just a &quot;skip this tree if w=
-e built it<br>
-&gt; in the past X time&quot; check that wouldn&#39;t be such an issue, it&=
-#39;s just if<br>
-&gt; the daily check runs at some fixed time each day or whatever that it<b=
-r>
-&gt; might add huge extra latency.<br>
-&gt; <br>
-&gt; Another idea I just thought of but I&#39;m not sure is practical would=
- be to<br>
-&gt; only check some trees if the Jenkins queue is less than some number of=
-<br>
-&gt; builds - that way if we&#39;re busy we won&#39;t add extra load, but i=
-t feels<br>
-&gt; like it&#39;s more trouble than it&#39;s worth to implement fairly.<br=
-></blockquote><div><br></div><div><div>These are different use-cases, some =
-people have said that they</div><div>wanted their branches checked every mo=
-rning (linusw) or every</div><div>Monday (media).=C2=A0 For real-time feedb=
-ack, we need to do something</div><div>quite different indeed.=C2=A0 With t=
-he ability to whitelist some</div><div>defconfigs and arches, we could have=
- quick builds for some</div><div>maintainers&#39; trees to optimise the tur=
-naround time / test</div><div>coverage ratio.</div><div><br></div><div>And =
-yes, a mechanism to skip builds on arbitrary criteria would</div><div>seem =
-to be quite hard to design with fair rules.=C2=A0 And at the end</div><div>=
-of the day, if we don&#39;t have enough build power to cope with the</div><=
-div>load, even the best rules would just be moving the problem</div><div>so=
-mewhere else.</div></div><div><br></div><div><div>What I think we should ha=
-ve is some kind of OOM system, to track</div><div>that if the queue keeps i=
-ncreasing from one day to the next then</div><div>some builds need to be ki=
-lled, because there really isn&#39;t any</div><div>choice in that situation=
-.=C2=A0 We&#39;re still running at about 75% of</div><div>our capacity and =
-builds can be cancelled manually if anything</div><div>goes very wrong, so =
-it&#39;s not a practical concern right now.</div></div><div>=C2=A0</div><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
-t:1px solid rgb(204,204,204);padding-left:1ex">
-I wonder what happens when something doesn&#39;t fit in a<br>
-hourly/daily/weekly box. It could also cause a daily/weekly bottleneck<br>
-if they&#39;re all scheduled at the same time.<br></blockquote><div><br></d=
-iv><div><div><div>Everything kind of fits in an hourly box, because that&#3=
-9;s a small</div><div>enough interval to start building things shortly afte=
-r a new</div><div>revision was pushed.=C2=A0 Having longer periods is usefu=
-l for people</div><div>who don&#39;t want intermediate versions to go throu=
-gh the test</div><div>system, or don&#39;t want to set up a branch just for=
- KernelCI.</div></div></div><div><br></div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">
-Perhaps each tree gets a cooling off period defined in e.g. seconds, and<br=
->
-it could be defaulted to current behavior of 1 hour. If a tree is<br>
-triggered but its cooling off period hasn&#39;t passed, the trigger is<br>
-either ignored or deferred. This would also let us increase the<br>
-frequency of the build trigger to something like every 5 minutes.<br></bloc=
-kquote><div><br></div><div><div>If we want that kind of speed then we shoul=
-d be using git hooks</div><div>to trigger builds directly rather than polli=
-ng continuously.</div></div><div>=C2=A0</div><blockquote class=3D"gmail_quo=
-te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
-);padding-left:1ex">
-This way, load is evened out a bit (no spikes when &#39;weekly&#39; or even=
-<br>
-&#39;hourly&#39; runs), kernelci is more realtime (to Mark&#39;s point), an=
-d<br>
-configuration is granular and per-tree (we can still offer standard<br>
-cool-off periods, of course).<br></blockquote><div><br></div><div><div>The =
-issue here is that it would be doing the opposite of what</div><div>some pe=
-ople want.=C2=A0 For example, when a branch gets updated</div><div>several =
-times during a day, some developers don&#39;t want the first</div><div>ones=
- to be tested but rather let the system wait until the</div><div>evening be=
-fore doing a build so they get the results the next</div><div>morning (see =
-Linus&#39; comment on the GPIO thread).</div></div><div><br></div><div><div=
->Also, periodic checks don&#39;t have to all be at the same time, they</div=
-><div>could be evened out within their polling period.</div></div><div><br>=
-</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
-order-left:1px solid rgb(204,204,204);padding-left:1ex">
-The only state that has to be tracked is the time of the last build per<br>
-tree, though I have no idea about the ease of implementation.<br></blockquo=
-te><div><br></div><div>The implementation will depend on a lot of things, i=
-.e. the build</div><div>automation tool (Jenkins or other) and the backend =
-/ storage</div><div>server where previous builds are stored.=C2=A0 At the m=
-oment we&#39;re</div><div>keeping a file containing the commit sha from las=
-t time a branch</div><div>was sampled, it wouldn&#39;t be hard to add date =
-and time information</div><div>to that for example (or get the last modifie=
-d date of that file).</div><div><br></div><div><div>The first thing to do i=
-mo is to have the ability to specify how</div><div>often a tree should be c=
-hecked in the YAML config file.=C2=A0 We could</div><div>reuse cron&#39;s s=
-yntax for that, or have simple but rough values</div><div>like &quot;daily&=
-quot; to let the implentation decide at what to actually</div><div>do the c=
-hecks.</div></div><div><br></div><div><div><div>As mentioned before, in som=
-e cases we could be using a hook to</div><div>trigger a build directly from=
- the git server every time a commit</div><div>is pushed (like a real CI sys=
-tem).=C2=A0 We should also have a way to</div><div>define that in the YAML =
-config, probably by not setting any</div><div>polling interval.</div></div>=
-</div><div><br></div><div>Guillaume</div></div></div></div></div></div></di=
-v></div></div></div></div></div></div></div></div>
 
---000000000000e8bcf00583697151--
