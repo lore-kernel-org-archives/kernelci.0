@@ -1,63 +1,107 @@
-Message-ID: <53924f64785c3469915b19d32cefd36ed244cecd.camel@collabora.com>
-Subject: Re: RFC: kernelCI media subsystem pilot (Test results for gtucker/kernelci-media - gtucker-kernelci-media-001-6-g1b2c6e5844d8)
-From: Ezequiel Garcia <ezequiel@collabora.com>
-Date: Fri, 19 Oct 2018 10:30:08 -0300
-In-Reply-To: <bea38cb8-5e1b-32b1-2d81-e6038b8d6c68@xs4all.nl>
-References: <b569d756-5c4a-d0b4-e077-27a2e2ebb19d@collabora.com>
-	 <1f439267adf9a492a5d178808ba23682338d7e58.camel@collabora.com>
-	 <bea38cb8-5e1b-32b1-2d81-e6038b8d6c68@xs4all.nl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <CAHRSSEzE-foFJaS4mmaosksXofwg8TaK=6ro8HFPGMV_d6=8sg@mail.gmail.com>
+ <CABXOdTerkt85X856TDx9RGEymxm6yrqkkbyPUssJJp8Sm37J2A@mail.gmail.com>
+In-Reply-To: <CABXOdTerkt85X856TDx9RGEymxm6yrqkkbyPUssJJp8Sm37J2A@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Wed, 6 Mar 2019 15:54:35 +0000
+Message-ID: <CAH1_8nAkms+ioW2EJNo8=f+5d=tF3fQZRAsd1-mofvaiRYzXfA@mail.gmail.com>
+Subject: Re: branches not building?
+Content-Type: multipart/alternative; boundary="00000000000049de9705836f0269"
 List-ID: <kernelci.groups.io>
-To: Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org, kernelci@groups.io
-Cc: Tomeu Vizoso <tomeu.vizoso@collabora.co.uk>, Gustavo Padovan <gustavo.padovan@collabora.co.uk>, Ana Guerrero Lopez <ana.guerrero@collabora.co.uk>, Guillaume Charles Tucker <guillaume.tucker@collabora.co.uk>
+To: kernelci@groups.io, groeck@google.com
+Cc: info@kernelci.org
 
-On Fri, 2018-10-19 at 09:06 +0200, Hans Verkuil wrote:
-> On 10/18/2018 09:23 PM, Ezequiel Garcia wrote:
-> > Hi everyone,
-> > 
-> > In Collabora, and as part of our kernelci work, we are doing
-> > research on kernel functional testing with kernelci.
-> > 
-> > For those new to kernelci, see https://github.com/kernelci/kernelci-doc/wiki/KernelCI 
-> > and https://kernelci.org/.
-> > 
-> > The goal is to lay down the infrastructure required to make
-> > automated test coverage an integral part of our feature
-> > and bugfix development process.
-> > 
-> > So, as a first attempt, we've decided to extend kernelci test
-> > v4l2 plan support, leading the way to extending
-> > other subsystems' test plans.
-> > 
-> > Currently, kernelci looks for a list of branches every hour and
-> > see if anything changed. For any branch that has changed, it triggers
-> > builds, boots, tests and reports for each branch that had some changes
-> > since last time it ran.
-> > 
-> > For this pilot, we've decided to target just a few devices:
-> > qemu with vivid, rk3399-gru-kevin and rk3288-veyron-jaq
-> > with uvc.
-> 
-> It's running v4l2-compliance, right?
-> 
+--00000000000049de9705836f0269
+Content-Type: text/plain; charset="UTF-8"
 
-Exactly.
+On Tue, Mar 5, 2019 at 5:06 PM Guenter Roeck via Groups.Io <groeck=
+google.com@groups.io> wrote:
 
-> Looking at the test cases, they appear in the reverse order that v4l2-compliance
-> performs them, that's a bit odd.
-> 
+> https://kernelci.org/job/ suggests that there have been several builds
+> since yesterday. Maybe the build system was busy.
+>
+> Guenter
+>
+> On Tue, Mar 5, 2019 at 8:49 AM 'Todd Kjos' via info <info@kernelci.org>
+> wrote:
+>
+>> A bunch of our Android branches were modified yesterday, but there were
+>> no kernelci builds... are they no longer being tested? Here's a list of
+>> branches that had changes yesterday and haven't been built:
+>>
+>> android-3.18-o-release
+>> android-3.18-o-mr1
+>> android-4.4-o-release
+>> android-4.4-o-mr1
+>> android-4.4-p-release
+>> android-4.9-o-release
+>> android-4.9-o-mr1
+>> android-4.9-p-release
+>> android-4.14-p-release
+>>
+>> They were changed at about 4pm PST yesterday (~16 hours ago) which is
+>> normally plenty of time to get kernelci results...
+>>
+>
+Err, I think these release branches might have been lost in
+translation during the move from Jenkins Matrix job configuration
+to the new YAML-based configuration.  I don't see them in the
+file:
 
-That's something to check in the parser. I'm sure it's fixable if you
-find it annoying.
 
-> And if we include uvc in the testing, then I need to prioritize the work I
-> started for uvc to remove the last FAILs.
-> 
+https://github.com/kernelci/kernelci-core/blob/5b8b00504e930d13645162a6e308e4ba0b1f0c51/build-configs.yaml#L188
 
-Well, we can run anything. We decided to go for uvc and vivid, just too pick
-two popular examples, but there are really no restrictions.
+Can you confirm you still don't have the build results you
+expected?  In which case I can make a pull request to add them.
+I have to say that's quite a large number of downstream branches
+though...
 
-Thanks,
-Ezequiel
+Guillaume
+
+>
+
+--00000000000049de9705836f0269
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br></d=
+iv><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On =
+Tue, Mar 5, 2019 at 5:06 PM Guenter Roeck via Groups.Io &lt;groeck=3D<a hre=
+f=3D"mailto:google.com@groups.io">google.com@groups.io</a>&gt; wrote:<br></=
+div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
+der-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div=
+ dir=3D"ltr"><div dir=3D"ltr"><div><a href=3D"https://kernelci.org/job/" ta=
+rget=3D"_blank">https://kernelci.org/job/</a> suggests that there have been=
+ several builds since yesterday. Maybe the build system was busy.<br></div>=
+<div><br></div><div>Guenter</div><br><div class=3D"gmail_quote"><div dir=3D=
+"ltr" class=3D"gmail_attr">On Tue, Mar 5, 2019 at 8:49 AM &#39;Todd Kjos&#3=
+9; via info &lt;<a href=3D"mailto:info@kernelci.org" target=3D"_blank">info=
+@kernelci.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex"><div dir=3D"ltr">A bunch of our Android branches were modified=
+ yesterday, but there were no kernelci builds... are they no longer being t=
+ested? Here&#39;s a list of branches that had changes yesterday and haven&#=
+39;t been built:<div><br></div><div>android-3.18-o-release</div><div>androi=
+d-3.18-o-mr1</div><div>android-4.4-o-release</div><div>android-4.4-o-mr1</d=
+iv><div>android-4.4-p-release</div><div>android-4.9-o-release</div><div>and=
+roid-4.9-o-mr1</div><div>android-4.9-p-release</div><div>android-4.14-p-rel=
+ease</div><div><br></div><div>They were changed at about 4pm PST yesterday =
+(~16 hours ago) which is normally plenty of time to get kernelci results...=
+</div></div></blockquote></div></div></div></div></blockquote><div><br></di=
+v><div><div><div>Err, I think these release branches might have been lost i=
+n</div><div>translation during the move from Jenkins Matrix job configurati=
+on</div><div>to the new YAML-based configuration.=C2=A0 I don&#39;t see the=
+m in the</div><div>file:</div></div><div><br></div><div>=C2=A0 <a href=3D"h=
+ttps://github.com/kernelci/kernelci-core/blob/5b8b00504e930d13645162a6e308e=
+4ba0b1f0c51/build-configs.yaml#L188">https://github.com/kernelci/kernelci-c=
+ore/blob/5b8b00504e930d13645162a6e308e4ba0b1f0c51/build-configs.yaml#L188</=
+a></div><div><br></div><div>Can you confirm you still don&#39;t have the bu=
+ild results you</div><div>expected?=C2=A0 In which case I can make a pull r=
+equest to add them.</div><div>I have to say that&#39;s quite a large number=
+ of downstream branches</div><div>though...</div></div><div><br></div><div>=
+Guillaume</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+
+<p></p><p></p></blockquote></div></div></div></div>
+
+--00000000000049de9705836f0269--
