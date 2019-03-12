@@ -1,160 +1,51 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: staging projects in github
+In-Reply-To: <CAH1_8nC=aa9jOa1rTzb7=joDXqjTDty+qeGe4bqpE11fqOgN-A@mail.gmail.com>
+References: <7himwxvr6m.fsf@baylibre.com> <CAH+k93EBGwnAbwvCDF3PmaCvS+Fpk6FTVtgdB37h-twqZf4hvQ@mail.gmail.com> <20190305170426.4kuzc4fq7fmvoeud@xps.therub.org> <15891FEF165BAE41.4955@groups.io> <CAH1_8nC=aa9jOa1rTzb7=joDXqjTDty+qeGe4bqpE11fqOgN-A@mail.gmail.com>
+Date: Tue, 12 Mar 2019 10:47:16 -0700
+Message-ID: <7hr2bct26z.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <CA+_AqiuE9EmTruc7-G0pH-2hXzDjc5VPQn4-qoN4+47Oqf0djQ@mail.gmail.com>
- <CAJrz+7+WWpkhFasJwqUsrN+h4eyMenNwg28t18cuNt1ssLzzog@mail.gmail.com>
- <CA+_AqivuXXgsHCNRn0mz752dojic61pLt--3pUL7bC3AnNDZdA@mail.gmail.com>
- <CAH1_8nBuwjnjHmwg3wsRK+BBABqt7tSuTCP4Twiti67XgmwBgw@mail.gmail.com> <CA+_AqivG7cdvABoRkTo9DkMnC+hHrzMqeqGOpEzQ7LRcs0SRCw@mail.gmail.com>
-In-Reply-To: <CA+_AqivG7cdvABoRkTo9DkMnC+hHrzMqeqGOpEzQ7LRcs0SRCw@mail.gmail.com>
-From: "Anibal Limon" <anibal.limon@linaro.org>
-Date: Tue, 23 Oct 2018 10:44:51 -0500
-Message-ID: <CA+_AqivR_=sLVWZZD7=fvae3Py8RQ9BLgzvSHbiTQsXEk=xmkg@mail.gmail.com>
-Subject: Re: [kernelci] KernelCI API Auth Token
-Content-Type: multipart/alternative; boundary="000000000000cadd130578e740e4"
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: info@kernelci.org, milo@milo.name, Nicolas Dechesne <nicolas.dechesne@linaro.org>, Anmar Oueja <anmar.oueja@linaro.org>, Fathi Boudra <fathi.boudra@linaro.org>
+To: Guillaume Tucker <guillaume.tucker@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: Dan Rue <dan.rue@linaro.org>, Matt Hart <matthew.hart@linaro.org>
 
---000000000000cadd130578e740e4
-Content-Type: text/plain; charset="UTF-8"
+Guillaume Tucker <guillaume.tucker@gmail.com> writes:
 
-On Tue, 16 Oct 2018 at 15:31, Anibal Limon <anibal.limon@linaro.org> wrote:
-
->
->
-> On Tue, 16 Oct 2018 at 15:29, Guillaume Tucker <guillaume.tucker@gmail.com>
-> wrote:
->
->> FYI I've sent an API token to Anibal with only HTTP GET permissions.
->>
->
-> Right, I tested it for my personal usage and works, thanks Guillaume.
->
-> I requested a token for read/write over qcom-lt/jobs.
->
-
-Hi Guillaume,
-
-Any update on get a token for r/w on qcom-lt/jobs?
-
-Regards,
-Anibal
-
-
->
-> Regards,
-> Anibal
->
+> On Tue, Mar 5, 2019 at 5:24 PM Guillaume Tucker via Groups.Io
+> <guillaume.tucker=gmail.com@groups.io> wrote:
 >
 >>
->> On Wed, Oct 3, 2018 at 5:16 PM Anibal Limon <anibal.limon@linaro.org>
->> wrote:
+>> On Tue, Mar 5, 2019 at 5:04 PM Dan Rue <dan.rue@linaro.org> wrote:
 >>
->>> + Milo
->>> + info at kernelci.org
+>>> On Tue, Mar 05, 2019 at 04:48:52PM +0000, Matt Hart wrote:
+>>> > On Tue, 5 Mar 2019 at 05:14, Kevin Hilman <khilman@baylibre.com> wrote:
+>>> > >
+>>> > > Can we consolidate the various "-staging" project in github with the
+>>> > > originals?  I've never fully understood why we created separate github
+>>> > > projects, when we should just be using a staging branch within the
+>>> main
+>>> > > project.
+>>
+>> [...]
+>
+>> I'm not sure if I'm considering all of the use-cases, but in the past
+>>> I've much preferred having staging == "master" and then tagging for
+>>> production releases. This does make it difficult (but not impossible) to
+>>> have things in staging that are not promoted to production.
 >>>
->>> On Wed, 3 Oct 2018 at 03:13, Milosz Wasilewski <
->>> milosz.wasilewski@linaro.org> wrote:
->>>
->>>> On Wed, 3 Oct 2018 at 01:37, Anibal Limon <anibal.limon@linaro.org>
->>>> wrote:
->>>> >
->>>> > Hi,
->>>> >
->>>> > I want to access the KernelCI API to get information about the QCOMLT
->>>> builds, I have a couple of questions,
->>>> >
->>>> > What is the process to get a KernelCI API  auth token?
->>>>
->>>> I guess asking the ML is a good start. Back in the days when Milo was
->>>> working on the code I got one directly from him. I'm not sure who is
->>>> generating tokens these days.
->>>>
->>>> milosz
->>>>
->>>> >
->>>> > Fathi, Anmar,
->>>> > Do we have a KernelCI auth token available on LinaroCI?
->>>> >
->>>> > Regards,
->>>> > Anibal
->>>> >
->>>>
->>>>
->>>>
->>>> 
 >>
+>> What would make most sense imo would be to have the master branch
+>> receiving the PRs (like Dan wrote) and a live "prod" branch used
+>> by Jenkins.
 >>
+>
+> So how about having one last staging -> prod sync this week using
+> the kernelci-core-staging project, and then switch to using
+> kernelci-core only starting from next week?
 
---000000000000cadd130578e740e4
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Sounds good to me.
 
-<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">On Tue=
-, 16 Oct 2018 at 15:31, Anibal Limon &lt;<a href=3D"mailto:anibal.limon@lin=
-aro.org">anibal.limon@linaro.org</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;pad=
-ding-left:1ex"><div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=
-=
-=3D"ltr">On Tue, 16 Oct 2018 at 15:29, Guillaume Tucker &lt;<a href=3D"mai=
-lto:guillaume.tucker@gmail.com" target=3D"_blank">guillaume.tucker@gmail.co=
-m</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
-:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr">F=
-YI I&#39;ve sent an API token to Anibal with only HTTP GET permissions.</di=
-v></blockquote><div><br></div><div>Right, I tested it for my personal usage=
- and works, thanks Guillaume.</div><div><br></div><div>I requested a token =
-for read/write over qcom-lt/jobs.</div></div></div></blockquote><div><br></=
-div><div>Hi Guillaume,</div><div><br></div><div>Any update on get a token f=
-or r/w on qcom-lt/jobs?</div><div><br></div><div>Regards,</div><div>Anibal<=
-/div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0=
- 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr"><div =
-class=3D"gmail_quote"><div><br></div><div>Regards,</div><div>Anibal</div><d=
-iv>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex=
-;border-left:1px #ccc solid;padding-left:1ex"><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr">On Wed, Oct 3, 2018 at 5:16 PM Anibal Limon &lt;<a href=
-=3D"mailto:anibal.limon@linaro.org" target=3D"_blank">anibal.limon@linaro.=
-org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr"=
->+ Milo=C2=A0<div>+ info at <a href=3D"http://kernelci.org" target=3D"_blan=
-k">kernelci.org</a><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">On W=
-ed, 3 Oct 2018 at 03:13, Milosz Wasilewski &lt;<a href=3D"mailto:milosz.was=
-ilewski@linaro.org" target=3D"_blank">milosz.wasilewski@linaro.org</a>&gt; =
-wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8e=
-x;border-left:1px #ccc solid;padding-left:1ex">On Wed, 3 Oct 2018 at 01:37,=
- Anibal Limon &lt;<a href=3D"mailto:anibal.limon@linaro.org" target=3D"_bla=
-nk">anibal.limon@linaro.org</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Hi,<br>
-&gt;<br>
-&gt; I want to access the KernelCI API to get information about the QCOMLT=
- builds, I have a couple of questions,<br>
-&gt;<br>
-&gt; What is the process to get a KernelCI API=C2=A0 auth token?<br>
-<br>
-I guess asking the ML is a good start. Back in the days when Milo was<br>
-working on the code I got one directly from him. I&#39;m not sure who is<b=
-r>
-generating tokens these days.<br>
-<br>
-milosz<br>
-<br>
-&gt;<br>
-&gt; Fathi, Anmar,<br>
-&gt; Do we have a KernelCI auth token available on LinaroCI?<br>
-&gt;<br>
-&gt; Regards,<br>
-&gt; Anibal<br>
-&gt; <br>
-<br>
-<br>
-<br>
-</blockquote></div></div></div>
+Kevin
 
-
-
-</blockquote></div>
-
-
-
-<p></p><p></p></blockquote></div></div>
-</blockquote></div></div>
-
---000000000000cadd130578e740e4--
