@@ -1,44 +1,128 @@
 MIME-Version: 1.0
 References: <CAHRSSEzE-foFJaS4mmaosksXofwg8TaK=6ro8HFPGMV_d6=8sg@mail.gmail.com>
- <CAHRSSEyLX7TUvkNc8Rt35OnJkH+j+sUHpJPw2b9OYGfpax08vA@mail.gmail.com>
-In-Reply-To: <CAHRSSEyLX7TUvkNc8Rt35OnJkH+j+sUHpJPw2b9OYGfpax08vA@mail.gmail.com>
-From: "'Todd Kjos' via info" <info@kernelci.org>
-Date: Fri, 15 Mar 2019 14:07:08 -0700
-Message-ID: <CAHRSSEw8Ejyg8xObeZ6nMKUBD1YnJ8MOJkn5rqfb0g-jpRCsSA@mail.gmail.com>
+ <CAHRSSEyLX7TUvkNc8Rt35OnJkH+j+sUHpJPw2b9OYGfpax08vA@mail.gmail.com> <CAHRSSEw8Ejyg8xObeZ6nMKUBD1YnJ8MOJkn5rqfb0g-jpRCsSA@mail.gmail.com>
+In-Reply-To: <CAHRSSEw8Ejyg8xObeZ6nMKUBD1YnJ8MOJkn5rqfb0g-jpRCsSA@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Fri, 15 Mar 2019 21:47:03 +0000
+Message-ID: <CAH1_8nDOGNNfNEAe9X3Uha8Tf89duNV=ggz507ERFeKAWWo-pA@mail.gmail.com>
 Subject: Re: branches not building?
-Reply-To: Todd Kjos <tkjos@google.com>
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/alternative; boundary="0000000000006ad7d8058428fbc8"
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: kernelci@groups.io, info@kernelci.org
 
-BTW- these all were included in the builds in February (for example:
-https://kernelci.org/job/android/branch/android-4.9-o-release/), but
-apparently were disabled we updated them in early March. These tend to
-get updated once-a-month when the Android Security Bulletin comes out.
-If possible, I'd like them to work for the April ASB (5 Apr 2019).
+--0000000000006ad7d8058428fbc8
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Mar 15, 2019 at 2:04 PM Todd Kjos <tkjos@google.com> wrote:
+On Fri, Mar 15, 2019 at 9:43 PM 'Todd Kjos' via info <info@kernelci.org>
+wrote:
+
+> BTW- these all were included in the builds in February (for example:
+> https://kernelci.org/job/android/branch/android-4.9-o-release/), but
+> apparently were disabled we updated them in early March. These tend to
+> get updated once-a-month when the Android Security Bulletin comes out.
+> If possible, I'd like them to work for the April ASB (5 Apr 2019).
 >
-> Ping.
+
+I've just done an upgrade of the kernelci.org production code and
+these branches have been added as part of the changes.  They
+should get built later tonight from the February release.
+
+Details about what is going into production can be found here:
+
+  https://github.com/kernelci/kernelci-core/pull/25
+
+Best wishes,
+Guillaume
+
+
+> On Fri, Mar 15, 2019 at 2:04 PM Todd Kjos <tkjos@google.com> wrote:
+> >
+> > Ping.
+> >
+> > On Tue, Mar 5, 2019 at 8:46 AM Todd Kjos <tkjos@google.com> wrote:
+> > >
+> > > A bunch of our Android branches were modified yesterday, but there
+> were no kernelci builds... are they no longer being tested? Here's a list
+> of branches that had changes yesterday and haven't been built:
+> > >
+> > > android-3.18-o-release
+> > > android-3.18-o-mr1
+> > > android-4.4-o-release
+> > > android-4.4-o-mr1
+> > > android-4.4-p-release
+> > > android-4.9-o-release
+> > > android-4.9-o-mr1
+> > > android-4.9-p-release
+> > > android-4.14-p-release
+> > >
+> > > They were changed at about 4pm PST yesterday (~16 hours ago) which is
+> normally plenty of time to get kernelci results...
+> > >
+> > > -Todd
+> > >
 >
-> On Tue, Mar 5, 2019 at 8:46 AM Todd Kjos <tkjos@google.com> wrote:
-> >
-> > A bunch of our Android branches were modified yesterday, but there were no kernelci builds... are they no longer being tested? Here's a list of branches that had changes yesterday and haven't been built:
-> >
-> > android-3.18-o-release
-> > android-3.18-o-mr1
-> > android-4.4-o-release
-> > android-4.4-o-mr1
-> > android-4.4-p-release
-> > android-4.9-o-release
-> > android-4.9-o-mr1
-> > android-4.9-p-release
-> > android-4.14-p-release
-> >
-> > They were changed at about 4pm PST yesterday (~16 hours ago) which is normally plenty of time to get kernelci results...
-> >
-> > -Todd
-> >
+> 
+>
+>
+
+--0000000000006ad7d8058428fbc8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"=
+gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Mar 15, 2019 at =
+9:43 PM &#39;Todd Kjos&#39; via info &lt;<a href=3D"mailto:info@kernelci.or=
+g">info@kernelci.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">BTW- these all were included in the builds in February =
+(for example:<br>
+<a href=3D"https://kernelci.org/job/android/branch/android-4.9-o-release/"=
+ rel=3D"noreferrer" target=3D"_blank">https://kernelci.org/job/android/bran=
+ch/android-4.9-o-release/</a>), but<br>
+apparently were disabled we updated them in early March. These tend to<br>
+get updated once-a-month when the Android Security Bulletin comes out.<br>
+If possible, I&#39;d like them to work for the April ASB (5 Apr 2019).<br>=
+</blockquote><div><br></div><div>I&#39;ve just done an upgrade of the <a hr=
+ef=3D"http://kernelci.org">kernelci.org</a> production code and</div><div>t=
+hese branches have been added as part of the changes.=C2=A0 They</div><div>=
+should get built later tonight from the February release.</div><div><br></d=
+iv><div>Details about what is going into production can be found here:</div=
+><div><br></div><div>=C2=A0 <a href=3D"https://github.com/kernelci/kernelci=
+-core/pull/25">https://github.com/kernelci/kernelci-core/pull/25</a></div><=
+div><br></div><div>Best wishes,</div><div>Guillaume=C2=A0</div><div>=C2=A0<=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">
+On Fri, Mar 15, 2019 at 2:04 PM Todd Kjos &lt;<a href=3D"mailto:tkjos@goog=
+le.com" target=3D"_blank">tkjos@google.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Ping.<br>
+&gt;<br>
+&gt; On Tue, Mar 5, 2019 at 8:46 AM Todd Kjos &lt;<a href=3D"mailto:tkjos@=
+google.com" target=3D"_blank">tkjos@google.com</a>&gt; wrote:<br>
+&gt; &gt;<br>
+&gt; &gt; A bunch of our Android branches were modified yesterday, but the=
+re were no kernelci builds... are they no longer being tested? Here&#39;s a=
+ list of branches that had changes yesterday and haven&#39;t been built:<br=
+>
+&gt; &gt;<br>
+&gt; &gt; android-3.18-o-release<br>
+&gt; &gt; android-3.18-o-mr1<br>
+&gt; &gt; android-4.4-o-release<br>
+&gt; &gt; android-4.4-o-mr1<br>
+&gt; &gt; android-4.4-p-release<br>
+&gt; &gt; android-4.9-o-release<br>
+&gt; &gt; android-4.9-o-mr1<br>
+&gt; &gt; android-4.9-p-release<br>
+&gt; &gt; android-4.14-p-release<br>
+&gt; &gt;<br>
+&gt; &gt; They were changed at about 4pm PST yesterday (~16 hours ago) whi=
+ch is normally plenty of time to get kernelci results...<br>
+&gt; &gt;<br>
+&gt; &gt; -Todd<br>
+&gt; &gt;<br>
+<br>
+<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000006ad7d8058428fbc8--
