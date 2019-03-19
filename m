@@ -1,34 +1,63 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: staging projects in github
+In-Reply-To: <CAH1_8nBRcPX5teqpM773KZGhiV3nrPwWToE3_RFZLZn2idN8yg@mail.gmail.com>
+References: <7himwxvr6m.fsf@baylibre.com> <CAH+k93EBGwnAbwvCDF3PmaCvS+Fpk6FTVtgdB37h-twqZf4hvQ@mail.gmail.com> <20190305170426.4kuzc4fq7fmvoeud@xps.therub.org> <15891FEF165BAE41.4955@groups.io> <CAH1_8nC=aa9jOa1rTzb7=joDXqjTDty+qeGe4bqpE11fqOgN-A@mail.gmail.com> <7hr2bct26z.fsf@baylibre.com> <CAH1_8nBRcPX5teqpM773KZGhiV3nrPwWToE3_RFZLZn2idN8yg@mail.gmail.com>
+Date: Tue, 19 Mar 2019 10:32:56 -0700
+Message-ID: <7hmulqg46v.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <CAHRSSEzTMcNTiPAa3-U20z0C0KnHRjNgA0+DMwySXsPKSPX5Gw@mail.gmail.com>
-In-Reply-To: <CAHRSSEzTMcNTiPAa3-U20z0C0KnHRjNgA0+DMwySXsPKSPX5Gw@mail.gmail.com>
-From: "Matt Hart" <matthew.hart@linaro.org>
-Date: Wed, 10 Apr 2019 16:09:36 +0100
-Message-ID: <CAH+k93HEAmn_Y1fCcFQWpPwLVC7ZTvCyFGFNpea+C1cV2KCSjg@mail.gmail.com>
-Subject: Re: please add android-4.X-q common kernels to kernelci
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, info@kernelci.org
-Cc: Alistair Strachan <astrachan@google.com>, Greg Kroah-Hartman <gregkh@google.com>, Sandeep Patil <sspatil@google.com>
+To: Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: kernelci@groups.io, Dan Rue <dan.rue@linaro.org>, Matt Hart <matthew.hart@linaro.org>
 
-On Tue, 9 Apr 2019 at 06:48, 'Todd Kjos' via info <info@kernelci.org> wrote:
->
-> We just created the "dessert" kernels for the Android Q release, please add them to
-> kernelci testing:
->
-> repo: https://android.googlesource.com/kernel/common
-> branches:
->   android-4.9-q
->   android-4.14-q
->   android-4.19-q
->
-> These will get updated weekly with LTS merges but have very little action otherwise.
+Guillaume Tucker <guillaume.tucker@gmail.com> writes:
 
-I'll get these added. If there's any concern about build capacity I
-will add GCE builders as required.
+[...]
 
+> So staging-20190315 was merged and deployed on Friday.  I've now
+> updated the kernelci.org Jenkins jobs in production to use a
+> kernelci.org branch from kernelci-core.
 >
-> Thanks.
+> We can start using kernelci-core/master branch for pull requests
+> instead of the kernelci-core-staging repository.  There are a few
+> PRs left in kernelci-core-staging, I suggest we try to merge
+> those that are almost ready by Thursday and cherry-pick the
+> changes in kernelci-core, and any PR left open on Friday should
+> be closed and probably opened again in kernelci-core.
 >
-> -Todd
+> See the kernelci-core project in Github:
 >
-> 
+>   https://github.com/kernelci/kernelci-core
+>
+> Open PRs in kernelci-core-staging:
+>
+>   https://github.com/kernelci/kernelci-core-staging/pulls
+>
+> I've also created a staging.kernelci.org branch in kernelci-core,
+> the idea being that we can use that to run some jobs on
+> staging.kernelci.org.  This should be especially useful for
+> occasional contributors who don't have an account on the staging
+> Jennkins instance: someone can put the code from their PRs on
+> that branch to have it tested for them.  It can also be used like
+> the staging branch in kernelci-backend, to test that on-going PRs
+> work when integrated together.
+>
+> Both the kernelci.org and staging.kernelci.org branches are not
+> for merging pull requests, they are just a way to configure the
+> Jenkins jobs on the corresponding instances.
+>
+> The next step is to update the README file in kernelci-core and
+> the wiki accordingly.  Essentially, the workflow now becomes very
+> simple from a contributor's point of view with regular PRs
+> against the master branch.  For production updates, we should
+> create a tag on the master branch and update the kernelci.org
+> branch to match that rather than create a "staging" PR.  We
+> should however sent notes to the mailing list with a summary like
+> in past staging PRs with things going into production.  Please
+> let me know if you have any suggestions to do things differently.
+
+This is great, thank you for taking the time/effort to implement this
+and roll it out.
+
+Kevin
