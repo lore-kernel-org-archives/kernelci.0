@@ -1,41 +1,50 @@
+Date: Tue, 26 Mar 2019 12:42:45 +0000
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: New meeting time
+Message-ID: <20190326124245.GA10898@sirena.org.uk>
+References: <20190325112258.GA7284@sirena.org.uk>
+ <CAH+k93GcepO9OX+6Lof0UEbOPYksymphO_ZKB8bJVuD1QoQDfg@mail.gmail.com>
+ <20190326003527.jzeviygligmbfkiy@xps.therub.org>
 MIME-Version: 1.0
-From: Todd Kjos <tkjos@google.com>
-Date: Wed, 8 May 2019 11:25:14 -0700
-Message-ID: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
-Subject: Please add 3 android common kernels to kernelci
-Content-Type: multipart/alternative; boundary="0000000000000cdfb10588647523"
+In-Reply-To: <20190326003527.jzeviygligmbfkiy@xps.therub.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="BXVAT5kNtrzKuDFl"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, dan.rue@linaro.org
+Cc: matthew.hart@linaro.org
 
---0000000000000cdfb10588647523
-Content-Type: text/plain; charset="UTF-8"
+--BXVAT5kNtrzKuDFl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Please add these three more android branches to kernelci:
+On Tue, Mar 26, 2019 at 08:35:27AM +0800, Dan Rue wrote:
 
-repo: https://android.googlesource.com/kernel/common
+> Is there any objection to making the meeting an open invite, and
+> advertising it on the wiki and the weekly minutes? I like how the LAVA
+> project is doing it @
+> https://lists.lavasoftware.org/pipermail/lava-devel/2019-March/000033.html
 
-branches:
-android-mainline (linux mainline regularly merged to stay close to tip)
-android-4.19-gki-dev (development branch for "generic kernel image" work)
-android-3.18 (needed to continue security update support when 3.18 LTS
-support is dropped)
+The obvious issue is the meeting doc and working out what to do to
+prevent vandalism/spam.  We might also have to look at moving off
+hangouts if there's any interest, though we've got headroom still.
+Alice did mention a free alternative a few weeks ago, though there's the
+potential issues with installing clients on non-desktop systems there
+(IIRC it does WebRTC on desktop).
 
-Thanks,
+--BXVAT5kNtrzKuDFl
+Content-Type: application/pgp-signature; name="signature.asc"
 
--Todd
+-----BEGIN PGP SIGNATURE-----
 
---0000000000000cdfb10588647523
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyaHkUACgkQJNaLcl1U
+h9Deagf9HE7+/iTJ1KZR4c86ToUSNwgYbhC1odOCTAm9AutR+bLcrm42bcKwdbBi
+RYIYPh4BcVttbdaNrgxphVWoNC+48K9gjBqhhlTfNsLSAKI9R9egm8IrJq8Kz36t
+00LbH+Qo5wKPzSMw8wR267bgooHFkPN+sCJRo62xRn0AZvgKK+MsHIgA6MrNpBs1
+f9pWXDArmxnS/GgKGHgYf8e7DMZ941q7G/1VBuRp5tXN3qdj79M8Y8jlYfyiNofK
+GCWdSfe2fPdrESjD14s3hJm9u96+tEft/M8peXQQAIYEpxAQDLxGya58bhpPREhw
+BVL2/CS7nKc/ihnIOadqlyNk7PDKiw==
+=A3jG
+-----END PGP SIGNATURE-----
 
-<div dir=3D"ltr"><div>Please add these three more android branches to kerne=
-lci:</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">repo: <a href=3D"http=
-s://android.googlesource.com/kernel/common">https://android.googlesource.co=
-m/kernel/common</a><br></div><div dir=3D"ltr"><br></div><div>branches:</div=
-><div>android-mainline (linux mainline regularly merged to stay close to ti=
-p)</div><div>android-4.19-gki-dev (development branch for &quot;generic ker=
-nel image&quot; work)</div><div>android-3.18 (needed to continue security u=
-pdate support when 3.18 LTS support is dropped)</div><div><br></div><div>Th=
-anks,</div><div><br></div><div>-Todd</div><div><br></div></div>
-
---0000000000000cdfb10588647523--
+--BXVAT5kNtrzKuDFl--
