@@ -1,43 +1,45 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: New meeting time
+In-Reply-To: <20190326003527.jzeviygligmbfkiy@xps.therub.org>
+References: <20190325112258.GA7284@sirena.org.uk> <CAH+k93GcepO9OX+6Lof0UEbOPYksymphO_ZKB8bJVuD1QoQDfg@mail.gmail.com> <20190326003527.jzeviygligmbfkiy@xps.therub.org>
+Date: Fri, 29 Mar 2019 10:20:29 -0700
+Message-ID: <7hy34xwqaq.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <AM6PR04MB4104B8BD556E17089924693BAB000@AM6PR04MB4104.eurprd04.prod.outlook.com>
-In-Reply-To: <AM6PR04MB4104B8BD556E17089924693BAB000@AM6PR04MB4104.eurprd04.prod.outlook.com>
-From: "Matt Hart" <matthew.hart@linaro.org>
-Date: Wed, 22 May 2019 15:01:27 +0100
-Message-ID: <CAH+k93FTdkqyh3N8Q4kUx0cZa5mtHmZzeTPP44NXnckNQNqr1Q@mail.gmail.com>
-Subject: Re: Would like to participate in build/boot test
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, suram@nxp.com
+To: kernelci@groups.io, dan.rue@linaro.org, kernelci@groups.io, matthew.hart@linaro.org
+Cc: Mark Brown <broonie@kernel.org>
 
-On Wed, 22 May 2019 at 09:57, Suram Suram <suram@nxp.com> wrote:
+"Dan Rue" <dan.rue@linaro.org> writes:
+
+> On Mon, Mar 25, 2019 at 11:27:52AM +0000, Matt Hart wrote:
+>> On Mon, 25 Mar 2019 at 11:23, Mark Brown <broonie@kernel.org> wrote:
+>> >
+>> > Hi,
+>> >
+>> > It's been just over a week since I sent out the doodle[1] for the new
+>> > meeting time and we've got responses in.  The top options we have allow
+>> > everyone to attend (at least acording to the survey!):
+>> >
+>> >  10 - Monday  14:00
+>> >     - Tuesday 16:00
+>> >     - Friday  15:00 (I will have a conflict every other week)
+>> >   9 - Monday  15:00 (but no Guillaume)
+>> >
+>> > with a bunch of other options with 8 votes.  I don't know what my
+>> > schedule is going to be like in a month or so but I'm guessing the other
+>> > slots should be fine for me.  Given that practically speaking it's
+>> > difficult for Kevin to attend the Monday 14:00 slot I propose that we go
+>> > with the Tuesday 16:00 slot since that's the latest one and therefore
+>> > most friendly to those on PST.  Thoughts?
+>> 
+>> Makes sense to me, as long as it definitely works for our PST folks
 >
-> Hi,
-> We would like to create setup for  build/ boot tests in our lab.
+> Is there any objection to making the meeting an open invite, and
+> advertising it on the wiki and the weekly minutes?
 
-Hi!
+No objection from me, as long as it's clear that this is a call for
+developers working on kernelCI, not a generic support call.
 
-Do you have automated hardware in a lab for boot testing, using
-something like LAVA?
-
-> I would like to discuss with you on the same.
-> Our interest is to setup a lab that primarily builds the upstream kernel with our patches and see that we are not breaking the build/ boot.
-
-The kernelci.org project produces its own builds of many kernel trees,
-and then sends them to volunteer labs to be boot tested.
-What kernel tree are you trying to test? Is it available publicly?
-Rather than setting up your own builds, maybe your kernel tree could
-be added to kernelci.org. The benefit of this is that your kernel tree
-will be boot tested in many different labs, on lots of hardware.
-Build capacity is limited, so a donation of some build servers may be
-requested on a tree with frequent commits.
-
->
-> Is there any forum to discuss on the same?
-
-Your email has been automatically forwarded to the kernelci mailing
-list (kernelci@groups.io) which is a good place to discuss your plans.
-
->
-> Regards
-> Suram
-> 
+Kevin
