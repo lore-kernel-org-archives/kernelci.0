@@ -1,228 +1,49 @@
 MIME-Version: 1.0
-References: <CAP245DXSaoGJ4STssCqa-Fr3eGE7Qu=BGGyNFgZnz+z0gAVXNw@mail.gmail.com>
- <CAH1_8nCuBHuGxgdPWWr0xLTXujeLv+S1obbdqqOJPZ45UZf8fg@mail.gmail.com>
- <CAP245DWZs+4MuSm4SEQLC==sk4F0K8NBMM-f_jc5pe9F8iszpA@mail.gmail.com>
- <CAH1_8nBoT9b3ZjZY=REestht6Z1W5hhA4YwOOvTGr-a19tA3cw@mail.gmail.com> <CAP245DWdaDFRX70YyZjtkPYhvWnRdYOHvFLT9HGDkYBJCgwRhg@mail.gmail.com>
-In-Reply-To: <CAP245DWdaDFRX70YyZjtkPYhvWnRdYOHvFLT9HGDkYBJCgwRhg@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Wed, 10 Jul 2019 11:55:05 +0100
-Message-ID: <CAH1_8nAjzQEBVTdQfO2ocHx8NN=oKffKGLyT5BdovSGnrM8evA@mail.gmail.com>
-Subject: Re: New experimental branch for Linaro Qualcomm Landing Team
-Content-Type: multipart/alternative; boundary="0000000000003119ef058d51839e"
+From: "'Todd Kjos' via info" <info@kernelci.org>
+Date: Fri, 29 Mar 2019 16:03:14 -0700
+Message-ID: <CAHRSSEzTMcNTiPAa3-U20z0C0KnHRjNgA0+DMwySXsPKSPX5Gw@mail.gmail.com>
+Subject: please add android-4.X-q common kernels to kernelci
+Reply-To: Todd Kjos <tkjos@google.com>
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: multipart/alternative; boundary="00000000000099b3ab058543ad39"
 List-ID: <kernelci.groups.io>
-To: Amit Kucheria <amit.kucheria@linaro.org>
-Cc: kernelci@groups.io, info <info@kernelci.org>, Kevin Hilman <khilman@baylibre.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Nicolas Dechesne <nicolas.dechesne@linaro.org>
+To: info@kernelci.org
+Cc: Alistair Strachan <astrachan@google.com>, Greg Kroah-Hartman <gregkh@google.com>, Sandeep Patil <sspatil@google.com>
 
---0000000000003119ef058d51839e
+--00000000000099b3ab058543ad39
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jul 9, 2019 at 2:24 PM Amit Kucheria <amit.kucheria@linaro.org>
-wrote:
+We just created the "dessert" kernels for the Android Q release, please add
+them to
+kernelci testing:
 
-> On Tue, Jul 9, 2019 at 6:32 PM Guillaume Tucker
-> <guillaume.tucker@gmail.com> wrote:
-> >
-> > On Tue, Jul 9, 2019 at 12:09 PM Amit Kucheria <amit.kucheria@linaro.org>
-> wrote:
-> >>
-> >> On Tue, Jul 9, 2019 at 4:27 PM Guillaume Tucker
-> >> <guillaume.tucker@gmail.com> wrote:
-> >> >
-> >> >
-> >> > On Tue, Jul 9, 2019 at 11:52 AM Amit Kucheria <
-> amit.kucheria@linaro.org> wrote:
-> >> >>
-> >> >> Hi,
-> >> >>
-> >> >> I'd like to request a new branch to be tracked by kernelci.org to
-> >> >> allow more experimental patches that could use much wider testing
-> >> >> across boards and architectures.
-> >> >>
-> >> >> We currently use our 'integration' branch[1] for this but that causes
-> >> >> disruption for people who depend on this branch to keep working.
->
+repo: https://android.googlesource.com/kernel/common
+branches:
+  android-4.9-q
+  android-4.14-q
+  android-4.19-q
 
-Ah sorry I missed the fact that the integration-linux-qcomlt
-branch was already built and tested on kernelci.org:
+These will get updated weekly with LTS merges but have very little action
+otherwise.
 
-  https://kernelci.org/job/qcom-lt/branch/integration-linux-qcomlt/
+Thanks.
 
-and it seems to be updated roughly once a week.
+-Todd
 
->> >> This experimental branch shouldn't see too many updates and would
-> >> >> likely only be used to get better testing for experimental series.
-> >> >> Would you be ok to pick up such a branch[2] into kernelci?
-> >> >
-> >> >
-> >> > The links you've provided don't seem to work, the page says
-> >> > "No repositories found".
-> >>
-> >> Curious. Either I missed a space between the URL and branch name or
-> >> gmail seems to have combined them in the link. Try
-> >> https://git.linaro.org/landing-teams/working/qualcomm/kernel.git
-> >
-> >
-> > Oh I see, there was a space between the URL and the branch name.
-> > Yeah I guess that got mangled somewhere, that link works for me.
-> >
-> >>
-> >> > Generally speaking I would say it's fine, as long as these aren't
-> >> > downstream branches but experimental patches that are based on
-> >> > current mainline and intended to be merged upstream.
-> >>
-> >> No, these will certainly be mainline-based branches.
-> >
-> >
-> > Great, so yes these look like relevant branches to test on
-> > kernelci.org.  Which configurations do you need to build?  The
-> > full range means about 230 builds but if you only care about arm,
-> > arm64 and x86_64 with just the defconfigs and maybe some qcom arm
-> > defconfigs that should come down to a much smaller number.
-> >
-> > Doing fewer builds means faster turnaround between when you push
-> > a change and when you get the results, and makes it possible to
-> > have more development trees for a given build capacity.
->
-> As mentioned earlier, I expect this branch to be used occassionally.
-> IOW, we won't use it in an automated merge + CI loop. We want to use
-> it to test instrusive features that might break on other
-> platforms/architectures/configuration.
->
-> So if it isn't too a huge stress on resources, I'd prefer this branch
-> to be exposed to the full range of kernelci builds and boot testing.
->
-
-Right, this was mentioned during the weekly meeting yesterday and
-yes we can add it on the basis that it doesn't get updated very
-often.
-
-For developer trees like this one, I think the amount of builds
-should be kept to a lower number than the main trees such as
-mainline, next, stable, maintainers...  So if it's important to
-build all the defconfigs, there should be a limit on how often it
-gets built.  We don't have the ability to regulate this at the
-moment, so please avoid pushing to these branches more than once
-a week and it'll be fine.
-
-I've made a PR to add this branch:
-
-  https://github.com/kernelci/kernelci-core/pull/119
-
-Best wishes,
-Guillaume
-
---0000000000003119ef058d51839e
+--00000000000099b3ab058543ad39
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul 9, 2019 at 2:24 PM Amit Kuche=
-ria &lt;<a href=3D"mailto:amit.kucheria@linaro.org">amit.kucheria@linaro.or=
-g</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
-:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
->On Tue, Jul 9, 2019 at 6:32 PM Guillaume Tucker<br>
-&lt;<a href=3D"mailto:guillaume.tucker@gmail.com" target=3D"_blank">guillau=
-me.tucker@gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; On Tue, Jul 9, 2019 at 12:09 PM Amit Kucheria &lt;<a href=3D"mailto:am=
-it.kucheria@linaro.org" target=3D"_blank">amit.kucheria@linaro.org</a>&gt; =
-wrote:<br>
-&gt;&gt;<br>
-&gt;&gt; On Tue, Jul 9, 2019 at 4:27 PM Guillaume Tucker<br>
-&gt;&gt; &lt;<a href=3D"mailto:guillaume.tucker@gmail.com" target=3D"_blank=
-">guillaume.tucker@gmail.com</a>&gt; wrote:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; On Tue, Jul 9, 2019 at 11:52 AM Amit Kucheria &lt;<a href=3D"=
-mailto:amit.kucheria@linaro.org" target=3D"_blank">amit.kucheria@linaro.org=
-</a>&gt; wrote:<br>
-&gt;&gt; &gt;&gt;<br>
-&gt;&gt; &gt;&gt; Hi,<br>
-&gt;&gt; &gt;&gt;<br>
-&gt;&gt; &gt;&gt; I&#39;d like to request a new branch to be tracked by <a =
-href=3D"http://kernelci.org" rel=3D"noreferrer" target=3D"_blank">kernelci.=
-org</a> to<br>
-&gt;&gt; &gt;&gt; allow more experimental patches that could use much wider=
- testing<br>
-&gt;&gt; &gt;&gt; across boards and architectures.<br>
-&gt;&gt; &gt;&gt;<br>
-&gt;&gt; &gt;&gt; We currently use our &#39;integration&#39; branch[1] for =
-this but that causes<br>
-&gt;&gt; &gt;&gt; disruption for people who depend on this branch to keep w=
-orking.<br></blockquote><div><br></div><div>Ah sorry I missed the fact that=
- the integration-linux-qcomlt<br>branch was already built and tested on <a =
-href=3D"http://kernelci.org">kernelci.org</a>:<br></div><div><br></div><div=
->=C2=A0 <a href=3D"https://kernelci.org/job/qcom-lt/branch/integration-linu=
-x-qcomlt/">https://kernelci.org/job/qcom-lt/branch/integration-linux-qcomlt=
-/</a><br><br>and it seems to be updated roughly once a week.<br></div><div>=
-<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
-ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt;&gt; &gt;&gt; This experimental branch shouldn&#39;t see too many updat=
-es and would<br>
-&gt;&gt; &gt;&gt; likely only be used to get better testing for experimenta=
-l series.<br>
-&gt;&gt; &gt;&gt; Would you be ok to pick up such a branch[2] into kernelci=
-?<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; The links you&#39;ve provided don&#39;t seem to work, the pag=
-e says<br>
-&gt;&gt; &gt; &quot;No repositories found&quot;.<br>
-&gt;&gt;<br>
-&gt;&gt; Curious. Either I missed a space between the URL and branch name o=
-r<br>
-&gt;&gt; gmail seems to have combined them in the link. Try<br>
-&gt;&gt; <a href=3D"https://git.linaro.org/landing-teams/working/qualcomm/k=
-ernel.git" rel=3D"noreferrer" target=3D"_blank">https://git.linaro.org/land=
-ing-teams/working/qualcomm/kernel.git</a><br>
-&gt;<br>
-&gt;<br>
-&gt; Oh I see, there was a space between the URL and the branch name.<br>
-&gt; Yeah I guess that got mangled somewhere, that link works for me.<br>
-&gt;<br>
-&gt;&gt;<br>
-&gt;&gt; &gt; Generally speaking I would say it&#39;s fine, as long as thes=
-e aren&#39;t<br>
-&gt;&gt; &gt; downstream branches but experimental patches that are based o=
-n<br>
-&gt;&gt; &gt; current mainline and intended to be merged upstream.<br>
-&gt;&gt;<br>
-&gt;&gt; No, these will certainly be mainline-based branches.<br>
-&gt;<br>
-&gt;<br>
-&gt; Great, so yes these look like relevant branches to test on<br>
-&gt; <a href=3D"http://kernelci.org" rel=3D"noreferrer" target=3D"_blank">k=
-ernelci.org</a>.=C2=A0 Which configurations do you need to build?=C2=A0 The=
-<br>
-&gt; full range means about 230 builds but if you only care about arm,<br>
-&gt; arm64 and x86_64 with just the defconfigs and maybe some qcom arm<br>
-&gt; defconfigs that should come down to a much smaller number.<br>
-&gt;<br>
-&gt; Doing fewer builds means faster turnaround between when you push<br>
-&gt; a change and when you get the results, and makes it possible to<br>
-&gt; have more development trees for a given build capacity.<br>
-<br>
-As mentioned earlier, I expect this branch to be used occassionally.<br>
-IOW, we won&#39;t use it in an automated merge + CI loop. We want to use<br=
->
-it to test instrusive features that might break on other<br>
-platforms/architectures/configuration.<br>
-<br>
-So if it isn&#39;t too a huge stress on resources, I&#39;d prefer this bran=
-ch<br>
-to be exposed to the full range of kernelci builds and boot testing.<br></b=
-lockquote><div>=C2=A0</div><div>Right, this was mentioned during the weekly=
- meeting yesterday and<br>yes we can add it on the basis that it doesn&#39;=
-t get updated very<br>often.<br><br>For developer trees like this one, I th=
-ink the amount of builds<br>should be kept to a lower number than the main =
-trees such as<br>mainline, next, stable, maintainers...=C2=A0 So if it&#39;=
-s important to<br>build all the defconfigs, there should be a limit on how =
-often it<br>gets built.=C2=A0 We don&#39;t have the ability to regulate thi=
-s at the<br>moment, so please avoid pushing to these branches more than onc=
-e<br>a week and it&#39;ll be fine.<br></div><div><br></div><div>I&#39;ve ma=
-de a PR to add this branch:<br><br>=C2=A0 <a href=3D"https://github.com/ker=
-nelci/kernelci-core/pull/119">https://github.com/kernelci/kernelci-core/pul=
-l/119</a><br></div><div><br></div><div>Best wishes,</div><div>Guillaume=C2=
-=A0</div></div></div>
+<div dir=3D"ltr">We just created the &quot;dessert&quot; kernels for the An=
+droid Q release, please add them to<br>kernelci testing:<br><br>repo:=C2=A0=
+<a href=3D"https://android.googlesource.com/kernel/common" rel=3D"noreferre=
+r" target=3D"_blank">https://android.googlesource.com/kernel/common</a><br>=
+branches:<div>=C2=A0 android-4.9-q</div><div>=C2=A0 android-4.14-q</div><di=
+v><div>=C2=A0 android-4.19-q<br></div></div><div><br></div><div>These will =
+get updated weekly with LTS merges but have very little action otherwise.</=
+div><div><br></div><div>Thanks.</div><div><br></div><div>-Todd</div><div><b=
+r></div></div>
 
---0000000000003119ef058d51839e--
+--00000000000099b3ab058543ad39--
