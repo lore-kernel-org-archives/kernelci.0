@@ -1,64 +1,65 @@
-Date: Wed, 26 Jun 2019 07:57:35 -0400 (EDT)
+Date: Fri, 5 Apr 2019 10:41:53 -0400 (EDT)
 From: Veronika Kabatova <vkabatov@redhat.com>
-Message-ID: <1255835260.27213560.1561550255907.JavaMail.zimbra@redhat.com>
-In-Reply-To: <ECADFF3FD767C149AD96A924E7EA6EAF977399CD@USCULXMSG01.am.sony.com>
-References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com> <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com> <CAH1_8nAx-1+uqOwAOCfGbqdWzgWD1-oikAfoVBqw4qPcu8v4fw@mail.gmail.com> <1759213455.26229412.1561047112464.JavaMail.zimbra@redhat.com> <ECADFF3FD767C149AD96A924E7EA6EAF977399CD@USCULXMSG01.am.sony.com>
-Subject: Re: CKI hackfest @Plumbers invite
+Message-ID: <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com>
+In-Reply-To: <299272045.11819252.1554465036421.JavaMail.zimbra@redhat.com>
+Subject: A common place for CI results?
 MIME-Version: 1.0
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Tim Bird <Tim.Bird@sony.com>
-Cc: guillaume tucker <guillaume.tucker@gmail.com>, kernelci@groups.io, automated-testing@yoctoproject.org, info@kernelci.org, syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, labbott@redhat.com, eslobodo@redhat.com, cki-project@redhat.com
+To: automated-testing@yoctoproject.org, info@kernelci.org
 
 
+Hi,
 
------ Original Message -----
-> From: "Tim Bird" <Tim.Bird@sony.com>
-> To: vkabatov@redhat.com, "guillaume tucker" <guillaume.tucker@gmail.com>
-> Cc: kernelci@groups.io, automated-testing@yoctoproject.org, info@kernelci.org, syzkaller@googlegroups.com,
-> lkp@lists.01.org, stable@vger.kernel.org, labbott@redhat.com, eslobodo@redhat.com, cki-project@redhat.com
-> Sent: Monday, June 24, 2019 8:55:12 PM
-> Subject: RE: CKI hackfest @Plumbers invite
-> 
-> > -----Original Message-----
-> > From: Veronika Kabatova
-> > 
-> > ----- Original Message -----
-> > > From: "Guillaume Tucker"
-> > >
-> > > Hi Veronika,
-> > >
-> > > On Tue, May 21, 2019 at 3:55 PM Veronika Kabatova
-> > <vkabatov@redhat.com>
-> > > wrote:
-> > >
-> > 
-> > I agree that this topic is important (and I believe some other CKI people
-> > made that clear as well) so I added it to the agenda topics. The list of
-> > those is getting long so we'd definitely need to curate it properly soon
-> > but I'll make sure this stays there.
-> 
-> I agree that Guillaume's topic would be good to discuss.
-> 
-> Is the draft agenda online anywhere?
+as we know from this list, there's plenty CI systems doing some testing on the
+upstream kernels (and maybe some others we don't know about).
 
-I sent the draft with the original invite so you can check that out. Since
-then, we added a few new topics to the list:
-
-- Test definition standardization (from you)
-- Onboarding new tests to run (versioning, unification of test locations
-  etc.)
-- Open testing philosophy (from Guillaume)
-
-We'll try our best to cover all mentioned topics during the hackfest but
-haven't started working on the schedule yet. We'll send it out before the
-hackfest and likely will publish it on cki-project.org as well.
+It would be great if there was a single common place where all the CI systems
+can put their results. This would make it much easier for the kernel
+maintainers and developers to see testing status since they only need to
+check one place instead of having a list of sites/mailing lists where each CI
+posts their contributions.
 
 
-Veronika
+A few weeks ago, with some people we've been talking about kernelci.org being
+in a good place to act as the central upstream kernel CI piece that most
+maintainers already know about. So I'm wondering if it would be possible for
+kernelci to also act as an aggregator of all results? There's already an API
+for publishing a report [0] so it shouldn't be too hard to adjust it to
+handle and show more information. I also found the beta version for test
+results [1] so actually, most of the needed functionality seems to be already
+there. Since there will be multiple CI systems, the source and contact point
+for the contributor (so maintainers know whom to ask about results if needed)
+would likely be the only missing essential data point.
 
 
->  -- Tim
-> 
-> 
+The common place for results would also make it easier for new CI systems to
+get involved with upstream. There are likely other companies out there running
+some tests on kernel internally but don't publish the results anywhere. Only
+adding some API calls into their code (with the data they are allowed to
+publish) would make it very simple for them to start contributing. If we want
+to make them interested, the starting point needs to be trivial. Different
+companies have different setups and policies and they might not be able to
+fulfill arbitrary requirements so they opt to not get involved at all, which
+is a shame because their results can be useful. After the initial "onboarding"
+step they might be willing to contribute more and more too.
+
+
+Please let me know if the idea makes sense or if something similar is already
+in plans. I'd be happy to contribute to the effort because I believe it would
+make everyone's life easier and we'd all benefit from it (and maybe someone
+else from my team would be willing to help out too if needed).
+
+
+Thanks,
+
+Veronika Kabatova
+CKI Project
+
+
+[0] https://api.kernelci.org/examples.html#sending-a-boot-report
+[1] https://kernelci.org/test/
