@@ -1,153 +1,152 @@
 MIME-Version: 1.0
-References: <CAHRSSEzE-foFJaS4mmaosksXofwg8TaK=6ro8HFPGMV_d6=8sg@mail.gmail.com>
- <CAHRSSEyLX7TUvkNc8Rt35OnJkH+j+sUHpJPw2b9OYGfpax08vA@mail.gmail.com>
- <CAHRSSEw8Ejyg8xObeZ6nMKUBD1YnJ8MOJkn5rqfb0g-jpRCsSA@mail.gmail.com> <158C4016687FAA35.2550@groups.io>
-In-Reply-To: <158C4016687FAA35.2550@groups.io>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Fri, 15 Mar 2019 21:49:40 +0000
-Message-ID: <CAH1_8nC7VJK_xxM+C+yamZi7=tmbUUs-HRjs09i=chq28VuAcQ@mail.gmail.com>
-Subject: Re: branches not building?
-Content-Type: multipart/alternative; boundary="000000000000b6ff6505842904a1"
-List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
-
---000000000000b6ff6505842904a1
+References: <20190215185151.GG7897@sirena.org.uk> <20190226155948.299aa894a5576e61dda3e5aa@linux-foundation.org>
+ <CAPcyv4ivjC8fNkfjdFyaYCAjGh7wtvFQnoPpOcR=VNZ=c6d6Rg@mail.gmail.com>
+ <20190228151438.fc44921e66f2f5d393c8d7b4@linux-foundation.org>
+ <CAPcyv4hDmmK-L=0txw7L9O8YgvAQxZfVFiSoB4LARRnGQ3UC7Q@mail.gmail.com>
+ <026b5082-32f2-e813-5396-e4a148c813ea@collabora.com> <20190301124100.62a02e2f622ff6b5f178a7c3@linux-foundation.org>
+ <3fafb552-ae75-6f63-453c-0d0e57d818f3@collabora.com> <CAPcyv4hMNiiM11ULjbOnOf=9N=yCABCRsAYLpjXs+98bRoRpCA@mail.gmail.com>
+ <36faea07-139c-b97d-3585-f7d6d362abc3@collabora.com> <20190306140529.GG3549@rapoport-lnx>
+ <21d138a5-13e4-9e83-d7fe-e0639a8d180a@collabora.com> <CAPcyv4jBjUScKExK09VkL8XKibNcbw11ET4WNUWUWbPXeT9DFQ@mail.gmail.com>
+ <CAGXu5jLAPKBE-EdfXkg2AK5P=qZktW6ow4kN5Yzc0WU2rtG8LQ@mail.gmail.com>
+ <CABXOdTdVvFn=Nbd_Anhz7zR1H-9QeGByF3HFg4ZFt58R8=H6zA@mail.gmail.com> <CAGXu5j+Sw2FyMc8L+8hTpEKbOsySFGrCmFtVP5gt9y2pJhYVUw@mail.gmail.com>
+In-Reply-To: <CAGXu5j+Sw2FyMc8L+8hTpEKbOsySFGrCmFtVP5gt9y2pJhYVUw@mail.gmail.com>
+From: "Guenter Roeck" <groeck@google.com>
+Date: Thu, 11 Apr 2019 13:08:15 -0700
+Message-ID: <CABXOdTcXWf9iReoocaj9rZ7z17zt-62iPDuvQQSrQRtMeeZNiA@mail.gmail.com>
+Subject: Re: next/master boot bisection: next-20190215 on beaglebone-black
 Content-Type: text/plain; charset="UTF-8"
+List-ID: <kernelci.groups.io>
+To: Kees Cook <keescook@chromium.org>
+Cc: kernelci@groups.io, Dan Williams <dan.j.williams@intel.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Mike Rapoport <rppt@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Mark Brown <broonie@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Matt Hart <matthew.hart@linaro.org>, Stephen Rothwell <sfr@canb.auug.org.au>, Kevin Hilman <khilman@baylibre.com>, Enric Balletbo i Serra <enric.balletbo@collabora.com>, Nicholas Piggin <npiggin@gmail.com>, Dominik Brodowski <linux@dominikbrodowski.net>, Masahiro Yamada <yamada.masahiro@socionext.com>, Adrian Reber <adrian@lisas.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Linux MM <linux-mm@kvack.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Richard Guy Briggs <rgb@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, info@kernelci.org
 
-On Fri, Mar 15, 2019 at 9:47 PM Guillaume Tucker via Groups.Io
-<guillaume.tucker=gmail.com@groups.io> wrote:
-
+On Thu, Apr 11, 2019 at 10:35 AM Kees Cook <keescook@chromium.org> wrote:
 >
-> On Fri, Mar 15, 2019 at 9:43 PM 'Todd Kjos' via info <info@kernelci.org>
-> wrote:
+> On Thu, Apr 11, 2019 at 9:42 AM Guenter Roeck <groeck@google.com> wrote:
+> >
+> > On Thu, Apr 11, 2019 at 9:19 AM Kees Cook <keescook@chromium.org> wrote:
+> > >
+> > > On Thu, Mar 7, 2019 at 7:43 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > > > I went ahead and acquired one of these boards to see if I can can
+> > > > debug this locally.
+> > >
+> > > Hi! Any progress on this? Might it be possible to unblock this series
+> > > for v5.2 by adding a temporary "not on ARM" flag?
+> > >
+> >
+> > Can someone send me a pointer to the series in question ? I would like
+> > to run it through my testbed.
 >
->> BTW- these all were included in the builds in February (for example:
->> https://kernelci.org/job/android/branch/android-4.9-o-release/), but
->> apparently were disabled we updated them in early March. These tend to
->> get updated once-a-month when the Android Security Bulletin comes out.
->> If possible, I'd like them to work for the April ASB (5 Apr 2019).
->>
->
-> I've just done an upgrade of the kernelci.org production code and
-> these branches have been added as part of the changes.  They
-> should get built later tonight from the February release.
->
-
-Sorry - I meant March, or whatever is currently on these branches.
-
-
-> Details about what is going into production can be found here:
->
->   https://github.com/kernelci/kernelci-core/pull/25
->
-> Best wishes,
-> Guillaume
->
->
->> On Fri, Mar 15, 2019 at 2:04 PM Todd Kjos <tkjos@google.com> wrote:
->> >
->> > Ping.
->> >
->> > On Tue, Mar 5, 2019 at 8:46 AM Todd Kjos <tkjos@google.com> wrote:
->> > >
->> > > A bunch of our Android branches were modified yesterday, but there
->> were no kernelci builds... are they no longer being tested? Here's a list
->> of branches that had changes yesterday and haven't been built:
->> > >
->> > > android-3.18-o-release
->> > > android-3.18-o-mr1
->> > > android-4.4-o-release
->> > > android-4.4-o-mr1
->> > > android-4.4-p-release
->> > > android-4.9-o-release
->> > > android-4.9-o-mr1
->> > > android-4.9-p-release
->> > > android-4.14-p-release
->> > >
->> > > They were changed at about 4pm PST yesterday (~16 hours ago) which is
->> normally plenty of time to get kernelci results...
->> > >
->> > > -Todd
->> > >
->>
->>
->>
->> 
->
+> It's already in -mm and linux-next (",mm: shuffle initial free memory
+> to improve memory-side-cache utilization") but it gets enabled with
+> CONFIG_SHUFFLE_PAGE_ALLOCATOR=y (which was made the default briefly in
+> -mm which triggered problems on ARM as was reverted).
 >
 
---000000000000b6ff6505842904a1
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Boot tests report
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Fri, Mar 15, 2019 at 9:47 PM Guillaume=
- Tucker via Groups.Io &lt;guillaume.tucker=3D<a href=3D"mailto:gmail.com@gr=
-oups.io">gmail.com@groups.io</a>&gt; wrote:<br></div><blockquote class=3D"g=
-mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
-,204,204);padding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"l=
-tr"><br></div><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_at=
-tr">On Fri, Mar 15, 2019 at 9:43 PM &#39;Todd Kjos&#39; via info &lt;<a hre=
-f=3D"mailto:info@kernelci.org" target=3D"_blank">info@kernelci.org</a>&gt; =
-wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">BTW- thes=
-e all were included in the builds in February (for example:<br>
-<a href=3D"https://kernelci.org/job/android/branch/android-4.9-o-release/"=
- rel=3D"noreferrer" target=3D"_blank">https://kernelci.org/job/android/bran=
-ch/android-4.9-o-release/</a>), but<br>
-apparently were disabled we updated them in early March. These tend to<br>
-get updated once-a-month when the Android Security Bulletin comes out.<br>
-If possible, I&#39;d like them to work for the April ASB (5 Apr 2019).<br>=
-</blockquote><div><br></div><div>I&#39;ve just done an upgrade of the <a hr=
-ef=3D"http://kernelci.org" target=3D"_blank">kernelci.org</a> production co=
-de and</div><div>these branches have been added as part of the changes.=C2=
-=A0 They</div><div>should get built later tonight from the February releas=
-e.</div></div></div></div></blockquote><div><br></div><div>Sorry - I meant =
-March, or whatever is currently on these branches.</div><div>=C2=A0</div><b=
-lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
-ft:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div dir=
-=3D"ltr"><div class=3D"gmail_quote"><div>Details about what is going into =
-production can be found here:</div><div><br></div><div>=C2=A0 <a href=3D"ht=
-tps://github.com/kernelci/kernelci-core/pull/25" target=3D"_blank">https://=
-github.com/kernelci/kernelci-core/pull/25</a></div><div><br></div><div>Best=
- wishes,</div><div>Guillaume=C2=A0</div><div>=C2=A0</div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
-gb(204,204,204);padding-left:1ex">
-On Fri, Mar 15, 2019 at 2:04 PM Todd Kjos &lt;<a href=3D"mailto:tkjos@goog=
-le.com" target=3D"_blank">tkjos@google.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Ping.<br>
-&gt;<br>
-&gt; On Tue, Mar 5, 2019 at 8:46 AM Todd Kjos &lt;<a href=3D"mailto:tkjos@=
-google.com" target=3D"_blank">tkjos@google.com</a>&gt; wrote:<br>
-&gt; &gt;<br>
-&gt; &gt; A bunch of our Android branches were modified yesterday, but the=
-re were no kernelci builds... are they no longer being tested? Here&#39;s a=
- list of branches that had changes yesterday and haven&#39;t been built:<br=
->
-&gt; &gt;<br>
-&gt; &gt; android-3.18-o-release<br>
-&gt; &gt; android-3.18-o-mr1<br>
-&gt; &gt; android-4.4-o-release<br>
-&gt; &gt; android-4.4-o-mr1<br>
-&gt; &gt; android-4.4-p-release<br>
-&gt; &gt; android-4.9-o-release<br>
-&gt; &gt; android-4.9-o-mr1<br>
-&gt; &gt; android-4.9-p-release<br>
-&gt; &gt; android-4.14-p-release<br>
-&gt; &gt;<br>
-&gt; &gt; They were changed at about 4pm PST yesterday (~16 hours ago) whi=
-ch is normally plenty of time to get kernelci results...<br>
-&gt; &gt;<br>
-&gt; &gt; -Todd<br>
-&gt; &gt;<br>
-<br>
-<br>
-<br>
-</blockquote></div></div></div>
+Qemu test results:
+    total: 345 pass: 345 fail: 0
 
+This is on top of next-20190410 with CONFIG_SHUFFLE_PAGE_ALLOCATOR=y
+and the known crashes fixed.
 
+$ git log --oneline next-20190410..
+3367c36ce744 Set SHUFFLE_PAGE_ALLOCATOR=y for testing.
+d2aee8b3cd5d Revert "crypto: scompress - Use per-CPU struct instead
+multiple variables"
+4bc9f5bc9a84 Fix: rhashtable: use bit_spin_locks to protect hash bucket.
 
-<p></p><p></p></blockquote></div></div>
+Boot tests on arm are:
 
---000000000000b6ff6505842904a1--
+Building arm:versatilepb:versatile_defconfig:aeabi:pci:scsi:mem128:versatile-pb:rootfs
+... running ........ passed
+Building arm:versatilepb:versatile_defconfig:aeabi:pci:mem128:versatile-pb:initrd
+... running ........ passed
+Building arm:versatileab:versatile_defconfig:mem128:versatile-ab:initrd
+... running ........ passed
+Building arm:imx25-pdk:imx_v4_v5_defconfig:nonand:mem128:imx25-pdk:initrd
+... running ........ passed
+Building arm:kzm:imx_v6_v7_defconfig:nodrm:mem128:initrd ... running
+.......... passed
+Building arm:mcimx6ul-evk:imx_v6_v7_defconfig:nodrm:mem256:imx6ul-14x14-evk:initrd
+... running .......... passed
+Building arm:mcimx6ul-evk:imx_v6_v7_defconfig:nodrm:sd:mem256:imx6ul-14x14-evk:rootfs
+... running .......... passed
+Building arm:vexpress-a9:multi_v7_defconfig:nolocktests:mem128:vexpress-v2p-ca9:initrd
+... running ........ passed
+Building arm:vexpress-a9:multi_v7_defconfig:nolocktests:sd:mem128:vexpress-v2p-ca9:rootfs
+... running ........ passed
+Building arm:vexpress-a9:multi_v7_defconfig:nolocktests:virtio-blk:mem128:vexpress-v2p-ca9:rootfs
+... running ........ passed
+Building arm:vexpress-a15:multi_v7_defconfig:nolocktests:sd:mem128:vexpress-v2p-ca15-tc1:rootfs
+... running ........ passed
+Building arm:vexpress-a15-a7:multi_v7_defconfig:nolocktests:sd:mem256:vexpress-v2p-ca15_a7:rootfs
+... running ........ passed
+Building arm:beagle:multi_v7_defconfig:sd:mem256:omap3-beagle:rootfs
+... running ............ passed
+Building arm:beaglexm:multi_v7_defconfig:sd:mem512:omap3-beagle-xm:rootfs
+... running ........... passed
+Building arm:overo:multi_v7_defconfig:sd:mem256:omap3-overo-tobi:rootfs
+... running ........... passed
+Building arm:midway:multi_v7_defconfig:mem2G:ecx-2000:initrd ...
+running .......... passed
+Building arm:sabrelite:multi_v7_defconfig:mem256:imx6dl-sabrelite:initrd
+... running ............ passed
+Building arm:mcimx7d-sabre:multi_v7_defconfig:mem256:imx7d-sdb:initrd
+... running .......... passed
+Building arm:xilinx-zynq-a9:multi_v7_defconfig:mem128:zynq-zc702:initrd
+... running ............ passed
+Building arm:xilinx-zynq-a9:multi_v7_defconfig:sd:mem128:zynq-zc702:rootfs
+... running ............ passed
+Building arm:xilinx-zynq-a9:multi_v7_defconfig:sd:mem128:zynq-zc706:rootfs
+... running ............ passed
+Building arm:xilinx-zynq-a9:multi_v7_defconfig:sd:mem128:zynq-zed:rootfs
+... running ........... passed
+Building arm:cubieboard:multi_v7_defconfig:mem128:sun4i-a10-cubieboard:initrd
+... running ........... passed
+Building arm:raspi2:multi_v7_defconfig:bcm2836-rpi-2-b:initrd ...
+running .......... passed
+Building arm:raspi2:multi_v7_defconfig:sd:bcm2836-rpi-2-b:rootfs ...
+running .......... passed
+Building arm:virt:multi_v7_defconfig:virtio-blk:mem512:rootfs ...
+running ......... passed
+Building arm:smdkc210:exynos_defconfig:cpuidle:nocrypto:mem128:exynos4210-smdkv310:initrd
+... running ......... passed
+Building arm:realview-pb-a8:realview_defconfig:realview_pb:mem512:arm-realview-pba8:initrd
+... running ........ passed
+Building arm:realview-pbx-a9:realview_defconfig:realview_pb:arm-realview-pbx-a9:initrd
+... running ........ passed
+Building arm:realview-eb:realview_defconfig:realview_eb:mem512:arm-realview-eb:initrd
+... running ........ passed
+Building arm:realview-eb-mpcore:realview_defconfig:realview_eb:mem512:arm-realview-eb-11mp-ctrevb:initrd
+... running ......... passed
+Building arm:akita:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
+... running ..... passed
+Building arm:borzoi:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
+... running ..... passed
+Building arm:mainstone:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
+... running ..... passed
+Building arm:spitz:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
+... running ..... passed
+Building arm:terrier:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
+... running ..... passed
+Building arm:tosa:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
+... running ..... passed
+Building arm:z2:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
+... running ..... passed
+Building arm:collie:collie_defconfig:aeabi:notests:initrd ... running
+..... passed
+Building arm:integratorcp:integrator_defconfig:mem128:integratorcp:initrd
+... running ....... passed
+Building arm:palmetto-bmc:aspeed_g4_defconfig:aspeed-bmc-opp-palmetto:initrd
+... running ................. passed
+Building arm:witherspoon-bmc:aspeed_g5_defconfig:notests:aspeed-bmc-opp-witherspoon:initrd
+... running ........... passed
+Building arm:ast2500-evb:aspeed_g5_defconfig:notests:aspeed-ast2500-evb:initrd
+... running ................ passed
+Building arm:romulus-bmc:aspeed_g5_defconfig:notests:aspeed-bmc-opp-romulus:initrd
+... running ......................... passed
+Building arm:mps2-an385:mps2_defconfig:mps2-an385:initrd ... running
+...... passed
+
+Guenter
