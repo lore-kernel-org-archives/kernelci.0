@@ -8,145 +8,86 @@ References: <20190215185151.GG7897@sirena.org.uk> <20190226155948.299aa894a5576e
  <36faea07-139c-b97d-3585-f7d6d362abc3@collabora.com> <20190306140529.GG3549@rapoport-lnx>
  <21d138a5-13e4-9e83-d7fe-e0639a8d180a@collabora.com> <CAPcyv4jBjUScKExK09VkL8XKibNcbw11ET4WNUWUWbPXeT9DFQ@mail.gmail.com>
  <CAGXu5jLAPKBE-EdfXkg2AK5P=qZktW6ow4kN5Yzc0WU2rtG8LQ@mail.gmail.com>
- <CABXOdTdVvFn=Nbd_Anhz7zR1H-9QeGByF3HFg4ZFt58R8=H6zA@mail.gmail.com> <CAGXu5j+Sw2FyMc8L+8hTpEKbOsySFGrCmFtVP5gt9y2pJhYVUw@mail.gmail.com>
-In-Reply-To: <CAGXu5j+Sw2FyMc8L+8hTpEKbOsySFGrCmFtVP5gt9y2pJhYVUw@mail.gmail.com>
+ <CABXOdTdVvFn=Nbd_Anhz7zR1H-9QeGByF3HFg4ZFt58R8=H6zA@mail.gmail.com>
+ <CAGXu5j+Sw2FyMc8L+8hTpEKbOsySFGrCmFtVP5gt9y2pJhYVUw@mail.gmail.com>
+ <CABXOdTcXWf9iReoocaj9rZ7z17zt-62iPDuvQQSrQRtMeeZNiA@mail.gmail.com> <CAPcyv4i8xhA6B5e=YBq2Z5kooyUpYZ8Bv9qov-mvqm4Uz=KLWQ@mail.gmail.com>
+In-Reply-To: <CAPcyv4i8xhA6B5e=YBq2Z5kooyUpYZ8Bv9qov-mvqm4Uz=KLWQ@mail.gmail.com>
 From: "Guenter Roeck" <groeck@google.com>
-Date: Thu, 11 Apr 2019 13:08:15 -0700
-Message-ID: <CABXOdTcXWf9iReoocaj9rZ7z17zt-62iPDuvQQSrQRtMeeZNiA@mail.gmail.com>
+Date: Thu, 11 Apr 2019 13:53:59 -0700
+Message-ID: <CABXOdTc5=J7ZFgbiwahVind-SNt7+G_-TVO=v-Y5SBVPLdUFog@mail.gmail.com>
 Subject: Re: next/master boot bisection: next-20190215 on beaglebone-black
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Kees Cook <keescook@chromium.org>
-Cc: kernelci@groups.io, Dan Williams <dan.j.williams@intel.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Mike Rapoport <rppt@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Mark Brown <broonie@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Matt Hart <matthew.hart@linaro.org>, Stephen Rothwell <sfr@canb.auug.org.au>, Kevin Hilman <khilman@baylibre.com>, Enric Balletbo i Serra <enric.balletbo@collabora.com>, Nicholas Piggin <npiggin@gmail.com>, Dominik Brodowski <linux@dominikbrodowski.net>, Masahiro Yamada <yamada.masahiro@socionext.com>, Adrian Reber <adrian@lisas.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Linux MM <linux-mm@kvack.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Richard Guy Briggs <rgb@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, info@kernelci.org
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Kees Cook <keescook@chromium.org>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Mike Rapoport <rppt@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Mark Brown <broonie@kernel.org>, Tomeu Vizoso <tomeu.vizoso@collabora.com>, Matt Hart <matthew.hart@linaro.org>, Stephen Rothwell <sfr@canb.auug.org.au>, Kevin Hilman <khilman@baylibre.com>, Enric Balletbo i Serra <enric.balletbo@collabora.com>, Nicholas Piggin <npiggin@gmail.com>, Dominik Brodowski <linux@dominikbrodowski.net>, Masahiro Yamada <yamada.masahiro@socionext.com>, Adrian Reber <adrian@lisas.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Linux MM <linux-mm@kvack.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Richard Guy Briggs <rgb@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, info@kernelci.org
 
-On Thu, Apr 11, 2019 at 10:35 AM Kees Cook <keescook@chromium.org> wrote:
+On Thu, Apr 11, 2019 at 1:22 PM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> On Thu, Apr 11, 2019 at 9:42 AM Guenter Roeck <groeck@google.com> wrote:
+> On Thu, Apr 11, 2019 at 1:08 PM Guenter Roeck <groeck@google.com> wrote:
 > >
-> > On Thu, Apr 11, 2019 at 9:19 AM Kees Cook <keescook@chromium.org> wrote:
+> > On Thu, Apr 11, 2019 at 10:35 AM Kees Cook <keescook@chromium.org> wrote:
 > > >
-> > > On Thu, Mar 7, 2019 at 7:43 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > > > I went ahead and acquired one of these boards to see if I can can
-> > > > debug this locally.
+> > > On Thu, Apr 11, 2019 at 9:42 AM Guenter Roeck <groeck@google.com> wrote:
+> > > >
+> > > > On Thu, Apr 11, 2019 at 9:19 AM Kees Cook <keescook@chromium.org> wrote:
+> > > > >
+> > > > > On Thu, Mar 7, 2019 at 7:43 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > > > > > I went ahead and acquired one of these boards to see if I can can
+> > > > > > debug this locally.
+> > > > >
+> > > > > Hi! Any progress on this? Might it be possible to unblock this series
+> > > > > for v5.2 by adding a temporary "not on ARM" flag?
+> > > > >
+> > > >
+> > > > Can someone send me a pointer to the series in question ? I would like
+> > > > to run it through my testbed.
 > > >
-> > > Hi! Any progress on this? Might it be possible to unblock this series
-> > > for v5.2 by adding a temporary "not on ARM" flag?
+> > > It's already in -mm and linux-next (",mm: shuffle initial free memory
+> > > to improve memory-side-cache utilization") but it gets enabled with
+> > > CONFIG_SHUFFLE_PAGE_ALLOCATOR=y (which was made the default briefly in
+> > > -mm which triggered problems on ARM as was reverted).
 > > >
 > >
-> > Can someone send me a pointer to the series in question ? I would like
-> > to run it through my testbed.
+> > Boot tests report
+> >
+> > Qemu test results:
+> >     total: 345 pass: 345 fail: 0
+> >
+> > This is on top of next-20190410 with CONFIG_SHUFFLE_PAGE_ALLOCATOR=y
+> > and the known crashes fixed.
 >
-> It's already in -mm and linux-next (",mm: shuffle initial free memory
-> to improve memory-side-cache utilization") but it gets enabled with
-> CONFIG_SHUFFLE_PAGE_ALLOCATOR=y (which was made the default briefly in
-> -mm which triggered problems on ARM as was reverted).
+> In addition to CONFIG_SHUFFLE_PAGE_ALLOCATOR=y you also need the
+> kernel command line option "page_alloc.shuffle=1"
 >
+> ...so I doubt you are running with shuffling enabled. Another way to
+> double check is:
+>
+>    cat /sys/module/page_alloc/parameters/shuffle
 
-Boot tests report
+Yes, you are right. Because, with it enabled, I see:
 
-Qemu test results:
-    total: 345 pass: 345 fail: 0
+Kernel command line: rdinit=/sbin/init page_alloc.shuffle=1 panic=-1
+console=ttyAMA0,115200 page_alloc.shuffle=1
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 0 at ./include/linux/jump_label.h:303
+page_alloc_shuffle+0x12c/0x1ac
+static_key_enable(): static key 'page_alloc_shuffle_key+0x0/0x4' used
+before call to jump_label_init()
+Modules linked in:
+CPU: 0 PID: 0 Comm: swapper Not tainted
+5.1.0-rc4-next-20190410-00003-g3367c36ce744 #1
+Hardware name: ARM Integrator/CP (Device Tree)
+[<c0011c68>] (unwind_backtrace) from [<c000ec48>] (show_stack+0x10/0x18)
+[<c000ec48>] (show_stack) from [<c07e9710>] (dump_stack+0x18/0x24)
+[<c07e9710>] (dump_stack) from [<c001bb1c>] (__warn+0xe0/0x108)
+[<c001bb1c>] (__warn) from [<c001bb88>] (warn_slowpath_fmt+0x44/0x6c)
+[<c001bb88>] (warn_slowpath_fmt) from [<c0b0c4a8>]
+(page_alloc_shuffle+0x12c/0x1ac)
+[<c0b0c4a8>] (page_alloc_shuffle) from [<c0b0c550>] (shuffle_store+0x28/0x48)
+[<c0b0c550>] (shuffle_store) from [<c003e6a0>] (parse_args+0x1f4/0x350)
+[<c003e6a0>] (parse_args) from [<c0ac3c00>] (start_kernel+0x1c0/0x488)
+[<c0ac3c00>] (start_kernel) from [<00000000>] (  (null))
 
-This is on top of next-20190410 with CONFIG_SHUFFLE_PAGE_ALLOCATOR=y
-and the known crashes fixed.
-
-$ git log --oneline next-20190410..
-3367c36ce744 Set SHUFFLE_PAGE_ALLOCATOR=y for testing.
-d2aee8b3cd5d Revert "crypto: scompress - Use per-CPU struct instead
-multiple variables"
-4bc9f5bc9a84 Fix: rhashtable: use bit_spin_locks to protect hash bucket.
-
-Boot tests on arm are:
-
-Building arm:versatilepb:versatile_defconfig:aeabi:pci:scsi:mem128:versatile-pb:rootfs
-... running ........ passed
-Building arm:versatilepb:versatile_defconfig:aeabi:pci:mem128:versatile-pb:initrd
-... running ........ passed
-Building arm:versatileab:versatile_defconfig:mem128:versatile-ab:initrd
-... running ........ passed
-Building arm:imx25-pdk:imx_v4_v5_defconfig:nonand:mem128:imx25-pdk:initrd
-... running ........ passed
-Building arm:kzm:imx_v6_v7_defconfig:nodrm:mem128:initrd ... running
-.......... passed
-Building arm:mcimx6ul-evk:imx_v6_v7_defconfig:nodrm:mem256:imx6ul-14x14-evk:initrd
-... running .......... passed
-Building arm:mcimx6ul-evk:imx_v6_v7_defconfig:nodrm:sd:mem256:imx6ul-14x14-evk:rootfs
-... running .......... passed
-Building arm:vexpress-a9:multi_v7_defconfig:nolocktests:mem128:vexpress-v2p-ca9:initrd
-... running ........ passed
-Building arm:vexpress-a9:multi_v7_defconfig:nolocktests:sd:mem128:vexpress-v2p-ca9:rootfs
-... running ........ passed
-Building arm:vexpress-a9:multi_v7_defconfig:nolocktests:virtio-blk:mem128:vexpress-v2p-ca9:rootfs
-... running ........ passed
-Building arm:vexpress-a15:multi_v7_defconfig:nolocktests:sd:mem128:vexpress-v2p-ca15-tc1:rootfs
-... running ........ passed
-Building arm:vexpress-a15-a7:multi_v7_defconfig:nolocktests:sd:mem256:vexpress-v2p-ca15_a7:rootfs
-... running ........ passed
-Building arm:beagle:multi_v7_defconfig:sd:mem256:omap3-beagle:rootfs
-... running ............ passed
-Building arm:beaglexm:multi_v7_defconfig:sd:mem512:omap3-beagle-xm:rootfs
-... running ........... passed
-Building arm:overo:multi_v7_defconfig:sd:mem256:omap3-overo-tobi:rootfs
-... running ........... passed
-Building arm:midway:multi_v7_defconfig:mem2G:ecx-2000:initrd ...
-running .......... passed
-Building arm:sabrelite:multi_v7_defconfig:mem256:imx6dl-sabrelite:initrd
-... running ............ passed
-Building arm:mcimx7d-sabre:multi_v7_defconfig:mem256:imx7d-sdb:initrd
-... running .......... passed
-Building arm:xilinx-zynq-a9:multi_v7_defconfig:mem128:zynq-zc702:initrd
-... running ............ passed
-Building arm:xilinx-zynq-a9:multi_v7_defconfig:sd:mem128:zynq-zc702:rootfs
-... running ............ passed
-Building arm:xilinx-zynq-a9:multi_v7_defconfig:sd:mem128:zynq-zc706:rootfs
-... running ............ passed
-Building arm:xilinx-zynq-a9:multi_v7_defconfig:sd:mem128:zynq-zed:rootfs
-... running ........... passed
-Building arm:cubieboard:multi_v7_defconfig:mem128:sun4i-a10-cubieboard:initrd
-... running ........... passed
-Building arm:raspi2:multi_v7_defconfig:bcm2836-rpi-2-b:initrd ...
-running .......... passed
-Building arm:raspi2:multi_v7_defconfig:sd:bcm2836-rpi-2-b:rootfs ...
-running .......... passed
-Building arm:virt:multi_v7_defconfig:virtio-blk:mem512:rootfs ...
-running ......... passed
-Building arm:smdkc210:exynos_defconfig:cpuidle:nocrypto:mem128:exynos4210-smdkv310:initrd
-... running ......... passed
-Building arm:realview-pb-a8:realview_defconfig:realview_pb:mem512:arm-realview-pba8:initrd
-... running ........ passed
-Building arm:realview-pbx-a9:realview_defconfig:realview_pb:arm-realview-pbx-a9:initrd
-... running ........ passed
-Building arm:realview-eb:realview_defconfig:realview_eb:mem512:arm-realview-eb:initrd
-... running ........ passed
-Building arm:realview-eb-mpcore:realview_defconfig:realview_eb:mem512:arm-realview-eb-11mp-ctrevb:initrd
-... running ......... passed
-Building arm:akita:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
-... running ..... passed
-Building arm:borzoi:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
-... running ..... passed
-Building arm:mainstone:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
-... running ..... passed
-Building arm:spitz:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
-... running ..... passed
-Building arm:terrier:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
-... running ..... passed
-Building arm:tosa:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
-... running ..... passed
-Building arm:z2:pxa_defconfig:nofdt:nodebug:notests:novirt:nousb:noscsi:initrd
-... running ..... passed
-Building arm:collie:collie_defconfig:aeabi:notests:initrd ... running
-..... passed
-Building arm:integratorcp:integrator_defconfig:mem128:integratorcp:initrd
-... running ....... passed
-Building arm:palmetto-bmc:aspeed_g4_defconfig:aspeed-bmc-opp-palmetto:initrd
-... running ................. passed
-Building arm:witherspoon-bmc:aspeed_g5_defconfig:notests:aspeed-bmc-opp-witherspoon:initrd
-... running ........... passed
-Building arm:ast2500-evb:aspeed_g5_defconfig:notests:aspeed-ast2500-evb:initrd
-... running ................ passed
-Building arm:romulus-bmc:aspeed_g5_defconfig:notests:aspeed-bmc-opp-romulus:initrd
-... running ......................... passed
-Building arm:mps2-an385:mps2_defconfig:mps2-an385:initrd ... running
-...... passed
+I'll re-run the test, but I suspect it will drown in warnings.
 
 Guenter
