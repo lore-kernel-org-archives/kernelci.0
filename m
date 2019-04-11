@@ -1,55 +1,53 @@
-Date: Mon, 25 Mar 2019 11:22:58 +0000
-From: "Mark Brown" <broonie@kernel.org>
-Subject: New meeting time
-Message-ID: <20190325112258.GA7284@sirena.org.uk>
+Date: Thu, 11 Apr 2019 12:02:59 -0400 (EDT)
+From: Veronika Kabatova <vkabatov@redhat.com>
+Message-ID: <852738449.13339710.1554998579496.JavaMail.zimbra@redhat.com>
+In-Reply-To: <CAOi56cXN9UGE6Fm4+okoWF0F+Mi-9ayGPE1KSwjjZHgTHciukg@mail.gmail.com>
+References: <299272045.11819252.1554465036421.JavaMail.zimbra@redhat.com> <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com> <ECADFF3FD767C149AD96A924E7EA6EAF976C1720@USCULXMSG01.am.sony.com> <CABXOdTcv1tJvzx=1nRJxR0pct5iCH4V34gow1-AjXZ9NbyPWFw@mail.gmail.com> <792428822.13097227.1554918446625.JavaMail.zimbra@redhat.com> <CAOi56cXN9UGE6Fm4+okoWF0F+Mi-9ayGPE1KSwjjZHgTHciukg@mail.gmail.com>
+Subject: Re: [Automated-testing] A common place for CI results?
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: Guenter Roeck <groeck@google.com>, Timothy Bird <Tim.Bird@sony.com>, info <info@kernelci.org>, automated-testing@yoctoproject.org, kernelci@groups.io
 
---HlL+5n6rz5pIUxbD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
 
-It's been just over a week since I sent out the doodle[1] for the new
-meeting time and we've got responses in.  The top options we have allow
-everyone to attend (at least acording to the survey!):
+----- Original Message -----
+> From: "Kevin Hilman" <khilman@baylibre.com>
+> To: "Veronika Kabatova" <vkabatov@redhat.com>
+> Cc: "Guenter Roeck" <groeck@google.com>, "Timothy Bird" <Tim.Bird@sony.com>, "info" <info@kernelci.org>,
+> automated-testing@yoctoproject.org, kernelci@groups.io
+> Sent: Wednesday, April 10, 2019 11:13:40 PM
+> Subject: Re: [Automated-testing] A common place for CI results?
+> 
+> On Wed, Apr 10, 2019 at 10:47 AM Veronika Kabatova <vkabatov@redhat.com>
+> wrote:
+> 
+> [...]
+> 
+> > Is there any page with details on how to join and what are the requirements
+> > on us that I can pass along to management to get an official statement?
+> 
+> Attatched is the LF slide deck with the project overview, membership
+> levels and costs etc.
+> 
+> I'd be happy to discuss more with you on a call after you review the
+> deck, but it would have to be next week as I'm OoO for the rest of
+> this week.
 
- 10 - Monday  14:00
-    - Tuesday 16:00
-    - Friday  15:00 (I will have a conflict every other week)
-  9 - Monday  15:00 (but no Guillaume)
- =20
-with a bunch of other options with 8 votes.  I don't know what my
-schedule is going to be like in a month or so but I'm guessing the other
-slots should be fine for me.  Given that practically speaking it's
-difficult for Kevin to attend the Monday 14:00 slot I propose that we go
-with the Tuesday 16:00 slot since that's the latest one and therefore
-most friendly to those on PST.  Thoughts?
+Sounds good. Feel free to reach out off list to set up the time and call
+location. I'll prepare a list of questions to discuss (especially as I have
+no idea how the project memberships work, even though Red Hat is already a
+member of Linux Foundation). Afterwards I can pass along all the information
+and try to get any funding.
+
 
 Thanks,
-Mark
+Veronika
 
-[1] https://doodle.com/poll/3yb3mzgxt7nqwg87
-
---HlL+5n6rz5pIUxbD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyYug8ACgkQJNaLcl1U
-h9Cn9Qf/Y4XEnAKT7QFqNj5BDn3+/OfdVSYIQeHGFFQrWIPX/d5QAQIe3i+6J7DI
-MkFMwVqlg+qzPHlUbCZNwCHOGYAbFtC7Yzvtb0hWKW4AxBiGykrWrb24SObXABwo
-vz3ImzWvJLgWJ7S3oKanq+ANseGAJ+HJ35TLUPo/+M7GpydGn8XnYaEwnYgFupWI
-ePFbO4G/DVCxIKieupgUnNcNp1uyb2Mwt+PTUGf4Bl/vO0kY21hMNF8v/btBW/fW
-5rDSg/Xk7jaQVqlCPZeeF1LA789aTH0oXtFllCi/fWxywsAtN6FeyLiDnAiINlo6
-FgD/j/Hsx0SW7ntTYzMifm5ia8CRcA==
-=wD1R
------END PGP SIGNATURE-----
-
---HlL+5n6rz5pIUxbD--
+> 
+> Thanks,
+> 
+> Kevin
+> 
