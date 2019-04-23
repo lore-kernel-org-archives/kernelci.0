@@ -1,58 +1,67 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Tue, 23 Apr 2019 12:36:31 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-04-23 #minutes
+Message-ID: <20190423173631.kgcbxmewtota4rhc@xps.therub.org>
 MIME-Version: 1.0
-References: <1596D609BD00E33A.15370@groups.io>
-In-Reply-To: <1596D609BD00E33A.15370@groups.io>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Mon, 22 Apr 2019 10:27:29 +0000
-Message-ID: <CAH1_8nCm+M5cWFX8A78FK2Tb2-kbp3tDOPfM7c-Jg+a7cqRe5w@mail.gmail.com>
-Subject: Re: kernelci.org Jenkins service is down
-Content-Type: multipart/alternative; boundary="00000000000002a50b05871beb5e"
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
+To: kernelci@groups.io
 
---00000000000002a50b05871beb5e
-Content-Type: text/plain; charset="UTF-8"
+- Attendees: Guillaume, Mark, Daniel, Dan, Guenter, Matt, Anders, Kevin,
+  Michal
 
-On Fri, Apr 19, 2019 at 10:27 AM Guillaume Tucker via Groups.Io
-<guillaume.tucker=gmail.com@groups.io> wrote:
+- gtucker
+  - kci_build PR now being tested on staging
+  - Email recipients for staging reports?
+    - [drue] +1 please add me
+    - [Matt] as well
+    - [broonie] Sure, my mail server deserves to be punished
+    - [khilman] yes, please
+  - [drue] any update/info on the downtime on ci.kernelci.org from the
+    weekend?
+    - [Matt] I noticed the 2 baylibre builders havent come up
+      - one is connected to staging
+      - [khilman] other one is old/unused, I just deleted
+      - [Matt] ack
+    - Box became unavailable in hetzner. Needed to do a reboot through
+      collabora’s hetzner interface to recover. Unknown root cause.
 
-> Hi,
->
-> The kernelci.org Jenkins service on ci.kernelci.org is currently
-> down.  As a result, no jobs are being processed in production for
-> kernelci.org.  Jobs that were interrupted will be rescheduled
-> when the issue has been fixed.  Sorry for the inconvenience.
->
+- Anders
+  - Quickhit on x86 it takes 4-16min
+  - Ltp-math 4-11min
+  - Ltp-ipc 3-6min, hikey 8-11m
+  - Ltp-timers 3-11min
+  - [drue] what’s going on with ltp rootfs pr?
+    - [anders] On me to get back with some numbers… like above I guess
+      =)
+  - Need to demonstrate it running under the debos build on an arm64
+    host
 
-The server is now back online, it will probably take about 8h to
-catch up with the backlog (28 branches to build in the queue
-now...).  Please let us know if you're still missing any test
-results tomorrow.
+- Broonie
+  - Who has admin access to the builders/core services?
+    - [anders] where’s the doc?
+      - Private google doc that contains lots of admin secrets. Matt
+        will create new doc with contact details for server owners which
+        more people can view.
+        - [drue] maybe secrets should be managed more properly too… i
+          don’t have a suggestion
+        - [Matt] Suggestions welcome :D
+          - Lastpass or 1password? Dunno if either’s free version would
+            cover this usecase.
+          - [broonie] Not sure either of them is substantially better
+            than the doc for secrets - fundamentally it’s just about
+            sharing access to something where you can read everything,
+            the ACL support in google docs is actually pretty advanced.
 
-Best wishes,
-Guillaume
+- Misc Discussion
+  - Docker daemon on the build slave died quietly on staging gce host
+    last week. Not happening in production gce - unknown cause.
+  - [Kevin] Any updates on elastic search work
+    - [matt] I will ask the Linaro guys to join meeting next week
+  - LF project
+    - MSFT joining
+    - Kevin had brief call w/Redhat (Veronica) about joining
 
---00000000000002a50b05871beb5e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"=
-gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Apr 19, 2019 at =
-10:27 AM Guillaume Tucker via Groups.Io &lt;guillaume.tucker=3D<a href=3D"m=
-ailto:gmail.com@groups.io">gmail.com@groups.io</a>&gt; wrote:<br></div><blo=
-ckquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left=
-:1px solid rgb(204,204,204);padding-left:1ex">Hi,<br>
-<br>
-The <a href=3D"http://kernelci.org" rel=3D"noreferrer" target=3D"_blank">ke=
-rnelci.org</a> Jenkins service on <a href=3D"http://ci.kernelci.org" rel=3D=
-"noreferrer" target=3D"_blank">ci.kernelci.org</a> is currently<br>
-down.=C2=A0 As a result, no jobs are being processed in production for<br>
-<a href=3D"http://kernelci.org" rel=3D"noreferrer" target=3D"_blank">kernel=
-ci.org</a>.=C2=A0 Jobs that were interrupted will be rescheduled<br>
-when the issue has been fixed.=C2=A0 Sorry for the inconvenience.<br></bloc=
-kquote><div><br></div><div>The server is now back online, it will probably =
-take about 8h to</div><div>catch up with the backlog (28 branches to build =
-in the queue</div><div>now...).=C2=A0 Please let us know if you&#39;re stil=
-l missing any test</div><div>results tomorrow.</div><div><br></div><div>Bes=
-t wishes,</div><div>Guillaume</div></div></div></div>
-
---00000000000002a50b05871beb5e--
