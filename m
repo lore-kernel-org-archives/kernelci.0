@@ -1,45 +1,41 @@
 MIME-Version: 1.0
-References: <DBBPR04MB63298113754D73EF48762E40993D0@DBBPR04MB6329.eurprd04.prod.outlook.com>
-In-Reply-To: <DBBPR04MB63298113754D73EF48762E40993D0@DBBPR04MB6329.eurprd04.prod.outlook.com>
-From: "Milosz Wasilewski" <milosz.wasilewski@linaro.org>
-Date: Thu, 25 Apr 2019 08:21:05 +0100
-Message-ID: <CAJrz+7LvJw4vE0=1qFw5QeN658w_QFtbjsZVh2Zcwakn-W_vHQ@mail.gmail.com>
-Subject: Re: [Lava-users] What's the difference between kernel ci's docker and official docker?
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "Corentin Labbe" <clabbe@baylibre.com>
+Date: Thu, 25 Apr 2019 15:07:31 +0200
+Message-ID: <CA+j61XPyD-j+OneCwi-Xj=mJdC3KXN_Q4OvxG3wnrEXk21gqOA@mail.gmail.com>
+Subject: lab token request
+Content-Type: multipart/alternative; boundary="000000000000d8bb5305875a80ce"
 List-ID: <kernelci.groups.io>
-To: Larry Shen <larry.shen@nxp.com>
-Cc: "lava-users@lists.lavasoftware.org" <lava-users@lists.lavasoftware.org>, kernelci@groups.io
+To: kernelci@groups.io
 
-+kernelci
+--000000000000d8bb5305875a80ce
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 25 Apr 2019 at 03:33, Larry Shen <larry.shen@nxp.com> wrote:
->
-> Hi,
->
->
->
-> I=E2=80=99d like to know is this site official? https://github.com/kernel=
-ci/lava-docker
->
+Hello
 
-This is the 1st historical implementation. At the time KCI created
-docker container there were no containers coming from LAVA project.
+I am LABBE Corentin and I work with Kevin HILMAN.
+I maintain lab-baylibre.
 
->
->
-> Does this project same as the one in dockerhub, lavasoftware/lava-server?
+Now I have a personnal lab at home, and for that reason could you give me:
+- an API token, for using kernelci-core/lava-v2-jobs-from-api.py
+- a lab token for submititng results
 
-I'm not exactly sure what the differences are between kernelci and
-official LAVA containers. I suspect the might at least differ when it
-comes to the version of LAVA release inside.
-lavasoftware/lava-{server,dispatcher} are official containers provided
-by LAVA project.
+Note that due to very low bandwith, my lab cannot be made public for the
+moment.
 
-milosz
+Thanks
+Regard
 
->
-> _______________________________________________
-> Lava-users mailing list
-> Lava-users@lists.lavasoftware.org
-> https://lists.lavasoftware.org/mailman/listinfo/lava-users
+--000000000000d8bb5305875a80ce
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hello</div><div><br></div><div>I am LABBE Corentin an=
+d I work with Kevin HILMAN.</div><div>I maintain lab-baylibre.</div><div><b=
+r></div><div>Now I have a personnal lab at home, and for that reason could =
+you give me:</div><div>- an API token, for using kernelci-core/lava-v2-jobs=
+-from-api.py</div><div>- a lab token for submititng results</div><div><br><=
+/div><div>Note that due to very low bandwith, my lab cannot be made public =
+for the moment.<br></div><div><br></div><div>Thanks<br></div><div>Regard<br=
+></div></div>
+
+--000000000000d8bb5305875a80ce--
