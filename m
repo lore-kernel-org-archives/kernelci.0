@@ -1,32 +1,41 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Tue, 14 May 2019 11:16:52 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Weekly Meeting 2019-05-14 #minutes
-Message-ID: <20190514161652.c44sqivfy2g3icpd@xps.therub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From: Todd Kjos <tkjos@google.com>
+Date: Wed, 8 May 2019 11:25:14 -0700
+Message-ID: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
+Subject: Please add 3 android common kernels to kernelci
+Content-Type: multipart/alternative; boundary="0000000000000cdfb10588647523"
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-- Attendees: Dan, Broonie, Charles, Amro, Michal, Guenter, Matt H,
-  Daniel
-- Matt
-  - Duplicate email warnings for bisections
-    - Likely due to merge window triggering races with prior bisection
-      not completing?
-- Kevin
-  - buildroot-builder moved to scripts, eventually to pipeline job
-- broonie
-  - Any report from the testing call last week?
-    - Minutes @ <redacted public google doc link - email
-      dan.rue@linaro.org for a link/invite>
-      - Call was recorded. Recording and minutes will be posted back to
-        list by Maria.
-      - A few new faces/attendees
-      - Some complaints about timezone, but I think we spread pacific
-        time and japan as best as we can (and we had attendees from
-        both)
+--0000000000000cdfb10588647523
+Content-Type: text/plain; charset="UTF-8"
 
--- 
-Linaro - Kernel Validation
+Please add these three more android branches to kernelci:
+
+repo: https://android.googlesource.com/kernel/common
+
+branches:
+android-mainline (linux mainline regularly merged to stay close to tip)
+android-4.19-gki-dev (development branch for "generic kernel image" work)
+android-3.18 (needed to continue security update support when 3.18 LTS
+support is dropped)
+
+Thanks,
+
+-Todd
+
+--0000000000000cdfb10588647523
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Please add these three more android branches to kerne=
+lci:</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">repo: <a href=3D"http=
+s://android.googlesource.com/kernel/common">https://android.googlesource.co=
+m/kernel/common</a><br></div><div dir=3D"ltr"><br></div><div>branches:</div=
+><div>android-mainline (linux mainline regularly merged to stay close to ti=
+p)</div><div>android-4.19-gki-dev (development branch for &quot;generic ker=
+nel image&quot; work)</div><div>android-3.18 (needed to continue security u=
+pdate support when 3.18 LTS support is dropped)</div><div><br></div><div>Th=
+anks,</div><div><br></div><div>-Todd</div><div><br></div></div>
+
+--0000000000000cdfb10588647523--
