@@ -1,100 +1,34 @@
-From: <Tim.Bird@sony.com>
-Subject: Re: A common place for CI results?
-Date: Tue, 14 May 2019 23:01:35 +0000
-Message-ID: <ECADFF3FD767C149AD96A924E7EA6EAF977191AE@USCULXMSG01.am.sony.com>
-References: <299272045.11819252.1554465036421.JavaMail.zimbra@redhat.com>
- <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com>
-In-Reply-To: <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com>
 MIME-Version: 1.0
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
+In-Reply-To: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
+From: "Matt Hart" <matthew.hart@linaro.org>
+Date: Wed, 15 May 2019 13:03:17 +0100
+Message-ID: <CAH+k93HHKjOTCBjmDXDyAyW86KY66_bHjP6265sY1Fm3=TgVSg@mail.gmail.com>
+Subject: Re: Please add 3 android common kernels to kernelci
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: vkabatov@redhat.com, automated-testing@yoctoproject.org, info@kernelci.org
+To: kernelci@groups.io, Todd Kjos <tkjos@google.com>
 
+On Wed, 15 May 2019 at 07:09, via Groups.Io <tkjos=google.com@groups.io> wrote:
+>
+> Please add these three more android branches to kernelci:
+>
+> repo: https://android.googlesource.com/kernel/common
+>
 
+I'll make a pull request to add those today.
 
-> -----Original Message-----
-> From: Veronika Kabatova
->=20
-> Hi,
->=20
-> as we know from this list, there's plenty CI systems doing some testing o=
-n
-> the
-> upstream kernels (and maybe some others we don't know about).
->=20
-> It would be great if there was a single common place where all the CI sys=
-tems
-> can put their results. This would make it much easier for the kernel
-> maintainers and developers to see testing status since they only need to
-> check one place instead of having a list of sites/mailing lists where eac=
-h CI
-> posts their contributions.
->=20
->=20
-> A few weeks ago, with some people we've been talking about kernelci.org
-> being
-> in a good place to act as the central upstream kernel CI piece that most
-> maintainers already know about. So I'm wondering if it would be possible =
-for
-> kernelci to also act as an aggregator of all results? There's already an =
-API
-> for publishing a report [0] so it shouldn't be too hard to adjust it to
-> handle and show more information. I also found the beta version for test
-> results [1] so actually, most of the needed functionality seems to be alr=
-eady
-> there. Since there will be multiple CI systems, the source and contact po=
-int
-> for the contributor (so maintainers know whom to ask about results if
-> needed)
-> would likely be the only missing essential data point.
->=20
->=20
-> The common place for results would also make it easier for new CI systems
-> to
-> get involved with upstream. There are likely other companies out there
-> running
-> some tests on kernel internally but don't publish the results anywhere. O=
-nly
-> adding some API calls into their code (with the data they are allowed to
-> publish) would make it very simple for them to start contributing. If we =
-want
-> to make them interested, the starting point needs to be trivial. Differen=
-t
-> companies have different setups and policies and they might not be able t=
-o
-> fulfill arbitrary requirements so they opt to not get involved at all, wh=
-ich
-> is a shame because their results can be useful. After the initial "onboar=
-ding"
-> step they might be willing to contribute more and more too.
->=20
->=20
-> Please let me know if the idea makes sense or if something similar is alr=
-eady
-> in plans. I'd be happy to contribute to the effort because I believe it w=
-ould
-> make everyone's life easier and we'd all benefit from it (and maybe
-> someone
-> else from my team would be willing to help out too if needed).
+> branches:
+> android-mainline (linux mainline regularly merged to stay close to tip)
+> android-4.19-gki-dev (development branch for "generic kernel image" work)
+> android-3.18 (needed to continue security update support when 3.18 LTS support is dropped)
 
-I never responded to this, but this sounds like a really good idea to me.
-I don't care much which backend we aggregate to, but it would be good
-as a community to start using one service to start with.  It would help
-to find issues with the API, or the results schema, if multiple people
-started using it.
+These sound like they will be frequently built so I've added 2 more
+GCE builders to the kernelci production instance in preparation.
 
-I know that people using Fuego are sending data to their own instances
-of KernelCI.  But I don't know what the issues are for sending this
-data to a shared KernelCI service.
-
-I would be interested in hooking up my lab to send Fuego results to
-KernelCI.  This would be a good exercise.  I'm not sure what the next
-steps would be, but maybe we could discuss this on the next automated
-testing conference call.
- -- Tim
-
+>
+> Thanks,
+>
+> -Todd
+>
+> 
