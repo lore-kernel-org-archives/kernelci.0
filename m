@@ -1,601 +1,220 @@
-Subject: Email reports from staging and automated staging tests
-References: <5c9a7406.1c69fb81.4db25.ff2d@mx.google.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Message-ID: <9ac7fc41-379d-24d0-b316-61fbb0f381ef@collabora.com>
-Date: Wed, 27 Mar 2019 09:11:13 +0100
+Date: Mon, 20 May 2019 11:32:09 -0400 (EDT)
+From: Veronika Kabatova <vkabatov@redhat.com>
+Message-ID: <1070842434.21130927.1558366329557.JavaMail.zimbra@redhat.com>
+In-Reply-To: <A0783550-C80A-4037-9B18-256AEA3CDAA7@linaro.org>
+References: <299272045.11819252.1554465036421.JavaMail.zimbra@redhat.com> <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com> <ECADFF3FD767C149AD96A924E7EA6EAF977191AE@USCULXMSG01.am.sony.com> <20190515203334.lbhpqpdyulqztr5c@xps.therub.org> <A0783550-C80A-4037-9B18-256AEA3CDAA7@linaro.org>
+Subject: Re: A common place for CI results?
 MIME-Version: 1.0
-In-Reply-To: <5c9a7406.1c69fb81.4db25.ff2d@mx.google.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
-
-Hello,
-
-I've revived the main jobs on staging.kernelci.org to build and
-test the kernelci-core/staging.kernelci.org branch with the
-intent to automatically update it every day with all the open
-PRs.  It has a series of extra patches to make it appropriate on
-staging, with a separate tree and bisection reports disabled to
-avoid spamming people.  The history can be found here:
-
-  https://github.com/kernelci/kernelci-core/commits/staging.kernelci.org
-
-I've initially put only mgalka and myself on the list of
-recipients for these jobs, but I think it would make sense to
-have all the contributors whose code gets tested on staging.  So
-please let me know if you wish to be added or not added to the
-list.
-
-I've started a tool to gather all the PRs for a particular Github
-project into a "staging" branch with an extra series of patches
-to apply on top of it:
-
-  https://gitlab.collabora.com/gtucker/kernelci-staging-tools
-
-I'll add a README and if this looks fine then it should be moved
-to Github.  Also we should probably have a Linux kernel tree for
-KernelCI to have a branch to test on staging, as at the moment
-it's using my own tree.
-
-The next bit that needs to be automated is to push the staging
-branches to the Github repos.  For this I think we'll need to
-create a Github user with some dedicated SSH keys.  The script
-can be used for any project (kernelci-core, kernelci-backend,
-kernelci-frontend...).  We would also need an extra user to
-deploy the backend and frontend branches over SSH on the staging
-server.  After that, it could add a change to a test kernel
-branch and trigger a kernel-tree-monitor job to get the whole
-thing running.  That could be run as a daily Jenkins job.
-
-Guillaume
+To: Tom Gall <tom.gall@linaro.org>, Dan Rue <dan.rue@linaro.org>, Tim Bird <Tim.Bird@sony.com>
+Cc: kernelci@groups.io, automated-testing@yoctoproject.org, info@kernelci.org
 
 
--------- Forwarded Message --------
-Subject: staging/kernelci-stable build: 7 builds: 0 failed, 7 passed, 126=
- warnings (v4.20.17-1-g836086c352db)
-Date: Tue, 26 Mar 2019 11:48:38 -0700 (PDT)
-From: kernelci.org bot <bot@kernelci.org>
-To: gtucker@collabora.com, mgalka@collabora.com
 
-staging/kernelci-stable build: 7 builds: 0 failed, 7 passed, 126 warnings=
- (v4.20.17-1-g836086c352db)
+----- Original Message -----
+> From: "Tom Gall" <tom.gall@linaro.org>
+> To: kernelci@groups.io, "Dan Rue" <dan.rue@linaro.org>
+> Cc: "Tim Bird" <Tim.Bird@sony.com>, vkabatov@redhat.com, automated-testin=
+g@yoctoproject.org, info@kernelci.org
+> Sent: Wednesday, May 15, 2019 11:06:33 PM
+> Subject: Re: A common place for CI results?
+>=20
+>=20
+>=20
+> > On May 15, 2019, at 3:33 PM, Dan Rue <dan.rue@linaro.org> wrote:
+> >=20
+> > On Tue, May 14, 2019 at 11:01:35PM +0000, Tim.Bird@sony.com wrote:
+> >>=20
+> >>=20
+> >>> -----Original Message-----
+> >>> From: Veronika Kabatova
+> >>>=20
+> >>> Hi,
+> >>>=20
+> >>> as we know from this list, there's plenty CI systems doing some testi=
+ng
+> >>> on
+> >>> the
+> >>> upstream kernels (and maybe some others we don't know about).
+> >>>=20
+> >>> It would be great if there was a single common place where all the CI
+> >>> systems
+> >>> can put their results. This would make it much easier for the kernel
+> >>> maintainers and developers to see testing status since they only need=
+ to
+> >>> check one place instead of having a list of sites/mailing lists where
+> >>> each CI
+> >>> posts their contributions.
+> >>>=20
+> >>>=20
+> >>> A few weeks ago, with some people we've been talking about kernelci.o=
+rg
+> >>> being
+> >>> in a good place to act as the central upstream kernel CI piece that m=
+ost
+> >>> maintainers already know about. So I'm wondering if it would be possi=
+ble
+> >>> for
+> >>> kernelci to also act as an aggregator of all results? There's already=
+ an
+> >>> API
+> >>> for publishing a report [0] so it shouldn't be too hard to adjust it =
+to
+> >>> handle and show more information. I also found the beta version for t=
+est
+> >>> results [1] so actually, most of the needed functionality seems to be
+> >>> already
+> >>> there. Since there will be multiple CI systems, the source and contac=
+t
+> >>> point
+> >>> for the contributor (so maintainers know whom to ask about results if
+> >>> needed)
+> >>> would likely be the only missing essential data point.
+> >>>=20
+> >>>=20
+> >>> The common place for results would also make it easier for new CI sys=
+tems
+> >>> to
+> >>> get involved with upstream. There are likely other companies out ther=
+e
+> >>> running
+> >>> some tests on kernel internally but don't publish the results anywher=
+e.
+> >>> Only
+> >>> adding some API calls into their code (with the data they are allowed=
+ to
+> >>> publish) would make it very simple for them to start contributing. If=
+ we
+> >>> want
+> >>> to make them interested, the starting point needs to be trivial.
+> >>> Different
+> >>> companies have different setups and policies and they might not be ab=
+le
+> >>> to
+> >>> fulfill arbitrary requirements so they opt to not get involved at all=
+,
+> >>> which
+> >>> is a shame because their results can be useful. After the initial
+> >>> "onboarding"
+> >>> step they might be willing to contribute more and more too.
+> >>>=20
+> >>>=20
+> >>> Please let me know if the idea makes sense or if something similar is
+> >>> already
+> >>> in plans. I'd be happy to contribute to the effort because I believe =
+it
+> >>> would
+> >>> make everyone's life easier and we'd all benefit from it (and maybe
+> >>> someone
+> >>> else from my team would be willing to help out too if needed).
+> >>=20
+> >> I never responded to this,
+> >=20
+> > yea, you did. ;)
+> >=20
+> >> but this sounds like a really good idea to me. I don't care much which
+> >> backend we aggregate to, but it would be good as a community to start
+> >> using one service to start with.  It would help to find issues with
+> >> the API, or the results schema, if multiple people started using it.
+> >>=20
+> >> I know that people using Fuego are sending data to their own instances
+> >> of KernelCI.  But I don't know what the issues are for sending this
+> >> data to a shared KernelCI service.
+> >>=20
+> >> I would be interested in hooking up my lab to send Fuego results to
+> >> KernelCI.  This would be a good exercise.  I'm not sure what the next
+> >> steps would be, but maybe we could discuss this on the next automated
+> >> testing conference call.
+> >=20
+> > OK here's my idea.
+> >=20
+> > I don't personally think kernelci (or LKFT) are set up to aggregate
+> > results currently. We have too many assumptions about where tests are
+> > coming from, how things are built, etc. In other words, dealing with
+> > noisy data is going to be non-trivial in any existing project.
+>=20
+> I completely agree.
+>=20
 
-Full Build Summary: https://staging.kernelci.org/build/staging/branch/ker=
-nelci-stable/kernel/v4.20.17-1-g836086c352db/
+This is a good point. I'm totally fine with having a separate independent
+place for aggregation.
 
-Tree: staging
-Branch: kernelci-stable
-Git Describe: v4.20.17-1-g836086c352db
-Git Commit: 836086c352db12e584eda192158bee1c92f0d121
-Git URL: https://gitlab.collabora.com/gtucker/linux.git
-Built: 6 unique architectures
+> > I would propose aggregating data into something like google's BigQuery.
+> > This has a few benefits:
+> > - Non-opinionated place to hold structured data
+> > - Allows many downstream use-cases
+> > - Managed hosting, and data is publicly available
+> > - Storage is sponsored by google as a part of
+> >  https://cloud.google.com/bigquery/public-data/
+> > - First 1TB of query per 'project' is free, and users pay for more
+> >  queries than that
+>=20
+> I very much like this idea. I do lots of android kernel testing
+> and being able to work with / compare / contribute to what
+> is essentially a pile of data in BQ would be great. As an
+> end user working with the data I=E2=80=99d also have lots of dash
+> board options to customize and share queries with others.
+>=20
+> > With storage taken care of, how do we get the data in?
+>=20
+> > First, we'll need some canonical data structure defined. I would
+> > approach defining the canonical structure in conjunction with the first
+> > few projects that are interested in contributing their results. Each
+> > project will have an ETL pipeline which will extract the test results
+> > from a given project (such as kernelci, lkft, etc), translate it into
+> > the canonical data structure, and load it into the google bigquery
+> > dataset at a regular interval or in real-time. The translation layer is
+> > where things like test names are handled.
+>=20
 
-Warnings Detected:
++1, exactly how I imagined this part.
 
-arc:    arc-linux-gcc (ARCv2 ISA Linux uClibc toolchain 2017.09) 7.1.1 20=
-170710
+> Exactly. I would hope that the various projects that are producing
+> data would be motived to plug in. After all, it makes the data
+> they are producing more useful and available to a larger group
+> of people.
+>=20
+> > The things this leaves me wanting are:
+> > - raw data storage. It would be nice if raw data were stored somewhere
+> >  permanent in some intermediary place so that later implementations
+> >  could happen, and for data that doesn't fit into whatever structure we
+> >  end up with.
+>=20
+> I agree.
 
-    nsim_hs_defconfig: 3 warnings
++1
 
-arm64:    aarch64-linux-gnu-gcc (Debian 7.4.0-1) 7.4.0
+>=20
+> > - time, to actually try it and find the gaps. This is just an idea I've
+> >  been thinking about. Anyone with experience here that can help flesh
+> >  this out?
+>=20
+> I=E2=80=99m willing to lend a hand.
+>=20
 
-    defconfig: 122 warnings
+Thanks for starting up a specific proposal! I agree with everything that wa=
+s
+brought up. I'll try to find time to participate in the implementation part
+too (although my experience with data storage is.. limited, I should be abl=
+e
+to help out with the structure prototyping and maybe other parts too).
 
-arm:    arm-linux-gnueabihf-gcc (Debian 7.4.0-1) 7.4.0
 
-    multi_v7_defconfig: 1 warning
+Thanks again,
 
+Veronika
+CKI Project
 
-Warnings summary:
-
-    3    drivers/soc/rockchip/pm_domains.c:814:20: warning: shift count i=
-s negative [-Wshift-count-negative]
-    3    drivers/soc/rockchip/pm_domains.c:802:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    3    drivers/soc/rockchip/pm_domains.c:801:22: warning: shift count i=
-s negative [-Wshift-count-negative]
-    3    drivers/soc/rockchip/pm_domains.c:800:22: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:816:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:815:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:804:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:803:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:778:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:777:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:776:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:775:22: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:774:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:773:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:772:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:771:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:770:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    2    drivers/soc/rockchip/pm_domains.c:742:21: warning: shift count i=
-s negative [-Wshift-count-negative]
-    1    scripts/mod/file2alias.c:989:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:989:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:978:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:978:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:967:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:967:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:956:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:956:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:933:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:933:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:917:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:917:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:898:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:898:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:881:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:881:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:864:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:864:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:844:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:844:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:832:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:832:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:759:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:759:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:739:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:739:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:615:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:615:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:577:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:577:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:557:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:557:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:546:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:546:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:535:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:535:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:511:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:511:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:467:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:467:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:442:1: warning: adding 'unsigned long' =
-to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:442:1: note: use array indexing to sile=
-nce this warning
-    1    scripts/mod/file2alias.c:1377:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1377:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1364:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1364:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1339:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1339:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1327:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1327:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1312:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1312:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1295:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1295:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1282:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1282:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1262:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1262:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1243:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1243:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1233:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1233:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1208:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1208:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1192:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1192:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1121:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1121:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1105:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1105:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1089:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1089:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1078:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1078:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1053:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1053:1: note: use array indexing to sil=
-ence this warning
-    1    scripts/mod/file2alias.c:1044:1: warning: adding 'unsigned long'=
- to a string does not append to the string [-Wstring-plus-int]
-    1    scripts/mod/file2alias.c:1044:1: note: use array indexing to sil=
-ence this warning
-    1    net/ipv4/tcp_input.c:4315:49: warning: array subscript is above =
-array bounds [-Warray-bounds]
-    1    drivers/pinctrl/bcm/pinctrl-bcm2835.c:707:40: warning: implicit =
-conversion from enumeration type 'enum bcm2835_pinconf_param' to differen=
-t enumeration type 'enum pin_config_param' [-Wenum-conversion]
-    1    arch/arm/boot/dts/qcom-apq8064-arrow-sd-600eval.dtb: Warning (gr=
-aph_endpoint): /soc/mdp@5100000/ports/port@3/endpoint: graph connection t=
-o node '/soc/hdmi-tx@4a00000/ports/port@0/endpoint' is not bidirectional
-    1    arch/arc/mm/tlb.c:914:2: warning: ISO C90 forbids variable lengt=
-h array 'pd0' [-Wvla]
-    1    arch/arc/include/asm/cmpxchg.h:95:29: warning: value computed is=
- not used [-Wunused-value]
-    1    40 warnings generated.
-    1    39 warnings generated.
-    1    1 warning generated.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
--------------------------------------------------------------------------=
--------
-32r2el_defconfig (mips, gcc-7) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
--------------------------------------------------------------------------=
--------
-defconfig (riscv, gcc-7) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
--------------------------------------------------------------------------=
--------
-defconfig (arm64, gcc-7) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
--------------------------------------------------------------------------=
--------
-defconfig (arm64, clang-8) =E2=80=94 PASS, 0 errors, 122 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    scripts/mod/file2alias.c:442:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:442:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:467:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:467:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:511:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:511:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:535:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:535:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:546:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:546:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:557:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:557:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:577:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:577:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:615:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:615:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:739:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:739:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:759:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:759:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:832:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:832:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:844:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:844:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:864:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:864:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:881:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:881:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:898:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:898:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:917:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:917:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:933:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:933:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:956:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:956:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:967:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:967:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:978:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:978:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:989:1: warning: adding 'unsigned long' to a =
-string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:989:1: note: use array indexing to silence t=
-his warning
-    scripts/mod/file2alias.c:1044:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1044:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1053:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1053:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1078:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1078:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1089:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1089:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1105:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1105:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1121:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1121:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1192:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1192:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1208:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1208:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1233:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1233:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1243:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1243:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1262:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1262:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1282:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1282:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1295:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1295:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1312:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1312:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1327:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1327:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1339:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1339:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1364:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1364:1: note: use array indexing to silence =
-this warning
-    scripts/mod/file2alias.c:1377:1: warning: adding 'unsigned long' to a=
- string does not append to the string [-Wstring-plus-int]
-    scripts/mod/file2alias.c:1377:1: note: use array indexing to silence =
-this warning
-    39 warnings generated.
-    drivers/pinctrl/bcm/pinctrl-bcm2835.c:707:40: warning: implicit conve=
-rsion from enumeration type 'enum bcm2835_pinconf_param' to different enu=
-meration type 'enum pin_config_param' [-Wenum-conversion]
-    1 warning generated.
-    drivers/soc/rockchip/pm_domains.c:742:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:742:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:770:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:770:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:771:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:771:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:772:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:772:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:773:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:773:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:774:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:774:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:775:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:775:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:776:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:776:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:777:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:777:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:778:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:778:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:800:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:800:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:800:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:801:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:801:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:801:22: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:802:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:802:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:802:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:803:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:803:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:804:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:804:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:814:20: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:814:20: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:814:20: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:815:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:815:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:816:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    drivers/soc/rockchip/pm_domains.c:816:21: warning: shift count is neg=
-ative [-Wshift-count-negative]
-    40 warnings generated.
-
--------------------------------------------------------------------------=
--------
-multi_v7_defconfig (arm, gcc-7) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/arm/boot/dts/qcom-apq8064-arrow-sd-600eval.dtb: Warning (graph_e=
-ndpoint): /soc/mdp@5100000/ports/port@3/endpoint: graph connection to nod=
-e '/soc/hdmi-tx@4a00000/ports/port@0/endpoint' is not bidirectional
-
--------------------------------------------------------------------------=
--------
-nsim_hs_defconfig (arc, gcc-7) =E2=80=94 PASS, 0 errors, 3 warnings, 0 se=
-ction mismatches
-
-Warnings:
-    arch/arc/mm/tlb.c:914:2: warning: ISO C90 forbids variable length arr=
-ay 'pd0' [-Wvla]
-    arch/arc/include/asm/cmpxchg.h:95:29: warning: value computed is not =
-used [-Wunused-value]
-    net/ipv4/tcp_input.c:4315:49: warning: array subscript is above array=
- bounds [-Warray-bounds]
-
--------------------------------------------------------------------------=
--------
-x86_64_defconfig (x86_64, gcc-7) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
-section mismatches
-
----
-For more info write to <info@kernelci.org>
+> > Dan
+> >=20
+> > --
+> > Linaro - Kernel Validation
+>=20
+> Tom
+>=20
+> =E2=80=94
+> Directory, Linaro Consumer Group
+>=20
+>=20
