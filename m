@@ -1,119 +1,43 @@
-Date: Wed, 22 May 2019 06:14:40 -0400 (EDT)
-From: Veronika Kabatova <vkabatov@redhat.com>
-Message-ID: <1528423489.21391606.1558520080567.JavaMail.zimbra@redhat.com>
-In-Reply-To: <20190521164704.GB8787@kroah.com>
-References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com> <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com> <20190521164704.GB8787@kroah.com>
-Subject: Re: CKI hackfest @Plumbers invite
 MIME-Version: 1.0
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+References: <AM6PR04MB4104B8BD556E17089924693BAB000@AM6PR04MB4104.eurprd04.prod.outlook.com>
+In-Reply-To: <AM6PR04MB4104B8BD556E17089924693BAB000@AM6PR04MB4104.eurprd04.prod.outlook.com>
+From: "Matt Hart" <matthew.hart@linaro.org>
+Date: Wed, 22 May 2019 15:01:27 +0100
+Message-ID: <CAH+k93FTdkqyh3N8Q4kUx0cZa5mtHmZzeTPP44NXnckNQNqr1Q@mail.gmail.com>
+Subject: Re: Would like to participate in build/boot test
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: automated-testing@yoctoproject.org, info@kernelci.org, Tim Bird <Tim.Bird@sony.com>, khilamn@baylibre.org, syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, Laura Abbott <labbott@redhat.com>, Eliska Slobodova <eslobodo@redhat.com>, CKI Project <cki-project@redhat.com>
+To: kernelci@groups.io, suram@nxp.com
 
+On Wed, 22 May 2019 at 09:57, Suram Suram <suram@nxp.com> wrote:
+>
+> Hi,
+> We would like to create setup for  build/ boot tests in our lab.
 
+Hi!
 
------ Original Message -----
-> From: "Greg KH" <gregkh@linuxfoundation.org>
-> To: "Veronika Kabatova" <vkabatov@redhat.com>
-> Cc: automated-testing@yoctoproject.org, info@kernelci.org, "Tim Bird" <Tim.Bird@sony.com>, khilamn@baylibre.org,
-> syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, "Laura Abbott" <labbott@redhat.com>, "Eliska
-> Slobodova" <eslobodo@redhat.com>, "CKI Project" <cki-project@redhat.com>
-> Sent: Tuesday, May 21, 2019 6:47:04 PM
-> Subject: Re: CKI hackfest @Plumbers invite
-> 
-> On Tue, May 21, 2019 at 10:54:12AM -0400, Veronika Kabatova wrote:
-> > Hi,
-> > 
-> > as some of you have heard, CKI Project is planning hackfest CI meetings
-> > after
-> > Plumbers conference this year (Sept. 12-13). We would like to invite
-> > everyone
-> > who has interest in CI for kernel to come and join us.
-> > 
-> > The early agenda with summary is at the end of the email. If you think
-> > there's
-> > something important missing let us know! Also let us know in case you'd
-> > want to
-> > lead any of the sessions, we'd be happy to delegate out some work :)
-> > 
-> > 
-> > Please send us an email as soon as you decide to come and feel free to
-> > invite
-> > other people who should be present. We are not planning to cap the
-> > attendance
-> > right now but need to solve the logistics based on the interest. The event
-> > is
-> > free to attend, no additional registration except letting us know is
-> > needed.
-> > 
-> > Feel free to contact us if you have any questions,
-> > Veronika
-> > CKI Project
-> > 
-> > 
-> > -----------------------------------------------------------
-> > Here is an early agenda we put together:
-> > - Introductions
-> > - Common place for upstream results, result publishing in general
-> >   - The discussion on the mailing list is going strong so we might be able
-> >   to
-> >     substitute this session for a different one in case everything is
-> >     solved by
-> >     September.
-> > - Test result interpretation and bug detection
-> >   - How to autodetect infrastructure failures, regressions/new bugs and
-> >   test
-> >     bugs? How to handle continuous failures due to known bugs in both tests
-> >     and
-> >     kernel? What's your solution? Can people always trust the results they
-> >     receive?
-> > - Getting results to developers/maintainers
-> >   - Aimed at kernel developers and maintainers, share your feedback and
-> >     expectations.
-> >   - How much data should be sent in the initial communication vs. a click
-> >   away
-> >     in a dashboard? Do you want incremental emails with new results as they
-> >     come
-> >     in?
-> >   - What about adding checks to tested patches in Patchwork when patch
-> >   series
-> >     are being tested?
-> >   - Providing enough data/script to reproduce the failure. What if special
-> >   HW
-> >     is needed?
-> > - Onboarding new kernel trees to test
-> >   - Aimed at kernel developers and maintainers.
-> >   - Which trees are most prone to bring in new problems? Which are the most
-> >     critical ones? Do you want them to be tested? Which tests do you feel
-> >     are
-> >     most beneficial for specific trees or in general?
-> > - Security when testing untrusted patches
-> >   - How do we merge, compile, and test patches that have untrusted code in
-> >   them
-> >     and have not yet been reviewed? How do we avoid abuse of systems,
-> >     information theft, or other damage?
-> >   - Check out the original patch that sparked the discussion at
-> >     https://patchwork.ozlabs.org/patch/862123/
-> > - Avoiding effort duplication
-> >   - Food for thought by GregKH
-> 
-> So I guess I'm going to be there?
-> 
-> Ok, fair enough, I'll be present, looks good :)
-> 
+Do you have automated hardware in a lab for boot testing, using
+something like LAVA?
 
-Glad to hear that!
-You always have valuable feedback and ideas to offer so we are definitely
-looking forward to having you there :)
+> I would like to discuss with you on the same.
+> Our interest is to setup a lab that primarily builds the upstream kernel with our patches and see that we are not breaking the build/ boot.
 
+The kernelci.org project produces its own builds of many kernel trees,
+and then sends them to volunteer labs to be boot tested.
+What kernel tree are you trying to test? Is it available publicly?
+Rather than setting up your own builds, maybe your kernel tree could
+be added to kernelci.org. The benefit of this is that your kernel tree
+will be boot tested in many different labs, on lots of hardware.
+Build capacity is limited, so a donation of some build servers may be
+requested on a tree with frequent commits.
 
-Veronika
+>
+> Is there any forum to discuss on the same?
 
-> thanks,
-> 
-> greg k-h
+Your email has been automatically forwarded to the kernelci mailing
+list (kernelci@groups.io) which is a good place to discuss your plans.
+
+>
+> Regards
+> Suram
 > 
