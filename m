@@ -1,96 +1,152 @@
-From: <Tim.Bird@sony.com>
+Date: Mon, 27 May 2019 07:52:13 -0400 (EDT)
+From: Veronika Kabatova <vkabatov@redhat.com>
+Message-ID: <1442701383.22077553.1558957933273.JavaMail.zimbra@redhat.com>
+In-Reply-To: <ECADFF3FD767C149AD96A924E7EA6EAF9772760D@USCULXMSG01.am.sony.com>
+References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com> <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com> <ECADFF3FD767C149AD96A924E7EA6EAF9772760D@USCULXMSG01.am.sony.com>
 Subject: Re: CKI hackfest @Plumbers invite
-Date: Fri, 24 May 2019 20:17:04 +0000
-Message-ID: <ECADFF3FD767C149AD96A924E7EA6EAF9772760D@USCULXMSG01.am.sony.com>
-References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com>
- <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com>
-In-Reply-To: <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com>
 MIME-Version: 1.0
 List-ID: <info.kernelci.org>
 List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
  <mailto:info+help@kernelci.org>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: vkabatov@redhat.com, automated-testing@yoctoproject.org, info@kernelci.org, khilamn@baylibre.org, syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, labbott@redhat.com
-Cc: eslobodo@redhat.com, cki-project@redhat.com
+To: Tim Bird <Tim.Bird@sony.com>
+Cc: automated-testing@yoctoproject.org, info@kernelci.org, syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, labbott@redhat.com, eslobodo@redhat.com, cki-project@redhat.com
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVmVyb25pa2EgS2FiYXRv
-dmEgDQo+IA0KPiBIaSwNCj4gDQo+IGFzIHNvbWUgb2YgeW91IGhhdmUgaGVhcmQsIENLSSBQcm9q
-ZWN0IGlzIHBsYW5uaW5nIGhhY2tmZXN0IENJIG1lZXRpbmdzIGFmdGVyDQo+IFBsdW1iZXJzIGNv
-bmZlcmVuY2UgdGhpcyB5ZWFyIChTZXB0LiAxMi0xMykuIFdlIHdvdWxkIGxpa2UgdG8gaW52aXRl
-DQo+IGV2ZXJ5b25lDQo+IHdobyBoYXMgaW50ZXJlc3QgaW4gQ0kgZm9yIGtlcm5lbCB0byBjb21l
-IGFuZCBqb2luIHVzLg0KPiANCj4gVGhlIGVhcmx5IGFnZW5kYSB3aXRoIHN1bW1hcnkgaXMgYXQg
-dGhlIGVuZCBvZiB0aGUgZW1haWwuIElmIHlvdSB0aGluayB0aGVyZSdzDQo+IHNvbWV0aGluZyBp
-bXBvcnRhbnQgbWlzc2luZyBsZXQgdXMga25vdyEgQWxzbyBsZXQgdXMga25vdyBpbiBjYXNlIHlv
-dSdkDQo+IHdhbnQgdG8NCj4gbGVhZCBhbnkgb2YgdGhlIHNlc3Npb25zLCB3ZSdkIGJlIGhhcHB5
-IHRvIGRlbGVnYXRlIG91dCBzb21lIHdvcmsgOikNCj4gDQo+IA0KPiBQbGVhc2Ugc2VuZCB1cyBh
-biBlbWFpbCBhcyBzb29uIGFzIHlvdSBkZWNpZGUgdG8gY29tZSBhbmQgZmVlbCBmcmVlIHRvIGlu
-dml0ZQ0KPiBvdGhlciBwZW9wbGUgd2hvIHNob3VsZCBiZSBwcmVzZW50LiBXZSBhcmUgbm90IHBs
-YW5uaW5nIHRvIGNhcCB0aGUNCj4gYXR0ZW5kYW5jZQ0KPiByaWdodCBub3cgYnV0IG5lZWQgdG8g
-c29sdmUgdGhlIGxvZ2lzdGljcyBiYXNlZCBvbiB0aGUgaW50ZXJlc3QuIFRoZSBldmVudCBpcw0K
-PiBmcmVlIHRvIGF0dGVuZCwgbm8gYWRkaXRpb25hbCByZWdpc3RyYXRpb24gZXhjZXB0IGxldHRp
-bmcgdXMga25vdyBpcyBuZWVkZWQuDQo+IA0KPiBGZWVsIGZyZWUgdG8gY29udGFjdCB1cyBpZiB5
-b3UgaGF2ZSBhbnkgcXVlc3Rpb25zLA0KDQpJIHBsYW4gdG8gY29tZSB0byB0aGUgZXZlbnQuDQoN
-Cj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0NCj4gSGVyZSBpcyBhbiBlYXJseSBhZ2VuZGEgd2UgcHV0IHRvZ2V0aGVyOg0KPiAtIElu
-dHJvZHVjdGlvbnMNCj4gLSBDb21tb24gcGxhY2UgZm9yIHVwc3RyZWFtIHJlc3VsdHMsIHJlc3Vs
-dCBwdWJsaXNoaW5nIGluIGdlbmVyYWwNCj4gICAtIFRoZSBkaXNjdXNzaW9uIG9uIHRoZSBtYWls
-aW5nIGxpc3QgaXMgZ29pbmcgc3Ryb25nIHNvIHdlIG1pZ2h0IGJlIGFibGUgdG8NCj4gICAgIHN1
-YnN0aXR1dGUgdGhpcyBzZXNzaW9uIGZvciBhIGRpZmZlcmVudCBvbmUgaW4gY2FzZSBldmVyeXRo
-aW5nIGlzIHNvbHZlZCBieQ0KPiAgICAgU2VwdGVtYmVyLg0KPiAtIFRlc3QgcmVzdWx0IGludGVy
-cHJldGF0aW9uIGFuZCBidWcgZGV0ZWN0aW9uDQo+ICAgLSBIb3cgdG8gYXV0b2RldGVjdCBpbmZy
-YXN0cnVjdHVyZSBmYWlsdXJlcywgcmVncmVzc2lvbnMvbmV3IGJ1Z3MgYW5kIHRlc3QNCj4gICAg
-IGJ1Z3M/IEhvdyB0byBoYW5kbGUgY29udGludW91cyBmYWlsdXJlcyBkdWUgdG8ga25vd24gYnVn
-cyBpbiBib3RoIHRlc3RzDQo+IGFuZA0KPiAgICAga2VybmVsPyBXaGF0J3MgeW91ciBzb2x1dGlv
-bj8gQ2FuIHBlb3BsZSBhbHdheXMgdHJ1c3QgdGhlIHJlc3VsdHMgdGhleQ0KPiAgICAgcmVjZWl2
-ZT8NCj4gLSBHZXR0aW5nIHJlc3VsdHMgdG8gZGV2ZWxvcGVycy9tYWludGFpbmVycw0KPiAgIC0g
-QWltZWQgYXQga2VybmVsIGRldmVsb3BlcnMgYW5kIG1haW50YWluZXJzLCBzaGFyZSB5b3VyIGZl
-ZWRiYWNrIGFuZA0KPiAgICAgZXhwZWN0YXRpb25zLg0KPiAgIC0gSG93IG11Y2ggZGF0YSBzaG91
-bGQgYmUgc2VudCBpbiB0aGUgaW5pdGlhbCBjb21tdW5pY2F0aW9uIHZzLiBhIGNsaWNrIGF3YXkN
-Cj4gICAgIGluIGEgZGFzaGJvYXJkPyBEbyB5b3Ugd2FudCBpbmNyZW1lbnRhbCBlbWFpbHMgd2l0
-aCBuZXcgcmVzdWx0cyBhcyB0aGV5DQo+IGNvbWUNCj4gICAgIGluPw0KPiAgIC0gV2hhdCBhYm91
-dCBhZGRpbmcgY2hlY2tzIHRvIHRlc3RlZCBwYXRjaGVzIGluIFBhdGNod29yayB3aGVuIHBhdGNo
-DQo+IHNlcmllcw0KPiAgICAgYXJlIGJlaW5nIHRlc3RlZD8NCj4gICAtIFByb3ZpZGluZyBlbm91
-Z2ggZGF0YS9zY3JpcHQgdG8gcmVwcm9kdWNlIHRoZSBmYWlsdXJlLiBXaGF0IGlmIHNwZWNpYWwg
-SFcNCj4gICAgIGlzIG5lZWRlZD8NCj4gLSBPbmJvYXJkaW5nIG5ldyBrZXJuZWwgdHJlZXMgdG8g
-dGVzdA0KPiAgIC0gQWltZWQgYXQga2VybmVsIGRldmVsb3BlcnMgYW5kIG1haW50YWluZXJzLg0K
-PiAgIC0gV2hpY2ggdHJlZXMgYXJlIG1vc3QgcHJvbmUgdG8gYnJpbmcgaW4gbmV3IHByb2JsZW1z
-PyBXaGljaCBhcmUgdGhlIG1vc3QNCj4gICAgIGNyaXRpY2FsIG9uZXM/IERvIHlvdSB3YW50IHRo
-ZW0gdG8gYmUgdGVzdGVkPyBXaGljaCB0ZXN0cyBkbyB5b3UgZmVlbCBhcmUNCj4gICAgIG1vc3Qg
-YmVuZWZpY2lhbCBmb3Igc3BlY2lmaWMgdHJlZXMgb3IgaW4gZ2VuZXJhbD8NCj4gLSBTZWN1cml0
-eSB3aGVuIHRlc3RpbmcgdW50cnVzdGVkIHBhdGNoZXMNCj4gICAtIEhvdyBkbyB3ZSBtZXJnZSwg
-Y29tcGlsZSwgYW5kIHRlc3QgcGF0Y2hlcyB0aGF0IGhhdmUgdW50cnVzdGVkIGNvZGUgaW4NCj4g
-dGhlbQ0KPiAgICAgYW5kIGhhdmUgbm90IHlldCBiZWVuIHJldmlld2VkPyBIb3cgZG8gd2UgYXZv
-aWQgYWJ1c2Ugb2Ygc3lzdGVtcywNCj4gICAgIGluZm9ybWF0aW9uIHRoZWZ0LCBvciBvdGhlciBk
-YW1hZ2U/DQo+ICAgLSBDaGVjayBvdXQgdGhlIG9yaWdpbmFsIHBhdGNoIHRoYXQgc3BhcmtlZCB0
-aGUgZGlzY3Vzc2lvbiBhdA0KPiAgICAgaHR0cHM6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wYXRj
-aC84NjIxMjMvDQo+IC0gQXZvaWRpbmcgZWZmb3J0IGR1cGxpY2F0aW9uDQo+ICAgLSBGb29kIGZv
-ciB0aG91Z2h0IGJ5IEdyZWdLSA0KPiAgIC0gWCBkaWZmZXJlbnQgQ0kgc3lzdGVtcyBydW5uaW5n
-ICR7VEVTVH0gb24gbGF0ZXN0IHN0YWJsZSBrZXJuZWwgb24geDg2XzY0DQo+ICAgICBtaWdodCBs
-b29rIHVzZWxlc3Mgb24gdGhlIGZpcnN0IGxvb2sgYnV0IGlzIGl0PyBBTUQvSW50ZWwgQ1BVcywg
-ZGlmZmVyZW50DQo+ICAgICBuZXR3b3JrIGNhcmRzLCBkaWZmZXJlbnQgZ3JhcGhpYyBkcml2ZXJz
-LCBjb21waWxlcnMsIGtlcm5lbCBjb25maWd1cmF0aW9uLi4uDQo+ICAgICBIb3cgZG8gd2UgZGlz
-dHJpYnV0ZSB0aGUgd29ya2xvYWQgdG8gYXZvaWQgZG9pbmcgdGhlIHNhbWUgdGhpbmcgYWxsIG92
-ZXINCj4gICAgIGFnYWluIHdoaWxlIHN0aWxsIHJ1bm5pbmcgaW4gZW5vdWdoIGRpZmZlcmVudCBl
-bnZpcm9ubWVudHMgdG8gZ2V0IHRoZSBtb3N0DQo+ICAgICBjb3ZlcmFnZT8NCj4gLSBDb21tb24g
-aGFyZHdhcmUgcG9vbHMNCj4gICAtIElzIHRoaXMgc29tZXRoaW5nIHBlb3BsZSBhcmUgaW50ZXJl
-c3RlZCBpbj8gV291bGQgYmUgaGVscGZ1bCBlc3BlY2lhbGx5IGZvcg0KPiAgICAgSFcgdGhhdCdz
-IGhhcmQgdG8gYWNjZXNzLCBlZy4gcHBjNjRsZSBvciBzMzkweCBzeXN0ZW1zLiBDb21wYW5pZXMg
-Y291bGQNCj4gYWxzbw0KPiAgICAgc2luZyB1cCB0byBzaGFyZSB0aGVpciBIVyBmb3IgdGVzdGlu
-ZyB0byBlbnN1cmUga2VybmVsIHdvcmtzIHdpdGggdGhlaXINCj4gICAgIHByb2R1Y3RzLg0KDQpJ
-IGhhdmUgc3Ryb25nIG9waW5pb25zIG9uIHNvbWUgb2YgdGhlc2UsIGJ1dCBtYXliZSBvbmx5IHVz
-ZWZ1bCBleHBlcmllbmNlDQppbiBhIGZldyBhcmVhcy4gIEZ1ZWdvIGhhcyAyIHNlcGFyYXRlIG5v
-dGlvbnMsIHdoaWNoIHdlIGNhbGwgInNraXBsaXN0cyINCmFuZCAicGFzcyBjcml0ZXJpYSIsIHdo
-aWNoIGhhdmUgdG8gZG8gd2l0aCB0aGlzIGJ1bGxldDoNCg0KLSBIb3cgdG8gYXV0b2RldGVjdCBp
-bmZyYXN0cnVjdHVyZSBmYWlsdXJlcywgcmVncmVzc2lvbnMvbmV3IGJ1Z3MgYW5kIHRlc3QNCiAg
-ICAgYnVncz8gSG93IHRvIGhhbmRsZSBjb250aW51b3VzIGZhaWx1cmVzIGR1ZSB0byBrbm93biBi
-dWdzIGluIGJvdGgNCiAgICAgdGVzdHMgYW5kIGtlcm5lbD8gV2hhdCdzIHlvdXIgc29sdXRpb24/
-IENhbiBwZW9wbGUgYWx3YXlzIHRydXN0IHRoZSByZXN1bHRzIHRoZXkNCiAgICAgcmVjZWl2ZT8N
-Cg0KSSdkIGJlIGhhcHB5IHRvIGRpc2N1c3MgdGhpcywgaWYgaXQncyBkZXNpcmVkLg0KDQpPdGhl
-cndpc2UsIEkndmUgcmVjZW50bHkgYmVlbiB3b3JraW5nIG9uIHN0YW5kYXJkcyBmb3IgInRlc3Qg
-ZGVmaW5pdGlvbiIsDQp3aGljaCBkZWZpbmVzIHRoZSBkYXRhIGFuZCBtZXRhLWRhdGEgYXNzb2Np
-YXRlZCB3aXRoIGEgdGVzdC4gICBJIGNvdWxkIHRhbGsNCmFib3V0IHdoZXJlIEknbSBhdCB3aXRo
-IHRoYXQsIGlmIHBlb3BsZSBhcmUgaW50ZXJlc3RlZC4NCg0KTGV0IG1lIGtub3cgd2hhdCB5b3Ug
-dGhpbmsuDQogLS0gVGltDQoNCg==
+
+
+----- Original Message -----
+> From: "Tim Bird" <Tim.Bird@sony.com>
+> To: vkabatov@redhat.com, automated-testing@yoctoproject.org, info@kernelci.org, khilamn@baylibre.org,
+> syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, labbott@redhat.com
+> Cc: eslobodo@redhat.com, cki-project@redhat.com
+> Sent: Friday, May 24, 2019 10:17:04 PM
+> Subject: RE: CKI hackfest @Plumbers invite
+> 
+> 
+> 
+> > -----Original Message-----
+> > From: Veronika Kabatova
+> > 
+> > Hi,
+> > 
+> > as some of you have heard, CKI Project is planning hackfest CI meetings
+> > after
+> > Plumbers conference this year (Sept. 12-13). We would like to invite
+> > everyone
+> > who has interest in CI for kernel to come and join us.
+> > 
+> > The early agenda with summary is at the end of the email. If you think
+> > there's
+> > something important missing let us know! Also let us know in case you'd
+> > want to
+> > lead any of the sessions, we'd be happy to delegate out some work :)
+> > 
+> > 
+> > Please send us an email as soon as you decide to come and feel free to
+> > invite
+> > other people who should be present. We are not planning to cap the
+> > attendance
+> > right now but need to solve the logistics based on the interest. The event
+> > is
+> > free to attend, no additional registration except letting us know is
+> > needed.
+> > 
+> > Feel free to contact us if you have any questions,
+> 
+> I plan to come to the event.
+> 
+> > -----------------------------------------------------------
+> > Here is an early agenda we put together:
+> > - Introductions
+> > - Common place for upstream results, result publishing in general
+> >   - The discussion on the mailing list is going strong so we might be able
+> >   to
+> >     substitute this session for a different one in case everything is
+> >     solved by
+> >     September.
+> > - Test result interpretation and bug detection
+> >   - How to autodetect infrastructure failures, regressions/new bugs and
+> >   test
+> >     bugs? How to handle continuous failures due to known bugs in both tests
+> > and
+> >     kernel? What's your solution? Can people always trust the results they
+> >     receive?
+> > - Getting results to developers/maintainers
+> >   - Aimed at kernel developers and maintainers, share your feedback and
+> >     expectations.
+> >   - How much data should be sent in the initial communication vs. a click
+> >   away
+> >     in a dashboard? Do you want incremental emails with new results as they
+> > come
+> >     in?
+> >   - What about adding checks to tested patches in Patchwork when patch
+> > series
+> >     are being tested?
+> >   - Providing enough data/script to reproduce the failure. What if special
+> >   HW
+> >     is needed?
+> > - Onboarding new kernel trees to test
+> >   - Aimed at kernel developers and maintainers.
+> >   - Which trees are most prone to bring in new problems? Which are the most
+> >     critical ones? Do you want them to be tested? Which tests do you feel
+> >     are
+> >     most beneficial for specific trees or in general?
+> > - Security when testing untrusted patches
+> >   - How do we merge, compile, and test patches that have untrusted code in
+> > them
+> >     and have not yet been reviewed? How do we avoid abuse of systems,
+> >     information theft, or other damage?
+> >   - Check out the original patch that sparked the discussion at
+> >     https://patchwork.ozlabs.org/patch/862123/
+> > - Avoiding effort duplication
+> >   - Food for thought by GregKH
+> >   - X different CI systems running ${TEST} on latest stable kernel on
+> >   x86_64
+> >     might look useless on the first look but is it? AMD/Intel CPUs,
+> >     different
+> >     network cards, different graphic drivers, compilers, kernel
+> >     configuration...
+> >     How do we distribute the workload to avoid doing the same thing all
+> >     over
+> >     again while still running in enough different environments to get the
+> >     most
+> >     coverage?
+> > - Common hardware pools
+> >   - Is this something people are interested in? Would be helpful especially
+> >   for
+> >     HW that's hard to access, eg. ppc64le or s390x systems. Companies could
+> > also
+> >     sing up to share their HW for testing to ensure kernel works with their
+> >     products.
+> 
+> I have strong opinions on some of these, but maybe only useful experience
+> in a few areas.  Fuego has 2 separate notions, which we call "skiplists"
+> and "pass criteria", which have to do with this bullet:
+> 
+> - How to autodetect infrastructure failures, regressions/new bugs and test
+>      bugs? How to handle continuous failures due to known bugs in both
+>      tests and kernel? What's your solution? Can people always trust the
+>      results they
+>      receive?
+> 
+> I'd be happy to discuss this, if it's desired.
+> 
+> Otherwise, I've recently been working on standards for "test definition",
+> which defines the data and meta-data associated with a test.   I could talk
+> about where I'm at with that, if people are interested.
+> 
+
+Sounds great! I added both your points to the agenda as I do think they have
+a place here. The list of items is growing so I hope we can still fit
+everything into the two days we planned :)
+
+
+See you there!
+Veronika
+
+> Let me know what you think.
+>  -- Tim
+> 
+> 
