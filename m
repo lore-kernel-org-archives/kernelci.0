@@ -1,44 +1,60 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2019-05-31
-Message-ID: <6ff9a612-e5ca-9684-a75b-57d707c52c39@collabora.com>
-Date: Fri, 31 May 2019 14:58:49 +0100
+Return-Path: <dan.rue@linaro.org>
+Date: Tue, 4 Jun 2019 13:48:07 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-06-04 #minutes
+Message-ID: <20190604184807.isjktbnyrqhaytvq@xps.therub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-Summary of changes going into production today:
+- Attendees: Michał, Charles, Mark, Guillaume, Guenter, Daniel, Kevin,
+  Dan, Amro
 
-kernelci-core
--------------
+- Kevin
+  - build logs: start saving full build logs (instead of just make cmds
+    and stderr).  
+    - Goal is to enable other post-processing / analysis (e.g. ELK
+      stack)
+      - [gtucker] we can add --verbose to the build command
+  - buildroot
+    - add “baseline” version: who will add this (already done)
+    - pushed a rebased `kernelci/2019.05` branch to `latest` (built on
+      staging)
+      - Should kernelci/latest be updated?
+    - Jenkins job migration to scripts: is this ready?
 
-* retire the legacy build.py script as the new kci_build command line tool is
-  now used in automated Jenkins jobs
+- Guillaume
+  - Should we consider building fewer kernels for maintainer trees? i.e.
+    many trees with plain defconfigs and a couple of test fragments
+    - [gtucker] I’ll go through some of the maintainer trees we have and
+      check with them which builds they actually want (defconfigs,
+      fragments)
+  - Adding buster-igt rootfs using meson to build libdrm and igt
+  - Slow response from Bjorn & Linaro so have now forked bootrr in
+    kernelci/bootrr to use in baseline buildroot
 
-* add support for out-of-tree config fragments in bisections
-  (i.e. virtualvideo, kselftest...)
+- Michał
+  - “tests” API currently uses build_id, job_id and boot_id is anyone
+    actually using it? Is it worth to keep it ?
+    - Need to check if frontend is using those ids.
+      - If it does we should probably change it to use the metadata
+  - “tests” API changes. Adding metadata handling like in lava callback.
+    - No-one seems to be using the “tests” API
+    - Making “tests” and “callback” APIs behave similarly and sharing
+      some code feels like a good direction
 
-* enable igt test plan on rk3399-gru-kevin for kernels v4.19+
+- broonie
+  - Would be nice to have bisections visible in the UI, not that I have
+    the time/UI skills to do it.
+    - [gtucker] This has actually been in my backlog for a while, if
+      people are showing interest then it should rise in priority.
 
-* disable v4l2-compliance email reports to linux-media until some improvements
-  have been made to only notify when new regressions are found or when
-  regressions are fixed
+- Drue
+  - Alias support in LAVA 2019.05. I tried using it but couldn’t figure
+    it out :-/, but it should solve the board naming problem.
+    - https://github.com/danrue/lava.therub.org
+    - https://github.com/danrue/lava-docker-compose
 
-* add the chrome-platform tree and build the for-kernelci branch
-
-* upgrade stretch-v4l2 and stretch-igt to get the latest tests
-
-
-kernelci-backend
-----------------
-
-* add build environment name to the test reports (i.e. gcc-8, clang-8...)
-
-* add support for LAVA jobs that run several test suites, which will be useful
-  for the baseline test plan (bootrr + kernel log checks)
-
-
-Best wishes,
-Guillaume
