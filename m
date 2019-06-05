@@ -1,110 +1,101 @@
+Date: Wed, 5 Jun 2019 15:46:59 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Re: CKI hackfest @Plumbers invite
+Message-ID: <20190605204659.npyf7wnmsdlr2bff@xps.therub.org>
+References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com>
+ <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com>
 MIME-Version: 1.0
-References: <CACRpkdYeSLVFT14W4QP_dx_F6nVRNR8aNeZV+8wQkQA3rmMiiQ@mail.gmail.com>
- <CAH1_8nC2G1xkapA4qNnSa5_wMSBGjFgs1VmYFwAAJ9duWk9Ciw@mail.gmail.com>
- <CAH+k93GJE6oEVNYxwU4Qv_F9dgcSYycg=aEHDmGfHsPJL2ooWw@mail.gmail.com>
- <CACRpkdYEw_xqxEhM_egqeTUHhGCEkUTSyaYDQ0hAwgMdSU8fnw@mail.gmail.com>
- <CAH1_8nB4idAJ1VM_D6Bkis3T8V4zhTyatmmi1iSwS_MmL2j4Qg@mail.gmail.com> <CACRpkdaR3hbKkDf0DH9nBT7AgxJmMzWfu_mNjnq0wyL=KuqWPg@mail.gmail.com>
-In-Reply-To: <CACRpkdaR3hbKkDf0DH9nBT7AgxJmMzWfu_mNjnq0wyL=KuqWPg@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Wed, 5 Jun 2019 14:01:13 +0100
-Message-ID: <CAH1_8nAZZNE0_nGUrSQoOt-wxdcpKe+fmB8-qw9kmv1T1TeeOg@mail.gmail.com>
-Subject: Re: Adding tree to kernelci
-Content-Type: multipart/alternative; boundary="000000000000e1a347058a9331e2"
+In-Reply-To: <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com>
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Matt Hart <matthew.hart@linaro.org>, kernelci@groups.io, Anders Roxell <anders.roxell@linaro.org>, Bartosz Golaszewski <bgolaszewski@baylibre.com>
+To: Veronika Kabatova <vkabatov@redhat.com>
+Cc: automated-testing@yoctoproject.org, info@kernelci.org, Tim.Bird@sony.com, khilamn@baylibre.org, syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, Laura Abbott <labbott@redhat.com>, Eliska Slobodova <eslobodo@redhat.com>, CKI Project <cki-project@redhat.com>
 
---000000000000e1a347058a9331e2
-Content-Type: text/plain; charset="UTF-8"
+On Tue, May 21, 2019 at 10:54:12AM -0400, Veronika Kabatova wrote:
+> Hi,
+> 
+> as some of you have heard, CKI Project is planning hackfest CI meetings after
+> Plumbers conference this year (Sept. 12-13). We would like to invite everyone
+> who has interest in CI for kernel to come and join us.
+> 
+> The early agenda with summary is at the end of the email. If you think there's
+> something important missing let us know! Also let us know in case you'd want to
+> lead any of the sessions, we'd be happy to delegate out some work :)
+> 
+> 
+> Please send us an email as soon as you decide to come and feel free to invite
+> other people who should be present. We are not planning to cap the attendance
+> right now but need to solve the logistics based on the interest. The event is
+> free to attend, no additional registration except letting us know is needed.
+> 
+> Feel free to contact us if you have any questions,
+> Veronika
+> CKI Project
 
-Hi Linus,
+Hi Veronika! Thanks for organizing this. I plan to attend, and I'm happy
+to help out.
 
-On Tue, Feb 26, 2019 at 3:15 PM Linus Walleij <linus.walleij@linaro.org>
-wrote:
+With regard to the agenda, I've been following the '[Ksummit-discuss]
+[MAINTAINERS SUMMIT] Squashing bugs!'[1] thread with interest, as it
+relates especially to 'Getting results to developers/maintainers'. This,
+along with result aggregation, are important areas to focus.
 
-> On Mon, Feb 25, 2019 at 2:04 PM Guillaume Tucker
-> <guillaume.tucker@gmail.com> wrote:
-> > On Fri, Feb 1, 2019 at 12:18 PM Linus Walleij <linus.walleij@linaro.org>
-> wrote:
->
-> >> The best would be that the tree be checked once per 24 hrs
-> >> at my nighttime for if any changes done during the day.
-> >> I think that would seldom amount to it running two days in
-> >> a row except during intense times (merge window).
-> >
-> > I see there's now a PR to add these branches:
-> >
-> >   https://github.com/kernelci/kernelci-core-staging/pull/100
->
-> Sweet!
->
-> > I've added a comment about the number of builds, as at the moment
-> > we can't easily configure to only check these branches every 24h
-> > when all the other branches are being checked every hour.
->
-> Fair enough, I don't think it will stress the system too much.
->
+Dan
 
-While there is still some headroom in the build capacity, it
-seems worthwhile reviewing what each maintainer tree actually
-needs to build.  Some maintainers need to have full coverage, but
-often it's not necessary to build more than the defconfigs for
-all the architectures.
+[1] https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-May/006389.html
 
-By doing this, we can enable many more maintainer trees and also
-reduce the turnaround time.
+> 
+> 
+> -----------------------------------------------------------
+> Here is an early agenda we put together:
+> - Introductions
+> - Common place for upstream results, result publishing in general
+>   - The discussion on the mailing list is going strong so we might be able to
+>     substitute this session for a different one in case everything is solved by
+>     September.
+> - Test result interpretation and bug detection
+>   - How to autodetect infrastructure failures, regressions/new bugs and test
+>     bugs? How to handle continuous failures due to known bugs in both tests and
+>     kernel? What's your solution? Can people always trust the results they
+>     receive?
+> - Getting results to developers/maintainers
+>   - Aimed at kernel developers and maintainers, share your feedback and
+>     expectations.
+>   - How much data should be sent in the initial communication vs. a click away
+>     in a dashboard? Do you want incremental emails with new results as they come
+>     in?
+>   - What about adding checks to tested patches in Patchwork when patch series
+>     are being tested?
+>   - Providing enough data/script to reproduce the failure. What if special HW
+>     is needed?
+> - Onboarding new kernel trees to test
+>   - Aimed at kernel developers and maintainers.
+>   - Which trees are most prone to bring in new problems? Which are the most
+>     critical ones? Do you want them to be tested? Which tests do you feel are
+>     most beneficial for specific trees or in general?
+> - Security when testing untrusted patches
+>   - How do we merge, compile, and test patches that have untrusted code in them
+>     and have not yet been reviewed? How do we avoid abuse of systems,
+>     information theft, or other damage?
+>   - Check out the original patch that sparked the discussion at
+>     https://patchwork.ozlabs.org/patch/862123/
+> - Avoiding effort duplication
+>   - Food for thought by GregKH
+>   - X different CI systems running ${TEST} on latest stable kernel on x86_64
+>     might look useless on the first look but is it? AMD/Intel CPUs, different
+>     network cards, different graphic drivers, compilers, kernel configuration...
+>     How do we distribute the workload to avoid doing the same thing all over
+>     again while still running in enough different environments to get the most
+>     coverage?
+> - Common hardware pools
+>   - Is this something people are interested in? Would be helpful especially for
+>     HW that's hard to access, eg. ppc64le or s390x systems. Companies could also
+>     sing up to share their HW for testing to ensure kernel works with their
+>     products.
 
-Could you please confirm which combinations of architectures,
-defconfigs and fragments you need for each branch in your
-linux-gpio tree?
-
-Thanks,
-Guillaume
-
---000000000000e1a347058a9331e2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi Linus,</div><br><div class=3D"gmail_qu=
-ote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Feb 26, 2019 at 3:15 PM =
-Linus Walleij &lt;<a href=3D"mailto:linus.walleij@linaro.org">linus.walleij=
-@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">On Mon, Feb 25, 2019 at 2:04 PM Guillaume Tucker<br>
-&lt;<a href=3D"mailto:guillaume.tucker@gmail.com" target=3D"_blank">guillau=
-me.tucker@gmail.com</a>&gt; wrote:<br>
-&gt; On Fri, Feb 1, 2019 at 12:18 PM Linus Walleij &lt;<a href=3D"mailto:li=
-nus.walleij@linaro.org" target=3D"_blank">linus.walleij@linaro.org</a>&gt; =
-wrote:<br>
-<br>
-&gt;&gt; The best would be that the tree be checked once per 24 hrs<br>
-&gt;&gt; at my nighttime for if any changes done during the day.<br>
-&gt;&gt; I think that would seldom amount to it running two days in<br>
-&gt;&gt; a row except during intense times (merge window).<br>
-&gt;<br>
-&gt; I see there&#39;s now a PR to add these branches:<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0<a href=3D"https://github.com/kernelci/kernelci-core-stagi=
-ng/pull/100" rel=3D"noreferrer" target=3D"_blank">https://github.com/kernel=
-ci/kernelci-core-staging/pull/100</a><br>
-<br>
-Sweet!<br>
-<br>
-&gt; I&#39;ve added a comment about the number of builds, as at the moment<=
-br>
-&gt; we can&#39;t easily configure to only check these branches every 24h<b=
-r>
-&gt; when all the other branches are being checked every hour.<br>
-<br>
-Fair enough, I don&#39;t think it will stress the system too much.<br></blo=
-ckquote><div><br></div><div>While there is still some headroom in the build=
- capacity, it<br>seems worthwhile reviewing what each maintainer tree actua=
-lly<br>needs to build.=C2=A0 Some maintainers need to have full coverage, b=
-ut<br>often it&#39;s not necessary to build more than the defconfigs for<br=
->all the architectures.<br><br>By doing this, we can enable many more maint=
-ainer trees and also<br>reduce the turnaround time.<br><br>Could you please=
- confirm which combinations of architectures,<br>defconfigs and fragments y=
-ou need for each branch in your<br>linux-gpio tree?<br></div><div><br></div=
-><div>Thanks,</div><div>Guillaume</div></div></div>
-
---000000000000e1a347058a9331e2--
+-- 
+Linaro - Kernel Validation
