@@ -1,70 +1,39 @@
 MIME-Version: 1.0
-References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com>
- <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com>
- <20190605204659.npyf7wnmsdlr2bff@xps.therub.org> <CAKocOONHHuL2xSBUQx0=pw5AHMG4im=9kv3GrJLrKaH6+wguDw@mail.gmail.com>
-In-Reply-To: <CAKocOONHHuL2xSBUQx0=pw5AHMG4im=9kv3GrJLrKaH6+wguDw@mail.gmail.com>
-From: "'Dmitry Vyukov' via info" <info@kernelci.org>
-Date: Fri, 7 Jun 2019 18:27:57 +0200
-Message-ID: <CACT4Y+YFHZhm0pwoZdXSXtG4z1wHPOC9hG-RvRy=3szteEe6XA@mail.gmail.com>
-Subject: Re: CKI hackfest @Plumbers invite
-Reply-To: Dmitry Vyukov <dvyukov@google.com>
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
+References: <CACRpkdYeSLVFT14W4QP_dx_F6nVRNR8aNeZV+8wQkQA3rmMiiQ@mail.gmail.com>
+ <CAH1_8nC2G1xkapA4qNnSa5_wMSBGjFgs1VmYFwAAJ9duWk9Ciw@mail.gmail.com>
+ <CAH+k93GJE6oEVNYxwU4Qv_F9dgcSYycg=aEHDmGfHsPJL2ooWw@mail.gmail.com>
+ <CACRpkdYEw_xqxEhM_egqeTUHhGCEkUTSyaYDQ0hAwgMdSU8fnw@mail.gmail.com>
+ <CAH1_8nB4idAJ1VM_D6Bkis3T8V4zhTyatmmi1iSwS_MmL2j4Qg@mail.gmail.com>
+ <CACRpkdaR3hbKkDf0DH9nBT7AgxJmMzWfu_mNjnq0wyL=KuqWPg@mail.gmail.com> <CAH1_8nAZZNE0_nGUrSQoOt-wxdcpKe+fmB8-qw9kmv1T1TeeOg@mail.gmail.com>
+In-Reply-To: <CAH1_8nAZZNE0_nGUrSQoOt-wxdcpKe+fmB8-qw9kmv1T1TeeOg@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 7 Jun 2019 22:48:46 +0200
+Message-ID: <CACRpkdafj1mLML12EkJ9BNEfRvD5Mb=yjcMkmHV6Ux0+dsVUmA@mail.gmail.com>
+Subject: Re: Adding tree to kernelci
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Shuah Khan <shuahkhan@gmail.com>
-Cc: Veronika Kabatova <vkabatov@redhat.com>, automated-testing@yoctoproject.org, info@kernelci.org, Tim Bird <Tim.Bird@sony.com>, khilamn@baylibre.org, syzkaller <syzkaller@googlegroups.com>, lkp@lists.01.org, stable <stable@vger.kernel.org>, Laura Abbott <labbott@redhat.com>, Eliska Slobodova <eslobodo@redhat.com>, CKI Project <cki-project@redhat.com>
+To: Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: Matt Hart <matthew.hart@linaro.org>, kernelci@groups.io, Anders Roxell <anders.roxell@linaro.org>, Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-On Thu, Jun 6, 2019 at 12:00 AM Shuah Khan <shuahkhan@gmail.com> wrote:
->
-> Hi Veronika,
->
-> On Wed, Jun 5, 2019 at 2:47 PM Dan Rue <dan.rue@linaro.org> wrote:
-> >
-> > On Tue, May 21, 2019 at 10:54:12AM -0400, Veronika Kabatova wrote:
-> > > Hi,
-> > >
-> > > as some of you have heard, CKI Project is planning hackfest CI meetings after
-> > > Plumbers conference this year (Sept. 12-13). We would like to invite everyone
-> > > who has interest in CI for kernel to come and join us.
-> > >
-> > > The early agenda with summary is at the end of the email. If you think there's
-> > > something important missing let us know! Also let us know in case you'd want to
-> > > lead any of the sessions, we'd be happy to delegate out some work :)
-> > >
-> > >
-> > > Please send us an email as soon as you decide to come and feel free to invite
-> > > other people who should be present. We are not planning to cap the attendance
-> > > right now but need to solve the logistics based on the interest. The event is
-> > > free to attend, no additional registration except letting us know is needed.
-> > >
->
-> I am going be there and plan to attend.
->
-> > > Feel free to contact us if you have any questions,
-> > > Veronika
-> > > CKI Project
-> >
-> > Hi Veronika! Thanks for organizing this. I plan to attend, and I'm happy
-> > to help out.
-> >
-> > With regard to the agenda, I've been following the '[Ksummit-discuss]
-> > [MAINTAINERS SUMMIT] Squashing bugs!'[1] thread with interest, as it
-> > relates especially to 'Getting results to developers/maintainers'. This,
-> > along with result aggregation, are important areas to focus.
-> >
-> >
-> > [1] https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-May/006389.html
-> >
->
-> Good to know there is an overlap and it makes sense for me to attend. :)
+On Wed, Jun 5, 2019 at 3:01 PM Guillaume Tucker
+<guillaume.tucker@gmail.com> wrote:
 
-Hi Shuah,
+> While there is still some headroom in the build capacity, it
+> seems worthwhile reviewing what each maintainer tree actually
+> needs to build.  Some maintainers need to have full coverage, but
+> often it's not necessary to build more than the defconfigs for
+> all the architectures.
+>
+> By doing this, we can enable many more maintainer trees and also
+> reduce the turnaround time.
+>
+> Could you please confirm which combinations of architectures,
+> defconfigs and fragments you need for each branch in your
+> linux-gpio tree?
 
-Oh, and I did not even know about
-https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-May/006389.html
-How can I be kept in the loop/provide inputs/receive
-feedback/discussion summary?
+I just need the defconfigs for sure, all architectures have GPIO
+except UML and S390 so these two can be skipped. Also any
+virtualization targets if there are such.
 
-Thanks
+Yours,
+Linus Walleij
