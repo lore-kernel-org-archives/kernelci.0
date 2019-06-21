@@ -1,49 +1,77 @@
-Date: Fri, 21 Jun 2019 12:28:16 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: Add more arches to kernelci via QEMU devices (part2)
-Message-ID: <20190621112816.GF5316@sirena.org.uk>
-References: <CA+j61XPeb0rjEO_=e8-bhdm9c79Wm=az_o=o9TtNwMhROSKB4w@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CA+j61XPeb0rjEO_=e8-bhdm9c79Wm=az_o=o9TtNwMhROSKB4w@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="G+QafMOtP06Swj/I"
-Content-Disposition: inline
+References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com>
+ <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com>
+ <20190605204659.npyf7wnmsdlr2bff@xps.therub.org> <CAKocOONHHuL2xSBUQx0=pw5AHMG4im=9kv3GrJLrKaH6+wguDw@mail.gmail.com>
+ <CACT4Y+YFHZhm0pwoZdXSXtG4z1wHPOC9hG-RvRy=3szteEe6XA@mail.gmail.com>
+In-Reply-To: <CACT4Y+YFHZhm0pwoZdXSXtG4z1wHPOC9hG-RvRy=3szteEe6XA@mail.gmail.com>
+From: Shuah Khan <shuahkhan@gmail.com>
+Date: Fri, 21 Jun 2019 17:01:16 -0600
+Message-ID: <CAKocOON_dFX0DizJU9F6ZPj1vrXapy-R36uGZSo2ytxYknqbUA@mail.gmail.com>
+Subject: Re: CKI hackfest @Plumbers invite
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, clabbe@baylibre.com
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: Veronika Kabatova <vkabatov@redhat.com>, automated-testing@yoctoproject.org, info@kernelci.org, Tim Bird <Tim.Bird@sony.com>, khilamn@baylibre.org, syzkaller <syzkaller@googlegroups.com>, lkp@lists.01.org, stable <stable@vger.kernel.org>, Laura Abbott <labbott@redhat.com>, Eliska Slobodova <eslobodo@redhat.com>, CKI Project <cki-project@redhat.com>
 
---G+QafMOtP06Swj/I
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, Jun 7, 2019 at 10:28 AM Dmitry Vyukov <dvyukov@google.com> wrote:
+>
+> On Thu, Jun 6, 2019 at 12:00 AM Shuah Khan <shuahkhan@gmail.com> wrote:
+> >
+> > Hi Veronika,
+> >
+> > On Wed, Jun 5, 2019 at 2:47 PM Dan Rue <dan.rue@linaro.org> wrote:
+> > >
+> > > On Tue, May 21, 2019 at 10:54:12AM -0400, Veronika Kabatova wrote:
+> > > > Hi,
+> > > >
+> > > > as some of you have heard, CKI Project is planning hackfest CI meetings after
+> > > > Plumbers conference this year (Sept. 12-13). We would like to invite everyone
+> > > > who has interest in CI for kernel to come and join us.
+> > > >
+> > > > The early agenda with summary is at the end of the email. If you think there's
+> > > > something important missing let us know! Also let us know in case you'd want to
+> > > > lead any of the sessions, we'd be happy to delegate out some work :)
+> > > >
+> > > >
+> > > > Please send us an email as soon as you decide to come and feel free to invite
+> > > > other people who should be present. We are not planning to cap the attendance
+> > > > right now but need to solve the logistics based on the interest. The event is
+> > > > free to attend, no additional registration except letting us know is needed.
+> > > >
+> >
+> > I am going be there and plan to attend.
+> >
+> > > > Feel free to contact us if you have any questions,
+> > > > Veronika
+> > > > CKI Project
+> > >
+> > > Hi Veronika! Thanks for organizing this. I plan to attend, and I'm happy
+> > > to help out.
+> > >
+> > > With regard to the agenda, I've been following the '[Ksummit-discuss]
+> > > [MAINTAINERS SUMMIT] Squashing bugs!'[1] thread with interest, as it
+> > > relates especially to 'Getting results to developers/maintainers'. This,
+> > > along with result aggregation, are important areas to focus.
+> > >
+> > >
+> > > [1] https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-May/006389.html
+> > >
+> >
+> > Good to know there is an overlap and it makes sense for me to attend. :)
+>
+> Hi Shuah,
+>
+> Oh, and I did not even know about
+> https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-May/006389.html
+> How can I be kept in the loop/provide inputs/receive
+> feedback/discussion summary?
+>
 
-On Fri, Jun 21, 2019 at 11:24:16AM +0200, Corentin Labbe wrote:
+Sorry didn't see this until now. You can subscribe ksummit-discuss to
+follow the thread.
 
-> 4) defconfig hacks
-> Some qemu machines can only be booted if defconfig are hacked.
-> Examples are
-> - need to disable cryptohw in exynos/cubieboard
-> - need to disable some CONFIG for omap1
-> Does kernelci want to build extra defconfig+hacks ?
-
-These seem like bugs, we probably shouldn't be using those emulations if
-they don't work - it's not like it's the only way to get coverage of 32
-bit Arm or anything.
-
-One question if we're going to start covering new architectures is where
-are the builders coming from?
-
---G+QafMOtP06Swj/I
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0Mv00ACgkQJNaLcl1U
-h9DmwAf/bImIeFKU/g84NLM/0PNu0RW4E6NpAIRRV8hJ9grikVZ4GXN6CPJzU3Zq
-BWYOqR6vbdJdFTm0DWcnx+ORHMHv6ghZUf9rtK0M5OBep0CbQPb0lpa4bSmPxTCC
-fpKB7COtXCGBtla0oZD1YP8/pCyJoAjKGUzVS5BKQNMTa29C1dxbFy0iqVJFnKDN
-21BhAs9E5QLPngdHys0me4ttpnLN4S5USafapAakukD75LaHgt9PrFIexCwAPvJw
-3zKVaGbCCw8xESFJ+hsLX+XRQOkSWo0BgjuPVSIfJKUOm4iTJivdq1GNi4nl0kUI
-56CBuuWpKO0ocwWOawP0XAoavIXpqA==
-=xpIX
------END PGP SIGNATURE-----
-
---G+QafMOtP06Swj/I--
+thanks,
+-- Shuah
