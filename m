@@ -1,77 +1,30 @@
-MIME-Version: 1.0
+From: <Tim.Bird@sony.com>
+Subject: Re: CKI hackfest @Plumbers invite
+Date: Mon, 24 Jun 2019 18:55:12 +0000
+Message-ID: <ECADFF3FD767C149AD96A924E7EA6EAF977399CD@USCULXMSG01.am.sony.com>
 References: <1204558561.21265703.1558449611621.JavaMail.zimbra@redhat.com>
  <1667759567.21267950.1558450452057.JavaMail.zimbra@redhat.com>
- <20190605204659.npyf7wnmsdlr2bff@xps.therub.org> <CAKocOONHHuL2xSBUQx0=pw5AHMG4im=9kv3GrJLrKaH6+wguDw@mail.gmail.com>
- <CACT4Y+YFHZhm0pwoZdXSXtG4z1wHPOC9hG-RvRy=3szteEe6XA@mail.gmail.com>
-In-Reply-To: <CACT4Y+YFHZhm0pwoZdXSXtG4z1wHPOC9hG-RvRy=3szteEe6XA@mail.gmail.com>
-From: Shuah Khan <shuahkhan@gmail.com>
-Date: Fri, 21 Jun 2019 17:01:16 -0600
-Message-ID: <CAKocOON_dFX0DizJU9F6ZPj1vrXapy-R36uGZSo2ytxYknqbUA@mail.gmail.com>
-Subject: Re: CKI hackfest @Plumbers invite
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: text/plain; charset="UTF-8"
+ <CAH1_8nAx-1+uqOwAOCfGbqdWzgWD1-oikAfoVBqw4qPcu8v4fw@mail.gmail.com>
+ <1759213455.26229412.1561047112464.JavaMail.zimbra@redhat.com>
+In-Reply-To: <1759213455.26229412.1561047112464.JavaMail.zimbra@redhat.com>
+MIME-Version: 1.0
+Return-Path: Tim.Bird@sony.com
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: Veronika Kabatova <vkabatov@redhat.com>, automated-testing@yoctoproject.org, info@kernelci.org, Tim Bird <Tim.Bird@sony.com>, khilamn@baylibre.org, syzkaller <syzkaller@googlegroups.com>, lkp@lists.01.org, stable <stable@vger.kernel.org>, Laura Abbott <labbott@redhat.com>, Eliska Slobodova <eslobodo@redhat.com>, CKI Project <cki-project@redhat.com>
+To: vkabatov@redhat.com, guillaume.tucker@gmail.com
+Cc: kernelci@groups.io, automated-testing@yoctoproject.org, info@kernelci.org, syzkaller@googlegroups.com, lkp@lists.01.org, stable@vger.kernel.org, labbott@redhat.com, eslobodo@redhat.com, cki-project@redhat.com
 
-On Fri, Jun 7, 2019 at 10:28 AM Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> On Thu, Jun 6, 2019 at 12:00 AM Shuah Khan <shuahkhan@gmail.com> wrote:
-> >
-> > Hi Veronika,
-> >
-> > On Wed, Jun 5, 2019 at 2:47 PM Dan Rue <dan.rue@linaro.org> wrote:
-> > >
-> > > On Tue, May 21, 2019 at 10:54:12AM -0400, Veronika Kabatova wrote:
-> > > > Hi,
-> > > >
-> > > > as some of you have heard, CKI Project is planning hackfest CI meetings after
-> > > > Plumbers conference this year (Sept. 12-13). We would like to invite everyone
-> > > > who has interest in CI for kernel to come and join us.
-> > > >
-> > > > The early agenda with summary is at the end of the email. If you think there's
-> > > > something important missing let us know! Also let us know in case you'd want to
-> > > > lead any of the sessions, we'd be happy to delegate out some work :)
-> > > >
-> > > >
-> > > > Please send us an email as soon as you decide to come and feel free to invite
-> > > > other people who should be present. We are not planning to cap the attendance
-> > > > right now but need to solve the logistics based on the interest. The event is
-> > > > free to attend, no additional registration except letting us know is needed.
-> > > >
-> >
-> > I am going be there and plan to attend.
-> >
-> > > > Feel free to contact us if you have any questions,
-> > > > Veronika
-> > > > CKI Project
-> > >
-> > > Hi Veronika! Thanks for organizing this. I plan to attend, and I'm happy
-> > > to help out.
-> > >
-> > > With regard to the agenda, I've been following the '[Ksummit-discuss]
-> > > [MAINTAINERS SUMMIT] Squashing bugs!'[1] thread with interest, as it
-> > > relates especially to 'Getting results to developers/maintainers'. This,
-> > > along with result aggregation, are important areas to focus.
-> > >
-> > >
-> > > [1] https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-May/006389.html
-> > >
-> >
-> > Good to know there is an overlap and it makes sense for me to attend. :)
->
-> Hi Shuah,
->
-> Oh, and I did not even know about
-> https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-May/006389.html
-> How can I be kept in the loop/provide inputs/receive
-> feedback/discussion summary?
->
-
-Sorry didn't see this until now. You can subscribe ksummit-discuss to
-follow the thread.
-
-thanks,
--- Shuah
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWZXJvbmlrYSBLYWJhdG92YSAN
+Cj4gDQo+IC0tLS0tIE9yaWdpbmFsIE1lc3NhZ2UgLS0tLS0NCj4gPiBGcm9tOiAiR3VpbGxhdW1l
+IFR1Y2tlciIgDQo+ID4NCj4gPiBIaSBWZXJvbmlrYSwNCj4gPg0KPiA+IE9uIFR1ZSwgTWF5IDIx
+LCAyMDE5IGF0IDM6NTUgUE0gVmVyb25pa2EgS2FiYXRvdmENCj4gPHZrYWJhdG92QHJlZGhhdC5j
+b20+DQo+ID4gd3JvdGU6DQo+ID4NCj4gDQo+IEkgYWdyZWUgdGhhdCB0aGlzIHRvcGljIGlzIGlt
+cG9ydGFudCAoYW5kIEkgYmVsaWV2ZSBzb21lIG90aGVyIENLSSBwZW9wbGUNCj4gbWFkZSB0aGF0
+IGNsZWFyIGFzIHdlbGwpIHNvIEkgYWRkZWQgaXQgdG8gdGhlIGFnZW5kYSB0b3BpY3MuIFRoZSBs
+aXN0IG9mDQo+IHRob3NlIGlzIGdldHRpbmcgbG9uZyBzbyB3ZSdkIGRlZmluaXRlbHkgbmVlZCB0
+byBjdXJhdGUgaXQgcHJvcGVybHkgc29vbg0KPiBidXQgSSdsbCBtYWtlIHN1cmUgdGhpcyBzdGF5
+cyB0aGVyZS4NCg0KSSBhZ3JlZSB0aGF0IEd1aWxsYXVtZSdzIHRvcGljIHdvdWxkIGJlIGdvb2Qg
+dG8gZGlzY3Vzcy4NCg0KSXMgdGhlIGRyYWZ0IGFnZW5kYSBvbmxpbmUgYW55d2hlcmU/DQogLS0g
+VGltDQoNCg==
