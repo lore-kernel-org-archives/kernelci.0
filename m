@@ -1,65 +1,53 @@
-Date: Fri, 5 Apr 2019 10:41:53 -0400 (EDT)
-From: Veronika Kabatova <vkabatov@redhat.com>
-Message-ID: <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com>
-In-Reply-To: <299272045.11819252.1554465036421.JavaMail.zimbra@redhat.com>
-Subject: A common place for CI results?
+Date: Wed, 26 Jun 2019 12:11:16 +0100
+From: Mark Brown <broonie@sirena.org.uk>
+Subject: Re: kernel tree support matrix for Clang
+Message-ID: <20190626111116.GY5316@sirena.org.uk>
+References: <CAKwvOd=VBORyjtbqijM8FGAQUV6r6qy3ADQRGrxnKHY_ke=iPw@mail.gmail.com>
+ <20190619185714.GY5316@sirena.org.uk>
+ <CAKwvOd=9U9Z2w8R_GnAKf438f+fXUZ5zCnvsmJGSKnjv+L4g2A@mail.gmail.com>
+ <20190620113016.GB5316@sirena.org.uk>
+ <CAH+k93GiHtJxFTFgUca2=RPqZDseQq-1377ey9u7Zj5e7gnEYw@mail.gmail.com>
+ <CAKwvOdkqEBHy1rY+fHKDdf3g5tT8feZ5=pevYNYxGdx7qtpp6Q@mail.gmail.com>
 MIME-Version: 1.0
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CAKwvOdkqEBHy1rY+fHKDdf3g5tT8feZ5=pevYNYxGdx7qtpp6Q@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CTbJ8gzD8xFSYJnG"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: automated-testing@yoctoproject.org, info@kernelci.org
+To: kernelci@groups.io, ndesaulniers@google.com
+Cc: Matt Hart <matthew.hart@linaro.org>, Dan Rue <dan.rue@linaro.org>, Anmar Oueja <anmar.oueja@linaro.org>, clang-built-linux <clang-built-linux@googlegroups.com>, Todd Kjos <tkjos@google.com>, Sandeep Patil <sspatil@google.com>, Alistair Delva <adelva@google.com>, Stephen Hines <srhines@google.com>
 
+--CTbJ8gzD8xFSYJnG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi,
+On Tue, Jun 25, 2019 at 12:45:58PM -0700, Nick Desaulniers via Groups.Io wrote:
 
-as we know from this list, there's plenty CI systems doing some testing on the
-upstream kernels (and maybe some others we don't know about).
+> Hi Matt,
+> I just filed:
+> - https://github.com/kernelci/kernelci-core/issues/103: [clang]
+> additional trees/branches
+> - https://github.com/kernelci/kernelci-core/issues/104: [clang] enable lld
+> - https://github.com/kernelci/kernelci-core/issues/105: [clang]
+> additional arches
 
-It would be great if there was a single common place where all the CI systems
-can put their results. This would make it much easier for the kernel
-maintainers and developers to see testing status since they only need to
-check one place instead of having a list of sites/mailing lists where each CI
-posts their contributions.
+I replied on the tickets, note that : is a valid character in a URL so
+the way you've written things there makes it slightly annoying to
+cut'n'paste the URLs.
 
+--CTbJ8gzD8xFSYJnG
+Content-Type: application/pgp-signature; name="signature.asc"
 
-A few weeks ago, with some people we've been talking about kernelci.org being
-in a good place to act as the central upstream kernel CI piece that most
-maintainers already know about. So I'm wondering if it would be possible for
-kernelci to also act as an aggregator of all results? There's already an API
-for publishing a report [0] so it shouldn't be too hard to adjust it to
-handle and show more information. I also found the beta version for test
-results [1] so actually, most of the needed functionality seems to be already
-there. Since there will be multiple CI systems, the source and contact point
-for the contributor (so maintainers know whom to ask about results if needed)
-would likely be the only missing essential data point.
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0TUtQACgkQJNaLcl1U
+h9BhFAf/f2IJiR9qL1lTrsV0DHhnLWiIyrx1VP/byCvZoZVIEVRq45soBWJs3U4u
+KoObi7MibIAAMf1tZf7+u9Kdy61QbDtAHLKhalAVno95U0WKxRGMpvwuHcAxyztx
+TvneChCKYbliqxqiNA5r65Xym/kpO7rKIG4Mv71XO7tQYZ7pA0FnUR+ZbD4PDXTQ
+rbI2R+eJ0hi3/MLLkRXcvKCHs1OAMbpYb4ThGfPpPdQyTMUT7GtKpVKPdqrv7+EG
+b1+DcAEV58Wrf4er5xKLe1JzjQyqNxqN1YRlAllYtZlrJgLkCi9jqQlZPvr9PWEe
+lTwXurcFyMoPiNKF0mE/B4/am0i/6g==
+=n2+M
+-----END PGP SIGNATURE-----
 
-The common place for results would also make it easier for new CI systems to
-get involved with upstream. There are likely other companies out there running
-some tests on kernel internally but don't publish the results anywhere. Only
-adding some API calls into their code (with the data they are allowed to
-publish) would make it very simple for them to start contributing. If we want
-to make them interested, the starting point needs to be trivial. Different
-companies have different setups and policies and they might not be able to
-fulfill arbitrary requirements so they opt to not get involved at all, which
-is a shame because their results can be useful. After the initial "onboarding"
-step they might be willing to contribute more and more too.
-
-
-Please let me know if the idea makes sense or if something similar is already
-in plans. I'd be happy to contribute to the effort because I believe it would
-make everyone's life easier and we'd all benefit from it (and maybe someone
-else from my team would be willing to help out too if needed).
-
-
-Thanks,
-
-Veronika Kabatova
-CKI Project
-
-
-[0] https://api.kernelci.org/examples.html#sending-a-boot-report
-[1] https://kernelci.org/test/
+--CTbJ8gzD8xFSYJnG--
