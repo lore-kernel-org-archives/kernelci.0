@@ -1,40 +1,22 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2019-02-28
-Message-ID: <546303a7-1ff6-80e0-c3b0-babcd6167942@collabora.com>
-Date: Fri, 28 Jun 2019 15:00:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
+ <CAH+k93HHKjOTCBjmDXDyAyW86KY66_bHjP6265sY1Fm3=TgVSg@mail.gmail.com>
+ <CAH+k93EFwUw4KsKZirJKDOF=Xi8SCk80KyVYfJmFYxzLP69qJA@mail.gmail.com> <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com>
+In-Reply-To: <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Tue, 2 Jul 2019 12:16:16 -0700
+Message-ID: <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
+Subject: Please remove android-4.4 from kernelci
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Matt Hart <matthew.hart@linaro.org>
+Cc: kernelci@groups.io
 
-Summary of changes going into production today:
+The android kernel branch 'android-4.4' will be deprecated soon.
+Please remove it from kernelci testing (this does not include other
+4.4 branches like 'android-4.4-p' which are still needed).
 
-kernelci-core
--------------
+repo: https://android.googlesource.com/kernel/common
+branch: android-4.4
 
-* add support for LAVA device type aliases
-
-* fix email report triggers for branches that build less than 4 CPU
-  architectures
-
-* build buster-igt for MIPS again (no platforms to test it yet)
-
-* add kernelci.org branch in the kernelci kernel tree on Github to run tests
-
-
-kernelci-backend
-----------------
-
-* do not treat conflicting boot results between labs as regressions
-
-* add line in bisection email reports about using Reported-by kernelci.org bot
-
-
-Also, bisections have been re-enabled in lab-baylibre as well as for several
-maintainer trees that have been rebased on a newer revision (v5.2-rc1 had a
-known problem on rk3288).
-
-Best wishes,
-Guillaume
+-Todd
