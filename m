@@ -1,22 +1,53 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Wed, 3 Jul 2019 08:34:31 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-07-02 #minutes
+Message-ID: <20190703133431.txetxpqee7ejbndv@xps.therub.org>
 MIME-Version: 1.0
-References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
- <CAH+k93HHKjOTCBjmDXDyAyW86KY66_bHjP6265sY1Fm3=TgVSg@mail.gmail.com>
- <CAH+k93EFwUw4KsKZirJKDOF=Xi8SCk80KyVYfJmFYxzLP69qJA@mail.gmail.com> <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com>
-In-Reply-To: <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Tue, 2 Jul 2019 12:16:16 -0700
-Message-ID: <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
-Subject: Please remove android-4.4 from kernelci
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Matt Hart <matthew.hart@linaro.org>
-Cc: kernelci@groups.io
+To: kernelci@groups.io
 
-The android kernel branch 'android-4.4' will be deprecated soon.
-Please remove it from kernelci testing (this does not include other
-4.4 branches like 'android-4.4-p' which are still needed).
+- Attendees: Anders, Charles, Guillaume, Mark, Matt, Michal, Daniel
 
-repo: https://android.googlesource.com/kernel/common
-branch: android-4.4
+- Guillaume
+  - LTP test plan: up for grabs?
+    - [gtucker] on hold for now, low level of interest at the moment
+  - LAVA downloads: http + squid + checksums, or https with LAVA
+    built-in cache?
+    - [gtucker] Sounds like http + squid + checksums is the way to go,
+      adding checksums when posting files to the upload API in
+      kernelci-backend
+    - [matt] LAVA suggests squid in documentation so Linaro lab has used
+      it for a while - Doc
+  - Viewing test results on the front-end: are there any plans to fix
+    this?
+    - Charles to try to come up with some simple test results front-end
+      (kibana based)
+  - I’ve spent some time on gfx-ci tools (cibuglog, ezbench), some
+    interesting things
+    - cibuglog and modified patchwork could be used for testing patches
+    - cibuglog is yet another front-end / back-end using Django
+    - ezbench is not currently used in production but has some great
+      bisection logic which could be reused for complex test suites in
+      KernelCI
+    - next step: experiment with ezbench bisection separately from the
+      rest of ezbench features (building tests, scheduling runs,
+      producing reports…)
 
--Todd
+- Michal
+  - Changes in /test API
+    https://github.com/kernelci/kernelci-backend/pull/141
+    - [gtucker] check with Bjorn and Kevin as they have non-LAVA labs
+    - It’s worth getting some feedback to verify it is functional and
+      also that the API design is good before we document and publish it
+      for good
+
+- Anders
+  - Uefi - where should we have the uefi images, at storage.kernelci.org
+    or should it be somewhere else that Ard can upload new whenever he
+    needs/want?
+  - https://github.com/roxell/kernelci-core/commit/5282995a6abcc50c826826c0e8ffae131eb4b805
+
