@@ -1,28 +1,28 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2019-07-05
+Message-ID: <d7aabd95-b3df-958a-1fe1-144e165b1c56@collabora.com>
+Date: Fri, 5 Jul 2019 13:40:20 +0100
 MIME-Version: 1.0
-References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
- <CAH+k93HHKjOTCBjmDXDyAyW86KY66_bHjP6265sY1Fm3=TgVSg@mail.gmail.com>
- <CAH+k93EFwUw4KsKZirJKDOF=Xi8SCk80KyVYfJmFYxzLP69qJA@mail.gmail.com>
- <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com> <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
-In-Reply-To: <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
-From: "Matt Hart" <matthew.hart@linaro.org>
-Date: Wed, 3 Jul 2019 15:43:28 +0100
-Message-ID: <CAH+k93E08PDLoobtWzaiHAA3BsdiQZYpBcWbP=MaiaFuL=qN_A@mail.gmail.com>
-Subject: Re: Please remove android-4.4 from kernelci
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Todd Kjos <tkjos@google.com>
-Cc: kernelci@groups.io
+To: kernelci@groups.io
 
-On Tue, 2 Jul 2019 at 20:16, Todd Kjos <tkjos@google.com> wrote:
->
-> The android kernel branch 'android-4.4' will be deprecated soon.
+Summary of changes going into production today:
 
-Thanks for the update, I'll get it removed soon.
+kernelci-core
+-------------
 
-> Please remove it from kernelci testing (this does not include other
-> 4.4 branches like 'android-4.4-p' which are still needed).
->
-> repo: https://android.googlesource.com/kernel/common
-> branch: android-4.4
->
-> -Todd
+* fix USB test plan (was missing "diff" in Buster rootfs)
+
+* remove android-4.4 branch as it's now deprecated
+
+* fix the ARC image type and get hsdk board to boot
+
+* enable sending email reports for the kernelci tree to a small list of
+  recipients for testing purposes
+
+
+Best wishes,
+Guillaume
