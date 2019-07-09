@@ -1,48 +1,80 @@
 MIME-Version: 1.0
-References: <CACRpkdYeSLVFT14W4QP_dx_F6nVRNR8aNeZV+8wQkQA3rmMiiQ@mail.gmail.com>
- <CAH1_8nC2G1xkapA4qNnSa5_wMSBGjFgs1VmYFwAAJ9duWk9Ciw@mail.gmail.com>
- <CAH+k93GJE6oEVNYxwU4Qv_F9dgcSYycg=aEHDmGfHsPJL2ooWw@mail.gmail.com>
- <CACRpkdYEw_xqxEhM_egqeTUHhGCEkUTSyaYDQ0hAwgMdSU8fnw@mail.gmail.com>
- <CAH1_8nB4idAJ1VM_D6Bkis3T8V4zhTyatmmi1iSwS_MmL2j4Qg@mail.gmail.com>
- <CACRpkdaR3hbKkDf0DH9nBT7AgxJmMzWfu_mNjnq0wyL=KuqWPg@mail.gmail.com>
- <CAH1_8nAZZNE0_nGUrSQoOt-wxdcpKe+fmB8-qw9kmv1T1TeeOg@mail.gmail.com>
- <CACRpkdafj1mLML12EkJ9BNEfRvD5Mb=yjcMkmHV6Ux0+dsVUmA@mail.gmail.com>
- <CAH1_8nAnOJE5vO9YNxbrWZfwbHgMa8ScSNahbpqmjqw-k9cbzA@mail.gmail.com>
- <CACRpkdb_mfh=14rAgMSWPg7FXokQyDfAzMaEzYTr-7xGnY1p5w@mail.gmail.com> <CAH1_8nBA6NgEixrfZfN5qhyoByXDXeJqMnmfiJ3HHBw=_hcVjA@mail.gmail.com>
-In-Reply-To: <CAH1_8nBA6NgEixrfZfN5qhyoByXDXeJqMnmfiJ3HHBw=_hcVjA@mail.gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 9 Jul 2019 15:05:05 +0200
-Message-ID: <CACRpkdaFBirW=W3q0gVJcarRZiLkrubH835nR60dsVo=qyH8kQ@mail.gmail.com>
-Subject: Re: Adding tree to kernelci
+References: <CAP245DXSaoGJ4STssCqa-Fr3eGE7Qu=BGGyNFgZnz+z0gAVXNw@mail.gmail.com>
+ <CAH1_8nCuBHuGxgdPWWr0xLTXujeLv+S1obbdqqOJPZ45UZf8fg@mail.gmail.com>
+ <CAP245DWZs+4MuSm4SEQLC==sk4F0K8NBMM-f_jc5pe9F8iszpA@mail.gmail.com> <CAH1_8nBoT9b3ZjZY=REestht6Z1W5hhA4YwOOvTGr-a19tA3cw@mail.gmail.com>
+In-Reply-To: <CAH1_8nBoT9b3ZjZY=REestht6Z1W5hhA4YwOOvTGr-a19tA3cw@mail.gmail.com>
+From: Amit Kucheria <amit.kucheria@linaro.org>
+Date: Tue, 9 Jul 2019 18:54:14 +0530
+Message-ID: <CAP245DWdaDFRX70YyZjtkPYhvWnRdYOHvFLT9HGDkYBJCgwRhg@mail.gmail.com>
+Subject: Re: New experimental branch for Linaro Qualcomm Landing Team
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
 To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: Matt Hart <matthew.hart@linaro.org>, kernelci@groups.io, Anders Roxell <anders.roxell@linaro.org>, Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc: kernelci@groups.io, info <info@kernelci.org>, Kevin Hilman <khilman@baylibre.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Nicolas Dechesne <nicolas.dechesne@linaro.org>
 
-On Tue, Jul 9, 2019 at 2:44 PM Guillaume Tucker
+On Tue, Jul 9, 2019 at 6:32 PM Guillaume Tucker
 <guillaume.tucker@gmail.com> wrote:
-> On Tue, Jul 9, 2019 at 12:27 PM Linus Walleij <linus.walleij@linaro.org> wrote:
->> On Tue, Jul 9, 2019 at 12:52 PM Guillaume Tucker
->> <guillaume.tucker@gmail.com> wrote:
-
->> >   https://staging.kernelci.org/job/linusw/branch/devel/
+>
+> On Tue, Jul 9, 2019 at 12:09 PM Amit Kucheria <amit.kucheria@linaro.org> wrote:
 >>
->> This isn't working right now the page is full of error messages.
+>> On Tue, Jul 9, 2019 at 4:27 PM Guillaume Tucker
+>> <guillaume.tucker@gmail.com> wrote:
+>> >
+>> >
+>> > On Tue, Jul 9, 2019 at 11:52 AM Amit Kucheria <amit.kucheria@linaro.org> wrote:
+>> >>
+>> >> Hi,
+>> >>
+>> >> I'd like to request a new branch to be tracked by kernelci.org to
+>> >> allow more experimental patches that could use much wider testing
+>> >> across boards and architectures.
+>> >>
+>> >> We currently use our 'integration' branch[1] for this but that causes
+>> >> disruption for people who depend on this branch to keep working.
+>> >>
+>> >> This experimental branch shouldn't see too many updates and would
+>> >> likely only be used to get better testing for experimental series.
+>> >> Would you be ok to pick up such a branch[2] into kernelci?
+>> >
+>> >
+>> > The links you've provided don't seem to work, the page says
+>> > "No repositories found".
+>>
+>> Curious. Either I missed a space between the URL and branch name or
+>> gmail seems to have combined them in the link. Try
+>> https://git.linaro.org/landing-teams/working/qualcomm/kernel.git
 >
-> Oops, there was a broken change being tested there.  It should be
-> back on track now.
-
-Looks good!
-
->> Yes linux-gpio@vger.kernel.org should probably be added.
 >
-> OK I've added a path to the PR to add that, with just build and
-> boot reports for now.  I guess it would be useful to run some
-> GPIO tests at some point (libgpiod was mentioned earlier on this
-> thread), and then enable email reports for that.
+> Oh I see, there was a space between the URL and the branch name.
+> Yeah I guess that got mangled somewhere, that link works for me.
+>
+>>
+>> > Generally speaking I would say it's fine, as long as these aren't
+>> > downstream branches but experimental patches that are based on
+>> > current mainline and intended to be merged upstream.
+>>
+>> No, these will certainly be mainline-based branches.
+>
+>
+> Great, so yes these look like relevant branches to test on
+> kernelci.org.  Which configurations do you need to build?  The
+> full range means about 230 builds but if you only care about arm,
+> arm64 and x86_64 with just the defconfigs and maybe some qcom arm
+> defconfigs that should come down to a much smaller number.
+>
+> Doing fewer builds means faster turnaround between when you push
+> a change and when you get the results, and makes it possible to
+> have more development trees for a given build capacity.
 
-Yes Bartosz knows what is the proper approach here.
-A set of whitebox tests from userspace is coming into place.
+As mentioned earlier, I expect this branch to be used occassionally.
+IOW, we won't use it in an automated merge + CI loop. We want to use
+it to test instrusive features that might break on other
+platforms/architectures/configuration.
 
-Yours,
-Linus Walleij
+So if it isn't too a huge stress on resources, I'd prefer this branch
+to be exposed to the full range of kernelci builds and boot testing.
+
+Thanks.
+
+Regards,
+Amit
