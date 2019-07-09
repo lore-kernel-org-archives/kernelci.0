@@ -1,80 +1,56 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Tue, 9 Jul 2019 13:51:49 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-07-09 #minutes
+Message-ID: <20190709185149.bafily25pf4yvzbs@xps.therub.org>
 MIME-Version: 1.0
-References: <CAP245DXSaoGJ4STssCqa-Fr3eGE7Qu=BGGyNFgZnz+z0gAVXNw@mail.gmail.com>
- <CAH1_8nCuBHuGxgdPWWr0xLTXujeLv+S1obbdqqOJPZ45UZf8fg@mail.gmail.com>
- <CAP245DWZs+4MuSm4SEQLC==sk4F0K8NBMM-f_jc5pe9F8iszpA@mail.gmail.com> <CAH1_8nBoT9b3ZjZY=REestht6Z1W5hhA4YwOOvTGr-a19tA3cw@mail.gmail.com>
-In-Reply-To: <CAH1_8nBoT9b3ZjZY=REestht6Z1W5hhA4YwOOvTGr-a19tA3cw@mail.gmail.com>
-From: Amit Kucheria <amit.kucheria@linaro.org>
-Date: Tue, 9 Jul 2019 18:54:14 +0530
-Message-ID: <CAP245DWdaDFRX70YyZjtkPYhvWnRdYOHvFLT9HGDkYBJCgwRhg@mail.gmail.com>
-Subject: Re: New experimental branch for Linaro Qualcomm Landing Team
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: kernelci@groups.io, info <info@kernelci.org>, Kevin Hilman <khilman@baylibre.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Nicolas Dechesne <nicolas.dechesne@linaro.org>
+To: kernelci@groups.io
 
-On Tue, Jul 9, 2019 at 6:32 PM Guillaume Tucker
-<guillaume.tucker@gmail.com> wrote:
->
-> On Tue, Jul 9, 2019 at 12:09 PM Amit Kucheria <amit.kucheria@linaro.org> wrote:
->>
->> On Tue, Jul 9, 2019 at 4:27 PM Guillaume Tucker
->> <guillaume.tucker@gmail.com> wrote:
->> >
->> >
->> > On Tue, Jul 9, 2019 at 11:52 AM Amit Kucheria <amit.kucheria@linaro.org> wrote:
->> >>
->> >> Hi,
->> >>
->> >> I'd like to request a new branch to be tracked by kernelci.org to
->> >> allow more experimental patches that could use much wider testing
->> >> across boards and architectures.
->> >>
->> >> We currently use our 'integration' branch[1] for this but that causes
->> >> disruption for people who depend on this branch to keep working.
->> >>
->> >> This experimental branch shouldn't see too many updates and would
->> >> likely only be used to get better testing for experimental series.
->> >> Would you be ok to pick up such a branch[2] into kernelci?
->> >
->> >
->> > The links you've provided don't seem to work, the page says
->> > "No repositories found".
->>
->> Curious. Either I missed a space between the URL and branch name or
->> gmail seems to have combined them in the link. Try
->> https://git.linaro.org/landing-teams/working/qualcomm/kernel.git
->
->
-> Oh I see, there was a space between the URL and the branch name.
-> Yeah I guess that got mangled somewhere, that link works for me.
->
->>
->> > Generally speaking I would say it's fine, as long as these aren't
->> > downstream branches but experimental patches that are based on
->> > current mainline and intended to be merged upstream.
->>
->> No, these will certainly be mainline-based branches.
->
->
-> Great, so yes these look like relevant branches to test on
-> kernelci.org.  Which configurations do you need to build?  The
-> full range means about 230 builds but if you only care about arm,
-> arm64 and x86_64 with just the defconfigs and maybe some qcom arm
-> defconfigs that should come down to a much smaller number.
->
-> Doing fewer builds means faster turnaround between when you push
-> a change and when you get the results, and makes it possible to
-> have more development trees for a given build capacity.
+- Attendees: Guillaume, Mark, Michał, Daniel
 
-As mentioned earlier, I expect this branch to be used occassionally.
-IOW, we won't use it in an automated merge + CI loop. We want to use
-it to test instrusive features that might break on other
-platforms/architectures/configuration.
+- Guillaume
+  - Updated igt tests, with igt_drm_kms test plan
+  - Updated test email report format, any thoughts?
+    https://github.com/kernelci/kernelci-backend/pull/144
+    - Would be good to have smaller email reports with just regressions
+      (new ones, fixed ones) and offload the details to the web
+      front-end
+  - Gradually fine tuning build configurations, adding support for regex
+    filters Looks like we should stop building some arches with older
+    kernels
+  - Thoughts on adding the QCom landing team tree? It sounds like we
+    should have some guidelines regarding branches we want to be part of
+    kernelci.org
+    - We can add this tree because it’s not going to be updated very
+      often.
+  - Should we envisage running unit tests such as KUnit?
+    https://www.phoronix.com/scan.php?page=news_item&px=KUnit-Linux-Kernel-V1
+    https://lwn.net/Articles/791279/
+    - Yes, it would take some work to get the infra in place (run on
+      Jenkins builders, VMs in LAVA…) but it makes sense to add it to
+      kernelci.org
 
-So if it isn't too a huge stress on resources, I'd prefer this branch
-to be exposed to the full range of kernelci builds and boot testing.
+- Michal
+  - Test API current status
+    - All the changes and updated unit tests are in the PR.
+    - E2E test in preparation if it produces sensible results, PR can be
+      merged.
+  - Check test API changes with Kevin if he joins the meeting
 
-Thanks.
-
-Regards,
-Amit
+- Kevin
+  - OoO this week
+  - multinode jobs: how to handle in the backend
+    - e.g. there is one callback, but multiple logs (one for each
+      sub-job)
+    - [gtucker] The test results database hierarchy should be able to
+      handle that quite easily, with each job contributing different
+      sub-groups
+    - [gtucker] For logs, they would need to be saved in separate files
+      with top-level groups pointing at them.  It’s a bit more messy at
+      the moment. Having log fragments associated with each test result
+      would make it easier to manage as they would become attributes of
+      test results.
