@@ -1,66 +1,67 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Wed, 17 Jul 2019 09:25:31 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Weekly Meeting 2019-07-16 #minutes
-Message-ID: <20190717142531.hge5hi7udd2pl7yx@xps.therub.org>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: next/master baseline: 7 runs, 0 regressions (next-20190717)
+In-Reply-To: <1ab642a0-0157-84c6-a3a8-da3ead6f55b1@collabora.com>
+References: <5d2f063d.1c69fb81.64f72.9c8e@mx.google.com> <1ab642a0-0157-84c6-a3a8-da3ead6f55b1@collabora.com>
+Date: Wed, 17 Jul 2019 10:43:55 -0500
+Message-ID: <7ha7dcy8ck.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, guillaume.tucker@gmail.com, kernel-build-reports@lists.linaro.org, kernelci@groups.io
+Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 
-- Attendees: Guillaume, Kevin, Mark, Matt, Michał, Nick, Daniel
+"Guillaume Tucker" <guillaume.tucker@gmail.com> writes:
 
-- Guillaume
-  - There are things we could do to improve the structure of the project
-    independently of joining the LF, such as:
-    - Reviewing and improving documentation around how the project
-      operates
-    - Defining the purpose of the project (upstream kernel testing…)
-    - Creating a roadmap or at least a backlog (Github issues?) These
-      things should help provide some visibility to people who are
-      getting interested in the project, and also help coordinate
-      development efforts.
-  - Test results on the kernelci.org front-end: the work done on
-    kernelci.automotivelinux.org could be a good starting point as it is
-    based on kernel revisions.  It doesn’t know about sub-groups though.
-    This may still be the shortest path to a functional Tests view on
-    the front-end.
-    - [KH] anyone else working on this?
-    - [KH] background: BayLibre has done some experiments for AGL, which
-      are now outdated due to the migration from 3-level (suite, set,
-      case) to multi-level nested groups
-      - Code available, but needs rebase/rework:
-        https://github.com/BayLibre/kernelci-frontend/tree/wip/tests-by-build
-  - CKI Hackfest agenda: https://cki-project.org/posts/hackfest-agenda/
+> On 17/07/2019 12:27, kernelci.org bot wrote:
+>> next/master baseline: 7 runs, 0 regressions (next-20190717)
+>> 
+>> Test results summary
+>> --------------------
+>> 
+>> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
+>> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
+>>   1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+>>   2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+>>   3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+>>   4 | rk3399-gru-kevin         | arm64  | lab-collabora            | clang-8  | defconfig          | 0/78
+>>   5 | rk3399-gru-kevin         | arm64  | lab-collabora            | clang-8  | defconfig          | 0/78
+>>   6 | rk3399-gru-kevin         | arm64  | lab-collabora            | gcc-8    | defconfig          | 0/78
+>>   7 | rk3399-gru-kevin         | arm64  | lab-collabora            | gcc-8    | defconfig          | 0/78
+>
+> There's still an issue with this summary table as the "full"
+> defconfig is not shown, so there's no way to tell the difference
+> between runs 1, 2 or 3.  In the detailed sections, you can see
+> that they have CONFIG_ARM_LPAE=y, CONFIG_EFI=y and CONFIG_SMP=n
+> on top of the defconfig.
+>
+> So it could be reformatted this way:
+>
+>
+> run | platform                 | arch   | lab                      | compiler | defconfig                                         | errors
+> ----+--------------------------+--------+--------------------------+----------+---------------------------------------------------+-------
+>   1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y | 1/61
+>   2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig+CONFIG_SMP=n                   | 1/61
+>   3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig                                | 1/61
+>
+>
+> which obviously makes the table quite a bit wider.
+>
+> The width of each column is currently fixed but it could be
+> dynamically computed based on the results to avoid superfluous
+> spaces:
+>
+> run | platform          | arch | lab           | compiler | defconfig                                         | errors
+> ----+-------------------+------+---------------+----------+---------------------------------------------------+-------
+>   1 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y | 1/61
+>   2 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig+CONFIG_SMP=n                   | 1/61
+>   3 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig                                | 1/61
+>
+>
+> Is that still readable enough, or does it get so wide that it's
+> becoming too hard to read?
 
-- Nick
-  - New Android virtual device, possibly to replace Android Emulator.
-  - Build with Clang-9?
-  - Interest in mainline, stable kernels.
+IMO, that's readable, but any more columns, and were going to soon be in
+the realm of "not useful to view in email"
 
-- Michał
-  - Non-LAVA labs support in kernelci-backend
-
-- Kevin
-  - Supporting multi-node jobs in the backend
-    - BayLibre working on using multi-node jobs to add power-measurement
-      for boots and tests (host job controls measurement equipment,
-      target job does normal boot/test)
-    - multi-node docs are ...
-    - multi-node jobs have a callback for each (sub)job
-      - all (sub)jobs show the same device-type, so currently the boot
-        logs (and lava-json-*.json) are overwritten
-        - patch coming for this soon
-
-- Matt
-  - Building perf?
-    - Sounds like a yes, I will do a PR
-
-New features needed/requested/discussed during meeting
-- build email reports
-  - show/highlight only new warnings, deltas
-  - Cut down the size of boot reports
-    - Mark has some ideas here, may start looking at them once some
-      paperwork goes through internally.
+Kevin
