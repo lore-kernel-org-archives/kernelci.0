@@ -1,136 +1,130 @@
+Subject: Re: next/master baseline: 7 runs, 0 regressions (next-20190717)
+References: <5d2f063d.1c69fb81.64f72.9c8e@mx.google.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Message-ID: <1ab642a0-0157-84c6-a3a8-da3ead6f55b1@collabora.com>
+Date: Wed, 17 Jul 2019 14:00:56 +0100
 MIME-Version: 1.0
-References: <CAP245DXSaoGJ4STssCqa-Fr3eGE7Qu=BGGyNFgZnz+z0gAVXNw@mail.gmail.com>
- <CAH1_8nCuBHuGxgdPWWr0xLTXujeLv+S1obbdqqOJPZ45UZf8fg@mail.gmail.com>
- <CAP245DWZs+4MuSm4SEQLC==sk4F0K8NBMM-f_jc5pe9F8iszpA@mail.gmail.com>
- <CAH1_8nBoT9b3ZjZY=REestht6Z1W5hhA4YwOOvTGr-a19tA3cw@mail.gmail.com>
- <CAP245DWdaDFRX70YyZjtkPYhvWnRdYOHvFLT9HGDkYBJCgwRhg@mail.gmail.com>
- <CAH1_8nAjzQEBVTdQfO2ocHx8NN=oKffKGLyT5BdovSGnrM8evA@mail.gmail.com>
- <CAP245DU5k60D3Dx5ZLy7SgpiozEUsJemcqMmeomLWx8Q5sQtCg@mail.gmail.com> <CAH1_8nAWW=_hpWWoVy343W=iB83DeOB4yQxACZNQHmJuft+M_g@mail.gmail.com>
-In-Reply-To: <CAH1_8nAWW=_hpWWoVy343W=iB83DeOB4yQxACZNQHmJuft+M_g@mail.gmail.com>
-From: Amit Kucheria <amit.kucheria@linaro.org>
-Date: Sat, 13 Jul 2019 09:26:07 +0530
-Message-ID: <CAP245DWmVHdw8gswS52LTy+9mbDz0RBby3G0Ck_zQdY+GQvEQA@mail.gmail.com>
-Subject: Re: New experimental branch for Linaro Qualcomm Landing Team
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <5d2f063d.1c69fb81.64f72.9c8e@mx.google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: kernelci@groups.io, info <info@kernelci.org>, Kevin Hilman <khilman@baylibre.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Nicolas Dechesne <nicolas.dechesne@linaro.org>
+To: kernel-build-reports@lists.linaro.org, kernelci@groups.io
+Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 
-On Sat, Jul 13, 2019 at 12:20 AM Guillaume Tucker
-<guillaume.tucker@gmail.com> wrote:
->
->
->
-> On Fri, Jul 12, 2019 at 4:50 PM Amit Kucheria <amit.kucheria@linaro.org> wrote:
->>
->>
->>
->> On Wed, 10 Jul, 2019, 16:25 Guillaume Tucker, <guillaume.tucker@gmail.com> wrote:
->>>
->>>
->>> On Tue, Jul 9, 2019 at 2:24 PM Amit Kucheria <amit.kucheria@linaro.org> wrote:
->>>>
->>>> On Tue, Jul 9, 2019 at 6:32 PM Guillaume Tucker
->>>> <guillaume.tucker@gmail.com> wrote:
->>>> >
->>>> > On Tue, Jul 9, 2019 at 12:09 PM Amit Kucheria <amit.kucheria@linaro.org> wrote:
->>>> >>
->>>> >> On Tue, Jul 9, 2019 at 4:27 PM Guillaume Tucker
->>>> >> <guillaume.tucker@gmail.com> wrote:
->>>> >> >
->>>> >> >
->>>> >> > On Tue, Jul 9, 2019 at 11:52 AM Amit Kucheria <amit.kucheria@linaro.org> wrote:
->>>> >> >>
->>>> >> >> Hi,
->>>> >> >>
->>>> >> >> I'd like to request a new branch to be tracked by kernelci.org to
->>>> >> >> allow more experimental patches that could use much wider testing
->>>> >> >> across boards and architectures.
->>>> >> >>
->>>> >> >> We currently use our 'integration' branch[1] for this but that causes
->>>> >> >> disruption for people who depend on this branch to keep working.
->>>
->>>
->>> Ah sorry I missed the fact that the integration-linux-qcomlt
->>> branch was already built and tested on kernelci.org:
->>>
->>>   https://kernelci.org/job/qcom-lt/branch/integration-linux-qcomlt/
->>>
->>> and it seems to be updated roughly once a week.
->>>
->>>> >> >> This experimental branch shouldn't see too many updates and would
->>>> >> >> likely only be used to get better testing for experimental series.
->>>> >> >> Would you be ok to pick up such a branch[2] into kernelci?
->>>> >> >
->>>> >> >
->>>> >> > The links you've provided don't seem to work, the page says
->>>> >> > "No repositories found".
->>>> >>
->>>> >> Curious. Either I missed a space between the URL and branch name or
->>>> >> gmail seems to have combined them in the link. Try
->>>> >> https://git.linaro.org/landing-teams/working/qualcomm/kernel.git
->>>> >
->>>> >
->>>> > Oh I see, there was a space between the URL and the branch name.
->>>> > Yeah I guess that got mangled somewhere, that link works for me.
->>>> >
->>>> >>
->>>> >> > Generally speaking I would say it's fine, as long as these aren't
->>>> >> > downstream branches but experimental patches that are based on
->>>> >> > current mainline and intended to be merged upstream.
->>>> >>
->>>> >> No, these will certainly be mainline-based branches.
->>>> >
->>>> >
->>>> > Great, so yes these look like relevant branches to test on
->>>> > kernelci.org.  Which configurations do you need to build?  The
->>>> > full range means about 230 builds but if you only care about arm,
->>>> > arm64 and x86_64 with just the defconfigs and maybe some qcom arm
->>>> > defconfigs that should come down to a much smaller number.
->>>> >
->>>> > Doing fewer builds means faster turnaround between when you push
->>>> > a change and when you get the results, and makes it possible to
->>>> > have more development trees for a given build capacity.
->>>>
->>>> As mentioned earlier, I expect this branch to be used occassionally.
->>>> IOW, we won't use it in an automated merge + CI loop. We want to use
->>>> it to test instrusive features that might break on other
->>>> platforms/architectures/configuration.
->>>>
->>>> So if it isn't too a huge stress on resources, I'd prefer this branch
->>>> to be exposed to the full range of kernelci builds and boot testing.
->>>
->>>
->>> Right, this was mentioned during the weekly meeting yesterday and
->>> yes we can add it on the basis that it doesn't get updated very
->>> often.
->>>
->>> For developer trees like this one, I think the amount of builds
->>> should be kept to a lower number than the main trees such as
->>> mainline, next, stable, maintainers...  So if it's important to
->>> build all the defconfigs, there should be a limit on how often it
->>> gets built.  We don't have the ability to regulate this at the
->>> moment, so please avoid pushing to these branches more than once
->>> a week and it'll be fine.
->>>
->>> I've made a PR to add this branch:
->>>
->>>   https://github.com/kernelci/kernelci-core/pull/119
->>>
->>
->> I noticed this pull request was merged. How long before this becomes active? And who will get notifications?
->
->
-> It was deployed in production today, I've just sent the notes on
-> the mailing list.
->
-> Recipients are defined here:
->
->   https://github.com/kernelci/kernelci-core/blob/master/jenkins/kernel-arch-complete.sh#L106
->
-> Essentially, that's "qcomlt-patches@lists.linaro.org"
->
-> You should get the first report in a few hours, once the builds
-> have caught up with the backlog.
+On 17/07/2019 12:27, kernelci.org bot wrote:
+> next/master baseline: 7 runs, 0 regressions (next-20190717)
+> 
+> Test results summary
+> --------------------
+> 
+> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
+> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
+>   1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+>   2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+>   3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+>   4 | rk3399-gru-kevin         | arm64  | lab-collabora            | clang-8  | defconfig          | 0/78
+>   5 | rk3399-gru-kevin         | arm64  | lab-collabora            | clang-8  | defconfig          | 0/78
+>   6 | rk3399-gru-kevin         | arm64  | lab-collabora            | gcc-8    | defconfig          | 0/78
+>   7 | rk3399-gru-kevin         | arm64  | lab-collabora            | gcc-8    | defconfig          | 0/78
 
-Got them, thanks.
+There's still an issue with this summary table as the "full"
+defconfig is not shown, so there's no way to tell the difference
+between runs 1, 2 or 3.  In the detailed sections, you can see
+that they have CONFIG_ARM_LPAE=y, CONFIG_EFI=y and CONFIG_SMP=n
+on top of the defconfig.
+
+So it could be reformatted this way:
+
+
+run | platform                 | arch   | lab                      | compiler | defconfig                                         | errors
+----+--------------------------+--------+--------------------------+----------+---------------------------------------------------+-------
+  1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y | 1/61
+  2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig+CONFIG_SMP=n                   | 1/61
+  3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig                                | 1/61
+
+
+which obviously makes the table quite a bit wider.
+
+The width of each column is currently fixed but it could be
+dynamically computed based on the results to avoid superfluous
+spaces:
+
+run | platform          | arch | lab           | compiler | defconfig                                         | errors
+----+-------------------+------+---------------+----------+---------------------------------------------------+-------
+  1 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y | 1/61
+  2 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig+CONFIG_SMP=n                   | 1/61
+  3 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig                                | 1/61
+
+
+Is that still readable enough, or does it get so wide that it's
+becoming too hard to read?
+
+Or, does anyone have any better idea of how to show this
+information?
+
+
+Guillaume
+
+>   Test:     baseline
+>   Tree:     next
+>   Branch:   master
+>   Describe: next-20190717
+>   URL:      git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+>   SHA:      e40115c06b1d3a6059ba379041e4661dbb6b02b8 
+> 
+> 
+> Test Failures
+> -------------
+>   
+> 
+> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
+> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
+>   1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+> 
+>   Results:     60 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y
+>   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
+>   Plain log:   https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.txt
+>   HTML log:    https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.html
+>   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/armel/baseline/rootfs.cpio.gz     
+> 
+>   bootrr - 61 tests: 60  PASS, 1 FAIL, 0 SKIP
+>     * rk3x-i2c5-probed: never passed  
+>       
+> 
+> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
+> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
+>   2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+> 
+>   Results:     60 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig+CONFIG_SMP=n
+>   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
+>   Plain log:   https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_SMP=n/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.txt
+>   HTML log:    https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_SMP=n/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.html
+>   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/armel/baseline/rootfs.cpio.gz     
+> 
+>   bootrr - 61 tests: 60  PASS, 1 FAIL, 0 SKIP
+>     * rk3x-i2c5-probed: never passed  
+>       
+> 
+> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
+> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
+>   3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
+> 
+>   Results:     60 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
+>   Plain log:   https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.txt
+>   HTML log:    https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.html
+>   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/armel/baseline/rootfs.cpio.gz     
+> 
+>   bootrr - 61 tests: 60  PASS, 1 FAIL, 0 SKIP
+>     * rk3x-i2c5-probed: never passed  
+>                   
+> _______________________________________________
+> Kernel-build-reports mailing list
+> Kernel-build-reports@lists.linaro.org
+> https://lists.linaro.org/mailman/listinfo/kernel-build-reports
+> 
+
