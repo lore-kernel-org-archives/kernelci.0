@@ -1,130 +1,66 @@
-Subject: Re: next/master baseline: 7 runs, 0 regressions (next-20190717)
-References: <5d2f063d.1c69fb81.64f72.9c8e@mx.google.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Message-ID: <1ab642a0-0157-84c6-a3a8-da3ead6f55b1@collabora.com>
-Date: Wed, 17 Jul 2019 14:00:56 +0100
+Return-Path: <dan.rue@linaro.org>
+Date: Wed, 17 Jul 2019 09:25:31 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-07-16 #minutes
+Message-ID: <20190717142531.hge5hi7udd2pl7yx@xps.therub.org>
 MIME-Version: 1.0
-In-Reply-To: <5d2f063d.1c69fb81.64f72.9c8e@mx.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: kernel-build-reports@lists.linaro.org, kernelci@groups.io
-Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+To: kernelci@groups.io
 
-On 17/07/2019 12:27, kernelci.org bot wrote:
-> next/master baseline: 7 runs, 0 regressions (next-20190717)
-> 
-> Test results summary
-> --------------------
-> 
-> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
-> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
->   1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
->   2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
->   3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
->   4 | rk3399-gru-kevin         | arm64  | lab-collabora            | clang-8  | defconfig          | 0/78
->   5 | rk3399-gru-kevin         | arm64  | lab-collabora            | clang-8  | defconfig          | 0/78
->   6 | rk3399-gru-kevin         | arm64  | lab-collabora            | gcc-8    | defconfig          | 0/78
->   7 | rk3399-gru-kevin         | arm64  | lab-collabora            | gcc-8    | defconfig          | 0/78
+- Attendees: Guillaume, Kevin, Mark, Matt, Michał, Nick, Daniel
 
-There's still an issue with this summary table as the "full"
-defconfig is not shown, so there's no way to tell the difference
-between runs 1, 2 or 3.  In the detailed sections, you can see
-that they have CONFIG_ARM_LPAE=y, CONFIG_EFI=y and CONFIG_SMP=n
-on top of the defconfig.
+- Guillaume
+  - There are things we could do to improve the structure of the project
+    independently of joining the LF, such as:
+    - Reviewing and improving documentation around how the project
+      operates
+    - Defining the purpose of the project (upstream kernel testing…)
+    - Creating a roadmap or at least a backlog (Github issues?) These
+      things should help provide some visibility to people who are
+      getting interested in the project, and also help coordinate
+      development efforts.
+  - Test results on the kernelci.org front-end: the work done on
+    kernelci.automotivelinux.org could be a good starting point as it is
+    based on kernel revisions.  It doesn’t know about sub-groups though.
+    This may still be the shortest path to a functional Tests view on
+    the front-end.
+    - [KH] anyone else working on this?
+    - [KH] background: BayLibre has done some experiments for AGL, which
+      are now outdated due to the migration from 3-level (suite, set,
+      case) to multi-level nested groups
+      - Code available, but needs rebase/rework:
+        https://github.com/BayLibre/kernelci-frontend/tree/wip/tests-by-build
+  - CKI Hackfest agenda: https://cki-project.org/posts/hackfest-agenda/
 
-So it could be reformatted this way:
+- Nick
+  - New Android virtual device, possibly to replace Android Emulator.
+  - Build with Clang-9?
+  - Interest in mainline, stable kernels.
 
+- Michał
+  - Non-LAVA labs support in kernelci-backend
 
-run | platform                 | arch   | lab                      | compiler | defconfig                                         | errors
-----+--------------------------+--------+--------------------------+----------+---------------------------------------------------+-------
-  1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y | 1/61
-  2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig+CONFIG_SMP=n                   | 1/61
-  3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig                                | 1/61
+- Kevin
+  - Supporting multi-node jobs in the backend
+    - BayLibre working on using multi-node jobs to add power-measurement
+      for boots and tests (host job controls measurement equipment,
+      target job does normal boot/test)
+    - multi-node docs are ...
+    - multi-node jobs have a callback for each (sub)job
+      - all (sub)jobs show the same device-type, so currently the boot
+        logs (and lava-json-*.json) are overwritten
+        - patch coming for this soon
 
+- Matt
+  - Building perf?
+    - Sounds like a yes, I will do a PR
 
-which obviously makes the table quite a bit wider.
-
-The width of each column is currently fixed but it could be
-dynamically computed based on the results to avoid superfluous
-spaces:
-
-run | platform          | arch | lab           | compiler | defconfig                                         | errors
-----+-------------------+------+---------------+----------+---------------------------------------------------+-------
-  1 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y | 1/61
-  2 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig+CONFIG_SMP=n                   | 1/61
-  3 | rk3288-veyron-jaq | arm  | lab-collabora | gcc-8    | multi_v7_defconfig                                | 1/61
-
-
-Is that still readable enough, or does it get so wide that it's
-becoming too hard to read?
-
-Or, does anyone have any better idea of how to show this
-information?
-
-
-Guillaume
-
->   Test:     baseline
->   Tree:     next
->   Branch:   master
->   Describe: next-20190717
->   URL:      git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
->   SHA:      e40115c06b1d3a6059ba379041e4661dbb6b02b8 
-> 
-> 
-> Test Failures
-> -------------
->   
-> 
-> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
-> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
->   1 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
-> 
->   Results:     60 PASS, 1 FAIL, 0 SKIP
->   Full config: multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y
->   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
->   Plain log:   https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.txt
->   HTML log:    https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_EFI=y+CONFIG_ARM_LPAE=y/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.html
->   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/armel/baseline/rootfs.cpio.gz     
-> 
->   bootrr - 61 tests: 60  PASS, 1 FAIL, 0 SKIP
->     * rk3x-i2c5-probed: never passed  
->       
-> 
-> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
-> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
->   2 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
-> 
->   Results:     60 PASS, 1 FAIL, 0 SKIP
->   Full config: multi_v7_defconfig+CONFIG_SMP=n
->   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
->   Plain log:   https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_SMP=n/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.txt
->   HTML log:    https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig+CONFIG_SMP=n/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.html
->   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/armel/baseline/rootfs.cpio.gz     
-> 
->   bootrr - 61 tests: 60  PASS, 1 FAIL, 0 SKIP
->     * rk3x-i2c5-probed: never passed  
->       
-> 
-> run | platform                 | arch   | lab                      | compiler | defconfig          | errors
-> ----+--------------------------+--------+--------------------------+----------+--------------------+-------
->   3 | rk3288-veyron-jaq        | arm    | lab-collabora            | gcc-8    | multi_v7_defconfig | 1/61
-> 
->   Results:     60 PASS, 1 FAIL, 0 SKIP
->   Full config: multi_v7_defconfig
->   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
->   Plain log:   https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.txt
->   HTML log:    https://storage.kernelci.org//next/master/next-20190717/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-rk3288-veyron-jaq.html
->   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-2-gefc755ba4a02/armel/baseline/rootfs.cpio.gz     
-> 
->   bootrr - 61 tests: 60  PASS, 1 FAIL, 0 SKIP
->     * rk3x-i2c5-probed: never passed  
->                   
-> _______________________________________________
-> Kernel-build-reports mailing list
-> Kernel-build-reports@lists.linaro.org
-> https://lists.linaro.org/mailman/listinfo/kernel-build-reports
-> 
-
+New features needed/requested/discussed during meeting
+- build email reports
+  - show/highlight only new warnings, deltas
+  - Cut down the size of boot reports
+    - Mark has some ideas here, may start looking at them once some
+      paperwork goes through internally.
