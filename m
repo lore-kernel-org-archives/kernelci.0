@@ -1,39 +1,47 @@
-MIME-Version: 1.0
-References: <CAKwvOdn0kv+N5raBDE_aPv637ROHmu7C1_C9F3PXNnAYSMTOYQ@mail.gmail.com>
- <20190806190254.GH4527@sirena.org.uk> <CABXOdTckrMfM_-5+pJ37KHveLE8oRDvFAzPftnp_5--fYJVuXQ@mail.gmail.com>
- <20190806200809.GI4527@sirena.org.uk>
-In-Reply-To: <20190806200809.GI4527@sirena.org.uk>
-From: "Guenter Roeck" <groeck@google.com>
-Date: Tue, 6 Aug 2019 13:45:44 -0700
-Message-ID: <CABXOdTcWG-wh9ZHMVmON+B4cxV64-8HDkTvpG61eTNAOYbs-jw@mail.gmail.com>
+Date: Wed, 7 Aug 2019 13:38:54 +0100
+From: "Mark Brown" <broonie@kernel.org>
 Subject: Re: aarch64 Big Endian
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20190807123854.GB4048@sirena.co.uk>
+References: <CAKwvOdn0kv+N5raBDE_aPv637ROHmu7C1_C9F3PXNnAYSMTOYQ@mail.gmail.com>
+ <20190806190254.GH4527@sirena.org.uk>
+ <CABXOdTckrMfM_-5+pJ37KHveLE8oRDvFAzPftnp_5--fYJVuXQ@mail.gmail.com>
+ <20190806200809.GI4527@sirena.org.uk>
+ <CABXOdTcWG-wh9ZHMVmON+B4cxV64-8HDkTvpG61eTNAOYbs-jw@mail.gmail.com>
+MIME-Version: 1.0
+In-Reply-To: <CABXOdTcWG-wh9ZHMVmON+B4cxV64-8HDkTvpG61eTNAOYbs-jw@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ZoaI/ZTpAVc4A5k6"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Mark Brown <broonie@kernel.org>
+To: Guenter Roeck <groeck@google.com>
 Cc: kernelci@groups.io, Nick Desaulniers <ndesaulniers@google.com>, clang-built-linux <clang-built-linux@googlegroups.com>
 
-On Tue, Aug 6, 2019 at 1:08 PM Mark Brown <broonie@kernel.org> wrote:
->
-> On Tue, Aug 06, 2019 at 12:58:43PM -0700, Guenter Roeck wrote:
-> > On Tue, Aug 6, 2019 at 12:03 PM Mark Brown <broonie@kernel.org> wrote:
->
-> > > This is the same symptoms, it will eventually time out trying to run
-> > > init and generate a panic.  Those request_module messages are it trying
-> > > to load binfmt_misc which is how the kernel handles unknown binaries,
-> > > it's trying to run userspace but can't work out how to do that.
->
-> > Correct. Also, while there is no root file system, there is an initrd
-> > (or at least the log says so), and there is most likely a little
-> > endian binary (init ?) in that initrd.
->
-> Right, sorry - should've mentioned.  You need a big endian root
-> filesystem (or init) to go with a big endian kernel.  The kernelci one
-> should be:
->
->         http://storage.kernelci.org/images/rootfs/buildroot/arm64be/
+--ZoaI/ZTpAVc4A5k6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-FWIW, I generated a big endian aarch64 root file system with buildroot
-and gave it a try with gcc 8.3.0. Works fine for me, at least with "-M
-virt" in qemu. I have not yet tried any other machines.
+On Tue, Aug 06, 2019 at 01:45:44PM -0700, Guenter Roeck wrote:
 
-Guenter
+> FWIW, I generated a big endian aarch64 root file system with buildroot
+> and gave it a try with gcc 8.3.0. Works fine for me, at least with "-M
+> virt" in qemu. I have not yet tried any other machines.
+
+Yeah, the GCC big endian boots have been working fine.  It's just clang
+builds.
+
+--ZoaI/ZTpAVc4A5k6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1Kxl4ACgkQJNaLcl1U
+h9C54Af/Sxz4QnXVAISMIGFSRj6HGRepOYHZbT2kGwq7t/23vD1ZWCI41dMTwRQP
+QVKdK9lxNu9dWVjTNtBxyeBhccoNJaPqiMZYW1g7FIeUpG3Kl30WxXe5ZoHnPOMK
+8I8wrk6djNwbDWr64mDi7zkIhgz2T9yU4Erjd+p9Jf/UgtdRGYkgHDLBOvVZsJ5M
+ZjKinDKoA417bSkCZ7uZengNm0ocqWMqIhODapDaU3T0pe2DIXbbJooYMxORYPrK
+CaTQSU1V61wgmk1s9/ZDumHQFOJPKnifcOTFYoNIgGX8uFuwpZNyLV8B5EtOfZBd
+1y2SdJufMheY6qUOI+Amfo+PjHjQ5A==
+=2aJ+
+-----END PGP SIGNATURE-----
+
+--ZoaI/ZTpAVc4A5k6--
