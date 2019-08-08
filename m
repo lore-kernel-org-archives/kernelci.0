@@ -1,129 +1,91 @@
 MIME-Version: 1.0
-References: <299272045.11819252.1554465036421.JavaMail.zimbra@redhat.com>
- <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com> <ECADFF3FD767C149AD96A924E7EA6EAF976C1720@USCULXMSG01.am.sony.com>
-In-Reply-To: <ECADFF3FD767C149AD96A924E7EA6EAF976C1720@USCULXMSG01.am.sony.com>
-From: "Guenter Roeck" <groeck@google.com>
-Date: Tue, 9 Apr 2019 06:41:24 -0700
-Message-ID: <CABXOdTcv1tJvzx=1nRJxR0pct5iCH4V34gow1-AjXZ9NbyPWFw@mail.gmail.com>
-Subject: Re: A common place for CI results?
-Reply-To: Guenter Roeck <groeck@google.com>
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <CAKwvOdn0kv+N5raBDE_aPv637ROHmu7C1_C9F3PXNnAYSMTOYQ@mail.gmail.com>
+ <20190806190254.GH4527@sirena.org.uk> <CABXOdTckrMfM_-5+pJ37KHveLE8oRDvFAzPftnp_5--fYJVuXQ@mail.gmail.com>
+ <20190806200809.GI4527@sirena.org.uk> <CABXOdTcWG-wh9ZHMVmON+B4cxV64-8HDkTvpG61eTNAOYbs-jw@mail.gmail.com>
+ <20190807123854.GB4048@sirena.co.uk>
+In-Reply-To: <20190807123854.GB4048@sirena.co.uk>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Thu, 8 Aug 2019 23:31:51 +0200
+Message-ID: <CAH1_8nDY-WOySK94u7WrDdgndfyca-XhLgtbG=VmL54V6pqfow@mail.gmail.com>
+Subject: Re: aarch64 Big Endian
+Content-Type: multipart/alternative; boundary="0000000000009d6b6b058fa1cae4"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, "Bird, Timothy" <Tim.Bird@sony.com>
-Cc: vkabatov@redhat.com, automated-testing@yoctoproject.org, info@kernelci.org
+To: kernelci@groups.io, broonie@kernel.org
+Cc: Guenter Roeck <groeck@google.com>, Nick Desaulniers <ndesaulniers@google.com>, clang-built-linux <clang-built-linux@googlegroups.com>
 
-On Mon, Apr 8, 2019 at 10:48 PM <Tim.Bird@sony.com> wrote:
+--0000000000009d6b6b058fa1cae4
+Content-Type: text/plain; charset="UTF-8"
+
+On Wed, Aug 7, 2019 at 2:38 PM Mark Brown <broonie@kernel.org> wrote:
+
+> On Tue, Aug 06, 2019 at 01:45:44PM -0700, Guenter Roeck wrote:
 >
-> > -----Original Message-----
-> > From: Veronika Kabatova
-> ...
-> > as we know from this list, there's plenty CI systems doing some testing on
-> > the
-> > upstream kernels (and maybe some others we don't know about).
-> >
-> > It would be great if there was a single common place where all the CI systems
-> > can put their results. This would make it much easier for the kernel
-> > maintainers and developers to see testing status since they only need to
-> > check one place instead of having a list of sites/mailing lists where each CI
-> > posts their contributions.
+> > FWIW, I generated a big endian aarch64 root file system with buildroot
+> > and gave it a try with gcc 8.3.0. Works fine for me, at least with "-M
+> > virt" in qemu. I have not yet tried any other machines.
 >
-> We've had discussions about this, and decided there are a few issues.
-> Some of these you identify below.
->
-> >
-> > A few weeks ago, with some people we've been talking about kernelci.org
-> > being
-> > in a good place to act as the central upstream kernel CI piece that most
-> > maintainers already know about. So I'm wondering if it would be possible for
-> > kernelci to also act as an aggregator of all results?
->
-> Right now, the kernelCI central server is (to my knowledge) maintained
-> by Kevin Hilman, on his own dime.  That may be changing with the Linux
-> Foundation possibly creating a testing project to provide support for this.
-> But in any event, at the scale we're talking about (with lots of test frameworks
-> and potentially thousands of boards and hundreds of thousands of test
-> run results arriving daily), hosting this is costly.  So there's a question of
-> who pays for this.
+> Yeah, the GCC big endian boots have been working fine.  It's just clang
+> builds.
 >
 
-In theory that would be the Linux Foundation as part of the KernelCI
-project. Unfortunately, while companies and people do show interest in
-KernelCI, there seems to be little interest in actually joining the
-project. My understanding is that the Linux Foundation will only make
-it official if/when there are five members. Currently there are three,
-Google being one of them. Any company interested in the project may
-possibly want to consider joining it. When doing so, you'l have
-influence setting its direction, and that may include hosting test
-results other than those from KernelCI itself.
+It turns out that there are several issues: one in the kernelci
+build scripts, one in merge_config.sh and also one allegedly in
+the kernel top-level Makefile.  I've described all this in detail
+here:
 
-Guenter
 
-> > There's already an API
-> > for publishing a report [0] so it shouldn't be too hard to adjust it to
-> > handle and show more information. I also found the beta version for test
-> > results [1] so actually, most of the needed functionality seems to be already
-> > there. Since there will be multiple CI systems, the source and contact point
-> > for the contributor (so maintainers know whom to ask about results if
-> > needed)
-> > would likely be the only missing essential data point.
->
-> One of the things on our action item list is to have discussions about a common results format.
-> See https://elinux.org/ATS_2018_Minutes (towards the end right before "Decisions from the summit")
-> I think this addresses the issue of what information is needed for a universal results format.
-> I think we should definitely add a 'contributor' field to a common definition, for the
-> reasons you mention.
->
-> Some other issues, are making it so that different test frameworks emit the same testcase
-> names when they run the same test.  For example, in Fuego there is a testcase called
-> Functional.LTP.syscalls.abort07.  It's not required, but it seems like it would be valuable
-> if CKI, Linaro, Fuego and others decided on a canonical name for this particular testcase,
-> so they were the same in each run result.
->
-> I took an action item from our meetings at Linaro last week to look at this issue
-> (testcase name harmonization).
->
-> >
-> > The common place for results would also make it easier for new CI systems
-> > to
-> > get involved with upstream. There are likely other companies out there
-> > running
-> > some tests on kernel internally but don't publish the results anywhere.
->
-> > Only
-> > adding some API calls into their code (with the data they are allowed to
-> > publish) would make it very simple for them to start contributing. If we want
-> > to make them interested, the starting point needs to be trivial. Different
-> > companies have different setups and policies and they might not be able to
-> > fulfill arbitrary requirements so they opt to not get involved at all, which
-> > is a shame because their results can be useful. After the initial "onboarding"
-> > step they might be willing to contribute more and more too.
-> >
-> Indeed.  Probably most groups don't publish their test results, even
-> when they are using open source tests.  There are lots of reasons for this
-> (including there not being a place to publish them, as you mention).
-> It would be good to also address the other reasons that testing entities
-> don't publish, and try to remove as many obstacles (or to try to encourage
-> as much as possible) publishing of test results.
->
-> > Please let me know if the idea makes sense or if something similar is already
-> > in plans. I'd be happy to contribute to the effort because I believe it would
-> > make everyone's life easier and we'd all benefit from it (and maybe
-> > someone
-> > else from my team would be willing to help out too if needed).
->
-> I think it makes a lot of sense, and we'd like to take steps to make that possible.
->
-> The aspect of this that  I plan to work on myself is testcase name harmonization.
-> That's one aspect of standardizing a common or universal results format.
-> But I've already got a lot of things I'm working on.  If someone else wants to
-> volunteer to work on this, or head up a workgroup to work on this, let me know.
->
-> Regards,
->  -- Tim
->
->
-> 
->
+https://github.com/kernelci/kernelci-core/issues/136#issuecomment-519691794
+
+I've run some builds with these fixes on staging and it does
+work, here's a "good" kernel defconfig created as a result using
+my kernel branch with a patch in the Makefile:
+
+
+https://staging-storage.kernelci.org/gtucker/kernelci-local/kernelci-local-snapshot-048-1-gb60ff4593140/arm64/defconfig+CONFIG_CPU_BIG_ENDIAN=y/clang-8/kernel.config
+
+As you can see, it has CONFIG_CPU_BIG_ENDIAN=y as one would
+expect.  I haven't found any big endian boot results though, I
+guess all the relevant platforms were probably offline or not
+available for staging runs but only in production.
+
+Guillaume
+
+--0000000000009d6b6b058fa1cae4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
+ dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 7, 2019 at 2:38 PM Mark Brown=
+ &lt;<a href=3D"mailto:broonie@kernel.org">broonie@kernel.org</a>&gt; wrote=
+:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
+8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Tue, Aug 06=
+, 2019 at 01:45:44PM -0700, Guenter Roeck wrote:<br>
+<br>
+&gt; FWIW, I generated a big endian aarch64 root file system with buildroot=
+<br>
+&gt; and gave it a try with gcc 8.3.0. Works fine for me, at least with &qu=
+ot;-M<br>
+&gt; virt&quot; in qemu. I have not yet tried any other machines.<br>
+<br>
+Yeah, the GCC big endian boots have been working fine.=C2=A0 It&#39;s just =
+clang<br>
+builds.<br></blockquote><div><br></div>It turns out that there are several =
+issues: one in the kernelci<br>build scripts, one in merge_config.sh and al=
+so one allegedly in<br>the kernel top-level Makefile.=C2=A0 I&#39;ve descri=
+bed all this in detail<br>here:<br><br>=C2=A0 <a href=3D"https://github.com=
+/kernelci/kernelci-core/issues/136#issuecomment-519691794">https://github.c=
+om/kernelci/kernelci-core/issues/136#issuecomment-519691794</a><br><br>I&#3=
+9;ve run some builds with these fixes on staging and it does<br>work, here&=
+#39;s a &quot;good&quot; kernel defconfig created as a result using<br>my k=
+ernel branch with a patch in the Makefile:<br><br>=C2=A0 <a href=3D"https:/=
+/staging-storage.kernelci.org/gtucker/kernelci-local/kernelci-local-snapsho=
+t-048-1-gb60ff4593140/arm64/defconfig+CONFIG_CPU_BIG_ENDIAN=3Dy/clang-8/ker=
+nel.config">https://staging-storage.kernelci.org/gtucker/kernelci-local/ker=
+nelci-local-snapshot-048-1-gb60ff4593140/arm64/defconfig+CONFIG_CPU_BIG_END=
+IAN=3Dy/clang-8/kernel.config</a><br><br>As you can see, it has CONFIG_CPU_=
+BIG_ENDIAN=3Dy as one would<br>expect.=C2=A0 I haven&#39;t found any big en=
+dian boot results though, I<br>guess all the relevant platforms were probab=
+ly offline or not<br><div>available for staging runs but only in production=
+.</div><div><br></div><div>Guillaume</div></div></div>
+
+--0000000000009d6b6b058fa1cae4--
