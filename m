@@ -1,29 +1,45 @@
-From: "Zheng, Ruoqin" <zhengrq.fnst@cn.fujitsu.com>
-Subject: How to use kernelci
-Date: Thu, 8 Aug 2019 02:52:49 +0000
-Message-ID: <33D4DBCAC5F2D74E96B07F6E7632BF73B5B610A3@G08CNEXMBPEKD01.g08.fujitsu.local>
+Return-Path: <viresh.kumar@linaro.org>
+Date: Thu, 8 Aug 2019 13:44:54 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: My Branch not getting tested
+Message-ID: <20190808081454.5atort63pqt6glfo@vireshk-i7>
+References: <CAKohpomfjPajY6fp0CywZ-khzNZEjwmAzKz3dzc4=R9B-vOXgw@mail.gmail.com>
+ <CAH+k93GJ=xJJR5dCb-Fwrc7nmcdGVJvCqLchg3fZBdVU9bEnTQ@mail.gmail.com>
+ <20190806070817.3wrzstcvrcyac4d2@vireshk-i7>
 MIME-Version: 1.0
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Language: zh-CN
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+In-Reply-To: <20190806070817.3wrzstcvrcyac4d2@vireshk-i7>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: "info@kernelci.org" <info@kernelci.org>
+To: Matt Hart <matthew.hart@linaro.org>
+Cc: kernelci@groups.io, info@kernelci.org
 
-aGksYWxsDQoNCiAgICBJIGFtIGEgcm9va2llIHRvIGtlcm5lbGNpLg0KICAg
-IEkgaGF2ZSBhbHJlYWR5IGluc3RhbGxlZCBrZXJuZWxjaS1kb2NrZXIgYW5k
-IG5leHQgSSB3YW50IHRvIGluc3RhbGwgdGhlIEtlcm5lbENJLm9yZyBCdWls
-ZCBTeXN0ZW0uDQoNCiAgICBJIGd1ZXNzICBodHRwczovL2dpdGh1Yi5jb20v
-a2VybmVsY2kva2VybmVsY2ktY29yZSBpcyB0aGUgQnVpbGQgU3lzdGVtLiAg
-QW0gSSByaWdodD8NCiAgICBJIGhhdmUgaW52ZXN0aWdhdGVkIHRoZSBrZXJu
-ZWxjaS13aWtpIGFuZCBjYW4ndCBnb3QgdGhlIGluc3RhbGxhdGlvbiBndWlk
-ZSwgYW5kIEkgZG9uJ3Qga25vdyBob3cgdG8gY29ubmVjdCBsYXZhIHRvIGtl
-cm5lbGNpLg0KDQogICAgQ291bGQgYW55b25lIGdpdmUgc29tZSBoaW50cyBv
-ciBsaW5rPw0KDQpUaGFuayB5b3UgYWxsLg0KLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NClpoZW5nIFJ1b3Fp
-bg0KTmFuamluZyBGdWppdHN1IE5hbmRhIFNvZnR3YXJlIFRlY2guIENvLiwg
-THRkLihGTlNUKQ0KQUREUi46IE5vLjYgV2Vuemh1IFJvYWQsIFNvZnR3YXJl
-IEF2ZW51ZSwNCiAgICAgICBOYW5qaW5nLCAyMTAwMTIsIENoaW5hDQpNQUlM
-IDogemhlbmdycS5mbnN0QGNuLmZ1amlzdHUuY29tDQoNCg0KCgo=
+On 06-08-19, 12:38, Viresh Kumar wrote:
+> On 06-08-19, 08:06, Matt Hart wrote:
+> > On Mon, 5 Aug 2019 at 14:00, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> > >
+> > > Hi,
+> > >
+> > > I have pushed my branch again yesterday and it looks like my
+> > > branch isn't getting tested anymore now.
+> > >
+> > > Can someone please confirm ?
+> > >
+> > > http://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git for-kernelci
+> > 
+> > Hi Viresh, I've had a look at the current build configs and I don't
+> > see your tree.
+> > It hasn't been triggered since August 2017 so was probably removed due
+> > to inactivity.
+> > 
+> > How often do you expect this tree to be updated?
+> 
+> This doesn't get updated unless I have a big group of patches to test,
+> like backporting spectre to 4.4 in this case. So the frequency may not
+> be huge that way.
+
+Can you please enable it for now at least? As I have few branches to
+get tested urgently.
+
+-- 
+viresh
