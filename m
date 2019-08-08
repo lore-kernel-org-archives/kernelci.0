@@ -1,70 +1,42 @@
-Return-Path: <viresh.kumar@linaro.org>
-Date: Thu, 8 Aug 2019 16:17:41 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: My Branch not getting tested
-Message-ID: <20190808104741.x5vca23fpwtxt4cc@vireshk-i7>
-References: <CAKohpomfjPajY6fp0CywZ-khzNZEjwmAzKz3dzc4=R9B-vOXgw@mail.gmail.com>
- <CAH+k93GJ=xJJR5dCb-Fwrc7nmcdGVJvCqLchg3fZBdVU9bEnTQ@mail.gmail.com>
- <20190806070817.3wrzstcvrcyac4d2@vireshk-i7>
- <20190808081454.5atort63pqt6glfo@vireshk-i7>
- <CAH1_8nCQiy8e7iQVgFf7MixMocefUMC09hQgA33ijK4QaqSEMg@mail.gmail.com>
- <20190808093433.c4b2x23opmee2bgt@vireshk-i7>
- <CAH1_8nAnWVea2hsChgLSYvQ4ZEnH=vx3pjJz-tQ8-V=tqwrx=Q@mail.gmail.com>
+Return-Path: <dan.rue@linaro.org>
+Date: Thu, 8 Aug 2019 08:03:22 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-08-06 #minutes
+Message-ID: <20190808130322.je447ur4flzkisvn@xps.therub.org>
 MIME-Version: 1.0
-In-Reply-To: <CAH1_8nAnWVea2hsChgLSYvQ4ZEnH=vx3pjJz-tQ8-V=tqwrx=Q@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: kernelci@groups.io, Matt Hart <matthew.hart@linaro.org>, info <info@kernelci.org>
+To: kernelci@groups.io
 
-On 08-08-19, 12:01, Guillaume Tucker wrote:
-> On Thu, Aug 8, 2019 at 11:34 AM Viresh Kumar <viresh.kumar@linaro.org>
-> wrote:
-> 
-> > HI Guillaume,
-> >
-> > On 08-08-19, 11:19, Guillaume Tucker wrote:
-> > > There's a PR to add your branch:
-> > > https://github.com/kernelci/kernelci-core/pull/135
-> > >
-> > > It will get enabled on kernelci.org during the next production
-> > > update once your PR has been merged, so probably tomorrow.
-> > >
-> > > I put a comment there, it would be a bit better to use https to
-> > > avoid all the redirections and reduce the number of requests with
-> > > git.kernel.org.
-> >
-> > Great, thanks.
-> >
-> > > Also, do you need your for-kernelci branch to be built for the
-> > > full range of architectures and defconfigs combinations?  That
-> > > amounts to about 200 builds, but if you only make changes related
-> > > to a subset of that then it could be greatly reduced (say, only
-> > > multi_v7_defconfig for arm, and only build arm, arm64 and x86_64
-> > > arches).  If your branch doesn't get updated very often then it's
-> > > OK to have more build configurations enabled.  There aren't any
-> > > strict rules about this but it's important that we tune each
-> > > branch to get optimum overall performance.
-> >
-> > I am more interested in boot testing as my tree is already getting
-> > build tested by 0 day build bot from Intel.
-> >
-> 
-> OK I've made another PR to reduce the number of builds with your
-> branch:
-> 
->   https://github.com/kernelci/kernelci-core/pull/139
-> 
-> This will give you the same level of coverage as on linusw'
-> branches:
-> 
->   https://kernelci.org/job/linusw/branch/devel/
-> 
-> Also, which email addresses do you want the build and boot
-> reports to be sent to?
+- broonie
+  - arm64+BIG_ENDIAN still failing noisily
+    - Can someone check if we’re sending the right rootfs to the
+      devices?
+      - [Matt] I’ve run the LAVA job generating script and the
+        CONFIG_CPU_BIG_ENDIAN=y jobs all have the correct url to the BE
+        ramdisk. I’ve also checked that the rootfs is actually big
+        endian.
+    - Also one v7 machine with a similar symptom
+      https://kernelci.org/boot/id/5d4807f559b514d97f31b28e/
+      - bug in Kevin’s scripts: unique to my lab
+    - Looks like it’s the kernel, Matt has confirmed that we should be
+      sending the right rootfs
+      - Nick to test boots with clang kernels in qemu
+      - Mark to send patch upstream disabling BE+clang builds until this
+        works.
+    - Should look at getting big endian booted on other hardware, having
+      more labs would make life a lot easier.
 
-vireshk@kernel.org
+- Kevin`
+  - handling LAVA multinode jobs:
+    https://github.com/kernelci/kernelci-backend/pull/152
+    - motivation
+    - backend data model [gtucker] see also
+      https://baylibre.com/tpmp-power-measurement-platform/
 
--- 
-viresh
+- Matt
+  - Email bugs and adding clang builds to my to-do this week
+  - My lab will be offline from next week for the foreseeable future
+
