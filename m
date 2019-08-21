@@ -1,38 +1,40 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Tue, 20 Aug 2019 13:16:45 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Weekly Meeting 2019-08-20 #minutes
-Message-ID: <20190820181645.agwgvpx3mpu5hy7u@xps.therub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
+ <CAH+k93HHKjOTCBjmDXDyAyW86KY66_bHjP6265sY1Fm3=TgVSg@mail.gmail.com>
+ <CAH+k93EFwUw4KsKZirJKDOF=Xi8SCk80KyVYfJmFYxzLP69qJA@mail.gmail.com>
+ <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com> <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
+In-Reply-To: <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Wed, 21 Aug 2019 11:03:33 -0700
+Message-ID: <CAHRSSExgOW4CWc_YfUQcx_sJYanBNTrLiNntt67zxcWUPudcjQ@mail.gmail.com>
+Subject: Please add/remove android branches from kernelci + clang builds
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
+Cc: Matt Hart <matthew.hart@linaro.org>, Anmar Oueja <anmar.oueja@linaro.org>
 
-- Attendees: Daniel, Kevin, Mark, Anders, Dan, Guillaume, Nick
+4 requests related to android kernels (repo:
+https://android.googlesource.com/kernel/common):
 
-- Matt (off ill today)
-  - Should we look at running KUnit and/or KTF
-    - [gtucker] KUnit discussed in July (short answer is “yes”):
-      https://groups.io/g/kernelci/message/465 
+1) android-4.14 is being moved to android-4.14-r (currently mirrored
+so testing can be moved to new branch)
 
-- [drue] DHCP issue in lkft linaro lab on x15
-  - Sounds like it may be a u-boot bug. Per Milosz, a lease is issued
-    from dhcpd but the client does not accept it. If the client runs
-    dhcp twice, it always accepts it on the second try, as a workaround.
-    It started happening on one particular board after a u-boot upgrade.
-    Montjoie in #kernelci has seen similar on pine64.
-    - Workaround is running “dhcp;dhcp”, implemented in the device-type
-      definition
-    - Dan will follow up with linaro lab and see if they’re willing to
-      implement the workaround.
+delete: android-4.14
+add: android-4.14-r
 
-- clang vs. big-endian
-  - workaround that removes host gcc is necessary but not sufficient to
-    fix the problem
-    - [gtucker] there’s a special function to generate the kselftest
-      fragment already in kci_build, this can remain unchanged while we
-      use a new Python implementation to enable/disable extra configs
-      for all the other cases (until we need kselftest with clang)
+2) android-4.19 is being moved to android-4.19-r (currently mirrored
+so testing can be moved to new branch)
 
+delete: android-4.19
+add: android-4.19-r
+
+3) android-4.9 is obsolete
+
+delete: android-4.19
+
+4) Please add limited clang build testing of two branches
+
+a) android-4.19-r arm64/x86_64 'allmodconfig'
+b) android-mainline arm64/x86_64 'allmodconfig'
+
+-Todd
