@@ -1,40 +1,37 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: Please add/remove android branches from kernelci + clang builds
+In-Reply-To: <CAHRSSExgOW4CWc_YfUQcx_sJYanBNTrLiNntt67zxcWUPudcjQ@mail.gmail.com>
+References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com> <CAH+k93HHKjOTCBjmDXDyAyW86KY66_bHjP6265sY1Fm3=TgVSg@mail.gmail.com> <CAH+k93EFwUw4KsKZirJKDOF=Xi8SCk80KyVYfJmFYxzLP69qJA@mail.gmail.com> <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com> <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com> <CAHRSSExgOW4CWc_YfUQcx_sJYanBNTrLiNntt67zxcWUPudcjQ@mail.gmail.com>
+Date: Wed, 21 Aug 2019 13:21:01 -0700
+Message-ID: <7hsgpu9snm.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
- <CAH+k93HHKjOTCBjmDXDyAyW86KY66_bHjP6265sY1Fm3=TgVSg@mail.gmail.com>
- <CAH+k93EFwUw4KsKZirJKDOF=Xi8SCk80KyVYfJmFYxzLP69qJA@mail.gmail.com>
- <CAHRSSEw_3QEb6NS51LGN+FGjYeKma4=WO5kfjHrKM46+SofiEw@mail.gmail.com> <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
-In-Reply-To: <CAHRSSEz4n+=gAokMj4p5w++VDBPWic_rodvaUS-1eSp5rUpWNg@mail.gmail.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Wed, 21 Aug 2019 11:03:33 -0700
-Message-ID: <CAHRSSExgOW4CWc_YfUQcx_sJYanBNTrLiNntt67zxcWUPudcjQ@mail.gmail.com>
-Subject: Please add/remove android branches from kernelci + clang builds
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, tkjos@google.com, kernelci@groups.io
 Cc: Matt Hart <matthew.hart@linaro.org>, Anmar Oueja <anmar.oueja@linaro.org>
 
-4 requests related to android kernels (repo:
-https://android.googlesource.com/kernel/common):
+" via Groups.Io" <tkjos=google.com@groups.io> writes:
 
-1) android-4.14 is being moved to android-4.14-r (currently mirrored
-so testing can be moved to new branch)
+> 4 requests related to android kernels (repo:
+> https://android.googlesource.com/kernel/common):
+>
+> 1) android-4.14 is being moved to android-4.14-r (currently mirrored
+> so testing can be moved to new branch)
+>
+> delete: android-4.14
+> add: android-4.14-r
+>
+> 2) android-4.19 is being moved to android-4.19-r (currently mirrored
+> so testing can be moved to new branch)
+>
+> delete: android-4.19
+> add: android-4.19-r
+>
+> 3) android-4.9 is obsolete
+>
+> delete: android-4.19
 
-delete: android-4.14
-add: android-4.14-r
+I assume you meant android-4.9 here (based on the previous sentence)?
 
-2) android-4.19 is being moved to android-4.19-r (currently mirrored
-so testing can be moved to new branch)
-
-delete: android-4.19
-add: android-4.19-r
-
-3) android-4.9 is obsolete
-
-delete: android-4.19
-
-4) Please add limited clang build testing of two branches
-
-a) android-4.19-r arm64/x86_64 'allmodconfig'
-b) android-mainline arm64/x86_64 'allmodconfig'
-
--Todd
+Kevin
