@@ -1,41 +1,41 @@
-Subject: Re: syzkaller reproducers
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
-From: George Kennedy <george.kennedy@oracle.com>
-Message-ID: <e903c0b0-70cb-6545-fbbf-9c06107b1ad7@oracle.com>
-Date: Tue, 8 Oct 2019 12:35:46 -0400
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Wed, 28 Aug 2019 14:03:22 -0700
+Message-ID: <CACT4Y+bt8r-1t7=sFtH75_Bj-xBdTTUkM-tZ=GEoy2B=rCYQOg@mail.gmail.com>
+Subject: Some questions about KernelCI
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>, Shuah Khan <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>
-Cc: syzkaller <syzkaller@googlegroups.com>
+To: kernelci@groups.io
+Cc: Kevin Hilman <khilman@baylibre.com>
 
+Hello KernelCI-devs,
 
+I have some questions regarding KernelCI to better understand state of
+upstream kernel testing. It's more about missing parts rather than
+present parts, so sorry if it all sounds a bit negative.
 
-On 10/8/2019 8:16 AM, Dmitry Vyukov wrote:
-> On Tue, Oct 8, 2019 at 1:46 PM Dmitry Vyukov <dvyukov@google.com> wrote:
->> Hi Shuah,
->>
->> We discussed collecting and uploading all syzkaller reproducers
->> somewhere. You wanted to see how they look. I've uploaded all current
->> reproducers here:
->> https://github.com/dvyukov/syzkaller-repros
->> Minimalistic build/run scripts are included.
->> +some testing mailing lists too as this can be used as a test suite
->> If you have any potential uses for this, you are welcome to use it.
->> But then we probably need to find some more official and shared place
->> for them than my private github.
->> The test programs can also be bulk updated if necessary, because all
->> of this is auto-generated.
+1. Do I understand it correctly that KernelCI is still mostly about
+building/booting, it started running tests some time ago but few tests
+are currently onboarded? Is there a full list of tests? I looked at
+lava-kernel-tests repo, but on the dashboard I also seen "networking"
+tests, so I am not sure if lava-kernel-tests is the full list. There
+are plans to onboard more tests in the future, right?
 
-Thank you for putting this together Dmitry,
+2. Are there test coverage reports anywhere? Is it in plans?
 
-George
+3. Does KernelCI use any of KASAN, LOCKDEP, KMEMLEAK, FAULT_INJECTION,
+DEBUG_OBJECTS, DEBUG_VM runtime debugging features?
 
->>
->> Thanks
-> +more people who expressed interest in the test suite before
+4. Do I understand it correctly that test failures are currently not
+reported in any way (other than being shown on the dashboard)? Who
+looks at the dashboard? Is there constant monitoring of all results?
+Is automatic reporting in plans?
 
+5. There is no pre-commit testing, right?
+
+6. What are the major TODO items for near/mid-term future?
+
+7. What is rough approximation of total engineer-years spent on the
+project? What are the major time sinks? Pain points?
+
+Thanks in advance
