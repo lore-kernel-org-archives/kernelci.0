@@ -1,49 +1,53 @@
-Date: Wed, 10 Apr 2019 10:28:36 +0100
-From: Mark Brown <broonie@sirena.org.uk>
-Subject: Re: [Automated-testing] A common place for CI results?
-Message-ID: <20190410092836.GA6106@sirena.org.uk>
-References: <299272045.11819252.1554465036421.JavaMail.zimbra@redhat.com>
- <457016061.11846096.1554475313006.JavaMail.zimbra@redhat.com>
- <ECADFF3FD767C149AD96A924E7EA6EAF976C1720@USCULXMSG01.am.sony.com>
- <CABXOdTcv1tJvzx=1nRJxR0pct5iCH4V34gow1-AjXZ9NbyPWFw@mail.gmail.com>
+Return-Path: <dan.rue@linaro.org>
+Date: Wed, 28 Aug 2019 09:54:45 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-08-27 #minutes
+Message-ID: <20190828145445.j6mwzbhli7jzo2ro@xps.therub.org>
 MIME-Version: 1.0
-In-Reply-To: <CABXOdTcv1tJvzx=1nRJxR0pct5iCH4V34gow1-AjXZ9NbyPWFw@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mYCpIKhGyMATD0i+"
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Guenter Roeck <groeck@google.com>
-Cc: kernelci@groups.io, "Bird, Timothy" <Tim.Bird@sony.com>, info@kernelci.org, automated-testing@yoctoproject.org
+To: kernelci@groups.io
 
---mYCpIKhGyMATD0i+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+- broonie
+  - Got a confliciting meeting
 
-On Tue, Apr 09, 2019 at 06:41:24AM -0700, Guenter Roeck wrote:
-> On Mon, Apr 8, 2019 at 10:48 PM <Tim.Bird@sony.com> wrote:
+- Kevin
+  - conflict: will miss (or be very late)
+  - email report: regression false positives
+  - email to list: Subject: kernelci-backend: /callback/lava/test: only
+    "lava" results? [gtucker] just replied before the meeting
 
-> > Right now, the kernelCI central server is (to my knowledge) maintained
-> > by Kevin Hilman, on his own dime.  That may be changing with the Linux
+- Matt
+  - While I’m fixing the boot emails bug, Nick is happy to turn off boot
+    testing for clang
+  - I will enable more clang builds with more build capacity (stable)
 
-Linaro is paying for the core servers (the Hetzner boxes with the core
-servers are a combination of Linaro and Collabora, IIRC the boxes
-Collabora is paying for are all builders).  As far as I'm aware no
-individual is paying out of pocket for anything except for labs at the
-minute.
+- gtucker
+  - Running out of space on staging-ci.kernelci.org (master node) - I
+    have no ssh access to that server so can someone please do some
+    clean-up?
+    - [Matt] main problem is debos rootfs jobs leaving artifacts on the
+      master
+  - Related to the email thread mentioned above, we need to sort out
+    test views and roll out baseline test plan as discussed a while ago
+  - Making good progress on kci_test command line tool and Pipeline jobs
+    to run tests, gradual changes in a series of PRs
+  - Found some issues with merge_config.sh and the loop that verifies
+    all the confing options, we’ll need to use something else altogether
+    with scripts/config --enable/--disable and our own checks in the
+    resulting config file
 
---mYCpIKhGyMATD0i+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlytt0EACgkQJNaLcl1U
-h9CRwwf/aigDHYpdPVqt8E1WyxOGGKj8Sg3z+e4H4npheyYy1qHvjTqjK6J/JTTi
-umeKELHJ0M/7Ms6XIG0WKiCE3yKB8USemYRJk/ylQcPwS/Bqa33TXVBy7phXEbgk
-e36/7xuRCaOEN/dydRDhxdR310jU6qqUYfRDppgAyKxUOZCuClw/P+OoRWIqkwVJ
-9KdEF6FmtsMkECOdWUuFoDnTFHZWP718lVDrmyn/yQnu9yCV5Ohm3y1QRLEG6rWm
-CJZHCy8X5joQ6XytNg7aSZNvcobr3oRZ591B7rAyhaXofLfH947wF6l/s2mdjKVl
-DGA1PDegsctwSev7DZGVxPfmaHALdw==
-=Sn+C
------END PGP SIGNATURE-----
-
---mYCpIKhGyMATD0i+--
+- Mgalka
+  - “Bootstraping a Local KernelCI” presentation at ELCNA 2019
+    - Showing a proposal for a dockerized dev setup
+    - Showing tolls like kernelci-admin/kci and kernelci-core/kci_build
+      as means to facilitate the work
+    - Slides:
+      https://static.sched.com/hosted_files/ossna19/1e/Bootstraping%20Local%20KernelCI.pdf
+    - Session has been recorded, will be available when LFEvents
+      publishes it.
+  - Conitinuation towards creating a single docker-compose file that’ll
+    integrate AGL KernelCI docker + LAVA as a single easily deployable
+    dev enviroment.
