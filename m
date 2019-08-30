@@ -1,57 +1,93 @@
-Date: Wed, 9 Oct 2019 17:06:00 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: kernelci/staging.kernelci.org baseline: 59 runs, 1 regressions (staging-20191009.1)
-Message-ID: <20191009160600.GJ2036@sirena.org.uk>
-References: <5d9dc6c8.1c69fb81.ffa07.41ad@mx.google.com>
- <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
- <20191009142505.GE3929@sirena.co.uk>
- <0e8e25e6-872e-7639-fea8-b743bc9d9913@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <0e8e25e6-872e-7639-fea8-b743bc9d9913@collabora.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9v+t0xRk6rtskISq"
-Content-Disposition: inline
+References: <CACT4Y+bt8r-1t7=sFtH75_Bj-xBdTTUkM-tZ=GEoy2B=rCYQOg@mail.gmail.com>
+ <20190829121441.GD4118@sirena.co.uk>
+In-Reply-To: <20190829121441.GD4118@sirena.co.uk>
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Fri, 30 Aug 2019 12:07:47 -0700
+Message-ID: <CACT4Y+Zn-q=iAnLttLKSPVAg-u_4sGv4YxT4hfGc+N=UrMf6vw@mail.gmail.com>
+Subject: Re: Some questions about KernelCI
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, guillaume.tucker@gmail.com
-Cc: mgalka@collabora.com, alexandra.pereira@collabora.com, dan.rue@linaro.org, matthew.hart@linaro.org, kernelci@baylibre.com, anders.roxell@linaro.org
+To: Mark Brown <broonie@kernel.org>
+Cc: kernelci@groups.io, Kevin Hilman <khilman@baylibre.com>
 
---9v+t0xRk6rtskISq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Thu, Aug 29, 2019 at 5:14 AM Mark Brown <broonie@kernel.org> wrote:
+>
+> On Wed, Aug 28, 2019 at 02:03:22PM -0700,  via Groups.Io wrote:
+>
+> Just responding for me, this hasn't been reviewed by anyone else.
 
-On Wed, Oct 09, 2019 at 03:40:22PM +0100, Guillaume Tucker wrote:
+Hi Mark,
 
-> Yes that's not new but it's not great either, it means 1 failure
-> among 5 tests.  I think we should rather have the number of
-> passes and total as that's more intuitive, and replace "errors"
-> with "results" in the column title.
+Thanks for providing info!
+2 comments below.
 
-That's a good idea - switching it to passes rather than fails
-makes the existing display work I think.
+> > 1. Do I understand it correctly that KernelCI is still mostly about
+> > building/booting, it started running tests some time ago but few tests
+> > are currently onboarded? Is there a full list of tests? I looked at
+> > lava-kernel-tests repo, but on the dashboard I also seen "networking"
+> > tests, so I am not sure if lava-kernel-tests is the full list. There
+> > are plans to onboard more tests in the future, right?
+>
+> There's also some of the v4l tests running.  The plan is to get the UI
+> working well and figure out what we're doing in terms of hardware to run
+> things on before expanding testsuite coverage.  I'll let the people
+> working on that provide more detail on how that's going.
+>
+> > 2. Are there test coverage reports anywhere? Is it in plans?
+>
+> There's some e-mail reports for tests which are sent to developers at
+> the minute, the web UI is being looked at as well since as you've
+> noticed it's currently not great.
 
-> Showing just the number of failures also works but because we
-> don't have a functional web frontend yet it's actually very
-> helpful to know how many tests were run, to see whether it's the
-> expected number.  We should definitely be able to revisit and
-> simplify things in these emails once we can refer to a web page
-> with all the details.
+I meant code coverage reports/stats, which show what's being tested
+and what's not tested.
 
-Yeah, a useful web UI would mean there's a lot of opportunity to
-revisit these.
 
---9v+t0xRk6rtskISq
-Content-Type: application/pgp-signature; name="signature.asc"
+> > 3. Does KernelCI use any of KASAN, LOCKDEP, KMEMLEAK, FAULT_INJECTION,
+> > DEBUG_OBJECTS, DEBUG_VM runtime debugging features?
+>
+> Not at the current time except in so far as they appear in defconfigs,
+> we do talk about it sometimes - some of them would even be useful during
+> boot testing - but we've had resource issues in the past with adding the
+> extra configs.
+>
+> > 4. Do I understand it correctly that test failures are currently not
+> > reported in any way (other than being shown on the dashboard)? Who
+> > looks at the dashboard? Is there constant monitoring of all results?
+> > Is automatic reporting in plans?
+>
+> The test support is pretty much in development at the moment, until
+> we've got the infrastructure working well we're not really pushing on
+> reporting things out too much.
 
------BEGIN PGP SIGNATURE-----
+This equally applies to build and boot testing too. If code does not
+build, this needs to be reported. How does this happen?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2eBWcACgkQJNaLcl1U
-h9CtKgf+PyADFvY1ob58cDNEVQ/5bCzUjHR9VZ9lHRRRriI9rstnUYb7iKmdVByk
-fPHzK04LNA9qtl77qnDtJmW3e2bRXH8Le/JGjznLZQQLyiBX3tPEScBd4ULYqmUv
-5SfY986phPDVYk6cvlF+OYKPI/BENlHJzF/4KJeJmpKe7YuZsDrocD5tDU8MdG/J
-85/7DP4bsCbNzn/LyCZ6uYP/Wedk5kvFUGSu/PaW3vfMHfZZWIeal+dAmCPa2fKD
-9jsLZk319eGuQyjGBMZGgTnaEtlnzWSkikaudDbWKUptsM0bgDq3T/NMOLoMvbAP
-4Gz+OFzPzdD5XyvKvQNnrVEqn0auSQ==
-=D+Lz
------END PGP SIGNATURE-----
-
---9v+t0xRk6rtskISq--
+> > 5. There is no pre-commit testing, right?
+>
+> Right.  It's a feature that gets talked about from time to time but
+> nobody's stepped forward to implement it and we'd need to figure out
+> resources to run the tests as well.
+>
+> > 6. What are the major TODO items for near/mid-term future?
+>
+> There's a bunch of issues in github:
+>
+>         https://github.com/kernelci
+>
+> but really a lot of it is about people scratching their own itches, for
+> example I want to do some work on the e-mail build reports since they're
+> not very usable right now but I've never got round to filing an issue
+> for it.
+>
+> > 7. What is rough approximation of total engineer-years spent on the
+> > project? What are the major time sinks? Pain points?
+>
+> Finger in the air I'd guess more than 8, possibly quite a bit - the
+> project has been going for a bit over 5 years, we've had periods where
+> there's been multiple people working on it pretty much full time but
+> also periods where it's been mostly in maintanence mode.
+>
+> For me the biggest specific pain point right now is front end developers
+> able to work on the UI.
