@@ -1,30 +1,32 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2019-08-30
+Message-ID: <3bad57ba-5f47-768e-ec76-ee021c313e1c@collabora.com>
+Date: Fri, 30 Aug 2019 13:23:55 +0100
 MIME-Version: 1.0
-References: <CAHRSSEznMc-Bz+FbSAan-8SwMExaR-e-8r4tBQUN=mPOyaoLfQ@mail.gmail.com>
-In-Reply-To: <CAHRSSEznMc-Bz+FbSAan-8SwMExaR-e-8r4tBQUN=mPOyaoLfQ@mail.gmail.com>
-From: "Anders Roxell" <anders.roxell@gmail.com>
-Date: Tue, 8 Oct 2019 23:26:25 +0200
-Message-ID: <CAEUf8FtFq9Rz7a9G0dfi3ZyOqESLqcKQUpnR2ssGRvhcV4oHbw@mail.gmail.com>
-Subject: Re: Please add 3 android common kernels to kernelci
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: "via Groups.Io" <tkjos=google.com@groups.io>
-Cc: kernelci@groups.io
+To: kernelci@groups.io
 
-On Sat, Oct 5, 2019 at 4:48 AM via Groups.Io <tkjos=google.com@groups.io> wrote:
->
-> Please add these three more android branches to kernelci:
->
-> repo: https://android.googlesource.com/kernel/common
->
-> branches:
-> android-4.9-q-release
-> android-4.14-q-release
-> android-4.19-q-release
->
-> All three will get updates only about once a month, so little impact to build capacity.
+Summary of changes going into production today:
 
-Sounds reasonable to me, PR [1] created.
+kernelci-core
+-------------
 
-Cheers,
-Anders
-[1] https://github.com/kernelci/kernelci-core/pull/208
+* general configuration:
+  * stop running boot tests with clang-built kernels for now
+  * remove Android kernel branches that have been retired and enable new ones
+
+* v4l2:
+  * add media device presence test to the v4l2 test plan
+  * stop using "vivid.no_error_inj=1" as it's not required any more
+
+* test devices:
+  * add new Amlogic boards in lab-baylibre
+  * split QEMU variants with different type names and enable more variants as a
+    consolidation based on previous UEFI test plan definitions (qemu_x86_64,
+    qemu_arm-virt-gicv2...)
+
+Best wishes,
+Guillaume
