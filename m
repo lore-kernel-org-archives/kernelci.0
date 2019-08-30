@@ -1,40 +1,68 @@
-Date: Tue, 15 Oct 2019 15:44:07 +0200
-From: Cyril Hrubis <chrubis@suse.cz>
-Subject: Re: [Automated-testing] syzkaller reproducers
-Message-ID: <20191015134407.GA12523@rei.lan>
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org>
- <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
- <20191011180248.GA24089@rei.lan>
- <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
- <20191014085414.GB31760@rei.lan>
- <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
- <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
+Date: Fri, 30 Aug 2019 20:53:24 +0100
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: Some questions about KernelCI
+Message-ID: <20190830195324.GH5182@sirena.co.uk>
+References: <CACT4Y+bt8r-1t7=sFtH75_Bj-xBdTTUkM-tZ=GEoy2B=rCYQOg@mail.gmail.com>
+ <20190829121441.GD4118@sirena.co.uk>
+ <CACT4Y+Zn-q=iAnLttLKSPVAg-u_4sGv4YxT4hfGc+N=UrMf6vw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <CACT4Y+Zn-q=iAnLttLKSPVAg-u_4sGv4YxT4hfGc+N=UrMf6vw@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cPi+lWm09sJ+d57q"
 Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: George Kennedy <george.kennedy@oracle.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>, shuah <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: kernelci@groups.io, Kevin Hilman <khilman@baylibre.com>
 
-Hi!
-> >> I do not think that these scripts are ever supposed to be the used in
-> >> production testing, you need much more than this to produce results
-> >> reliably. I would expect that they are supposed to be a form of very
-> >> minimal documentation.
-> > Yes, I just added them as quick hints: some repros are 32-bits; each
-> > needs a new dir; some external timeout is needed for each test.
-> Thank you again for the collection of repro C programs!
-> 
-> Hitting a lot more crashes with the collection of repro C programs than 
-> in all the hours of running Syzkaller. Wonder why? Any idea? This is 
-> with the same kernel and VM that Syzkaller is run on.
+--cPi+lWm09sJ+d57q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I would guess that these reproducers are product of countless hours of
-fuzzing, so it's about to be expected...
+On Fri, Aug 30, 2019 at 12:07:47PM -0700, Dmitry Vyukov wrote:
+> On Thu, Aug 29, 2019 at 5:14 AM Mark Brown <broonie@kernel.org> wrote:
 
--- 
-Cyril Hrubis
-chrubis@suse.cz
+> > > 2. Are there test coverage reports anywhere? Is it in plans?
+
+> > There's some e-mail reports for tests which are sent to developers at
+> > the minute, the web UI is being looked at as well since as you've
+> > noticed it's currently not great.
+
+> I meant code coverage reports/stats, which show what's being tested
+> and what's not tested.
+
+No, I don't think that's something that's ever done for the kernel in
+any sustained fashion. =20
+
+> > > 4. Do I understand it correctly that test failures are currently not
+> > > reported in any way (other than being shown on the dashboard)? Who
+> > > looks at the dashboard? Is there constant monitoring of all results?
+> > > Is automatic reporting in plans?
+
+> > The test support is pretty much in development at the moment, until
+> > we've got the infrastructure working well we're not really pushing on
+> > reporting things out too much.
+
+> This equally applies to build and boot testing too. If code does not
+> build, this needs to be reported. How does this happen?
+
+The build results are visible via the web site but the main thing for
+KernelCI and all the other build testers is that people do some basic
+triage and forward on the relevant bits of the e-mail reports.
+
+--cPi+lWm09sJ+d57q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1pfrMACgkQJNaLcl1U
+h9Bd3gf6AiVxNe2YwluXvkZR+6bC18+F4x64MxZNkRhkxbMSKVH17OqRrAotixtD
+sHqLFHUmQiRkWV0XvuYEPjV6mi9ksw55MuEAeAAvQJnVrHtJWcXDBIAj00nsIDPR
+QH9COxSUWTLpRMug2ehFM4oiM53KB1A4DYDvurdwNeg3OzHxILki9TtfpM+tVkSC
+l7qmzg0KU4xVtilfODOGqJtDiIL0yyJ8LNEeqO9b67OEvuwbtmMeF0/isVwSWXuV
+r2ELLQUMzfN3PR4kGp+n6AIpv+FQH2/54iFVQOo/YO1Gg71JLGbTGlIrRkk8v0fv
+vTb+QCCa55m3E4mj/zjqJm6O+ABVuw==
+=J8Ua
+-----END PGP SIGNATURE-----
+
+--cPi+lWm09sJ+d57q--
