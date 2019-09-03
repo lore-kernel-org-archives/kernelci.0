@@ -1,53 +1,28 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2019-10-25
-Message-ID: <ee6c2ef8-b562-9c3c-762b-e185af092170@collabora.com>
-Date: Fri, 25 Oct 2019 15:09:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Tue, 3 Sep 2019 15:07:21 +0200
+Message-ID: <CADYN=9Lwg+=UoGf65TXTtqqXkx1zojq46F9QO17eFzfYPDZy=Q@mail.gmail.com>
+Subject: Automated Testing devroom at FOSDEM 2020 poll
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: info@kernelci.org
+Cc: Cyril Hrubis <chrubis@suse.cz>, Matt Hart <matthew.hart@linaro.org>
 
-Summary of changes going into production today:
+Hello everyone,
 
-kernelci-core
--------------
+We are planning to put together a Automated Testing devroom at FOSDEM
+2020 [1] and would like to see if there is any interest in attending
+such an event.
+If we're not able to put together a set of talks that fills up a (half) day we
+shouldn't apply for a devroom.
+We have a few people prepared to give talks if the devroom happens.
 
-* fixed filters for lab-clabbe to only run kernels from some trees
+We would like to know your interest in attending  (or, better yet, make a
+proposal to speak or for a discussion session) before 16 September.
 
-* added Github issue template for adding a new kernel branch
-
-* enabled sleep test plan on rk3399-gru-kevin
-
-* added support for KCONFIG_* options in defconfig
-
-* fixed test plan filters to avoid submitting some unwanted jobs
-
-* stop running currently broken test plans and android kernels in lab-collabora
-
-
-kernelci-backend
-----------------
-
-* fixed handling of file server paths for build binaries
-
-* show measurements in test report emails
-
-* rename /etc/linaro to /etc/kernelci (config files default location)
-
-
-kernelci-frontend
------------------
-
-* rename /etc/linaro to /etc/kernelci (config files default location)
-
-* bump Flask version to 1.0
-
-
-All the staging and production servers have also been upgraded to Debian Buster
-or except those running Ubuntu that is still supported.  The ansible playbooks
-for backend and frontend have been updated for Debian Buster accordingly.
-
-Best wishes,
-Guillaume
+Cheers,
+Anders
+[1] https://fosdem.org/2020/
