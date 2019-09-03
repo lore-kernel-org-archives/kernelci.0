@@ -1,87 +1,54 @@
-Date: Thu, 17 Oct 2019 13:01:25 -0400 (EDT)
-From: "Veronika Kabatova" <vkabatov@redhat.com>
-Message-ID: <1783449691.4379913.1571331685575.JavaMail.zimbra@redhat.com>
-In-Reply-To: <20191017160242.qgp5y56gnbxnmkaa@willie-the-truck>
-References: <20191015202114.GA120152@google.com> <20191016123833.GG49619@arrakis.emea.arm.com> <20191016125416.GA11371@sirena.co.uk> <20191016164621.xa2nc6li2luiujug@willie-the-truck> <456755903.4221278.1571246924706.JavaMail.zimbra@redhat.com> <20191016235055.begiifweaxolgwih@willie-the-truck> <287771981.4310580.1571311874347.JavaMail.zimbra@redhat.com> <20191017160242.qgp5y56gnbxnmkaa@willie-the-truck>
-Subject: Re: Branch for kernelci
+Subject: Re: kernelci/staging.kernelci.org build: 12 builds: 1 failed, 11 passed, 1 error, 36 warnings (staging-20190902.2)
+References: <5d6d4aeb.1c69fb81.397c0.e8c8@mx.google.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Message-ID: <b66aaa4d-d86e-976e-c172-3e41f3397fd9@collabora.com>
+Date: Tue, 3 Sep 2019 08:22:59 +0100
 MIME-Version: 1.0
+In-Reply-To: <5d6d4aeb.1c69fb81.397c0.e8c8@mx.google.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Will Deacon <will@kernel.org>
-Cc: kernelci@groups.io, Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, tkjos@google.com
+To: mgalka@collabora.com, alexandra.pereira@collabora.com, dan.rue@linaro.org, matthew.hart@linaro.org, broonie@kernel.org, kernelci@baylibre.com, anders.roxell@linaro.org
+Cc: kernelci@groups.io
+
+On 02/09/2019 18:01, kernelci.org bot wrote:
+> -----------------------------------------------------------------------=
+---------
+> defconfig+CONFIG_CPU_BIG_ENDIAN=3Dy (arm64, clang-8) =E2=80=94 FAIL, 1 =
+error, 0 warnings, 0 section mismatches
+>=20
+> Errors:
+>     /bin/sh: 1: gcc: not found
+>=20
+> -----------------------------------------------------------------------=
+---------
+> defconfig+CONFIG_CPU_BIG_ENDIAN=3Dy (arm64, gcc-8) =E2=80=94 PASS, 0 er=
+rors, 3 warnings, 0 section mismatches
+
+That's more as expected.  Mark's patch was missing from the
+staging kernel branch in some builds last week, so some build
+errors were not reported as a result.
 
 
+Now we need the merge_config.sh fixup applied upstream before
+merging PR #157 otherwise it fails during the config options
+checks due to the grep exit code issue:
 
------ Original Message -----
-> From: "Will Deacon" <will@kernel.org>
-> To: "Veronika Kabatova" <vkabatov@redhat.com>
-> Cc: kernelci@groups.io, "Mark Brown" <broonie@kernel.org>, "Catalin Marinas" <catalin.marinas@arm.com>,
-> tkjos@google.com
-> Sent: Thursday, October 17, 2019 6:02:43 PM
-> Subject: Re: Branch for kernelci
-> 
-> Hi Veronika,
-> 
-> On Thu, Oct 17, 2019 at 07:31:14AM -0400, Veronika Kabatova wrote:
-> > > On Wed, Oct 16, 2019 at 01:28:44PM -0400, Veronika Kabatova wrote:
-> > > > > I asked Todd about this yesterday because we're dealing with an ABI
-> > > > > regression in 5.4 which wasn't picked up until -rc3, so figured that
-> > > > > this
-> > > > > was probably worth doing after all. Perhaps it wouldn't have helped
-> > > > > for
-> > > > > this
-> > > > > specific case, but it turns out that one person's LTP isn't quite the
-> > > > > same
-> > > > > as another person's LTP!
-> > > > > 
-> > > > 
-> > > > if you're mentioning the regression from this thread [0] you'd need to
-> > > > have
-> > > > the tree added to CKI, not KernelCI. Not sure if we're ready to handle
-> > > > mainline/next speed of development yet but we can discuss the specifics
-> > > > and
-> > > > decide based on that. The issue/PR with details be submitted here [1].
-> > > 
-> > > Hopefully the two aren't mutually exclusive, so if you're able to add the
-> > > branch to CKI as well then that would be great.
-> > > 
-> > 
-> > Of course not. Is testing on aarch64 sufficient or do you need other
-> > architectures too?
-> 
-> Oh, good question! I suppose the two targets we care about the most are
-> arm64 kernel with both arm64 and arm32 userspace.
-> 
-
-I think we only have arm64. Thanks for answer, I'll adjust the tree
-config to only use aarch64 for now.
-
-> > I submitted [0] the initial config, please check if the repo and email
-> > information are correct or if we should add e.g. ARM list (didn't see
-> > it in the initial email but checking just in case).
-> 
-> Brilliant, thanks very much. I hadn't considered adding the list, but I
-> guess it doesn't hurt so please feel free to add
-> linux-arm-kernel@lists.infradead.org as well.
-> 
-
-Will add!
-
-> Curious: why 'olddefconfig' instead of 'defconfig'? Are there some options
-> required by CKI that aren't present in defconfig?
-> 
-
-We're using Fedora config files with this option. I honestly don't know if
-there are any tests depending on it, but we are trying to build kernels
-close to the Fedora ones.
+  https://lore.kernel.org/lkml/a60fe77a1475ba960ad9fc851f1ace2196b661b8.1=
+567436778.git.guillaume.tucker@collabora.com/
 
 
-I'll get all the CKI configs in place and the first test run should start
-soon after they are merged.
+After that, the plan is to revisit the problem to finally solve
+clang builds with config fragments.  There are several options:
 
+* wrap merge_config.sh in a Makefile somehow, or
 
-Veronika
+* change merge_config.sh to propagate some options to the make command
+  (make CC=3D$CC ...), but this fragile, or
 
-> Will
-> 
+* stop using merge_config.sh altogether, leaving it partly broken
+  upstream but with a good solution for our particular issue with
+  a Python function in kci_build using scripts/config
+
+Guillaume
