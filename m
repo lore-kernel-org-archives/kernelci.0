@@ -1,104 +1,47 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2019-09-24
+Message-ID: <61b8edbb-0fe1-26e0-662f-34d631ce8777@collabora.com>
+Date: Wed, 25 Sep 2019 13:35:26 +0100
 MIME-Version: 1.0
-References: <CAFW5HqStCf5BtTUHzdNrr1F_7+qe+Htoon=PxCY20H1x6AROsA@mail.gmail.com>
- <CAH1_8nDgFe8RT0wjUnYNp_+RCiJ8Bzh_4m0MR6a=peZ46oQWBA@mail.gmail.com>
-In-Reply-To: <CAH1_8nDgFe8RT0wjUnYNp_+RCiJ8Bzh_4m0MR6a=peZ46oQWBA@mail.gmail.com>
-From: "koti koti" <kotisoftwaretest@gmail.com>
-Date: Mon, 9 Mar 2020 13:36:30 +0530
-Message-ID: <CAFW5HqQZjHxtNNtYyG8rkygzSW5L2-bxSPTsQ7ZpjuF=d07hvA@mail.gmail.com>
-Subject: Re: Can I setup KernelCI in Single Ubuntu-16.04 PC ?
-Content-Type: multipart/alternative; boundary="0000000000009afb2905a0677b3f"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: kernelci@groups.io
+To: kernelci@groups.io
 
---0000000000009afb2905a0677b3f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+(Sorry, sending this one day after the fact)
 
-Hi Guillaume,
+Summary of changes going into production today:
 
-Thanks for your reply and appreciated .
 
-thanks for conforming as Ubuntu 16.04 supports my POC.
+kernelci-core
+-------------
 
-Yes, Michal is providing outstanding support to go further and still I
-stuck to setup and run the tests from GUI. .  Hope these issues will
-resolve soon by posting in the kernelci groups.
+* enabled initial dmesg test cases in baseline test plan and run it on all
+  platforms
 
-Regards,
-Koti
+* added initial fastboot test plan to run on one platform in lab-baylibre
+  (sei510)
 
-On Fri, 6 Mar 2020 at 04:26, Guillaume Tucker <guillaume.tucker@gmail.com>
-wrote:
+* refactored and consolidated test plan names and related YAML configuration in
+  preparation for introducing the new kci_test command line tool
 
-> Hi Koti,
->
-> On Tue, Mar 3, 2020 at 11:11 AM koti koti <kotisoftwaretest@gmail.com>
-> wrote:
->
->> Hi,
->>
->> I want to create POC (proof of concept) for KernelCI test frame work by
->> install all components mentioned below.
->>
->>
->>    - *lava* (for LAVA)
->>    - *frontend* (for kernelci frontend)
->>    - *backend* with a second CNAME *storage* (for the kernelci backend
->>    and for the storage of builds logs and files)
->>    - *ci* (for jenkins)
->>
->>
->> Is it possible to install and test one QEMU target in single Ubuntu 16.0=
-4
->> PC?
->>
->
-> The short answer is "yes".  I believe Micha=C5=82 is already helping
-> you achieve this on the other thread, but please feel free to ask
-> if you need more information.
->
-> Guillaume
->
->>
+* upgraded debos docker image to Debian Buster to use latest golang
 
---0000000000009afb2905a0677b3f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi Guillaume,</div><div><br></div><div>Thanks for you=
-r reply and appreciated .</div><div><br></div><div>thanks for conforming as=
- Ubuntu 16.04 supports my POC.<br></div><div><br></div><div>Yes, Michal is =
-providing outstanding support to go further and still I=C2=A0 stuck to setu=
-p and run the tests from GUI. .=C2=A0 Hope these issues will resolve soon b=
-y posting in the kernelci groups.</div><div><br></div><div>Regards,</div><d=
-iv>Koti<br></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" clas=
-s=3D"gmail_attr">On Fri, 6 Mar 2020 at 04:26, Guillaume Tucker &lt;<a href=
-=3D"mailto:guillaume.tucker@gmail.com">guillaume.tucker@gmail.com</a>&gt; w=
-rote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
-x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=
-=3D"ltr"><div>Hi Koti,</div><br><div class=3D"gmail_quote"><div dir=3D"ltr"=
- class=3D"gmail_attr">On Tue, Mar 3, 2020 at 11:11 AM koti koti &lt;<a href=
-=3D"mailto:kotisoftwaretest@gmail.com" target=3D"_blank">kotisoftwaretest@g=
-mail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
-ft:1ex"><div dir=3D"ltr"><div>Hi,</div><div><br></div><div>I want to create=
- POC (proof of concept) for KernelCI test frame work by install all compone=
-nts mentioned below.</div><div><br></div><div><ul><li>
-<strong>lava</strong> (for LAVA)</li><li>
-<strong>frontend</strong> (for kernelci frontend)</li><li>
-<strong>backend</strong> with a second CNAME <strong>storage</strong> (for =
-the kernelci backend and for the storage of builds logs and files)</li><li>
-<strong>ci</strong> (for jenkins)</li></ul><div><br></div><div>Is it possib=
-le to install and test one QEMU target in single Ubuntu 16.04 PC?</div></di=
-v></div></blockquote><div><br></div>The short answer is &quot;yes&quot;.=C2=
-=A0 I believe Micha=C5=82 is already helping<br>you achieve this on the oth=
-er thread, but please feel free to ask<br><div>if you need more information=
-.</div><div><br></div><div>Guillaume</div><blockquote class=3D"gmail_quote"=
- style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
-adding-left:1ex">
+kernelci-backend
+----------------
 
-<p></p><p></p></blockquote></div></div>
-</blockquote></div>
+* relicensed all the code from AGPLv3+ to LGPLv2.1+ as agreed with all
+  contributors and to align with other KernelCI projects
 
---0000000000009afb2905a0677b3f--
+* removed deprecated part of the API to send test results, the new one which
+  was rolled out in the previous release is now the official way of submitting
+  test results from non-LAVA labs to kernelci-backend
+
+* fixed logic when downloading the rootfs meta-data build_info.json if the
+  rootfs is on the local file system
+
+
+Best wishes,
+Guillaume
