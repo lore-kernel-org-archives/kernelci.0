@@ -1,76 +1,57 @@
-Date: Sat, 4 Apr 2020 11:06:58 +0200
-From: Maxime Ripard <maxime@cerno.tech>
-Subject: Re: mainline/master bisection: baseline.login on peach-pi
-Message-ID: <20200404090658.nxfvi5zg2rgag2qo@gilmour.lan>
-References: <5e863110.1c69fb81.17969.099e@mx.google.com>
- <187eeb8e-5c70-4479-d806-a7123f9023c8@collabora.com>
- <MN2PR12MB4488D9D3984D03030D3BACC3F7C70@MN2PR12MB4488.namprd12.prod.outlook.com>
+Return-Path: <dan.rue@linaro.org>
+Date: Tue, 1 Oct 2019 16:37:29 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: Weekly Meeting 2019-10-01 #minutes
+Message-ID: <20191001213729.wzl4oiqfs76erwgn@xps.therub.org>
 MIME-Version: 1.0
-In-Reply-To: <MN2PR12MB4488D9D3984D03030D3BACC3F7C70@MN2PR12MB4488.namprd12.prod.outlook.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mzixxo5gkplcdwbu"
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: "Deucher, Alexander" <Alexander.Deucher@amd.com>
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, "Michael J. Ruhl" <michael.j.ruhl@intel.com>, Shane Francis <bigbeeshane@gmail.com>, "kernelci@groups.io" <kernelci@groups.io>, "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Tom Murphy <murphyt7@tcd.ie>, Joerg Roedel <jroedel@suse.de>, David Airlie <airlied@linux.ie>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>, Enric Balletbo i Serra <enric.balletbo@collabora.com>
+To: kernelci@groups.io
 
---mzixxo5gkplcdwbu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Here are the minutes from today's as well as last week's kernelci
+meetings.
 
-Hi,
+2019-10-01
+- Attendees: Mark, Michał, Kevin, Guillaume
+- Guillaume
+  - Baseline test plan:
+    - Initial implementation enabled in production
+    - Dynam ic table column widths fixed in email reports
+    - Login test case added
+    - Still needed: show number of lines (measurements)
+  - kcidb
+    - Prepared instructions for BigQuery account set-up (PR to come
+      soon)
+    - Tried locally with separate account and sample.json
+    - Looking into how to wire this up in kernelci-backend
+- Kevin
+  - kcidb: new schema
+    - initial experiment to export kernelci from mongodb to new schema:
+      https://github.com/khilman/kcidb/tree/wip/kernelci 
 
-On Fri, Apr 03, 2020 at 03:47:46PM +0000, Deucher, Alexander wrote:
-> [AMD Official Use Only - Internal Distribution Only]
->
-> > -----Original Message-----
-> > From: Guillaume Tucker <guillaume.tucker@collabora.com>
-> > Sent: Friday, April 3, 2020 10:14 AM
-> > To: Michael J. Ruhl <michael.j.ruhl@intel.com>; Shane Francis
-> > <bigbeeshane@gmail.com>; Deucher, Alexander
-> > <Alexander.Deucher@amd.com>
-> > Cc: kernelci@groups.io; dri-devel@lists.freedesktop.org; linux-
-> > kernel@vger.kernel.org; Tom Murphy <murphyt7@tcd.ie>; Joerg Roedel
-> > <jroedel@suse.de>; David Airlie <airlied@linux.ie>; Maarten Lankhorst
-> > <maarten.lankhorst@linux.intel.com>; Daniel Vetter <daniel@ffwll.ch>;
-> > Maxime Ripard <mripard@kernel.org>; Enric Balletbo i Serra
-> > <enric.balletbo@collabora.com>
-> > Subject: Re: mainline/master bisection: baseline.login on peach-pi
-> >
-> > Please see the bisection report below about a boot failure.
-> >
-> > Reports aren't automatically sent to the public while we're trialing new
-> > bisection features on kernelci.org but this one looks valid.
-> >
-> > This bisection was run with exynos_defconfig but the issue can also be
-> > reproduced with multi_v7_defconfig.  It doesn't appear to be affecting any
-> > other platforms on kernelci.org.  This looks like a DRM driver problem, the
-> > kernel image boots fine without the modules installed.  It actually started
-> > failing on Tuesday in mainline.
->
-> Fixed with this patch:
-> https://patchwork.freedesktop.org/patch/359081/
->
-> Just trying to get this into 5.7 and stable.  I was waiting for a
-> 5.6 back merge to drm-misc-next-fixes, but I could send it as a
-> separate PR if Dave or Daniel prefer.
-
-You should ask us next time, we're not doing them unless asked :)
-
-I've done it, it's compiling at the moment, it should be pushed in the
-next 10 minutes or so.
-
-Maxime
-
---mzixxo5gkplcdwbu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXohOMgAKCRDj7w1vZxhR
-xZs/AQClCccmpU4+LG7nXB1gv0X+ax1FVxY/Q9I42krsqKVBYgEA/2490Jp1MW8+
-3WWdMsuAh6nMZl0kLN4/FVae8Wa03Qg=
-=hqzo
------END PGP SIGNATURE-----
-
---mzixxo5gkplcdwbu--
+2019-09-24
+- Attendees: Daniel, Guillaume, Kevin, Mark, Michał, Nikolai
+- Kevin
+  - build01.baylibre.com still needed (currently connected to staging). 
+    Load stats graph not working, so I can’t see how busy it is
+  - exploring the Arm workload-automation tool:
+    https://github.com/ARM-software/workload-automation
+- gtucker
+  - Baseline test plan:
+    - Initial implementation enabled on staging, enabling now in
+      production
+    - Not sending reports yet other than for kernelci team
+    - Adding login test case to all test plans using LAVA callback
+      information
+    - Improving formatting of summary table with dynamic widths
+    - Still need to show number of kernel messages (i.e. measurements)
+  - To replace boot tests with baseline:
+    - Enable simple bisections for single test case failures
+    - Check that all boot failures are also shown in baseline reports
+    - Minimal fixes to the front-end for test results
+  - Common database discussion:
+    - Dashboard tools: Grafana, DataStudio
+    - Waiting for regular user tokens before pushing more data
+    - Tool to convert current KernelCI schema to the new BQ one
