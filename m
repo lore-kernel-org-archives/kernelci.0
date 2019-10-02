@@ -1,53 +1,44 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Wed, 28 Aug 2019 09:54:45 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Weekly Meeting 2019-08-27 #minutes
-Message-ID: <20190828145445.j6mwzbhli7jzo2ro@xps.therub.org>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: Kernel building Participation .
+In-Reply-To: <CACwjjTm3UHGdhO8ydv5Yg0UQATG+NNe6h0XZhu49168ZuYa66A@mail.gmail.com>
+References: <CACwjjTm3UHGdhO8ydv5Yg0UQATG+NNe6h0XZhu49168ZuYa66A@mail.gmail.com>
+Date: Wed, 02 Oct 2019 09:31:19 -0700
+Message-ID: <7h8sq3m7mw.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: pramodkumar@k7computing.com
+Cc: kernelci@groups.io, 
 
-- broonie
-  - Got a confliciting meeting
+Hello,
 
-- Kevin
-  - conflict: will miss (or be very late)
-  - email report: regression false positives
-  - email to list: Subject: kernelci-backend: /callback/lava/test: only
-    "lava" results? [gtucker] just replied before the meeting
+Pramod Kumar Maurya <pramodkumar@k7computing.com> writes:
 
-- Matt
-  - While I’m fixing the boot emails bug, Nick is happy to turn off boot
-    testing for clang
-  - I will enable more clang builds with more build capacity (stable)
+> I am kernel developer I want to participate in kernel CI project
+> voluntarily. Please let me know how I can proceed further.
 
-- gtucker
-  - Running out of space on staging-ci.kernelci.org (master node) - I
-    have no ssh access to that server so can someone please do some
-    clean-up?
-    - [Matt] main problem is debos rootfs jobs leaving artifacts on the
-      master
-  - Related to the email thread mentioned above, we need to sort out
-    test views and roll out baseline test plan as discussed a while ago
-  - Making good progress on kci_test command line tool and Pipeline jobs
-    to run tests, gradual changes in a series of PRs
-  - Found some issues with merge_config.sh and the loop that verifies
-    all the confing options, we’ll need to use something else altogether
-    with scripts/config --enable/--disable and our own checks in the
-    resulting config file
+Thanks for reaching out.  Nice to hear you're interested in
+participating.
 
-- Mgalka
-  - “Bootstraping a Local KernelCI” presentation at ELCNA 2019
-    - Showing a proposal for a dockerized dev setup
-    - Showing tolls like kernelci-admin/kci and kernelci-core/kci_build
-      as means to facilitate the work
-    - Slides:
-      https://static.sched.com/hosted_files/ossna19/1e/Bootstraping%20Local%20KernelCI.pdf
-    - Session has been recorded, will be available when LFEvents
-      publishes it.
-  - Conitinuation towards creating a single docker-compose file that’ll
-    integrate AGL KernelCI docker + LAVA as a single easily deployable
-    dev enviroment.
+You could start by having a look at our doc/wiki[1] to get a feel for
+the projects and what we're up to.  The wiki has a brief overview of the
+projects and the various code repos involved.
+
+>From there, I'd recommend looking at issues and milestones the
+kernelci-core repo[2].  The issues there are places we could use some
+help, and the Milestones there are also describing some bigger,
+longer-term things we'd like to work on.
+
+Help in any of those areas would be helpful.
+
+Feel free to ask any questions here on this mailing list
+(kernelci@groups.io), or engage with other developers on the #kernelci
+IRC channel (on Freenode.)
+
+Thanks for your interest in helping,
+
+Kevin
+
+[1] https://github.com/kernelci/kernelci-doc/wiki
+[2] https://github.com/kernelci/kernelci-core/issues
