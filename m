@@ -1,31 +1,41 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2019-10-04
-Message-ID: <46a80bd6-8991-2826-74ea-b3351963a054@collabora.com>
-Date: Fri, 4 Oct 2019 14:04:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 4 Oct 2019 15:03:02 -0700
+Message-ID: <CAHRSSEznMc-Bz+FbSAan-8SwMExaR-e-8r4tBQUN=mPOyaoLfQ@mail.gmail.com>
+Subject: Please add 3 android common kernels to kernelci
+Content-Type: multipart/alternative; boundary="00000000000053d25605941cde6e"
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-Summary of changes going into production today:
+--00000000000053d25605941cde6e
+Content-Type: text/plain; charset="UTF-8"
 
-kernelci-core
--------------
+Please add these three more android branches to kernelci:
 
-* added first RISC-V hardware platform hifive-unleashed-a00 in lab-baylibre
+repo: https://android.googlesource.com/kernel/common
 
-* added linux-5.3.y branch from stable and stable-rc
+branches:
+android-4.9-q-release
+android-4.14-q-release
+android-4.19-q-release
 
-* added thermal subsystem tree with testing branch
+All three will get updates only about once a month, so little impact to
+build capacity.
 
-* fixed configuration for baseline tests on QEMU
+Thanks,
 
-* simplified kernel build meta-data JSON files
+-Todd
 
-* added lab-configs.yaml as a first step to improve job submission tools
+--00000000000053d25605941cde6e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">Please add these three more android branches to kernelci:<=
+br><br>repo: <a href=3D"https://android.googlesource.com/kernel/common">htt=
+ps://android.googlesource.com/kernel/common</a><br><br>branches:<br>android=
+-4.9-q-release<div>android-4.14-q-release</div><div>android-4.19-q-release<=
+/div><div><br></div><div>All three will get updates only about once a month=
+, so little impact to build capacity.</div><div><br><div>Thanks,<br><br>-To=
+dd<br></div></div></div>
 
-Best wishes,
-Guillaume
+--00000000000053d25605941cde6e--
