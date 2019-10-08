@@ -1,41 +1,25 @@
 MIME-Version: 1.0
-From: Todd Kjos <tkjos@google.com>
-Date: Fri, 4 Oct 2019 15:03:02 -0700
-Message-ID: <CAHRSSEznMc-Bz+FbSAan-8SwMExaR-e-8r4tBQUN=mPOyaoLfQ@mail.gmail.com>
-Subject: Please add 3 android common kernels to kernelci
-Content-Type: multipart/alternative; boundary="00000000000053d25605941cde6e"
-List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
-
---00000000000053d25605941cde6e
+From: dvyukov@google.com
+Date: Tue, 8 Oct 2019 13:46:52 +0200
+Message-ID: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
+Subject: syzkaller reproducers
 Content-Type: text/plain; charset="UTF-8"
+List-ID: <kernelci.groups.io>
+To: Shuah Khan <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io
+Cc: syzkaller <syzkaller@googlegroups.com>
 
-Please add these three more android branches to kernelci:
+Hi Shuah,
 
-repo: https://android.googlesource.com/kernel/common
+We discussed collecting and uploading all syzkaller reproducers
+somewhere. You wanted to see how they look. I've uploaded all current
+reproducers here:
+https://github.com/dvyukov/syzkaller-repros
+Minimalistic build/run scripts are included.
++some testing mailing lists too as this can be used as a test suite
+If you have any potential uses for this, you are welcome to use it.
+But then we probably need to find some more official and shared place
+for them than my private github.
+The test programs can also be bulk updated if necessary, because all
+of this is auto-generated.
 
-branches:
-android-4.9-q-release
-android-4.14-q-release
-android-4.19-q-release
-
-All three will get updates only about once a month, so little impact to
-build capacity.
-
-Thanks,
-
--Todd
-
---00000000000053d25605941cde6e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Please add these three more android branches to kernelci:<=
-br><br>repo: <a href=3D"https://android.googlesource.com/kernel/common">htt=
-ps://android.googlesource.com/kernel/common</a><br><br>branches:<br>android=
--4.9-q-release<div>android-4.14-q-release</div><div>android-4.19-q-release<=
-/div><div><br></div><div>All three will get updates only about once a month=
-, so little impact to build capacity.</div><div><br><div>Thanks,<br><br>-To=
-dd<br></div></div></div>
-
---00000000000053d25605941cde6e--
+Thanks
