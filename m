@@ -1,62 +1,67 @@
+Date: Wed, 9 Oct 2019 15:25:05 +0100
+From: "Mark Brown" <broonie@kernel.org>
 Subject: Re: kernelci/staging.kernelci.org baseline: 59 runs, 1 regressions (staging-20191009.1)
+Message-ID: <20191009142505.GE3929@sirena.co.uk>
 References: <5d9dc6c8.1c69fb81.ffa07.41ad@mx.google.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Message-ID: <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
-Date: Wed, 9 Oct 2019 12:53:10 +0100
+ <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <5d9dc6c8.1c69fb81.ffa07.41ad@mx.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="XuV1QlJbYrcVoo+x"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: mgalka@collabora.com, alexandra.pereira@collabora.com, dan.rue@linaro.org, matthew.hart@linaro.org, broonie@kernel.org, kernelci@baylibre.com, anders.roxell@linaro.org
-Cc: kernelci@groups.io
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: mgalka@collabora.com, alexandra.pereira@collabora.com, dan.rue@linaro.org, matthew.hart@linaro.org, kernelci@baylibre.com, anders.roxell@linaro.org, kernelci@groups.io
 
-On 09/10/2019 12:38, kernelci.org bot wrote:
-> run | platform                     | arch   | lab          | compiler | defconfig                    | errors
-> ----+------------------------------+--------+--------------+----------+------------------------------+-------
-> 10  | exynos5422-odroidxu3         | arm    | lab-baylibre | gcc-8    | multi_v7_defconfig           | 1/1   
-> 
->   Results:     0 PASS, 1 FAIL, 0 SKIP
->   Full config: multi_v7_defconfig
->   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
->   Plain log:   http://staging-storage.kernelci.org/kernelci/staging.kernelci.org/staging-20191009.1/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-exynos5422-odroidxu3.txt
->   HTML log:    http://staging-storage.kernelci.org/kernelci/staging.kernelci.org/staging-20191009.1/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-exynos5422-odroidxu3.html
->   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-8-gd700ebb99e8f/armel/baseline/rootfs.cpio.gz  
-> 
->   1 tests: 0 PASS, 1 FAIL, 0 SKIP
->     * login:
->         failing since 13 days (last pass: staging-20190925.1, first fail: staging-20190925.2)   
->                                                                                              
-> 
-> run | platform                     | arch   | lab          | compiler | defconfig                    | errors
-> ----+------------------------------+--------+--------------+----------+------------------------------+-------
-> 40  | qemu_arm64-virt-gicv2        | arm64  | lab-baylibre | gcc-8    | defconfig                    | 1/5   
-> 
->   Results:     4 PASS, 1 FAIL, 0 SKIP
->   Full config: defconfig
->   Compiler:    gcc-8 (aarch64-linux-gnu-gcc (Debian 8.3.0-2) 8.3.0)
->   Plain log:   http://staging-storage.kernelci.org/kernelci/staging.kernelci.org/staging-20191009.1/arm64/defconfig/gcc-8/lab-baylibre/baseline-qemu_arm64-virt-gicv2.txt
->   HTML log:    http://staging-storage.kernelci.org/kernelci/staging.kernelci.org/staging-20191009.1/arm64/defconfig/gcc-8/lab-baylibre/baseline-qemu_arm64-virt-gicv2.html
->   Rootfs:      https://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-8-gd700ebb99e8f/arm64/baseline/rootfs.cpio.gz       
-> 
->   dmesg - 3 tests: 2  PASS, 1 FAIL, 0 SKIP
->     * emerg:
->         never passed
->         1 lines  
+--XuV1QlJbYrcVoo+x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Any thoughts on showing measurements in test reports, i.e. the
-number of lines with emergency messages in this case?
+On Wed, Oct 09, 2019 at 12:53:10PM +0100, Guillaume Tucker wrote:
+> On 09/10/2019 12:38, kernelci.org bot wrote:
 
-It's not exactly great, but I don't know how to make something
-generic and still more useful without doing a lot of redesign at
-several levels.  Ideally we should be showing the log lines
-themselves in the email, like we do with builds, but that's not
-so easy to do with LAVA.  I guess the next step would be
-extracting the log lines associated with each test case as they
-should be there. Then we would be using that rather than storing
-the number of lines in a "measurement".
+> > run | platform                     | arch   | lab          | compiler |=
+ defconfig                    | errors
+> > ----+------------------------------+--------+--------------+----------+=
+------------------------------+-------
+> > 40  | qemu_arm64-virt-gicv2        | arm64  | lab-baylibre | gcc-8    |=
+ defconfig                    | 1/5  =20
 
-See also the PR: https://github.com/kernelci/kernelci-backend/pull/166
+> Any thoughts on showing measurements in test reports, i.e. the
+> number of lines with emergency messages in this case?
 
-Guillaume
+The 1/5 bit is a bit weird - from the column title I'd expect it to be a
+count of errors, but 1/5 sounds like 5 is what we're aiming for.
+Perhaps just a count?
+
+> It's not exactly great, but I don't know how to make something
+> generic and still more useful without doing a lot of redesign at
+> several levels.  Ideally we should be showing the log lines
+> themselves in the email, like we do with builds, but that's not
+> so easy to do with LAVA.  I guess the next step would be
+> extracting the log lines associated with each test case as they
+> should be there. Then we would be using that rather than storing
+> the number of lines in a "measurement".
+
+OTOH if the log lines for all the boards end up in the mail the mail
+might get a bit big - this feels like something where being able to go
+to the web UI to figure things out might be better, at least for a big
+summary report like this.
+
+--XuV1QlJbYrcVoo+x
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2d7cAACgkQJNaLcl1U
+h9CqzAf/duSEVr+KNDncRmejGjbBCUbLQgexTqb1aDhFqjuhOk6un21XjsGYJiIs
+NWO5LEonnPRSVWN/W0r3ppMb4ArDG90g/JXGEKGI4SfZK4wIU4Qm/dgsVjK/xfdK
+34HN6DRUp7JSISEattGU+mGUtnZsnPWSey7gp++4mn9TtqwISA/I86xobEW9Evvs
+m6iKrbQaB1rnELjdXO+tBS7K3TQ/dIU/tqlOgwrY6T3F7sx5BM/7+RymKhdlEqr8
+ovSp/6TwmVnym9mcxgxSD0vhTcYuD6Du2AuyTKNUyWy7sRZCYoyfBaNN2p9+Igvd
+VdSnOvksZh5MAzBpOwIb3okgHx1dUA==
+=bBc6
+-----END PGP SIGNATURE-----
+
+--XuV1QlJbYrcVoo+x--
