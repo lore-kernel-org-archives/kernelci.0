@@ -1,262 +1,46 @@
-MIME-Version: 1.0
-References: <20191009142446.6997-1-rpalethorpe@suse.com>
-In-Reply-To: <20191009142446.6997-1-rpalethorpe@suse.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Wed, 9 Oct 2019 16:40:56 +0200
-Message-ID: <CACT4Y+b0tTAQ0r_2gCVjjRh--Xwv=aLzh6MY=ciXMMrK+cAQsA@mail.gmail.com>
+Date: Wed, 9 Oct 2019 16:54:16 +0200
+From: Cyril Hrubis <chrubis@suse.cz>
 Subject: Re: [RFC PATCH] LTP Wrapper for Syzkaller reproducers
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20191009145416.GA5014@rei.lan>
+References: <20191009142446.6997-1-rpalethorpe@suse.com>
+ <CACT4Y+b0tTAQ0r_2gCVjjRh--Xwv=aLzh6MY=ciXMMrK+cAQsA@mail.gmail.com>
+MIME-Version: 1.0
+In-Reply-To: <CACT4Y+b0tTAQ0r_2gCVjjRh--Xwv=aLzh6MY=ciXMMrK+cAQsA@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Richard Palethorpe <rpalethorpe@suse.com>
-Cc: ltp@lists.linux.it, syzkaller <syzkaller@googlegroups.com>, kernelci@groups.io, "open list : KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, shuah <shuah@kernel.org>, George Kennedy <george.kennedy@oracle.com>, chrubis@suse.com
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: Richard Palethorpe <richard.palethorpe@suse.com>, syzkaller <syzkaller@googlegroups.com>, kernelci@groups.io, shuah <shuah@kernel.org>, ltp@lists.linux.it, George Kennedy <george.kennedy@oracle.com>, Cyril Hrubis <chrubis@suse.com>, "open list : KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org
 
-On Wed, Oct 9, 2019 at 4:26 PM Richard Palethorpe <rpalethorpe@suse.com> wrote:
->
-> First attempt at wrapping the Syzkaller reproducers in the LTP library. I am
-> posting this in case anyone wants to experiment with it early or has a
-> radically different approach in mind.
->
-> This just uses exec to run the reproducer executables as per Metan's
-> suggestion. There is a simple script which creates a runtest file allowing it
-> to work with existing LTP test runners, albeit with a bit of extra work for
-> now.
->
-> This would benefit from the following LTP library patch:
-> https://patchwork.ozlabs.org/patch/935568/
->
-> Running it without KASAN and the other kernel debugging options is not a good
-> idea. We can easily detect when the kernel config is wrong and print a
-> warning or even refuse to run, but I haven't added it yet.
->
-> Having to download, compile and install the reproducers seperately is annoying
-> and I bet most users won't do it. We can probably automate that as part of the
-> install, it is just a question of how much we do as default.
->
-> ---
->  runtest/.gitignore                            |  1 +
->  testcases/kernel/Makefile                     |  1 +
->  testcases/kernel/syzkaller-repros/.gitignore  |  1 +
->  testcases/kernel/syzkaller-repros/Makefile    | 10 +++
->  testcases/kernel/syzkaller-repros/README.md   | 39 +++++++++
->  .../kernel/syzkaller-repros/gen-runtest.sh    |  8 ++
->  testcases/kernel/syzkaller-repros/syzwrap.c   | 85 +++++++++++++++++++
->  7 files changed, 145 insertions(+)
->  create mode 100644 runtest/.gitignore
->  create mode 100644 testcases/kernel/syzkaller-repros/.gitignore
->  create mode 100644 testcases/kernel/syzkaller-repros/Makefile
->  create mode 100644 testcases/kernel/syzkaller-repros/README.md
->  create mode 100755 testcases/kernel/syzkaller-repros/gen-runtest.sh
->  create mode 100644 testcases/kernel/syzkaller-repros/syzwrap.c
->
-> diff --git a/runtest/.gitignore b/runtest/.gitignore
-> new file mode 100644
-> index 000000000..e3725dd42
-> --- /dev/null
-> +++ b/runtest/.gitignore
-> @@ -0,0 +1 @@
-> +syzkaller-repros
-> diff --git a/testcases/kernel/Makefile b/testcases/kernel/Makefile
-> index 3319b3163..0150cfb4f 100644
-> --- a/testcases/kernel/Makefile
-> +++ b/testcases/kernel/Makefile
-> @@ -53,6 +53,7 @@ SUBDIRS                       += connectors \
->                            sched \
->                            security \
->                            sound \
-> +                          syzkaller-repros \
->                            tracing \
->                            uevents \
->
-> diff --git a/testcases/kernel/syzkaller-repros/.gitignore b/testcases/kernel/syzkaller-repros/.gitignore
-> new file mode 100644
-> index 000000000..dbda1c71f
-> --- /dev/null
-> +++ b/testcases/kernel/syzkaller-repros/.gitignore
-> @@ -0,0 +1 @@
-> +syzwrap
-> diff --git a/testcases/kernel/syzkaller-repros/Makefile b/testcases/kernel/syzkaller-repros/Makefile
-> new file mode 100644
-> index 000000000..8e74805c2
-> --- /dev/null
-> +++ b/testcases/kernel/syzkaller-repros/Makefile
-> @@ -0,0 +1,10 @@
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +# Copyright (c) 2019 Linux Test Project
-> +
-> +top_srcdir             ?= ../../..
-> +
-> +include $(top_srcdir)/include/mk/testcases.mk
-> +
-> +CFLAGS                 += -D_GNU_SOURCE
-> +
-> +include $(top_srcdir)/include/mk/generic_leaf_target.mk
-> diff --git a/testcases/kernel/syzkaller-repros/README.md b/testcases/kernel/syzkaller-repros/README.md
-> new file mode 100644
-> index 000000000..e95ae19e2
-> --- /dev/null
-> +++ b/testcases/kernel/syzkaller-repros/README.md
-> @@ -0,0 +1,39 @@
-> +LTP wrapper for Syzkaller reproducers
-> +=====================================
-> +
-> +This allows you to run the autogenerated bug reproducers from the Syzkaller
-> +fuzzer within the LTP framework. Meaning that you may use an existing test
-> +runner compatible with the LTP.
-> +
-> +However some extra setup is currently required.
-> +
-> +Instructions
-> +------------
-> +
-> +1. Download and compile the reproducers.
-> +2. Build the LTP as normal
-> +3. Use the gen-runtest.sh script to create a runtest file
-> +4. Install the LTP and the reproducers to the SUT
-> +5. Execute the tests in the syzkaller-repros runtest file
-> +
-> +For now you can download the reproducers from here:
-> +https://github.com/dvyukov/syzkaller-repros. Soon they will be available on
-> +kernel.org.
-> +
-> +The gen-runtest takes two arguments:
-> +
-> +1. The directory where the reproducer executables are currently accessible
-> +2. The *absolute* path to the directory where they will be on the SUT (If
-> +   different, can be omitted)
-> +
-> +For example:
-> +```
-> +./gen-runtest.sh ~/qa/syzkaller-repros/bin /mnt/syzkaller-repros/bin >
-> +~/qa/ltp-build/runtest/syzkaller-repros
-> +```
-> +
-> +For the LTP, just doing `make install` will copy all the relevant files
-> +(assuming you put the runtest file in the runtest folder). However you will
-> +need to copy the reproducers yourself.
-> +
-> +
-> diff --git a/testcases/kernel/syzkaller-repros/gen-runtest.sh b/testcases/kernel/syzkaller-repros/gen-runtest.sh
-> new file mode 100755
-> index 000000000..091818fb2
-> --- /dev/null
-> +++ b/testcases/kernel/syzkaller-repros/gen-runtest.sh
-> @@ -0,0 +1,8 @@
-> +#!/usr/bin/sh
-> +
-> +BUILD_DIR=$1
-> +SUT_DIR=$2
-> +
-> +for f in $(ls $BUILD_DIR); do
-> +    echo $f syzwrap -d ${SUT_DIR:-$BUILD_DIR} -n $f
-> +done
-> diff --git a/testcases/kernel/syzkaller-repros/syzwrap.c b/testcases/kernel/syzkaller-repros/syzwrap.c
-> new file mode 100644
-> index 000000000..7951d1819
-> --- /dev/null
-> +++ b/testcases/kernel/syzkaller-repros/syzwrap.c
-> @@ -0,0 +1,85 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (c) 2019 Richard Palethorpe <rpalethorpe@suse.com>
-> + *
-> + * Run a single reproducer generated by the Syzkaller fuzzer.
-> + */
-> +
-> +#include <sys/types.h>
-> +#include <sys/wait.h>
-> +#include <signal.h>
-> +#include <stdio.h>
-> +
-> +#include "tst_test.h"
-> +#include "tst_taint.h"
-> +#include "tst_safe_stdio.h"
-> +
-> +static char *dir;
-> +static char *name;
-> +static char *path;
-> +
-> +static struct tst_option options[] = {
-> +       {"d:", &dir, "Mandatory directory containing reproducers"},
-> +       {"n:", &name, "Mandatory executable name of reproducer"},
-> +       {NULL, NULL, NULL}
-> +};
-> +
-> +static void setup(void)
-> +{
-> +       tst_taint_init(TST_TAINT_W | TST_TAINT_D);
-> +
-> +       if (!dir)
-> +               tst_brk(TBROK, "No reproducer directory specified");
-> +
-> +       if (!name)
-> +               tst_brk(TBROK, "No reproducer name specified");
-> +
-> +       tst_res(TINFO, "https://syzkaller.appspot.com/bug?id=%s", name);
-> +
-> +       SAFE_ASPRINTF(&path, "%s/%s", dir, name);
-> +       tst_res(TINFO, "%s", path);
-> +}
-> +
-> +static void run(void)
-> +{
-> +       unsigned int backoff = 100;
-> +       int rem, status, sent_kill = 0;
-> +       float exec_time_start = (float)tst_timeout_remaining();
-> +       int pid = SAFE_FORK();
-> +
-> +       if (!pid) {
-> +               execle(path, name, environ);
-> +               tst_brk(TBROK | TERRNO, "Failed to exec reproducer");
-> +       }
-> +
-> +       while (!waitpid(pid, &status, WNOHANG)) {
-> +               rem = tst_timeout_remaining();
-> +
-> +               if (!sent_kill && rem / exec_time_start < 0.98) {
-> +                       tst_res(TINFO, "Timeout; killing reproducer");
-> +
-> +                       TEST(kill(pid, SIGKILL));
-> +                       if (TST_RET == -1)
-> +                               tst_res(TWARN | TTERRNO, "kill() failed");
-> +                       else
-> +                               sent_kill = 1;
-> +               }
-> +
-> +               usleep(backoff);
-> +               backoff = MIN(2 * backoff, 1000000);
-> +       }
-> +
-> +       if (tst_taint_check()) {
-> +               tst_res(TFAIL, "Kernel is tainted");
-> +       } else {
-> +               tst_res(TPASS, "Kernel is not tainted");
-> +       }
-> +}
-> +
-> +static struct tst_test test = {
-> +       .setup = setup,
-> +       .test_all = run,
-> +       .options = options,
-> +       .needs_tmpdir = 1,
-> +       .forks_child = 1,
-> +};
+Hi!
+> I don't have prior experience with LTP tests, but from reading the
+> code it looks reasonable to me.
+> 
+> I assume that .needs_tmpdir = 1 ensures that each test runs in its own
+> new temp dir, which is later removed.
 
-Hi Richard,
+Indeed, it's removed recursively by the test library.
 
-I don't have prior experience with LTP tests, but from reading the
-code it looks reasonable to me.
+> I've stared for a while at "rem / exec_time_start < 0.98" trying to
+> understand what is that tst_timeout_remaining() returns that we want
+> to kill that process when the ratio is < 0.98... provided that we
+> convert 1 to float but not the other var. I failed to come up with the
+> answer. I have potential answers for "<0.02" and ">0.98". But I assume
+> you know what you are doing :)
 
-I assume that .needs_tmpdir = 1 ensures that each test runs in its own
-new temp dir, which is later removed.
+The tst_timeout_remaining() returns remaining test timeout, so at test
+start it returns something close to 300 seconds, since that is a default
+for a LTP tests, so this would probably kill a process quite fast, if
+I'm reading right, after a bit more than five seconds. I guess that this
+is something intended for a quick v1 hack rather than for later use.
 
-I've stared for a while at "rem / exec_time_start < 0.98" trying to
-understand what is that tst_timeout_remaining() returns that we want
-to kill that process when the ratio is < 0.98... provided that we
-convert 1 to float but not the other var. I failed to come up with the
-answer. I have potential answers for "<0.02" and ">0.98". But I assume
-you know what you are doing :)
+> Re tst_res(TINFO, "Timeout; killing reproducer"). Not sure how much it
+> pollutes output on 3000 tests. If it is, it can make sense to remove
+> it. Lots of tests run forever, killing it is not something of
+> particular interest generally.
 
-Re tst_res(TINFO, "Timeout; killing reproducer"). Not sure how much it
-pollutes output on 3000 tests. If it is, it can make sense to remove
-it. Lots of tests run forever, killing it is not something of
-particular interest generally.
+I guess so.
+
+-- 
+Cyril Hrubis
+chrubis@suse.cz
