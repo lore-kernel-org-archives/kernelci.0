@@ -1,67 +1,259 @@
-Date: Wed, 9 Oct 2019 15:25:05 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: kernelci/staging.kernelci.org baseline: 59 runs, 1 regressions (staging-20191009.1)
-Message-ID: <20191009142505.GE3929@sirena.co.uk>
-References: <5d9dc6c8.1c69fb81.ffa07.41ad@mx.google.com>
- <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
+From: Richard Palethorpe <rpalethorpe@suse.com>
+Subject: [RFC PATCH] LTP Wrapper for Syzkaller reproducers
+Date: Wed,  9 Oct 2019 16:24:46 +0200
+Message-Id: <20191009142446.6997-1-rpalethorpe@suse.com>
 MIME-Version: 1.0
-In-Reply-To: <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XuV1QlJbYrcVoo+x"
-Content-Disposition: inline
-List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: mgalka@collabora.com, alexandra.pereira@collabora.com, dan.rue@linaro.org, matthew.hart@linaro.org, kernelci@baylibre.com, anders.roxell@linaro.org, kernelci@groups.io
-
---XuV1QlJbYrcVoo+x
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+List-ID: <kernelci.groups.io>
+To: ltp@lists.linux.it
+Cc: Richard Palethorpe <rpalethorpe@suse.com>, syzkaller@googlegroups.com, Dmitry Vyukov <dvyukov@google.com>, kernelci@groups.io, "open list : KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, shuah <shuah@kernel.org>, George Kennedy <george.kennedy@oracle.com>, chrubis@suse.com
 
-On Wed, Oct 09, 2019 at 12:53:10PM +0100, Guillaume Tucker wrote:
-> On 09/10/2019 12:38, kernelci.org bot wrote:
+First attempt at wrapping the Syzkaller reproducers in the LTP library. I=
+ am
+posting this in case anyone wants to experiment with it early or has a
+radically different approach in mind.
 
-> > run | platform                     | arch   | lab          | compiler |=
- defconfig                    | errors
-> > ----+------------------------------+--------+--------------+----------+=
-------------------------------+-------
-> > 40  | qemu_arm64-virt-gicv2        | arm64  | lab-baylibre | gcc-8    |=
- defconfig                    | 1/5  =20
+This just uses exec to run the reproducer executables as per Metan's
+suggestion. There is a simple script which creates a runtest file allowin=
+g it
+to work with existing LTP test runners, albeit with a bit of extra work f=
+or
+now.
 
-> Any thoughts on showing measurements in test reports, i.e. the
-> number of lines with emergency messages in this case?
+This would benefit from the following LTP library patch:
+https://patchwork.ozlabs.org/patch/935568/
 
-The 1/5 bit is a bit weird - from the column title I'd expect it to be a
-count of errors, but 1/5 sounds like 5 is what we're aiming for.
-Perhaps just a count?
+Running it without KASAN and the other kernel debugging options is not a =
+good
+idea. We can easily detect when the kernel config is wrong and print a
+warning or even refuse to run, but I haven't added it yet.
 
-> It's not exactly great, but I don't know how to make something
-> generic and still more useful without doing a lot of redesign at
-> several levels.  Ideally we should be showing the log lines
-> themselves in the email, like we do with builds, but that's not
-> so easy to do with LAVA.  I guess the next step would be
-> extracting the log lines associated with each test case as they
-> should be there. Then we would be using that rather than storing
-> the number of lines in a "measurement".
+Having to download, compile and install the reproducers seperately is ann=
+oying
+and I bet most users won't do it. We can probably automate that as part o=
+f the
+install, it is just a question of how much we do as default.
 
-OTOH if the log lines for all the boards end up in the mail the mail
-might get a bit big - this feels like something where being able to go
-to the web UI to figure things out might be better, at least for a big
-summary report like this.
+---
+ runtest/.gitignore                            |  1 +
+ testcases/kernel/Makefile                     |  1 +
+ testcases/kernel/syzkaller-repros/.gitignore  |  1 +
+ testcases/kernel/syzkaller-repros/Makefile    | 10 +++
+ testcases/kernel/syzkaller-repros/README.md   | 39 +++++++++
+ .../kernel/syzkaller-repros/gen-runtest.sh    |  8 ++
+ testcases/kernel/syzkaller-repros/syzwrap.c   | 85 +++++++++++++++++++
+ 7 files changed, 145 insertions(+)
+ create mode 100644 runtest/.gitignore
+ create mode 100644 testcases/kernel/syzkaller-repros/.gitignore
+ create mode 100644 testcases/kernel/syzkaller-repros/Makefile
+ create mode 100644 testcases/kernel/syzkaller-repros/README.md
+ create mode 100755 testcases/kernel/syzkaller-repros/gen-runtest.sh
+ create mode 100644 testcases/kernel/syzkaller-repros/syzwrap.c
 
---XuV1QlJbYrcVoo+x
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/runtest/.gitignore b/runtest/.gitignore
+new file mode 100644
+index 000000000..e3725dd42
+--- /dev/null
++++ b/runtest/.gitignore
+@@ -0,0 +1 @@
++syzkaller-repros
+diff --git a/testcases/kernel/Makefile b/testcases/kernel/Makefile
+index 3319b3163..0150cfb4f 100644
+--- a/testcases/kernel/Makefile
++++ b/testcases/kernel/Makefile
+@@ -53,6 +53,7 @@ SUBDIRS			+=3D connectors \
+ 			   sched \
+ 			   security \
+ 			   sound \
++			   syzkaller-repros \
+ 			   tracing \
+ 			   uevents \
+=20
+diff --git a/testcases/kernel/syzkaller-repros/.gitignore b/testcases/ker=
+nel/syzkaller-repros/.gitignore
+new file mode 100644
+index 000000000..dbda1c71f
+--- /dev/null
++++ b/testcases/kernel/syzkaller-repros/.gitignore
+@@ -0,0 +1 @@
++syzwrap
+diff --git a/testcases/kernel/syzkaller-repros/Makefile b/testcases/kerne=
+l/syzkaller-repros/Makefile
+new file mode 100644
+index 000000000..8e74805c2
+--- /dev/null
++++ b/testcases/kernel/syzkaller-repros/Makefile
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++# Copyright (c) 2019 Linux Test Project
++
++top_srcdir		?=3D ../../..
++
++include $(top_srcdir)/include/mk/testcases.mk
++
++CFLAGS			+=3D -D_GNU_SOURCE
++
++include $(top_srcdir)/include/mk/generic_leaf_target.mk
+diff --git a/testcases/kernel/syzkaller-repros/README.md b/testcases/kern=
+el/syzkaller-repros/README.md
+new file mode 100644
+index 000000000..e95ae19e2
+--- /dev/null
++++ b/testcases/kernel/syzkaller-repros/README.md
+@@ -0,0 +1,39 @@
++LTP wrapper for Syzkaller reproducers
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++This allows you to run the autogenerated bug reproducers from the Syzkal=
+ler
++fuzzer within the LTP framework. Meaning that you may use an existing te=
+st
++runner compatible with the LTP.
++
++However some extra setup is currently required.
++
++Instructions
++------------
++
++1. Download and compile the reproducers.
++2. Build the LTP as normal
++3. Use the gen-runtest.sh script to create a runtest file
++4. Install the LTP and the reproducers to the SUT
++5. Execute the tests in the syzkaller-repros runtest file
++
++For now you can download the reproducers from here:
++https://github.com/dvyukov/syzkaller-repros. Soon they will be available=
+ on
++kernel.org.
++
++The gen-runtest takes two arguments:
++
++1. The directory where the reproducer executables are currently accessib=
+le
++2. The *absolute* path to the directory where they will be on the SUT (I=
+f
++   different, can be omitted)
++
++For example:
++```
++./gen-runtest.sh ~/qa/syzkaller-repros/bin /mnt/syzkaller-repros/bin >
++~/qa/ltp-build/runtest/syzkaller-repros
++```
++
++For the LTP, just doing `make install` will copy all the relevant files
++(assuming you put the runtest file in the runtest folder). However you w=
+ill
++need to copy the reproducers yourself.
++
++
+diff --git a/testcases/kernel/syzkaller-repros/gen-runtest.sh b/testcases=
+/kernel/syzkaller-repros/gen-runtest.sh
+new file mode 100755
+index 000000000..091818fb2
+--- /dev/null
++++ b/testcases/kernel/syzkaller-repros/gen-runtest.sh
+@@ -0,0 +1,8 @@
++#!/usr/bin/sh
++
++BUILD_DIR=3D$1
++SUT_DIR=3D$2
++
++for f in $(ls $BUILD_DIR); do
++    echo $f syzwrap -d ${SUT_DIR:-$BUILD_DIR} -n $f
++done
+diff --git a/testcases/kernel/syzkaller-repros/syzwrap.c b/testcases/kern=
+el/syzkaller-repros/syzwrap.c
+new file mode 100644
+index 000000000..7951d1819
+--- /dev/null
++++ b/testcases/kernel/syzkaller-repros/syzwrap.c
+@@ -0,0 +1,85 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (c) 2019 Richard Palethorpe <rpalethorpe@suse.com>
++ *
++ * Run a single reproducer generated by the Syzkaller fuzzer.
++ */
++
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <signal.h>
++#include <stdio.h>
++
++#include "tst_test.h"
++#include "tst_taint.h"
++#include "tst_safe_stdio.h"
++
++static char *dir;
++static char *name;
++static char *path;
++
++static struct tst_option options[] =3D {
++	{"d:", &dir, "Mandatory directory containing reproducers"},
++	{"n:", &name, "Mandatory executable name of reproducer"},
++	{NULL, NULL, NULL}
++};
++
++static void setup(void)
++{
++	tst_taint_init(TST_TAINT_W | TST_TAINT_D);
++
++	if (!dir)
++		tst_brk(TBROK, "No reproducer directory specified");
++
++	if (!name)
++		tst_brk(TBROK, "No reproducer name specified");
++
++	tst_res(TINFO, "https://syzkaller.appspot.com/bug?id=3D%s", name);
++
++	SAFE_ASPRINTF(&path, "%s/%s", dir, name);
++	tst_res(TINFO, "%s", path);
++}
++
++static void run(void)
++{
++	unsigned int backoff =3D 100;
++	int rem, status, sent_kill =3D 0;
++	float exec_time_start =3D (float)tst_timeout_remaining();
++	int pid =3D SAFE_FORK();
++
++	if (!pid) {
++		execle(path, name, environ);
++		tst_brk(TBROK | TERRNO, "Failed to exec reproducer");
++	}
++
++	while (!waitpid(pid, &status, WNOHANG)) {
++		rem =3D tst_timeout_remaining();
++
++		if (!sent_kill && rem / exec_time_start < 0.98) {
++			tst_res(TINFO, "Timeout; killing reproducer");
++
++			TEST(kill(pid, SIGKILL));
++			if (TST_RET =3D=3D -1)
++				tst_res(TWARN | TTERRNO, "kill() failed");
++			else
++				sent_kill =3D 1;
++		}
++
++		usleep(backoff);
++		backoff =3D MIN(2 * backoff, 1000000);
++	}
++
++	if (tst_taint_check()) {
++		tst_res(TFAIL, "Kernel is tainted");
++	} else {
++		tst_res(TPASS, "Kernel is not tainted");
++	}
++}
++
++static struct tst_test test =3D {
++	.setup =3D setup,
++	.test_all =3D run,
++	.options =3D options,
++	.needs_tmpdir =3D 1,
++	.forks_child =3D 1,
++};
+--=20
+2.23.0
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2d7cAACgkQJNaLcl1U
-h9CqzAf/duSEVr+KNDncRmejGjbBCUbLQgexTqb1aDhFqjuhOk6un21XjsGYJiIs
-NWO5LEonnPRSVWN/W0r3ppMb4ArDG90g/JXGEKGI4SfZK4wIU4Qm/dgsVjK/xfdK
-34HN6DRUp7JSISEattGU+mGUtnZsnPWSey7gp++4mn9TtqwISA/I86xobEW9Evvs
-m6iKrbQaB1rnELjdXO+tBS7K3TQ/dIU/tqlOgwrY6T3F7sx5BM/7+RymKhdlEqr8
-ovSp/6TwmVnym9mcxgxSD0vhTcYuD6Du2AuyTKNUyWy7sRZCYoyfBaNN2p9+Igvd
-VdSnOvksZh5MAzBpOwIb3okgHx1dUA==
-=bBc6
------END PGP SIGNATURE-----
-
---XuV1QlJbYrcVoo+x--
