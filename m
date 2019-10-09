@@ -1,93 +1,90 @@
 MIME-Version: 1.0
-References: <CACT4Y+bt8r-1t7=sFtH75_Bj-xBdTTUkM-tZ=GEoy2B=rCYQOg@mail.gmail.com>
- <20190829121441.GD4118@sirena.co.uk>
-In-Reply-To: <20190829121441.GD4118@sirena.co.uk>
-From: Dmitry Vyukov <dvyukov@google.com>
-Date: Fri, 30 Aug 2019 12:07:47 -0700
-Message-ID: <CACT4Y+Zn-q=iAnLttLKSPVAg-u_4sGv4YxT4hfGc+N=UrMf6vw@mail.gmail.com>
-Subject: Re: Some questions about KernelCI
-Content-Type: text/plain; charset="UTF-8"
+References: <5d9dc6c8.1c69fb81.ffa07.41ad@mx.google.com> <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
+ <20191009142505.GE3929@sirena.co.uk> <0e8e25e6-872e-7639-fea8-b743bc9d9913@collabora.com>
+ <20191009160600.GJ2036@sirena.org.uk>
+In-Reply-To: <20191009160600.GJ2036@sirena.org.uk>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Wed, 9 Oct 2019 17:35:27 +0100
+Message-ID: <CAH1_8nDtdsJKkCeB-3rFth8+BGKMpS=jWydegCEPSM-tVX3z2Q@mail.gmail.com>
+Subject: Re: kernelci/staging.kernelci.org baseline: 59 runs, 1 regressions (staging-20191009.1)
+Content-Type: multipart/alternative; boundary="00000000000002526d05947ce096"
 List-ID: <kernelci.groups.io>
 To: Mark Brown <broonie@kernel.org>
-Cc: kernelci@groups.io, Kevin Hilman <khilman@baylibre.com>
+Cc: kernelci@groups.io, mgalka@collabora.com, alexandra.pereira@collabora.com, Dan Rue <dan.rue@linaro.org>, Matt Hart <matthew.hart@linaro.org>, kernelci@baylibre.com, Anders Roxell <anders.roxell@linaro.org>
 
-On Thu, Aug 29, 2019 at 5:14 AM Mark Brown <broonie@kernel.org> wrote:
->
-> On Wed, Aug 28, 2019 at 02:03:22PM -0700,  via Groups.Io wrote:
->
-> Just responding for me, this hasn't been reviewed by anyone else.
+--00000000000002526d05947ce096
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Mark,
+On Wed, Oct 9, 2019 at 5:06 PM Mark Brown <broonie@kernel.org> wrote:
 
-Thanks for providing info!
-2 comments below.
+> On Wed, Oct 09, 2019 at 03:40:22PM +0100, Guillaume Tucker wrote:
+>
+> > Yes that's not new but it's not great either, it means 1 failure
+> > among 5 tests.  I think we should rather have the number of
+> > passes and total as that's more intuitive, and replace "errors"
+> > with "results" in the column title.
+>
+> That's a good idea - switching it to passes rather than fails
+> makes the existing display work I think.
+>
 
-> > 1. Do I understand it correctly that KernelCI is still mostly about
-> > building/booting, it started running tests some time ago but few tests
-> > are currently onboarded? Is there a full list of tests? I looked at
-> > lava-kernel-tests repo, but on the dashboard I also seen "networking"
-> > tests, so I am not sure if lava-kernel-tests is the full list. There
-> > are plans to onboard more tests in the future, right?
->
-> There's also some of the v4l tests running.  The plan is to get the UI
-> working well and figure out what we're doing in terms of hardware to run
-> things on before expanding testsuite coverage.  I'll let the people
-> working on that provide more detail on how that's going.
->
-> > 2. Are there test coverage reports anywhere? Is it in plans?
->
-> There's some e-mail reports for tests which are sent to developers at
-> the minute, the web UI is being looked at as well since as you've
-> noticed it's currently not great.
+OK, running on staging.kernelci.org with this PR now:
+https://github.com/kernelci/kernelci-backend/pull/167
 
-I meant code coverage reports/stats, which show what's being tested
-and what's not tested.
+> Showing just the number of failures also works but because we
+> > don't have a functional web frontend yet it's actually very
+> > helpful to know how many tests were run, to see whether it's the
+> > expected number.  We should definitely be able to revisit and
+> > simplify things in these emails once we can refer to a web page
+> > with all the details.
+>
+> Yeah, a useful web UI would mean there's a lot of opportunity to
+> revisit these.
+>
 
+More on this topic soon hopefully, with AGL's fork
+kernelci-frontend being ported upstream.
 
-> > 3. Does KernelCI use any of KASAN, LOCKDEP, KMEMLEAK, FAULT_INJECTION,
-> > DEBUG_OBJECTS, DEBUG_VM runtime debugging features?
->
-> Not at the current time except in so far as they appear in defconfigs,
-> we do talk about it sometimes - some of them would even be useful during
-> boot testing - but we've had resource issues in the past with adding the
-> extra configs.
->
-> > 4. Do I understand it correctly that test failures are currently not
-> > reported in any way (other than being shown on the dashboard)? Who
-> > looks at the dashboard? Is there constant monitoring of all results?
-> > Is automatic reporting in plans?
->
-> The test support is pretty much in development at the moment, until
-> we've got the infrastructure working well we're not really pushing on
-> reporting things out too much.
+Guillaume
 
-This equally applies to build and boot testing too. If code does not
-build, this needs to be reported. How does this happen?
+--00000000000002526d05947ce096
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > 5. There is no pre-commit testing, right?
+<div dir=3D"ltr"><div dir=3D"ltr">On Wed, Oct 9, 2019 at 5:06 PM Mark Brown=
+ &lt;<a href=3D"mailto:broonie@kernel.org">broonie@kernel.org</a>&gt; wrote=
+:<br></div><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">On Wed, Oct 09, 2019 at 03:40:22PM +0100, Guillaume Tucker wro=
+te:<br>
+<br>
+&gt; Yes that&#39;s not new but it&#39;s not great either, it means 1 failu=
+re<br>
+&gt; among 5 tests.=C2=A0 I think we should rather have the number of<br>
+&gt; passes and total as that&#39;s more intuitive, and replace &quot;error=
+s&quot;<br>
+&gt; with &quot;results&quot; in the column title.<br>
+<br>
+That&#39;s a good idea - switching it to passes rather than fails<br>
+makes the existing display work I think.<br></blockquote><div><br></div><di=
+v>OK, running on <a href=3D"http://staging.kernelci.org">staging.kernelci.o=
+rg</a> with this PR now:</div><div><a href=3D"https://github.com/kernelci/k=
+ernelci-backend/pull/167">https://github.com/kernelci/kernelci-backend/pull=
+/167</a>=C2=A0</div><div><br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+&gt; Showing just the number of failures also works but because we<br>
+&gt; don&#39;t have a functional web frontend yet it&#39;s actually very<br=
 >
-> Right.  It's a feature that gets talked about from time to time but
-> nobody's stepped forward to implement it and we'd need to figure out
-> resources to run the tests as well.
->
-> > 6. What are the major TODO items for near/mid-term future?
->
-> There's a bunch of issues in github:
->
->         https://github.com/kernelci
->
-> but really a lot of it is about people scratching their own itches, for
-> example I want to do some work on the e-mail build reports since they're
-> not very usable right now but I've never got round to filing an issue
-> for it.
->
-> > 7. What is rough approximation of total engineer-years spent on the
-> > project? What are the major time sinks? Pain points?
->
-> Finger in the air I'd guess more than 8, possibly quite a bit - the
-> project has been going for a bit over 5 years, we've had periods where
-> there's been multiple people working on it pretty much full time but
-> also periods where it's been mostly in maintanence mode.
->
-> For me the biggest specific pain point right now is front end developers
-> able to work on the UI.
+&gt; helpful to know how many tests were run, to see whether it&#39;s the<b=
+r>
+&gt; expected number.=C2=A0 We should definitely be able to revisit and<br>
+&gt; simplify things in these emails once we can refer to a web page<br>
+&gt; with all the details.<br>
+<br>
+Yeah, a useful web UI would mean there&#39;s a lot of opportunity to<br>
+revisit these.<br></blockquote><div><br></div><div>More on this topic soon =
+hopefully, with AGL&#39;s fork<br>kernelci-frontend being ported upstream.<=
+br></div><div><br></div><div>Guillaume=C2=A0</div></div></div>
+
+--00000000000002526d05947ce096--
