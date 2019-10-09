@@ -1,46 +1,57 @@
-Date: Wed, 9 Oct 2019 16:54:16 +0200
-From: Cyril Hrubis <chrubis@suse.cz>
-Subject: Re: [RFC PATCH] LTP Wrapper for Syzkaller reproducers
-Message-ID: <20191009145416.GA5014@rei.lan>
-References: <20191009142446.6997-1-rpalethorpe@suse.com>
- <CACT4Y+b0tTAQ0r_2gCVjjRh--Xwv=aLzh6MY=ciXMMrK+cAQsA@mail.gmail.com>
+Date: Wed, 9 Oct 2019 17:06:00 +0100
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: kernelci/staging.kernelci.org baseline: 59 runs, 1 regressions (staging-20191009.1)
+Message-ID: <20191009160600.GJ2036@sirena.org.uk>
+References: <5d9dc6c8.1c69fb81.ffa07.41ad@mx.google.com>
+ <557293d8-dde3-b24a-988f-f9b90dccf5f4@collabora.com>
+ <20191009142505.GE3929@sirena.co.uk>
+ <0e8e25e6-872e-7639-fea8-b743bc9d9913@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+b0tTAQ0r_2gCVjjRh--Xwv=aLzh6MY=ciXMMrK+cAQsA@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <0e8e25e6-872e-7639-fea8-b743bc9d9913@collabora.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="9v+t0xRk6rtskISq"
 Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: Richard Palethorpe <richard.palethorpe@suse.com>, syzkaller <syzkaller@googlegroups.com>, kernelci@groups.io, shuah <shuah@kernel.org>, ltp@lists.linux.it, George Kennedy <george.kennedy@oracle.com>, Cyril Hrubis <chrubis@suse.com>, "open list : KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org
+To: kernelci@groups.io, guillaume.tucker@gmail.com
+Cc: mgalka@collabora.com, alexandra.pereira@collabora.com, dan.rue@linaro.org, matthew.hart@linaro.org, kernelci@baylibre.com, anders.roxell@linaro.org
 
-Hi!
-> I don't have prior experience with LTP tests, but from reading the
-> code it looks reasonable to me.
-> 
-> I assume that .needs_tmpdir = 1 ensures that each test runs in its own
-> new temp dir, which is later removed.
+--9v+t0xRk6rtskISq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Indeed, it's removed recursively by the test library.
+On Wed, Oct 09, 2019 at 03:40:22PM +0100, Guillaume Tucker wrote:
 
-> I've stared for a while at "rem / exec_time_start < 0.98" trying to
-> understand what is that tst_timeout_remaining() returns that we want
-> to kill that process when the ratio is < 0.98... provided that we
-> convert 1 to float but not the other var. I failed to come up with the
-> answer. I have potential answers for "<0.02" and ">0.98". But I assume
-> you know what you are doing :)
+> Yes that's not new but it's not great either, it means 1 failure
+> among 5 tests.  I think we should rather have the number of
+> passes and total as that's more intuitive, and replace "errors"
+> with "results" in the column title.
 
-The tst_timeout_remaining() returns remaining test timeout, so at test
-start it returns something close to 300 seconds, since that is a default
-for a LTP tests, so this would probably kill a process quite fast, if
-I'm reading right, after a bit more than five seconds. I guess that this
-is something intended for a quick v1 hack rather than for later use.
+That's a good idea - switching it to passes rather than fails
+makes the existing display work I think.
 
-> Re tst_res(TINFO, "Timeout; killing reproducer"). Not sure how much it
-> pollutes output on 3000 tests. If it is, it can make sense to remove
-> it. Lots of tests run forever, killing it is not something of
-> particular interest generally.
+> Showing just the number of failures also works but because we
+> don't have a functional web frontend yet it's actually very
+> helpful to know how many tests were run, to see whether it's the
+> expected number.  We should definitely be able to revisit and
+> simplify things in these emails once we can refer to a web page
+> with all the details.
 
-I guess so.
+Yeah, a useful web UI would mean there's a lot of opportunity to
+revisit these.
 
--- 
-Cyril Hrubis
-chrubis@suse.cz
+--9v+t0xRk6rtskISq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2eBWcACgkQJNaLcl1U
+h9CtKgf+PyADFvY1ob58cDNEVQ/5bCzUjHR9VZ9lHRRRriI9rstnUYb7iKmdVByk
+fPHzK04LNA9qtl77qnDtJmW3e2bRXH8Le/JGjznLZQQLyiBX3tPEScBd4ULYqmUv
+5SfY986phPDVYk6cvlF+OYKPI/BENlHJzF/4KJeJmpKe7YuZsDrocD5tDU8MdG/J
+85/7DP4bsCbNzn/LyCZ6uYP/Wedk5kvFUGSu/PaW3vfMHfZZWIeal+dAmCPa2fKD
+9jsLZk319eGuQyjGBMZGgTnaEtlnzWSkikaudDbWKUptsM0bgDq3T/NMOLoMvbAP
+4Gz+OFzPzdD5XyvKvQNnrVEqn0auSQ==
+=D+Lz
+-----END PGP SIGNATURE-----
+
+--9v+t0xRk6rtskISq--
