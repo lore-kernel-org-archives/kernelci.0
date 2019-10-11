@@ -1,37 +1,39 @@
-Date: Fri, 11 Oct 2019 20:02:48 +0200
-From: Cyril Hrubis <chrubis@suse.cz>
-Subject: Re: [Automated-testing] syzkaller reproducers
-Message-ID: <20191011180248.GA24089@rei.lan>
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org>
- <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2019-10-11
+Message-ID: <020a07cc-8606-9b15-8abe-e793e5145c1a@collabora.com>
+Date: Fri, 11 Oct 2019 21:42:16 +0100
 MIME-Version: 1.0
-In-Reply-To: <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: shuah <shuah@kernel.org>
-Cc: Dmitry Vyukov <dvyukov@google.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, George Kennedy <george.kennedy@oracle.com>, Dhaval Giani <dhaval.giani@gmail.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>
+To: kernelci@groups.io
 
-Hi!
-> Playing with the git getting ready to host it on kernel.org git repo.
-> Build worked fine and I can't get the run.sh to work.
-> 
-> I expected it to run what is in
-> 
-> syzkaller-repros/bin
-> 
-> It doesn't seem to do that. Looks like it wants to build. Here is what
-> I see. What am I doing wrong?
+Summary of changes going into production today:
 
-You are suposed to run the run.sh script in the bin directory.
+kernelci-core
+-------------
 
-> I did a build which worked. There are some errors due to sys/cdefs.h
-> missing.
+* add kernelci.lab, kernelci.test and kci_test as new Python modules and
+  command line tool to manage lab configuration and job submission
 
-That is because you are missing 32bit gcc and devel libs.
+* new test-runner.jpl Jenkins Pipeline job using kci_test to improve job
+  submission and run for each kernel build rather than at the end of all the
+  builds for a branch.
 
--- 
-Cyril Hrubis
-chrubis@suse.cz
+* fix path to kvm_guest.config fragment, which should enable builds with it
+
+* add more android q branches
+
+* fix agross email address
+
+
+kernelci-backend
+----------------
+
+* show number of passing tests / total tests in email reports summaries than
+  the number of failures
+
+
+Best wishes,
+Guillaume
