@@ -1,41 +1,61 @@
+Date: Thu, 17 Oct 2019 17:02:43 +0100
+From: Will Deacon <will@kernel.org>
+Subject: Re: Branch for kernelci
+Message-ID: <20191017160242.qgp5y56gnbxnmkaa@willie-the-truck>
+References: <20191015202114.GA120152@google.com>
+ <CAHRSSExkad8q8bdjF77t_JOwfFmDpERfq4CDthSZp8p23HoJ+w@mail.gmail.com>
+ <20191016095636.GA4881@sirena.co.uk>
+ <20191016123833.GG49619@arrakis.emea.arm.com>
+ <20191016125416.GA11371@sirena.co.uk>
+ <20191016164621.xa2nc6li2luiujug@willie-the-truck>
+ <456755903.4221278.1571246924706.JavaMail.zimbra@redhat.com>
+ <20191016235055.begiifweaxolgwih@willie-the-truck>
+ <287771981.4310580.1571311874347.JavaMail.zimbra@redhat.com>
 MIME-Version: 1.0
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org> <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
- <20191011180248.GA24089@rei.lan> <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
- <20191014085414.GB31760@rei.lan> <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
- <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com> <20191015134407.GA12523@rei.lan>
-In-Reply-To: <20191015134407.GA12523@rei.lan>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Wed, 23 Oct 2019 15:24:17 +0200
-Message-ID: <CACT4Y+azc_6aoEf4GaVFwwZgLp9QcCk3jJB-spM9s5BUB8Gxqg@mail.gmail.com>
-Subject: Re: [Automated-testing] syzkaller reproducers
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <287771981.4310580.1571311874347.JavaMail.zimbra@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Cyril Hrubis <chrubis@suse.cz>
-Cc: George Kennedy <george.kennedy@oracle.com>, shuah <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>
+To: Veronika Kabatova <vkabatov@redhat.com>
+Cc: kernelci@groups.io, Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, tkjos@google.com
 
-On Tue, Oct 15, 2019 at 3:44 PM Cyril Hrubis <chrubis@suse.cz> wrote:
->
-> Hi!
-> > >> I do not think that these scripts are ever supposed to be the used in
-> > >> production testing, you need much more than this to produce results
-> > >> reliably. I would expect that they are supposed to be a form of very
-> > >> minimal documentation.
-> > > Yes, I just added them as quick hints: some repros are 32-bits; each
-> > > needs a new dir; some external timeout is needed for each test.
-> > Thank you again for the collection of repro C programs!
-> >
-> > Hitting a lot more crashes with the collection of repro C programs than
-> > in all the hours of running Syzkaller. Wonder why? Any idea? This is
-> > with the same kernel and VM that Syzkaller is run on.
->
-> I would guess that these reproducers are product of countless hours of
-> fuzzing, so it's about to be expected...
+Hi Veronika,
 
+On Thu, Oct 17, 2019 at 07:31:14AM -0400, Veronika Kabatova wrote:
+> > On Wed, Oct 16, 2019 at 01:28:44PM -0400, Veronika Kabatova wrote:
+> > > > I asked Todd about this yesterday because we're dealing with an ABI
+> > > > regression in 5.4 which wasn't picked up until -rc3, so figured that this
+> > > > was probably worth doing after all. Perhaps it wouldn't have helped for
+> > > > this
+> > > > specific case, but it turns out that one person's LTP isn't quite the
+> > > > same
+> > > > as another person's LTP!
+> > > > 
+> > > 
+> > > if you're mentioning the regression from this thread [0] you'd need to have
+> > > the tree added to CKI, not KernelCI. Not sure if we're ready to handle
+> > > mainline/next speed of development yet but we can discuss the specifics and
+> > > decide based on that. The issue/PR with details be submitted here [1].
+> > 
+> > Hopefully the two aren't mutually exclusive, so if you're able to add the
+> > branch to CKI as well then that would be great.
+> > 
+> 
+> Of course not. Is testing on aarch64 sufficient or do you need other
+> architectures too?
 
-Probably. Hard to say.
-If you used KCOV, KCOV_ENABLE_COMPARISONS, KASAN, LOCKDEP,
-FAULT_INJECTION, all other debugging configs, compat instance and some
-required image/cmdline features, then the only reason for difference
-that I see is indeed longer fuzzing time.
+Oh, good question! I suppose the two targets we care about the most are
+arm64 kernel with both arm64 and arm32 userspace.
+
+> I submitted [0] the initial config, please check if the repo and email
+> information are correct or if we should add e.g. ARM list (didn't see
+> it in the initial email but checking just in case).
+
+Brilliant, thanks very much. I hadn't considered adding the list, but I
+guess it doesn't hurt so please feel free to add
+linux-arm-kernel@lists.infradead.org as well.
+
+Curious: why 'olddefconfig' instead of 'defconfig'? Are there some options
+required by CKI that aren't present in defconfig?
+
+Will
