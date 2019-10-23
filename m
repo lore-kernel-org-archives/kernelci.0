@@ -1,61 +1,48 @@
-Date: Thu, 17 Oct 2019 17:02:43 +0100
+Date: Wed, 23 Oct 2019 17:42:09 +0100
 From: Will Deacon <will@kernel.org>
 Subject: Re: Branch for kernelci
-Message-ID: <20191017160242.qgp5y56gnbxnmkaa@willie-the-truck>
+Message-ID: <20191023164208.GC27010@willie-the-truck>
 References: <20191015202114.GA120152@google.com>
  <CAHRSSExkad8q8bdjF77t_JOwfFmDpERfq4CDthSZp8p23HoJ+w@mail.gmail.com>
  <20191016095636.GA4881@sirena.co.uk>
  <20191016123833.GG49619@arrakis.emea.arm.com>
  <20191016125416.GA11371@sirena.co.uk>
  <20191016164621.xa2nc6li2luiujug@willie-the-truck>
- <456755903.4221278.1571246924706.JavaMail.zimbra@redhat.com>
- <20191016235055.begiifweaxolgwih@willie-the-truck>
- <287771981.4310580.1571311874347.JavaMail.zimbra@redhat.com>
+ <CAH1_8nDFfrScfM87pNJrT8TeQU7Q9muNMH34AiKx=5_7vc5GOQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <287771981.4310580.1571311874347.JavaMail.zimbra@redhat.com>
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <CAH1_8nDFfrScfM87pNJrT8TeQU7Q9muNMH34AiKx=5_7vc5GOQ@mail.gmail.com>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Veronika Kabatova <vkabatov@redhat.com>
-Cc: kernelci@groups.io, Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, tkjos@google.com
+To: Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, kernelci@groups.io, tkjos@google.com
 
-Hi Veronika,
+Hi Guillaume,
 
-On Thu, Oct 17, 2019 at 07:31:14AM -0400, Veronika Kabatova wrote:
-> > On Wed, Oct 16, 2019 at 01:28:44PM -0400, Veronika Kabatova wrote:
-> > > > I asked Todd about this yesterday because we're dealing with an ABI
-> > > > regression in 5.4 which wasn't picked up until -rc3, so figured that this
-> > > > was probably worth doing after all. Perhaps it wouldn't have helped for
-> > > > this
-> > > > specific case, but it turns out that one person's LTP isn't quite the
-> > > > same
-> > > > as another person's LTP!
-> > > > 
-> > > 
-> > > if you're mentioning the regression from this thread [0] you'd need to have
-> > > the tree added to CKI, not KernelCI. Not sure if we're ready to handle
-> > > mainline/next speed of development yet but we can discuss the specifics and
-> > > decide based on that. The issue/PR with details be submitted here [1].
-> > 
-> > Hopefully the two aren't mutually exclusive, so if you're able to add the
-> > branch to CKI as well then that would be great.
-> > 
-> 
-> Of course not. Is testing on aarch64 sufficient or do you need other
-> architectures too?
+Thanks for the reply.
 
-Oh, good question! I suppose the two targets we care about the most are
-arm64 kernel with both arm64 and arm32 userspace.
+On Tue, Oct 22, 2019 at 08:53:03PM +0100, Guillaume Tucker wrote:
+>    On Wed, Oct 16, 2019 at 5:55 PM Will Deacon <[1]will@kernel.org> wro=
+te:
+>      So yes, I'm interested in having our for-kernelci branch picked up
+>      despite
+>      not seeing the benefit in the past.
+>=20
+>    Sure, sorry for the delay in getting this sorted out.=A0 There are
+>    a few pieces of information needed in order to add a branch to
+>    [2]kernelci.org, and to avoid repeating the same questions every
+>    time I've now made a Github issue template just for that:
+>=20
+>    =A0 [3]https://github.com/kernelci/kernelci-core/issues/new/choose
+>=20
+>    Would you be so kind as to filing one of those?=A0 You'll be the
+>    first one actually using this template so I hope it'll be
+>    self-explanatory but please let us know if you have any questions
+>    or comments.
 
-> I submitted [0] the initial config, please check if the repo and email
-> information are correct or if we should add e.g. ARM list (didn't see
-> it in the initial email but checking just in case).
-
-Brilliant, thanks very much. I hadn't considered adding the list, but I
-guess it doesn't hurt so please feel free to add
-linux-arm-kernel@lists.infradead.org as well.
-
-Curious: why 'olddefconfig' instead of 'defconfig'? Are there some options
-required by CKI that aren't present in defconfig?
+Hmm, so I don't actually have a github account anymore and it feels a bit
+OTT to create one just to fill in a form... Is the form accessible some
+other way?
 
 Will
