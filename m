@@ -1,130 +1,41 @@
 MIME-Version: 1.0
-References: <20191015202114.GA120152@google.com> <CAHRSSExkad8q8bdjF77t_JOwfFmDpERfq4CDthSZp8p23HoJ+w@mail.gmail.com>
- <20191016095636.GA4881@sirena.co.uk> <20191016123833.GG49619@arrakis.emea.arm.com>
- <20191016125416.GA11371@sirena.co.uk> <20191016164621.xa2nc6li2luiujug@willie-the-truck>
-In-Reply-To: <20191016164621.xa2nc6li2luiujug@willie-the-truck>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Tue, 22 Oct 2019 20:53:03 +0100
-Message-ID: <CAH1_8nDFfrScfM87pNJrT8TeQU7Q9muNMH34AiKx=5_7vc5GOQ@mail.gmail.com>
-Subject: Re: Branch for kernelci
-Content-Type: multipart/alternative; boundary="00000000000098aa130595852647"
-List-ID: <kernelci.groups.io>
-To: Will Deacon <will@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, kernelci@groups.io, tkjos@google.com
-
---00000000000098aa130595852647
+References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
+ <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
+ <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org> <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
+ <20191011180248.GA24089@rei.lan> <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
+ <20191014085414.GB31760@rei.lan> <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
+ <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com> <20191015134407.GA12523@rei.lan>
+In-Reply-To: <20191015134407.GA12523@rei.lan>
+From: "Dmitry Vyukov" <dvyukov@google.com>
+Date: Wed, 23 Oct 2019 15:24:17 +0200
+Message-ID: <CACT4Y+azc_6aoEf4GaVFwwZgLp9QcCk3jJB-spM9s5BUB8Gxqg@mail.gmail.com>
+Subject: Re: [Automated-testing] syzkaller reproducers
 Content-Type: text/plain; charset="UTF-8"
+List-ID: <kernelci.groups.io>
+To: Cyril Hrubis <chrubis@suse.cz>
+Cc: George Kennedy <george.kennedy@oracle.com>, shuah <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>
 
-On Wed, Oct 16, 2019 at 5:55 PM Will Deacon <will@kernel.org> wrote:
-
-> On Wed, Oct 16, 2019 at 01:54:16PM +0100, Mark Brown wrote:
-> > On Wed, Oct 16, 2019 at 01:38:34PM +0100, Catalin Marinas wrote:
-> > > On Wed, Oct 16, 2019 at 10:56:36AM +0100, Mark Brown wrote:
+On Tue, Oct 15, 2019 at 3:44 PM Cyril Hrubis <chrubis@suse.cz> wrote:
+>
+> Hi!
+> > >> I do not think that these scripts are ever supposed to be the used in
+> > >> production testing, you need much more than this to produce results
+> > >> reliably. I would expect that they are supposed to be a form of very
+> > >> minimal documentation.
+> > > Yes, I just added them as quick hints: some repros are 32-bits; each
+> > > needs a new dir; some external timeout is needed for each test.
+> > Thank you again for the collection of repro C programs!
 > >
-> > > > Are you sure they are interested in this?  When asked previously they
-> > > > indicated that they didn't see any extra value in covering their tree
-> > > > specifically separately to -next.
-> >
-> > > Will can comment on the reasoning but I guess it came as a request from
-> > > him since he also created the arm64/for-kernelci branch. This might as
-> > > well be the same as for-next/core but tested in isolation rather than
-> > > with the whole linux-next tree.
-> >
-> > Yeah, that was what you'd both rejected doing before which was why I was
-> > surprised (plus the fact that this was coming via Todd rather than one
-> > of you).
+> > Hitting a lot more crashes with the collection of repro C programs than
+> > in all the hours of running Syzkaller. Wonder why? Any idea? This is
+> > with the same kernel and VM that Syzkaller is run on.
 >
-> I asked Todd about this yesterday because we're dealing with an ABI
-> regression in 5.4 which wasn't picked up until -rc3, so figured that this
-> was probably worth doing after all. Perhaps it wouldn't have helped for
-> this
-> specific case, but it turns out that one person's LTP isn't quite the same
-> as another person's LTP!
->
-> So yes, I'm interested in having our for-kernelci branch picked up despite
-> not seeing the benefit in the past.
->
-
-Sure, sorry for the delay in getting this sorted out.  There are
-a few pieces of information needed in order to add a branch to
-kernelci.org, and to avoid repeating the same questions every
-time I've now made a Github issue template just for that:
-
-  https://github.com/kernelci/kernelci-core/issues/new/choose
-
-Would you be so kind as to filing one of those?  You'll be the
-first one actually using this template so I hope it'll be
-self-explanatory but please let us know if you have any questions
-or comments.
-
-Thanks,
-Guillaume
+> I would guess that these reproducers are product of countless hours of
+> fuzzing, so it's about to be expected...
 
 
-> 
->
->
-
---00000000000098aa130595852647
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Oct 16, 2019 at 5:55 PM Will =
-Deacon &lt;<a href=3D"mailto:will@kernel.org">will@kernel.org</a>&gt; wrote=
-:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
-8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Wed, Oct 16=
-, 2019 at 01:54:16PM +0100, Mark Brown wrote:<br>
-&gt; On Wed, Oct 16, 2019 at 01:38:34PM +0100, Catalin Marinas wrote:<br>
-&gt; &gt; On Wed, Oct 16, 2019 at 10:56:36AM +0100, Mark Brown wrote:<br>
-&gt; <br>
-&gt; &gt; &gt; Are you sure they are interested in this?=C2=A0 When asked =
-previously they<br>
-&gt; &gt; &gt; indicated that they didn&#39;t see any extra value in cover=
-ing their tree<br>
-&gt; &gt; &gt; specifically separately to -next.<br>
-&gt; <br>
-&gt; &gt; Will can comment on the reasoning but I guess it came as a reque=
-st from<br>
-&gt; &gt; him since he also created the arm64/for-kernelci branch. This mi=
-ght as<br>
-&gt; &gt; well be the same as for-next/core but tested in isolation rather=
- than<br>
-&gt; &gt; with the whole linux-next tree.<br>
-&gt; <br>
-&gt; Yeah, that was what you&#39;d both rejected doing before which was wh=
-y I was<br>
-&gt; surprised (plus the fact that this was coming via Todd rather than on=
-e<br>
-&gt; of you).<br>
-<br>
-I asked Todd about this yesterday because we&#39;re dealing with an ABI<br=
->
-regression in 5.4 which wasn&#39;t picked up until -rc3, so figured that t=
-his<br>
-was probably worth doing after all. Perhaps it wouldn&#39;t have helped fo=
-r this<br>
-specific case, but it turns out that one person&#39;s LTP isn&#39;t quite =
-the same<br>
-as another person&#39;s LTP!<br>
-<br>
-So yes, I&#39;m interested in having our for-kernelci branch picked up des=
-pite<br>
-not seeing the benefit in the past.<br></blockquote><div><br></div><div>Su=
-re, sorry for the delay in getting this sorted out.=C2=A0 There are<br>a fe=
-w pieces of information needed in order to add a branch to<br><a href=3D"ht=
-tp://kernelci.org">kernelci.org</a>, and to avoid repeating the same questi=
-ons every<br>time I&#39;ve now made a Github issue template just for that:<=
-br><br>=C2=A0 <a href=3D"https://github.com/kernelci/kernelci-core/issues/n=
-ew/choose">https://github.com/kernelci/kernelci-core/issues/new/choose</a><=
-br><br>Would you be so kind as to filing one of those?=C2=A0 You&#39;ll be =
-the<br>first one actually using this template so I hope it&#39;ll be<br>sel=
-f-explanatory but please let us know if you have any questions<br>or commen=
-ts.<br></div><div><br></div><div>Thanks,<br>Guillaume</div><div>=C2=A0</div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
--left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-<br>
-</blockquote></div></div>
-
---00000000000098aa130595852647--
+Probably. Hard to say.
+If you used KCOV, KCOV_ENABLE_COMPARISONS, KASAN, LOCKDEP,
+FAULT_INJECTION, all other debugging configs, compat instance and some
+required image/cmdline features, then the only reason for difference
+that I see is indeed longer fuzzing time.
