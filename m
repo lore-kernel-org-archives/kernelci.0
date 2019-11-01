@@ -1,35 +1,38 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2019-11-01
+Message-ID: <ac3c71c9-c732-bdee-ef6d-6b26cca682c8@collabora.com>
+Date: Fri, 1 Nov 2019 21:24:55 +0000
 MIME-Version: 1.0
-From: Sreenidhi Balakrishnan <sreenidhibalakrishnan6@gmail.com>
-Date: Tue, 29 Oct 2019 14:50:58 +0530
-Message-ID: <CA+hzkpNRjJZtbruGBG45+3UbXe2aK9r7zuCTMOnmpw473-70_A@mail.gmail.com>
-Subject: KernelCI
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: multipart/alternative; boundary="000000000000090b61059609232e"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: kernelci@groups.io
 
---000000000000090b61059609232e
-Content-Type: text/plain; charset="UTF-8"
+Summary of changes going into production today:
 
-Hi,
+kernelci-core
+-------------
 
-I would like to join your community , by which I would be able to learn
-more and help in the testing process for the product uplifting.
+* fine-tune allocation of kernel builders for large defconfigs (allmodconfig
+  typically) in Jenkins
+
+* add arm64 kernel tree with for-kernelci branch
+
+* enable support for reference branches for bisections where the good and bad
+  revisions are not on the same branch (useful for stable-rc)
+
+* enable Travis CI on Github for unit tests and coding standard
+
+* add kci_build pull_tarball command to download and extract a source tarball
+  and use it in Jenkins jobs
 
 
-Thank you.
-Sreenidhi.B
+kernelci-backend
+----------------
 
---000000000000090b61059609232e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+* enable kernel log highlighting based on log levels
 
-<div dir=3D"auto">Hi,<div dir=3D"auto"><br></div><div dir=3D"auto">I would =
-like to join your community , by which I would be able to learn more and he=
-lp in the testing process for the product uplifting.</div><div dir=3D"auto"=
-><br></div><div dir=3D"auto"><br></div><div dir=3D"auto">Thank you.</div><d=
-iv dir=3D"auto">Sreenidhi.B</div><div dir=3D"auto"><br></div></div>
 
---000000000000090b61059609232e--
+Best wishes,
+Guillaume
