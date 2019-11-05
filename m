@@ -1,30 +1,46 @@
-From: Anoop Vijayan <anoop@tuxera.com>
-Subject: Interest in kernelCI contribution
-Date: Mon, 4 Nov 2019 12:23:04 +0000
-Message-ID: <C79F9E92-F1FC-4E13-934D-1A0571F98C35@tuxera.com>
 MIME-Version: 1.0
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3107C19CB50D0F4ABD65E12C48356204@ex13.tuxera.com>
-Content-Transfer-Encoding: quoted-printable
+From: "Brendan Higgins" <brendanhiggins@google.com>
+Date: Mon, 4 Nov 2019 16:39:54 -0800
+Message-ID: <CAFd5g44tCPhoe5UkEkbTAX+z5x9Dyt29+ZGAZBHp1XV5JxLWGQ@mail.gmail.com>
+Subject: Investigating where to put KUnit in the KernelCI build pipeline
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: "info@kernelci.org" <info@kernelci.org>
+To: kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, Kevin Hilman <khilman@baylibre.com>
 
-Hello there !
-	I have more than a decade experience with creating/running/maintaining CI =
-systems.
-KernelCI started to get my attention recently and would like to contribute =
-there.=20
-Some places where you can get to know me:=20
-	- https://fi.linkedin.com/in/anoopvijayan
-	- http://twitter.com/maniankara
-	- https://medium.com/@maniankara
-	- http://github.com/maniankara/
+# Recapping discussion at OSS Europe:
 
-Let me know if I have to apply formally or if you have questions.
+At OSS Europe Kevin and I talked about how to integrate KUnit into KernelCI.
 
-Thanks,
- - Anoop=
+It sounded like there where two distinct cases to consider:
+
+1) Including KUnit as a stage in the normal KernelCI build and test process.
+
+2) Figuring out presubmit for KUnit/KernelCI.
+
+As the latter case requires a lot more work/thought/discussion, I will
+focus on just the first in this email.
+
+For integrating KUnit into the KernelCI build and test process, Kevin
+suggested that we should treat KUnit like a "static analysis step"
+that would run within the build pipeline before the install/test
+phase.
+
+I know that "static analysis step/pipeline" doesn't exist yet, but
+Kevin suggested that KUnit could be the first prototype "static
+analysis" thing and could establish the pattern that subsequent static
+analysis tools would implement.
+
+# My initial idea on how to add KUnit to KernelCI
+
+Based on my initial investigation, it seems that this KUnit step would
+probably fit somewhere in-between the "build-trigger[1]" and
+"build[2]" nodes. Does this make sense? (Forgive me, I am new to
+Jenkins pipelines, and the KernelCI infrastructure in general.)
+
+It seems like it might make sense to add a new pipeline file for
+"static analysis" type things, does this seem reasonable?
+
+Thanks!
+
+[1] https://github.com/kernelci/kernelci-core/blob/master/jenkins/build-trigger.jpl
+[2] https://github.com/kernelci/kernelci-core/blob/master/jenkins/build.jpl
