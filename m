@@ -10,76 +10,89 @@ References: <CAHRSSExW6ig0=1Kx3jEM0mHEbh7W5G9yJGN0BxBfTiN9MBungA@mail.gmail.com>
  <CAHRSSEytdV_pGQvH7+NGLMU3V3zDN43PxwgcWG3HQR8gqueghA@mail.gmail.com>
  <CAH+k93GhFGf9U2Am-V+ivf3Wn8d7H8vjg==8BGN0g8UW-p0K=A@mail.gmail.com>
  <CAHRSSEzg++6oUoG38v2x+e8K3H07q+k3jTnG6GPCgFSp-yLA=Q@mail.gmail.com>
- <CAHRSSEx=-rJGjk2USG+ghvf66+NaWtv5jEQzZ08=WHFoKh1cPg@mail.gmail.com>
- <CAHRSSEyz+SVUspLjwDJBVLjnNtqXd8gKH+3hiitw70M=N1qw-Q@mail.gmail.com> <7hsgmgn6hv.fsf@baylibre.com>
-In-Reply-To: <7hsgmgn6hv.fsf@baylibre.com>
+ <CAHRSSEx=-rJGjk2USG+ghvf66+NaWtv5jEQzZ08=WHFoKh1cPg@mail.gmail.com> <7hv9rcn6ix.fsf@baylibre.com>
+In-Reply-To: <7hv9rcn6ix.fsf@baylibre.com>
 From: Todd Kjos <tkjos@google.com>
-Date: Thu, 21 Nov 2019 16:17:54 -0800
-Message-ID: <CAHRSSEz--kkfox2+_EYO5G=GO6=yjjP6ost-_EpM8-Bd6uNTwA@mail.gmail.com>
+Date: Thu, 21 Nov 2019 16:18:15 -0800
+Message-ID: <CAHRSSEzHnrZFkVbNkFdA8fBNWucX2t2c3NQL2LPHD7_nEJi61Q@mail.gmail.com>
 Subject: Re: Please add/remove android branches from kernelci + clang builds
-Content-Type: multipart/alternative; boundary="0000000000001460f90597e4597b"
+Content-Type: multipart/alternative; boundary="0000000000004974d50597e45a75"
 List-ID: <kernelci.groups.io>
 To: Kevin Hilman <khilman@baylibre.com>
 Cc: Matt Hart <matthew.hart@linaro.org>, kernelci@groups.io, Anmar Oueja <anmar.oueja@linaro.org>
 
---0000000000001460f90597e4597b
+--0000000000004974d50597e45a75
 Content-Type: text/plain; charset="UTF-8"
 
-Ok...shows how much I cared about those old n branches. Looks like I had
-you stop them back in February. Thanks.
+Thanks!
 
-On Thu, Nov 21, 2019 at 3:40 PM Kevin Hilman <khilman@baylibre.com> wrote:
+On Thu, Nov 21, 2019 at 3:39 PM Kevin Hilman <khilman@baylibre.com> wrote:
 
 > Todd Kjos <tkjos@google.com> writes:
 >
-> > ...also please delete the following 3 obsolete android branches:
+> > Sorry about this request... please undo my previous request to enable
+> > testing on "-r" branches (top of this thread).
 > >
-> > android-3.18-n-release
+> > Specifically:
+> >
+> > repo: https://android.googlesource.com/kernel/common
+> >
+> > 1) android-4.14 will live on and android-4.14-r won't
+> >
+> > delete: android-4.14-r
+> > add: android-4.14
+> >
+> > 2) android-4.19 will live on and android-4.19-r won't
+> >
+> > delete: android-4.19-r
+> > add: android-4.19
 >
-> I don't see this one...
+> Done.
 >
-> > android-4.4-n
-> > android-4.4-n-release
->
-> ... or any of these either.  In fact I don't see any -n branches in our
-> build-configs file at all:
->
-> https://github.com/kernelci/kernelci-core/blob/master/build-configs.yaml
+> PR: https://github.com/kernelci/kernelci-core/pull/264
 >
 > Kevin
 >
 
---0000000000001460f90597e4597b
+--0000000000004974d50597e45a75
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Ok...shows how much I cared about those old n branches. Lo=
-oks like I had you stop them back in February. Thanks.</div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Nov 21, 2019=
- at 3:40 PM Kevin Hilman &lt;<a href=3D"mailto:khilman@baylibre.com">khilma=
-n@baylibre.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">Todd Kjos &lt;<a href=3D"mailto:tkjos@google.com" target=3D"_=
-blank">tkjos@google.com</a>&gt; writes:<br>
+<div dir=3D"ltr"><div>Thanks!</div><br><div class=3D"gmail_quote"><div dir=
+=3D"ltr" class=3D"gmail_attr">On Thu, Nov 21, 2019 at 3:39 PM Kevin Hilman =
+&lt;<a href=3D"mailto:khilman@baylibre.com">khilman@baylibre.com</a>&gt; wr=
+ote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px=
+ 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Todd Kjos &=
+lt;<a href=3D"mailto:tkjos@google.com" target=3D"_blank">tkjos@google.com</=
+a>&gt; writes:<br>
 <br>
-&gt; ...also please delete the following 3 obsolete android branches:<br>
+&gt; Sorry about this request... please undo my previous request to enable<=
+br>
+&gt; testing on &quot;-r&quot; branches (top of this thread).<br>
 &gt;<br>
-&gt; android-3.18-n-release<br>
+&gt; Specifically:<br>
+&gt;<br>
+&gt; repo: <a href=3D"https://android.googlesource.com/kernel/common" rel=
+=3D"noreferrer" target=3D"_blank">https://android.googlesource.com/kernel/c=
+ommon</a><br>
+&gt;<br>
+&gt; 1) android-4.14 will live on and android-4.14-r won&#39;t<br>
+&gt;<br>
+&gt; delete: android-4.14-r<br>
+&gt; add: android-4.14<br>
+&gt;<br>
+&gt; 2) android-4.19 will live on and android-4.19-r won&#39;t<br>
+&gt;<br>
+&gt; delete: android-4.19-r<br>
+&gt; add: android-4.19<br>
 <br>
-I don&#39;t see this one...<br>
+Done.<br>
 <br>
-&gt; android-4.4-n<br>
-&gt; android-4.4-n-release<br>
-<br>
-... or any of these either.=C2=A0 In fact I don&#39;t see any -n branches i=
-n our<br>
-build-configs file at all:<br>
-<br>
-<a href=3D"https://github.com/kernelci/kernelci-core/blob/master/build-conf=
-igs.yaml" rel=3D"noreferrer" target=3D"_blank">https://github.com/kernelci/=
-kernelci-core/blob/master/build-configs.yaml</a><br>
+PR: <a href=3D"https://github.com/kernelci/kernelci-core/pull/264" rel=3D"n=
+oreferrer" target=3D"_blank">https://github.com/kernelci/kernelci-core/pull=
+/264</a><br>
 <br>
 Kevin<br>
-</blockquote></div>
+</blockquote></div></div>
 
---0000000000001460f90597e4597b--
+--0000000000004974d50597e45a75--
