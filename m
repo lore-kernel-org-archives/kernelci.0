@@ -1,70 +1,66 @@
-From: Hans de Goede <hdegoede@redhat.com>
-Subject: Donating some boards for testing?
-Message-ID: <0e8451f7-53d9-f9dd-7959-f236b24d679a@redhat.com>
-Date: Mon, 2 Dec 2019 11:38:17 +0100
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2019-12-02 #minutes
+Message-ID: <e2c609ea-4795-5df2-6d03-340c949190a9@collabora.com>
+Date: Mon, 2 Dec 2019 17:38:41 +0000
 MIME-Version: 1.0
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: kernelci@groups.io
 
-Hi,
+Summary of changes going into production today:
 
-Quick self intro: I'm a FOSS enthusiast / developer. My main contribution
-area is the kernel and low level user space bits. I'm working for Red Hat,
-but this mail is send on a personal title.
+kernelci-core
+-------------
 
-As a side-project I have been working on
-  hardware enablement for Intel Bay and
-Cherry Trail based devices. To have a
-  wide range of hardware to test on I have
-been buying these kind of devices on the
-  Dutch second hand market.
-I may have slightly over
-  done the "wide range of hardware" thing, so I have
-plenty (too much) of these devices.
+* New Github issue templates have been added for feature requests and API
+  tokens:
 
-During the last few years there have been a number of cases where esp.
-Bay Trail devices would no longer boot with the latest mainline kernel,
-as such it would be good if we can get a couple of these into the kernel
-CI system.
+    https://github.com/kernelci/kernelci-core/issues/new/choose
 
-The main cause why these stop booting is because of the use of 32 bit UEFI
-while running a 64 bit Linux kernel. When changes are made to the UEFI bits
-of the kernel this mixed-mode support is often overlooked and broken.
-Bay Trail is somewhat old but still relevant, it is used in a lot of
-POS systems and IOT gateways.
+* Legacy Python scripts have been removed as kci_build and kci_test can now be
+  used to reproduce all the KernelCI steps.  See the documentation on this wiki
+  page (work in progress):
 
-So I wonder if there already are any Bay Trail based systems using 32 bit
-UEFI in kernel-CI and if these are tested with 64 bit kernels. If the answer
-to that is yes, then the rest of this mail is probably irrelevant ...
+    https://github.com/kernelci/kernelci-doc/wiki/KernelCI-command-line
 
-I've been reading your FAQ:
-https://kernelci.org/faq/#my-board
+* All Python scripts have now been converted to Python 3
 
-Which points to how things need to work with LAVA, then I looked at the
-LAVA docs and those are not really helpful, I did find:
+* Fix value of "verbose git describe" in build meta-data
 
-https://connect.linaro.org/resources/hkg18/hkg18-tr10/
+* Use yaml.safe_load() instead of yaml.load()
 
-Which among other things talks about how the device should preferably
-not have a battery or at least work without one, which in itself may
-already be a bit of a challenge as most of my test hardware are
-in tablet form factor and typically they refuse to boot without a
-battery...  Also they lack wired ethernet...
+* Add more QEMU ARM variants including VExpress
 
-So my main question is can you give a quick summary of what you need
-from an X86 UEFI system for it to be added to the kernel CI infra?
+* Add several new device types in lab-baylibre
 
-Regards,
+* Add kci_build --publish-path to specify the relative path of kernel binaries
+  on a storage server
 
-Hans
+* Add kci_test --mach to generate jobs only for a given SoC type
 
-p.s.
+* Drop old LSK branches
 
-Will someone from kernel-ci be at Fosdem 2020 ?
+* Update list of Android branches
+
+* Fix issue with LAVA job names longer than 200 characters
+
+
+kernelci-backend
+----------------
+
+* Upgrade to PyMongo v3.9 and use Mongo DB v4.2 with Debian Buster
+  Note: Some unit tests still need to be updated to work.
+
+* Bump PyYAML to v5.1 to fix security issue
+
+* Use yaml.safe_load() instead of yaml.load()
+
+* Fix Unicode handling in HTML kernel logs
+
+* Fix exception with callbacks from cancelled LAVA jobs
+
+Best wishes,
+Guillaume
 
