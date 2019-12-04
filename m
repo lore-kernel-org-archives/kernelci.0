@@ -1,66 +1,32 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2019-12-02 #minutes
-Message-ID: <e2c609ea-4795-5df2-6d03-340c949190a9@collabora.com>
-Date: Mon, 2 Dec 2019 17:38:41 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From: Todd Kjos <tkjos@google.com>
+Date: Wed, 4 Dec 2019 09:33:30 -0800
+Message-ID: <CAHRSSEzfP_NbK+b5M3_AAR7H7ujhdTdJ9W2JCiSMvNDZzGVykw@mail.gmail.com>
+Subject: Please add android-5.4 to kernelci
+Content-Type: multipart/alternative; boundary="000000000000b16ce40598e43691"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, Kevin Hilman <khilman@baylibre.com>
 
-Summary of changes going into production today:
+--000000000000b16ce40598e43691
+Content-Type: text/plain; charset="UTF-8"
 
-kernelci-core
--------------
+We recently added the android-5.4 kernel, please add it to kernelci testing.
 
-* New Github issue templates have been added for feature requests and API
-  tokens:
+repo: https://android.googlesource.com/kernel/common
+branch: android-5.4
 
-    https://github.com/kernelci/kernelci-core/issues/new/choose
+Thanks,
 
-* Legacy Python scripts have been removed as kci_build and kci_test can now be
-  used to reproduce all the KernelCI steps.  See the documentation on this wiki
-  page (work in progress):
+Todd
 
-    https://github.com/kernelci/kernelci-doc/wiki/KernelCI-command-line
+--000000000000b16ce40598e43691
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-* All Python scripts have now been converted to Python 3
+<div dir=3D"ltr">We recently added the android-5.4 kernel, please add it to=
+ kernelci testing.<div><br></div><div>repo:=C2=A0<a href=3D"https://android=
+.googlesource.com/kernel/common" rel=3D"noreferrer" target=3D"_blank">https=
+://android.googlesource.com/kernel/common</a></div><div>branch: android-5.4=
+</div><div><br></div><div>Thanks,</div><div><br></div><div>Todd</div></div>
 
-* Fix value of "verbose git describe" in build meta-data
-
-* Use yaml.safe_load() instead of yaml.load()
-
-* Add more QEMU ARM variants including VExpress
-
-* Add several new device types in lab-baylibre
-
-* Add kci_build --publish-path to specify the relative path of kernel binaries
-  on a storage server
-
-* Add kci_test --mach to generate jobs only for a given SoC type
-
-* Drop old LSK branches
-
-* Update list of Android branches
-
-* Fix issue with LAVA job names longer than 200 characters
-
-
-kernelci-backend
-----------------
-
-* Upgrade to PyMongo v3.9 and use Mongo DB v4.2 with Debian Buster
-  Note: Some unit tests still need to be updated to work.
-
-* Bump PyYAML to v5.1 to fix security issue
-
-* Use yaml.safe_load() instead of yaml.load()
-
-* Fix Unicode handling in HTML kernel logs
-
-* Fix exception with callbacks from cancelled LAVA jobs
-
-Best wishes,
-Guillaume
-
+--000000000000b16ce40598e43691--
