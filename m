@@ -1,22 +1,35 @@
-Return-Path: <khilman@baylibre.com>
-From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: Please add android-5.4 to kernelci
-In-Reply-To: <CAHRSSEzfP_NbK+b5M3_AAR7H7ujhdTdJ9W2JCiSMvNDZzGVykw@mail.gmail.com>
-References: <CAHRSSEzfP_NbK+b5M3_AAR7H7ujhdTdJ9W2JCiSMvNDZzGVykw@mail.gmail.com>
-Date: Wed, 04 Dec 2019 15:51:14 -0800
-Message-ID: <7hpnh34pl9.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Sharjeel Aziz <sharjeel.aziz@gmail.com>
+Date: Fri, 6 Dec 2019 13:44:12 -0500
+Message-ID: <CAKCqXeGVi1FdJf21bvoz8ZJb+8nr2VYdxcSdJpuRVj7OLBFy0g@mail.gmail.com>
+Subject: Contribute as an Individual
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: multipart/alternative; boundary="0000000000002857f005990d7002"
 List-ID: <kernelci.groups.io>
-To: Todd Kjos <tkjos@google.com>, kernelci@groups.io
+To: info@kernelci.org
 
-Todd Kjos <tkjos@google.com> writes:
+--0000000000002857f005990d7002
+Content-Type: text/plain; charset="UTF-8"
 
-> We recently added the android-5.4 kernel, please add it to kernelci testing.
->
-> repo: https://android.googlesource.com/kernel/common
-> branch: android-5.4
+Hi,
+Just looking at your project and am wondering if I can contribute somehow
+either in the
+build test phase or boot test phase.
 
-PR sent: https://github.com/kernelci/kernelci-core/pull/275
+Best,
 
-Kevin
+Shaji
+
+--0000000000002857f005990d7002
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi,</div><div>Just looking at your project and am won=
+dering if I can contribute somehow either in the <br><dl><dt id=3D"gmail-m_=
+1273188226781805300gmail-build-test">build test phase or boot test phase.</=
+dt></dl></div><div><br></div><div>Best,</div><div><br></div><div>Shaji</div=
+></div>
+
+--0000000000002857f005990d7002--
