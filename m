@@ -1,35 +1,31 @@
+Subject: Re: [Automated-testing] syzkaller reproducers
+From: George Kennedy <george.kennedy@oracle.com>
+References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
+ <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
+ <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org>
+ <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
+ <20191011180248.GA24089@rei.lan>
+ <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
+ <20191014085414.GB31760@rei.lan>
+ <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
+ <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
+Message-ID: <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
+Date: Fri, 6 Dec 2019 15:06:23 -0500
 MIME-Version: 1.0
-From: Sharjeel Aziz <sharjeel.aziz@gmail.com>
-Date: Fri, 6 Dec 2019 13:44:12 -0500
-Message-ID: <CAKCqXeGVi1FdJf21bvoz8ZJb+8nr2VYdxcSdJpuRVj7OLBFy0g@mail.gmail.com>
-Subject: Contribute as an Individual
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: multipart/alternative; boundary="0000000000002857f005990d7002"
+In-Reply-To: <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: Dmitry Vyukov <dvyukov@google.com>, Cyril Hrubis <chrubis@suse.cz>
+Cc: shuah <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>
 
---0000000000002857f005990d7002
-Content-Type: text/plain; charset="UTF-8"
+Hello Dmitry,
 
-Hi,
-Just looking at your project and am wondering if I can contribute somehow
-either in the
-build test phase or boot test phase.
+Could we get another drop of the Syzkaller C reproducers?
 
-Best,
+Wonder if we could get the drop periodically (i.e. a drop/quarter or a 
+drop to match a major linux release)?
 
-Shaji
-
---0000000000002857f005990d7002
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi,</div><div>Just looking at your project and am won=
-dering if I can contribute somehow either in the <br><dl><dt id=3D"gmail-m_=
-1273188226781805300gmail-build-test">build test phase or boot test phase.</=
-dt></dl></div><div><br></div><div>Best,</div><div><br></div><div>Shaji</div=
-></div>
-
---0000000000002857f005990d7002--
+Thank you,
+George
