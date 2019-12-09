@@ -1,31 +1,24 @@
-Subject: Re: [Automated-testing] syzkaller reproducers
-From: George Kennedy <george.kennedy@oracle.com>
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org>
- <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
- <20191011180248.GA24089@rei.lan>
- <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
- <20191014085414.GB31760@rei.lan>
- <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
- <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
-Message-ID: <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
-Date: Fri, 6 Dec 2019 15:06:23 -0500
 MIME-Version: 1.0
-In-Reply-To: <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 9 Dec 2019 11:56:07 +0100
+Message-ID: <CAJZ5v0gtMPx1perK+sz+vgaWA7f6wTrqpkf6e6tkT28EE615Ng@mail.gmail.com>
+Subject: Adding a branch from linux-pm.git to the list of monitored branches
+List-ID: <info.kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>, Cyril Hrubis <chrubis@suse.cz>
-Cc: shuah <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>
+To: info@kernelci.org
 
-Hello Dmitry,
+Hi,
 
-Could we get another drop of the Syzkaller C reproducers?
+I think that it would make sense to test at least one branch from the
+linux-pm.git tree (for success) before the commits from there go into
+linux-next, so I'm wondering if the "testing" branch:
 
-Wonder if we could get the drop periodically (i.e. a drop/quarter or a 
-drop to match a major linux release)?
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git testing
 
-Thank you,
-George
+can be added to the list of branches monitored by kernelci?
+
+Thanks,
+Rafael
