@@ -1,31 +1,31 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2019-12-13 #minutes
-Message-ID: <dc1e39f7-b005-ec15-1928-cec52b51d0a0@collabora.com>
-Date: Fri, 13 Dec 2019 21:30:36 +0000
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: Contribute as an Individual
+In-Reply-To: <CAKCqXeGVi1FdJf21bvoz8ZJb+8nr2VYdxcSdJpuRVj7OLBFy0g@mail.gmail.com>
+References: <CAKCqXeGVi1FdJf21bvoz8ZJb+8nr2VYdxcSdJpuRVj7OLBFy0g@mail.gmail.com>
+Date: Wed, 18 Dec 2019 10:53:21 -0800
+Message-ID: <7hzhfp79em.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, sharjeel.aziz@gmail.com, info@kernelci.org
 
-Summary of changes going into production today:
+Hello,
 
-kernelci-core
--------------
+Sharjeel Aziz <sharjeel.aziz@gmail.com> writes:
 
-* start implementing kci_rootfs to reproduce KernelCI rootfs images on the
-  command line rather than requiring Jenkins
+> Just looking at your project and am wondering if I can contribute
+> somehow either in the build test phase or boot test phase.
 
-* fix QEMU on xi83 and x86_64 using the "ide" guest interface rather than
-  "virtio"
+We have lots of areas where we could use extra help.  Probably the best
+place to start would be browsing the github issues list in the
+kernelci-core repository:
 
-* add new device type sun50i-a64-pine64-plus
+  https://github.com/kernelci/kernelci-core/issues
 
-* fix device type name of at91-sama5d2_xplained
+If you have a specific area you want to contribute to but have more
+questions, feel free to ask here.
 
-* add android-5.4 branch
+Thanks for your interest in the project,
 
-
-Best wishes,
-Guillaume
+Kevin
