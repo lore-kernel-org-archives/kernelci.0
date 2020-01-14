@@ -1,28 +1,39 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2020-01-10 #minutes
+Message-ID: <096e9d53-f51c-cbbf-3d7a-8b9ea3bf5fff@collabora.com>
+Date: Tue, 14 Jan 2020 07:02:59 +0000
 MIME-Version: 1.0
-From: zhang yongchao <zychao66@gmail.com>
-Date: Tue, 24 Dec 2019 14:45:28 +0800
-Message-ID: <CAO+QB3yhnMmKMmJccgGnDpNFe+6TrVZqNe0B28Shv6xLVvEeTw@mail.gmail.com>
-Subject: how to add my own LAVA lab in kernelci
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Type: multipart/alternative; boundary="000000000000fe3d1c059a6d7d63"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: kernelci@groups.io
 
---000000000000fe3d1c059a6d7d63
-Content-Type: text/plain; charset="UTF-8"
+Summary of changes that went into production last Friday:
 
-Hi,
-    I want add my own LAVA lab in kernelci to do some test, is there some
-documentation for this?
+kernelci-core
+-------------
 
---000000000000fe3d1c059a6d7d63
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+* new "kci_rootfs build" command to build debos rootfs on the command line
 
-<div dir=3D"ltr">Hi,=C2=A0<div>=C2=A0 =C2=A0 I want add my own LAVA lab in =
-kernelci to do some test, is there some documentation=C2=A0for=C2=A0this?</=
-div></div>
+* enable automated bisections for single test case (not sending reports to the
+  public initially)
 
---000000000000fe3d1c059a6d7d63--
+* add support for Pine H64 model B
+
+
+kernelci-backend
+----------------
+
+* fix some unit tests using newer version of mongomock
+
+* fix some PyMongo deprecation warnings
+
+* filter more bisection emails by not including the list of recipients in the
+  report hash (to avoid duplicates sent to slightly different recipients)
+
+* handle test case regressions to trigger single test case bisections and drop
+  support for boot bisections
+
+Best wishes,
+Guillaume
