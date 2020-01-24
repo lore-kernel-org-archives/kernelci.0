@@ -1,81 +1,89 @@
-Subject: Need help to connect kernelci main instance with our lava-docker instance
-From: brown.teh@gmail.com
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kenelci.org update - 2020-01-24
+Message-ID: <8884eb18-efce-c686-98b6-d29c8f0edc5e@collabora.com>
+Date: Fri, 24 Jan 2020 21:44:48 +0000
 MIME-Version: 1.0
-Date: Tue, 21 Jan 2020 07:08:36 -0800
-Message-ID: <uXqW.1579619316616468927.7OCH@groups.io>
-Content-Type: multipart/alternative; boundary="oramy2j0tzD6PGD5lTJ4"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
+Cc: kernelci-members@groups.io
 
---oramy2j0tzD6PGD5lTJ4
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Technical Steering Committee minutes - 2020-01-21
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
-Hi all,
+* Guillaume: new staging instance
+  * staging.kernelci.org has moved to Azure, pending a data volume to be =
+added
+  * still need Jenkins to be moved too
+  * storage.staging.kernelci.org subdomain not updated yet, will do with =
+the
+    new Jenkins subdomain
+  * SSH keys installed for admins
 
-I'm new to kernelci, started to setup a lava-docker instance and managed t=
-o run a basic job to qemu device recently. Now I'm amid of integrating an a=
-ctual x86_64 board(running a yocto image) with the IPXE boot scenario , the=
- integration is still halfway done though.
-After gone through some previously posted message thread,
-I have learned that in order to connect my LAVA instance to kernelci main =
-frontend/backend instance there's couple of flow involved as following
-1) kernelci-core: jenkins jobs to watch kernel trees for changes
-2) kernelci-core: create LAVA jobs and submit to multiple LAVA labs(requir=
-e LAVA instance token to be shared to kernelci admin group)
-3) LAVA labs: run LAVA jobs on hardware/VMs etc.
-4) LAVA labs: submit results to kernelci-backend(Required kernelci admin g=
-roup to share their token to LAVA)
+* Guillaume: frontend changes to show test results
+  * work on-going, making steady progress now to replace boots with test
+    results
 
-Based on the context above, I have couple of questions to ask before I can=
- proceed with the connection enabling
-1) If I'm just want to add my LAVA instance to the official main kernelci =
-instance, other than sharing my LAVA instance API token and requesting kern=
-elci API token from kernelci admin group, do I still have to setup the kern=
-elci-core myself?
-2) If the new device type that I'm integrating is required a custom kernel=
- source in order to boot up the image, will kernelci support the build of c=
-ustom kernel artifacts, if yes where can I feed the custom kernel source in=
-formation?
-3) For the communication between kernelci and LAVA instance, what are the =
-ports that are involved? If it's REST API based, can I assume it's mostly o=
-nly involving HTTP/HTTPS protocol? (The reason behind this question is I'll=
- need to apply for a DMZ connection behind a corporate network, so might ne=
-ed the details of ports involved)
+* Kevin: sourcing new VM instances for kernelci.org production web servic=
+es
 
-Really appreciate if someone can answer my questions. Thanks
+* Kevin: kcidb
+  * config_name, config_url added
+  * how to start submitting new schema / fields to BQ?
+    * Kevin to try using kci_submit
+    * If doesn=E2=80=99t work, dump the database with "kcidb-query", recr=
+eate with
+      "kcidb-cleanup" and "kcidb-init", then re-upload the dump with
+      "kcidb-submit".
+  * when to enable in production?
+    * scaling issues: still takes 2s to submit
+      * Workaround: bundle updates
+      * Possible solution: streaming inserts (non-free)
+    * Need a "real" user of kcidb to see if it=E2=80=99s really useful ye=
+t
+      * Grafana experiments: OK for visuals, but not for reporting
+      * minimal email report? links to Grafana
 
---oramy2j0tzD6PGD5lTJ4
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+* Micha=C5=82: kci_rootfs
+  * starting with vanilla debian/buster
+  * next step is buster-v4l2
 
-Hi all,&nbsp;<br /><br />I'm new to kernelci, started to setup a lava-docke=
-r instance and managed to run a basic job to qemu device recently. Now I'm =
-amid of integrating an actual x86_64 board(running a yocto image) with the =
-IPXE boot scenario , the integration is still halfway done though.<br />Aft=
-er gone through some previously posted message thread,<br />I have learned =
-that in order to connect my LAVA instance to kernelci main frontend/backend=
- instance there's couple of flow involved as following<br />1)&nbsp;<span s=
-tyle=3D"white-space: pre-wrap;">kernelci-core: jenkins jobs to watch kernel=
- trees for changes<br />2) </span><span style=3D"white-space: pre-wrap;">ke=
-rnelci-core: create LAVA jobs and submit to multiple LAVA labs(require LAVA=
- instance token to be shared to kernelci admin group)<br />3) </span><span =
-style=3D"white-space: pre-wrap;">LAVA labs: run LAVA jobs on hardware/VMs e=
-tc.<br />4) </span><span style=3D"white-space: pre-wrap;">LAVA labs: submit=
- results to kernelci-backend(Required kernelci admin group to share their t=
-oken to LAVA)<br /><br />Based on the context above, I have couple of quest=
-ions to ask before I can proceed with the connection enabling<br />1) If I'=
-m just want to add my LAVA instance to the official main kernelci instance,=
- other than sharing my LAVA instance API token and requesting kernelci API =
-token from kernelci admin group, do I still have to setup the kernelci-core=
- myself?<br />2) If the new device type that I'm integrating is required a =
-custom kernel source in order to boot up the image, will kernelci support t=
-he build of custom kernel artifacts, if yes where can I feed the custom ker=
-nel source information?<br />3) For the communication between kernelci and =
-LAVA instance, what are the ports that are involved? If it's REST API based=
-, can I assume it's mostly only involving HTTP/HTTPS protocol? (The reason =
-behind this question is I'll need to apply for a DMZ connection behind a co=
-rporate network, so might need the details of ports involved)<br /><br />Re=
-ally appreciate if someone can answer my questions. Thanks </span>
 
---oramy2j0tzD6PGD5lTJ4--
+Advisory Board minutes - 2020-01-22
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+* approved budget for 2020 so can start spending
+* discussing mission statement and goals for the project in 2020
+* KernelCI stickers will be available at FOSDEM
+
+
+Summary of changes going into production
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+* kernelci-backend v2020.1.1
+  * drop some HTTP DELETE handlers
+  * fix PyMongo deprecation warnings
+  * prune unused fields in test case and test group documents
+  * remove dead code in several places
+  * fix database index creation
+  * stop storing boot results in test case documents (not useful)
+
+* kernelci-frontend v2020.01
+  * disable "Compare" view as it is a Beta feature and has broken for a w=
+hile
+  * fix broken comments in Javascript headers
+
+* kernelci-core v2020-01-24
+  * enable kci_rootfs YAML validation in Travis CI
+  * add linux-5.4.y for stable and stable-rc
+  * new buster-cros-ec rootfs with Chrome OS Embedded Controller test sui=
+te
+
+
+Best wishes,
+Guillaume
