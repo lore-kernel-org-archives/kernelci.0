@@ -1,55 +1,49 @@
-From: "Chris Paterson" <chris.paterson2@renesas.com>
-Subject: Re: kernelci.org update - 2020-01-31 #minutes
-Date: Mon, 3 Feb 2020 09:03:15 +0000
-Message-ID: 
- <TYAPR01MB228520DCBFE647FD74CA7A59B7000@TYAPR01MB2285.jpnprd01.prod.outlook.com>
-References: <375bae09-d215-173a-a1b4-5414e39f63c0@collabora.com>
-In-Reply-To: <375bae09-d215-173a-a1b4-5414e39f63c0@collabora.com>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: Need help to connect kernelci main instance with our lava-docker instance
+In-Reply-To: <uXqW.1579619316616468927.7OCH@groups.io>
+References: <uXqW.1579619316616468927.7OCH@groups.io>
+Date: Tue, 04 Feb 2020 10:53:04 -0800
+Message-ID: <7himkmkwvj.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>, "guillaume.tucker@gmail.com" <guillaume.tucker@gmail.com>
+To: kernelci@groups.io, brown.teh@gmail.com, kernelci@groups.io
 
-VGhhbmsgeW91IGZvciB0aGUgdXBkYXRlcyBHdWlsbGF1bWUuDQoNCktpbmQgcmVnYXJkcywgQ2hy
-aXMNCg0KPiBGcm9tOiBrZXJuZWxjaUBncm91cHMuaW8gPGtlcm5lbGNpQGdyb3Vwcy5pbz4gT24g
-QmVoYWxmIE9mIEd1aWxsYXVtZQ0KPiBUdWNrZXIgdmlhIEdyb3Vwcy5Jbw0KPiBTZW50OiAzMSBK
-YW51YXJ5IDIwMjAgMTY6NTENCj4gDQo+IFRlY2huaWNhbCBTdGVlcmluZyBDb21taXR0ZWUgbWlu
-dXRlcyAtIDIwMjAtMDEtMjgNCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PQ0KPiANCj4gKiBLZXZpbjoga2NpZGI6IGhvdyB0byBiZXN0IG1pZ3JhdGUg
-Zm9yIG5ldyBjb25maWdfbmFtZSwgY29uZmlnX3VybCBmaWVsZHM/DQo+ICAgKiBOaWtvbGFpIHdp
-bGwgZG8gaXQgKGFuZCBkb2N1bWVudCBpdCBmb3Igc3lzYWRtaW4gbm90ZXMpDQo+IA0KPiAqIE1h
-dHQ6IHN0YWdpbmcgamVua2lucw0KPiAgICogRG9pbmcgaXQgYXMgY29uZmlnLWFzLWNvZGUgY29u
-ZmlnIGZpbGVzDQo+ICAgICAqIEFueW9uZSBjYW4gc3BpbiB1cCBhIGxvY2FsIHNldHVwDQo+ICAg
-ICAqIFdlIGhhdmUgZXh0cmEgY29uZmlnIGZvciBnaXRodWIgYXV0aCwgbm9kZXMsIHRyaWdnZXJz
-IGV0Yw0KPiAgICogV2hlcmUgZG8gd2Ugc3RvcmUgb3VyIHNlY3JldHMvY3JlZGVudGlhbHMvc3No
-a2V5cyBldGMNCj4gICAgICogaHR0cHM6Ly93d3cucGFzc3dvcmRzdG9yZS5vcmcvDQo+ICAgICAq
-IGh0dHBzOi8vZG9jcy5jaGVmLmlvL2RhdGFfYmFncy5odG1sDQo+ICAgKiBEaXNjdXNzaW9uOg0K
-PiAgICAgKiBidWlsZGVyLWNvbmZpZzIgKyBidWlsZGVyLWNvbmZpZy1kYXRhIHVzaW5nIGdpdC1j
-cnlwdA0KPiAgICAgKiBMZXTigJlzIGNvbnRpbnVlIHdpdGggdGhhdCwgYW5kIHNlZSBpZiB0aGVy
-ZSBhcmUgYW55IGxpbWl0YXRpb25zDQo+IA0KPiAqIE5pa29sYWkNCj4gICAqIHB1c2hpbmcgbW9y
-ZSBSZWRIYXQgZGF0YQ0KPiAgICogc3RhcnRpbmcgdG8gbG9vayBhdCBkYXNoYm9hcmRzLCBldGMu
-DQo+IA0KPiAqIEd1aWxsYXVtZQ0KPiAgICogVXBkYXRpbmcgdGhlIEdpdEh1YiBib2FyZCB3aXRo
-IG1pbGVzdG9uZXMgdG8gYmV0dGVyIGNvb3JkaW5hdGUgY3Jvc3MtDQo+IHRlYW0NCj4gICAgIHdv
-cmsNCj4gICAqIE5leHQgdGVzdCBzdWl0ZXMgdG8gcnVuIGFuZCBhbGlnbiB0ZXN0IGNhc2UgbmFt
-aW5nIHNjaGVtZToga3NlbGZ0ZXN0LCBMVFANCj4gICAqIEZhY2UgdG8gRmFjZSBtZWV0aW5ncw0K
-PiAgICAgKiBhaW1pbmcgZm9yIGEgMS1kYXkgZXZlbnQgYXQgUGx1bWJlcnMgKGJlZm9yZSBvciBh
-ZnRlcikNCj4gDQo+IA0KPiBBZHZpc29yeSBCb2FyZCBtaW51dGVzIC0gMjAyMC0wMS0yOQ0KPiA9
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KPiANCj4gKiBNaXNzaW9uIHN0YXRl
-bWVudDoNCj4gDQo+IFRvIGVuc3VyZSB0aGUgcXVhbGl0eSwgc3RhYmlsaXR5IGFuZCBsb25nLXRl
-cm0gbWFpbnRlbmFuY2Ugb2YgdGhlIExpbnV4DQo+IGtlcm5lbA0KPiBieSBtYWludGFpbmluZyBh
-biBvcGVuIGVjb3N5c3RlbSBhcm91bmQgdGVzdCBhdXRvbWF0aW9uIHByYWN0aWNlcyBhbmQNCj4g
-cHJpbmNpcGxlcy4NCj4gDQo+ICogT2JqZWN0aXZlczoNCj4gICAqIE1haW50YWluZXIgYnV5LWlu
-DQo+ICAgKiBCcm9hZCBhZG9wdGlvbg0KPiAgICogQ29tbXVuaXR5IGNvbGxhYm9yYXRpb24NCj4g
-ICAqIE1lbWJlcnNoaXAgZ3Jvd3RoDQo+IA0KPiAqIE1ldHJpY3MgYXJlIG5lZWRlZCB0byBzZWUg
-d2hldGhlciBvYmplY3RpdmVzIGFyZSBtZXQuICBUaGlzIGlzIHNvbWV0aGluZw0KPiBmb3INCj4g
-ICB0aGUgVFNDIHRvIHNvbHZlLg0KPiANCj4gDQo+IFN1bW1hcnkgb2YgY2hhbmdlcyBnb2luZyBp
-bnRvIHByb2R1Y3Rpb24NCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PQ0KPiANCj4gVGhlcmUgaXMgbm8gcHJvZHVjdGlvbiB1cGRhdGUgdGhpcyB3ZWVrLiAgRnJlcXVl
-bnQgaXNzdWVzIGNhbiBiZSBzZWVuIHdpdGgNCj4gdGhlDQo+IGtlcm5lbGNpLm9yZyBKZW5raW5z
-IHNlcnZlciwgc29tZSBidWlsZHMgYXJlIHRha2luZyBhIGxvbmcgdGltZSB0byBzdGFydC4gIFRo
-aXMNCj4gc2VlbXMgdG8gYmUgYSBuZXR3b3JrIGlzc3VlLiAgVGhlIGxhdGVuY3kgdG8gcHJvZHVj
-ZSBidWlsZHMgYW5kIHRlc3QgcmVzdWx0cw0KPiBpcw0KPiBtdWNoIGdyZWF0ZXIgdGhhbiB1c3Vh
-bCBhcyBhIHJlc3VsdCwgcGxlYXNlIGJlYXIgd2l0aCB1cyB3aGlsZSB3ZSBmaXggdGhlDQo+IHBy
-b2JsZW0uDQo+IA0KPiBCZXN0IHdpc2hlcywNCj4gR3VpbGxhdW1lDQo+IA0KPiANCg0K
+brown.teh@gmail.com writes:
+
+> Hi all,
+>
+> I'm new to kernelci, started to setup a lava-docker instance and managed to run a basic job to qemu device recently. Now I'm amid of integrating an actual x86_64 board(running a yocto image) with the IPXE boot scenario , the integration is still halfway done though.
+> After gone through some previously posted message thread,
+> I have learned that in order to connect my LAVA instance to kernelci main frontend/backend instance there's couple of flow involved as following
+> 1) kernelci-core: jenkins jobs to watch kernel trees for changes
+> 2) kernelci-core: create LAVA jobs and submit to multiple LAVA labs(require LAVA instance token to be shared to kernelci admin group)
+> 3) LAVA labs: run LAVA jobs on hardware/VMs etc.
+> 4) LAVA labs: submit results to kernelci-backend(Required kernelci admin group to share their token to LAVA)
+>
+> Based on the context above, I have couple of questions to ask before I can proceed with the connection enabling
+> 1) If I'm just want to add my LAVA instance to the official main kernelci instance, other than sharing my LAVA instance API token and requesting kernelci API token from kernelci admin group, do I still have to setup the kernelci-core myself?
+
+No. You do not have to setup kernelci-core yourself.
+
+Once we have your LAVA API token, you just have to send a patch/PR to
+the lab-configs.yaml file[1].
+
+> 2) If the new device type that I'm integrating is required a custom
+> kernel source in order to boot up the image, will kernelci support the
+> build of custom kernel artifacts, if yes where can I feed the custom
+> kernel source information?
+
+Right now, we only support targets that boot mainline using upstream
+defconfigs.  If it only requires mainline with a Kconfig fragment, we
+can typically arrange to have that configuration built, but we like to
+understand why a given target cannot boot with mainline.
+
+> 3) For the communication between kernelci and LAVA instance, what are the ports that are involved? If it's REST API based, can I assume it's mostly only involving HTTP/HTTPS protocol? (The reason behind this question is I'll need to apply for a DMZ connection behind a corporate network, so might need the details of ports involved)
+
+It's XML-RPC over HTTPS.
+
+Kevin
+
+[1] https://github.com/kernelci/kernelci-core/blob/master/lab-configs.yaml
