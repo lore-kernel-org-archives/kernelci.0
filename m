@@ -1,78 +1,52 @@
 From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2020-02-07 #minutes
-Message-ID: <d7847bb4-be3a-91e8-1910-be76ef229648@collabora.com>
-Date: Fri, 7 Feb 2020 20:07:32 +0000
+Subject: kernelci.org metrics call for ideas
+Message-ID: <b131a2d9-68ec-dd9d-beba-7047d2d10bba@collabora.com>
+Date: Wed, 12 Feb 2020 13:10:37 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
+Cc: kernelci-members@groups.io
 
-Technical Steering Committee minutes - 2020-02-04
-=================================================
+Hi,
 
-* Matt: Where do we want the Jenkins config, kci-core or new repo?
-  * new one: kernelci-jenkins + deploy tools in kernelci-jenkins-config
+As KernelCI is now growing rapidly with the support of the Linux
+Foundation project members, we need to have a way to measure the
+effects it has on the Linux kernel community and code quality.
+This would enable us to both make sure that our efforts are
+bearing fruit and give more substance to the membership scheme.
 
-* BQ migrated to new dataset (with defconfig name/url)
+However, there isn't a single plain solution as to how this can
+be achieved.  As a first step, it would seem worthwhile gathering
+ideas anyone might have in a brainstorming fashion.  So, please
+use this thread to share your thoughts or ask questions to help
+us make progress.  I think the first aims are more about defining
+which metrics we need rather than how to implement them, although
+these things are obviously closely linked.
 
-* We can get rid of *.done files
+I've also created an issue on the GitHub project board where we
+can gather comments and post some progress updates:
 
-* GitHub issues/dashboard
-  https://github.com/orgs/kernelci/projects/1?fullscreen=true
+  https://github.com/kernelci/kernelci-core/issues/321
 
-* Discussion on a pub/sub service for triggers/notification of new
-  builds/tests/etc
+There are already a couple of ideas there to kick start the
+process, namely:
 
-  e.g. MQTT service running in/with the backend
+* Number of "Reported-by: kernelci.org bot <bot@kernelci.org>"
 
-* On-going issues with Jenkins and Docker, investigating
+* Number of individual fixes in each kernel release cycle
 
+* Qualitative test coverage: variety of platforms and test suites
 
-Advisory Board minutes - 2020-02-05
-===================================
+* Qualitative result: describe some particular cases where
+  kernelci.org helped avoid a problem
 
-* The technical steering committee needs to investigate how to produce metrics
-
-* Discussing marketing plan
-
-* Discussing how to test distributions with KernelCI
-
-
-Summary of changes going into production
-========================================
-
-kernelci-core
--------------
-
-* Add linux-pm testing branch
-
-* Drop legacy "$ARCH".done files to simplify Jenkins setup
-
-* New Allwinner boards in lab-baylibre:
-  sun50i-h5-nanopi-neo-plus2, sun8i-r40-bananapi-m2-ultra
-
-* Add "kci_rootfs upload" command
-
-* Update cros-ec test plan with new Chromium OS Embedded Controller test suite
+* Code coverage
 
 
-kernelci-backend
-----------------
+Don't be shy!
 
-* Update test case and regression schema to show more details on frontend
-
-* Allow more API calls to count test case and regression documents
-
-* Add new Mongo DB indexes to help with showing test results on frontend
-
-
-kernelci-frontend
------------------
-
-* Drop deprecated boot bisection range feature to suppress error messages
-
-
-Best wishes,
+Thanks,
 Guillaume
