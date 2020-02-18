@@ -1,136 +1,74 @@
-From: "Thayer, Thor" <thor.thayer@intel.com>
-Subject: Altera/Intel SOCFPGA Cyclone5 Boot testing.
-Date: Wed, 4 Sep 2019 20:43:10 +0000
-Message-ID: <FE4710B543D3A5458E117AFC3393E1E33A5BFE49@fmsmsx122.amr.corp.intel.com>
 MIME-Version: 1.0
-List-ID: <info.kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-Content-Language: en-US
-Content-Type: multipart/alternative;
-	boundary="_000_FE4710B543D3A5458E117AFC3393E1E33A5BFE49fmsmsx122amrcor_"
+References: <15F43B83401C45AE.21780@groups.io>
+In-Reply-To: <15F43B83401C45AE.21780@groups.io>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Date: Tue, 18 Feb 2020 21:11:22 +0000
+Message-ID: <CAH1_8nDaEnVq_eYp75xTwKmGYy29HpYgP8gMoRU+hUbobufuhQ@mail.gmail.com>
+Subject: Re: Planned kernelci.org downtime tomorrow 2020-02-18
+Content-Type: multipart/alternative; boundary="000000000000d5d2b4059ee01d69"
 List-ID: <kernelci.groups.io>
-To: "info@kernelci.org" <info@kernelci.org>
+To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
 
---_000_FE4710B543D3A5458E117AFC3393E1E33A5BFE49fmsmsx122amrcor_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+--000000000000d5d2b4059ee01d69
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+The new server is now all up and running on https://kernelci.org
+although some jobs were interrupted due to Jenkins problems
+mostly.  They will get restarted to complete the missing builds
+and tests.
 
-I'd like to run some boot tests with the Cyclone5 boards on your farm (socf=
-pga_cyclone5_de0_sockit and socfpga_cyclone5_socrates).
+Guillaume
 
->From the API, I think I need to get an authentication token for running tes=
-ts.
+On Mon, Feb 17, 2020 at 3:53 PM Guillaume Tucker via Groups.Io
+<guillaume.tucker=gmail.com@groups.io> wrote:
 
-We'd like to add more of our boards to your farm if we can get approval.
-
-Thanks,
-
-Thor
-
-INTEL PSG - Austin
-1300 S. Mopac
-M/S AN4, Pole A23, #A3-136-82
-Austin, TX 78746
-
-(512)362-0836
-Thor.Thayer@Intel.com<mailto:Thor.Thayer@Intel.com>
-
-
---_000_FE4710B543D3A5458E117AFC3393E1E33A5BFE49fmsmsx122amrcor_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+> The kernelci.org web services will be relocated to a new server
+> tomorrow, causing some downtime until the DNS records have been
+> updated and the new services are all up and running again.  The
+> downtime should happen tomorrow 2020-02-18 between 4pm and 12pm
+> GMT.  No new job will be started after tonight 2020-02-17 12pm
+> GMT to allow for all the tests to get stored and the database
+> backup to complete before the update can happen.
 >
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#0563C1;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:#954F72;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-family:"Calibri",sans-serif;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hi,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">I&#8217;d like to run some boot tests with the Cyclo=
-ne5 boards on your farm (socfpga_cyclone5_de0_sockit and socfpga_cyclone5_s=
-ocrates).
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">From the API, I think I need to get an authenticatio=
-n token for running tests.<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">We&#8217;d like to add more of our boards to your fa=
-rm if we can get approval.<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Thanks,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Thor<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><i><span style=3D"font-size:12.0pt;font-family:&quot=
-;Arial&quot;,sans-serif">INTEL PSG - Austin<o:p></o:p></span></i></p>
-<p class=3D"MsoNormal"><i><span style=3D"font-size:12.0pt;font-family:&quot=
-;Arial&quot;,sans-serif">1300 S. Mopac<o:p></o:p></span></i></p>
-<p class=3D"MsoNormal"><i><span style=3D"font-size:12.0pt;font-family:&quot=
-;Arial&quot;,sans-serif">M/S AN4, Pole A23, #A3-136-82<o:p></o:p></span></i=
-></p>
-<p class=3D"MsoNormal"><i><span style=3D"font-size:12.0pt;font-family:&quot=
-;Arial&quot;,sans-serif">Austin, TX 78746<o:p></o:p></span></i></p>
-<p class=3D"MsoNormal"><i><span style=3D"font-size:12.0pt;font-family:&quot=
-;Arial&quot;,sans-serif"><o:p>&nbsp;</o:p></span></i></p>
-<p class=3D"MsoNormal"><i><span style=3D"font-size:12.0pt;font-family:&quot=
-;Arial&quot;,sans-serif">(512)362-0836<o:p></o:p></span></i></p>
-<p class=3D"MsoNormal"><i><span style=3D"font-size:12.0pt;font-family:&quot=
-;Arial&quot;,sans-serif"><a href=3D"mailto:Thor.Thayer@Intel.com"><span sty=
-le=3D"color:#0563C1">Thor.Thayer@Intel.com</span></a><o:p></o:p></span></i>=
-</p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</body>
-</html>
+> Thank you for your understanding.
+>
+> Best wishes,
+> Guillaume
+>
+> 
+>
+>
 
---_000_FE4710B543D3A5458E117AFC3393E1E33A5BFE49fmsmsx122amrcor_--
+--000000000000d5d2b4059ee01d69
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>The new server is now all up and running on <a href=
+=3D"https://kernelci.org">https://kernelci.org</a><br>although some jobs w=
+ere interrupted due to Jenkins problems<br>mostly.=C2=A0 They will get rest=
+arted to complete the missing builds<br>and tests.<br></div><div><br></div>=
+<div>Guillaume</div><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><=
+div dir=3D"ltr" class=3D"gmail_attr">On Mon, Feb 17, 2020 at 3:53 PM Guilla=
+ume Tucker via Groups.Io &lt;guillaume.tucker=3D<a href=3D"mailto:gmail.com=
+@groups.io">gmail.com@groups.io</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
+gb(204,204,204);padding-left:1ex">The <a href=3D"http://kernelci.org" rel=
+=3D"noreferrer" target=3D"_blank">kernelci.org</a> web services will be re=
+located to a new server<br>
+tomorrow, causing some downtime until the DNS records have been<br>
+updated and the new services are all up and running again.=C2=A0 The<br>
+downtime should happen tomorrow 2020-02-18 between 4pm and 12pm<br>
+GMT.=C2=A0 No new job will be started after tonight 2020-02-17 12pm<br>
+GMT to allow for all the tests to get stored and the database<br>
+backup to complete before the update can happen.<br>
+<br>
+Thank you for your understanding.<br>
+<br>
+Best wishes,<br>
+Guillaume<br>
+<br>
+<br>
+<br>
+</blockquote></div></div>
+
+--000000000000d5d2b4059ee01d69--
