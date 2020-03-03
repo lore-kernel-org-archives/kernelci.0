@@ -1,81 +1,219 @@
+Subject: Re: "kernelci/kernelci-docker$ sudo ./start.sh" command keep on wait at "echo '-> waiting for backend...'"
+References: <CAFW5HqQcEZEuFTpFjN3Cf7ESuZ9v7XrWGFMw8NTR0gBfghcY3g@mail.gmail.com>
+ <CAFW5HqRQMTKeApPd=mhUX7ncpW0HCO764V6ZTfj3fcOzc+cr3Q@mail.gmail.com>
+From: =?UTF-8?B?TWljaGHFgiBHYcWCa2E=?= <michal.galka@collabora.com>
+Message-ID: <167dcd1a-7dc3-6bd1-efd2-2491da3ab46c@collabora.com>
+Date: Tue, 3 Mar 2020 11:16:04 +0100
 MIME-Version: 1.0
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org> <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
- <20191011180248.GA24089@rei.lan> <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
- <20191014085414.GB31760@rei.lan> <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
- <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com> <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
- <e8b11b09-37ac-6ae2-0908-b803b4160f7c@oracle.com> <CACT4Y+bShy-3vO3ifNKVcGGNf3X9XA7zL-Ja9-T+gZv5=QNe4w@mail.gmail.com>
- <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com>
-In-Reply-To: <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Tue, 3 Mar 2020 09:45:38 +0100
-Message-ID: <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
-Subject: Re: [Automated-testing] syzkaller reproducers
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAFW5HqRQMTKeApPd=mhUX7ncpW0HCO764V6ZTfj3fcOzc+cr3Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: George Kennedy <george.kennedy@oracle.com>, shuah <shuah@kernel.org>
-Cc: Cyril Hrubis <chrubis@suse.cz>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>, Dan Carpenter <dan.carpenter@oracle.com>
+To: kernelci@groups.io, kotisoftwaretest@gmail.com
 
-Shauh,
+Hi Koti,
 
-We've added more reproducers to:
-https://github.com/dvyukov/syzkaller-repros/tree/master/linux
+I tried to reproduce your issue, with no luck so far. I've never needed=20
+to set the DOCKER_HOST variable on my machine and everything worked.
+A bit suspicious is that during the start you're getting HTTP 403 from=20
+the backend URL. Have you checked that nothing is listening on port 8081=
+=20
+before you call the ./start.sh script?
+It may also be a good idea to check in a browser or with curl, what's=20
+the output you'll get when accessing localhost:8080 and localhost8081.
 
-It makes sense to pull in them to the kernel-arts repo. Not sure
-what's the most convenient way for you since it's not exactly a
-traditional "patch"? Perhaps you just copy linux/*.c files and commit?
+I tried the stuff on my box with Ubuntu 18.04 LTS and docker 19.03.6
 
-George, another throw in of 446 repros ;)
+Regards,
+
+Micha=C5=82
 
 
+On 02.03.2020 14:13, koti koti wrote:
 
-On Mon, Jan 27, 2020 at 6:08 PM George Kennedy
-<george.kennedy@oracle.com> wrote:
-> > Hi George,
-> >
-> > This was still starred in my inbox, but I never got to actually do
-> > anything with it. Thanks for pinging me. I thought that the script to
-> > extract the repros won't work for some reason and that I will need to
-> > fix it first. But turns out it's still working as-is (I wanted to
-> > submit some changes that would break it, but I never go to that as
-> > well. Good! :)).
-> >
-> > So here is a new drop in with 692 repros:
-> > https://github.com/dvyukov/syzkaller-repros/commit/6a06992209c328a3115c89c020f45b844b103573
-> > Enjoy!
-> >
-> > Yes, we have separate managers for each version, the entries in the
-> > Instances table correspond to syz-manager one-to-one:
-> > https://syzkaller.appspot.com/upstream
-> > https://syzkaller.appspot.com/linux-4.19
-> > https://syzkaller.appspot.com/android-54
+> Hi,
 >
-> Thank you Dmitry!
-> George
-> >
-> >
-> >
-> > On Mon, Jan 27, 2020 at 3:20 PM George Kennedy
-> > <george.kennedy@oracle.com> wrote:
-> >> Hi Dmitry,
-> >>
-> >> Re-sending this request.
-> >>
-> >> Also, how do you track the Upstream branches with Syzkaller? Do you have
-> >> a version of Syzkaller for each (i.e. 4.14, 4.19, etc)?
-> >>
-> >> Thank you,
-> >> George
-> >>
-> >> On 12/6/2019 3:06 PM, George Kennedy wrote:
-> >>> Hello Dmitry,
-> >>>
-> >>> Could we get another drop of the Syzkaller C reproducers?
-> >>>
-> >>> Wonder if we could get the drop periodically (i.e. a drop/quarter or a
-> >>> drop to match a major linux release)?
-> >>>
-> >>> Thank you,
-> >>> George
+> I fell some thing wrong at this=C2=A0 line in .start.shi.e
 >
+> # Get IP of Docker host from the DOCKER_HOST environment variable
+> IP=3D$(echo $DOCKER_HOST | cut -d'/' -f3 | cut -d':' -f1)
+> can some one let me know how can I get the "$DOCKER_HOST" in my ubuntu=
+=20
+> environment?
+>
+> Regards,
+> Koti
+>
+> On Mon, 2 Mar 2020 at 18:37, koti koti <kotisoftwaretest@gmail.com=20
+> <mailto:kotisoftwaretest@gmail.com>> wrote:
+>
+>     Hi,
+>
+>     Today I have tried to install "kernelci" in my Ubuntu machine (LTS
+>     16.04) using this README file i.e
+>     https://github.com/lucj/kernelci-docker/blob/master/README.md.
+>     But, the "./start .sh"=C2=A0 script keep on waiting at the message
+>     "echo '-> waiting for backend...'".
+>
+>     I have tried to debug more by put "debug messages (set -x) in that
+>     start.sh script and noticed below messages keep on.
+>
+>     can some one help me as how can i resolve this issue?
+>
+>     1. Do I need to setup any network IP before start this command?=C2=
+=A0 (
+>     I am new for this dockers)
+>     2. Do I need to set=C2=A0 any Docker HostIP=C2=A0 in environment bef=
+ore
+>     start the ./start script?=C2=A0 . if yes, how can I know this Docker
+>     Host IP? ( I am new for this dockers)
+>
+>     log:
+>     ###
+>     |"|
+>     |machine@machine:~/kernelci/kernelci-docker$ sudo ./start.sh
+>     + STACK_NAME=3Dkernelci
+>     + getopts t: option
+>     + export TAG=3Dlatest
+>     + TAG=3Dlatest
+>     ++ docker node ls
+>     + NODES=3D'ID =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0HOSTNAME =C2=A0 =C2=A0STATUS =
+=
+=C2=A0 =C2=A0 =C2=A0 =C2=A0
+>     =C2=A0 =C2=A0 =C2=A0AVAILABILITY =C2=A0 =C2=A0 =C2=A0 =C2=A0MANAGER =
+STATUS =C2=A0 =C2=A0 =C2=A0ENGINE VERSION
+>     2l2zca1iuj5yyzujtrlv3m7xq * =C2=A0 7Y561X2 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 Ready =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0
+>     =C2=A0 =C2=A0 Active =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0Leader =C2=A018.09.7'
+>     + '[' 0 =3D 1 ']'
+>     ++ echo
+>     ++ cut -d/ -f3
+>     ++ cut -d: -f1
+>     + IP=3D
+>     + '[' '' =3D '' ']'
+>     + IP=3D127.0.0.1
+>     + echo '-> deploying the application...'
+>     -> deploying the application...
+>     + docker stack deploy -c docker-stack.yml kernelci
+>     Creating network kernelci_default
+>     Creating service kernelci_proxy
+>     Creating service kernelci_frontend
+>     Creating service kernelci_backend
+>     Creating service kernelci_celery
+>     Creating service kernelci_redis
+>     Creating service kernelci_mongo
+>     + echo '-> application deployed'
+>     -> application deployed
+>     + echo '-> waiting for backend...'
+>     -> waiting for backend...
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1
+>     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 127.0.0.1:8081
+>     <http://127.0.0.1:8081>
+>     + '[' 403 -ne 200 ']'
+>     + sleep 1"
+>     |
+>     |
+>     |
+>     |
+>     |
+>     |"|
+>     |My output for sudo docker ps -a" is"|
+>     |
+>     |
+>     |machine@machine:~/kernelci/kernelci-docker$ sudo docker ps -a
+>     CONTAINER ID =C2=A0 =C2=A0 =C2=A0 =C2=A0IMAGE COMMAND =C2=A0 =C2=A0 =
+=
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CREATED =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0
+>     =C2=A0 =C2=A0 =C2=A0STATUS =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0PORTS =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 NAMES
+>     422fd26822d2 =C2=A0 =C2=A0 =C2=A0 =C2=A0redis:3.2 "docker-entrypoint=
+.s=E2=80=A6" =C2=A0 About a
+>     minute ago =C2=A0 Up About a minute =C2=A0 6379/tcp
+>     =C2=A0kernelci_redis.1.y81ztnwmn38bbrnemxmon2ihd
+>     4ed73ff801aa =C2=A0 =C2=A0 =C2=A0 =C2=A0mongo:3.4 "docker-entrypoint=
+.s=E2=80=A6" =C2=A0 About a
+>     minute ago =C2=A0 Up About a minute =C2=A0 27017/tcp
+>     kernelci_mongo.1.qy065rijglhxyqpr9u84dngmu
+>     7b43dc0aaf35 =C2=A0 =C2=A0 =C2=A0 =C2=A0lucj/kernelci-celery:latest
+>     "/srv/entrypoint.sh" =C2=A0 =C2=A0 About a minute ago =C2=A0 Up Abou=
+t a minute
+>     kernelci_celery.1.zc7ba4wchal8xqi2j236lvcx7
+>     75377d2684ce =C2=A0 =C2=A0 =C2=A0 =C2=A0lucj/kernelci-backend:latest
+>     =C2=A0"/srv/entrypoint.sh" =C2=A0 =C2=A0 About a minute ago =C2=A0 U=
+p About a minute =C2=A0
+>     8888/tcp =C2=A0kernelci_backend.1.o9fqdun7ff5djays1zhfzvtzh
+>     c163b138f787 =C2=A0 =C2=A0 =C2=A0 =C2=A0lucj/kernelci-frontend:lates=
+t
+>     "/srv/entrypoint.sh" =C2=A0 =C2=A0 About a minute ago =C2=A0 Up Abou=
+t a minute =C2=A0
+>     5000/tcp =C2=A0kernelci_frontend.1.k71cutuyw805d384wzv9398ua
+>     23a921a60479 =C2=A0 =C2=A0 =C2=A0 =C2=A0lucj/kernelci-proxy:latest
+>     =C2=A0"/usr/bin/entrypoint=E2=80=A6" =C2=A0 About a minute ago =C2=
+=A0 Up About a minute =C2=A0
+>     80/tcp =C2=A0kernelci_proxy.1.waurwpa2vftkpsw662aj84otu
+>     machine@machine:~/kernelci/kernelci-docker$
+>     |
+>     |
+>     |
+>     |
+>     |
+>     |Regards,|
+>     |Koti
+>     |
+>
+>=20
