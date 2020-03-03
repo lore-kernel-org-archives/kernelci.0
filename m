@@ -2,43 +2,30 @@ MIME-Version: 1.0
 References: <CAFW5HqQcEZEuFTpFjN3Cf7ESuZ9v7XrWGFMw8NTR0gBfghcY3g@mail.gmail.com>
  <CAFW5HqRQMTKeApPd=mhUX7ncpW0HCO764V6ZTfj3fcOzc+cr3Q@mail.gmail.com>
  <167dcd1a-7dc3-6bd1-efd2-2491da3ab46c@collabora.com> <CAFW5HqQiM8kjLFxXScSHOO-zg1h+Ch0X4r2wqe1Qw3X-WjBNFg@mail.gmail.com>
- <CAFW5HqSrwZn2E+OKJb1qEdP1po8MRaAc2qCo+C20HtH5FozFwg@mail.gmail.com> <c640d6a8-8f97-cd63-cee2-849d4d6e1da4@collabora.com>
-In-Reply-To: <c640d6a8-8f97-cd63-cee2-849d4d6e1da4@collabora.com>
+ <CAFW5HqSrwZn2E+OKJb1qEdP1po8MRaAc2qCo+C20HtH5FozFwg@mail.gmail.com>
+ <c640d6a8-8f97-cd63-cee2-849d4d6e1da4@collabora.com> <CAFW5HqSOrE7f2CGwd0XFMPQag1sT81FNkt_drgd7PxNBTYJ+xA@mail.gmail.com>
+In-Reply-To: <CAFW5HqSOrE7f2CGwd0XFMPQag1sT81FNkt_drgd7PxNBTYJ+xA@mail.gmail.com>
 From: "koti koti" <kotisoftwaretest@gmail.com>
-Date: Tue, 3 Mar 2020 22:14:52 +0530
-Message-ID: <CAFW5HqSOrE7f2CGwd0XFMPQag1sT81FNkt_drgd7PxNBTYJ+xA@mail.gmail.com>
+Date: Tue, 3 Mar 2020 22:16:58 +0530
+Message-ID: <CAFW5HqSC=o26JX4=tL-ts-CJkHpyV9Fw=HQOiewkC_=fOxybpw@mail.gmail.com>
 Subject: Re: "kernelci/kernelci-docker$ sudo ./start.sh" command keep on wait at "echo '-> waiting for backend...'"
-Content-Type: multipart/mixed; boundary="00000000000083b1d0059ff606d5"
+Content-Type: multipart/alternative; boundary="00000000000008fd5e059ff60eb2"
 List-ID: <kernelci.groups.io>
 To: =?UTF-8?B?TWljaGHFgiBHYcWCa2E=?= <michal.galka@collabora.com>
 Cc: kernelci@groups.io
 
---00000000000083b1d0059ff606d5
-Content-Type: multipart/alternative; boundary="00000000000083b1cd059ff606d3"
-
---00000000000083b1cd059ff606d3
+--00000000000008fd5e059ff60eb2
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi Michal,
 
-Really appreciated your support.
+I forgot to add one more info i.e   I am able to access below url in web
+also i.e
 
-1. I have debugged and it is working as expected if we place "sudo" before
-"curl" in the start.sh script.  Now my start script is executed
-successfully and attached the log.
-
-"
-echo "-> waiting for backend..."
-while [ $(sudo curl -s -m 3 -o /dev/null -w "%{http_code}" $IP:8081
---verbose) -ne 200 ]; do
-   sleep 1
-done
-echo "-> waiting for frontend..."
-while [ $(sudo curl -s -m 3 -o /dev/null -w "%{http_code}" $IP:8080
---verbose) -ne 200 ]; do
-  sleep 1
-done"
+http://172.18.0.1:8081/ or http://localhost:8081/
+http://172.18.0.1:8082/ or http://localhost:8081/
+http://172.18.0.1:8083/ or http://localhost:8081/
 
 2.  Can you let me know next step to configure LAVA to my kerneCI and  run
 the test by load QEMU?  ( I have plan to see the QEMU simple boot test cas=
@@ -51,506 +38,578 @@ any issues in feature while running test frame work?
 Regards,
 Koti
 
-On Tue, 3 Mar 2020 at 18:42, Micha=C5=82 Ga=C5=82ka <michal.galka@collabor=
-a.com>
-wrote:
+On Tue, 3 Mar 2020 at 22:14, koti koti <kotisoftwaretest@gmail.com> wrote:
 
-> Hi,
+> Hi Michal,
 >
-> The screenshots seem to confirm that backend and frontend are up and
-> running while curl says something different. Maybe you could pass
-> --verbose option to curl and have more insight in what's happening there=
-?
+> Really appreciated your support.
 >
-> 5.
+> 1. I have debugged and it is working as expected if we place "sudo" befo=
+re
+> "curl" in the start.sh script.  Now my start script is executed
+> successfully and attached the log.
 >
-> You could possibly run a whole setup on a single PC, however you'll need
-> to make sure that frontend, backend, LAVA web and Jenkins run on
-> different ports. I have never tried it on Ubuntu 16.04.
+> "
+> echo "-> waiting for backend..."
+> while [ $(sudo curl -s -m 3 -o /dev/null -w "%{http_code}" $IP:8081
+> --verbose) -ne 200 ]; do
+>    sleep 1
+> done
+> echo "-> waiting for frontend..."
+> while [ $(sudo curl -s -m 3 -o /dev/null -w "%{http_code}" $IP:8080
+> --verbose) -ne 200 ]; do
+>   sleep 1
+> done"
 >
-> My usual setup is Debian Buster with frontend/backend and mongo running
-> there + separate Debian based VM running LAVA.
+> 2.  Can you let me know next step to configure LAVA to my kerneCI and  r=
+un
+> the test by load QEMU?  ( I have plan to see the QEMU simple boot test c=
+ase
+> results in webpage)
 >
+> 3.  I am not sure why my curl is working with sudo only and is this give
+> any issues in feature while running test frame work?
 >
-> Cheers,
+> Regards,
+> Koti
 >
-> Micha=C5=82
+> On Tue, 3 Mar 2020 at 18:42, Micha=C5=82 Ga=C5=82ka <michal.galka@collab=
+ora.com>
+> wrote:
 >
-> On 03.03.2020 12:27, koti koti wrote:
-> > Hi Michal,
-> >
-> > sorry, I forgot to attach screenshots as mentioned in my previous emai=
-l.
-> >
-> > Please find the same attachments.
->
-> >
-> > Regards,
-> > Koti
-> >
-> > On Tue, 3 Mar 2020 at 16:36, koti koti <kotisoftwaretest@gmail.com
-> > <mailto:kotisoftwaretest@gmail.com>> wrote:
-> >
-> >     Hi Michal,
-> >
-> >     Thanks for your reply. Please find my responses and queries below.
-> >
-> >     1.  I have ran the start script (#sudo ./start.sh" ) by update the
-> >     IP statically as docker bridge ip (172.18.0.1 ).   Now I am seeing
-> >     the response as "000" instead of "200"  and my ./start script
-> >     stuck at "echo "-> waiting for backend...""
-> >
-> >     "
-> >     # Get IP of Docker host from the DOCKER_HOST environment variable
-> >     #IP=3D$(echo $DOCKER_HOST | cut -d'/' -f3 | cut -d':' -f1)
-> >     IP=3D"172.18.0.1"
-> >     "
-> >
-> >     log:
-> >     ####
-> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
-> >     <http://172.18.0.1:8081>
-> >     + '[' 000 -ne 200 ']'
-> >     + sleep 1
-> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
-> >     <http://172.18.0.1:8081>
-> >     + '[' 000 -ne 200 ']'
-> >     + sleep 1
-> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
-> >     <http://172.18.0.1:8081>
-> >     + '[' 000 -ne 200 ']'
-> >     + sleep 1
-> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
-> >     <http://172.18.0.1:8081>
-> >     + '[' 000 -ne 200 ']'
-> >     + sleep 1
-> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
-> >     <http://172.18.0.1:8081>
-> >
-> >
-> >     2. As you suggested I have check the ports (8080 and 8181) and the
-> >     ports are free before start my "./start.sh" script,
-> >     log:
-> >     ###
-> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
-> >     grep  8080
-> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
-> >     grep  8081
-> >     machine@machine:~/kernelci/kernelci-docker$
-> >
-> >     3. But these port are in LISTEN mode after run the ./start.sh scri=
-pt.
-> >     log:
-> >     ####
-> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
-> >     grep  8080
-> >     dockerd   4186   root   44u  IPv6  67713      0t0  TCP *:8080
-> (LISTEN)
-> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
-> >     grep  8081
-> >     dockerd   4186   root   45u  IPv6  67722      0t0  TCP *:8081
-> (LISTEN)
-> >     machine@machine:~/kernelci/kernelci-docker$
-> >
-> >     4. I am able to open the below URL's in web page. but still we are
-> >     seeing the curl response as "000" instead of "200" . (Attached the
-> >     screen shots)
-> >     http://172.18.0.1:8081
-> >     http://172.18.0.1:8080
-> >
-> >     5. After I run the "./start.sh", I am seeing so many networks in
-> >     "ifconfig -a" (in this en01 / loop/  wlp111s0 are  physical
-> >     port/loop/wifi port respectively) .  Do I need to assign any IP's
-> >     to them to use my KerneCI features?
-> >
-> >     "
-> >     docker0   Link encap:Ethernet  HWaddr
-> >               inet addr:172.17.0.1  Bcast:172.17.255.255
->  Mask:255.255.0.0
-> >               UP BROADCAST MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-> >
-> >     docker_gwbridge Link encap:Ethernet  HWaddr
-> >               inet addr:172.18.0.1  Bcast:172.18.255.255
->  Mask:255.255.0.0
-> >               inet6 addr:  Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:110 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:139 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:632971 (632.9 KB)  TX bytes:20143 (20.1 KB)
-> >
-> >     eno1      Link encap:Ethernet  HWaddr
-> >               UP BROADCAST MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:1000
-> >               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-> >               Interrupt:16 Memory:b5300000-b5320000
-> >
-> >     enx8c04ba689132 Link encap:Ethernet  HWaddr
-> >               UP BROADCAST MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:1000
-> >               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-> >
-> >     lo        Link encap:Local Loopback
-> >               inet addr:127.0.0.1  Mask:255.0.0.0
-> >               inet6 addr: ::1/128 Scope:Host
-> >               UP LOOPBACK RUNNING  MTU:65536  Metric:1
-> >               RX packets:1361 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:1361 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:1000
-> >               RX bytes:108755 (108.7 KB)  TX bytes:108755 (108.7 KB)
-> >
-> >     veth0b28762 Link encap:Ethernet  HWaddr
-> >               inet6 addr:  Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:34 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:0 (0.0 B)  TX bytes:4083 (4.0 KB)
-> >
-> >     veth11e0835 Link encap:Ethernet  HWaddr
-> >               inet6 addr: Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:32 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:0 (0.0 B)  TX bytes:3906 (3.9 KB)
-> >
-> >     veth64e481a Link encap:Ethernet  HWaddr
-> >               inet6 addr: Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:30 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:0 (0.0 B)  TX bytes:3729 (3.7 KB)
-> >
-> >     veth6ad0ac6 Link encap:Ethernet  HWaddr
-> >               inet6 addr:  Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:31 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:0 (0.0 B)  TX bytes:3836 (3.8 KB)
-> >
-> >     vethc5582f5 Link encap:Ethernet  HWaddr
-> >               inet6 addr:  Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:32 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:0 (0.0 B)  TX bytes:3906 (3.9 KB)
-> >
-> >     vethc8c5721 Link encap:Ethernet  HWaddr
-> >               inet6 addr:  Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:110 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:166 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:634511 (634.5 KB)  TX bytes:23307 (23.3 KB)
-> >
-> >     vethe5d7629 Link encap:Ethernet  HWaddr
-> >               inet6 addr:  Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:32 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:0
-> >               RX bytes:0 (0.0 B)  TX bytes:3906 (3.9 KB)
-> >
-> >     wlp111s0  Link encap:Ethernet  HWaddr
-> >               inet addr:  Bcast:10.118.213.255  Mask:255.255.254.0
-> >               inet6 addr:  Scope:Link
-> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-> >               RX packets:32160 errors:0 dropped:0 overruns:0 frame:0
-> >               TX packets:15689 errors:0 dropped:0 overruns:0 carrier:0
-> >               collisions:0 txqueuelen:1000
-> >               RX bytes:23377024 (23.3 MB)  TX bytes:5250217 (5.2 MB)
-> >     "
-> >
-> >     5. can I run all below modules in my single Ubuntu 16.04 PC?  (I
-> >     just want to run "QEMU" test in Ubuntu PC for POC (Proof of
-> >     concept) of Kerneci framework . Is it possible to run these in my
-> >     Single PC?
-> >
-> >       * *frontend* (for kernelci frontend)
-> >       * *backend* with a second CNAME *storage* (for the kernelci
-> >         backend and for the storage of builds logs and files)
-> >       * *lava* (for LAVA)
-> >       * *ci* (for jenkins)
-> >
-> >
-> >     Regards,
-> >     Koti
-> >
-> >     On Tue, 3 Mar 2020 at 15:46, Micha=C5=82 Ga=C5=82ka
-> >     <michal.galka@collabora.com <mailto:michal.galka@collabora.com>>
-> >     wrote:
-> >
-> >         Hi Koti,
-> >
-> >         I tried to reproduce your issue, with no luck so far. I've
-> >         never needed
-> >         to set the DOCKER_HOST variable on my machine and everything
-> >         worked.
-> >         A bit suspicious is that during the start you're getting HTTP
-> >         403 from
-> >         the backend URL. Have you checked that nothing is listening on
-> >         port 8081
-> >         before you call the ./start.sh script?
-> >         It may also be a good idea to check in a browser or with curl,
-> >         what's
-> >         the output you'll get when accessing localhost:8080 and
-> >         localhost8081.
-> >
-> >         I tried the stuff on my box with Ubuntu 18.04 LTS and docker
-> >         19.03.6
-> >
-> >         Regards,
-> >
-> >         Micha=C5=82
-> >
-> >
-> >         On 02.03.2020 14:13, koti koti wrote:
-> >
-> >         > Hi,
-> >         >
-> >         > I fell some thing wrong at this  line in .start.shi.e
-> >         >
-> >         > # Get IP of Docker host from the DOCKER_HOST environment
-> >         variable
-> >         > IP=3D$(echo $DOCKER_HOST | cut -d'/' -f3 | cut -d':' -f1)
-> >         > can some one let me know how can I get the "$DOCKER_HOST" in
-> >         my ubuntu
-> >         > environment?
-> >         >
-> >         > Regards,
-> >         > Koti
-> >         >
-> >         > On Mon, 2 Mar 2020 at 18:37, koti koti
-> >         <kotisoftwaretest@gmail.com <mailto:kotisoftwaretest@gmail.com=
->
-> >         > <mailto:kotisoftwaretest@gmail.com
-> >         <mailto:kotisoftwaretest@gmail.com>>> wrote:
-> >         >
-> >         >     Hi,
-> >         >
-> >         >     Today I have tried to install "kernelci" in my Ubuntu
-> >         machine (LTS
-> >         >     16.04) using this README file i.e
-> >         > https://github.com/lucj/kernelci-docker/blob/master/README.m=
-d.
-> >         >     But, the "./start .sh"  script keep on waiting at the
-> >         message
-> >         >     "echo '-> waiting for backend...'".
-> >         >
-> >         >     I have tried to debug more by put "debug messages (set
-> >         -x) in that
-> >         >     start.sh script and noticed below messages keep on.
-> >         >
-> >         >     can some one help me as how can i resolve this issue?
-> >         >
-> >         >     1. Do I need to setup any network IP before start this
-> >         command?  (
-> >         >     I am new for this dockers)
-> >         >     2. Do I need to set  any Docker HostIP  in environment
-> >         before
-> >         >     start the ./start script?  . if yes, how can I know this
-> >         Docker
-> >         >     Host IP? ( I am new for this dockers)
-> >         >
-> >         >     log:
-> >         >     ###
-> >         >     |"|
-> >         >     |machine@machine:~/kernelci/kernelci-docker$ sudo
-> ./start.sh
-> >         >     + STACK_NAME=3Dkernelci
-> >         >     + getopts t: option
-> >         >     + export TAG=3Dlatest
-> >         >     + TAG=3Dlatest
-> >         >     ++ docker node ls
-> >         >     + NODES=3D'ID                            HOSTNAME  STATU=
-S
-> >         >          AVAILABILITY        MANAGER STATUS  ENGINE VERSION
-> >         >     2l2zca1iuj5yyzujtrlv3m7xq *   7Y561X2 Ready
-> >         >         Active              Leader  18.09.7'
-> >         >     + '[' 0 =3D 1 ']'
-> >         >     ++ echo
-> >         >     ++ cut -d/ -f3
-> >         >     ++ cut -d: -f1
-> >         >     + IP=3D
-> >         >     + '[' '' =3D '' ']'
-> >         >     + IP=3D127.0.0.1
-> >         >     + echo '-> deploying the application...'
-> >         >     -> deploying the application...
-> >         >     + docker stack deploy -c docker-stack.yml kernelci
-> >         >     Creating network kernelci_default
-> >         >     Creating service kernelci_proxy
-> >         >     Creating service kernelci_frontend
-> >         >     Creating service kernelci_backend
-> >         >     Creating service kernelci_celery
-> >         >     Creating service kernelci_redis
-> >         >     Creating service kernelci_mongo
-> >         >     + echo '-> application deployed'
-> >         >     -> application deployed
-> >         >     + echo '-> waiting for backend...'
-> >         >     -> waiting for backend...
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1
-> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
-> >         127.0.0.1:8081 <http://127.0.0.1:8081>
-> >         >     <http://127.0.0.1:8081>
-> >         >     + '[' 403 -ne 200 ']'
-> >         >     + sleep 1"
-> >         >     |
-> >         >     |
-> >         >     |
-> >         >     |
-> >         >     |
-> >         >     |"|
-> >         >     |My output for sudo docker ps -a" is"|
-> >         >     |
-> >         >     |
-> >         >     |machine@machine:~/kernelci/kernelci-docker$ sudo docker
-> >         ps -a
-> >         >     CONTAINER ID        IMAGE COMMAND  CREATED
-> >         >          STATUS          PORTS               NAMES
-> >         >     422fd26822d2        redis:3.2 "docker-entrypoint.s=E2=80=
-=
-=A6"
-> >         About a
-> >         >     minute ago   Up About a minute   6379/tcp
-> >         >      kernelci_redis.1.y81ztnwmn38bbrnemxmon2ihd
-> >         >     4ed73ff801aa        mongo:3.4 "docker-entrypoint.s=E2=80=
-=
-=A6"
-> >         About a
-> >         >     minute ago   Up About a minute   27017/tcp
-> >         >     kernelci_mongo.1.qy065rijglhxyqpr9u84dngmu
-> >         >     7b43dc0aaf35        lucj/kernelci-celery:latest
-> >         >     "/srv/entrypoint.sh"     About a minute ago   Up About a
-> >         minute
-> >         >     kernelci_celery.1.zc7ba4wchal8xqi2j236lvcx7
-> >         >     75377d2684ce        lucj/kernelci-backend:latest
-> >         >      "/srv/entrypoint.sh"     About a minute ago   Up About
-> >         a minute
-> >         >     8888/tcp  kernelci_backend.1.o9fqdun7ff5djays1zhfzvtzh
-> >         >     c163b138f787        lucj/kernelci-frontend:latest
-> >         >     "/srv/entrypoint.sh"     About a minute ago   Up About a
-> >         minute
-> >         >     5000/tcp  kernelci_frontend.1.k71cutuyw805d384wzv9398ua
-> >         >     23a921a60479        lucj/kernelci-proxy:latest
-> >         >      "/usr/bin/entrypoint=E2=80=A6"   About a minute ago   U=
-p About
-> >         a minute
-> >         >     80/tcp  kernelci_proxy.1.waurwpa2vftkpsw662aj84otu
-> >         >     machine@machine:~/kernelci/kernelci-docker$
-> >         >     |
-> >         >     |
-> >         >     |
-> >         >     |
-> >         >     |
-> >         >     |Regards,|
-> >         >     |Koti
-> >         >     |
-> >         >
-> >         >=20
-> >
+>> Hi,
+>>
+>> The screenshots seem to confirm that backend and frontend are up and
+>> running while curl says something different. Maybe you could pass
+>> --verbose option to curl and have more insight in what's happening ther=
+e?
+>>
+>> 5.
+>>
+>> You could possibly run a whole setup on a single PC, however you'll nee=
+d
+>> to make sure that frontend, backend, LAVA web and Jenkins run on
+>> different ports. I have never tried it on Ubuntu 16.04.
+>>
+>> My usual setup is Debian Buster with frontend/backend and mongo running
+>> there + separate Debian based VM running LAVA.
+>>
+>>
+>> Cheers,
+>>
+>> Micha=C5=82
+>>
+>> On 03.03.2020 12:27, koti koti wrote:
+>> > Hi Michal,
+>> >
+>> > sorry, I forgot to attach screenshots as mentioned in my previous ema=
+il.
+>> >
+>> > Please find the same attachments.
+>>
+>> >
+>> > Regards,
+>> > Koti
+>> >
+>> > On Tue, 3 Mar 2020 at 16:36, koti koti <kotisoftwaretest@gmail.com
+>> > <mailto:kotisoftwaretest@gmail.com>> wrote:
+>> >
+>> >     Hi Michal,
+>> >
+>> >     Thanks for your reply. Please find my responses and queries below=
+.
+>> >
+>> >     1.  I have ran the start script (#sudo ./start.sh" ) by update th=
+e
+>> >     IP statically as docker bridge ip (172.18.0.1 ).   Now I am seein=
+g
+>> >     the response as "000" instead of "200"  and my ./start script
+>> >     stuck at "echo "-> waiting for backend...""
+>> >
+>> >     "
+>> >     # Get IP of Docker host from the DOCKER_HOST environment variable
+>> >     #IP=3D$(echo $DOCKER_HOST | cut -d'/' -f3 | cut -d':' -f1)
+>> >     IP=3D"172.18.0.1"
+>> >     "
+>> >
+>> >     log:
+>> >     ####
+>> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
+>> >     <http://172.18.0.1:8081>
+>> >     + '[' 000 -ne 200 ']'
+>> >     + sleep 1
+>> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
+>> >     <http://172.18.0.1:8081>
+>> >     + '[' 000 -ne 200 ']'
+>> >     + sleep 1
+>> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
+>> >     <http://172.18.0.1:8081>
+>> >     + '[' 000 -ne 200 ']'
+>> >     + sleep 1
+>> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
+>> >     <http://172.18.0.1:8081>
+>> >     + '[' 000 -ne 200 ']'
+>> >     + sleep 1
+>> >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}' 172.18.0.1:8081
+>> >     <http://172.18.0.1:8081>
+>> >
+>> >
+>> >     2. As you suggested I have check the ports (8080 and 8181) and th=
+e
+>> >     ports are free before start my "./start.sh" script,
+>> >     log:
+>> >     ###
+>> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
+>> >     grep  8080
+>> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
+>> >     grep  8081
+>> >     machine@machine:~/kernelci/kernelci-docker$
+>> >
+>> >     3. But these port are in LISTEN mode after run the ./start.sh
+>> script.
+>> >     log:
+>> >     ####
+>> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
+>> >     grep  8080
+>> >     dockerd   4186   root   44u  IPv6  67713      0t0  TCP *:8080
+>> (LISTEN)
+>> >     machine@machine:~/kernelci/kernelci-docker$ sudo lsof -i -P -n |
+>> >     grep  8081
+>> >     dockerd   4186   root   45u  IPv6  67722      0t0  TCP *:8081
+>> (LISTEN)
+>> >     machine@machine:~/kernelci/kernelci-docker$
+>> >
+>> >     4. I am able to open the below URL's in web page. but still we ar=
+e
+>> >     seeing the curl response as "000" instead of "200" . (Attached th=
+e
+>> >     screen shots)
+>> >     http://172.18.0.1:8081
+>> >     http://172.18.0.1:8080
+>> >
+>> >     5. After I run the "./start.sh", I am seeing so many networks in
+>> >     "ifconfig -a" (in this en01 / loop/  wlp111s0 are  physical
+>> >     port/loop/wifi port respectively) .  Do I need to assign any IP's
+>> >     to them to use my KerneCI features?
+>> >
+>> >     "
+>> >     docker0   Link encap:Ethernet  HWaddr
+>> >               inet addr:172.17.0.1  Bcast:172.17.255.255
+>>  Mask:255.255.0.0
+>> >               UP BROADCAST MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+>> >
+>> >     docker_gwbridge Link encap:Ethernet  HWaddr
+>> >               inet addr:172.18.0.1  Bcast:172.18.255.255
+>>  Mask:255.255.0.0
+>> >               inet6 addr:  Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:110 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:139 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:632971 (632.9 KB)  TX bytes:20143 (20.1 KB)
+>> >
+>> >     eno1      Link encap:Ethernet  HWaddr
+>> >               UP BROADCAST MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:1000
+>> >               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+>> >               Interrupt:16 Memory:b5300000-b5320000
+>> >
+>> >     enx8c04ba689132 Link encap:Ethernet  HWaddr
+>> >               UP BROADCAST MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:1000
+>> >               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+>> >
+>> >     lo        Link encap:Local Loopback
+>> >               inet addr:127.0.0.1  Mask:255.0.0.0
+>> >               inet6 addr: ::1/128 Scope:Host
+>> >               UP LOOPBACK RUNNING  MTU:65536  Metric:1
+>> >               RX packets:1361 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:1361 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:1000
+>> >               RX bytes:108755 (108.7 KB)  TX bytes:108755 (108.7 KB)
+>> >
+>> >     veth0b28762 Link encap:Ethernet  HWaddr
+>> >               inet6 addr:  Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:34 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:0 (0.0 B)  TX bytes:4083 (4.0 KB)
+>> >
+>> >     veth11e0835 Link encap:Ethernet  HWaddr
+>> >               inet6 addr: Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:32 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:0 (0.0 B)  TX bytes:3906 (3.9 KB)
+>> >
+>> >     veth64e481a Link encap:Ethernet  HWaddr
+>> >               inet6 addr: Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:30 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:0 (0.0 B)  TX bytes:3729 (3.7 KB)
+>> >
+>> >     veth6ad0ac6 Link encap:Ethernet  HWaddr
+>> >               inet6 addr:  Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:31 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:0 (0.0 B)  TX bytes:3836 (3.8 KB)
+>> >
+>> >     vethc5582f5 Link encap:Ethernet  HWaddr
+>> >               inet6 addr:  Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:32 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:0 (0.0 B)  TX bytes:3906 (3.9 KB)
+>> >
+>> >     vethc8c5721 Link encap:Ethernet  HWaddr
+>> >               inet6 addr:  Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:110 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:166 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:634511 (634.5 KB)  TX bytes:23307 (23.3 KB)
+>> >
+>> >     vethe5d7629 Link encap:Ethernet  HWaddr
+>> >               inet6 addr:  Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:32 errors:0 dropped:0 overruns:0 carrier:0
+>> >               collisions:0 txqueuelen:0
+>> >               RX bytes:0 (0.0 B)  TX bytes:3906 (3.9 KB)
+>> >
+>> >     wlp111s0  Link encap:Ethernet  HWaddr
+>> >               inet addr:  Bcast:10.118.213.255  Mask:255.255.254.0
+>> >               inet6 addr:  Scope:Link
+>> >               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+>> >               RX packets:32160 errors:0 dropped:0 overruns:0 frame:0
+>> >               TX packets:15689 errors:0 dropped:0 overruns:0 carrier:=
+0
+>> >               collisions:0 txqueuelen:1000
+>> >               RX bytes:23377024 (23.3 MB)  TX bytes:5250217 (5.2 MB)
+>> >     "
+>> >
+>> >     5. can I run all below modules in my single Ubuntu 16.04 PC?  (I
+>> >     just want to run "QEMU" test in Ubuntu PC for POC (Proof of
+>> >     concept) of Kerneci framework . Is it possible to run these in my
+>> >     Single PC?
+>> >
+>> >       * *frontend* (for kernelci frontend)
+>> >       * *backend* with a second CNAME *storage* (for the kernelci
+>> >         backend and for the storage of builds logs and files)
+>> >       * *lava* (for LAVA)
+>> >       * *ci* (for jenkins)
+>> >
+>> >
+>> >     Regards,
+>> >     Koti
+>> >
+>> >     On Tue, 3 Mar 2020 at 15:46, Micha=C5=82 Ga=C5=82ka
+>> >     <michal.galka@collabora.com <mailto:michal.galka@collabora.com>>
+>> >     wrote:
+>> >
+>> >         Hi Koti,
+>> >
+>> >         I tried to reproduce your issue, with no luck so far. I've
+>> >         never needed
+>> >         to set the DOCKER_HOST variable on my machine and everything
+>> >         worked.
+>> >         A bit suspicious is that during the start you're getting HTTP
+>> >         403 from
+>> >         the backend URL. Have you checked that nothing is listening o=
+n
+>> >         port 8081
+>> >         before you call the ./start.sh script?
+>> >         It may also be a good idea to check in a browser or with curl=
+,
+>> >         what's
+>> >         the output you'll get when accessing localhost:8080 and
+>> >         localhost8081.
+>> >
+>> >         I tried the stuff on my box with Ubuntu 18.04 LTS and docker
+>> >         19.03.6
+>> >
+>> >         Regards,
+>> >
+>> >         Micha=C5=82
+>> >
+>> >
+>> >         On 02.03.2020 14:13, koti koti wrote:
+>> >
+>> >         > Hi,
+>> >         >
+>> >         > I fell some thing wrong at this  line in .start.shi.e
+>> >         >
+>> >         > # Get IP of Docker host from the DOCKER_HOST environment
+>> >         variable
+>> >         > IP=3D$(echo $DOCKER_HOST | cut -d'/' -f3 | cut -d':' -f1)
+>> >         > can some one let me know how can I get the "$DOCKER_HOST" i=
+n
+>> >         my ubuntu
+>> >         > environment?
+>> >         >
+>> >         > Regards,
+>> >         > Koti
+>> >         >
+>> >         > On Mon, 2 Mar 2020 at 18:37, koti koti
+>> >         <kotisoftwaretest@gmail.com <mailto:kotisoftwaretest@gmail.co=
+m>
+>> >         > <mailto:kotisoftwaretest@gmail.com
+>> >         <mailto:kotisoftwaretest@gmail.com>>> wrote:
+>> >         >
+>> >         >     Hi,
+>> >         >
+>> >         >     Today I have tried to install "kernelci" in my Ubuntu
+>> >         machine (LTS
+>> >         >     16.04) using this README file i.e
+>> >         > https://github.com/lucj/kernelci-docker/blob/master/README.=
+md
+>> .
+>> >         >     But, the "./start .sh"  script keep on waiting at the
+>> >         message
+>> >         >     "echo '-> waiting for backend...'".
+>> >         >
+>> >         >     I have tried to debug more by put "debug messages (set
+>> >         -x) in that
+>> >         >     start.sh script and noticed below messages keep on.
+>> >         >
+>> >         >     can some one help me as how can i resolve this issue?
+>> >         >
+>> >         >     1. Do I need to setup any network IP before start this
+>> >         command?  (
+>> >         >     I am new for this dockers)
+>> >         >     2. Do I need to set  any Docker HostIP  in environment
+>> >         before
+>> >         >     start the ./start script?  . if yes, how can I know thi=
+s
+>> >         Docker
+>> >         >     Host IP? ( I am new for this dockers)
+>> >         >
+>> >         >     log:
+>> >         >     ###
+>> >         >     |"|
+>> >         >     |machine@machine:~/kernelci/kernelci-docker$ sudo
+>> ./start.sh
+>> >         >     + STACK_NAME=3Dkernelci
+>> >         >     + getopts t: option
+>> >         >     + export TAG=3Dlatest
+>> >         >     + TAG=3Dlatest
+>> >         >     ++ docker node ls
+>> >         >     + NODES=3D'ID                            HOSTNAME  STAT=
+US
+>> >         >          AVAILABILITY        MANAGER STATUS  ENGINE VERSION
+>> >         >     2l2zca1iuj5yyzujtrlv3m7xq *   7Y561X2 Ready
+>> >         >         Active              Leader  18.09.7'
+>> >         >     + '[' 0 =3D 1 ']'
+>> >         >     ++ echo
+>> >         >     ++ cut -d/ -f3
+>> >         >     ++ cut -d: -f1
+>> >         >     + IP=3D
+>> >         >     + '[' '' =3D '' ']'
+>> >         >     + IP=3D127.0.0.1
+>> >         >     + echo '-> deploying the application...'
+>> >         >     -> deploying the application...
+>> >         >     + docker stack deploy -c docker-stack.yml kernelci
+>> >         >     Creating network kernelci_default
+>> >         >     Creating service kernelci_proxy
+>> >         >     Creating service kernelci_frontend
+>> >         >     Creating service kernelci_backend
+>> >         >     Creating service kernelci_celery
+>> >         >     Creating service kernelci_redis
+>> >         >     Creating service kernelci_mongo
+>> >         >     + echo '-> application deployed'
+>> >         >     -> application deployed
+>> >         >     + echo '-> waiting for backend...'
+>> >         >     -> waiting for backend...
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1
+>> >         >     ++ curl -s -m 3 -o /dev/null -w '%{http_code}'
+>> >         127.0.0.1:8081 <http://127.0.0.1:8081>
+>> >         >     <http://127.0.0.1:8081>
+>> >         >     + '[' 403 -ne 200 ']'
+>> >         >     + sleep 1"
+>> >         >     |
+>> >         >     |
+>> >         >     |
+>> >         >     |
+>> >         >     |
+>> >         >     |"|
+>> >         >     |My output for sudo docker ps -a" is"|
+>> >         >     |
+>> >         >     |
+>> >         >     |machine@machine:~/kernelci/kernelci-docker$ sudo docke=
+r
+>> >         ps -a
+>> >         >     CONTAINER ID        IMAGE COMMAND  CREATED
+>> >         >          STATUS          PORTS               NAMES
+>> >         >     422fd26822d2        redis:3.2 "docker-entrypoint.s=E2=
+=80=A6"
+>> >         About a
+>> >         >     minute ago   Up About a minute   6379/tcp
+>> >         >      kernelci_redis.1.y81ztnwmn38bbrnemxmon2ihd
+>> >         >     4ed73ff801aa        mongo:3.4 "docker-entrypoint.s=E2=
+=80=A6"
+>> >         About a
+>> >         >     minute ago   Up About a minute   27017/tcp
+>> >         >     kernelci_mongo.1.qy065rijglhxyqpr9u84dngmu
+>> >         >     7b43dc0aaf35        lucj/kernelci-celery:latest
+>> >         >     "/srv/entrypoint.sh"     About a minute ago   Up About =
+a
+>> >         minute
+>> >         >     kernelci_celery.1.zc7ba4wchal8xqi2j236lvcx7
+>> >         >     75377d2684ce        lucj/kernelci-backend:latest
+>> >         >      "/srv/entrypoint.sh"     About a minute ago   Up About
+>> >         a minute
+>> >         >     8888/tcp  kernelci_backend.1.o9fqdun7ff5djays1zhfzvtzh
+>> >         >     c163b138f787        lucj/kernelci-frontend:latest
+>> >         >     "/srv/entrypoint.sh"     About a minute ago   Up About =
+a
+>> >         minute
+>> >         >     5000/tcp  kernelci_frontend.1.k71cutuyw805d384wzv9398ua
+>> >         >     23a921a60479        lucj/kernelci-proxy:latest
+>> >         >      "/usr/bin/entrypoint=E2=80=A6"   About a minute ago   =
+Up About
+>> >         a minute
+>> >         >     80/tcp  kernelci_proxy.1.waurwpa2vftkpsw662aj84otu
+>> >         >     machine@machine:~/kernelci/kernelci-docker$
+>> >         >     |
+>> >         >     |
+>> >         >     |
+>> >         >     |
+>> >         >     |
+>> >         >     |Regards,|
+>> >         >     |Koti
+>> >         >     |
+>> >         >
+>> >         >=20
+>> >
+>>
 >
 
---00000000000083b1cd059ff606d3
+--00000000000008fd5e059ff60eb2
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi Michal,</div><div><br></div><div>Really appreciate=
-d your support.</div><div><br></div><div>1. I have debugged and it is worki=
-ng as expected if we place &quot;sudo&quot; before &quot;curl&quot; in the =
-start.sh script.=C2=A0 Now my start script is executed successfully and att=
-ached the log. <br></div><div><br></div><div>&quot;</div><div>echo &quot;-&=
-gt; waiting for backend...&quot;<br>while [ $(sudo curl -s -m 3 -o /dev/nul=
-l -w &quot;%{http_code}&quot; $IP:8081 --verbose) -ne 200 ]; do<br>=C2=A0 =
-=C2=A0sleep 1<br>done<br>echo &quot;-&gt; waiting for frontend...&quot;<br=
->while [ $(sudo curl -s -m 3 -o /dev/null -w &quot;%{http_code}&quot; $IP:8=
-080 --verbose) -ne 200 ]; do<br>=C2=A0 sleep 1<br>done&quot;<br></div><div>=
-<br></div><div>2.=C2=A0 Can you let me know next step to configure LAVA to =
-my kerneCI and=C2=A0 run the test by load QEMU?=C2=A0 ( I have plan to see =
-the QEMU simple boot test case results in webpage)</div><div><br></div><div=
->3.=C2=A0 I am not sure why my curl is working with sudo only and is this g=
-ive any issues in feature while running test frame work?</div><div><br></di=
-v><div>Regards,</div><div>Koti<br></div></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, 3 Mar 2020 at 18:42, Micha=
-=C5=82 Ga=C5=82ka &lt;<a href=3D"mailto:michal.galka@collabora.com">michal=
-.galka@collabora.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
-te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
-);padding-left:1ex">Hi,<br>
+<div dir=3D"ltr"><div>Hi Michal,</div><div><br></div><div>I forgot to add o=
+ne more info i.e=C2=A0=C2=A0 I am able to access below url in web also i.e<=
+/div><div><br></div><div><a href=3D"http://172.18.0.1:8081/">http://172.18.=
+0.1:8081/</a> or <a href=3D"http://localhost:8081/">http://localhost:8081/<=
+/a></div><div><a href=3D"http://172.18.0.1:8082/">http://172.18.0.1:8082/</=
+a> or  <a href=3D"http://localhost:8081/">http://localhost:8081/</a></div><=
+div><a href=3D"http://172.18.0.1:8083/">http://172.18.0.1:8083/</a> or  <a =
+href=3D"http://localhost:8081/">http://localhost:8081/</a></div><div><br></=
+div><div><div>2.=C2=A0 Can you let me know next step to configure LAVA to m=
+y kerneCI=20
+and=C2=A0 run the test by load QEMU?=C2=A0 ( I have plan to see the QEMU s=
+imple=20
+boot test case results in webpage)</div><div><br></div><div>3.=C2=A0 I am =
+not sure why my curl is working with sudo only and is this give any issues =
+in feature while running test frame work?</div></div><div><br></div><div>Re=
+gards,</div><div>Koti<br></div></div><br><div class=3D"gmail_quote"><div di=
+r=3D"ltr" class=3D"gmail_attr">On Tue, 3 Mar 2020 at 22:14, koti koti &lt;<=
+a href=3D"mailto:kotisoftwaretest@gmail.com">kotisoftwaretest@gmail.com</a>=
+&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div=
+ dir=3D"ltr"><div>Hi Michal,</div><div><br></div><div>Really appreciated yo=
+ur support.</div><div><br></div><div>1. I have debugged and it is working a=
+s expected if we place &quot;sudo&quot; before &quot;curl&quot; in the star=
+t.sh script.=C2=A0 Now my start script is executed successfully and attache=
+d the log. <br></div><div><br></div><div>&quot;</div><div>echo &quot;-&gt; =
+waiting for backend...&quot;<br>while [ $(sudo curl -s -m 3 -o /dev/null -w=
+ &quot;%{http_code}&quot; $IP:8081 --verbose) -ne 200 ]; do<br>=C2=A0 =C2=
+=A0sleep 1<br>done<br>echo &quot;-&gt; waiting for frontend...&quot;<br>wh=
+ile [ $(sudo curl -s -m 3 -o /dev/null -w &quot;%{http_code}&quot; $IP:8080=
+ --verbose) -ne 200 ]; do<br>=C2=A0 sleep 1<br>done&quot;<br></div><div><br=
+></div><div>2.=C2=A0 Can you let me know next step to configure LAVA to my =
+kerneCI and=C2=A0 run the test by load QEMU?=C2=A0 ( I have plan to see the=
+ QEMU simple boot test case results in webpage)</div><div><br></div><div>3.=
+=
+=C2=A0 I am not sure why my curl is working with sudo only and is this giv=
+e any issues in feature while running test frame work?</div><div><br></div>=
+<div>Regards,</div><div>Koti<br></div></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, 3 Mar 2020 at 18:42, Micha=C5=
+=
+=82 Ga=C5=82ka &lt;<a href=3D"mailto:michal.galka@collabora.com" target=3D=
+"_blank">michal.galka@collabora.com</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">Hi,<br>
 <br>
 The screenshots seem to confirm that backend and frontend are up and <br>
 running while curl says something different. Maybe you could pass <br>
@@ -1363,84 +1422,6 @@ r>
 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;
 &gt;<br>
 </blockquote></div>
+</blockquote></div>
 
---00000000000083b1cd059ff606d3--
-
---00000000000083b1d0059ff606d5
-Content-Type: text/plain; charset="US-ASCII"; name="start_log.txt"
-Content-Disposition: attachment; filename="start_log.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_k7c4etoi0>
-X-Attachment-Id: f_k7c4etoi0
-
-bWFjaGluZUBtYWNoaW5lOn4va2VybmVsY2kva2VybmVsY2ktZG9ja2VyJCBzdWRvIC4vc3RhcnQu
-c2ggCisgU1RBQ0tfTkFNRT1rZXJuZWxjaQorIGdldG9wdHMgdDogb3B0aW9uCisgZXhwb3J0IFRB
-Rz1sYXRlc3QKKyBUQUc9bGF0ZXN0CisrIGRvY2tlciBub2RlIGxzCisgTk9ERVM9J0lEICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIEhPU1ROQU1FICAgICAgICAgICAgU1RBVFVTICAgICAgICAg
-ICAgICBBVkFJTEFCSUxJVFkgICAgICAgIE1BTkFHRVIgU1RBVFVTICAgICAgRU5HSU5FIFZFUlNJ
-T04KNjhhODYxbThrZHRlbHVsNGZ4eHJobGZ4NCAqICAgN1k1NjFYMiAgICAgICAgICAgICBSZWFk
-eSAgICAgICAgICAgICAgIEFjdGl2ZSAgICAgICAgICAgICAgTGVhZGVyICAgICAgICAgICAgICAx
-OC4wOS43JworICdbJyAwID0gMSAnXScKKyBJUD0xNzIuMTguMC4xCisgJ1snIDE3Mi4xOC4wLjEg
-PSAnJyAnXScKKyBlY2hvICctPiBkZXBsb3lpbmcgdGhlIGFwcGxpY2F0aW9uLi4uJwotPiBkZXBs
-b3lpbmcgdGhlIGFwcGxpY2F0aW9uLi4uCisgZG9ja2VyIHN0YWNrIGRlcGxveSAtYyBkb2NrZXIt
-c3RhY2sueW1sIGtlcm5lbGNpCkNyZWF0aW5nIG5ldHdvcmsga2VybmVsY2lfZGVmYXVsdApDcmVh
-dGluZyBzZXJ2aWNlIGtlcm5lbGNpX3JlZGlzCkNyZWF0aW5nIHNlcnZpY2Uga2VybmVsY2lfbW9u
-Z28KQ3JlYXRpbmcgc2VydmljZSBrZXJuZWxjaV9wcm94eQpDcmVhdGluZyBzZXJ2aWNlIGtlcm5l
-bGNpX2Zyb250ZW5kCkNyZWF0aW5nIHNlcnZpY2Uga2VybmVsY2lfYmFja2VuZApDcmVhdGluZyBz
-ZXJ2aWNlIGtlcm5lbGNpX2NlbGVyeQorIGVjaG8gJy0+IGFwcGxpY2F0aW9uIGRlcGxveWVkJwot
-PiBhcHBsaWNhdGlvbiBkZXBsb3llZAorIGVjaG8gJy0+IHdhaXRpbmcgZm9yIGJhY2tlbmQuLi4n
-Ci0+IHdhaXRpbmcgZm9yIGJhY2tlbmQuLi4KKysgc3VkbyBjdXJsIC1zIC1tIDMgLW8gL2Rldi9u
-dWxsIC13ICcle2h0dHBfY29kZX0nIDE3Mi4xOC4wLjE6ODA4MSAtLXZlcmJvc2UKKiBSZWJ1aWx0
-IFVSTCB0bzogMTcyLjE4LjAuMTo4MDgxLwoqICAgVHJ5aW5nIDE3Mi4xOC4wLjEuLi4KKiBDb25u
-ZWN0ZWQgdG8gMTcyLjE4LjAuMSAoMTcyLjE4LjAuMSkgcG9ydCA4MDgxICgjMCkKPiBHRVQgLyBI
-VFRQLzEuMQo+IEhvc3Q6IDE3Mi4xOC4wLjE6ODA4MQo+IFVzZXItQWdlbnQ6IGN1cmwvNy40Ny4w
-Cj4gQWNjZXB0OiAqLyoKPiAKPCBIVFRQLzEuMSAyMDAgT0sKPCBTZXJ2ZXI6IG5naW54LzEuMTMu
-OAo8IERhdGU6IFR1ZSwgMDMgTWFyIDIwMjAgMTY6MjE6NDggR01UCjwgQ29udGVudC1UeXBlOiB0
-ZXh0L2h0bWw7IGNoYXJzZXQ9dXRmLTgKPCBDb250ZW50LUxlbmd0aDogMTM4NzgKPCBMYXN0LU1v
-ZGlmaWVkOiBGcmksIDA5IEZlYiAyMDE4IDIwOjMyOjM4IEdNVAo8IENvbm5lY3Rpb246IGtlZXAt
-YWxpdmUKPCBFVGFnOiAiNWE3ZTA1NjYtMzYzNiIKPCBBY2NlcHQtUmFuZ2VzOiBieXRlcwo8IAp7
-IFsxMzg3OCBieXRlcyBkYXRhXQoqIENvbm5lY3Rpb24gIzAgdG8gaG9zdCAxNzIuMTguMC4xIGxl
-ZnQgaW50YWN0CisgJ1snIDIwMCAtbmUgMjAwICddJworIGVjaG8gJy0+IHdhaXRpbmcgZm9yIGZy
-b250ZW5kLi4uJwotPiB3YWl0aW5nIGZvciBmcm9udGVuZC4uLgorKyBzdWRvIGN1cmwgLXMgLW0g
-MyAtbyAvZGV2L251bGwgLXcgJyV7aHR0cF9jb2RlfScgMTcyLjE4LjAuMTo4MDgwIC0tdmVyYm9z
-ZQoqIFJlYnVpbHQgVVJMIHRvOiAxNzIuMTguMC4xOjgwODAvCiogICBUcnlpbmcgMTcyLjE4LjAu
-MS4uLgoqIENvbm5lY3RlZCB0byAxNzIuMTguMC4xICgxNzIuMTguMC4xKSBwb3J0IDgwODAgKCMw
-KQo+IEdFVCAvIEhUVFAvMS4xCj4gSG9zdDogMTcyLjE4LjAuMTo4MDgwCj4gVXNlci1BZ2VudDog
-Y3VybC83LjQ3LjAKPiBBY2NlcHQ6ICovKgo+IAo8IEhUVFAvMS4xIDIwMCBPSwo8IFNlcnZlcjog
-bmdpbngvMS4xMy44CjwgRGF0ZTogVHVlLCAwMyBNYXIgMjAyMCAxNjoyMTo0OCBHTVQKPCBDb250
-ZW50LVR5cGU6IHRleHQvaHRtbDsgY2hhcnNldD11dGYtOAo8IENvbnRlbnQtTGVuZ3RoOiAxNDQz
-OQo8IENvbm5lY3Rpb246IGtlZXAtYWxpdmUKPCBTZXQtQ29va2llOiBsaW5hcm9rZXJuZWxjaT1l
-eUpqYzNKbVgzUnZhMlZ1SWpwN0lpQmlJam9pV2xSbk0wMTZSVFZPYWtwclRWZEpNMXBFU1hwUFJG
-cHBUbnByTlUxcVZUSlplbWMxV2xSQk5VNUhUbXRaZW1jeVdWUnJOVmwzUFQwaWZYMC5FVUFWbkEu
-MDh2MEdERmEzVXRTdG1Gc2oweVFVei12WVBjOyBIdHRwT25seTsgUGF0aD0vCjwgCnsgWzY2MzYg
-Ynl0ZXMgZGF0YV0KKiBDb25uZWN0aW9uICMwIHRvIGhvc3QgMTcyLjE4LjAuMSBsZWZ0IGludGFj
-dAorICdbJyAyMDAgLW5lIDIwMCAnXScKKyBlY2hvICctPiBjb25maWd1cmluZyB0aGUgYXBwbGlj
-YXRpb24uLi4nCi0+IGNvbmZpZ3VyaW5nIHRoZSBhcHBsaWNhdGlvbi4uLgorIGVjaG8gJy0+IHJl
-cXVlc3RpbmcgdG9rZW4gZnJvbSBiYWNrZW5kLi4uJwotPiByZXF1ZXN0aW5nIHRva2VuIGZyb20g
-YmFja2VuZC4uLgorIFRPS0VOPQorICdbJyAnJyA9ICcnICddJworKyBzdWRvIGN1cmwgLW0gMyAt
-cyAtWCBQT1NUIC1IICdDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb24nIC1IICdBdXRob3Jp
-emF0aW9uOiBNQVNURVJfS0VZJyAtZCAneyJlbWFpbCI6ICJhZG1Aa2VybmVsY2kub3JnIiwgImFk
-bWluIjogMX0nIDE3Mi4xOC4wLjE6ODA4MS90b2tlbgorKyBkb2NrZXIgY29udGFpbmVyIHJ1biAt
-LXJtIC1pIGx1Y2ovanEgLXIgJy5yZXN1bHRbMF0udG9rZW4nCisgVE9LRU49OWNiYmY3NDgtZTJj
-MS00YzBjLWJkNDUtYjAwZWY2NWFmMDA3Cisgc2xlZXAgMQorICdbJyA5Y2JiZjc0OC1lMmMxLTRj
-MGMtYmQ0NS1iMDBlZjY1YWYwMDcgPSAnJyAnXScKKyBlY2hvIDljYmJmNzQ4LWUyYzEtNGMwYy1i
-ZDQ1LWIwMGVmNjVhZjAwNworIGVjaG8gJy0+IHRva2VuIHJldHVybmVkOiA5Y2JiZjc0OC1lMmMx
-LTRjMGMtYmQ0NS1iMDBlZjY1YWYwMDcnCi0+IHRva2VuIHJldHVybmVkOiA5Y2JiZjc0OC1lMmMx
-LTRjMGMtYmQ0NS1iMDBlZjY1YWYwMDcKKysgZGF0ZSArJVklbSVkVCVIJU0lUworIENPTkZJRz1m
-cm9udGVuZC0yMDIwMDMwM1QyMTUxNTAKKyBzZWQgLWUgJ3MvXkJBQ0tFTkRfVE9LRU4uKiQvQkFD
-S0VORF9UT0tFTiA9ICI5Y2JiZjc0OC1lMmMxLTRjMGMtYmQ0NS1iMDBlZjY1YWYwMDciLycgZnJv
-bnRlbmQvZmxhc2tfc2V0dGluZ3MKKyBkb2NrZXIgY29uZmlnIGNyZWF0ZSBmcm9udGVuZC0yMDIw
-MDMwM1QyMTUxNTAgY29uZmlnL2Zyb250ZW5kLmNvbmZpZwppaWZnbndrNG1vaGs1NGNqdjRxNTUy
-dWF6CisgZG9ja2VyIHNlcnZpY2UgdXBkYXRlIC0tY29uZmlnLWFkZCBzcmM9ZnJvbnRlbmQtMjAy
-MDAzMDNUMjE1MTUwLHRhcmdldD0vZXRjL2xpbmFyby9rZXJuZWxjaS1mcm9udGVuZC5jZmcga2Vy
-bmVsY2lfZnJvbnRlbmQKa2VybmVsY2lfZnJvbnRlbmQKb3ZlcmFsbCBwcm9ncmVzczogMSBvdXQg
-b2YgMSB0YXNrcyAKMS8xOiBydW5uaW5nICAgWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09Pl0gCnZlcmlmeTogU2VydmljZSBjb252ZXJnZWQgCisgZWNo
-byAnLT4gYXBwbGljYXRpb24gY29uZmlndXJlZCcKLT4gYXBwbGljYXRpb24gY29uZmlndXJlZAor
-IGVjaG8gJy0tPiBmcm9udGVuZCBhdmFpbGFibGUgb24gcG9ydCA4MDgwJwotLT4gZnJvbnRlbmQg
-YXZhaWxhYmxlIG9uIHBvcnQgODA4MAorIGVjaG8gJy0tPiBiYWNrZW5kIGF2YWlsYWJsZSBvbiBw
-b3J0IDgwODEnCi0tPiBiYWNrZW5kIGF2YWlsYWJsZSBvbiBwb3J0IDgwODEKKyBlY2hvICctLT4g
-c3RvcmFnZSBhdmFpbGFibGUgb24gcG9ydCA4MDgyJwotLT4gc3RvcmFnZSBhdmFpbGFibGUgb24g
-cG9ydCA4MDgyCm1hY2hpbmVAbWFjaGluZQoK
-
---00000000000083b1d0059ff606d5--
+--00000000000008fd5e059ff60eb2--
