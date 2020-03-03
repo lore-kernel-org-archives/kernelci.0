@@ -1,101 +1,94 @@
-Date: Thu, 29 Aug 2019 13:14:41 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: Some questions about KernelCI
-Message-ID: <20190829121441.GD4118@sirena.co.uk>
-References: <CACT4Y+bt8r-1t7=sFtH75_Bj-xBdTTUkM-tZ=GEoy2B=rCYQOg@mail.gmail.com>
+Subject: Re: [Automated-testing] syzkaller reproducers
+References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
+ <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
+ <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org>
+ <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
+ <20191011180248.GA24089@rei.lan>
+ <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
+ <20191014085414.GB31760@rei.lan>
+ <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
+ <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
+ <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
+ <e8b11b09-37ac-6ae2-0908-b803b4160f7c@oracle.com>
+ <CACT4Y+bShy-3vO3ifNKVcGGNf3X9XA7zL-Ja9-T+gZv5=QNe4w@mail.gmail.com>
+ <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com>
+ <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
+From: George Kennedy <george.kennedy@oracle.com>
+Message-ID: <2d593685-b50e-ea2c-a724-818f6b149731@oracle.com>
+Date: Tue, 3 Mar 2020 08:46:23 -0500
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+bt8r-1t7=sFtH75_Bj-xBdTTUkM-tZ=GEoy2B=rCYQOg@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IDYEmSnFhs3mNXr+"
-Content-Disposition: inline
+In-Reply-To: <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, dvyukov@google.com
-Cc: Kevin Hilman <khilman@baylibre.com>
+To: Dmitry Vyukov <dvyukov@google.com>, shuah <shuah@kernel.org>
+Cc: Cyril Hrubis <chrubis@suse.cz>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>, Dan Carpenter <dan.carpenter@oracle.com>
 
---IDYEmSnFhs3mNXr+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Aug 28, 2019 at 02:03:22PM -0700,  via Groups.Io wrote:
 
-Just responding for me, this hasn't been reviewed by anyone else.
+On 3/3/2020 3:45 AM, Dmitry Vyukov wrote:
+> Shauh,
+>
+> We've added more reproducers to:
+> https://github.com/dvyukov/syzkaller-repros/tree/master/linux
+>
+> It makes sense to pull in them to the kernel-arts repo. Not sure
+> what's the most convenient way for you since it's not exactly a
+> traditional "patch"? Perhaps you just copy linux/*.c files and commit?
+>
+> George, another throw in of 446 repros ;)
 
-> 1. Do I understand it correctly that KernelCI is still mostly about
-> building/booting, it started running tests some time ago but few tests
-> are currently onboarded? Is there a full list of tests? I looked at
-> lava-kernel-tests repo, but on the dashboard I also seen "networking"
-> tests, so I am not sure if lava-kernel-tests is the full list. There
-> are plans to onboard more tests in the future, right?
+Thank you Dmitry!
+George
 
-There's also some of the v4l tests running.  The plan is to get the UI
-working well and figure out what we're doing in terms of hardware to run
-things on before expanding testsuite coverage.  I'll let the people
-working on that provide more detail on how that's going.
+>
+>
+>
+> On Mon, Jan 27, 2020 at 6:08 PM George Kennedy
+> <george.kennedy@oracle.com> wrote:
+>>> Hi George,
+>>>
+>>> This was still starred in my inbox, but I never got to actually do
+>>> anything with it. Thanks for pinging me. I thought that the script to
+>>> extract the repros won't work for some reason and that I will need to
+>>> fix it first. But turns out it's still working as-is (I wanted to
+>>> submit some changes that would break it, but I never go to that as
+>>> well. Good! :)).
+>>>
+>>> So here is a new drop in with 692 repros:
+>>> https://github.com/dvyukov/syzkaller-repros/commit/6a06992209c328a3115c89c020f45b844b103573
+>>> Enjoy!
+>>>
+>>> Yes, we have separate managers for each version, the entries in the
+>>> Instances table correspond to syz-manager one-to-one:
+>>> https://syzkaller.appspot.com/upstream
+>>> https://syzkaller.appspot.com/linux-4.19
+>>> https://syzkaller.appspot.com/android-54
+>> Thank you Dmitry!
+>> George
+>>>
+>>>
+>>> On Mon, Jan 27, 2020 at 3:20 PM George Kennedy
+>>> <george.kennedy@oracle.com> wrote:
+>>>> Hi Dmitry,
+>>>>
+>>>> Re-sending this request.
+>>>>
+>>>> Also, how do you track the Upstream branches with Syzkaller? Do you have
+>>>> a version of Syzkaller for each (i.e. 4.14, 4.19, etc)?
+>>>>
+>>>> Thank you,
+>>>> George
+>>>>
+>>>> On 12/6/2019 3:06 PM, George Kennedy wrote:
+>>>>> Hello Dmitry,
+>>>>>
+>>>>> Could we get another drop of the Syzkaller C reproducers?
+>>>>>
+>>>>> Wonder if we could get the drop periodically (i.e. a drop/quarter or a
+>>>>> drop to match a major linux release)?
+>>>>>
+>>>>> Thank you,
+>>>>> George
 
-> 2. Are there test coverage reports anywhere? Is it in plans?
-
-There's some e-mail reports for tests which are sent to developers at
-the minute, the web UI is being looked at as well since as you've
-noticed it's currently not great.
-
-> 3. Does KernelCI use any of KASAN, LOCKDEP, KMEMLEAK, FAULT_INJECTION,
-> DEBUG_OBJECTS, DEBUG_VM runtime debugging features?
-
-Not at the current time except in so far as they appear in defconfigs,
-we do talk about it sometimes - some of them would even be useful during
-boot testing - but we've had resource issues in the past with adding the
-extra configs.
-
-> 4. Do I understand it correctly that test failures are currently not
-> reported in any way (other than being shown on the dashboard)? Who
-> looks at the dashboard? Is there constant monitoring of all results?
-> Is automatic reporting in plans?
-
-The test support is pretty much in development at the moment, until
-we've got the infrastructure working well we're not really pushing on
-reporting things out too much.
-
-> 5. There is no pre-commit testing, right?
-
-Right.  It's a feature that gets talked about from time to time but
-nobody's stepped forward to implement it and we'd need to figure out
-resources to run the tests as well.
-
-> 6. What are the major TODO items for near/mid-term future?
-
-There's a bunch of issues in github:
-
-	https://github.com/kernelci
-
-but really a lot of it is about people scratching their own itches, for
-example I want to do some work on the e-mail build reports since they're
-not very usable right now but I've never got round to filing an issue
-for it.
-
-> 7. What is rough approximation of total engineer-years spent on the
-> project? What are the major time sinks? Pain points?
-
-Finger in the air I'd guess more than 8, possibly quite a bit - the
-project has been going for a bit over 5 years, we've had periods where
-there's been multiple people working on it pretty much full time but
-also periods where it's been mostly in maintanence mode.
-
-For me the biggest specific pain point right now is front end developers
-able to work on the UI.
-
---IDYEmSnFhs3mNXr+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1nwbAACgkQJNaLcl1U
-h9Dg/Qf+Mjpj5nk7yn2ZtSouw6KSJ6Iz2yILB7VPsgZpYwHbGpuGwaJEK+3/sEgA
-66lubelu0HksXWWUG1GpJn6r3M+2flrSRx51KRCG80Lhwi7hWyzowXOUmyZHgQ0E
-5lcBDuIJK0Frh+fvclPvTNtJPTaF/83H/aiaIE2jbTJ3N0PeF+1pR9iNBQVICylL
-aJiLwws5Ca4Z5yYiMLpDK/3q/BsxCnO03im1DPP2XWxMoTm6jNw6QMVCMiGMGO+i
-94dVnqI1JTZlWPpN9+1BXcSFLzX1g8XT/gJ7VLxGzFVbB4ypryldo/AH+z4prOCA
-knkpT3XF2c4Zzet0KYd+58fVRniQvw==
-=NBpN
------END PGP SIGNATURE-----
-
---IDYEmSnFhs3mNXr+--
