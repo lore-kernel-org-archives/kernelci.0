@@ -1,125 +1,169 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: Common database and kcidb: what next?
+Message-ID: <9e1beacd-c406-c234-479a-c2946698330c@collabora.com>
+Date: Fri, 6 Mar 2020 17:43:49 +0000
 MIME-Version: 1.0
-References: <CAHRSSEy0WwprMwvLP1ZUXpi66o5ObwD_zvrs_jjmNED_Sfi8gg@mail.gmail.com>
- <CAH1_8nBqa1Dy0pNJwGoSVjW--S2zBusf8H+tG=BXw+5zvHJBbw@mail.gmail.com>
-In-Reply-To: <CAH1_8nBqa1Dy0pNJwGoSVjW--S2zBusf8H+tG=BXw+5zvHJBbw@mail.gmail.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Thu, 5 Mar 2020 14:16:31 -0800
-Message-ID: <CAHRSSEyHe6SjJiZ45hyKR=8P3jN+zQq5p+mZSmuiBK7qng41OQ@mail.gmail.com>
-Subject: Re: dumb question regarding "x86_64_defconfig+kselftest"
-Content-Type: multipart/alternative; boundary="00000000000049b41805a022e489"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: kernelci@groups.io, Kevin Hilman <khilman@baylibre.com>
+To: kernelci@groups.io
+Cc: kernelci-members@groups.io, Nikolai Kondrashov <spbnick@gmail.com>, Sasha Levin <sashal@kernel.org>
 
---00000000000049b41805a022e489
-Content-Type: text/plain; charset="UTF-8"
+You may not have noticed yet but there is an ongoing effort to
+have a common database where test results for the upstream
+Linux kernel can all converge.  The initial steps towards this
+goal have taken the form of a proof-of-concept project called
+kcidb[1].  Nikolai has been making fast progress on this over
+the past few months and I would like to thank him on behalf of
+the KernelCI TSC for all his efforts so far.
 
-Thanks Guillaume. I guess I wasn't missing "something obvious" :).
+As things are starting to crystallise, it is now time to start
+considering how to go about making this new database part of
+KernelCI in a community-driven fashion.  There are several ways
+to do so, and making key design decisions now is essential in
+order to be able to plan things in the medium and longer term.
 
-On Thu, Mar 5, 2020 at 1:50 PM Guillaume Tucker <guillaume.tucker@gmail.com>
-wrote:
+I propose to take a look at what kernelci.org currently has to
+offer, the lessons we have learnt so far from the kcidb project
+and the mission statement[2] as defined by the advisory board
+of members.  This should provide us with the basis we need to
+plan our way forward in alignment with the kernel community.
 
-> Hi Todd,
->
-> On Thu, Mar 5, 2020 at 7:42 PM Todd Kjos via Groups.Io <tkjos=
-> google.com@groups.io> wrote:
->
->> I'm probably missing something obvious, but I have a failure for the
->> "x86_64_defconfig+kselftest" build of the android-4.19 branch. There is no
->> failure with the "x86_64_defconfig" build.
->>
->> How do I reproduce the "+kselftest"? I don't see any "kselftest" string
->> in the build.log.
->>
->
-> The +kselftest syntax is a KernelCI convention to show that a
-> kselftest config fragment was added on top of the base defconfig.
-> The code that generates the fragment can be found here:
->
->
-> https://github.com/kernelci/kernelci-core/blob/master/kernelci/build.py#L249
->
-> It can typically be run by the following command, using the
-> kernelci-core tool kci_build:
->
->   ./kci_build generate_fragments --config=mainline --kdir=~/src/linux
->
-> Please note that the --config option in this command is not the
-> kernel config but the build config from build-configs.yaml to
-> know which fragments need to be generated for each kernel branch.
->
-> With kernelci.org builds, the fragments are first added to a
-> kernel source tarball which is then used in all subsequent builds
-> for a given revision.  If I pick the latest mainline one:
->
->
-> https://storage.kernelci.org/mainline/master/v5.6-rc4-78-g9f65ed5fe41c/linux-src_mainline.tar.gz
->
-> I can see it has this fragment:
->
->   kernel/configs/kselftest.config
->
-> which I've copied here to save people's time:
->
->   https://people.collabora.com/~gtucker/kernelci/doc/kselftest.config
->
->
-> There's a similar fragment for every kernel revision being built,
-> including the android branches.
->
-> Guillaume
->
->>
+Your feedback is needed at every step, so please do not
+hesitate to reply and discuss any aspect of it.
 
---00000000000049b41805a022e489
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Thanks Guillaume. I guess I wasn&#39;t missing &quot;=
-something obvious&quot; :).</div><br><div class=3D"gmail_quote"><div dir=3D=
-"ltr" class=3D"gmail_attr">On Thu, Mar 5, 2020 at 1:50 PM Guillaume Tucker =
-&lt;<a href=3D"mailto:guillaume.tucker@gmail.com" target=3D"_blank">guillau=
-me.tucker@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex"><div dir=3D"ltr"><div>Hi Todd,</div><br><div class=3D"gm=
-ail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Mar 5, 2020 at 7:4=
-2 PM Todd Kjos via Groups.Io &lt;tkjos=3D<a href=3D"mailto:google.com@group=
-s.io" target=3D"_blank">google.com@groups.io</a>&gt; wrote:<br></div><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr">I&#39;m probab=
-ly missing something obvious, but I have a failure for the &quot;x86_64_def=
-config+kselftest&quot; build of the android-4.19 branch. There is no failur=
-e with the &quot;x86_64_defconfig&quot; build.<div><br></div><div>How do I =
-reproduce the &quot;+kselftest&quot;? I don&#39;t see any &quot;kselftest&q=
-uot; string in the build.log.</div></div></blockquote><div><br></div><div>T=
-he +kselftest syntax is a KernelCI convention to show that a<br>kselftest c=
-onfig fragment was added on top of the base defconfig.<br>The code that gen=
-erates the fragment can be found here:<br><br>=C2=A0 <a href=3D"https://git=
-hub.com/kernelci/kernelci-core/blob/master/kernelci/build.py#L249" target=
-=3D"_blank">https://github.com/kernelci/kernelci-core/blob/master/kernelci/=
-build.py#L249</a><br><br>It can typically be run by the following command, =
-using the<br>kernelci-core tool kci_build:<br><br>=C2=A0 ./kci_build genera=
-te_fragments --config=3Dmainline --kdir=3D~/src/linux<br><br></div><div>Ple=
-ase note that the --config option in this command is not the<br>kernel conf=
-ig but the build config from build-configs.yaml to<br>know which fragments =
-need to be generated for each kernel branch.</div><div><br>With <a href=3D"=
-http://kernelci.org" target=3D"_blank">kernelci.org</a> builds, the fragmen=
-ts are first added to a<br>kernel source tarball which is then used in all =
-subsequent builds<br>for a given revision.=C2=A0 If I pick the latest mainl=
-ine one:<br><br>=C2=A0 <a href=3D"https://storage.kernelci.org/mainline/mas=
-ter/v5.6-rc4-78-g9f65ed5fe41c/linux-src_mainline.tar.gz" target=3D"_blank">=
-https://storage.kernelci.org/mainline/master/v5.6-rc4-78-g9f65ed5fe41c/linu=
-x-src_mainline.tar.gz</a><br><br>I can see it has this fragment:<br><br>=C2=
-=A0 kernel/configs/kselftest.config<br><br>which I&#39;ve copied here to sa=
-ve people&#39;s time:<br><br>=C2=A0 <a href=3D"https://people.collabora.com=
-/~gtucker/kernelci/doc/kselftest.config" target=3D"_blank">https://people.c=
-ollabora.com/~gtucker/kernelci/doc/kselftest.config</a><br><br><br>There&#3=
-9;s a similar fragment for every kernel revision being built,<br>including =
-the android branches.<br></div><div><br></div><div>Guillaume<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">
+What does kernelci.org currently have to offer?
+-----------------------------------------------
 
-<p></p><p></p></blockquote></div></div>
-</blockquote></div></div>
+The well known parts are:
 
---00000000000049b41805a022e489--
+* a distributed architecture with labs running around the world
+
+* a very diverse pool of hardware across many CPU architectures
+
+* many upstream-oriented kernel branches being built and tested
+
+* no single organisation in charge to provide a neutral ground
+  oriented towards the upstream Linux kernel
+
+* automated tracking of test regressions and bisections
+
+* email reports and custom-tailored web dashboard
+
+* public-facing web API to submit and query test results
+
+* a well established ecosystem of labs, contributors and users
+
+* portable tools[3] that can be reused in any test environment
+
+
+Things currently being worked on include:
+
+* a growing test coverage to end the era of doing purely boot
+  testing (KUnit, kselftest, LTP...)
+
+* improved web dashboard to show detailed test results rather
+  than plain boots
+
+* more effective email reports as a result
+
+
+* What lessons have we learnt from kcidb so far?
+------------------------------------------------
+
+Defining a schema for a common database is a patchwork of
+compromises.  Each system doing upstream Linux kernel testing
+has a slightly different approach, and a balance needs to be
+struck between simplifying the data and causing extra
+translations for the submitters.  We seem to have started to
+converge on something that works for the existing kernelci.org
+results and Red Hat's CKI.  We need to remain flexible enough
+to refine things and be able to include other sources of data
+as the project grows.
+
+Still, we are essentially now very close to be able to start
+storing production data in the common database.  This is why we
+are also at a turning point where we have to start thinking
+beyond the proof-of-concept, to agree on how we want to design
+things going forward.  If we neglect this step, we may well end
+up with a new system completely unrelated to kernelci.org
+except by name.  While it may be a great new design if done on
+purpose, if this happened by accident it would most likely be a
+failure.
+
+For example, kcidb is currently based on Google BigQuery, which
+is fine for a proof-of-concept but we know that being tied to a
+cloud provider has major drawbacks.  In particular, we lose the
+ability to run an autonomous KernelCI instance.  It is this
+kind of design decisions that we need to make now so we can
+move on to the next stage with enough confidence.
+
+
+* What are the options going forward?
+-------------------------------------
+
+The main thing we need now is engagement in the decision
+process from the KernelCI community.  For this, we need to
+collect feedback and ideas.  There are many experienced people
+who care about KernelCI, this is the chance to make a system
+designed by the community and for the community.
+
+To get started, here are a few key topics that I would like to
+shed some light upon:
+
+1. Converting the kernelci-backend web API as an abstraction
+   layer for submitting results
+
+   Anyone can set up a kernelci-backend instance, but it is
+   currently tied to Mongo DB.  It wouldn't be difficult to
+   make it also work with other database engines since it has
+   abstract data models and already uses hooks to submit to
+   BigQuery.
+
+2. Keeping core functions in kernelci-core
+
+   While kcidb has explored a few things around submitting data
+   and triggering email reports, the kernelci-core project is
+   about providing portable tools to run each KernelCI step.
+   As such, it would seem like the canonical place to provide
+   any new tools of this kind.
+
+3. Comparative study of web dashboard solutions
+
+   The current kernelci.org web dashboard was designed
+   especially for showing kernel test results.  It wasn't well
+   maintained for several years but we are now improving it to
+   show test results.  As such, it is still a very good
+   candidate.  However, there are many other possible
+   solutions, and we may create a combination of several tools
+   to address different needs.  Previous attempts at using
+   SQUAD and ElasticStack did not give satisfactory results or
+   were aborted.  The attention has now moved towards Grafana,
+   we don't know yet what the outcome will be.  It seems
+   worthwhile listing all these tools as well as other web
+   frameworks and libraries to compare them, and define what
+   the requirements are in terms of users (developers,
+   maintainers, OEMs...).  Based on that we would be able to
+   spend our energy with reduced risks of missing the goals.
+
+
+Sorry for the very long email...  It seemed like the best way
+to get everyone on the same page.  Please take the time you
+need to digest it, we are not (yet) in a state of emergency.
+As KernelCI is going through a transformative phase it is
+important for all of us to see the bigger picture and make
+conscious decisions as much as possible.  Thank you!
+
+Best wishes,
+Guillaume
+
+
+[1] https://github.com/kernelci/kcidb
+
+[2] "To ensure the quality, stability and long-term maintenance
+     of the Linux kernel by maintaining an open ecosystem
+     around test automation practices and principles."
+
+[3] https://github.com/kernelci/kernelci-core
