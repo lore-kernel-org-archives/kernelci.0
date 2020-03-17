@@ -1,42 +1,46 @@
-Subject: Re: [Automated-testing] syzkaller reproducers
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org>
- <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
- <20191011180248.GA24089@rei.lan>
- <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
- <20191014085414.GB31760@rei.lan>
- <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
- <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
- <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
- <e8b11b09-37ac-6ae2-0908-b803b4160f7c@oracle.com>
- <CACT4Y+bShy-3vO3ifNKVcGGNf3X9XA7zL-Ja9-T+gZv5=QNe4w@mail.gmail.com>
- <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com>
- <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
-From: shuah <shuah@kernel.org>
-Message-ID: <fe365a78-0768-ea1f-25b8-6bd05a57c751@kernel.org>
-Date: Fri, 13 Mar 2020 09:59:29 -0600
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From: Javier Romero <xavinux@gmail.com>
+Date: Tue, 17 Mar 2020 19:42:41 -0300
+Message-ID: <CAEX+82+jdktsFSGWyM_8_XnrOKoy_an4ZJrooWut4mAt2u3Qaw@mail.gmail.com>
+Subject: Contribution as a build and boot tester.
+List-ID: <info.kernelci.org>
+List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
+List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/kernelci.org/group/info/subscribe>
+Content-Type: multipart/alternative; boundary="000000000000ead07105a114a761"
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>, George Kennedy <george.kennedy@oracle.com>
-Cc: Cyril Hrubis <chrubis@suse.cz>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, automated-testing@yoctoproject.org, kernelci@groups.io, Dhaval Giani <dhaval.giani@gmail.com>, Jan Setje-Eilers <jan.setjeeilers@oracle.com>, syzkaller <syzkaller@googlegroups.com>, Dan Carpenter <dan.carpenter@oracle.com>, shuah <shuah@kernel.org>
+To: info@kernelci.org
 
-On 3/3/20 1:45 AM, Dmitry Vyukov wrote:
-> Shauh,
-> 
-> We've added more reproducers to:
-> https://github.com/dvyukov/syzkaller-repros/tree/master/linux
-> 
-> It makes sense to pull in them to the kernel-arts repo. Not sure
-> what's the most convenient way for you since it's not exactly a
-> traditional "patch"? Perhaps you just copy linux/*.c files and commit?
-> 
+--000000000000ead07105a114a761
+Content-Type: text/plain; charset="UTF-8"
 
-Thanks Dmitry. I will pull these in. I will pull these in.
+Hi,
 
-thanks,
--- Shuah
+My name is Javier, have been working as a Linux sysadmin for the last 10
+years and now I'm working as a cloud engineer.
+
+Would like to start contributing as a build and boot tester. I've a
+Raspberry PI 3 with ARM Hardware, and a computer with an Intel Core 2 duo.
+
+Thanks for your attention and sorry for the inconvenience.
+
+Best Regards,
+
+--000000000000ead07105a114a761
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div dir=3D"auto">Hi,</div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">My name is Javier, have been working as a Linux sysadmin fo=
+r the last 10 years and now I&#39;m working as a cloud engineer.</div><div =
+dir=3D"auto"><br></div><div dir=3D"auto">Would like to start contributing a=
+s a build and boot tester. I&#39;ve a Raspberry PI 3 with ARM Hardware, and=
+ a computer with an Intel Core 2 duo.</div><div dir=3D"auto"><br></div><div=
+ dir=3D"auto">Thanks for your attention and sorry for the inconvenience.</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">Best Regards,</div><div di=
+r=3D"auto"><br></div><div dir=3D"auto"><br></div></div>
+
+--000000000000ead07105a114a761--
