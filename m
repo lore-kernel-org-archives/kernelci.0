@@ -1,525 +1,92 @@
-Subject: Re: next/master build: 227 builds: 17 failed, 210 passed, 41 errors, 497 warnings (next-20200326)
-References: <5e7cb175.1c69fb81.d10e.6d4a@mx.google.com>
- <CAKwvOdkTh+uHOK0bd5UGGfYiFQU+MkeT71Yy7Ggof9FkQHCG-g@mail.gmail.com>
- <64828a9f-9983-d731-d52e-3d753fc035f6@collabora.com>
- <CAKwvOdmRN6H6LMSc2o=XYVzrzSqDCW3JqLMxzWDiwa+XogyggA@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Message-ID: <8dc8d1f3-cccf-d908-2ed1-c24b1387e362@collabora.com>
-Date: Tue, 31 Mar 2020 12:59:54 +0100
 MIME-Version: 1.0
-In-Reply-To: <CAKwvOdmRN6H6LMSc2o=XYVzrzSqDCW3JqLMxzWDiwa+XogyggA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+References: <5e7cb175.1c69fb81.d10e.6d4a@mx.google.com> <CAKwvOdkTh+uHOK0bd5UGGfYiFQU+MkeT71Yy7Ggof9FkQHCG-g@mail.gmail.com>
+ <64828a9f-9983-d731-d52e-3d753fc035f6@collabora.com> <CAKwvOdmRN6H6LMSc2o=XYVzrzSqDCW3JqLMxzWDiwa+XogyggA@mail.gmail.com>
+ <8dc8d1f3-cccf-d908-2ed1-c24b1387e362@collabora.com>
+In-Reply-To: <8dc8d1f3-cccf-d908-2ed1-c24b1387e362@collabora.com>
+From: "Nick Desaulniers" <ndesaulniers@google.com>
+Date: Tue, 31 Mar 2020 09:30:52 -0700
+Message-ID: <CAKwvOd=PQabz1q3SJsa6VQ7t+KcfN9PgO1GjyMUHn2+YXD-g9w@mail.gmail.com>
+Subject: Re: next/master build: 227 builds: 17 failed, 210 passed, 41 errors, 497 warnings (next-20200326)
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Nick Desaulniers <ndesaulniers@google.com>
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
 Cc: Kevin Hilman <khilman@baylibre.com>, kernelci@groups.io, clang-built-linux <clang-built-linux@googlegroups.com>, Mark Brown <broonie@kernel.org>
 
-Hi Nick,
+On Tue, Mar 31, 2020 at 4:59 AM Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
+>
+> Hi Nick,
+>
+> On 27/03/2020 17:56, Nick Desaulniers wrote:
+> > 3. I have to click through to see warnings, not all are listed in the
+> > preview (example: allmodconfig =E2=80=90 arm =E2=80=90 clang-9 on
+> > https://kernelci.org/build/next/branch/master/kernel/next-20200326/ is
+> > red but says 0 warnings 0 errors. But if you click through in the logs
+> > you see a failure in modpost).
 
-On 27/03/2020 17:56, Nick Desaulniers wrote:
-> On Thu, Mar 26, 2020 at 1:54 PM Guillaume Tucker
-> <guillaume.tucker@collabora.com> wrote:
->>
->> On 26/03/2020 18:49, Nick Desaulniers wrote:
->>> Oh no, did the format of the logs change with the latest deployment?
->>> I expected to see the breakdown of which builds had which
->>> warnings/errors, which is very fast for me to triage.  If it was an
->>> intentional change, can we please bring those back?
->>
->> Erm, yes I think it was this change:
->>
->>   https://github.com/kernelci/kernelci-backend/pull/222
->=20
->>> The "detailed" section of the email reports is not useful,
->=20
-> I was grepping these daily to find new warnings popping up.
->=20
->>
->> I probably need to have several different templates, and the
->> ability to choose which one to use for each report.  We'll need
->> this kind of flexibility too for other test email reports.
->>
->> However you can still see the list of clang builds here:
->>
->>   https://kernelci.org/build/next/branch/master/kernel/next-20200326/
->>
->> if you type "clang" in the search bar.  Is that better?
->=20
-> No.  The above change completely breaks my workflow, and the above
-> link is not a substitute.  In the previous reports, I would get a
-> handy daily reminder, that I could quickly ctrl+f,clang,ctrl+g and
-> find issues specific to Clang.
->=20
-> With the above link, I need to:
-> 1. remember to go look at the site each day (I won't; I live out of my =
-inbox)
-> 2. search for linux-next builds (I'm not sure how to even find the
-> linux-next builds here. Searching for "next" turns up tons of
-> *branches* with next in the name. Where's the next *tree*?
-> 3. I have to click through to see warnings, not all are listed in the
-> preview (example: allmodconfig =E2=80=90 arm =E2=80=90 clang-9 on
-> https://kernelci.org/build/next/branch/master/kernel/next-20200326/ is
-> red but says 0 warnings 0 errors. But if you click through in the logs
-> you see a failure in modpost).
-> 4. clicking back resets the filter, so you have to open multiple tabs
-> to the reports.
+^ thinking more about this case, not all errors are necessarily from
+the compiler.  Other host utilities (in this case modpost, but on x86
+and maybe soon arm64 objtool) can fail/warn/error as well.  Maybe the
+UI is predicated on compiler warnings/errors only, and not the other
+host utilities?  I can point to some objtool warnings with Clang; it
+would be good to highlight those as they are typically bugs (sometimes
+in the compiler).
 
-Thanks for taking a look and providing this detailed feedback as
-to why the web frontend doesn't help with your workflow.  It's
-very useful as it's the only way we can improve it, for you and
-others in general.
-
-> Compare the above, to ctrl+f,clang,ctrl+g in a daily email.  It's
-> super painful.  It also makes the current email reports useless to us.
->=20
-> I'm aware of every bug in
-> https://github.com/ClangBuiltLinux/linux/issues that's open and every
-> bug we've ever had there.  I need to be able to quickly spot if
-> there's something *new* on the Clang side and file a bug to follow up
-> on it when I have time, then quickly move on to the next fire.  I was
-> also able to quickly grep and see if the issue was observed with GCC
-> as well, or just Clang.
->=20
-> I strongly agree with Broonie emailing that a successful build
-> occurred is noise; we disable this in our travisci:
-> https://github.com/ClangBuiltLinux/continuous-integration/blob/a0e363f2=
+> > 4. clicking back resets the filter, so you have to open multiple tabs
+> > to the reports.
+>
+> Thanks for taking a look and providing this detailed feedback as
+> to why the web frontend doesn't help with your workflow.  It's
+> very useful as it's the only way we can improve it, for you and
+> others in general.
+>
+> > Compare the above, to ctrl+f,clang,ctrl+g in a daily email.  It's
+> > super painful.  It also makes the current email reports useless to us.
+> >
+> > I'm aware of every bug in
+> > https://github.com/ClangBuiltLinux/linux/issues that's open and every
+> > bug we've ever had there.  I need to be able to quickly spot if
+> > there's something *new* on the Clang side and file a bug to follow up
+> > on it when I have time, then quickly move on to the next fire.  I was
+> > also able to quickly grep and see if the issue was observed with GCC
+> > as well, or just Clang.
+> >
+> > I strongly agree with Broonie emailing that a successful build
+> > occurred is noise; we disable this in our travisci:
+> > https://github.com/ClangBuiltLinux/continuous-integration/blob/a0e363f2=
 68dab899a6b259b24639d02b73401526/.travis.yml#L211
+>
+> We need to consider the whole notification / visualisation system
+> we have to better design emails and web dashboards, with enough
+> flexibility to take into account the main use-cases.  It's good
+> to know that in your case, listing passing builds isn't useful.
 
-We need to consider the whole notification / visualisation system
-we have to better design emails and web dashboards, with enough
-flexibility to take into account the main use-cases.  It's good
-to know that in your case, listing passing builds isn't useful.
+If you have a dashboard that shows builds as a field of red/green, it
+doesn't hurt. (https://ci.android.com/ for example).  For the email
+reports, it might be possible to filter those out though. You
+generally don't call the firemen when there's no fire.
 
-> But I'm afraid this change throws the baby out with the bath water,
-> and it really really hinders my ability to triage bugs and slows me
-> down.  Please consider reverting.
+>
+> > But I'm afraid this change throws the baby out with the bath water,
+> > and it really really hinders my ability to triage bugs and slows me
+> > down.  Please consider reverting.
+>
+> Yep, it has now been reverted as agreed with others on IRC.  This
+> is already effective in production so the next reports should
+> have all the details as they did before.  Sorry for the
+> inconvenience.
 
-Yep, it has now been reverted as agreed with others on IRC.  This
-is already effective in production so the next reports should
-have all the details as they did before.  Sorry for the
-inconvenience.
+I appreciate it.
 
-Moving forward, we should make sure you have a chance to look at
-any changes to the email format before deploying something in
-production.
+>
+> Moving forward, we should make sure you have a chance to look at
+> any changes to the email format before deploying something in
+> production.
 
+Yes, please @ me on the github change and I'd be happy to give a quick look=
+.
+
+--=20
 Thanks,
-Guillaume
-
->>> On Thu, Mar 26, 2020 at 6:43 AM kernelci.org bot <bot@kernelci.org> w=
-rote:
->>>>
->>>> next/master build: 227 builds: 17 failed, 210 passed, 41 errors, 497=
- warnings (next-20200326)
->>>>
->>>> Full Build Summary: https://kernelci.org/build/next/branch/master/ke=
-rnel/next-20200326/
->>>>
->>>> Tree: next
->>>> Branch: master
->>>> Git Describe: next-20200326
->>>> Git Commit: 89295c59c1f063b533d071ca49d0fa0c0783ca6f
->>>> Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-=
-next.git
->>>> Built: 7 unique architectures
->>>>
->>>> Build Failures Detected:
->>>>
->>>> arm64:
->>>>     allmodconfig: (clang-9) FAIL
->>>>     allmodconfig: (gcc-8) FAIL
->>>>
->>>> arm:
->>>>     allmodconfig: (clang-9) FAIL
->>>>     allmodconfig: (gcc-8) FAIL
->>>>     cm_x300_defconfig: (gcc-8) FAIL
->>>>     em_x270_defconfig: (gcc-8) FAIL
->>>>     eseries_pxa_defconfig: (gcc-8) FAIL
->>>>     mmp2_defconfig: (gcc-8) FAIL
->>>>     pxa168_defconfig: (gcc-8) FAIL
->>>>     pxa910_defconfig: (gcc-8) FAIL
->>>>     pxa_defconfig: (gcc-8) FAIL
->>>>     qcom_defconfig: (gcc-8) FAIL
->>>>     vf610m4_defconfig: (gcc-8) FAIL
->>>>
->>>> mips:
->>>>     mtx1_defconfig: (gcc-8) FAIL
->>>>
->>>> riscv:
->>>>     allnoconfig: (gcc-8) FAIL
->>>>     tinyconfig: (gcc-8) FAIL
->>>>
->>>> x86_64:
->>>>     defconfig: (clang-9) FAIL
->>>>
->>>> Errors and Warnings Detected:
->>>>
->>>> arc:
->>>>
->>>> arm64:
->>>>     allmodconfig (gcc-8): 2 errors
->>>>     allmodconfig (clang-9): 2 errors
->>>>     defconfig (gcc-8): 29 warnings
->>>>     defconfig (clang-9): 29 warnings
->>>>     defconfig (gcc-8): 29 warnings
->>>>     defconfig (gcc-8): 29 warnings
->>>>     defconfig (gcc-8): 29 warnings
->>>>
->>>> arm:
->>>>     allmodconfig (gcc-8): 2 errors, 18 warnings
->>>>     allmodconfig (clang-9): 2 errors, 21 warnings
->>>>     aspeed_g4_defconfig (gcc-8): 4 warnings
->>>>     aspeed_g5_defconfig (clang-9): 4 warnings
->>>>     aspeed_g5_defconfig (gcc-8): 4 warnings
->>>>     bcm2835_defconfig (gcc-8): 14 warnings
->>>>     cm_x300_defconfig (gcc-8): 1 error, 2 warnings
->>>>     em_x270_defconfig (gcc-8): 1 error, 2 warnings
->>>>     eseries_pxa_defconfig (gcc-8): 14 errors, 12 warnings
->>>>     integrator_defconfig (gcc-8): 1 warning
->>>>     mmp2_defconfig (gcc-8): 1 error
->>>>     multi_v4t_defconfig (gcc-8): 1 warning
->>>>     multi_v5_defconfig (gcc-8): 4 warnings
->>>>     multi_v5_defconfig (clang-9): 4 warnings
->>>>     multi_v7_defconfig (gcc-8): 18 warnings
->>>>     multi_v7_defconfig (clang-9): 20 warnings
->>>>     multi_v7_defconfig (gcc-8): 18 warnings
->>>>     multi_v7_defconfig (gcc-8): 18 warnings
->>>>     multi_v7_defconfig (gcc-8): 18 warnings
->>>>     multi_v7_defconfig (gcc-8): 19 warnings
->>>>     pxa168_defconfig (gcc-8): 1 error
->>>>     pxa910_defconfig (gcc-8): 1 error
->>>>     pxa_defconfig (gcc-8): 3 errors, 6 warnings
->>>>     qcom_defconfig (gcc-8): 1 error
->>>>     vf610m4_defconfig (gcc-8): 4 errors, 5 warnings
->>>>
->>>> i386:
->>>>
->>>> mips:
->>>>     32r2el_defconfig (gcc-8): 3 warnings
->>>>     32r2el_defconfig (gcc-8): 3 warnings
->>>>     allnoconfig (gcc-8): 1 warning
->>>>     ar7_defconfig (gcc-8): 2 warnings
->>>>     ath25_defconfig (gcc-8): 2 warnings
->>>>     ath79_defconfig (gcc-8): 2 warnings
->>>>     bcm47xx_defconfig (gcc-8): 2 warnings
->>>>     bcm63xx_defconfig (gcc-8): 1 warning
->>>>     bigsur_defconfig (gcc-8): 2 warnings
->>>>     bmips_be_defconfig (gcc-8): 1 warning
->>>>     bmips_stb_defconfig (gcc-8): 1 warning
->>>>     capcella_defconfig (gcc-8): 2 warnings
->>>>     cavium_octeon_defconfig (gcc-8): 2 warnings
->>>>     ci20_defconfig (gcc-8): 3 warnings
->>>>     cobalt_defconfig (gcc-8): 2 warnings
->>>>     cu1000-neo_defconfig (gcc-8): 1 warning
->>>>     db1xxx_defconfig (gcc-8): 1 warning
->>>>     decstation_64_defconfig (gcc-8): 2 warnings
->>>>     decstation_defconfig (gcc-8): 2 warnings
->>>>     decstation_r4k_defconfig (gcc-8): 2 warnings
->>>>     e55_defconfig (gcc-8): 2 warnings
->>>>     fuloong2e_defconfig (gcc-8): 2 warnings
->>>>     gcw0_defconfig (gcc-8): 1 warning
->>>>     gpr_defconfig (gcc-8): 2 warnings
->>>>     ip22_defconfig (gcc-8): 2 warnings
->>>>     ip27_defconfig (gcc-8): 2 warnings
->>>>     ip28_defconfig (gcc-8): 2 warnings
->>>>     ip32_defconfig (gcc-8): 2 warnings
->>>>     jazz_defconfig (gcc-8): 2 warnings
->>>>     jmr3927_defconfig (gcc-8): 1 warning
->>>>     lasat_defconfig (gcc-8): 1 warning
->>>>     lemote2f_defconfig (gcc-8): 2 warnings
->>>>     loongson1b_defconfig (gcc-8): 2 warnings
->>>>     loongson1c_defconfig (gcc-8): 2 warnings
->>>>     loongson3_defconfig (gcc-8): 2 warnings
->>>>     malta_defconfig (gcc-8): 2 warnings
->>>>     malta_kvm_defconfig (gcc-8): 2 warnings
->>>>     malta_kvm_guest_defconfig (gcc-8): 2 warnings
->>>>     malta_qemu_32r6_defconfig (gcc-8): 3 warnings
->>>>     maltaaprp_defconfig (gcc-8): 2 warnings
->>>>     maltasmvp_defconfig (gcc-8): 2 warnings
->>>>     maltasmvp_eva_defconfig (gcc-8): 2 warnings
->>>>     maltaup_defconfig (gcc-8): 2 warnings
->>>>     maltaup_xpa_defconfig (gcc-8): 2 warnings
->>>>     markeins_defconfig (gcc-8): 2 warnings
->>>>     mips_paravirt_defconfig (gcc-8): 2 warnings
->>>>     mpc30x_defconfig (gcc-8): 2 warnings
->>>>     msp71xx_defconfig (gcc-8): 2 warnings
->>>>     mtx1_defconfig (gcc-8): 2 errors, 1 warning
->>>>     nlm_xlp_defconfig (gcc-8): 2 warnings
->>>>     nlm_xlr_defconfig (gcc-8): 2 warnings
->>>>     omega2p_defconfig (gcc-8): 1 warning
->>>>     pic32mzda_defconfig (gcc-8): 2 warnings
->>>>     pistachio_defconfig (gcc-8): 2 warnings
->>>>     pnx8335_stb225_defconfig (gcc-8): 2 warnings
->>>>     qi_lb60_defconfig (gcc-8): 2 warnings
->>>>     rb532_defconfig (gcc-8): 2 warnings
->>>>     rbtx49xx_defconfig (gcc-8): 2 warnings
->>>>     rm200_defconfig (gcc-8): 3 warnings
->>>>     rt305x_defconfig (gcc-8): 2 warnings
->>>>     sb1250_swarm_defconfig (gcc-8): 2 warnings
->>>>     tb0219_defconfig (gcc-8): 2 warnings
->>>>     tb0226_defconfig (gcc-8): 2 warnings
->>>>     tb0287_defconfig (gcc-8): 2 warnings
->>>>     tinyconfig (gcc-8): 1 warning
->>>>     vocore2_defconfig (gcc-8): 1 warning
->>>>     workpad_defconfig (gcc-8): 2 warnings
->>>>     xway_defconfig (gcc-8): 2 warnings
->>>>
->>>> riscv:
->>>>     allnoconfig (gcc-8): 1 error
->>>>     rv32_defconfig (gcc-8): 6 warnings
->>>>     tinyconfig (gcc-8): 1 error
->>>>
->>>> x86_64:
->>>>     allmodconfig (clang-9): 4 warnings
->>>>     defconfig (clang-9): 2 errors
->>>>     tinyconfig (gcc-8): 1 warning
->>>>
->>>> Errors summary:
->>>>
->>>>     4    ERROR: modpost: "mtk_mmsys_ddp_disconnect" [drivers/gpu/drm=
-/mediatek/mediatek-drm.ko] undefined!
->>>>     4    ERROR: modpost: "mtk_mmsys_ddp_connect" [drivers/gpu/drm/me=
-diatek/mediatek-drm.ko] undefined!
->>>>     3    ERROR: modpost: "snd_ac97_reset" [sound/soc/codecs/snd-soc-=
-wm9712.ko] undefined!
->>>>     2    arch/riscv/kernel/stacktrace.c:78:8: error: =E2=80=98sp_in_=
-global=E2=80=99 undeclared (first use in this function); did you mean =E2=
-=80=98spin_lock=E2=80=99?
->>>>     2    /home/buildslave/workspace/kernel-build@2/linux/build/../dr=
-ivers/clk/mmp/clk.c:192: undefined reference to `mmp_clk_register_pll'
->>>>     1    sound/soc/codecs/wm9712.c:94:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98num_reg_defaults=E2=
-=80=99
->>>>     1    sound/soc/codecs/wm9712.c:93:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98reg_defaults=E2=80=99
->>>>     1    sound/soc/codecs/wm9712.c:91:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98volatile_reg=E2=80=99
->>>>     1    sound/soc/codecs/wm9712.c:89:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98cache_type=E2=80=99
->>>>     1    sound/soc/codecs/wm9712.c:88:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98max_register=E2=80=99
->>>>     1    sound/soc/codecs/wm9712.c:87:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98val_bits=E2=80=99
->>>>     1    sound/soc/codecs/wm9712.c:86:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98reg_stride=E2=80=99
->>>>     1    sound/soc/codecs/wm9712.c:85:3: error: =E2=80=98const struc=
-t regmap_config=E2=80=99 has no member named =E2=80=98reg_bits=E2=80=99
->>>>     1    sound/soc/codecs/wm9712.c:84:35: error: storage size of =E2=
-=80=98wm9712_regmap_config=E2=80=99 isn=E2=80=99t known
->>>>     1    sound/soc/codecs/wm9712.c:84:21: error: variable =E2=80=98w=
-m9712_regmap_config=E2=80=99 has initializer but incomplete type
->>>>     1    sound/soc/codecs/wm9712.c:80:10: error: implicit declaratio=
-n of function =E2=80=98regmap_ac97_default_volatile=E2=80=99 [-Werror=3Di=
-mplicit-function-declaration]
->>>>     1    sound/soc/codecs/wm9712.c:675:3: error: implicit declaratio=
-n of function =E2=80=98snd_soc_component_exit_regmap=E2=80=99; did you me=
-an =E2=80=98snd_soc_component_trigger=E2=80=99? [-Werror=3Dimplicit-funct=
-ion-declaration]
->>>>     1    sound/soc/codecs/wm9712.c:662:2: error: implicit declaratio=
-n of function =E2=80=98snd_soc_component_init_regmap=E2=80=99; did you me=
-an =E2=80=98snd_soc_component_trigger=E2=80=99? [-Werror=3Dimplicit-funct=
-ion-declaration]
->>>>     1    sound/soc/codecs/wm9712.c:653:12: error: implicit declarati=
-on of function =E2=80=98regmap_init_ac97=E2=80=99; did you mean =E2=80=98=
-memmap_init_zone=E2=80=99? [-Werror=3Dimplicit-function-declaration]
->>>>     1    drivers/clocksource/timer-vf-pit.c:194: error: unterminated=
- argument list invoking macro "BUG_ON"
->>>>     1    drivers/clocksource/timer-vf-pit.c:131:8: error: expected =E2=
-=80=98;=E2=80=99 at end of input
->>>>     1    drivers/clocksource/timer-vf-pit.c:131:2: error: =E2=80=98B=
-UG_ON=E2=80=99 undeclared (first use in this function)
->>>>     1    drivers/clocksource/timer-vf-pit.c:131:2: error: expected d=
-eclaration or statement at end of input
->>>>     1    clang: error: assembler command failed with exit code 1 (us=
-e -v to see invocation)
->>>>     1    ERROR: modpost: "sysrq_toggle_support" [drivers/tty/serial/=
-serial_core.ko] undefined!
->>>>     1    ERROR: modpost: "sysrq_mask" [drivers/tty/serial/serial_cor=
-e.ko] undefined!
->>>>     1    ERROR: modpost: "snd_ac97_reset" [sound/soc/codecs/snd-soc-=
-wm9713.ko] undefined!
->>>>     1    ERROR: modpost: "snd_ac97_reset" [sound/soc/codecs/snd-soc-=
-wm9705.ko] undefined!
->>>>     1    ERROR: modpost: "rd_full" [drivers/gpu/drm/msm/msm.ko] unde=
-fined!
->>>>     1    /tmp/cpudeadline-9c7247.s:76: Error: `%ecx' not allowed wit=
-h `orb'
->>>>     1    /home/buildslave/workspace/workspace/kernel-build@3/linux/b=
-uild/../drivers/clk/mmp/clk.c:192: undefined reference to `mmp_clk_regist=
-er_pll'
->>>>
->>>> Warnings summary:
->>>>
->>>>     125  <stdin>:1520:2: warning: #warning syscall process_madvise n=
-ot implemented [-Wcpp]
->>>>     98   arch/arm/boot/dts/bcm2835-rpi.dtsi:18.4-15: Warning (dma_ra=
-nges_format): /soc/firmware:dma-ranges: empty "dma-ranges" property but i=
-ts #address-cells (2) differs from /soc (1)
->>>>     80   arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi:1086.4-52: Wa=
-rning (dma_ranges_format): /soc/dram-controller@1c62000:dma-ranges: "dma-=
-ranges" property has invalid length (12 bytes) (parent #address-cells =3D=
-=3D 1, child #address-cells =3D=3D 2, #size-cells =3D=3D 1)
->>>>     25   scripts/dtc/include-prefixes/arm/bcm2835-rpi.dtsi:18.4-15: =
-Warning (dma_ranges_format): /soc/firmware:dma-ranges: empty "dma-ranges"=
- property but its #address-cells (2) differs from /soc (1)
->>>>     15   arch/arm64/boot/dts/broadcom/stingray/stingray-usb.dtsi:7.3=
--14: Warning (dma_ranges_format): /usb:dma-ranges: empty "dma-ranges" pro=
-perty but its #size-cells (1) differs from / (2)
->>>>     15   arch/arm64/boot/dts/broadcom/stingray/stingray-usb.dtsi:7.3=
--14: Warning (dma_ranges_format): /usb:dma-ranges: empty "dma-ranges" pro=
-perty but its #address-cells (1) differs from / (2)
->>>>     11   arch/arm/boot/dts/aspeed-bmc-facebook-tiogapass.dts:523.3-3=
-0: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@380/ipmb0@10:reg:=
- I2C address must be less than 10-bits, got "0x40000010"
->>>>     11   arch/arm/boot/dts/aspeed-bmc-facebook-tiogapass.dts:521.11-=
-525.4: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@380/ipmb0@10:=
- I2C bus unit address format error, expected "40000010"
->>>>     11   arch/arm/boot/dts/aspeed-bmc-facebook-tiogapass.dts:437.3-3=
-0: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@140/ipmb0@10:reg:=
- I2C address must be less than 10-bits, got "0x40000010"
->>>>     11   arch/arm/boot/dts/aspeed-bmc-facebook-tiogapass.dts:435.11-=
-439.4: Warning (i2c_bus_reg): /ahb/apb/bus@1e78a000/i2c-bus@140/ipmb0@10:=
- I2C bus unit address format error, expected "40000010"
->>>>     9    drivers/net/phy/mdio-cavium.h:113:48: warning: cast to poin=
-ter from integer of different size [-Wint-to-pointer-cast]
->>>>     8    WARNING: unmet direct dependencies detected for SND_SOC_WM9=
-712
->>>>     8    1 warning generated.
->>>>     5    arch/arm64/boot/dts/qcom/ipq6018.dtsi:127.3-14: Warning (dm=
-a_ranges_format): /soc:dma-ranges: empty "dma-ranges" property but its #s=
-ize-cells (1) differs from / (2)
->>>>     5    arch/arm64/boot/dts/qcom/ipq6018.dtsi:127.3-14: Warning (dm=
-a_ranges_format): /soc:dma-ranges: empty "dma-ranges" property but its #a=
-ddress-cells (1) differs from / (2)
->>>>     4    drivers/net/phy/mdio-cavium.h:114:37: warning: cast to poin=
-ter from integer of different size [-Wint-to-pointer-cast]
->>>>     2    arch/arm/lib/xor-neon.c:30:2: warning: This code requires a=
-t least version 4.6 of GCC [-W#warnings]
->>>>     2    arch/arm/boot/dts/integratorap.dts:12.2-43: Warning (dma_ra=
-nges_format): /:dma-ranges: Root node has a "dma-ranges" property
->>>>     2    WARNING: unmet direct dependencies detected for SND_SOC_WM9=
-713
->>>>     2    WARNING: unmet direct dependencies detected for SND_SOC_WM9=
-705
->>>>     2    <stdin>:830:2: warning: #warning syscall fstat64 not implem=
-ented [-Wcpp]
->>>>     2    <stdin>:1511:2: warning: #warning syscall clone3 not implem=
-ented [-Wcpp]
->>>>     2    <stdin>:1127:2: warning: #warning syscall fstatat64 not imp=
-lemented [-Wcpp]
->>>>     2    #warning This code requires at least version 4.6 of GCC
->>>>     1    {standard input}:141: Warning: macro instruction expanded i=
-nto multiple instructions
->>>>     1    sound/soc/codecs/wm9712.c:93:18: warning: excess elements i=
-n struct initializer
->>>>     1    sound/soc/codecs/wm9712.c:91:18: warning: excess elements i=
-n struct initializer
->>>>     1    sound/soc/codecs/wm9712.c:89:16: warning: excess elements i=
-n struct initializer
->>>>     1    sound/soc/codecs/wm9712.c:88:18: warning: excess elements i=
-n struct initializer
->>>>     1    sound/soc/codecs/wm9712.c:87:14: warning: excess elements i=
-n struct initializer
->>>>     1    sound/soc/codecs/wm9712.c:86:16: warning: excess elements i=
-n struct initializer
->>>>     1    sound/soc/codecs/wm9712.c:85:14: warning: excess elements i=
-n struct initializer
->>>>     1    sound/soc/codecs/wm9712.c:653:10: warning: assignment to =E2=
-=80=98struct regmap *=E2=80=99 from =E2=80=98int=E2=80=99 makes pointer f=
-rom integer without a cast [-Wint-conversion]
->>>>     1    sound/soc/codecs/cros_ec_codec.c:776:12: warning: stack fra=
-me size of 1152 bytes in function 'wov_hotword_model_put' [-Wframe-larger=
--than=3D]
->>>>     1    security/integrity/ima/ima_crypto.c:512:5: warning: stack f=
-rame size of 1152 bytes in function 'ima_calc_field_array_hash' [-Wframe-=
-larger-than=3D]
->>>>     1    net/sched/cls_flower.c:331:1: warning: the frame size of 10=
-32 bytes is larger than 1024 bytes [-Wframe-larger-than=3D]
->>>>     1    mm/kasan/common.o: warning: objtool: kasan_report()+0x87: c=
-all to __stack_chk_fail() with UACCESS enabled
->>>>     1    include/linux/kernel.h:47:25: warning: excess elements in s=
-truct initializer
->>>>     1    include/linux/kern_levels.h:5:18: warning: format =E2=80=98=
-%lu=E2=80=99 expects argument of type =E2=80=98long unsigned int=E2=80=99=
-, but argument 2 has type =E2=80=98unsigned int=E2=80=99 [-Wformat=3D]
->>>>     1    drivers/soc/fsl/dpio/qbman-portal.c:870:14: warning: cast f=
-rom pointer to integer of different size [-Wpointer-to-int-cast]
->>>>     1    drivers/soc/fsl/dpio/dpio-service.c:476:5: warning: stack f=
-rame size of 1072 bytes in function 'dpaa2_io_service_enqueue_multiple_de=
-sc_fq' [-Wframe-larger-than=3D]
->>>>     1    drivers/scsi/bfa/bfa_fcs_lport.c:1900:1: warning: stack fra=
-me size of 1824 bytes in function 'bfa_fcs_lport_fdmi_build_rhba_pyld' [-=
-Wframe-larger-than=3D]
->>>>     1    drivers/net/phy/mdio-octeon.c:48:3: warning: cast from poin=
-ter to integer of different size [-Wpointer-to-int-cast]
->>>>     1    drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dce_calcs.c:=
-77:13: warning: stack frame size of 5648 bytes in function 'calculate_ban=
-dwidth' [-Wframe-larger-than=3D]
->>>>     1    drivers/gpu/drm/amd/amdgpu/../display/dc/calcs/dce_calcs.c:=
-3014:6: warning: stack frame size of 1376 bytes in function 'bw_calcs' [-=
-Wframe-larger-than=3D]
->>>>     1    drivers/firmware/efi/libstub/file.c:123:21: warning: stack =
-frame size of 1232 bytes in function 'handle_cmdline_files' [-Wframe-larg=
-er-than=3D]
->>>>     1    drivers/crypto/inside-secure/safexcel_cipher.c:404:12: warn=
-ing: stack frame size of 1136 bytes in function 'safexcel_aead_setkey' [-=
-Wframe-larger-than=3D]
->>>>     1    drivers/clocksource/timer-vf-pit.c:97:20: warning: =E2=80=98=
-pit_timer_interrupt=E2=80=99 defined but not used [-Wunused-function]
->>>>     1    drivers/clocksource/timer-vf-pit.c:56:19: warning: =E2=80=98=
-pit_clocksource_init=E2=80=99 defined but not used [-Wunused-function]
->>>>     1    drivers/clocksource/timer-vf-pit.c:131:2: warning: no retur=
-n statement in function returning non-void [-Wreturn-type]
->>>>     1    drivers/clocksource/timer-vf-pit.c:126:19: warning: =E2=80=98=
-pit_clockevent_init=E2=80=99 defined but not used [-Wunused-function]
->>>>     1    drivers/clocksource/timer-vf-pit.c:117:34: warning: =E2=80=98=
-clockevent_pit=E2=80=99 defined but not used [-Wunused-variable]
->>>>     1    drivers/block/paride/bpck.c:32: warning: "PC" redefined
->>>>     1    cc1: some warnings being treated as errors
->>>>     1    arch/x86/kernel/signal.o: warning: objtool: x32_setup_rt_fr=
-ame()+0x1fa: call to memset() with UACCESS enabled
->>>>     1    arch/x86/kernel/signal.o: warning: objtool: __setup_rt_fram=
-e()+0x1f8: call to memset() with UACCESS enabled
->>>>     1    arch/x86/ia32/ia32_signal.o: warning: objtool: ia32_setup_r=
-t_frame()+0x1ef: call to memset() with UACCESS enabled
->>>>     1    arch/mips/configs/ci20_defconfig:178:warning: override: rea=
-ssigning to symbol LEDS_TRIGGER_ONESHOT
->>>>     1    2 warnings generated.
->>>>     1    /tmp/test-arm-e023be.s:18788: Warning: using r15 results in=
- unpredictable behaviour
->>>>     1    /tmp/test-arm-e023be.s:18713: Warning: using r15 results in=
- unpredictable behaviour
->>>>     1    /tmp/ccbU4HdL.s:18191: Warning: using r15 results in unpred=
-ictable behaviour
->>>>     1    /tmp/ccbU4HdL.s:18119: Warning: using r15 results in unpred=
-ictable behaviour
->>>>     1    .config:1161:warning: override: UNWINDER_GUESS changes choi=
-ce state
->>>>
->>>> Section mismatches summary:
->>>>
->>>>     1    WARNING: modpost: vmlinux.o(.text.unlikely+0x39dc): Section=
- mismatch in reference from the function pmax_setup_memory_region() to th=
-e function .init.text:add_memory_region()
->>>>     1    WARNING: modpost: vmlinux.o(.text.unlikely+0x3684): Section=
- mismatch in reference from the function pmax_setup_memory_region() to th=
-e function .init.text:add_memory_region()
->>>>
->>>> ---
->>>> For more info write to <info@kernelci.org>
->>>>
->>>> --
->>>> You received this message because you are subscribed to the Google G=
-roups "Clang Built Linux" group.
->>>> To unsubscribe from this group and stop receiving emails from it, se=
-nd an email to clang-built-linux+unsubscribe@googlegroups.com.
->>>> To view this discussion on the web visit https://groups.google.com/d=
-/msgid/clang-built-linux/5e7cb175.1c69fb81.d10e.6d4a%40mx.google.com.
->>>
->>>
->>>
->>
->=20
->=20
-
+~Nick Desaulniers
