@@ -1,85 +1,78 @@
-Return-Path: <khilman@baylibre.com>
-From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: Improve kernelci setup for RISC-V
-In-Reply-To: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
-References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
-Date: Wed, 01 Jul 2020 17:17:46 -0700
-Message-ID: <7hsgeaixcl.fsf@baylibre.com>
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2020-04-17 #minutes
+Message-ID: <ea03c20e-8ae9-59e6-a8c8-e0257105cbf4@collabora.com>
+Date: Fri, 17 Apr 2020 18:02:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Atish Patra <Atish.Patra@wdc.com>
-Cc: "drew@beagleboard.org" <drew@beagleboard.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "david.abdurachmanov@sifive.com" <david.abdurachmanov@sifive.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, Alistair Francis <Alistair.Francis@wdc.com>, Corentin Labbe <clabbe@baylibre.com>, kernelci@groups.io, Lakshmipathi Ganapathi <lakshmipathi.ganapathi@collabora.co.uk>
+To: kernelci@groups.io
 
-[ + kernelci list ]
+Technical Steering Committee minutes - 2020-04-14
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
-Hi Atish,
+* kcidb
 
-Atish Patra <Atish.Patra@wdc.com> writes:
+  * new release of kcidb: https://github.com/kernelci/kcidb/releases/tag/=
+v5
+    (no schema changes)
 
-> I just want to follow up the discussions we had in the risc-v slack
-> channel related to improving kernelci setup for RISC-V.
->
-> 1. Adding Qemu target for RISC-V: As per out latest conversation, this
-> won't be an issue anymore as Qemu supports -bios and -kernel
-> separately.
+  * Message queue infrastructure deployed to =E2=80=9Ckernelci=E2=80=9D G=
+CP, should be ready
+    for submission. Reports should be sent to
+    kernelci-results-staging@groups.io. CKI is switching tomorrow.
 
-Yes, this looks straight forward now.  We should be able to get this
-going for our basic tests without too much more work.
+  * A bunch of test reports already sent to the maillist.
+    https://groups.io/g/kernelci-results-staging/topics
 
-> 2. Running more tests in addition to boot tests on unleashed target:
->
-> The main blocker here is the rootfs. As kernelci only supports debian
-> based rootfs to actually run tests. I think it is not that difficult to
-> bootstrap a debian rootfs for RISC-V but I have not done that in ages.
-> I think palmer uses debian rootfs for his testing. I have cc'd him for
-> his inputs.
+  * Set up new service accounts to have minimal access for submission/que=
+rying
+    (one per CI system), and have a separate, shared, all-powerful accoun=
+t for
+    maintenance. Sent to Kevin and Guillaume.
+    https://github.com/kernelci/kcidb#administrator-guide
 
-For every other arch, we debootstrap a buster rootfs, and this doesn't
-work for riscv.  But, I just discovered[1] that this should work for
-unstable using debian-ports, so we'll need to update our rootfs builder
-to support unstable/debian-ports.
+* Kubernetes experiments are on-going
 
-I've cc'd Lakshmipathi from Collabora who has been doing work on our
-rootfs builder tool to see how we can extend this.
+* kernelci.org monitoring
 
-> But Alistair & khem (cc'd) expressed interest to add OE to kernelci as
-> well. Can you share some pointers on what needs to be done ?
+  * Zabbix vs xymon
+  * what do we want to monitor?
+    * backend, frontend, jenkins, grafana, static servers (not builders)
+    * software updates, disk space, services health
 
-The main tricky/annoying part with yocto is that builds are per-board,
-where as we like to build rootfs images per-arch.  Maybe there's a way
-to build an arch-generic yocto rootfs using a qemu target or something,
-though.
+* Jenkins
 
-The place to start would be to look at the kci_rootfs tool in the
-kernelci-core repo[2] along with the rootfs-config.yaml file and figure
-out how to extend that for yocto/OE.
+  * kernelci-jenkins is now complete (except GitHub auth=E2=80=A6), deplo=
+ying in
+    production
 
-Again, Lakshmipathi may have some ideas there.
+* Web frontend
 
-OTOH, I'm not quite sure what we would gain by using yocto instead of
-debian?  Are there more packages for yocto available than for debian
-currently?
+  * test views are all there, starting =E2=80=9Cfinalising=E2=80=9D phase=
+ now before roll out
+    https://staging.kernelci.org/job/
 
-> 3. How difficult is to setup kernelci from scratch locally ?
+* Test case log fragments now work well for nested group->sub_group->test=
+_case
 
-Not really, but it's not well documented. :(
-
-But it depends on which parts you want to setup.  There are several
-moving parts:
-
-1) lab / board-farm
-2) backend / storage
-3) frontend
-4) kernel builds (centralized, published publically to
-  storage.kernelci.org)
-
-We have some rudimentary docs for 2-4 here[3], but the compute part for
-builds is currently centralized.
-
-Kevin
+* kernelci-backend lacks proper unit tests, this should be part of the re=
+work
 
 
-[1] https://wiki.debian.org/RISC-V#debootstrap
-[2] https://github.com/kernelci/kernelci-core/
-[3] https://github.com/kernelci/kernelci-doc/wiki/Setting-up-a-local-development-instance
+Summary of changes going into production
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+* new kci_rootfs tool now used to build Debian Buster rootfs images
+* enable stable and mainline trees in lab-clabbe as well as several new b=
+oards
+* add ONFIG_MEDIA_TEST_SUPPORT=3Dy to virtualvideo fragment for vivid tes=
+ting
+* clang-10 enabled to build linux-next with arm, arm64 and x86_64 defconf=
+igs
+
+Best wishes,
+Guillaume
