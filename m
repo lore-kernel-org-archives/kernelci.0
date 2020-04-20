@@ -1,46 +1,85 @@
+Return-Path: <dan.rue@linaro.org>
+Date: Mon, 20 Apr 2020 11:36:28 -0500
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: kci_build proposal
+Message-ID: <20200420163628.wmbc7f7vuvqsbdhw@xps.therub.org>
 MIME-Version: 1.0
-References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
- <7hsgeaixcl.fsf@baylibre.com> <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
- <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
- <20200702144955.GA1132145@aurel32.net> <20200702181553.GA3226@aletheia.cgn.bolug.org>
-In-Reply-To: <20200702181553.GA3226@aletheia.cgn.bolug.org>
-From: "Manuel A. Fernandez Montecelo" <manuel.montezelo@gmail.com>
-Date: Thu, 2 Jul 2020 22:15:54 +0200
-Message-ID: <CAPQ4b8nVgcanT3SF8P+S0MwbpEBi0YB3zoAzhj99ukDWGetEvg@mail.gmail.com>
-Subject: Re: Improve kernelci setup for RISC-V
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Karsten Merker <merker@debian.org>
-Cc: Aurelien Jarno <aurelien@aurel32.net>, David Abdurachmanov <david.abdurachmanov@sifive.com>, Atish Patra <Atish.Patra@wdc.com>, "khilman@baylibre.com" <khilman@baylibre.com>, "drew@beagleboard.org" <drew@beagleboard.org>, Alistair Francis <Alistair.Francis@wdc.com>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>, Manuel Montecelo <mafm@debian.org>
+To: kernelci@groups.io
 
-Hi,
+Hey Everyone!
 
-Em qui., 2 de jul. de 2020 =C3=A0s 20:21, Karsten Merker
-<merker@debian.org> escreveu:
-> [...]
-> In contrast to debootstrap, mmdebstrap can handle multiple suites
-> without problems and automatically takes care of adding the
-> corresponding sources.list entries in the chroot.  The capability of
-> creating a chroot from multiple suites makes it also more resilient to
-> cases where one of the base packages temporarily has to move from
-> "unstable" to "unreleased".  The latter hasn't happened for a long
-> time, but it could in principle happen again - when that happens it is
-> usually only a temporary issue, but using mmdebstrap instead of
-> debootstrap completely avoids that becoming a problem at all.
->
-> Unfortunately there are certain differences between the debootstrap and
-> the mmdebstrap commandline parameters, so mmdebstrap is not a direct
-> 1:1 replacement for debootstrap, but the two are similar enough that
-> this shouldn't pose a serious problem.
+I've been working on a kernel building service/api that's designed to perform
+massive numbers of builds. The actual kernel build implementation reuses
+kernelci's kci_build script.
 
-Yeah, I think that it depends on the effort.  I'd suggest to start
-with the current set-up of debos with debootstrap underneath, it
-should work for now and most of the time, and if needed or deemed
-useful, add support for mmdebstrap.
+So far we have not had to modify kernelci-core's kci_build, but we're
+approaching a point where we think we're going to have to modify it
+fundamentally to meet our needs. I would really like to continue sharing a
+build implementation with kernelci, but some of the changes needed are
+architectural in nature, and so I'd like to share a brief proposal for
+consideration:
 
-Great to see this happening BTW, thanks all working on it for the effort :-=
-)
+Standalone python-based kernel builder with the following properties:
+- Independent python package (library and cli) that only does a local kernel
+  build
+- Takes as arguments things like architecture, toolchain, kernel config, etc.
+- Dockerzed toolchain environments are supported directly (e.g. it will run
+  "docker run make")
+- Builds are done within the context of an existing kernel tree (doing git
+  checkout, git fetch, etc are out of scope)
+- Artifacts go to some named or default directory path. Uploading them
+  elsewhere is out of scope.
+- Exception handling is built in and makes it usable as a python library
+- Logging is built in with flexibility in mind (log to console, verbose or
+  silent, log to file, etc.)
+- Simple, one-line dockerized reproducers are given as a build artifact, for
+  reproducing builds locally.
+- Partial build failure support - e.g. what if kselftest fails but the rest of
+  the build passes?
+- Rigorous unit testing
+- Implementation is modular enough to support things like a documentation build
+  and other targets in the tree such as various tools/, sparse checker,
+  coccinelle, etc.
+- Support for kernel fragement files or urls in addition to supporting
+  individual kernel config arguments
 
---=20
-Manuel A. Fernandez Montecelo <manuel.montezelo@gmail.com>
+Use Case Examples:
+- Install using pip, build using the cli interface
+  - "pip install --user kernel-builder; cd linux; kernel-builder --arch arm64 --toolchain clang-9"
+- Run using a published docker container. This example would need permission to
+  launch additional docker containers to perform the build steps.
+  - "docker run kernel-builder --arch arm64 --toolchain clang-9"
+- Install using pip, and use it from python as a library
+  - "import kernel-builder"
+
+In the example above, "kernel-builder" is a placeholder for whatever the name
+would be.
+
+The artifacts produced would be similar to the set of artifacts kci_build
+produces today, with the addition of a build reproducer script and probably
+some differences in metadata files.
+
+Docker support would be optional (you could use a locally installed toolchain),
+but allows for arbitrary toolchains to be available and perfect
+reproducibility.
+
+It's hard to change kci_build to be anything like this because it's tightly
+coupled with the kernelci-core repo, and kernelci itself. The design above also
+fundamentally changes how the builder interfaces with docker, such that it
+becomes supported directly rather than something that's implemented outside the
+scope of the builder.
+
+It's important that docker is supported directly because it makes the
+reproducible build use-case a one-liner, it solves the problem of having to get
+python and the builder into the build containers, and it allows for more
+granular control of the build.
+
+So, thoughts? How close or how far is this from the roadmap for kci_build as it
+stands today? We are likely to start working on this soon, and would really
+like to work together on it if possible.
+
+Thanks for your feedback,
+Dan
