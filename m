@@ -1,68 +1,52 @@
-From: santiago.esteban@microchip.com
-Subject: Re: Microchip KernelCi contributions
-Date: Mon, 20 Jul 2020 12:11:47 +0000
-Message-ID: <72733295-b2b4-aaa1-5e8f-023df9f158e1@microchip.com>
-References: <3c193c7e-c13d-5740-8d11-4dca5be528ef@microchip.com>
- <7hr1to4iad.fsf@baylibre.com>
-In-Reply-To: <7hr1to4iad.fsf@baylibre.com>
+Date: Tue, 21 Apr 2020 16:53:59 +0100
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: kci_build proposal
+Message-ID: <20200421155359.GD4540@sirena.org.uk>
+References: <20200420163628.wmbc7f7vuvqsbdhw@xps.therub.org>
+ <CAH1_8nBL+YSnmWyEkV336+wkq4YP=pHs1srUNxUZ_zhGxOe45Q@mail.gmail.com>
 MIME-Version: 1.0
-Return-Path: Santiago.Esteban@microchip.com
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <74CA8B9E423E774397C320861CD997B6@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+In-Reply-To: <CAH1_8nBL+YSnmWyEkV336+wkq4YP=pHs1srUNxUZ_zhGxOe45Q@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fOHHtNG4YXGJ0yqR"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: khilman@baylibre.com, kernelci@groups.io, info@kernelci.org
+To: kernelci@groups.io, guillaume.tucker@gmail.com
+Cc: Dan Rue <dan.rue@linaro.org>
 
-SGkgS2V2aW4sDQoNCkknbSBzb3JyeSBmb3IgbXkgbGF0ZSByZXBseSwgYnV0IHdhcyBvbiBob2xs
-aWRheXMuLi4NCg0KT24gNi83LzIwIDIwOjIwLCBLZXZpbiBIaWxtYW4gd3JvdGU6DQo+IEVYVEVS
-TkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3Mg
-eW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPg0KPiBIaSBTYW50aWFnbywNCj4NCj4gPFNh
-bnRpYWdvLkVzdGViYW5AbWljcm9jaGlwLmNvbT4gd3JpdGVzOg0KPg0KPj4gSSdtIFNhbnRpYWdv
-IEVzdGViYW4sIFNXIEVuZ2luZWVyIGF0IE1pY3JvY2hpcC4gSSdtICBsZWFkaW5nIHRoZSBlZmZv
-cnQNCj4+IGZvciBjb250aW51b3VzIGludGVncmF0aW9uIG9mIG91ciBMaW51eCBkZXZlbG9wbWVu
-dHMuIFdlIGFyZSBzZXR0aW5nIHVwDQo+PiB0aGUgIGluZnJhc3RydWN0dXJlIGZvciBDSSBpbiBh
-ICBib2FyZCBmYXJtIGNvbnRhaW5pbmcgc2V2ZXJhbCBib2FyZHMuDQo+PiBXZSB3b3VsZCBsaWtl
-IHRvIGNvbnRyaWJ1dGUgdG8gdGhlIEtlcm5lbENJIGVmZm9ydCB3aXRoIGJ1aWxkIGFuZCB0ZXN0
-DQo+PiBkYXRhLiBIb3BlZnVsbHksIGFzIG91ciBrbm93bGVkZ2UgaW5jcmVhc2VzIHdlIHdpbGwg
-YmUgYWJsZSB0byBoZWxwICBpbg0KPj4gc29tZSBvdGhlciB3YXlzLg0KPj4NCj4+DQo+PiBIb3cg
-c2hvdWxkIEkgcHJvZGVlZD8NCj4gSG93IGlzIHlvdXIgbGFiIGN1cnJlbnRseSBzZXR1cD8gIEFy
-ZSB5b3UgdXNpbmcgTEFWQT8gSWYgbm90LCBjYW4geW91DQo+IHRlbGwgdXMgYSBiaXQgbW9yZSBh
-Ym91dCBob3cgeW91ciBsYWIgaXMgc2V0dXA/ICBXaGF0IGtpbmQgb2YgaGFyZHdhcmUNCj4geW91
-J3JlIHRlc3Rpbmc/DQoNClVuZm9ydHVuYXRlbHksIHdlIGFyZSBub3QgdXNpbmcgTEFWQSwgd2Ug
-YXJlIHVzaW5nIGEgY29ycG9yYXRlIEplbmtpbnMgDQpzZXJ2ZXIsIGEgbG9jYWwgZGV2ZWxvcG1l
-bnQgS2VybmVsQ0kgc2VydmVyIGFuZCBMYWJncmlkIChmcm9tIA0KUGVuZ3V0cm9uaXgpIGZvciB0
-ZXN0aW5nIHRoZSBib2FyZHMgb24gdGhlIGZhcm0uDQoNClJpZ2h0IG5vdywgd2UgYXJlIHRlc3Rp
-bmcgMyBkaWZmZXJlbnQgQVJNIENvcnRleC1BNSBTT0NzIChTQU1BNUQzLCANClNBTUE1RDQsIFNB
-TUE1RDIpIGFuZCBBUk05IGRldmljZSAoU0FNOVg2MCksIGFsbCBTb0NzIGFuZCB0ZXN0IGJvYXJk
-cyANCmFyZSBtYWlubGluZWQuIFdlIGFyZSBpbiB0aGUgcHJvY2VzcyBvZiBtYWlubGluaW5nIHN1
-cHBvcnQgZm9yIDIgbmV3IA0KZGV2aWNlcy9ib2FyZHMuDQoNCj4NCj4gSWYgdXNpbmcgTEFWQSwg
-Z2V0dGluZyBpbnRlZ3JhdGVkIGludG8gS2VybmVsQ0kgaXMgcHJldHR5IHN0cmFpZ2h0DQo+IGZv
-cndhcmQuDQo+DQo+IFNvbWUgcHJlLXJlcXVpc2l0ZXM6DQo+DQo+IC0gYm9hcmRzIGNhbiBib290
-IGFuIHVwc3RyZWFtIExpbnV4IGtlcm5lbCB1c2luZyBhbiB1cHN0cmVhbSBkZWZjb25maWcsDQo+
-ICAgIChtaW5pbXVtOiBib290IHRvIGEgc2VyaWFsLWNvbnNvbGUgc2hlbGwgdXNpbmcgYSByYW1k
-aXNrKQ0KPiAtIExBVkEgZGV2aWNlLXR5cGVzIGZvciB5b3VyIGJvYXJkcyBhcmUgc3VibWl0dGVk
-IHVwc3RyZWFtIHRvIHRoZSBMQVZBDQo+ICAgIHByb2plY3QNCj4NCj4gIEZyb20gdGhlcmUsIHdp
-dGggYSBiYXNpYyBMQVZBIHNldHVwL3dvcmtpbmcsIHdlIGp1c3QgYWRkIHlvdXIgbGFiIHRvIG91
-cg0KPiBsaXN0IG9mIGxhYnNbMV0gYW5kIHRoZW4gYWRkIHlvdXIgZGV2aWNlLXR5cGVzIGluIHlv
-dXIgbGFiIHRvIG91ciBsaXN0DQo+IG9mIGRldmljZXNbMl0uDQo+DQo+IEZvciBrZXJuZWxjaS5v
-cmcgdG8gYmUgYWJsZSB0byBzdWJtaXQgam9icyB0byB5b3VyIExBVkEgbGFiLCB5b3UnbGwgbmVl
-ZA0KPiB0byBjcmVhdGUgYSBga2VybmVsLWNpYCB1c2VyLCBzZXR1cCBhbiBhdXRoIHRva2VuIGFu
-ZCBzaGFyZSB0aGF0IHRva2VuDQo+IHdpdGggdXMuICBBbnkgYm9hcmRzIHRoYXQgdGhlIGtlcm5l
-bC1jaSBMQVZBIHVzZXIgaGFzIGFjY2VzcyB0bywNCj4ga2VybmVsY2kub3JnIHdpbGwgaGF2ZSBh
-Y2Nlc3MgdG8uDQo+DQo+IEhvcGUgdGhhdCBoZWxwcyBnZXQgeW91IHN0YXJ0ZWQsDQo+DQo+IEtl
-dmluDQo+DQo+IFsxXSBodHRwczovL2dpdGh1Yi5jb20va2VybmVsY2kva2VybmVsY2ktY29yZS9i
-bG9iL21hc3Rlci9sYWItY29uZmlncy55YW1sDQo+IFsyXSBodHRwczovL2dpdGh1Yi5jb20va2Vy
-bmVsY2kva2VybmVsY2ktY29yZS9ibG9iL21hc3Rlci90ZXN0LWNvbmZpZ3MueWFtbA0KPg0KQXMg
-d2UgYXJlIG5vdCB1c2luZyBMQVZBLCB3ZSBhcmUgdXNpbmcgYSBsb2NhbCBLQ0kgZG9ja2VyIHNl
-dHVwLiBXZSBhcmUgDQphYmxlIHRvIHBlcmZvcm0gYnVpbGRzIGZvciBhIHNlbGVjdGVkIHNldCBv
-ZiByZXBvcy9icmFuY2hlcyAoc2ltcGxpZmllZCANCnZlcnNpb24gb2YgbGFiLWNvbmZpZ3MueWFt
-bCksIHRlc3QgdGhlIG91dHB1dHMgdXNpbmcgTGFiZ3JpZCwgYW5kIA0KcHVibGlzaCB0aGUgdGVz
-dCByZXN1bHRzIGluIHRoZSBsb2NhbCBLQ0kgYXBwbGljYXRpb24uDQoNClJpZ2h0IG5vdyBpdCBp
-cyBhIHNpbXBsZSBib290IHRlc3QsIGJ1dCBJJ20gd29ya2luZyBvbiBhIGZ1bGwgYmFzZWxpbmUg
-DQp0ZXN0IGFuZCBsYXRlciwgaW4gdGhlIGZ1dHVyZSwgYWRkIG1vcmUgZnVuY3Rpb25hbCB0ZXN0
-cy4NCg0KSSBndWVzcyB0aGF0IGluIHRoaXMgY2FzZSwgSSB3b3VsZCBuZWVkIGZyb20geW91IHRv
-IGNyZWF0ZSBhIGxhYiwgbGV0J3MgDQpzYXnCoCAibGFiLW1pY3JvY2hpcCIgYW5kIHNoYXJlIHRo
-ZSB0b2tlbiB3aXRoIHVzIChtYXliZSBzdGFydGluZyB3aXRoIGEgDQpzdGFnaW5nIHJlcG9zaXRv
-cnkpLCBzbyBJIGNhbiBwdXNoIG91ciB0ZXN0IHJlc3VsdHMuDQoNCkJlc3QgcmVnYXJkcywNCg0K
-U2FudGlhZ28gRXN0ZWJhbg0KDQoNCg==
+--fOHHtNG4YXGJ0yqR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Apr 21, 2020 at 04:46:34PM +0100, Guillaume Tucker wrote:
+> On Mon, Apr 20, 2020 at 5:36 PM Dan Rue <dan.rue@linaro.org> wrote:
+
+> > I've been working on a kernel building service/api that's designed to
+> > perform
+> > massive numbers of builds. The actual kernel build implementation reuses
+> > kernelci's kci_build script.
+
+> Out of interest, how do you manage the builders?
+
+> We're looking into Kubernetes now so we might find issues similar
+> to those in your use-case.
+
+Indeed if the tool that you're working on is free software (I'm guessing
+it might be if it's for Linaro?) then it might make sense to just deploy
+a copy of that software rather than developing something similar.
+
+--fOHHtNG4YXGJ0yqR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6fFxYACgkQJNaLcl1U
+h9DzWQf/eYlAUmNY285+K6rurb4Shd27/2zUIGf9XOgrol4asrTA+F/PyhjZzOOa
+0g1DoUqvOc/AbUU4eDOlVB85nvYTImfXvJ31IfgLmn9fS9Nt2XOh6F38bi4UK2Go
+1XhNPBrqvszAHR2CLpsSKffVdISCKIcsKyg7GUQeyigsAwvqHgrL7TpozzsUqqbr
+B6nh0Lps95AkcrymTvZAQrBCHPHo74sX33PZfDlYX7SfLp17OCXGbWWrywd82e/x
+N8rsf8bxu/TZu640EGiij3hOa6Lunn7KOJWXO5mVz4Ya4MU6RY+GAtJRNXgNjnIA
+sGEPR4RBmOu4UhYtCfLI9kbqHjCL7w==
+=9AQS
+-----END PGP SIGNATURE-----
+
+--fOHHtNG4YXGJ0yqR--
