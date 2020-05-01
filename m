@@ -1,150 +1,56 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2020-04-07 #minutes
-Message-ID: <d739cb52-d393-8ecb-0987-4cc896274b14@collabora.com>
-Date: Tue, 7 Apr 2020 17:01:16 +0100
+Date: Fri, 1 May 2020 13:25:36 +0100
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: stable-rc/linux-5.4.y bisection: baseline.dmesg.alert on meson-g12a-x96-max
+Message-ID: <20200501122536.GA38314@sirena.org.uk>
+References: <5eabecbf.1c69fb81.2c617.628f@mx.google.com>
+ <cc10812b-19bd-6bd1-75da-32082241640a@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <cc10812b-19bd-6bd1-75da-32082241640a@collabora.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zYM0uCDKw75PZbzx"
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Jerome Brunet <jbrunet@baylibre.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernelci@groups.io, Kevin Hilman <khilman@baylibre.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org, stable@vger.kernel.org
 
-IMPORTANT - REDUCED BUILD CAPACITY
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
+--zYM0uCDKw75PZbzx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Due to a sharp increase in the Microsoft Azure global workload, many
-kernelci.org builders have been turned off temporarily.  We don't know ho=
-w long
-this will last, and only essential branches are being built at the moment=
-.  The
-current list of enabled build configurations is:
+On Fri, May 01, 2020 at 12:57:27PM +0100, Guillaume Tucker wrote:
 
-* mainline
-* next
-* lee_android_3.18
-* stable_3.16
-* stable_4.4
-* stable_4.9
-* stable_4.14
-* stable_4.19
-* stable_5.4
-* stable_5.6
-* stable-rc_3.16
-* stable-rc_4.4
-* stable-rc_4.9
-* stable-rc_4.14
-* stable-rc_4.19
-* stable-rc_5.4
-* stable-rc_5.6
+> The call stack is not the same as in the commit message found by
+> the bisection, so maybe it only fixed part of the problem:
 
-We are working on enabling support for pre-emptible builders to increase =
-the
-build capacity regardless, so hopefully we should soon be gradually rampi=
-ng
-things up again over the next few weeks.
+No, it is a backport which was fixing an issue that wasn't present in
+v5.4.
 
+> >   Result:     09f4294793bd3 ASoC: meson: axg-card: fix codec-to-codec link setup
 
-Technical Steering Committee minutes - 2020-03-31
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+As I said in reply to the AUTOSEL mail:
 
-* Clang-build Linux
-  * Reported-by: KernelCI tag in CBL issues tracker:
-      https://github.com/ClangBuiltLinux/linux/issues?q=3Dlabel%3A%22%5BR=
-eported-by%5D+KernelCI%22+
-    Lowball count; some issues get fixed without tracking these properly,=
- or
-    without having seen the report from KernelCI.
+| > Since the addition of commit 9b5db059366a ("ASoC: soc-pcm: dpcm: Only allow
+| > playback/capture if supported"), meson-axg cards which have codec-to-codec
+| > links fail to init and Oops:
 
-  * build report email changes reverted to have all the details back, the=
-y are
-    needed for the Clang team's workflow
+| This clearly describes the issue as only being present after the above
+| commit which is not in v5.6.
 
-* kcidb
-  * Grafana updated with new schema https://staging.kernelci.org:3000/
+Probably best that this not be backported.
 
-  * kcidb reporting TODO:
-    * Remembering sent notifications
-    * Formatting and sending e-mails
-    * Caching data before submission
+--zYM0uCDKw75PZbzx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-  * Sending kcidb results still takes too long
-    -> caching to be implemented on receiving end, transparent to kcidb u=
-sers
+-----BEGIN PGP SIGNATURE-----
 
-    [    INFO/MainThread] Task kcidb-tests[0a278e57-bec7-4128-8621-a3e55d=
-b0b227] succeeded in 5.14888362633s: ObjectId('5e8224645fbf28e92d9bf482'
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6sFT8ACgkQJNaLcl1U
+h9CjCwf6A/KP149/7ilTWJylUigNvyI1cVIskzDBGQREGWK0VI2Z8qGOKkNgLzZw
+F8H2cYXmeDRb0MJRqgNwV0mDl3iHd7l2lqtIUd4kQdvL7id2OlZV2NEso/o28AwF
+x5GDVyl5E9rRto72Krs/X1R1V2+ACbNJORJiargnx7mv7QlmY5L0axZKbifhjP/C
+aEA5DlAD6eZXLpOCh++yPZYuatnik0c5uSao+TKsurFgxfC2+xdUnFC9QTYRd7NA
+jchP5RvU86y4V7yzhlBcndg+msHZ9/EjcJj1zdbJuaeDX2y895T3jCtgLzlhHVAM
+bCa8P2t5jxwaaDQxCLHjRE+uFUbt+w==
+=Ue/C
+-----END PGP SIGNATURE-----
 
-
-* pre-emptible builds
-  * initial testing with GCE (google-compute-engine Jenkins plugin)
-
-  * Matt recommended eventually using Juju for cloud-agnostic way
-    (https://juju.is/)
-
-  * a few issues in https://github.com/kernelci/kernelci-jenkins/issues
-
-* KUnit
-  * providing backend API tokens for staging
-
-  * how to accept test results when there are no builds (static analysis =
-in
-    general will have this problem)
-
-* kselftest build
-  * need =E2=80=98rsync=E2=80=99 on builders (PR sent)
-
-  * how/when do docker images get re built/pushed
-    -> manual process at the moment, Docker Hub credentials needed for
-       pushing updates automatically
-
-  * some tests (eg bpf) depend on latest clang
-
-  * FVP status?
-    broonie: LAVA support landed
-
-* staging.kernelci.org improvemnts to do:
-  * add weekly Mongo DB public dumps shared on storage.staging.kernelci.o=
-rg
-  * time boxing to only get recent data and limit dump size
-  * making the logs available every 8h (backend, frontend, automation)
-
-* Jenkins config-as-code
-  * GitHub auth still not enabled on staging
-    -> Production doesn=E2=80=99t use GitHub auth so not a blocker for de=
-ployment there
-  * Still needs bisection job to be added to kernelci-jenkins
-
-  * time to start looking at Jenkins alternatives?
-    *  Concourse (https://concourse-ci.org/) ?
-    * Switch to microservices + k8s?
-
-* test log fragments:
-  * issues with empty log_lines in some test cases
-  * recent ascii encoding issue found by Kevin
-
-
-Advisory Board minutes - 2020-04-01
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* Members=E2=80=99 logos now live: https://kernelci.org/
-* Discussing how to provide builders in the long-term
-* Discussing how to create metrics about kernelci.org impact
-
-
-Summary of changes going into production
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* reduce number of defconfigs built with Clang on linux-next
-* re-enable lab-pengutronix
-* several new i.mx6 and i.mx7 devices in lab-nxp
-* HTTP urls used for all artifacts to enable easy proxy caching in labs
-* list of stable branches revisited (added 3.16 and 5.6, removed 3.18)
-* new "KCIDB (beta)" tab on web frontend with link to kcidb
-
-
-Best wishes,
-Guillaume
+--zYM0uCDKw75PZbzx--
