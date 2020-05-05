@@ -1,78 +1,66 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2020-05-04 #minutes
-Message-ID: <8bf065e3-4a27-89ca-25d4-7763f8432e23@collabora.com>
-Date: Mon, 4 May 2020 14:44:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAPDyKFoP_zTja189oGvUm0NuOe1ihi8u-XfPUwxbz3DVHrjP_w@mail.gmail.com>
+ <CAH1_8nDa6f3gJJtdpS8UDDj6ZhTCCW-VPK5Ps_jqxPhH2SETpw@mail.gmail.com>
+In-Reply-To: <CAH1_8nDa6f3gJJtdpS8UDDj6ZhTCCW-VPK5Ps_jqxPhH2SETpw@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 5 May 2020 16:05:30 +0200
+Message-ID: <CAPDyKFqv1_CCT5K6xsixyys9nthz=qGFj9Qspw+gjkpPBdHqKA@mail.gmail.com>
+Subject: Re: MMC tree not building anymore
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, kernelci-members@groups.io
+To: Guillaume Tucker <guillaume.tucker@gmail.com>
+Cc: kernelci@groups.io, info <info@kernelci.org>
 
-Technical Steering Committee minutes - 2020-04-28
-=================================================
+On Thu, 30 Apr 2020 at 15:28, Guillaume Tucker
+<guillaume.tucker@gmail.com> wrote:
+>
+> Hi Ulf,
+>
+> On Thu, Apr 30, 2020 at 2:14 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+>>
+>> Hi KernelCI folkz,
+>>
+>> My MMC tree seems not to be included in the kernelCI infrastructure
+>> anymore, as I receive no more reports.
+>> Would it possible to re-enable my tree?
+>
+>
+> Sorry, some of our kernel builders had to be turned off
+> temporarily and as a result we've had to scale down the number of
+> branches being monitored.  We have now started re-enabling some
+> gradually to see how much the system can cope with, until we add
+> a new set of builders and go back to normal.
+>
+> I've just enabled your ulfh/next branch again, it should be fine
+> if you don't push new revisions more than once a day to limit the
+> total number of builds.
 
-* QEMU command line references?
-  What KernelCI logs give you:
-    https://storage.kernelci.org/next/master/next-20200428/arm/multi_v7_defconfig/gcc-8/lab-baylibre/boot-qemu_arm-virt-gicv3.html#L77
-  See also the Clang QEMU boot-utils:
-    https://github.com/ClangBuiltLinux/boot-utils
+Thanks a lot!
 
-* Syzcaller+KernelCI
-  Would be a good potential extra source of test results in kernelci.org
-  Also probably for Clang-built-Linux tests
-    https://github.com/ClangBuiltLinux/continuous-integration
+Occasionally I may push more than once per day - but normally I push
+~3 times per week.
 
-* Clang
-  1752 warnings w/ Clang-10 are the PAC/BTI extensions missing support in older
-  bintuils.
+>
+> Actually, maybe this would also be the opportunity to review the
+> number of kernels built from your branch.  Do you need all the
+> CPU architectures and all the defconfigs to be built?  For
+> example, some maintainers are happy with just the main defconfigs
+> such as linusw:
+>
+>     https://kernelci.org/build/linusw/branch/for-next/kernel/v5.7-rc2-34-g9e581cd14663/
+>
+> Some even just need 3 builds, for arm, arm64 and x86_64.  This is
+> typically the best tests/build ratio.  Having fewer builds also
+> means you'll get email reports quicker.  It's easy enough to
+> adjust the KernelCI configuration to make it optimal, please let
+> us know.
 
-* KCIDB
-  Only mainline notifications are sent to the maillist now
-    https://groups.io/g/kernelci-results-staging/topics
-  Notification generation performance fixed
-  Design doc started
-  Submission HOWTO started
+Okay, I think these are a good enough subset for me.
 
-  Revision ID generation proposal, e.g.:
-    ( echo -n "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git@c0d73a868d9b411bd2d0c8e5ff9d98bfa8563cb1"; sha256sum *.patch | while read -r hash file; do echo -n "+$hash"; done;  ) | sha256sum
-  Output: eb28f86dec5a8b98a6c3c6c2778916b48e3c00923db51720099f6ee28e376735
+allmodconfig (arm, arm64, x86_64)
+defconfig (arm64, riscv, x86_64, i386)
+multi_v7_defconfig (arm)
+cavium_octeon_defconfig (mips)
 
-* kernelci.org web dashboard
-  * Final tweaks on frontend before production update
-    https://staging.kernelci.org
-
-  * Feedback needed to catch issues before it goes live
-
-  * Reviewing / fixing Mongo DB indexes
-
-* Documentation
-  Feedback needed on the current kernelci-core documentation
-    https://github.com/kernelci/kernelci-core/blob/master/README.md
-
-* Email reporting
-  Log fragments enabled for failed test cases in the e-mail reports on staging
-
-* Kubernetes
-  some good progress on a separate Jenkins test instance
-  fixing some issues related to managing multiple clusters
-
-
-Advisory Board minutes - 2020-04-29
-===================================
-
-* Refining the survey to learn about general kernel CI users
-* Follow us on Twitter https://twitter.com/kernelci
-
-
-Summary of changes going into production
-========================================
-
-* baseline rootfs now has dmesg.sh built-in to parse dmesg output
-* drop arc and mips from Android builds
-* enable the kernelci-results-staging@groups.io mailing list
-* drop lab-drue as it's now permanently offline
-
-
-Best wishes,
-Guillaume
+Kind regards
+Uffe
