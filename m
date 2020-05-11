@@ -1,66 +1,93 @@
+From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
+Subject: kernelci.org update - 2020-05-11 #minutes
+Message-ID: <3a23bb06-e808-2f7e-fdeb-559185a6664f@collabora.com>
+Date: Mon, 11 May 2020 17:06:09 +0100
 MIME-Version: 1.0
-References: <CAPDyKFoP_zTja189oGvUm0NuOe1ihi8u-XfPUwxbz3DVHrjP_w@mail.gmail.com>
- <CAH1_8nDa6f3gJJtdpS8UDDj6ZhTCCW-VPK5Ps_jqxPhH2SETpw@mail.gmail.com>
-In-Reply-To: <CAH1_8nDa6f3gJJtdpS8UDDj6ZhTCCW-VPK5Ps_jqxPhH2SETpw@mail.gmail.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 5 May 2020 16:05:30 +0200
-Message-ID: <CAPDyKFqv1_CCT5K6xsixyys9nthz=qGFj9Qspw+gjkpPBdHqKA@mail.gmail.com>
-Subject: Re: MMC tree not building anymore
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: kernelci@groups.io, info <info@kernelci.org>
+To: kernelci@groups.io
 
-On Thu, 30 Apr 2020 at 15:28, Guillaume Tucker
-<guillaume.tucker@gmail.com> wrote:
->
-> Hi Ulf,
->
-> On Thu, Apr 30, 2020 at 2:14 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->>
->> Hi KernelCI folkz,
->>
->> My MMC tree seems not to be included in the kernelCI infrastructure
->> anymore, as I receive no more reports.
->> Would it possible to re-enable my tree?
->
->
-> Sorry, some of our kernel builders had to be turned off
-> temporarily and as a result we've had to scale down the number of
-> branches being monitored.  We have now started re-enabling some
-> gradually to see how much the system can cope with, until we add
-> a new set of builders and go back to normal.
->
-> I've just enabled your ulfh/next branch again, it should be fine
-> if you don't push new revisions more than once a day to limit the
-> total number of builds.
+--- IMPORTANT: BOOT TESTS DEPRECATION NOTICE ---
 
-Thanks a lot!
+As the work to convert the web frontend to show functional test results is
+nearing completion, there is now a plan to finally deprecate boot tests as=
+ per
+the details on this GitHub issue:
 
-Occasionally I may push more than once per day - but normally I push
-~3 times per week.
+  https://github.com/kernelci/kernelci-backend/issues/238
 
->
-> Actually, maybe this would also be the opportunity to review the
-> number of kernels built from your branch.  Do you need all the
-> CPU architectures and all the defconfigs to be built?  For
-> example, some maintainers are happy with just the main defconfigs
-> such as linusw:
->
->     https://kernelci.org/build/linusw/branch/for-next/kernel/v5.7-rc2-34-g9e581cd14663/
->
-> Some even just need 3 builds, for arm, arm64 and x86_64.  This is
-> typically the best tests/build ratio.  Having fewer builds also
-> means you'll get email reports quicker.  It's easy enough to
-> adjust the KernelCI configuration to make it optimal, please let
-> us know.
+There will be an email tomorrow with the detailed schedule.  Please let us=
+ know
+if this going to cause any disruption in your workflow or if you have any
+comments or questions.
 
-Okay, I think these are a good enough subset for me.
 
-allmodconfig (arm, arm64, x86_64)
-defconfig (arm64, riscv, x86_64, i386)
-multi_v7_defconfig (arm)
-cavium_octeon_defconfig (mips)
+Technical Steering Committee minutes - 2020-05-05
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
 
-Kind regards
-Uffe
+* Clang
+  * Looking into clang-10 arm64 allyesconfig failures, will bring up the A=
+RM
+    LLVM team tomorrow.
+  * I386 one patch away from building+booting w/ Clang
+  * Patches enabling -gz=3Dzlib, -gdwarf-5, in tree Rust
+  * clang for android?  I noticed this week that the android trees are onl=
+y
+    built with gcc -> Yes, please file a bug to track
+  * Clang Travis tests: using KernelCI builds or their own?
+    * Separate builds for the time being, waiting for LLVM make support to=
+ land
+      in mainline before enabling that in kernelci and using it (i.e. full
+      binutils=E2=80=A6)  `make LLVM=3D1` rather than `make CC=3Dclang` is=
+ in mainline.
+
+* k8s
+  * builds are scaling well across multiple clusters (2x Azure, 4x GCP)
+  * build failure catching needs work (e.g. build fails vs. k8s infra fail=
+s)
+  * Jenkins: random worker disconnects
+
+* web frontend
+  * latest version ready to deploy into production
+    https://staging.kernelci.org/
+  * Guide users looking for boot results to the baseline results
+  * Non-LAVA labs need to switch from boots to baseline results (lab-bjorn=
+,
+    lab-qcom, lab-baylibre-seattle)
+
+* Jenkins
+  * Jenkins DSL jobs in Folders: discussing variables in a DSL YAML templa=
+te
+  * Login to bot.kernelci.org - sorted, will create users manually for now
+
+* Misc.
+  * Branches with slashes -> getting fixed next week
+  * Feedback about Jitsi for weekly video call
+    * worked well
+    * per-user connection stats are super cool (c.f. upper left corner of =
+each
+      users video)
+
+
+Advisory Board minutes - 2020-05-06
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+* Discussing plans for adding a blog to foundation.kernelci.org
+* Discussing user survey to learn about KernelCI users
+
+
+Summary of changes going into production
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+No production update this week due to low amount of recent changes and the
+freeze of staging to roll out the new website in production.
+
+
+Best wishes,
+Guillaume
