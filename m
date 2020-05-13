@@ -1,93 +1,53 @@
 From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2020-05-11 #minutes
-Message-ID: <3a23bb06-e808-2f7e-fdeb-559185a6664f@collabora.com>
-Date: Mon, 11 May 2020 17:06:09 +0100
+Subject: kernelci.org transitioning to functional testing
+Message-ID: <66aae710-1ee9-fb67-1a1b-997eeb70dc04@collabora.com>
+Date: Wed, 13 May 2020 12:13:24 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, kernel-build-reports@lists.linaro.org, automated-testing@lists.yoctoproject.org, linux-next@vger.kernel.org, stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, agross@kernel.org, qcomlt-patches@lists.linaro.org, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, Tony Lindgren <tony@atomide.com>, ulf.hansson@linaro.org, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, linux-pm@vger.kernel.org, vireshk@kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, kernel@collabora.com, kernelci@baylibre.com, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 
---- IMPORTANT: BOOT TESTS DEPRECATION NOTICE ---
+As kernelci.org is expanding its functional testing
+capabilities, the concept of boot testing is now being
+deprecated.
 
-As the work to convert the web frontend to show functional test results is
-nearing completion, there is now a plan to finally deprecate boot tests as=
- per
-the details on this GitHub issue:
+Next Monday 18th May, the web dashboard on https://kernelci.org
+will be updated to primarily show functional test results
+rather than boot results.  The Boots tab will still be
+available until 5th June to ease the transition.
 
-  https://github.com/kernelci/kernelci-backend/issues/238
+The new equivalent to boot testing is the *baseline* test suite
+which also runs sanity checks using dmesg and bootrr[1].
 
-There will be an email tomorrow with the detailed schedule.  Please let us=
- know
-if this going to cause any disruption in your workflow or if you have any
-comments or questions.
+Boot email reports will eventually be replaced with baseline
+reports.  For those of you already familiar with the test email
+reports, they will be simplified to only show regressions with
+links to the dashboard for all the details.
 
+Some functional tests are already being run by kernelci.org,
+results have only been shared by email so far but they will
+become visible on the web dashboard next week.  In particular:
+v4l2-compliance, i-g-t for DRM/KMS and Panfrost,
+suspend/resume...
 
-Technical Steering Committee minutes - 2020-05-05
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
+And of course, a lot of functional test suites are in the
+process of being added: kselftest, KUnit, LTP, xfstests,
+extended i-g-t coverage and many more.
 
-* Clang
-  * Looking into clang-10 arm64 allyesconfig failures, will bring up the A=
-RM
-    LLVM team tomorrow.
-  * I386 one patch away from building+booting w/ Clang
-  * Patches enabling -gz=3Dzlib, -gdwarf-5, in tree Rust
-  * clang for android?  I noticed this week that the android trees are onl=
-y
-    built with gcc -> Yes, please file a bug to track
-  * Clang Travis tests: using KernelCI builds or their own?
-    * Separate builds for the time being, waiting for LLVM make support to=
- land
-      in mainline before enabling that in kernelci and using it (i.e. full
-      binutils=E2=80=A6)  `make LLVM=3D1` rather than `make CC=3Dclang` is=
- in mainline.
+The detailed schedule is available on a GitHub issue[2].
 
-* k8s
-  * builds are scaling well across multiple clusters (2x Azure, 4x GCP)
-  * build failure catching needs work (e.g. build fails vs. k8s infra fail=
-s)
-  * Jenkins: random worker disconnects
+Please let us know if you have any questions, comments or
+concerns either in this thread, on kernelci@groups.io or IRC
+#kernelci on Freenode.
 
-* web frontend
-  * latest version ready to deploy into production
-    https://staging.kernelci.org/
-  * Guide users looking for boot results to the baseline results
-  * Non-LAVA labs need to switch from boots to baseline results (lab-bjorn=
-,
-    lab-qcom, lab-baylibre-seattle)
+Stay tuned!
 
-* Jenkins
-  * Jenkins DSL jobs in Folders: discussing variables in a DSL YAML templa=
-te
-  * Login to bot.kernelci.org - sorted, will create users manually for now
-
-* Misc.
-  * Branches with slashes -> getting fixed next week
-  * Feedback about Jitsi for weekly video call
-    * worked well
-    * per-user connection stats are super cool (c.f. upper left corner of =
-each
-      users video)
-
-
-Advisory Board minutes - 2020-05-06
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* Discussing plans for adding a blog to foundation.kernelci.org
-* Discussing user survey to learn about KernelCI users
-
-
-Summary of changes going into production
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-No production update this week due to low amount of recent changes and the
-freeze of staging to roll out the new website in production.
-
-
-Best wishes,
+Thanks,
 Guillaume
+
+
+[1] bootrr: https://github.com/kernelci/bootrr
+[2] schedule: https://github.com/kernelci/kernelci-backend/issues/238
+
