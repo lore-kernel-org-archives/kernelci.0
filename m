@@ -1,165 +1,199 @@
-Subject: kernelci/staging.kernelci.org boot: 176 boots: 10 failed, 164 passed with 2 untried/unknown (staging-20200513.1)
-References: <5ebcebbb.1c69fb81.a94d7.0004@mx.google.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Message-ID: <e8236563-8e70-ce32-c8fa-386868c9a37e@collabora.com>
-Date: Thu, 14 May 2020 08:01:51 +0100
 MIME-Version: 1.0
-In-Reply-To: <5ebcebbb.1c69fb81.a94d7.0004@mx.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <5ebce8ce.1c69fb81.c274.4b92@mx.google.com> <812faa30-b801-f91e-d436-d21d8d232ff8@collabora.com>
+In-Reply-To: <812faa30-b801-f91e-d436-d21d8d232ff8@collabora.com>
+From: "Guenter Roeck" <groeck@google.com>
+Date: Thu, 14 May 2020 07:07:08 -0700
+Message-ID: <CABXOdTdXx0Zt+k9rDN0=kT+DbMVOO7yLPpnTFB9vquMW_WBPVQ@mail.gmail.com>
+Subject: Re: kernelci/staging.kernelci.org baseline: 167 runs, 7 regressions (staging-20200514.0)
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@gmail.com>
 
-Similarly to my previous email with the new format for test email
-reports, please see below an example boot report with the added
-section at the top.=C2=A0 This explains the deprecation of boot
-results and adds a link to the detailed matching baseline
-results.
+On Wed, May 13, 2020 at 11:55 PM Guillaume Tucker
+<guillaume.tucker@gmail.com> wrote:
+>
+> Please see below an example of the reduced test email format
+> which only shows regressions but also has links to all the
+> results, and more details on the frontend.  As a result, these
+> email reports are not sent if there were no regressions.
+>
+> This is what is expected to be deployed in production on Monday
+> to go hand-in-hand with the new web frontend.  Please let us know
+> if you find any issues.  More sample test email reports can be
+> found on the staging results mailing list:
+>
+>   https://groups.io/g/kernelci-results-staging/topics
+>
+> Emails up to revision staging-20200514.0 are using the previous
+> detailed format, newer reports will be like this one.
+>
+> Note: In this case, one same regression was found in 2 labs and
+> was listed twice.  This is probably something that can be
+> improved in the report to avoid showing duplicated information.
+> Still it's important to track it this way in the database.
+>
 
-Likewise, please let us know if you have any comments about this
-updated boot email format.
-
-Boot email reports are generated in both plain text and html,
-unlike test email reports that are only available in plain text.
+Any chance to report the actual regression (afaics a crash in iommu code) ?
 
 Thanks,
-Guillaume
+Guenter
 
-
--------- Forwarded Message --------
-Subject: =09kernelci/staging.kernelci.org boot: 176 boots: 10 failed, 164 =
-passed with 2 untried/unknown (staging-20200513.1)
-Date: =09Wed, 13 May 2020 23:56:59 -0700 (PDT)
-From: =09staging.kernelci.org bot <bot@kernelci.org>
-To: =09gtucker@collabora.com, debug011@gtucker.io
-
-
-
-kernelci/staging.kernelci.org boot: 176 boots: 10 failed, 164 passed with =
-2 untried/unknown (staging-20200513.1)
-
-
-    =E2=9A=A0=C2=A0Boot tests are now deprecated=C2=A0=E2=9A=A0
-
-As kernelci.org is expanding its functional testing capabilities, the conc=
-ept of boot testing is now deprecated. Boot results are scheduled to be dro=
-pped on 5th June 2020. The full schedule for boot tests deprecation is avai=
-lable on GitHub issue #238 <https://github.com/kernelci/kernelci-backend/is=
-sues/238>.
-
-The new equivalent is the baseline test suite which also runs sanity check=
-s using dmesg and bootrr <https://github.com/kernelci/bootrr>.
-
-See the baseline results for this kernel revision on this page:
-https://staging.kernelci.org/test/job/kernelci/branch/staging.kernelci.org=
-/kernel/staging-20200513.1/plan/baseline/
-
-*kernelci/staging.kernelci.org boot: 176 boots: 10 failed, 164 passed with=
- 2 untried/unknown (staging-20200513.1)*
-
-Full Boot Summary: https://staging.kernelci.org/boot/all/job/kernelci/bran=
-ch/staging.kernelci.org/kernel/staging-20200513.1/
-Full Build Summary: https://staging.kernelci.org/build/kernelci/branch/sta=
-ging.kernelci.org/kernel/staging-20200513.1/
-
-Tree: kernelci
-Branch: staging.kernelci.org
-Git Describe: staging-20200513.1
-Git Commit: 23faf34c1d96be0fd94fd15181f2a88472771424
-Git URL: https://github.com/kernelci/linux.git
-Tested: 71 unique boards, 16 SoC families, 9 builds out of 22
-
-*Boot Regressions Detected:*
-
-arm:
-multi_v7_defconfig:
-clang-9:
-tegra124-nyan-big:
-lab-collabora <https://staging.kernelci.org/boot/id/5ebc30bd513ddd5e445afc=
-40/>: failing since 5 days <https://staging.kernelci.org/boot/all/job/kerne=
-lci/branch/staging.kernelci.org/kernel/staging-20200513.1/#regressions> (la=
-st pass: staging-20200507.1 <https://staging.kernelci.org/boot/id/5eb433f26=
-c75984ccd509847/> - first fail: staging-20200507.2 <https://staging.kernelc=
-i.org/boot/id/5eb4834154224ffca697dddb/>)
-gcc-8:
-bcm2836-rpi-2-b:
-lab-collabora <https://staging.kernelci.org/boot/id/5ebc2e676623429c425afc=
-40/>: failing since 113 days <https://staging.kernelci.org/boot/all/job/ker=
-nelci/branch/staging.kernelci.org/kernel/staging-20200513.1/#regressions> (=
-last pass: staging-20200117.0 <https://staging.kernelci.org/boot/id/5e217f5=
-9d26c42ba35686f52/> - first fail: staging-20200121.0 <https://staging.kerne=
-lci.org/boot/id/5e26d20fe7e65a913ad9150e/>)
-tegra124-nyan-big:
-lab-collabora <https://staging.kernelci.org/boot/id/5ebc32ff520a208e955afc=
-38/>: failing since 5 days <https://staging.kernelci.org/boot/all/job/kerne=
-lci/branch/staging.kernelci.org/kernel/staging-20200513.1/#regressions> (la=
-st pass: staging-20200507.1 <https://staging.kernelci.org/boot/id/5eb42654d=
-2e3487528e26a40/> - first fail: staging-20200507.2 <https://staging.kernelc=
-i.org/boot/id/5eb48332d3e0c19dca97dd93/>)
-arm64:
-defconfig:
-clang-9:
-meson-g12a-sei510:
-lab-baylibre <https://staging.kernelci.org/boot/id/5ebc2c2090b9cb16975afc3=
-8/>: new failure <https://staging.kernelci.org/boot/all/job/kernelci/branch=
-/staging.kernelci.org/kernel/staging-20200513.1/#regressions> (last pass: s=
-taging-20200512.2 <https://staging.kernelci.org/boot/id/5ebb17d9c07482c16fe=
-6f456/>)
-meson-gxl-s805x-p241:
-lab-baylibre <https://staging.kernelci.org/boot/id/5ebc2d43961555b6eb5afc5=
-b/>: failing since 1 day <https://staging.kernelci.org/boot/all/job/kernelc=
-i/branch/staging.kernelci.org/kernel/staging-20200513.1/#regressions> (last=
- pass: staging-20200512.0 <https://staging.kernelci.org/boot/id/5eba3125c9e=
-fec7feda51410/> - first fail: staging-20200512.2 <https://staging.kernelci.=
-org/boot/id/5ebb198d22fe12c249e6f451/>)
-meson-gxl-s905d-p230:
-lab-baylibre <https://staging.kernelci.org/boot/id/5ebc2d47961555b6eb5afc5=
-e/>: new failure <https://staging.kernelci.org/boot/all/job/kernelci/branch=
-/staging.kernelci.org/kernel/staging-20200513.1/#regressions> (last pass: s=
-taging-20200512.2 <https://staging.kernelci.org/boot/id/5ebb18b6a309159116e=
-6f44f/>)
-sun50i-h6-orangepi-3:
-lab-clabbe <https://staging.kernelci.org/boot/id/5ebc2c5ef1aea45f465afc44/=
->: new failure <https://staging.kernelci.org/boot/all/job/kernelci/branch/s=
-taging.kernelci.org/kernel/staging-20200513.1/#regressions> (last pass: sta=
-ging-20200512.2 <https://staging.kernelci.org/boot/id/5ebb944c1ef4d4c6dae6f=
-44b/>)
-defconfig+CONFIG_CPU_BIG_ENDIAN=3Dy:
-gcc-8:
-sun50i-a64-pine64-plus:
-lab-baylibre <https://staging.kernelci.org/boot/id/5ebc28593e2e510c6d5afc5=
-6/>: failing since 1 day <https://staging.kernelci.org/boot/all/job/kernelc=
-i/branch/staging.kernelci.org/kernel/staging-20200513.1/#regressions> (last=
- pass: staging-20200512.2 <https://staging.kernelci.org/boot/id/5ebb14113b6=
-19a2e62e6f450/> - first fail: staging-20200513.0 <https://staging.kernelci.=
-org/boot/id/5ebc1cbe87c285caf25afc3d/>)
-
-*Boot Failures Detected:*
-
-arm64:
-defconfig:
-clang-9:
-sun50i-a64-pine64-plus <https://staging.kernelci.org/boot/sun50i-a64-pine6=
-4-plus/job/kernelci/branch/staging.kernelci.org/kernel/staging-20200513.1/d=
-efconfig/defconfig/>: 1 failed lab
-defconfig+CONFIG_CPU_BIG_ENDIAN=3Dy:
-gcc-8:
-sun50i-a64-pine64-plus <https://staging.kernelci.org/boot/sun50i-a64-pine6=
-4-plus/job/kernelci/branch/staging.kernelci.org/kernel/staging-20200513.1/d=
-efconfig/defconfig+CONFIG_CPU_BIG_ENDIAN=3Dy/>: 1 failed lab
-arm:
-multi_v7_defconfig:
-gcc-8:
-bcm2836-rpi-2-b <https://staging.kernelci.org/boot/bcm2836-rpi-2-b/job/ker=
-nelci/branch/staging.kernelci.org/kernel/staging-20200513.1/defconfig/multi=
-_v7_defconfig/>: 1 failed lab
-tegra124-jetson-tk1 <https://staging.kernelci.org/boot/tegra124-jetson-tk1=
-/job/kernelci/branch/staging.kernelci.org/kernel/staging-20200513.1/defconf=
-ig/multi_v7_defconfig/>: 2 failed labs
-tegra124-nyan-big <https://staging.kernelci.org/boot/tegra124-nyan-big/job=
-/kernelci/branch/staging.kernelci.org/kernel/staging-20200513.1/defconfig/m=
-ulti_v7_defconfig/>: 1 failed lab
-
-=E2=94=80
-For more info write to <info@kernelci.org <mailto:info@kernelci.org>>
-
+> Thanks,
+> Guillaume
+>
+>
+> -------- Forwarded Message --------
+> Subject: kernelci/staging.kernelci.org baseline: 167 runs, 7 regressions (staging-20200514.0)
+> Date: Wed, 13 May 2020 23:44:30 -0700 (PDT)
+> From: staging.kernelci.org bot <bot@kernelci.org>
+> To: gtucker@collabora.com, debug011@gtucker.io
+>
+> kernelci/staging.kernelci.org baseline: 167 runs, 7 regressions (staging-20200514.0)
+>
+> Regressions Summary
+> -------------------
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> exynos5422-odroidxu3 | arm  | lab-collabora | clang-9  | multi_v7_defconfig | 0/1
+> tegra124-jetson-tk1  | arm  | lab-baylibre  | clang-9  | multi_v7_defconfig | 0/1
+> tegra124-jetson-tk1  | arm  | lab-collabora | clang-9  | multi_v7_defconfig | 0/1
+> tegra124-jetson-tk1  | arm  | lab-baylibre  | gcc-8    | multi_v7_defconfig | 0/1
+> tegra124-jetson-tk1  | arm  | lab-collabora | gcc-8    | multi_v7_defconfig | 0/1
+> tegra124-nyan-big    | arm  | lab-collabora | clang-9  | multi_v7_defconfig | 0/1
+> tegra124-nyan-big    | arm  | lab-collabora | gcc-8    | multi_v7_defconfig | 0/1
+>
+>   Details:  https://staging.kernelci.org/test/job/kernelci/branch/staging.kernelci.org/kernel/staging-20200514.0/plan/baseline/
+>
+>   Test:     baseline
+>   Tree:     kernelci
+>   Branch:   staging.kernelci.org
+>   Describe: staging-20200514.0
+>   URL:      https://github.com/kernelci/linux.git
+>   SHA:      a3b0fec31a5d6d3cb9c327318cd4c88fab5e28d5
+>
+>
+> Test Regressions
+> ----------------
+>
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> exynos5422-odroidxu3 | arm  | lab-collabora | clang-9  | multi_v7_defconfig | 0/1
+>
+>   Details:     https://staging.kernelci.org/test/plan/id/5ebc9a0d1f955c12235afc44
+>
+>   Results:     0 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    clang-9 (clang version 9.0.1-+20191211082622+c1a0a213378-1~exp1~20191211193200.102 )
+>   Plain log:   https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-collabora/baseline-exynos5422-odroidxu3.txt
+>   HTML log:    https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-collabora/baseline-exynos5422-odroidxu3.html
+>   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-11-g17e793fa4728/armel/baseline/rootfs.cpio.gz
+>
+>   * baseline.login: https://staging.kernelci.org/test/case/id/5ebc9a0d1f955c12235afc45
+>       new failure (last pass: staging-20200513.1)
+>
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> tegra124-jetson-tk1  | arm  | lab-baylibre  | clang-9  | multi_v7_defconfig | 0/1
+>
+>   Details:     https://staging.kernelci.org/test/plan/id/5ebc98f751b2987fcc5afc57
+>
+>   Results:     0 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    clang-9 (clang version 9.0.1-+20191211082622+c1a0a213378-1~exp1~20191211193200.102 )
+>   Plain log:   https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-baylibre/baseline-tegra124-jetson-tk1.txt
+>   HTML log:    https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-baylibre/baseline-tegra124-jetson-tk1.html
+>   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-11-g17e793fa4728/armel/baseline/rootfs.cpio.gz
+>
+>   * baseline.login: https://staging.kernelci.org/test/case/id/5ebc98f751b2987fcc5afc58
+>       failing since 5 days (last pass: staging-20200507.1, first fail: staging-20200507.2)
+>
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> tegra124-jetson-tk1  | arm  | lab-collabora | clang-9  | multi_v7_defconfig | 0/1
+>
+>   Details:     https://staging.kernelci.org/test/plan/id/5ebc9927d3812770235afc47
+>
+>   Results:     0 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    clang-9 (clang version 9.0.1-+20191211082622+c1a0a213378-1~exp1~20191211193200.102 )
+>   Plain log:   https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-collabora/baseline-tegra124-jetson-tk1.txt
+>   HTML log:    https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-collabora/baseline-tegra124-jetson-tk1.html
+>   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-11-g17e793fa4728/armel/baseline/rootfs.cpio.gz
+>
+>   * baseline.login: https://staging.kernelci.org/test/case/id/5ebc9927d3812770235afc48
+>       failing since 5 days (last pass: staging-20200507.1, first fail: staging-20200507.2)
+>
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> tegra124-jetson-tk1  | arm  | lab-baylibre  | gcc-8    | multi_v7_defconfig | 0/1
+>
+>   Details:     https://staging.kernelci.org/test/plan/id/5ebc9dc223d592f42b5afc3c
+>
+>   Results:     0 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
+>   Plain log:   https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-tegra124-jetson-tk1.txt
+>   HTML log:    https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/gcc-8/lab-baylibre/baseline-tegra124-jetson-tk1.html
+>   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-11-g17e793fa4728/armel/baseline/rootfs.cpio.gz
+>
+>   * baseline.login: https://staging.kernelci.org/test/case/id/5ebc9dc223d592f42b5afc3d
+>       failing since 5 days (last pass: staging-20200507.1, first fail: staging-20200507.2)
+>
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> tegra124-jetson-tk1  | arm  | lab-collabora | gcc-8    | multi_v7_defconfig | 0/1
+>
+>   Details:     https://staging.kernelci.org/test/plan/id/5ebc9dfde601dc356c5afc42
+>
+>   Results:     0 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
+>   Plain log:   https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-tegra124-jetson-tk1.txt
+>   HTML log:    https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-tegra124-jetson-tk1.html
+>   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-11-g17e793fa4728/armel/baseline/rootfs.cpio.gz
+>
+>   * baseline.login: https://staging.kernelci.org/test/case/id/5ebc9dfde601dc356c5afc43
+>       failing since 5 days (last pass: staging-20200507.1, first fail: staging-20200507.2)
+>
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> tegra124-nyan-big    | arm  | lab-collabora | clang-9  | multi_v7_defconfig | 0/1
+>
+>   Details:     https://staging.kernelci.org/test/plan/id/5ebc999b9f2ef087745afc49
+>
+>   Results:     0 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    clang-9 (clang version 9.0.1-+20191211082622+c1a0a213378-1~exp1~20191211193200.102 )
+>   Plain log:   https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-collabora/baseline-tegra124-nyan-big.txt
+>   HTML log:    https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/clang-9/lab-collabora/baseline-tegra124-nyan-big.html
+>   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-11-g17e793fa4728/armel/baseline/rootfs.cpio.gz
+>
+>   * baseline.login: https://staging.kernelci.org/test/case/id/5ebc999b9f2ef087745afc4a
+>       failing since 6 days (last pass: staging-20200507.1, first fail: staging-20200507.2)
+>
+>
+> platform             | arch | lab           | compiler | defconfig          | results
+> ---------------------+------+---------------+----------+--------------------+--------
+> tegra124-nyan-big    | arm  | lab-collabora | gcc-8    | multi_v7_defconfig | 0/1
+>
+>   Details:     https://staging.kernelci.org/test/plan/id/5ebca0489a7d9a3bbe5afc45
+>
+>   Results:     0 PASS, 1 FAIL, 0 SKIP
+>   Full config: multi_v7_defconfig
+>   Compiler:    gcc-8 (arm-linux-gnueabihf-gcc (Debian 8.3.0-2) 8.3.0)
+>   Plain log:   https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-tegra124-nyan-big.txt
+>   HTML log:    https://storage.staging.kernelci.org//kernelci/staging.kernelci.org/staging-20200514.0/arm/multi_v7_defconfig/gcc-8/lab-collabora/baseline-tegra124-nyan-big.html
+>   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/kci-2019.02-11-g17e793fa4728/armel/baseline/rootfs.cpio.gz
+>
+>   * baseline.login: https://staging.kernelci.org/test/case/id/5ebca0489a7d9a3bbe5afc46
+>       failing since 6 days (last pass: staging-20200507.1, first fail: staging-20200507.2)
+>
+> 
+>
