@@ -1,47 +1,58 @@
-Date: Fri, 29 May 2020 11:44:20 +0100
-From: "Mark Brown" <broonie@kernel.org>
 Subject: Re: kci_build proposal
-Message-ID: <20200529104420.GC4610@sirena.org.uk>
 References: <7ho8q77i1t.fsf@baylibre.com>
  <18306.1590738124792037023@groups.io>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <8a6bf3c3-2568-1cda-fac1-60c521bfa7f7@collabora.com>
+Date: Fri, 29 May 2020 15:27:53 +0100
 MIME-Version: 1.0
 In-Reply-To: <18306.1590738124792037023@groups.io>
-Content-Type: multipart/mixed; boundary="Groupsio=dmlZBjXW3EpAsGytxQRB"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, mathieu.acher@irisa.fr
-Cc: Kevin Hilman <khilman@baylibre.com>
+To: mathieu.acher@irisa.fr
+Cc: kernelci@groups.io, Kevin Hilman <khilman@baylibre.com>
 
---Groupsio=dmlZBjXW3EpAsGytxQRB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Mathieu,
 
-On Fri, May 29, 2020 at 12:42:04AM -0700, Mathieu Acher wrote:
+On 29/05/2020 08:42, Mathieu Acher wrote:
+> Dear all, 
+> 
+> I'm glad to hear the ongoing effort about containerization (Docker + Python 3) of KernelCI. 
+> I didn't know the existence of tuxbuild and I'm as curious as Kevin for having more details. 
+> 
+> As an academic, we have some use cases that can further motivate the use of a "cloud-based solution".
+> In 2017, we have developed TuxML (https://github.com/TuxML/ProjetIrma) which a solution with Docker and Python 3 for massively compiling kernel configurations. 
+> The "ml" part stands for statistical learning. So far, we have collected 200K+ configurations with a distributed computing infrastructure (a kind of cloud). 
+> Our focus is to explore the configuration space of the Linux kernel in the large; we fed several config files (mainly with randconfig and some pre-set options) and then perform some "tests" (in a broad sense). 
+> 
+> We have two major use cases:
+>  * bug-finding related to configurations: we are able to locate faulty (combinations of) options and even prevent/fix some failures at the Kconfig level (more details here: https://hal.inria.fr/hal-02147012)
+>  * size prediction of a configuration (without compiling it) and identificaton of options that influence size (more details here: https://hal.inria.fr/hal-02314830) 
+> 
+> In both cases, we need an infrastructure capable of compiling *any* configuration of the kernel.
+> For measuring the size, we need to control all factors, like gcc version and so forth. Docker was helpful here to have a canonical environment. 
+> One issue we found is to build the right Docker image: some configurations of the kernel require specific tools and anticipating all can be tricky, leading to some false-positive failures.
+> Have you encountered this situation? 
+> 
+> In general, my colleagues at University of Rennes 1/Inria and I are really interested to be part of this new effort through discussions or technical contributions. 
+> We plan to modernize TuxML with KernelCI toolchain, especially if it's possible to deploy it on several distributed machines. 
 
-> One issue we found is to build the right Docker image: some
-> configurations of the kernel require specific tools and anticipating
-> all can be tricky, leading to some false-positive failures.  Have you
-> encountered this situation?=20
+Thank you for getting in touch, your project sounds really
+interesting.  To echo what Mark wrote in his email, it does seem
+like we're all fighting for a common cause.
 
-We do, generally when we notice something like this has happened we will
-just add the new tool to our images and move on.  Since linux-next is
-included in our coverage we tend to notice when things hit that and
-people are a bit more tolerant of breakage there than they might be in
-other trees so long as it gets addressed reasonably promptly.
+> Can I somehow participate in the next call? Mainly to learn and as a first step to contribute in this very nice project. 
 
---Groupsio=dmlZBjXW3EpAsGytxQRB
-Content-Type: application/pgp-signature; name="signature.asc"
+As it turns out, we're now planning to have a meeting with Dan on
+Tuesday 23rd June to focus on the tuxmake/tuxbuild topic he just
+brought up.  Please feel free to join us then, as well as any of
+the weekly Tuesday meetings so we can introduce ourselves.  I've
+added you to the calendar invitation.
 
------BEGIN PGP SIGNATURE-----
+Out of interest, do you cover other compilers than gcc?  We're
+working closely with the Clang-built Linux team and this may be
+of interest to them too.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7Q54QACgkQJNaLcl1U
-h9AvmQf/T3/U+7UTy4PKDfMAQh2w5p0G9Zc8aWj/toWNolOjDBd8glwRmwp4W2F9
-+rnqCojw4wW5zA2XFfUC+sUU1fSGn7TVMgaszyrtW54RxTxukCCVJ5PW/0xm/Y9t
-roVM77Nre9zvRXTJ6s3r1z8ZkcaDIoy4qbZ/DZv3FCEspNQyG+cOM3svQdO/cXy3
-Sm7RaBbtD6HomOYUhoqco36HlxfcrL+PSusNM/G2bDIHIwbU92dv1DrU+bAqHVZ2
-8Ps9T4wuOFD1gwFsX7m/7m7/QPIa9/Fa5BomUdvIPcGSGJ+wPP2Jr19rxo14qGjp
-+KK8zL5RJSO29Cx24itxikCHj4V90A==
-=+AWq
------END PGP SIGNATURE-----
-
---Groupsio=dmlZBjXW3EpAsGytxQRB--
+Best wishes,
+Guillaume
