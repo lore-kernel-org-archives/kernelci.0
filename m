@@ -1,144 +1,83 @@
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Subject: kernelci.org update - 2020-06-05 #minutes
-Message-ID: <31916308-faef-c575-b25b-0b54ef6c8c31@collabora.com>
-Date: Fri, 5 Jun 2020 23:25:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Date: Tue, 09 Jun 2020 08:56:12 +0200
+From: Michael Walle <michael@walle.cc>
+Subject: Kernel CI board addition
+Message-ID: <456bf4081b13663a33f80e14837b69a3@walle.cc>
+List-ID: <info.kernelci.org>
+List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
+List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/kernelci.org/group/info/subscribe>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: info@kernelci.org
+Cc: michael.walle@kontron.com
 
---- IMPORTANT: BOOT TESTS DEPRECATION NOTICE ---
+Hi all,
 
-Boot tests are now officially deprecated, they are not run in labs any mor=
-e and
-boot email reports have stopped.  The Boots tab on the kernelci.org fronte=
-nd
-now shows a link to "baseline" results instead.
+our board (Kontron SMARC-sAL28 [1], based on the NXP Layerscape
+architecture) got upstream support in 5.7 [2]. I would be interested to
+add it to your kernelci.org setup. We could provide you a board together
+with the carrier board [3]. Are there any other requirement?
 
-Details of the schedule can be found on this GitHub issue:
+ From your website:
 
-  https://github.com/kernelci/kernelci-backend/issues/238
+> Must be able to boot a current build and defconfig from a 
+> mainline/upstream
+> Linux tree, to a shell prompt. No vendor kernels or out-of-tree 
+> patchsets.
 
-Boot views will remain on the frontend for at least a week, to not break l=
-inks
-in recent boot emails.
+Possible since 5.7.
 
+> Have a contact/maintainer who will react to boot failures. We do not 
+> want
+> to waste effort adding boards that will never get fixed, and then have 
+> to
+> remove them.
 
-Technical Steering Committee minutes - 2020-06-01
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
+That would be me [but I'm not in linux/MAINTAINERS].
 
-* Introduction: Isaiah
-  * intern for 11 weeks
-  * interested in all parts of the project
-  * suggestion: integrating DT validation in KernelCI
-    https://github.com/kernelci/kernelci-core/issues/396
+> Ideally, be supported by LAVA v2 for ease of integration.
 
-* Introduction: Mathieu
-  * TuxML research project
-    https://groups.io/g/kernelci/message/767
-  * Discussion topic: about scaling kernelci with containers
-  * Discussed how to use kernelci with TuxML, to build kernels
-  * Pipeline systems: Tekton, Gitlab CI
-    Gitlab CI example, from Kevin=E2=80=99s kernel tree:
-    https://gitlab.com/khilman/linux-amlogic/-/blob/gitlab-ci/.gitlab-ci.y=
-ml
+What means "supported" in this case? I had a look at [4], but couldn't
+find if there are any public "device-types" for the current boards in
+kernelci.
 
-* Transition from boot tests to functional tests
-  * Staging frozen this week until
-  * Roll out in production on Friday with no boot tests
+Maybe a little bit about our bootflow: After the SoC comes out of reset,
+by default the RCW gets loaded from EEPROM, which then loads u-boot from
+a writeable SPI flash partition. U-Boot then loads the linux kernel from
+whatever source (USB, sd card, network, ..).
+The board is fully failsafe, which means there is a read-only (and
+hardware write-protected) SPI partition which holds the failsafe RCW and
+bootloader. By default, the u-boot start is supervised by an external
+watchdog and automatically switches to failsafe mode if there is an 
+error.
 
-* 2020-Q3 plan review
-  https://docs.google.com/document/d/1KCIv6L3XrsNFIu4GzFMTV7Qx6Jlm2trc-bvR=
-IbDEVV8/edit#
+Current pending u-boot patches do not support this external watchdog yet
+and because of this, if you like to use upstream u-boot (if the patches
+are accepted) you will have to disable the external watchdog for now. If
+something go wrong, you will have to manually assert the FORCE_RECOV#
+input (either by button or if you have something like remote controlled
+relays or GPIOs).
 
-* Survey is now open: https://forms.gle/Y5iuyLXgQr2y3SrF6
+Long story short, if you have this kind of equipment to control two
+signals remotely, FORCE_RECOV# and RESET#, then it would be possible
+to even update the bootloader in kernelci or failsafe from a remote
+location.
 
+Please note, although its an aarch64 SoC, it does not support TF-A
+(yet).
 
-Technical Steering Committee minutes - 2020-05-26
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
+-michael
 
-* qemu CPU types for arm64
-  * Using "max" CPU type to enable all supported features
-    https://github.com/kernelci/kernelci-core/pull/388
-  * Checking on staging, if no big issue this can get merged now
-
-  * Longer term promoting some qemu-docker or something so we have more co=
-ntrol
-    over qemu versions might be good, LAVA is convenient for integration
-    though
-  * clabble at BayLibre had some work on the container stuff.
-
-* On-going clean up:
-  * moving jpl files to kernelci-jenkins
-  * then, moving YAML files to separate config project
-  * then, making kernelci-core a pure =E2=80=9Ckernelci=E2=80=9D Python pa=
-ckage
-  * Removing boot views in frontend
-  * Removing boot-related code in backend
-
-* Clang: Build time regressions on -next, was this noticed?
-  https://github.com/ClangBuiltLinux/linux/issues/1032
-  * not directly noticed by KernelCI, build times are stored but not used =
-as a
-    performance test at the moment.
-  * otherwise, there was some discussion on IRC of the READ_ONCE() changes
-    making compilers unhappy
-
-* Kernel builders
-  * production back to the previous state of trees/branches
-  * k8s: how to best send `file_server_resource` (or equivalent) to test-r=
-unner
-    * Idea: generate the =E2=80=9Cstatic=E2=80=9D meta-data before build, =
-it will contain
-      file_server_resource
-
-* KCIDB
-  * revision-correlation PR still on review
-    https://github.com/kernelci/kcidb/pull/84
-
-
-Advisory Board minutes - 2020-06-03
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* Reviewing 2020-Q3 plan following TSC discussion
-
-
-Advisory Board minutes - 2020-05-27
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* Making last tweaks to the KernelCI Community Survey
-* Discussing next blog topics for https://foundation.kernelci.org/blog/
-
-
-Summary of changes going into production
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* Boot test deprecation:
-  * https://kernelci.org frontend updated to not show boot results in Boot=
-s tab
-  * boot tests not run in labs any more
-  * boot emails not sent any more
-  * baseline-nfs test plan variant created, run on a handful of devices
-
-* kernelci-core documentation updated with kci_rootfs sample commands
-
-* rootfs Jenkins files moved to kernelci-jenkins repository
-
-* fixed bug to order data correctly on frontend Tests default view
-
-* sponsors page updated https://kernelci.org/sponsors/
-
-* new Docker image for DT validation kernelci/dt-validation
-
-
-Best wishes,
-Guillaume
+[1] 
+https://www.kontron.de/products/boards-and-standard-form-factors/smarc/smarc-sal28.html
+[2] https://kernelnewbies.org/Linux_5.7#ARM
+[3] 
+https://www.kontron.de/products/boards-and-standard-form-factors/smarc/smarc-evaluation-carrier-2.0.html
+[4] 
+https://validation.linaro.org/static/docs/v2/devicetypes.html#device-types
