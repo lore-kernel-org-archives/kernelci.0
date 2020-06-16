@@ -1,57 +1,74 @@
-Date: Tue, 16 Jun 2020 17:16:59 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: "Audience"/"Guest" can join for this meeting running on 23rd?
-Message-ID: <20200616161659.GP4447@sirena.org.uk>
-References: <20200420163628.wmbc7f7vuvqsbdhw@xps.therub.org>
- <CAH1_8nBL+YSnmWyEkV336+wkq4YP=pHs1srUNxUZ_zhGxOe45Q@mail.gmail.com>
- <20200421172848.ko5ydgus5nyp3blw@xps.therub.org>
- <7himgn7rty.fsf@baylibre.com>
- <20200527195831.nl2ptfjlcfkh4tyb@xps.therub.org>
- <77677a1d-1862-408d-9169-c92eb4f81066@collabora.com>
- <20200528172824.rwk5lj3ybhhymwdm@xps.therub.org>
- <22a9d522-4777-741d-74c9-f3f86ed3422b@collabora.com>
- <20200529155355.gcuhxadwhrjouw3w@xps.therub.org>
- <CAFW5HqR=3LTV=NUrFpF4CoUcqxcMkrRPy56xQLDrpYVhwGeqtA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAFW5HqR=3LTV=NUrFpF4CoUcqxcMkrRPy56xQLDrpYVhwGeqtA@mail.gmail.com>
-Content-Type: multipart/mixed; boundary="Groupsio=zmcl4mbM2jL9l1mxRnPi"
+References: <7ho8q77i1t.fsf@baylibre.com> <18306.1590738124792037023@groups.io>
+In-Reply-To: <18306.1590738124792037023@groups.io>
+From: "Nick Desaulniers" <ndesaulniers@google.com>
+Date: Tue, 16 Jun 2020 09:33:20 -0700
+Message-ID: <CAKwvOdnaoaZPLqcn6yiFEpEVx=HmpRe1ExhLZfzLhHs7e7Atww@mail.gmail.com>
+Subject: Re: kci_build proposal
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, kotisoftwaretest@gmail.com
-Cc: Dan Rue <dan.rue@linaro.org>, Guillaume Tucker <guillaume.tucker@collabora.com>, Kevin Hilman <khilman@baylibre.com>
+To: mathieu.acher@irisa.fr
+Cc: Kevin Hilman <khilman@baylibre.com>, kernelci@groups.io, clang-built-linux <clang-built-linux@googlegroups.com>
 
---Groupsio=zmcl4mbM2jL9l1mxRnPi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
++ clang-built-linux
 
-On Mon, Jun 15, 2020 at 06:52:22PM +0530, koti koti wrote:
+On Fri, May 29, 2020 at 12:42 AM Mathieu Acher <mathieu.acher@irisa.fr> wrote:
+>
+> Dear all,
+>
+> I'm glad to hear the ongoing effort about containerization (Docker + Python 3) of KernelCI.
+> I didn't know the existence of tuxbuild and I'm as curious as Kevin for having more details.
+>
+> As an academic, we have some use cases that can further motivate the use of a "cloud-based solution".
+> In 2017, we have developed TuxML (https://github.com/TuxML/ProjetIrma) which a solution with Docker and Python 3 for massively compiling kernel configurations.
+> The "ml" part stands for statistical learning. So far, we have collected 200K+ configurations with a distributed computing infrastructure (a kind of cloud).
+> Our focus is to explore the configuration space of the Linux kernel in the large; we fed several config files (mainly with randconfig and some pre-set options) and then perform some "tests" (in a broad sense).
+>
+> We have two major use cases:
+>  * bug-finding related to configurations: we are able to locate faulty (combinations of) options and even prevent/fix some failures at the Kconfig level (more details here: https://hal.inria.fr/hal-02147012)
+>  * size prediction of a configuration (without compiling it) and identificaton of options that influence size (more details here: https://hal.inria.fr/hal-02314830)
 
-> As per below Dan email, there is a meeting on 23rd June.
+Hi Mathieu,
+I'm focused on building the Linux kernel with Clang.  One of the
+issues we're running into is long tail bug reports from configs beyond
+defconfigs or the defconfigs from major Linux distros.  In particular,
+randconfig builds tend to dig up all kinds of issues for us.  It can
+also take time to differentiate whether this issue is
+toolchain-agnostic or specific to Clang.
 
-> Is it possible to join Audience/"Guest Members" ?
+>From your presentation
+https://static.sched.com/hosted_files/osseu19/ca/TuxML-OSS2019-v3.pdf
+the slides on classification trees have me curious.  I suppose if you
+had data from builds with GCC+Clang, you could help us spot what
+configs are still problematic just for Clang and not for GCC?  That
+kind of pattern analysis would be invaluable in trying to automate bug
+finding.  Already the configuration space is unfathomable, and adding
+yet another label (toolchain) doesn't help, but it is something that
+could have a quantifiable impact and really help.
 
-> If yes, Please can someone let me know the steps to join this meeting?
+If it's something that you have capacity for, let's chat more?
 
-No problem at all - the meeting is weekly at 9am PST/5pm BST and you can
-join via the URL below:
+>
+> In both cases, we need an infrastructure capable of compiling *any* configuration of the kernel.
+> For measuring the size, we need to control all factors, like gcc version and so forth. Docker was helpful here to have a canonical environment.
+> One issue we found is to build the right Docker image: some configurations of the kernel require specific tools and anticipating all can be tricky, leading to some false-positive failures.
+> Have you encountered this situation?
+>
+> In general, my colleagues at University of Rennes 1/Inria and I are really interested to be part of this new effort through discussions or technical contributions.
+> We plan to modernize TuxML with KernelCI toolchain, especially if it's possible to deploy it on several distributed machines.
+>
+> Can I somehow participate in the next call? Mainly to learn and as a first step to contribute in this very nice project.
+>
+> Best,
+>
+> Mathieu Acher
+>
+>
+>
+> 
+>
 
-   https://meet.kernel.social/kernelci-dev
 
-from a web browser with WebRTC support (most work).
-
---Groupsio=zmcl4mbM2jL9l1mxRnPi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7o8HsACgkQJNaLcl1U
-h9D6dwf+IL3D+QgsRsnhTrQckWEVYd4ZAcMtbkcRjDN5gkEEkxlKs4e6RcuaIrXP
-RqtRESgSKwuFW3okbKgQo7XZkVlJKengHU1SZGavqfeGWe7VQIpyAp19ZIM5PKrZ
-GT4AraamX9ivvl6HhieJmApYBGvVMzLeSBbyHVwfBDzvibCYhjsZrIH4XdnPo1a8
-O3UKRJw1eAsSU1aNeWBtVJS3px1qXye3TOr+4+KeZKJjObr21lKn5wgzHbNYR5vY
-F5VJuDdSvBJ9nUpNt2/Z3P87Ha3ag+wI63Cx6r1dncJtutggU6Mw7hEbwOOkP+rv
-Mdv3+SAJBNU0wvxtoJ2dLx1gRdz2qg==
-=8349
------END PGP SIGNATURE-----
-
---Groupsio=zmcl4mbM2jL9l1mxRnPi--
+-- 
+Thanks,
+~Nick Desaulniers
