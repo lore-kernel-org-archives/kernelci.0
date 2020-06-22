@@ -1,38 +1,69 @@
-From: "leimaohui" <leimaohui@cn.fujitsu.com>
-Subject: How to use kci_test?
-Date: Mon, 22 Jun 2020 03:10:31 +0000
-Message-ID: <bc20a3ed96fd4cedbad73e21f826a9ef@G08CNEXMBPEKD05.g08.fujitsu.local>
+Subject: Re: finding clang builds in web UI
+References: <CAKwvOdnFF_13xCRVH1dXJx00Go==ZMBCzCa7fOO+G02tQH8G3g@mail.gmail.com>
+ <CAKwvOdn0MtijM2TLsrS4s=FHLSqDtcb=f+wfuy4H++0Xwr-n1w@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <421e1a65-344c-ae61-ae0a-a56f9481c9df@collabora.com>
+Date: Mon, 22 Jun 2020 10:02:05 +0100
 MIME-Version: 1.0
-Content-Language: en-AU
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+In-Reply-To: <CAKwvOdn0MtijM2TLsrS4s=FHLSqDtcb=f+wfuy4H++0Xwr-n1w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>
+To: ndesaulniers@google.com
+Cc: kernelci@groups.io
 
-SGksIGFsbAoKSSBhbSBsZWFybmluZyB0byB1c2Uga2VybmVsY2kuIEF0IHByZXNlbnQsIEkgaGF2
-ZSBpbnN0YWxsZWQga2VybmVsY2kgZG9ja2VyIGFuZCBsYXZhIGRvY2tlciwgYW5kIHVzZSBrY2lf
-IGJ1aWxkIGJ1aWxkcyB0aGUga2VybmVsLgpVc2luZyBrY2lfdGVzdCwgd2UgZW5jb3VudGVyZWQg
-c29tZSBwcm9ibGVtczoKCjEuIFdoYXQgZG8gSSBuZWVkIHRvIGRvIHRvIGNvbm5lY3Qga2VybmVs
-Y2kgYW5kIGxhdmEgYmVmb3JlIHRoZSB0ZXN0IGNvbW1hbmQ/CgoyLiBJcyB0aGUgZm9sbG93aW5n
-IHVuZGVyc3RhbmRpbmcgb2Yga2NpX3Rlc3QncyBvcHRpb25zIGNvcnJlY3TigIs/CkZvciBleGFt
-cGxlOgouL2tjaV90ZXN0IGdlbmVyYXRlCgogIC0tYm1ldGEtanNvbj1saW51eC9faW5zdGFsbF8v
-Ym1ldGEuanNvbiBcICAgICAgLy9ibWV0YSBmaWxlIGluIGJ1aWxkIGRpcmVjdG9yeSBnZW5lcmF0
-ZWQgYnkga2NpX2J1aWxkCiAgLS1kdGJzLWpzb249bGludXgvX2luc3RhbGxfL2R0YnMuanNvbiBc
-ICAgICAgICAgICAgIC8vZHRicyBmaWxlIGluIGJ1aWxkIGRpcmVjdG9yeSBnZW5lcmF0ZWQgYnkg
-a2NpX2J1aWxk4oCLCiAgLS1wbGFuPWJhc2VsaW5lX3FlbXUgXCAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgLy8gdGVzdF9wbGFuICAgICAgICAKICAtLXRhcmdldD1xZW11X2Fy
-bTY0LXZpcnQtZ2ljdjMgXCAgICAgICAgICAgICAgICAgICAgIC8vZGV2aWNlX3R5cGUKICAtLWxh
-Yj1sYWItbmFtZSBcICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgLy9sYWIgbmFtZSB3aGljaCBpcyByZWNvcmRlZCBpbiBsYWItY29uZmlncy55YW1sIAog
-LS11c2VyPWtlcm5lbGNpLXVzZXItbmFtZSBcICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IC8vdXNlciBvZiBsYXZhIGZvciBrZXJuZWxjaSB0ZXN0CiAgLS10b2tlbj1hYmNkLTc4OTAgXCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLy90b2tlbiBvZiBsYXZh
-IHVzZXIgZm9yIGtlbmVsY2kgdGVzdAogIC0tbGFiLWpzb249bGFiLW5hbWUuanNvbiBcICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8vSlNPTiBmaWxlIGdlbmVyYXRlZCBieSBleGVj
-dXRpbmcgY29tbWFuZCBnZXRfbGFiX2luZm8KICA+IGpvYi55YW1sCgozLiBFcnJvciBpcyBvY2N1
-cnJlZCB3aGVuIGV4ZWN1dGluZyB0aGUgZm9sbG93aW5nIGNvbW1hbmQuIElzIHRoZXJlIGFueSBw
-cm9ibGVtIHdpdGggcGFyYW1ldGVyIHNwZWNpZmljYXRpb24/CkNvbW1hbmQgbGluZSA6ICQuIC8g
-S0NJXyB0ZXN0IGdldF8gbGFiXyBpbmZvIC0tbGFiPWxhYi1saW5hcm8tbGtmdCAtLWxhYi1qc29u
-PWxhYi1saW5hcm8tIGxrZnQuanNvbgpFcnJvciBtZXNzYWdlOiAgICQgYXR0cmlidXRlZXJyb3I6
-ICdub25ldHlwZScgb2JqZWN0IGhhcyBubyBhdHRyaWJ1dGUgJ3NjaGVkdWxlcicKCkJlc3QgcmVn
-YXJkcwpMZWkgTWFvaHVpCgo=
+Hi Nick,
+
+On 16/06/2020 19:10, Nick Desaulniers via groups.io wrote:
+> Additionally, if I go to
+> https://kernelci.org/job/
+> -> search `next`
+> -> next tree master branch
+> -> next-20200616
+> -> baseline
+> it looks like there's only gcc-8 builds.
+
+That's because clang builds are not currently being tested in
+production, as it was originally agreed to only do builds.  We
+can easily turn this on for linux-next, like we're already doing
+on staging.kernelci.org:
+
+  https://staging.kernelci.org/test/job/kernelci/branch/staging.kernelci.org/kernel/staging-20200620.1/plan/baseline/
+
+Let us know if that is what you want and I can make a PR.
+
+> On Tue, Jun 16, 2020 at 11:06 AM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+>>
+>> Hello,
+>> I was on https://kernelci.org/build/ and in the filter I was looking
+>> for `clang` but there's no results.  It looks like all 41 pages are
+>> gcc builds.  Were clang builds run, or am I looking in the wrong
+>> place?
+
+Well, that works for me:
+
+  https://kernelci.org/build/?clang
+
+(URL arguments like ?clang are directly added to the filter box).
+
+What you might have experienced is a limitation of the number of
+builds to filter.  The frontend currently does a query to get all
+the latest builds, in a 14-day window and with an upper limit of
+1024.  Then it applies filters with arbitrary keywords
+like "clang".  So if there were no linux-next updates over a
+week-end but plenty of stable and android ones, the last
+linux-next builds might be over 1024 behind and were not in the
+returned query.
+
+This is a limitation that can easily be overcome, if anything by
+increasing that arbitrary number.  A better option would be to
+add drop-down selectors for each column, to issue smaller
+queries (i.e. only linux-next, and only clang in our case).
+
+In any case, thanks for raising this issue, I guess it would be
+helpful if you could give some feedback on an improved version
+when we have it on staging.kernelci.org.
+
+Guillaume
