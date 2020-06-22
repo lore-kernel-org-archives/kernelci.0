@@ -1,89 +1,38 @@
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Subject: kernelci.org update - 2020-06-18 #minutes
-Message-ID: <bc5e4d7d-45be-ddf4-fec3-bbe7be492a4c@collabora.com>
-Date: Thu, 18 Jun 2020 16:33:25 +0100
+From: "leimaohui" <leimaohui@cn.fujitsu.com>
+Subject: How to use kci_test?
+Date: Mon, 22 Jun 2020 03:10:31 +0000
+Message-ID: <bc20a3ed96fd4cedbad73e21f826a9ef@G08CNEXMBPEKD05.g08.fujitsu.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-AU
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: "kernelci@groups.io" <kernelci@groups.io>
 
-Technical Steering Committee minutes - 2020-06-16
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-
-* KCIDB: Removing repo URL from revision IDs
-
-* Sharing meeting time/URL on mailing list - done
-  https://groups.io/g/kernelci/topic/audience_guest_can_join/74894108
-  (every Tuesday 4pm UTC on https://meet.kernel.social/kernelci-dev)
-
-* DT validation
-  * Looks like there=E2=80=99s some issue with dependencies for the DT val=
-idation tool
-    not being properly installed in the container
-    -> follow-up: https://github.com/kernelci/kernelci-core/pull/404
-
-* New LAVA lab, CIP (Civil Infrastructure Platform Project)
-  * https://github.com/kernelci/kernelci-core/pull/403
-  * Chris will add more device-types over time
-  * Should get enabled in production next week
-
-* 2020-Q3 plan
-  * project board: https://github.com/orgs/kernelci/projects/2
-  * plan document shared on mailing list
-    https://groups.io/g/kernelci/topic/kernelci_plans_for_2020_q3/74911398
-
-
-Technical Steering Committee minutes - 2020-06-09
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-
-* 2020-Q3 plan review:
-  * to start next week
-  * looking into the details of aligning data schemas
-  * initial thoughts on KernelCI/KCIDB integration
-
-* DT validation: https://github.com/kernelci/kernelci-core/issues/396
-
-* Survey:
-  * have you all filled it yet? https://forms.gle/Y5iuyLXgQr2y3SrF6
-  * Share on workflows mailing list? Mention it on IRC channels?
-    -> done
-
-* Log lines filtering:
-  New code for filtering (and how it can possibly affect log line links)
-
-* KCIDB
-  * Working around Google Cloud Python Function issue
-  * Marking debug builds in KCIDB data?
-    -> Too many different options that can be twiddled
-
-
-Advisory Board minutes - 2020-06-10
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* Discussing survey goals
-* Now meeting every other week
-* Discussing plans for Linux Plumbers Conference
-
-
-Summary of changes going into production
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* Fix SoC name for some freescale boards, rename to "imx"
-* Adjust configuration for Renesas boards being renamed upstream
-* Add i386_defconfig to the default list of arch defconfigs
-* Add the EFI "urgent" branch with minimal set of builds
-* Add D2500CC x86_64 board in lab-clabbe
-* Use "max" CPU for arm64 QEMU targets to enable all features
-* Re-enable bisection email reports to be sent automatically
-* Fix sorting by date on web dashboard with Firefox
-
-Best wishes,
-Guillaume
+SGksIGFsbAoKSSBhbSBsZWFybmluZyB0byB1c2Uga2VybmVsY2kuIEF0IHByZXNlbnQsIEkgaGF2
+ZSBpbnN0YWxsZWQga2VybmVsY2kgZG9ja2VyIGFuZCBsYXZhIGRvY2tlciwgYW5kIHVzZSBrY2lf
+IGJ1aWxkIGJ1aWxkcyB0aGUga2VybmVsLgpVc2luZyBrY2lfdGVzdCwgd2UgZW5jb3VudGVyZWQg
+c29tZSBwcm9ibGVtczoKCjEuIFdoYXQgZG8gSSBuZWVkIHRvIGRvIHRvIGNvbm5lY3Qga2VybmVs
+Y2kgYW5kIGxhdmEgYmVmb3JlIHRoZSB0ZXN0IGNvbW1hbmQ/CgoyLiBJcyB0aGUgZm9sbG93aW5n
+IHVuZGVyc3RhbmRpbmcgb2Yga2NpX3Rlc3QncyBvcHRpb25zIGNvcnJlY3TigIs/CkZvciBleGFt
+cGxlOgouL2tjaV90ZXN0IGdlbmVyYXRlCgogIC0tYm1ldGEtanNvbj1saW51eC9faW5zdGFsbF8v
+Ym1ldGEuanNvbiBcICAgICAgLy9ibWV0YSBmaWxlIGluIGJ1aWxkIGRpcmVjdG9yeSBnZW5lcmF0
+ZWQgYnkga2NpX2J1aWxkCiAgLS1kdGJzLWpzb249bGludXgvX2luc3RhbGxfL2R0YnMuanNvbiBc
+ICAgICAgICAgICAgIC8vZHRicyBmaWxlIGluIGJ1aWxkIGRpcmVjdG9yeSBnZW5lcmF0ZWQgYnkg
+a2NpX2J1aWxk4oCLCiAgLS1wbGFuPWJhc2VsaW5lX3FlbXUgXCAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgLy8gdGVzdF9wbGFuICAgICAgICAKICAtLXRhcmdldD1xZW11X2Fy
+bTY0LXZpcnQtZ2ljdjMgXCAgICAgICAgICAgICAgICAgICAgIC8vZGV2aWNlX3R5cGUKICAtLWxh
+Yj1sYWItbmFtZSBcICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgLy9sYWIgbmFtZSB3aGljaCBpcyByZWNvcmRlZCBpbiBsYWItY29uZmlncy55YW1sIAog
+LS11c2VyPWtlcm5lbGNpLXVzZXItbmFtZSBcICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IC8vdXNlciBvZiBsYXZhIGZvciBrZXJuZWxjaSB0ZXN0CiAgLS10b2tlbj1hYmNkLTc4OTAgXCAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLy90b2tlbiBvZiBsYXZh
+IHVzZXIgZm9yIGtlbmVsY2kgdGVzdAogIC0tbGFiLWpzb249bGFiLW5hbWUuanNvbiBcICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8vSlNPTiBmaWxlIGdlbmVyYXRlZCBieSBleGVj
+dXRpbmcgY29tbWFuZCBnZXRfbGFiX2luZm8KICA+IGpvYi55YW1sCgozLiBFcnJvciBpcyBvY2N1
+cnJlZCB3aGVuIGV4ZWN1dGluZyB0aGUgZm9sbG93aW5nIGNvbW1hbmQuIElzIHRoZXJlIGFueSBw
+cm9ibGVtIHdpdGggcGFyYW1ldGVyIHNwZWNpZmljYXRpb24/CkNvbW1hbmQgbGluZSA6ICQuIC8g
+S0NJXyB0ZXN0IGdldF8gbGFiXyBpbmZvIC0tbGFiPWxhYi1saW5hcm8tbGtmdCAtLWxhYi1qc29u
+PWxhYi1saW5hcm8tIGxrZnQuanNvbgpFcnJvciBtZXNzYWdlOiAgICQgYXR0cmlidXRlZXJyb3I6
+ICdub25ldHlwZScgb2JqZWN0IGhhcyBubyBhdHRyaWJ1dGUgJ3NjaGVkdWxlcicKCkJlc3QgcmVn
+YXJkcwpMZWkgTWFvaHVpCgo=
