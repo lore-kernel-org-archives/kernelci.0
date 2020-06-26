@@ -1,49 +1,77 @@
-From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Subject: Bisections with KCIDB
-Message-ID: <6cc1880f-456f-2c4f-2ac8-53bc321028ee@redhat.com>
-Date: Fri, 26 Jun 2020 12:13:29 +0300
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Subject: kernelci.org update - 2020-06-26 #minutes
+Message-ID: <da3474b1-03cc-701d-1b5f-87e2ffb4c222@collabora.com>
+Date: Fri, 26 Jun 2020 17:14:43 +0100
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
 To: kernelci@groups.io
 
-Hi everyone,
+Technical Steering Committee minutes - 2020-06-23
+=================================================
 
-Here are some ideas on how we can implement bisections with KCIDB.
-Please keep in mind that I know little how it currently works in KernelCI.
-Don't hesitate to correct, or share your ideas, please.
+The whole meeting was dedicated to tuxbuild and tuxmake with Antonio and Dan
+from Linaro.  Tuxbuild is a closed service provided by Linaro to build kernels,
+using open-source components.  Tuxmake is a new tool, the main open-source
+component used by tuxbuild to produce the kernel builds in a portable way.
 
-So, as I understand it, the objective is to only notify developers of a test
-failure once the particular commit breaking it is found.
 
-For that purpose, I think we can introduce a new (optional) field into
-revision objects: "parent_id", pointing to the direct previous revision.
+Some links:
+* Email thread: https://groups.io/g/kernelci/topic/kci_build_proposal/73153442
+* Gitlab repo: https://gitlab.com/Linaro/tuxmake (kernel build tool)
+* Gitlab repo for the cli: https://gitlab.com/Linaro/tuxbuild
+* See also: https://pypi.org/project/tuxbuild/ (kernel build service)
 
-In the case of pure-commit revisions that would be the revision for the
-parent commit. In the case of patched revisions that would either be the
-pure-commit revision the patches were applied to, or the previous version of
-the same patchset (if any).
+Key facts:
+* tuxbuild used by LKFT for 6 months, 1000s builds in parallel in cloud
+* tuxmake is a replacement for kci_build which LKFT had been using until now
+* "thinner" wrapper for plain kernel builds, with no other integration
+* portable, reproducible build environment for any kernel developer
+* easier to add arbitrary make targets
 
-We should be able to make the result-notification algorithm only send
-the failure report if there's a parent revision (field exists and linked
-revision object exists), the same (failing) test was executed for it on
-similar hardware with a similar build, and it passed.
+Some questions:
+* How does that compare with k8s? (being used by KernelCI now)
+  -> In short, k8s is fine for kernelci since it's already integrated
+  -> tuxbuild has its own implementation, buy similar type of technology
+* How can we avoid nested Docker, by not calling Docker in tuxmake?
+  -> Docker is optional, mostly a convenience for developers
+  -> Other runtimes can be added (k8s...)
+* Can we have a tuxbuild token please? :)
+  -> considering individual tokens for gtucker, khilman, broonie
 
-Finally, we could have the CI systems listen for incoming reports (on the same
-message bus which is used to submit them), look at each failing test they can
-execute, check if there is a parent revision with it passing, and if not,
-initiate bisection between the failure and the latest revision with the test
-passing they could find in the database. They would have to get the
-not-yet-reported revisions from the relevant git repo, though.
+Discussions:
+* Sharing containers in some common repo (kernel.org linked?)
+  -> Having a "canonical" repository with Dockerfiles for building upstream
+     kernels would be very useful and well aligned with the tuxmake idea.
+* Container versioning
+  -> Can be done with refined containers for specific toolchain variants
+  -> Docker image tags
+  -> There are issues with versioning not just toolchain but also other tools
+     like binutils that get used during the build.
+* Follow-up suggestion about modernizing the TuxML build infrastructure
+  -> kernelci k8s, tuxbuild, other build system using tuxmake or kci_build?
+* kci_build could use tuxmake as a common kernel build solution with LKFT
+* Moving tuxmake to a neutral place, currently in gitlab.com/Linaro
+  -> general agreement that it has some advantages, details to be discussed
 
-Or they could track failures themselves and just submit results of their own
-bisection (both the last passing and the first failing revision). Something
-that the existing KernelCI algorithm can already do. The notifying algorithm
-would still pick that up.
 
-What do you think?
+Advisory Board minutes - 2020-06-24
+===================================
 
-Nick
+* Reviewing survey results
+* Agreed to publish survey results next week
 
+
+Summary of changes going into production
+========================================
+
+* Enable lab-cip with initial subset of online devices
+* Drop lab-free-electrons as confirmed with Bootlin, it is offline
+* Remove all the boot views on frontend to complete the deprecation process
+* Align tooltips and page titles on frontend to improve user experience
+
+
+Best wishes,
+Guillaume
