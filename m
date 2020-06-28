@@ -1,37 +1,44 @@
+From: "leimaohui" <leimaohui@cn.fujitsu.com>
+Subject: Re: How to use kci_test?
+Date: Sun, 28 Jun 2020 03:55:26 +0000
+Message-ID: <1593316524096.87466@cn.fujitsu.com>
+References: <161ABF04116C5EFF.11535@groups.io>
+In-Reply-To: <161ABF04116C5EFF.11535@groups.io>
 MIME-Version: 1.0
-References: <CACT4Y+YbNNyvoYD7E1Rczt_OmkEuYTs6fDHoaUPFEygYYr_Oyg@mail.gmail.com>
- <CACT4Y+bDt_QJ8emH81qcSjFFC75u=cEz6Pc-PTNpoOELNfdBvQ@mail.gmail.com>
-In-Reply-To: <CACT4Y+bDt_QJ8emH81qcSjFFC75u=cEz6Pc-PTNpoOELNfdBvQ@mail.gmail.com>
-From: "Brendan Higgins" <brendanhiggins@google.com>
-Date: Thu, 9 Apr 2020 08:38:07 -0700
-Message-ID: <CAFd5g475QQ73g2U1ZjBnoTVnCxmDTTcjfHR4XEhQ2eXUfa+Q4Q@mail.gmail.com>
-Subject: Re: KernelCI and KUnit
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-AU
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: kernelci@groups.io, kasan-dev <kasan-dev@googlegroups.com>, Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>
+To: "kernelci@groups.io" <kernelci@groups.io>, "Lei, Maohui" <leimaohui@cn.fujitsu.com>
 
-On Thu, Apr 9, 2020 at 12:31 AM Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> On Thu, Apr 9, 2020 at 9:16 AM Dmitry Vyukov <dvyukov@google.com> wrote:
-> >
-> > Hi,
-> >
-> > I remember subj was discussed last year. What's the status?
-> > Has KernelCI started running KUnit tests during builds? How are tests
-> > selected? Does this use only UML?
-> >
-> > Thanks
->
-> +kasan-dev
->
-> For more context: we would like to get some testing for
-> KASAN/KCSAN/KMSAN/KFENCE. KASAN tests are being converted to KUnit and
-> KASAN is being ported to UML. Tests for other tools are in process.
-> I am trying to understand if KernelCI is something we could rely here.
-
-Yep, we have made a good deal of progress in this area. We had an Eng
-Resident working on this since the end of last year, and she was able
-to make most of the changes necessary for this to happen. Now we have
-a working prototype with one or two final changes needing to be
-upstreamed for upstream support; I am working on this now.
+cGluZwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KRnJvbToga2Vy
+bmVsY2lAZ3JvdXBzLmlvIDxrZXJuZWxjaUBncm91cHMuaW8+IG9uIGJlaGFsZiBvZiBsZWltYW9o
+dWkgPGxlaW1hb2h1aUBjbi5mdWppdHN1LmNvbT4KU2VudDogTW9uZGF5LCAyMiBKdW5lIDIwMjAg
+MTE6MTAKVG86IGtlcm5lbGNpQGdyb3Vwcy5pbwpTdWJqZWN0OiBIb3cgdG8gdXNlIGtjaV90ZXN0
+PwoKSGksIGFsbAoKSSBhbSBsZWFybmluZyB0byB1c2Uga2VybmVsY2kuIEF0IHByZXNlbnQsIEkg
+aGF2ZSBpbnN0YWxsZWQga2VybmVsY2kgZG9ja2VyIGFuZCBsYXZhIGRvY2tlciwgYW5kIHVzZSBr
+Y2lfIGJ1aWxkIGJ1aWxkcyB0aGUga2VybmVsLgpVc2luZyBrY2lfdGVzdCwgd2UgZW5jb3VudGVy
+ZWQgc29tZSBwcm9ibGVtczoKCjEuIFdoYXQgZG8gSSBuZWVkIHRvIGRvIHRvIGNvbm5lY3Qga2Vy
+bmVsY2kgYW5kIGxhdmEgYmVmb3JlIHRoZSB0ZXN0IGNvbW1hbmQ/CgoyLiBJcyB0aGUgZm9sbG93
+aW5nIHVuZGVyc3RhbmRpbmcgb2Yga2NpX3Rlc3QncyBvcHRpb25zIGNvcnJlY3TigIs/CkZvciBl
+eGFtcGxlOgouL2tjaV90ZXN0IGdlbmVyYXRlCgogIC0tYm1ldGEtanNvbj1saW51eC9faW5zdGFs
+bF8vYm1ldGEuanNvbiBcICAgICAgLy9ibWV0YSBmaWxlIGluIGJ1aWxkIGRpcmVjdG9yeSBnZW5l
+cmF0ZWQgYnkga2NpX2J1aWxkCiAgLS1kdGJzLWpzb249bGludXgvX2luc3RhbGxfL2R0YnMuanNv
+biBcICAgICAgICAgICAgIC8vZHRicyBmaWxlIGluIGJ1aWxkIGRpcmVjdG9yeSBnZW5lcmF0ZWQg
+Ynkga2NpX2J1aWxk4oCLCiAgLS1wbGFuPWJhc2VsaW5lX3FlbXUgXCAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgLy8gdGVzdF9wbGFuCiAgLS10YXJnZXQ9cWVtdV9hcm02NC12
+aXJ0LWdpY3YzIFwgICAgICAgICAgICAgICAgICAgICAvL2RldmljZV90eXBlCiAgLS1sYWI9bGFi
+LW5hbWUgXCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IC8vbGFiIG5hbWUgd2hpY2ggaXMgcmVjb3JkZWQgaW4gbGFiLWNvbmZpZ3MueWFtbAogLS11c2Vy
+PWtlcm5lbGNpLXVzZXItbmFtZSBcICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8vdXNl
+ciBvZiBsYXZhIGZvciBrZXJuZWxjaSB0ZXN0CiAgLS10b2tlbj1hYmNkLTc4OTAgXCAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLy90b2tlbiBvZiBsYXZhIHVzZXIg
+Zm9yIGtlbmVsY2kgdGVzdAogIC0tbGFiLWpzb249bGFiLW5hbWUuanNvbiBcICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIC8vSlNPTiBmaWxlIGdlbmVyYXRlZCBieSBleGVjdXRpbmcg
+Y29tbWFuZCBnZXRfbGFiX2luZm8KICA+IGpvYi55YW1sCgozLiBFcnJvciBpcyBvY2N1cnJlZCB3
+aGVuIGV4ZWN1dGluZyB0aGUgZm9sbG93aW5nIGNvbW1hbmQuIElzIHRoZXJlIGFueSBwcm9ibGVt
+IHdpdGggcGFyYW1ldGVyIHNwZWNpZmljYXRpb24/CkNvbW1hbmQgbGluZSA6ICQuIC8gS0NJXyB0
+ZXN0IGdldF8gbGFiXyBpbmZvIC0tbGFiPWxhYi1saW5hcm8tbGtmdCAtLWxhYi1qc29uPWxhYi1s
+aW5hcm8tIGxrZnQuanNvbgpFcnJvciBtZXNzYWdlOiAgICQgYXR0cmlidXRlZXJyb3I6ICdub25l
+dHlwZScgb2JqZWN0IGhhcyBubyBhdHRyaWJ1dGUgJ3NjaGVkdWxlcicKCkJlc3QgcmVnYXJkcwpM
+ZWkgTWFvaHVpCgoKCgoKCg==
