@@ -1,37 +1,36 @@
 MIME-Version: 1.0
-From: "Nick Desaulniers" <ndesaulniers@google.com>
-Date: Tue, 30 Jun 2020 10:49:03 -0700
-Message-ID: <CAKwvOdmu2Yi=SdR+ftnnfX_HNTfri-MPmzA7kxNzjwuuk=5R3w@mail.gmail.com>
-Subject: Clang Build Linux presentations + demos
-Content-Type: text/plain; charset="UTF-8"
+From: Aditya Srivastava <adityasrivastava301199@gmail.com>
+Date: Thu, 2 Jul 2020 01:52:26 +0530
+Message-ID: <CAJMT-dGBCdkJnDNRYRRk9aVk=FmJkjGmpXCqsXc73v8hY+yi9w@mail.gmail.com>
+Subject: Contribute to KernelCI in Kubernetes or Cloud
+Content-Type: multipart/alternative; boundary="00000000000097736a05a9670d16"
 List-ID: <kernelci.groups.io>
-To: clang-built-linux <clang-built-linux@googlegroups.com>
-Cc: Mathieu Acher <mathieu.acher@irisa.fr>, Masahiro Yamada <masahiroy@kernel.org>, Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+To: kernelci@groups.io
 
-(bcc a few lists)
+--00000000000097736a05a9670d16
+Content-Type: text/plain; charset="UTF-8"
 
-Hello,
-For tomorrow's bi-weekly meeting [0][1], we have two guest presentations:
+Hi,
+Heard the talk on OSS by Kevin Hilman and khouloud touil , I would like to
+help to get KernelCI on K8S or any other help if needed for the same.
 
-Prof. Mathieu Acher, an associate professor from the University of
-Rennes, will be discussing with us about the Linux kernel's
-configuration space.  A common question we get is "does the kernel
-build with Clang?"  "Depends on the config" is just the tip of the
-iceberg.  For a sneak peak of his and his team's work, please see
-[2][3][4][5].
+Thanks and Regards,
+Aditya Srivastava
 
-Nathan Huckleberry is a Comp. Sci. undergrad at the University of
-Texas at Austin and a Google summer intern.  Nathan is working on
-instrumenting Clang and LLVM in order for us to start measuring,
-investigating, and improving compile time performance.  Nathan will be
-demoing an RFC he plans to send out later that day.
+--00000000000097736a05a9670d16
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[0] https://calendar.google.com/calendar/embed?src=google.com_bbf8m6m4n8nq5p2bfjpele0n5s%40group.calendar.google.com
-[1] https://meet.google.com/yjf-jyqk-iaz
-[2] https://www.youtube.com/watch?v=UBghs-cwQX4
-[3] https://hal.inria.fr/hal-02147012v2/document
-[4] https://hal.inria.fr/hal-02314830/document
-[5] https://www.mathieuacher.com/
--- 
-Thanks,
-~Nick Desaulniers
+<div dir=3D"ltr"><div class=3D"gmail_default" style=3D"font-family:comic sa=
+ns ms,sans-serif">Hi,</div><div class=3D"gmail_default" style=3D"font-famil=
+y:comic sans ms,sans-serif">Heard the talk on OSS by Kevin Hilman and=C2=A0=
+khouloud touil<span style=3D"color:rgb(83,93,96);font-family:Roboto,Arial,s=
+ans-serif;font-size:16.996px">=C2=A0</span>, I would=C2=A0like to help to g=
+et KernelCI on K8S or any other help if needed for the same.=C2=A0</div><di=
+v class=3D"gmail_default" style=3D"font-family:comic sans ms,sans-serif"><b=
+r></div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"g=
+mail_signature"><div dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">T=
+hanks and Regards,</font><div><font face=3D"comic sans ms, sans-serif">Adit=
+ya Srivastava</font></div></div></div></div></div>
+
+--00000000000097736a05a9670d16--
