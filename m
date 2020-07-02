@@ -1,85 +1,102 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Mon, 20 Apr 2020 11:36:28 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: kci_build proposal
-Message-ID: <20200420163628.wmbc7f7vuvqsbdhw@xps.therub.org>
+From: Alistair Francis <Alistair.Francis@wdc.com>
+Subject: Re: Improve kernelci setup for RISC-V
+Date: Thu, 2 Jul 2020 20:19:22 +0000
+Message-ID: <950edcb196806c07802b3d3400156a2d052c485e.camel@wdc.com>
+References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
+	 <7hsgeaixcl.fsf@baylibre.com>
+	 <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
+	 <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
+In-Reply-To: 
+ <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6B32E2AF7F4A984F820621ABAF0C62B8@namprd04.prod.outlook.com>
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: "david.abdurachmanov@sifive.com" <david.abdurachmanov@sifive.com>, Atish Patra <Atish.Patra@wdc.com>
+Cc: "drew@beagleboard.org" <drew@beagleboard.org>, "merker@debian.org" <merker@debian.org>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "mafm@debian.org" <mafm@debian.org>, "aurelien@aurel32.net" <aurelien@aurel32.net>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>, "khilman@baylibre.com" <khilman@baylibre.com>
 
-Hey Everyone!
-
-I've been working on a kernel building service/api that's designed to perform
-massive numbers of builds. The actual kernel build implementation reuses
-kernelci's kci_build script.
-
-So far we have not had to modify kernelci-core's kci_build, but we're
-approaching a point where we think we're going to have to modify it
-fundamentally to meet our needs. I would really like to continue sharing a
-build implementation with kernelci, but some of the changes needed are
-architectural in nature, and so I'd like to share a brief proposal for
-consideration:
-
-Standalone python-based kernel builder with the following properties:
-- Independent python package (library and cli) that only does a local kernel
-  build
-- Takes as arguments things like architecture, toolchain, kernel config, etc.
-- Dockerzed toolchain environments are supported directly (e.g. it will run
-  "docker run make")
-- Builds are done within the context of an existing kernel tree (doing git
-  checkout, git fetch, etc are out of scope)
-- Artifacts go to some named or default directory path. Uploading them
-  elsewhere is out of scope.
-- Exception handling is built in and makes it usable as a python library
-- Logging is built in with flexibility in mind (log to console, verbose or
-  silent, log to file, etc.)
-- Simple, one-line dockerized reproducers are given as a build artifact, for
-  reproducing builds locally.
-- Partial build failure support - e.g. what if kselftest fails but the rest of
-  the build passes?
-- Rigorous unit testing
-- Implementation is modular enough to support things like a documentation build
-  and other targets in the tree such as various tools/, sparse checker,
-  coccinelle, etc.
-- Support for kernel fragement files or urls in addition to supporting
-  individual kernel config arguments
-
-Use Case Examples:
-- Install using pip, build using the cli interface
-  - "pip install --user kernel-builder; cd linux; kernel-builder --arch arm64 --toolchain clang-9"
-- Run using a published docker container. This example would need permission to
-  launch additional docker containers to perform the build steps.
-  - "docker run kernel-builder --arch arm64 --toolchain clang-9"
-- Install using pip, and use it from python as a library
-  - "import kernel-builder"
-
-In the example above, "kernel-builder" is a placeholder for whatever the name
-would be.
-
-The artifacts produced would be similar to the set of artifacts kci_build
-produces today, with the addition of a build reproducer script and probably
-some differences in metadata files.
-
-Docker support would be optional (you could use a locally installed toolchain),
-but allows for arbitrary toolchains to be available and perfect
-reproducibility.
-
-It's hard to change kci_build to be anything like this because it's tightly
-coupled with the kernelci-core repo, and kernelci itself. The design above also
-fundamentally changes how the builder interfaces with docker, such that it
-becomes supported directly rather than something that's implemented outside the
-scope of the builder.
-
-It's important that docker is supported directly because it makes the
-reproducible build use-case a one-liner, it solves the problem of having to get
-python and the builder into the build containers, and it allows for more
-granular control of the build.
-
-So, thoughts? How close or how far is this from the roadmap for kci_build as it
-stands today? We are likely to start working on this soon, and would really
-like to work together on it if possible.
-
-Thanks for your feedback,
-Dan
+T24gVGh1LCAyMDIwLTA3LTAyIGF0IDEwOjEyICswMzAwLCBEYXZpZCBBYmR1cmFjaG1hbm92IHdy
+b3RlOg0KPiBIaSwNCj4gDQo+IEkgYW0gYWRkaW5nIEthcnN0ZW4gTWVya2VyLCBBdXJlbGllbiBK
+YXJubyBhbmQgTWFudWVsIEEuIEZlcm5hbmRleg0KPiB3aG8NCj4gYXJlIHdvcmtpbmcgb24gRGVi
+aWFuIFJJU0NWLg0KPiANCj4gUmVjYXA6IEtlcm5lbENJIHVzZXMgRGViaWFuIGRlYm9vdHN0cmFw
+IGZvciB0aGVpciB0ZXN0DQo+IGluZnJhc3RydWN0dXJlLg0KPiBJIGJlbGlldmUgdGhleSBhcmUg
+dXNpbmcgQnVzdGVyIGZvciBpdCBub3cuDQo+IA0KPiBPbiBUaHUsIEp1bCAyLCAyMDIwIGF0IDEw
+OjAyIEFNIEF0aXNoIFBhdHJhIDxBdGlzaC5QYXRyYUB3ZGMuY29tPg0KPiB3cm90ZToNCj4gPiBP
+biBXZWQsIDIwMjAtMDctMDEgYXQgMTc6MTcgLTA3MDAsIEtldmluIEhpbG1hbiB3cm90ZToNCj4g
+PiA+IFsgKyBrZXJuZWxjaSBsaXN0IF0NCj4gPiA+IA0KPiA+ID4gSGkgQXRpc2gsDQo+ID4gPiAN
+Cj4gPiA+IEF0aXNoIFBhdHJhIDxBdGlzaC5QYXRyYUB3ZGMuY29tPiB3cml0ZXM6DQo+ID4gPiAN
+Cj4gPiA+ID4gSSBqdXN0IHdhbnQgdG8gZm9sbG93IHVwIHRoZSBkaXNjdXNzaW9ucyB3ZSBoYWQg
+aW4gdGhlIHJpc2Mtdg0KPiA+ID4gPiBzbGFjaw0KPiA+ID4gPiBjaGFubmVsIHJlbGF0ZWQgdG8g
+aW1wcm92aW5nIGtlcm5lbGNpIHNldHVwIGZvciBSSVNDLVYuDQo+ID4gPiA+IA0KPiA+ID4gPiAx
+LiBBZGRpbmcgUWVtdSB0YXJnZXQgZm9yIFJJU0MtVjogQXMgcGVyIG91dCBsYXRlc3QNCj4gPiA+
+ID4gY29udmVyc2F0aW9uLA0KPiA+ID4gPiB0aGlzDQo+ID4gPiA+IHdvbid0IGJlIGFuIGlzc3Vl
+IGFueW1vcmUgYXMgUWVtdSBzdXBwb3J0cyAtYmlvcyBhbmQgLWtlcm5lbA0KPiA+ID4gPiBzZXBh
+cmF0ZWx5Lg0KPiA+ID4gDQo+ID4gPiBZZXMsIHRoaXMgbG9va3Mgc3RyYWlnaHQgZm9yd2FyZCBu
+b3cuICBXZSBzaG91bGQgYmUgYWJsZSB0byBnZXQNCj4gPiA+IHRoaXMNCj4gPiA+IGdvaW5nIGZv
+ciBvdXIgYmFzaWMgdGVzdHMgd2l0aG91dCB0b28gbXVjaCBtb3JlIHdvcmsuDQo+ID4gPiANCj4g
+PiA+ID4gMi4gUnVubmluZyBtb3JlIHRlc3RzIGluIGFkZGl0aW9uIHRvIGJvb3QgdGVzdHMgb24g
+dW5sZWFzaGVkDQo+ID4gPiA+IHRhcmdldDoNCj4gPiA+ID4gDQo+ID4gPiA+IFRoZSBtYWluIGJs
+b2NrZXIgaGVyZSBpcyB0aGUgcm9vdGZzLiBBcyBrZXJuZWxjaSBvbmx5IHN1cHBvcnRzDQo+ID4g
+PiA+IGRlYmlhbg0KPiA+ID4gPiBiYXNlZCByb290ZnMgdG8gYWN0dWFsbHkgcnVuIHRlc3RzLiBJ
+IHRoaW5rIGl0IGlzIG5vdCB0aGF0DQo+ID4gPiA+IGRpZmZpY3VsdCB0bw0KPiA+ID4gPiBib290
+c3RyYXAgYSBkZWJpYW4gcm9vdGZzIGZvciBSSVNDLVYgYnV0IEkgaGF2ZSBub3QgZG9uZSB0aGF0
+DQo+ID4gPiA+IGluDQo+ID4gPiA+IGFnZXMuDQo+ID4gPiA+IEkgdGhpbmsgcGFsbWVyIHVzZXMg
+ZGViaWFuIHJvb3RmcyBmb3IgaGlzIHRlc3RpbmcuIEkgaGF2ZSBjYydkDQo+ID4gPiA+IGhpbQ0K
+PiA+ID4gPiBmb3INCj4gPiA+ID4gaGlzIGlucHV0cy4NCj4gPiA+IA0KPiA+ID4gRm9yIGV2ZXJ5
+IG90aGVyIGFyY2gsIHdlIGRlYm9vdHN0cmFwIGEgYnVzdGVyIHJvb3RmcywgYW5kIHRoaXMNCj4g
+PiA+IGRvZXNuJ3QNCj4gPiA+IHdvcmsgZm9yIHJpc2N2LiAgQnV0LCBJIGp1c3QgZGlzY292ZXJl
+ZFsxXSB0aGF0IHRoaXMgc2hvdWxkIHdvcmsNCj4gPiA+IGZvcg0KPiA+ID4gdW5zdGFibGUgdXNp
+bmcgZGViaWFuLXBvcnRzLCBzbyB3ZSdsbCBuZWVkIHRvIHVwZGF0ZSBvdXIgcm9vdGZzDQo+ID4g
+PiBidWlsZGVyDQo+ID4gPiB0byBzdXBwb3J0IHVuc3RhYmxlL2RlYmlhbi1wb3J0cy4NCj4gPiA+
+IA0KPiA+ID4gSSd2ZSBjYydkIExha3NobWlwYXRoaSBmcm9tIENvbGxhYm9yYSB3aG8gaGFzIGJl
+ZW4gZG9pbmcgd29yayBvbg0KPiA+ID4gb3VyDQo+ID4gPiByb290ZnMgYnVpbGRlciB0b29sIHRv
+IHNlZSBob3cgd2UgY2FuIGV4dGVuZCB0aGlzLg0KPiA+ID4gDQo+ID4gDQo+ID4gVGhhbmtzLg0K
+PiA+IA0KPiA+ID4gPiBCdXQgQWxpc3RhaXIgJiBraGVtIChjYydkKSBleHByZXNzZWQgaW50ZXJl
+c3QgdG8gYWRkIE9FIHRvDQo+ID4gPiA+IGtlcm5lbGNpDQo+ID4gPiA+IGFzDQo+ID4gPiA+IHdl
+bGwuIENhbiB5b3Ugc2hhcmUgc29tZSBwb2ludGVycyBvbiB3aGF0IG5lZWRzIHRvIGJlIGRvbmUg
+Pw0KPiA+ID4gDQo+ID4gPiBUaGUgbWFpbiB0cmlja3kvYW5ub3lpbmcgcGFydCB3aXRoIHlvY3Rv
+IGlzIHRoYXQgYnVpbGRzIGFyZSBwZXItDQo+ID4gPiBib2FyZCwNCj4gPiA+IHdoZXJlIGFzIHdl
+IGxpa2UgdG8gYnVpbGQgcm9vdGZzIGltYWdlcyBwZXItYXJjaC4gIE1heWJlIHRoZXJlJ3MNCj4g
+PiA+IGENCj4gPiA+IHdheQ0KPiA+ID4gdG8gYnVpbGQgYW4gYXJjaC1nZW5lcmljIHlvY3RvIHJv
+b3RmcyB1c2luZyBhIHFlbXUgdGFyZ2V0IG9yDQo+ID4gPiBzb21ldGhpbmcsDQo+ID4gPiB0aG91
+Z2guDQo+ID4gPiANCj4gPiA+IFRoZSBwbGFjZSB0byBzdGFydCB3b3VsZCBiZSB0byBsb29rIGF0
+IHRoZSBrY2lfcm9vdGZzIHRvb2wgaW4gdGhlDQo+ID4gPiBrZXJuZWxjaS1jb3JlIHJlcG9bMl0g
+YWxvbmcgd2l0aCB0aGUgcm9vdGZzLWNvbmZpZy55YW1sIGZpbGUgYW5kDQo+ID4gPiBmaWd1cmUN
+Cj4gPiA+IG91dCBob3cgdG8gZXh0ZW5kIHRoYXQgZm9yIHlvY3RvL09FLg0KPiA+ID4gDQo+ID4g
+PiBBZ2FpbiwgTGFrc2htaXBhdGhpIG1heSBoYXZlIHNvbWUgaWRlYXMgdGhlcmUuDQo+ID4gPiAN
+Cj4gPiA+IE9UT0gsIEknbSBub3QgcXVpdGUgc3VyZSB3aGF0IHdlIHdvdWxkIGdhaW4gYnkgdXNp
+bmcgeW9jdG8NCj4gPiA+IGluc3RlYWQgb2YNCj4gPiA+IGRlYmlhbj8gIEFyZSB0aGVyZSBtb3Jl
+IHBhY2thZ2VzIGZvciB5b2N0byBhdmFpbGFibGUgdGhhbiBmb3INCj4gPiA+IGRlYmlhbg0KPiA+
+ID4gY3VycmVudGx5Pw0KPiA+ID4gDQo+ID4gDQo+ID4gVEJILCBJIGFtIG5vdCBxdWl0ZSBzdXJl
+LiBJIHRoaW5rIEtoZW0gcHJvcG9zZWQgYWRkaW5nIE9FIHN1cHBvcnQNCj4gPiBhc3N1bWluZyB0
+aGF0IGRlYmlhbiByb290ZnMgc3VwcG9ydCBtYXkgbm90IGJlIHBvc3NpYmxlLiBJZg0KPiA+IGRl
+Ym9vdHN0cmFwDQo+ID4gY2FuIGJlIGRvbmUgZnJvbSB1bnN0YWJsZSB0cmVlLCB3ZSBtYXkgbm90
+IHJlcXVpcmVkIE9FIHN1cHBvcnQuDQo+IA0KPiBJZiB3ZSB3YW50IHRvIHRlc3QgcmlzY3YzMiB5
+b3UgbW9zdCBsaWtlbHkgbmVlZCB0byBnbyB3aXRoIE9FLiBJDQo+IGRvbid0DQo+IHRoaW5rIGFu
+eXRoaW5nIGVsc2Ugc3VwcG9ydHMgUklTQy1WIDMyLWJpdCBhbmQgSSBkb24ndCBrbm93IGlmIGFu
+eQ0KPiBvdGhlciBkaXN0cm8gKG5vdCB0YXJnZXRpbmcgZW1iZWRkZWQgbWFya2V0KSB3aWxsIHdv
+cmsgb24gaXQuDQoNCkkgdGhpbmsgZm9yIGEgUlYzMiB0ZXN0LCBPRSBpcyBwcm9iYWJseSB0aGUg
+YmVzdCB3YXkgdG8gZ28uIFRoYXQgc2hvdWxkDQpjb21lIGFmdGVyIHdlIGhhdmUgYSA2NC1iaXQg
+dGVzdCBydW5uaW5nIGFuZCB1cHN0cmVhbSBzdXBwb3J0IGZvciBSVjMyDQppbiBnbGliYyB0aG91
+Z2guDQoNClNvIGxldCdzIGdldCBSVjY0IHVwIGFuZCBydW5uaW5nIGZpcnN0Lg0KDQpBbGlzdGFp
+cg0KDQo+IA0KPiBJIGRvbid0IGtub3cgaWYgdGhlcmUgd2lsbCBiZSBhIERlYmlhbiByaXNjdjMy
+IHBvcnQuDQo+IA0KPiBDaGVlcnMsDQo+IGRhdmlkDQo+IA0KPiA+IEBBbGlzdGFpci9LaGVtIDog
+QW55IHRob3VnaHRzID8NCj4gPiANCj4gPiA+ID4gMy4gSG93IGRpZmZpY3VsdCBpcyB0byBzZXR1
+cCBrZXJuZWxjaSBmcm9tIHNjcmF0Y2ggbG9jYWxseSA/DQo+ID4gPiANCj4gPiA+IE5vdCByZWFs
+bHksIGJ1dCBpdCdzIG5vdCB3ZWxsIGRvY3VtZW50ZWQuIDooDQo+ID4gPiANCj4gPiA+IEJ1dCBp
+dCBkZXBlbmRzIG9uIHdoaWNoIHBhcnRzIHlvdSB3YW50IHRvIHNldHVwLiAgVGhlcmUgYXJlDQo+
+ID4gPiBzZXZlcmFsDQo+ID4gPiBtb3ZpbmcgcGFydHM6DQo+ID4gPiANCj4gPiA+IDEpIGxhYiAv
+IGJvYXJkLWZhcm0NCj4gPiA+IDIpIGJhY2tlbmQgLyBzdG9yYWdlDQo+ID4gPiAzKSBmcm9udGVu
+ZA0KPiA+ID4gNCkga2VybmVsIGJ1aWxkcyAoY2VudHJhbGl6ZWQsIHB1Ymxpc2hlZCBwdWJsaWNh
+bGx5IHRvDQo+ID4gPiAgIHN0b3JhZ2Uua2VybmVsY2kub3JnKQ0KPiA+ID4gDQo+ID4gPiBXZSBo
+YXZlIHNvbWUgcnVkaW1lbnRhcnkgZG9jcyBmb3IgMi00IGhlcmVbM10sIGJ1dCB0aGUgY29tcHV0
+ZQ0KPiA+ID4gcGFydA0KPiA+ID4gZm9yDQo+ID4gPiBidWlsZHMgaXMgY3VycmVudGx5IGNlbnRy
+YWxpemVkLg0KPiA+ID4gDQo+ID4gDQo+ID4gVGhhbmtzIGZvciB0aGUgbGlua3MuIEkgd2lsbCBn
+byB0aHJvdWdoIHRoZW0uDQo+ID4gDQo+ID4gPiBLZXZpbg0KPiA+ID4gDQo+ID4gPiANCj4gPiA+
+IFsxXSBodHRwczovL3dpa2kuZGViaWFuLm9yZy9SSVNDLVYjZGVib290c3RyYXANCj4gPiA+IFsy
+XSBodHRwczovL2dpdGh1Yi5jb20va2VybmVsY2kva2VybmVsY2ktY29yZS8NCj4gPiA+IFszXQ0K
+PiA+ID4gaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNpLWRvYy93aWtpL1NldHRp
+bmctdXAtYS1sb2NhbC1kZXZlbG9wbWVudC1pbnN0YW5jZQ0KPiA+IA0KPiA+IC0tDQo+ID4gUmVn
+YXJkcywNCj4gPiBBdGlzaA0K
