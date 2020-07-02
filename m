@@ -1,58 +1,150 @@
-Date: Thu, 2 Jul 2020 12:24:00 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: Improve kernelci setup for RISC-V
-Message-ID: <20200702112400.GC4483@sirena.org.uk>
-References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
- <7hsgeaixcl.fsf@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <7hsgeaixcl.fsf@baylibre.com>
-Content-Type: multipart/mixed; boundary="Groupsio=KDXVuhUEPTB0pkueCCae"
+References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
+ <7hsgeaixcl.fsf@baylibre.com> <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
+ <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
+In-Reply-To: <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
+From: David Abdurachmanov <david.abdurachmanov@sifive.com>
+Date: Thu, 2 Jul 2020 16:19:25 +0300
+Message-ID: <CAPSAq_zLQrw-EK70fHj-Kz3Xp+WP4TzFBOOmYY7e3OB+JHnE6w@mail.gmail.com>
+Subject: Re: Improve kernelci setup for RISC-V
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, khilman@baylibre.com
-Cc: Atish Patra <Atish.Patra@wdc.com>, "drew@beagleboard.org" <drew@beagleboard.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "david.abdurachmanov@sifive.com" <david.abdurachmanov@sifive.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, Alistair Francis <Alistair.Francis@wdc.com>, Corentin Labbe <clabbe@baylibre.com>, Lakshmipathi Ganapathi <lakshmipathi.ganapathi@collabora.co.uk>
+To: Atish Patra <Atish.Patra@wdc.com>
+Cc: "khilman@baylibre.com" <khilman@baylibre.com>, "drew@beagleboard.org" <drew@beagleboard.org>, Alistair Francis <Alistair.Francis@wdc.com>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>, Aurelien Jarno <aurelien@aurel32.net>, Manuel Montecelo <mafm@debian.org>, Karsten Merker <merker@debian.org>, Colin Ian King <colin.king@canonical.com>
 
---Groupsio=KDXVuhUEPTB0pkueCCae
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Almost forgot. I suggest we also run stress-ng for CI. It's a single
+binary and it already found a number of kernel related issues on
+Unleashed which usually result in board hanging.
 
-On Wed, Jul 01, 2020 at 05:17:46PM -0700, Kevin Hilman wrote:
-> Atish Patra <Atish.Patra@wdc.com> writes:
+I have added Colin from Canonical who is the author of the stress tool.
 
-> > But Alistair & khem (cc'd) expressed interest to add OE to kernelci as
-> > well. Can you share some pointers on what needs to be done ?
+david
 
-> The main tricky/annoying part with yocto is that builds are per-board,
-> where as we like to build rootfs images per-arch.  Maybe there's a way
-> to build an arch-generic yocto rootfs using a qemu target or something,
-> though.
-
-That definitely works well, I'm doing a lot of my testing with a setup
-like that - just ignore the kernel that yocto builds and use the rest of
-the rootfs.  Once you start to get further up the stack it can be an
-issue but for most things KernelCI is covering now it's fine.  The only
-gotcha I'm aware of is if there's architecture variants that are binary
-incompatible (like moving to v7 on arm) you need to pick one that's
-suitable for everything that'll use the image.
-
-> OTOH, I'm not quite sure what we would gain by using yocto instead of
-> debian?  Are there more packages for yocto available than for debian
-> currently?
-
-I'd expect it's the other way around TBH.
-
---Groupsio=KDXVuhUEPTB0pkueCCae
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl79w88ACgkQJNaLcl1U
-h9AnrQf9FX7Z59TyPQzYo/Tr5bLVx3qJ729UxRRZqxcDSnNIok3z4gilQ1XuSjVR
-AaJh9p68FnNP8AiDRkfU9iOq0etAprJNpY40Dl9Tx/WBBgblJqXyY+z8OsJ1Ha0h
-zGdmG9bjmUWzTKnpjTJurTq+hZ8/7y2aOevx7qJv6sQ3Ik+QwnVn3vCEuOjvWFBF
-T2muy3vK3FhXpOWykcaBStKoxQq0v9Pv+9qqLwmOkIIpL1FX4Q6xVKSM6L+s47sX
-rSgjStTxWnjVtOVlzHFtlfuOe1GPRpZYqggqE3EL2ujeCwvi3kxJ+kHGh8iXUDFj
-pp4N58ZHHRClYYJGntARG9TPOP7yVA==
-=oAnW
------END PGP SIGNATURE-----
-
---Groupsio=KDXVuhUEPTB0pkueCCae--
+On Thu, Jul 2, 2020 at 10:12 AM David Abdurachmanov
+<david.abdurachmanov@sifive.com> wrote:
+>
+> Hi,
+>
+> I am adding Karsten Merker, Aurelien Jarno and Manuel A. Fernandez who
+> are working on Debian RISCV.
+>
+> Recap: KernelCI uses Debian debootstrap for their test infrastructure.
+> I believe they are using Buster for it now.
+>
+> On Thu, Jul 2, 2020 at 10:02 AM Atish Patra <Atish.Patra@wdc.com> wrote:
+> >
+> > On Wed, 2020-07-01 at 17:17 -0700, Kevin Hilman wrote:
+> > > [ + kernelci list ]
+> > >
+> > > Hi Atish,
+> > >
+> > > Atish Patra <Atish.Patra@wdc.com> writes:
+> > >
+> > > > I just want to follow up the discussions we had in the risc-v slack
+> > > > channel related to improving kernelci setup for RISC-V.
+> > > >
+> > > > 1. Adding Qemu target for RISC-V: As per out latest conversation,
+> > > > this
+> > > > won't be an issue anymore as Qemu supports -bios and -kernel
+> > > > separately.
+> > >
+> > > Yes, this looks straight forward now.  We should be able to get this
+> > > going for our basic tests without too much more work.
+> > >
+> > > > 2. Running more tests in addition to boot tests on unleashed
+> > > > target:
+> > > >
+> > > > The main blocker here is the rootfs. As kernelci only supports
+> > > > debian
+> > > > based rootfs to actually run tests. I think it is not that
+> > > > difficult to
+> > > > bootstrap a debian rootfs for RISC-V but I have not done that in
+> > > > ages.
+> > > > I think palmer uses debian rootfs for his testing. I have cc'd him
+> > > > for
+> > > > his inputs.
+> > >
+> > > For every other arch, we debootstrap a buster rootfs, and this
+> > > doesn't
+> > > work for riscv.  But, I just discovered[1] that this should work for
+> > > unstable using debian-ports, so we'll need to update our rootfs
+> > > builder
+> > > to support unstable/debian-ports.
+> > >
+> > > I've cc'd Lakshmipathi from Collabora who has been doing work on our
+> > > rootfs builder tool to see how we can extend this.
+> > >
+> >
+> > Thanks.
+> >
+> > > > But Alistair & khem (cc'd) expressed interest to add OE to kernelci
+> > > > as
+> > > > well. Can you share some pointers on what needs to be done ?
+> > >
+> > > The main tricky/annoying part with yocto is that builds are per-
+> > > board,
+> > > where as we like to build rootfs images per-arch.  Maybe there's a
+> > > way
+> > > to build an arch-generic yocto rootfs using a qemu target or
+> > > something,
+> > > though.
+> > >
+> > > The place to start would be to look at the kci_rootfs tool in the
+> > > kernelci-core repo[2] along with the rootfs-config.yaml file and
+> > > figure
+> > > out how to extend that for yocto/OE.
+> > >
+> > > Again, Lakshmipathi may have some ideas there.
+> > >
+> > > OTOH, I'm not quite sure what we would gain by using yocto instead of
+> > > debian?  Are there more packages for yocto available than for debian
+> > > currently?
+> > >
+> >
+> > TBH, I am not quite sure. I think Khem proposed adding OE support
+> > assuming that debian rootfs support may not be possible. If debootstrap
+> > can be done from unstable tree, we may not required OE support.
+>
+> If we want to test riscv32 you most likely need to go with OE. I don't
+> think anything else supports RISC-V 32-bit and I don't know if any
+> other distro (not targeting embedded market) will work on it.
+>
+> I don't know if there will be a Debian riscv32 port.
+>
+> Cheers,
+> david
+>
+> >
+> > @Alistair/Khem : Any thoughts ?
+> >
+> > > > 3. How difficult is to setup kernelci from scratch locally ?
+> > >
+> > > Not really, but it's not well documented. :(
+> > >
+> > > But it depends on which parts you want to setup.  There are several
+> > > moving parts:
+> > >
+> > > 1) lab / board-farm
+> > > 2) backend / storage
+> > > 3) frontend
+> > > 4) kernel builds (centralized, published publically to
+> > >   storage.kernelci.org)
+> > >
+> > > We have some rudimentary docs for 2-4 here[3], but the compute part
+> > > for
+> > > builds is currently centralized.
+> > >
+> >
+> > Thanks for the links. I will go through them.
+> >
+> > > Kevin
+> > >
+> > >
+> > > [1] https://wiki.debian.org/RISC-V#debootstrap
+> > > [2] https://github.com/kernelci/kernelci-core/
+> > > [3]
+> > > https://github.com/kernelci/kernelci-doc/wiki/Setting-up-a-local-development-instance
+> >
+> > --
+> > Regards,
+> > Atish
