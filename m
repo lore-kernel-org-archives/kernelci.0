@@ -1,46 +1,85 @@
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: Improve kernelci setup for RISC-V
+In-Reply-To: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
+References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
+Date: Wed, 01 Jul 2020 17:17:46 -0700
+Message-ID: <7hsgeaixcl.fsf@baylibre.com>
 MIME-Version: 1.0
-From: Aditya Srivastava <adityasrivastava301199@gmail.com>
-Date: Thu, 2 Jul 2020 02:04:48 +0530
-Message-ID: <CAJMT-dHOMcy7S48m5671aLtEpm23iW6QeZ5d+Xt+nSsBT+gK-g@mail.gmail.com>
-Subject: Contribute to KernelCI in ML / Dl / kubernetes
-List-ID: <info.kernelci.org>
-List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
-List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
- <https://groups.google.com/a/kernelci.org/group/info/subscribe>
-Content-Type: multipart/alternative; boundary="000000000000cb7d1d05a96739be"
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: Atish Patra <Atish.Patra@wdc.com>
+Cc: "drew@beagleboard.org" <drew@beagleboard.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "david.abdurachmanov@sifive.com" <david.abdurachmanov@sifive.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, Alistair Francis <Alistair.Francis@wdc.com>, Corentin Labbe <clabbe@baylibre.com>, kernelci@groups.io, Lakshmipathi Ganapathi <lakshmipathi.ganapathi@collabora.co.uk>
 
---000000000000cb7d1d05a96739be
-Content-Type: text/plain; charset="UTF-8"
+[ + kernelci list ]
 
-Hi, I am Aditya
-I would love to contribute and help kernelCI in the above mentioned domains.
+Hi Atish,
 
-Link to my linkedin profile: https://www.linkedin.com/in/adi10hero/
+Atish Patra <Atish.Patra@wdc.com> writes:
 
-Thanks and Regards,
-Aditya Srivastava
+> I just want to follow up the discussions we had in the risc-v slack
+> channel related to improving kernelci setup for RISC-V.
+>
+> 1. Adding Qemu target for RISC-V: As per out latest conversation, this
+> won't be an issue anymore as Qemu supports -bios and -kernel
+> separately.
 
---000000000000cb7d1d05a96739be
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yes, this looks straight forward now.  We should be able to get this
+going for our basic tests without too much more work.
 
-<div dir=3D"ltr"><div class=3D"gmail_default" style=3D"font-family:comic sa=
-ns ms,sans-serif">Hi, I am Aditya</div><div class=3D"gmail_default" style=
-=3D"font-family:comic sans ms,sans-serif">I would love to contribute and he=
-lp kernelCI in the above mentioned domains.</div><div class=3D"gmail_defaul=
-t" style=3D"font-family:comic sans ms,sans-serif"><br></div><div class=3D"g=
-mail_default" style=3D"font-family:comic sans ms,sans-serif">Link to my lin=
-kedin profile:=C2=A0<a href=3D"https://www.linkedin.com/in/adi10hero/" styl=
-e=3D"font-family:Arial,Helvetica,sans-serif">https://www.linkedin.com/in/ad=
-i10hero/</a></div><div class=3D"gmail_default" style=3D"font-family:comic s=
-ans ms,sans-serif"><br></div><div><div dir=3D"ltr" class=3D"gmail_signature=
-" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><font face=3D"comic s=
-ans ms, sans-serif">Thanks and Regards,</font><div><font face=3D"comic sans=
- ms, sans-serif">Aditya Srivastava</font></div></div></div></div></div>
+> 2. Running more tests in addition to boot tests on unleashed target:
+>
+> The main blocker here is the rootfs. As kernelci only supports debian
+> based rootfs to actually run tests. I think it is not that difficult to
+> bootstrap a debian rootfs for RISC-V but I have not done that in ages.
+> I think palmer uses debian rootfs for his testing. I have cc'd him for
+> his inputs.
 
---000000000000cb7d1d05a96739be--
+For every other arch, we debootstrap a buster rootfs, and this doesn't
+work for riscv.  But, I just discovered[1] that this should work for
+unstable using debian-ports, so we'll need to update our rootfs builder
+to support unstable/debian-ports.
+
+I've cc'd Lakshmipathi from Collabora who has been doing work on our
+rootfs builder tool to see how we can extend this.
+
+> But Alistair & khem (cc'd) expressed interest to add OE to kernelci as
+> well. Can you share some pointers on what needs to be done ?
+
+The main tricky/annoying part with yocto is that builds are per-board,
+where as we like to build rootfs images per-arch.  Maybe there's a way
+to build an arch-generic yocto rootfs using a qemu target or something,
+though.
+
+The place to start would be to look at the kci_rootfs tool in the
+kernelci-core repo[2] along with the rootfs-config.yaml file and figure
+out how to extend that for yocto/OE.
+
+Again, Lakshmipathi may have some ideas there.
+
+OTOH, I'm not quite sure what we would gain by using yocto instead of
+debian?  Are there more packages for yocto available than for debian
+currently?
+
+> 3. How difficult is to setup kernelci from scratch locally ?
+
+Not really, but it's not well documented. :(
+
+But it depends on which parts you want to setup.  There are several
+moving parts:
+
+1) lab / board-farm
+2) backend / storage
+3) frontend
+4) kernel builds (centralized, published publically to
+  storage.kernelci.org)
+
+We have some rudimentary docs for 2-4 here[3], but the compute part for
+builds is currently centralized.
+
+Kevin
+
+
+[1] https://wiki.debian.org/RISC-V#debootstrap
+[2] https://github.com/kernelci/kernelci-core/
+[3] https://github.com/kernelci/kernelci-doc/wiki/Setting-up-a-local-development-instance
