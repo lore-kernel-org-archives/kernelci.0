@@ -1,78 +1,74 @@
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Subject: kernelci.org update - 2020-04-17 #minutes
-Message-ID: <ea03c20e-8ae9-59e6-a8c8-e0257105cbf4@collabora.com>
-Date: Fri, 17 Apr 2020 18:02:09 +0100
+From: Atish Patra <Atish.Patra@wdc.com>
+Subject: Re: Improve kernelci setup for RISC-V
+Date: Thu, 2 Jul 2020 07:02:11 +0000
+Message-ID: <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
+References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
+	 <7hsgeaixcl.fsf@baylibre.com>
+In-Reply-To: <7hsgeaixcl.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3EA1F9F0F5E85A4482A559095346E64E@namprd04.prod.outlook.com>
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: "khilman@baylibre.com" <khilman@baylibre.com>
+Cc: "drew@beagleboard.org" <drew@beagleboard.org>, Alistair Francis <Alistair.Francis@wdc.com>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "david.abdurachmanov@sifive.com" <david.abdurachmanov@sifive.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>
 
-Technical Steering Committee minutes - 2020-04-14
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* kcidb
-
-  * new release of kcidb: https://github.com/kernelci/kcidb/releases/tag/=
-v5
-    (no schema changes)
-
-  * Message queue infrastructure deployed to =E2=80=9Ckernelci=E2=80=9D G=
-CP, should be ready
-    for submission. Reports should be sent to
-    kernelci-results-staging@groups.io. CKI is switching tomorrow.
-
-  * A bunch of test reports already sent to the maillist.
-    https://groups.io/g/kernelci-results-staging/topics
-
-  * Set up new service accounts to have minimal access for submission/que=
-rying
-    (one per CI system), and have a separate, shared, all-powerful accoun=
-t for
-    maintenance. Sent to Kevin and Guillaume.
-    https://github.com/kernelci/kcidb#administrator-guide
-
-* Kubernetes experiments are on-going
-
-* kernelci.org monitoring
-
-  * Zabbix vs xymon
-  * what do we want to monitor?
-    * backend, frontend, jenkins, grafana, static servers (not builders)
-    * software updates, disk space, services health
-
-* Jenkins
-
-  * kernelci-jenkins is now complete (except GitHub auth=E2=80=A6), deplo=
-ying in
-    production
-
-* Web frontend
-
-  * test views are all there, starting =E2=80=9Cfinalising=E2=80=9D phase=
- now before roll out
-    https://staging.kernelci.org/job/
-
-* Test case log fragments now work well for nested group->sub_group->test=
-_case
-
-* kernelci-backend lacks proper unit tests, this should be part of the re=
-work
-
-
-Summary of changes going into production
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* new kci_rootfs tool now used to build Debian Buster rootfs images
-* enable stable and mainline trees in lab-clabbe as well as several new b=
-oards
-* add ONFIG_MEDIA_TEST_SUPPORT=3Dy to virtualvideo fragment for vivid tes=
-ting
-* clang-10 enabled to build linux-next with arm, arm64 and x86_64 defconf=
-igs
-
-Best wishes,
-Guillaume
+T24gV2VkLCAyMDIwLTA3LTAxIGF0IDE3OjE3IC0wNzAwLCBLZXZpbiBIaWxtYW4gd3JvdGU6DQo+
+IFsgKyBrZXJuZWxjaSBsaXN0IF0NCj4gDQo+IEhpIEF0aXNoLA0KPiANCj4gQXRpc2ggUGF0cmEg
+PEF0aXNoLlBhdHJhQHdkYy5jb20+IHdyaXRlczoNCj4gDQo+ID4gSSBqdXN0IHdhbnQgdG8gZm9s
+bG93IHVwIHRoZSBkaXNjdXNzaW9ucyB3ZSBoYWQgaW4gdGhlIHJpc2MtdiBzbGFjaw0KPiA+IGNo
+YW5uZWwgcmVsYXRlZCB0byBpbXByb3Zpbmcga2VybmVsY2kgc2V0dXAgZm9yIFJJU0MtVi4NCj4g
+PiANCj4gPiAxLiBBZGRpbmcgUWVtdSB0YXJnZXQgZm9yIFJJU0MtVjogQXMgcGVyIG91dCBsYXRl
+c3QgY29udmVyc2F0aW9uLA0KPiA+IHRoaXMNCj4gPiB3b24ndCBiZSBhbiBpc3N1ZSBhbnltb3Jl
+IGFzIFFlbXUgc3VwcG9ydHMgLWJpb3MgYW5kIC1rZXJuZWwNCj4gPiBzZXBhcmF0ZWx5Lg0KPiAN
+Cj4gWWVzLCB0aGlzIGxvb2tzIHN0cmFpZ2h0IGZvcndhcmQgbm93LiAgV2Ugc2hvdWxkIGJlIGFi
+bGUgdG8gZ2V0IHRoaXMNCj4gZ29pbmcgZm9yIG91ciBiYXNpYyB0ZXN0cyB3aXRob3V0IHRvbyBt
+dWNoIG1vcmUgd29yay4NCj4gDQo+ID4gMi4gUnVubmluZyBtb3JlIHRlc3RzIGluIGFkZGl0aW9u
+IHRvIGJvb3QgdGVzdHMgb24gdW5sZWFzaGVkDQo+ID4gdGFyZ2V0Og0KPiA+IA0KPiA+IFRoZSBt
+YWluIGJsb2NrZXIgaGVyZSBpcyB0aGUgcm9vdGZzLiBBcyBrZXJuZWxjaSBvbmx5IHN1cHBvcnRz
+DQo+ID4gZGViaWFuDQo+ID4gYmFzZWQgcm9vdGZzIHRvIGFjdHVhbGx5IHJ1biB0ZXN0cy4gSSB0
+aGluayBpdCBpcyBub3QgdGhhdA0KPiA+IGRpZmZpY3VsdCB0bw0KPiA+IGJvb3RzdHJhcCBhIGRl
+YmlhbiByb290ZnMgZm9yIFJJU0MtViBidXQgSSBoYXZlIG5vdCBkb25lIHRoYXQgaW4NCj4gPiBh
+Z2VzLg0KPiA+IEkgdGhpbmsgcGFsbWVyIHVzZXMgZGViaWFuIHJvb3RmcyBmb3IgaGlzIHRlc3Rp
+bmcuIEkgaGF2ZSBjYydkIGhpbQ0KPiA+IGZvcg0KPiA+IGhpcyBpbnB1dHMuDQo+IA0KPiBGb3Ig
+ZXZlcnkgb3RoZXIgYXJjaCwgd2UgZGVib290c3RyYXAgYSBidXN0ZXIgcm9vdGZzLCBhbmQgdGhp
+cw0KPiBkb2Vzbid0DQo+IHdvcmsgZm9yIHJpc2N2LiAgQnV0LCBJIGp1c3QgZGlzY292ZXJlZFsx
+XSB0aGF0IHRoaXMgc2hvdWxkIHdvcmsgZm9yDQo+IHVuc3RhYmxlIHVzaW5nIGRlYmlhbi1wb3J0
+cywgc28gd2UnbGwgbmVlZCB0byB1cGRhdGUgb3VyIHJvb3Rmcw0KPiBidWlsZGVyDQo+IHRvIHN1
+cHBvcnQgdW5zdGFibGUvZGViaWFuLXBvcnRzLg0KPiANCj4gSSd2ZSBjYydkIExha3NobWlwYXRo
+aSBmcm9tIENvbGxhYm9yYSB3aG8gaGFzIGJlZW4gZG9pbmcgd29yayBvbiBvdXINCj4gcm9vdGZz
+IGJ1aWxkZXIgdG9vbCB0byBzZWUgaG93IHdlIGNhbiBleHRlbmQgdGhpcy4NCj4gDQoNClRoYW5r
+cy4NCg0KPiA+IEJ1dCBBbGlzdGFpciAmIGtoZW0gKGNjJ2QpIGV4cHJlc3NlZCBpbnRlcmVzdCB0
+byBhZGQgT0UgdG8ga2VybmVsY2kNCj4gPiBhcw0KPiA+IHdlbGwuIENhbiB5b3Ugc2hhcmUgc29t
+ZSBwb2ludGVycyBvbiB3aGF0IG5lZWRzIHRvIGJlIGRvbmUgPw0KPiANCj4gVGhlIG1haW4gdHJp
+Y2t5L2Fubm95aW5nIHBhcnQgd2l0aCB5b2N0byBpcyB0aGF0IGJ1aWxkcyBhcmUgcGVyLQ0KPiBi
+b2FyZCwNCj4gd2hlcmUgYXMgd2UgbGlrZSB0byBidWlsZCByb290ZnMgaW1hZ2VzIHBlci1hcmNo
+LiAgTWF5YmUgdGhlcmUncyBhDQo+IHdheQ0KPiB0byBidWlsZCBhbiBhcmNoLWdlbmVyaWMgeW9j
+dG8gcm9vdGZzIHVzaW5nIGEgcWVtdSB0YXJnZXQgb3INCj4gc29tZXRoaW5nLA0KPiB0aG91Z2gu
+DQo+IA0KPiBUaGUgcGxhY2UgdG8gc3RhcnQgd291bGQgYmUgdG8gbG9vayBhdCB0aGUga2NpX3Jv
+b3RmcyB0b29sIGluIHRoZQ0KPiBrZXJuZWxjaS1jb3JlIHJlcG9bMl0gYWxvbmcgd2l0aCB0aGUg
+cm9vdGZzLWNvbmZpZy55YW1sIGZpbGUgYW5kDQo+IGZpZ3VyZQ0KPiBvdXQgaG93IHRvIGV4dGVu
+ZCB0aGF0IGZvciB5b2N0by9PRS4NCj4gDQo+IEFnYWluLCBMYWtzaG1pcGF0aGkgbWF5IGhhdmUg
+c29tZSBpZGVhcyB0aGVyZS4NCj4gDQo+IE9UT0gsIEknbSBub3QgcXVpdGUgc3VyZSB3aGF0IHdl
+IHdvdWxkIGdhaW4gYnkgdXNpbmcgeW9jdG8gaW5zdGVhZCBvZg0KPiBkZWJpYW4/ICBBcmUgdGhl
+cmUgbW9yZSBwYWNrYWdlcyBmb3IgeW9jdG8gYXZhaWxhYmxlIHRoYW4gZm9yIGRlYmlhbg0KPiBj
+dXJyZW50bHk/DQo+IA0KDQpUQkgsIEkgYW0gbm90IHF1aXRlIHN1cmUuIEkgdGhpbmsgS2hlbSBw
+cm9wb3NlZCBhZGRpbmcgT0Ugc3VwcG9ydA0KYXNzdW1pbmcgdGhhdCBkZWJpYW4gcm9vdGZzIHN1
+cHBvcnQgbWF5IG5vdCBiZSBwb3NzaWJsZS4gSWYgZGVib290c3RyYXANCmNhbiBiZSBkb25lIGZy
+b20gdW5zdGFibGUgdHJlZSwgd2UgbWF5IG5vdCByZXF1aXJlZCBPRSBzdXBwb3J0Lg0KDQpAQWxp
+c3RhaXIvS2hlbSA6IEFueSB0aG91Z2h0cyA/DQoNCj4gPiAzLiBIb3cgZGlmZmljdWx0IGlzIHRv
+IHNldHVwIGtlcm5lbGNpIGZyb20gc2NyYXRjaCBsb2NhbGx5ID8NCj4gDQo+IE5vdCByZWFsbHks
+IGJ1dCBpdCdzIG5vdCB3ZWxsIGRvY3VtZW50ZWQuIDooDQo+IA0KPiBCdXQgaXQgZGVwZW5kcyBv
+biB3aGljaCBwYXJ0cyB5b3Ugd2FudCB0byBzZXR1cC4gIFRoZXJlIGFyZSBzZXZlcmFsDQo+IG1v
+dmluZyBwYXJ0czoNCj4gDQo+IDEpIGxhYiAvIGJvYXJkLWZhcm0NCj4gMikgYmFja2VuZCAvIHN0
+b3JhZ2UNCj4gMykgZnJvbnRlbmQNCj4gNCkga2VybmVsIGJ1aWxkcyAoY2VudHJhbGl6ZWQsIHB1
+Ymxpc2hlZCBwdWJsaWNhbGx5IHRvDQo+ICAgc3RvcmFnZS5rZXJuZWxjaS5vcmcpDQo+IA0KPiBX
+ZSBoYXZlIHNvbWUgcnVkaW1lbnRhcnkgZG9jcyBmb3IgMi00IGhlcmVbM10sIGJ1dCB0aGUgY29t
+cHV0ZSBwYXJ0DQo+IGZvcg0KPiBidWlsZHMgaXMgY3VycmVudGx5IGNlbnRyYWxpemVkLg0KPiAN
+Cg0KVGhhbmtzIGZvciB0aGUgbGlua3MuIEkgd2lsbCBnbyB0aHJvdWdoIHRoZW0uDQoNCj4gS2V2
+aW4NCj4gDQo+IA0KPiBbMV0gaHR0cHM6Ly93aWtpLmRlYmlhbi5vcmcvUklTQy1WI2RlYm9vdHN0
+cmFwDQo+IFsyXSBodHRwczovL2dpdGh1Yi5jb20va2VybmVsY2kva2VybmVsY2ktY29yZS8NCj4g
+WzNdIA0KPiBodHRwczovL2dpdGh1Yi5jb20va2VybmVsY2kva2VybmVsY2ktZG9jL3dpa2kvU2V0
+dGluZy11cC1hLWxvY2FsLWRldmVsb3BtZW50LWluc3RhbmNlDQoNCi0tIA0KUmVnYXJkcywNCkF0
+aXNoDQo=
