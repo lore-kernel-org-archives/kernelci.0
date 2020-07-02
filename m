@@ -1,36 +1,30 @@
-MIME-Version: 1.0
-References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
- <7hsgeaixcl.fsf@baylibre.com> <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
- <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
-In-Reply-To: <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
-From: David Abdurachmanov <david.abdurachmanov@sifive.com>
-Date: Thu, 2 Jul 2020 16:19:25 +0300
-Message-ID: <CAPSAq_zLQrw-EK70fHj-Kz3Xp+WP4TzFBOOmYY7e3OB+JHnE6w@mail.gmail.com>
+Date: Thu, 2 Jul 2020 16:49:55 +0200
+From: Aurelien Jarno <aurelien@aurel32.net>
 Subject: Re: Improve kernelci setup for RISC-V
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20200702144955.GA1132145@aurel32.net>
+References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
+ <7hsgeaixcl.fsf@baylibre.com>
+ <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
+ <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
+MIME-Version: 1.0
+In-Reply-To: <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Atish Patra <Atish.Patra@wdc.com>
-Cc: "khilman@baylibre.com" <khilman@baylibre.com>, "drew@beagleboard.org" <drew@beagleboard.org>, Alistair Francis <Alistair.Francis@wdc.com>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>, Aurelien Jarno <aurelien@aurel32.net>, Manuel Montecelo <mafm@debian.org>, Karsten Merker <merker@debian.org>, Colin Ian King <colin.king@canonical.com>
+To: David Abdurachmanov <david.abdurachmanov@sifive.com>
+Cc: Atish Patra <Atish.Patra@wdc.com>, "khilman@baylibre.com" <khilman@baylibre.com>, "drew@beagleboard.org" <drew@beagleboard.org>, Alistair Francis <Alistair.Francis@wdc.com>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>, Manuel Montecelo <mafm@debian.org>, Karsten Merker <merker@debian.org>
 
-Almost forgot. I suggest we also run stress-ng for CI. It's a single
-binary and it already found a number of kernel related issues on
-Unleashed which usually result in board hanging.
+Hi,
 
-I have added Colin from Canonical who is the author of the stress tool.
-
-david
-
-On Thu, Jul 2, 2020 at 10:12 AM David Abdurachmanov
-<david.abdurachmanov@sifive.com> wrote:
->
+On 2020-07-02 10:12, David Abdurachmanov wrote:
 > Hi,
->
+> 
 > I am adding Karsten Merker, Aurelien Jarno and Manuel A. Fernandez who
 > are working on Debian RISCV.
->
+> 
 > Recap: KernelCI uses Debian debootstrap for their test infrastructure.
 > I believe they are using Buster for it now.
->
+> 
 > On Thu, Jul 2, 2020 at 10:02 AM Atish Patra <Atish.Patra@wdc.com> wrote:
 > >
 > > On Wed, 2020-07-01 at 17:17 -0700, Kevin Hilman wrote:
@@ -74,9 +68,22 @@ On Thu, Jul 2, 2020 at 10:12 AM David Abdurachmanov
 > > > I've cc'd Lakshmipathi from Collabora who has been doing work on our
 > > > rootfs builder tool to see how we can extend this.
 > > >
-> >
-> > Thanks.
-> >
+
+Yes, so far the riscv64 port of debian is only available for the sid
+distribution. debootstrap should work fine in general (I have just
+tested now), but it might break from time to time (I hope rarely). Do
+not hesitate to contact us if it happens. In short just use
+debian-ports/ in the URL instead of debian/, for example
+https://deb.debian.org/debian-ports
+
+Of course, due to the fact it's sid and not buster, the environment
+might be slightly different. OTOH, it means you'll be ready for the next
+release.
+
+We really hope that the riscv64 port can become integrated to testing
+after the next release of bullseye, we are mostly waiting the general
+availability of hardware.
+
 > > > > But Alistair & khem (cc'd) expressed interest to add OE to kernelci
 > > > > as
 > > > > well. Can you share some pointers on what needs to be done ?
@@ -104,47 +111,20 @@ On Thu, Jul 2, 2020 at 10:12 AM David Abdurachmanov
 > > TBH, I am not quite sure. I think Khem proposed adding OE support
 > > assuming that debian rootfs support may not be possible. If debootstrap
 > > can be done from unstable tree, we may not required OE support.
->
+> 
 > If we want to test riscv32 you most likely need to go with OE. I don't
 > think anything else supports RISC-V 32-bit and I don't know if any
 > other distro (not targeting embedded market) will work on it.
->
+> 
 > I don't know if there will be a Debian riscv32 port.
->
-> Cheers,
-> david
->
-> >
-> > @Alistair/Khem : Any thoughts ?
-> >
-> > > > 3. How difficult is to setup kernelci from scratch locally ?
-> > >
-> > > Not really, but it's not well documented. :(
-> > >
-> > > But it depends on which parts you want to setup.  There are several
-> > > moving parts:
-> > >
-> > > 1) lab / board-farm
-> > > 2) backend / storage
-> > > 3) frontend
-> > > 4) kernel builds (centralized, published publically to
-> > >   storage.kernelci.org)
-> > >
-> > > We have some rudimentary docs for 2-4 here[3], but the compute part
-> > > for
-> > > builds is currently centralized.
-> > >
-> >
-> > Thanks for the links. I will go through them.
-> >
-> > > Kevin
-> > >
-> > >
-> > > [1] https://wiki.debian.org/RISC-V#debootstrap
-> > > [2] https://github.com/kernelci/kernelci-core/
-> > > [3]
-> > > https://github.com/kernelci/kernelci-doc/wiki/Setting-up-a-local-development-instance
-> >
-> > --
-> > Regards,
-> > Atish
+
+There is currently no real plan for that, although I know there has been
+some discussion about that recently. However, even if it get created it
+won't be an official port, Debian will not add new 32-bit official
+ports.
+
+Aurelien
+
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                 http://www.aurel32.net
