@@ -1,102 +1,79 @@
-From: Alistair Francis <Alistair.Francis@wdc.com>
-Subject: Re: Improve kernelci setup for RISC-V
-Date: Thu, 2 Jul 2020 20:19:22 +0000
-Message-ID: <950edcb196806c07802b3d3400156a2d052c485e.camel@wdc.com>
-References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
-	 <7hsgeaixcl.fsf@baylibre.com>
-	 <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
-	 <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
-In-Reply-To: 
- <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
+Subject: Re: Contribute to KernelCI in Kubernetes or Cloud
+In-Reply-To: <CAJMT-dGBCdkJnDNRYRRk9aVk=FmJkjGmpXCqsXc73v8hY+yi9w@mail.gmail.com>
+References: <CAJMT-dGBCdkJnDNRYRRk9aVk=FmJkjGmpXCqsXc73v8hY+yi9w@mail.gmail.com>
+Date: Mon, 06 Jul 2020 11:10:16 -0700
+Message-ID: <7hwo3g4irb.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6B32E2AF7F4A984F820621ABAF0C62B8@namprd04.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: "david.abdurachmanov@sifive.com" <david.abdurachmanov@sifive.com>, Atish Patra <Atish.Patra@wdc.com>
-Cc: "drew@beagleboard.org" <drew@beagleboard.org>, "merker@debian.org" <merker@debian.org>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "mafm@debian.org" <mafm@debian.org>, "aurelien@aurel32.net" <aurelien@aurel32.net>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>, "khilman@baylibre.com" <khilman@baylibre.com>
+To: kernelci@groups.io, adityasrivastava301199@gmail.com, kernelci@groups.io
 
-T24gVGh1LCAyMDIwLTA3LTAyIGF0IDEwOjEyICswMzAwLCBEYXZpZCBBYmR1cmFjaG1hbm92IHdy
-b3RlOg0KPiBIaSwNCj4gDQo+IEkgYW0gYWRkaW5nIEthcnN0ZW4gTWVya2VyLCBBdXJlbGllbiBK
-YXJubyBhbmQgTWFudWVsIEEuIEZlcm5hbmRleg0KPiB3aG8NCj4gYXJlIHdvcmtpbmcgb24gRGVi
-aWFuIFJJU0NWLg0KPiANCj4gUmVjYXA6IEtlcm5lbENJIHVzZXMgRGViaWFuIGRlYm9vdHN0cmFw
-IGZvciB0aGVpciB0ZXN0DQo+IGluZnJhc3RydWN0dXJlLg0KPiBJIGJlbGlldmUgdGhleSBhcmUg
-dXNpbmcgQnVzdGVyIGZvciBpdCBub3cuDQo+IA0KPiBPbiBUaHUsIEp1bCAyLCAyMDIwIGF0IDEw
-OjAyIEFNIEF0aXNoIFBhdHJhIDxBdGlzaC5QYXRyYUB3ZGMuY29tPg0KPiB3cm90ZToNCj4gPiBP
-biBXZWQsIDIwMjAtMDctMDEgYXQgMTc6MTcgLTA3MDAsIEtldmluIEhpbG1hbiB3cm90ZToNCj4g
-PiA+IFsgKyBrZXJuZWxjaSBsaXN0IF0NCj4gPiA+IA0KPiA+ID4gSGkgQXRpc2gsDQo+ID4gPiAN
-Cj4gPiA+IEF0aXNoIFBhdHJhIDxBdGlzaC5QYXRyYUB3ZGMuY29tPiB3cml0ZXM6DQo+ID4gPiAN
-Cj4gPiA+ID4gSSBqdXN0IHdhbnQgdG8gZm9sbG93IHVwIHRoZSBkaXNjdXNzaW9ucyB3ZSBoYWQg
-aW4gdGhlIHJpc2Mtdg0KPiA+ID4gPiBzbGFjaw0KPiA+ID4gPiBjaGFubmVsIHJlbGF0ZWQgdG8g
-aW1wcm92aW5nIGtlcm5lbGNpIHNldHVwIGZvciBSSVNDLVYuDQo+ID4gPiA+IA0KPiA+ID4gPiAx
-LiBBZGRpbmcgUWVtdSB0YXJnZXQgZm9yIFJJU0MtVjogQXMgcGVyIG91dCBsYXRlc3QNCj4gPiA+
-ID4gY29udmVyc2F0aW9uLA0KPiA+ID4gPiB0aGlzDQo+ID4gPiA+IHdvbid0IGJlIGFuIGlzc3Vl
-IGFueW1vcmUgYXMgUWVtdSBzdXBwb3J0cyAtYmlvcyBhbmQgLWtlcm5lbA0KPiA+ID4gPiBzZXBh
-cmF0ZWx5Lg0KPiA+ID4gDQo+ID4gPiBZZXMsIHRoaXMgbG9va3Mgc3RyYWlnaHQgZm9yd2FyZCBu
-b3cuICBXZSBzaG91bGQgYmUgYWJsZSB0byBnZXQNCj4gPiA+IHRoaXMNCj4gPiA+IGdvaW5nIGZv
-ciBvdXIgYmFzaWMgdGVzdHMgd2l0aG91dCB0b28gbXVjaCBtb3JlIHdvcmsuDQo+ID4gPiANCj4g
-PiA+ID4gMi4gUnVubmluZyBtb3JlIHRlc3RzIGluIGFkZGl0aW9uIHRvIGJvb3QgdGVzdHMgb24g
-dW5sZWFzaGVkDQo+ID4gPiA+IHRhcmdldDoNCj4gPiA+ID4gDQo+ID4gPiA+IFRoZSBtYWluIGJs
-b2NrZXIgaGVyZSBpcyB0aGUgcm9vdGZzLiBBcyBrZXJuZWxjaSBvbmx5IHN1cHBvcnRzDQo+ID4g
-PiA+IGRlYmlhbg0KPiA+ID4gPiBiYXNlZCByb290ZnMgdG8gYWN0dWFsbHkgcnVuIHRlc3RzLiBJ
-IHRoaW5rIGl0IGlzIG5vdCB0aGF0DQo+ID4gPiA+IGRpZmZpY3VsdCB0bw0KPiA+ID4gPiBib290
-c3RyYXAgYSBkZWJpYW4gcm9vdGZzIGZvciBSSVNDLVYgYnV0IEkgaGF2ZSBub3QgZG9uZSB0aGF0
-DQo+ID4gPiA+IGluDQo+ID4gPiA+IGFnZXMuDQo+ID4gPiA+IEkgdGhpbmsgcGFsbWVyIHVzZXMg
-ZGViaWFuIHJvb3RmcyBmb3IgaGlzIHRlc3RpbmcuIEkgaGF2ZSBjYydkDQo+ID4gPiA+IGhpbQ0K
-PiA+ID4gPiBmb3INCj4gPiA+ID4gaGlzIGlucHV0cy4NCj4gPiA+IA0KPiA+ID4gRm9yIGV2ZXJ5
-IG90aGVyIGFyY2gsIHdlIGRlYm9vdHN0cmFwIGEgYnVzdGVyIHJvb3RmcywgYW5kIHRoaXMNCj4g
-PiA+IGRvZXNuJ3QNCj4gPiA+IHdvcmsgZm9yIHJpc2N2LiAgQnV0LCBJIGp1c3QgZGlzY292ZXJl
-ZFsxXSB0aGF0IHRoaXMgc2hvdWxkIHdvcmsNCj4gPiA+IGZvcg0KPiA+ID4gdW5zdGFibGUgdXNp
-bmcgZGViaWFuLXBvcnRzLCBzbyB3ZSdsbCBuZWVkIHRvIHVwZGF0ZSBvdXIgcm9vdGZzDQo+ID4g
-PiBidWlsZGVyDQo+ID4gPiB0byBzdXBwb3J0IHVuc3RhYmxlL2RlYmlhbi1wb3J0cy4NCj4gPiA+
-IA0KPiA+ID4gSSd2ZSBjYydkIExha3NobWlwYXRoaSBmcm9tIENvbGxhYm9yYSB3aG8gaGFzIGJl
-ZW4gZG9pbmcgd29yayBvbg0KPiA+ID4gb3VyDQo+ID4gPiByb290ZnMgYnVpbGRlciB0b29sIHRv
-IHNlZSBob3cgd2UgY2FuIGV4dGVuZCB0aGlzLg0KPiA+ID4gDQo+ID4gDQo+ID4gVGhhbmtzLg0K
-PiA+IA0KPiA+ID4gPiBCdXQgQWxpc3RhaXIgJiBraGVtIChjYydkKSBleHByZXNzZWQgaW50ZXJl
-c3QgdG8gYWRkIE9FIHRvDQo+ID4gPiA+IGtlcm5lbGNpDQo+ID4gPiA+IGFzDQo+ID4gPiA+IHdl
-bGwuIENhbiB5b3Ugc2hhcmUgc29tZSBwb2ludGVycyBvbiB3aGF0IG5lZWRzIHRvIGJlIGRvbmUg
-Pw0KPiA+ID4gDQo+ID4gPiBUaGUgbWFpbiB0cmlja3kvYW5ub3lpbmcgcGFydCB3aXRoIHlvY3Rv
-IGlzIHRoYXQgYnVpbGRzIGFyZSBwZXItDQo+ID4gPiBib2FyZCwNCj4gPiA+IHdoZXJlIGFzIHdl
-IGxpa2UgdG8gYnVpbGQgcm9vdGZzIGltYWdlcyBwZXItYXJjaC4gIE1heWJlIHRoZXJlJ3MNCj4g
-PiA+IGENCj4gPiA+IHdheQ0KPiA+ID4gdG8gYnVpbGQgYW4gYXJjaC1nZW5lcmljIHlvY3RvIHJv
-b3RmcyB1c2luZyBhIHFlbXUgdGFyZ2V0IG9yDQo+ID4gPiBzb21ldGhpbmcsDQo+ID4gPiB0aG91
-Z2guDQo+ID4gPiANCj4gPiA+IFRoZSBwbGFjZSB0byBzdGFydCB3b3VsZCBiZSB0byBsb29rIGF0
-IHRoZSBrY2lfcm9vdGZzIHRvb2wgaW4gdGhlDQo+ID4gPiBrZXJuZWxjaS1jb3JlIHJlcG9bMl0g
-YWxvbmcgd2l0aCB0aGUgcm9vdGZzLWNvbmZpZy55YW1sIGZpbGUgYW5kDQo+ID4gPiBmaWd1cmUN
-Cj4gPiA+IG91dCBob3cgdG8gZXh0ZW5kIHRoYXQgZm9yIHlvY3RvL09FLg0KPiA+ID4gDQo+ID4g
-PiBBZ2FpbiwgTGFrc2htaXBhdGhpIG1heSBoYXZlIHNvbWUgaWRlYXMgdGhlcmUuDQo+ID4gPiAN
-Cj4gPiA+IE9UT0gsIEknbSBub3QgcXVpdGUgc3VyZSB3aGF0IHdlIHdvdWxkIGdhaW4gYnkgdXNp
-bmcgeW9jdG8NCj4gPiA+IGluc3RlYWQgb2YNCj4gPiA+IGRlYmlhbj8gIEFyZSB0aGVyZSBtb3Jl
-IHBhY2thZ2VzIGZvciB5b2N0byBhdmFpbGFibGUgdGhhbiBmb3INCj4gPiA+IGRlYmlhbg0KPiA+
-ID4gY3VycmVudGx5Pw0KPiA+ID4gDQo+ID4gDQo+ID4gVEJILCBJIGFtIG5vdCBxdWl0ZSBzdXJl
-LiBJIHRoaW5rIEtoZW0gcHJvcG9zZWQgYWRkaW5nIE9FIHN1cHBvcnQNCj4gPiBhc3N1bWluZyB0
-aGF0IGRlYmlhbiByb290ZnMgc3VwcG9ydCBtYXkgbm90IGJlIHBvc3NpYmxlLiBJZg0KPiA+IGRl
-Ym9vdHN0cmFwDQo+ID4gY2FuIGJlIGRvbmUgZnJvbSB1bnN0YWJsZSB0cmVlLCB3ZSBtYXkgbm90
-IHJlcXVpcmVkIE9FIHN1cHBvcnQuDQo+IA0KPiBJZiB3ZSB3YW50IHRvIHRlc3QgcmlzY3YzMiB5
-b3UgbW9zdCBsaWtlbHkgbmVlZCB0byBnbyB3aXRoIE9FLiBJDQo+IGRvbid0DQo+IHRoaW5rIGFu
-eXRoaW5nIGVsc2Ugc3VwcG9ydHMgUklTQy1WIDMyLWJpdCBhbmQgSSBkb24ndCBrbm93IGlmIGFu
-eQ0KPiBvdGhlciBkaXN0cm8gKG5vdCB0YXJnZXRpbmcgZW1iZWRkZWQgbWFya2V0KSB3aWxsIHdv
-cmsgb24gaXQuDQoNCkkgdGhpbmsgZm9yIGEgUlYzMiB0ZXN0LCBPRSBpcyBwcm9iYWJseSB0aGUg
-YmVzdCB3YXkgdG8gZ28uIFRoYXQgc2hvdWxkDQpjb21lIGFmdGVyIHdlIGhhdmUgYSA2NC1iaXQg
-dGVzdCBydW5uaW5nIGFuZCB1cHN0cmVhbSBzdXBwb3J0IGZvciBSVjMyDQppbiBnbGliYyB0aG91
-Z2guDQoNClNvIGxldCdzIGdldCBSVjY0IHVwIGFuZCBydW5uaW5nIGZpcnN0Lg0KDQpBbGlzdGFp
-cg0KDQo+IA0KPiBJIGRvbid0IGtub3cgaWYgdGhlcmUgd2lsbCBiZSBhIERlYmlhbiByaXNjdjMy
-IHBvcnQuDQo+IA0KPiBDaGVlcnMsDQo+IGRhdmlkDQo+IA0KPiA+IEBBbGlzdGFpci9LaGVtIDog
-QW55IHRob3VnaHRzID8NCj4gPiANCj4gPiA+ID4gMy4gSG93IGRpZmZpY3VsdCBpcyB0byBzZXR1
-cCBrZXJuZWxjaSBmcm9tIHNjcmF0Y2ggbG9jYWxseSA/DQo+ID4gPiANCj4gPiA+IE5vdCByZWFs
-bHksIGJ1dCBpdCdzIG5vdCB3ZWxsIGRvY3VtZW50ZWQuIDooDQo+ID4gPiANCj4gPiA+IEJ1dCBp
-dCBkZXBlbmRzIG9uIHdoaWNoIHBhcnRzIHlvdSB3YW50IHRvIHNldHVwLiAgVGhlcmUgYXJlDQo+
-ID4gPiBzZXZlcmFsDQo+ID4gPiBtb3ZpbmcgcGFydHM6DQo+ID4gPiANCj4gPiA+IDEpIGxhYiAv
-IGJvYXJkLWZhcm0NCj4gPiA+IDIpIGJhY2tlbmQgLyBzdG9yYWdlDQo+ID4gPiAzKSBmcm9udGVu
-ZA0KPiA+ID4gNCkga2VybmVsIGJ1aWxkcyAoY2VudHJhbGl6ZWQsIHB1Ymxpc2hlZCBwdWJsaWNh
-bGx5IHRvDQo+ID4gPiAgIHN0b3JhZ2Uua2VybmVsY2kub3JnKQ0KPiA+ID4gDQo+ID4gPiBXZSBo
-YXZlIHNvbWUgcnVkaW1lbnRhcnkgZG9jcyBmb3IgMi00IGhlcmVbM10sIGJ1dCB0aGUgY29tcHV0
-ZQ0KPiA+ID4gcGFydA0KPiA+ID4gZm9yDQo+ID4gPiBidWlsZHMgaXMgY3VycmVudGx5IGNlbnRy
-YWxpemVkLg0KPiA+ID4gDQo+ID4gDQo+ID4gVGhhbmtzIGZvciB0aGUgbGlua3MuIEkgd2lsbCBn
-byB0aHJvdWdoIHRoZW0uDQo+ID4gDQo+ID4gPiBLZXZpbg0KPiA+ID4gDQo+ID4gPiANCj4gPiA+
-IFsxXSBodHRwczovL3dpa2kuZGViaWFuLm9yZy9SSVNDLVYjZGVib290c3RyYXANCj4gPiA+IFsy
-XSBodHRwczovL2dpdGh1Yi5jb20va2VybmVsY2kva2VybmVsY2ktY29yZS8NCj4gPiA+IFszXQ0K
-PiA+ID4gaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNpLWRvYy93aWtpL1NldHRp
-bmctdXAtYS1sb2NhbC1kZXZlbG9wbWVudC1pbnN0YW5jZQ0KPiA+IA0KPiA+IC0tDQo+ID4gUmVn
-YXJkcywNCj4gPiBBdGlzaA0K
+Hello,
+
+Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+
+> Heard the talk on OSS by Kevin Hilman and khouloud touil , I would like to
+> help to get KernelCI on K8S or any other help if needed for the same.
+
+Thanks for contacting us.  What's your experience with k8s? and how do
+you want to help?
+
+As you may have learned in my talk, we do *lots* of kernel builds.
+
+We have Docker images for each arch/toolchain combination[1], and these
+are the containers we use in the k8s jobs.
+
+Our pipeline is managed by Jenkins, and you can read a bit about the
+Jenkins jobs in the README of the main kernelci-core repo[2].
+
+Where k8s comes in is at the `jenkins/build.jpl` step.  When we get to
+this phase, we're ready to do a build for a specific combination of:
+
+- git tree
+- git branch
+- kernel defconfig
+- arch
+- compiler
+
+The build step then generates a k8s job (from a jinja2 template) based
+on these parameters, and sends it off to a pre-configure k8s cluster
+using kubectl.
+
+Here is the github PR[3] that has the jinja2 template and a python
+script (gen.py) to generate the k8s job yaml.  There's also another
+script (wait.py) which uses the k8s python API to wait for the job to
+complete and then fetch the build logs.
+
+I've been the one working on the k8s tooling, but I'm pretty new to it,
+so I'm assuming that I made some newbie mistakes and that there are
+probably better ways of doing things.
+
+For now, this is already working pretty well and has allowed us to scale
+up our build capacity (thanks to compute donations from gcloud and
+azure), but any help in this area by experienced engineers would be very
+helpful.
+
+I'm particularily interested in your thoughts on improvements on how to
+submit/wait for k8s jobs and then fetch the logs.  It's working OK now,
+but occaisionaly get problems wher kubectl (or wait.py) gets random
+failures, or "connection refused" errors from the k8s cluster.  I cannot
+reliably reproduce these reliably but they happen every few thousand
+builds.
+
+Anyways, that's a bit of background.  If you have some time to help out,
+please have a look at the current expirments and feel free to ask
+questions.
+
+It also might be worth your time to join our weekly call.  We meet at
+16h UTC every Tuesday via a jitsi video call[4].
+
+Thanks again for you interest and offer to help,
+
+Kevin
+
+[1] https://github.com/kernelci/kernelci-core/tree/master/jenkins/dockerfiles
+[2] https://github.com/kernelci/kernelci-core
+[3] https://github.com/kernelci/kernelci-core/pull/366/commits/b63da26abc216ad8bc8123d63010a485db2ae3a8
+[4] https://meet.kernel.social/kernelci-dev
