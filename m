@@ -1,63 +1,45 @@
 Return-Path: <khilman@baylibre.com>
 From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: Microchip KernelCi contributions
-In-Reply-To: <3c193c7e-c13d-5740-8d11-4dca5be528ef@microchip.com>
-References: <3c193c7e-c13d-5740-8d11-4dca5be528ef@microchip.com>
-Date: Mon, 06 Jul 2020 11:20:26 -0700
-Message-ID: <7hr1to4iad.fsf@baylibre.com>
+Subject: Re: Participate in build test (MIPS/Loongson)
+In-Reply-To: <17159ea67a7.13d5ba30b1709.5131811758859128540@flygoat.com>
+References: <17159ea67a7.13d5ba30b1709.5131811758859128540@flygoat.com>
+Date: Mon, 06 Jul 2020 11:24:39 -0700
+Message-ID: <7ho8os4i3c.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Santiago.Esteban@microchip.com, info@kernelci.org
+To: kernelci@groups.io, jiaxun.yang@flygoat.com, info <info@kernelci.org>
+Cc: Corentin Labbe <clabbe@baylibre.com>
 
-Hi Santiago,
+Hi Jianxun,
 
-<Santiago.Esteban@microchip.com> writes:
+Jiaxun Yang <jiaxun.yang@flygoat.com> writes:
 
-> I'm Santiago Esteban, SW Engineer at Microchip. I'm=C2=A0 leading the ef=
-fort=20
-> for continuous integration of our Linux developments. We are setting up=
-=20
-> the=C2=A0 infrastructure for CI in a=C2=A0 board farm containing several=
- boards.=20
-> We would like to contribute to the KernelCI effort with build and test=
-=20
-> data. Hopefully, as our knowledge increases we will be able to help=C2=
-=A0 in=20
-> some other ways.
+> I'm a maintainer of MIPS/LOONGSON64 and MIPS/LOONGSON2EF support in
+> kernel, and I would like to enable build test for these platforms in
+> KernelCI. Also I will respond to their build failures.
 >
+> Currently it's hard for me to provide hardware to perform boot test as
+> a amateur, but Fuloong2E has already accepted by QEMU and we can
+> perform boot test on it for LOONGSON2EF.
 >
-> How should I prodeed?
+> Please give me some instructions.
+>
+> Btw: MIPS/malta is not under my maintenance but I can also respond to
+> it's build failure and QEMU boot failure. I'd like to apply for this
+> platform too if I'm eligible.
 
-How is your lab currently setup?  Are you using LAVA? If not, can you
-tell us a bit more about how your lab is setup?  What kind of hardware
-you're testing?
+I don't think we're doing any MIPS boots on QEMU currently, but we can
+probably add that if you can give us a bit of guidance.  I've also cc'd
+Corentin who has been working on QEMU support for more platforms.
 
-If using LAVA, getting integrated into KernelCI is pretty straight
-forward.
-
-Some pre-requisites:
-
-- boards can boot an upstream Linux kernel using an upstream defconfig,
-  (minimum: boot to a serial-console shell using a ramdisk)
-- LAVA device-types for your boards are submitted upstream to the LAVA
-  project
-
->From there, with a basic LAVA setup/working, we just add your lab to our
-list of labs[1] and then add your device-types in your lab to our list
-of devices[2].
-
-For kernelci.org to be able to submit jobs to your LAVA lab, you'll need
-to create a `kernel-ci` user, setup an auth token and share that token
-with us.  Any boards that the kernel-ci LAVA user has access to,
-kernelci.org will have access to.
-
-Hope that helps get you started,
+Can you share with us more details on QEMU version that is known to work
+well for upstream MIPS kernels, and the qemu cmdline that you use to
+boot upstream kernels?  With that, we can guide you on how to add
+support.
 
 Kevin
 
-[1] https://github.com/kernelci/kernelci-core/blob/master/lab-configs.yaml
-[2] https://github.com/kernelci/kernelci-core/blob/master/test-configs.yam=
-l
+
+
 
