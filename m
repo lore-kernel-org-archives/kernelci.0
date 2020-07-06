@@ -1,79 +1,63 @@
 Return-Path: <khilman@baylibre.com>
 From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: Contribute to KernelCI in Kubernetes or Cloud
-In-Reply-To: <CAJMT-dGBCdkJnDNRYRRk9aVk=FmJkjGmpXCqsXc73v8hY+yi9w@mail.gmail.com>
-References: <CAJMT-dGBCdkJnDNRYRRk9aVk=FmJkjGmpXCqsXc73v8hY+yi9w@mail.gmail.com>
-Date: Mon, 06 Jul 2020 11:10:16 -0700
-Message-ID: <7hwo3g4irb.fsf@baylibre.com>
+Subject: Re: Microchip KernelCi contributions
+In-Reply-To: <3c193c7e-c13d-5740-8d11-4dca5be528ef@microchip.com>
+References: <3c193c7e-c13d-5740-8d11-4dca5be528ef@microchip.com>
+Date: Mon, 06 Jul 2020 11:20:26 -0700
+Message-ID: <7hr1to4iad.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, adityasrivastava301199@gmail.com, kernelci@groups.io
+To: kernelci@groups.io, Santiago.Esteban@microchip.com, info@kernelci.org
 
-Hello,
+Hi Santiago,
 
-Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+<Santiago.Esteban@microchip.com> writes:
 
-> Heard the talk on OSS by Kevin Hilman and khouloud touil , I would like to
-> help to get KernelCI on K8S or any other help if needed for the same.
+> I'm Santiago Esteban, SW Engineer at Microchip. I'm=C2=A0 leading the ef=
+fort=20
+> for continuous integration of our Linux developments. We are setting up=
+=20
+> the=C2=A0 infrastructure for CI in a=C2=A0 board farm containing several=
+ boards.=20
+> We would like to contribute to the KernelCI effort with build and test=
+=20
+> data. Hopefully, as our knowledge increases we will be able to help=C2=
+=A0 in=20
+> some other ways.
+>
+>
+> How should I prodeed?
 
-Thanks for contacting us.  What's your experience with k8s? and how do
-you want to help?
+How is your lab currently setup?  Are you using LAVA? If not, can you
+tell us a bit more about how your lab is setup?  What kind of hardware
+you're testing?
 
-As you may have learned in my talk, we do *lots* of kernel builds.
+If using LAVA, getting integrated into KernelCI is pretty straight
+forward.
 
-We have Docker images for each arch/toolchain combination[1], and these
-are the containers we use in the k8s jobs.
+Some pre-requisites:
 
-Our pipeline is managed by Jenkins, and you can read a bit about the
-Jenkins jobs in the README of the main kernelci-core repo[2].
+- boards can boot an upstream Linux kernel using an upstream defconfig,
+  (minimum: boot to a serial-console shell using a ramdisk)
+- LAVA device-types for your boards are submitted upstream to the LAVA
+  project
 
-Where k8s comes in is at the `jenkins/build.jpl` step.  When we get to
-this phase, we're ready to do a build for a specific combination of:
+>From there, with a basic LAVA setup/working, we just add your lab to our
+list of labs[1] and then add your device-types in your lab to our list
+of devices[2].
 
-- git tree
-- git branch
-- kernel defconfig
-- arch
-- compiler
+For kernelci.org to be able to submit jobs to your LAVA lab, you'll need
+to create a `kernel-ci` user, setup an auth token and share that token
+with us.  Any boards that the kernel-ci LAVA user has access to,
+kernelci.org will have access to.
 
-The build step then generates a k8s job (from a jinja2 template) based
-on these parameters, and sends it off to a pre-configure k8s cluster
-using kubectl.
-
-Here is the github PR[3] that has the jinja2 template and a python
-script (gen.py) to generate the k8s job yaml.  There's also another
-script (wait.py) which uses the k8s python API to wait for the job to
-complete and then fetch the build logs.
-
-I've been the one working on the k8s tooling, but I'm pretty new to it,
-so I'm assuming that I made some newbie mistakes and that there are
-probably better ways of doing things.
-
-For now, this is already working pretty well and has allowed us to scale
-up our build capacity (thanks to compute donations from gcloud and
-azure), but any help in this area by experienced engineers would be very
-helpful.
-
-I'm particularily interested in your thoughts on improvements on how to
-submit/wait for k8s jobs and then fetch the logs.  It's working OK now,
-but occaisionaly get problems wher kubectl (or wait.py) gets random
-failures, or "connection refused" errors from the k8s cluster.  I cannot
-reliably reproduce these reliably but they happen every few thousand
-builds.
-
-Anyways, that's a bit of background.  If you have some time to help out,
-please have a look at the current expirments and feel free to ask
-questions.
-
-It also might be worth your time to join our weekly call.  We meet at
-16h UTC every Tuesday via a jitsi video call[4].
-
-Thanks again for you interest and offer to help,
+Hope that helps get you started,
 
 Kevin
 
-[1] https://github.com/kernelci/kernelci-core/tree/master/jenkins/dockerfiles
-[2] https://github.com/kernelci/kernelci-core
-[3] https://github.com/kernelci/kernelci-core/pull/366/commits/b63da26abc216ad8bc8123d63010a485db2ae3a8
-[4] https://meet.kernel.social/kernelci-dev
+[1] https://github.com/kernelci/kernelci-core/blob/master/lab-configs.yaml
+[2] https://github.com/kernelci/kernelci-core/blob/master/test-configs.yam=
+l
+
