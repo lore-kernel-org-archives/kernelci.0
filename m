@@ -1,108 +1,212 @@
-Return-Path: <hdegoede@redhat.com>
-Subject: Re: Donating some boards for testing?
-References: <0e8451f7-53d9-f9dd-7959-f236b24d679a@redhat.com>
- <7ha70c4hes.fsf@baylibre.com>
-From: Hans de Goede <hdegoede@redhat.com>
-Message-ID: <af0c0af4-2f31-ceb3-6ad9-305253777efb@redhat.com>
-Date: Mon, 6 Jul 2020 22:21:06 +0200
+Subject: Re: Participate in build test (MIPS/Loongson)
+References: <17159ea67a7.13d5ba30b1709.5131811758859128540@flygoat.com>
+ <7ho8os4i3c.fsf@baylibre.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Message-ID: <2821325d-56d7-4770-6027-fb30097f6a7b@flygoat.com>
+Date: Tue, 7 Jul 2020 08:43:42 +0800
 MIME-Version: 1.0
-In-Reply-To: <7ha70c4hes.fsf@baylibre.com>
-Content-Language: en-US
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <7ho8os4i3c.fsf@baylibre.com>
+List-ID: <info.kernelci.org>
+List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
+List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/kernelci.org/group/info/subscribe>
+Content-Type: multipart/alternative;
+ boundary="------------B4515F3F897F9C1955C0E112"
 List-ID: <kernelci.groups.io>
-To: Kevin Hilman <khilman@baylibre.com>, kernelci@groups.io, info@kernelci.org
+To: Kevin Hilman <khilman@baylibre.com>, kernelci@groups.io, info <info@kernelci.org>
+Cc: Corentin Labbe <clabbe@baylibre.com>
 
-Hi Kevin,
+--------------B4515F3F897F9C1955C0E112
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
 
-On 7/6/20 8:39 PM, Kevin Hilman wrote:
-> Hi Hans,
-> 
-> Hans de Goede <hdegoede@redhat.com> writes:
-> 
->> Quick self intro: I'm a FOSS enthusiast / developer. My main contribution
->> area is the kernel and low level user space bits. I'm working for Red Hat,
->> but this mail is send on a personal title.
->>
->> As a side-project I have been working on
->>    hardware enablement for Intel Bay and
->> Cherry Trail based devices. To have a
->>    wide range of hardware to test on I have
->> been buying these kind of devices on the
->>    Dutch second hand market.
->> I may have slightly over
->>    done the "wide range of hardware" thing, so I have
->> plenty (too much) of these devices.
->>
->> During the last few years there have been a number of cases where esp.
->> Bay Trail devices would no longer boot with the latest mainline kernel,
->> as such it would be good if we can get a couple of these into the kernel
->> CI system.
->>
->> The main cause why these stop booting is because of the use of 32 bit UEFI
->> while running a 64 bit Linux kernel. When changes are made to the UEFI bits
->> of the kernel this mixed-mode support is often overlooked and broken.
->> Bay Trail is somewhat old but still relevant, it is used in a lot of
->> POS systems and IOT gateways.
->>
->> So I wonder if there already are any Bay Trail based systems using 32 bit
->> UEFI in kernel-CI and if these are tested with 64 bit kernels. If the answer
->> to that is yes, then the rest of this mail is probably irrelevant ...
->>
->> I've been reading your FAQ:
->> https://kernelci.org/faq/#my-board
->>
->> Which points to how things need to work with LAVA, then I looked at the
->> LAVA docs and those are not really helpful, I did find:
->>
->> https://connect.linaro.org/resources/hkg18/hkg18-tr10/
->>
->> Which among other things talks about how the device should preferably
->> not have a battery or at least work without one, which in itself may
->> already be a bit of a challenge as most of my test hardware are
->> in tablet form factor and typically they refuse to boot without a
->> battery...  Also they lack wired ethernet...
->>
->> So my main question is can you give a quick summary of what you need
->> from an X86 UEFI system for it to be added to the kernel CI infra?
-> 
-> First, sorry for the major lag.  I was just looking back through the
-> list and realized nobody reponded to this.
-> 
-> The short answer to your main question is that we would need a LAVA lab
-> setup that manages/provisions these boards.  Basically, it's LAVAs job
-> to mange the power-cycling, serial console, interacting with GRUB/UEFI
-> etc.  From there, kernelci.org just generates LAVA jobs and sends them
-> to your LAVA server.
-> 
-> Now, as you seem to have already noticed, the initial setup of LAVA is
-> a non-trivial exercise, but there are several people on this list who
-> have done it, so we can probably give guidance.  We also have a
-> helper-project that's Docker'ized LAVA to help simplify
-> install/maintenance of a LAVA server.  You can find that project,
-> lava-docker, here[1]
-> 
-> That being said, LAVA is not a strict requirement, it's just a
-> bit of a shortcut since most (but not all) of the kernelci labs today
-> are using LAVA.
-> 
-> Since you're at RedHat, and RedHat is now an official member of the LF
-> KernelCI project, we are working closely together to integrate results
-> from the RedHat CKI project as well, so working with Red Hat CKI folks
-> might be another path for you.
-> 
-> Anyways, there's a couple ideas to ponder if you're still interseted,
-> and sorry again for the lag
 
-Thank you for your reaction. In the mean time most of the UEFI stub
-code refactoring has landed and stabilized, removing my immediate
-itch of this breaking every release.
 
-And my UEFI mixed-mode boards are all tablets, making them hard to
-integrate into a CI setup. Still I wil keep your suggestions in
-mind in case this comes up again.
+在 2020/7/7 2:24, Kevin Hilman 写道:
+> Hi Jianxun,
+>
+> Jiaxun Yang <jiaxun.yang@flygoat.com> writes:
+>
+>> I'm a maintainer of MIPS/LOONGSON64 and MIPS/LOONGSON2EF support in
+>> kernel, and I would like to enable build test for these platforms in
+>> KernelCI. Also I will respond to their build failures.
+>>
+>> Currently it's hard for me to provide hardware to perform boot test as
+>> a amateur, but Fuloong2E has already accepted by QEMU and we can
+>> perform boot test on it for LOONGSON2EF.
+>>
+>> Please give me some instructions.
+>>
+>> Btw: MIPS/malta is not under my maintenance but I can also respond to
+>> it's build failure and QEMU boot failure. I'd like to apply for this
+>> platform too if I'm eligible.
+> I don't think we're doing any MIPS boots on QEMU currently, but we can
+> probably add that if you can give us a bit of guidance.  I've also cc'd
+> Corentin who has been working on QEMU support for more platforms.
+>
+> Can you share with us more details on QEMU version that is known to work
+> well for upstream MIPS kernels, and the qemu cmdline that you use to
+> boot upstream kernels?  With that, we can guide you on how to add
+> support.
 
-Regards,
+Sure, with QEMU 4.2/5.0:
 
-Hans
+fuloong2e_defconfig:
+No RootFS avliable, Debian dropped MIPS-III suport since stretch.
+qemu-system-mips64el -nographic \
+         -machine fulong2e -cpu Loongson-2E -m 256M \
+         -kernel vmlinux \
+         -append "console=ttyS0,115200"
 
+malta_defconfig: (Default)
+RootFS: 
+https://people.debian.org/~jcowgill/qemu-mips/debian-buster-mipsel.qcow2
+qemu-system-mipsel -nographic -net nic,model=virtio \
+         -machine malta -cpu P5600 -m 2G \
+         -kernel vmlinux \
+         -append "root=/dev/vda1 rw console=ttyS0,38400n8r" \
+         -drive file=debian-buster-mipsel.qcow2,if=virtio
+
+malta_defconfig: (Selected to MIPS64R2 CPU)
+RootFS: 
+https://people.debian.org/~jcowgill/qemu-mips/debian-buster-mips64el.qcow2
+qemu-system-mips64el -nographic -net nic,model=virtio \
+         -machine malta -cpu |mips64dspr2| -m 2G \
+         -kernel vmlinux \
+         -append "root=/dev/vda1 rw console=ttyS0,38400n8r" \
+         -drive file=debian-buster-mips64el.qcow2,if=virtio
+
+malta_qemu_32r6_defconfig:
+No rootfs avilable
+qemu-system-mipsel -nographic -net nic,model=virtio \
+         -machine malta -cpu |mips32r6-generic| -m 2G \
+         -kernel vmlinux \
+         -append "root=/dev/vda1 rw console=ttyS0,38400n8r" \
+
+malta_defconfig: (Selected to MIPS64R6 CPU)
+RootFS: http://mips64el.bfsu.edu.cn/debian-new/tarball/qemu/
+qemu-system-mips64el -nographic -net nic,model=virtio \
+         -machine malta -cpu I6400 -smp 2 -m 512M \
+         -kernel vmlinux -initrd initrd.img \
+         -append "root=/dev/vda1 console=ttyS0,38400n8r rw" \
+         -drive file=buster-mips64r6el.qcow2,if=virtio
+
+Thanks.
+
+>
+> Kevin
+>
+>
+>
+
+
+--------------B4515F3F897F9C1955C0E112
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <br>
+    <br>
+    <div class="moz-cite-prefix">在 2020/7/7 2:24, Kevin Hilman 写道:<br>
+    </div>
+    <blockquote type="cite" cite="mid:7ho8os4i3c.fsf@baylibre.com">
+      <pre class="moz-quote-pre" wrap="">Hi Jianxun,
+
+Jiaxun Yang <a class="moz-txt-link-rfc2396E" href="mailto:jiaxun.yang@flygoat.com">&lt;jiaxun.yang@flygoat.com&gt;</a> writes:
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">I'm a maintainer of MIPS/LOONGSON64 and MIPS/LOONGSON2EF support in
+kernel, and I would like to enable build test for these platforms in
+KernelCI. Also I will respond to their build failures.
+
+Currently it's hard for me to provide hardware to perform boot test as
+a amateur, but Fuloong2E has already accepted by QEMU and we can
+perform boot test on it for LOONGSON2EF.
+
+Please give me some instructions.
+
+Btw: MIPS/malta is not under my maintenance but I can also respond to
+it's build failure and QEMU boot failure. I'd like to apply for this
+platform too if I'm eligible.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+I don't think we're doing any MIPS boots on QEMU currently, but we can
+probably add that if you can give us a bit of guidance.  I've also cc'd
+Corentin who has been working on QEMU support for more platforms.
+
+Can you share with us more details on QEMU version that is known to work
+well for upstream MIPS kernels, and the qemu cmdline that you use to
+boot upstream kernels?  With that, we can guide you on how to add
+support.</pre>
+    </blockquote>
+    <br>
+    Sure, with QEMU 4.2/5.0:<br>
+    <br>
+    fuloong2e_defconfig:<br>
+    No RootFS avliable, Debian dropped MIPS-III suport since stretch.<br>
+    qemu-system-mips64el -nographic \<br>
+            -machine fulong2e -cpu Loongson-2E -m 256M \<br>
+            -kernel vmlinux \<br>
+            -append "console=ttyS0,115200"<br>
+    <br>
+    malta_defconfig: (Default)<br>
+    RootFS:
+    <a class="moz-txt-link-freetext" href="https://people.debian.org/~jcowgill/qemu-mips/debian-buster-mipsel.qcow2">https://people.debian.org/~jcowgill/qemu-mips/debian-buster-mipsel.qcow2</a><br>
+    qemu-system-mipsel -nographic -net nic,model=virtio \<br>
+            -machine malta -cpu P5600 -m 2G \<br>
+            -kernel vmlinux \<br>
+            -append "root=/dev/vda1 rw console=ttyS0,38400n8r" \<br>
+            -drive file=debian-buster-mipsel.qcow2,if=virtio<br>
+    <br>
+    malta_defconfig: (Selected to MIPS64R2 CPU)<br>
+    RootFS:
+<a class="moz-txt-link-freetext" href="https://people.debian.org/~jcowgill/qemu-mips/debian-buster-mips64el.qcow2">https://people.debian.org/~jcowgill/qemu-mips/debian-buster-mips64el.qcow2</a><br>
+    qemu-system-mips64el -nographic -net nic,model=virtio \<br>
+            -machine malta -cpu <code class="docutils literal
+      notranslate"><span class="pre">mips64dspr2</span></code> -m 2G \<br>
+            -kernel vmlinux \<br>
+            -append "root=/dev/vda1 rw console=ttyS0,38400n8r" \<br>
+            -drive file=debian-buster-mips64el.qcow2,if=virtio<br>
+    <br>
+    malta_qemu_32r6_defconfig:<br>
+    No rootfs avilable<br>
+    qemu-system-mipsel -nographic -net nic,model=virtio \<br>
+            -machine malta -cpu <code class="docutils literal
+      notranslate"><span class="pre">mips32r6-generic</span></code> -m
+    2G \<br>
+            -kernel vmlinux \<br>
+            -append "root=/dev/vda1 rw console=ttyS0,38400n8r" \<br>
+    <br>
+    malta_defconfig: (Selected to MIPS64R6 CPU)<br>
+    RootFS: <a class="moz-txt-link-freetext" href="http://mips64el.bfsu.edu.cn/debian-new/tarball/qemu/">http://mips64el.bfsu.edu.cn/debian-new/tarball/qemu/</a><br>
+    qemu-system-mips64el -nographic -net nic,model=virtio \<br>
+            -machine malta -cpu I6400 -smp 2 -m 512M \<br>
+            -kernel vmlinux -initrd initrd.img \<br>
+            -append "root=/dev/vda1 console=ttyS0,38400n8r rw" \<br>
+            -drive file=buster-mips64r6el.qcow2,if=virtio<br>
+    <br>
+    Thanks.<br>
+    <br>
+    <blockquote type="cite" cite="mid:7ho8os4i3c.fsf@baylibre.com">
+      <pre class="moz-quote-pre" wrap="">
+
+Kevin
+
+
+
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------B4515F3F897F9C1955C0E112--
