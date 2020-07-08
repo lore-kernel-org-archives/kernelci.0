@@ -1,39 +1,29 @@
 MIME-Version: 1.0
-From: "Nick Desaulniers" <ndesaulniers@google.com>
-Date: Wed, 8 Jul 2020 12:24:07 -0700
-Message-ID: <CAKwvOd=um1y=Ax2hK5YYQBxbxLK4kiQuDs9fZsr77YyNR5r=Ww@mail.gmail.com>
-Subject: plumbers session on CI and LLVM
+References: <3c2cba2849caa6ea0116611c1da3268b41432b76.camel@wdc.com>
+ <7hsgeaixcl.fsf@baylibre.com> <fd8b97f2ec7f5ae72b1d96bbe698e40c5227b4f1.camel@wdc.com>
+ <CAPSAq_xzT-O9rZm4ctcrS_y0=Xt4d2Pjb=OcWMezDXcmAqiZcw@mail.gmail.com>
+ <20200702144955.GA1132145@aurel32.net> <20200702181553.GA3226@aletheia.cgn.bolug.org>
+ <CAPQ4b8nVgcanT3SF8P+S0MwbpEBi0YB3zoAzhj99ukDWGetEvg@mail.gmail.com>
+In-Reply-To: <CAPQ4b8nVgcanT3SF8P+S0MwbpEBi0YB3zoAzhj99ukDWGetEvg@mail.gmail.com>
+From: "Manuel A. Fernandez Montecelo" <manuel.montezelo@gmail.com>
+Date: Thu, 9 Jul 2020 01:31:32 +0200
+Message-ID: <CAPQ4b8mmARmReHpmcgbmRTFBai7za+Ue4VD2ZyZsUcpXGgduWQ@mail.gmail.com>
+Subject: Re: Improve kernelci setup for RISC-V
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Kevin Hilman <khilman@baylibre.com>
-Cc: kernelci@groups.io, Chen Rong <rong.a.chen@intel.com>, Philip Li <philip.li@intel.com>, Dan Rue <dan.rue@linaro.org>, clang-built-linux <clang-built-linux@googlegroups.com>, Mathieu Acher <mathieu.acher@irisa.fr>, Steven Rostedt <rostedt@goodmis.org>, Sasha Levin <sashal@kernel.org>
+To: Karsten Merker <merker@debian.org>
+Cc: Aurelien Jarno <aurelien@aurel32.net>, David Abdurachmanov <david.abdurachmanov@sifive.com>, Atish Patra <Atish.Patra@wdc.com>, "khilman@baylibre.com" <khilman@baylibre.com>, "drew@beagleboard.org" <drew@beagleboard.org>, Alistair Francis <Alistair.Francis@wdc.com>, "lakshmipathi.ganapathi@collabora.co.uk" <lakshmipathi.ganapathi@collabora.co.uk>, "kernelci@groups.io" <kernelci@groups.io>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "raj.khem@gmail.com" <raj.khem@gmail.com>, "clabbe@baylibre.com" <clabbe@baylibre.com>, Manuel Montecelo <mafm@debian.org>
 
-Hi Kevin and folks,
-I'm trying to put together a Micro Conference for plumbers focused on
-LLVM.  In particular, I'd like to have a session that focuses on
-Continuous Integration (KernelCI, 0day bot, tuxbuild, kernel
-configuration space, and LLVM buildbots).
+Hi again,
 
-I'm curious, are you all planning on attending the conference?
+There's this recipe for debos from Ana, who was working on kernelci
+some time ago, using sid (unstable):
 
-If so, would such a session be of interest to attend or speak at?
+  https://github.com/ana/riscv64-image
 
-I saw the testing MC has already been approved and that Kevin and
-Sasha are the leads.  I'm still working on the approval for our MC so
-it may not happen ultimately, but I still would like to have such a
-session regardless of which MC it's in.
+Maybe it is of some help to set things up.
 
-Do folks who are planning to attend such a session have thoughts on
-whether we can carve this out of the existing testing MC vs keep it in
-the LLVM MC, or even if it is of value or not?  One thing I'm curious
-is what happens for two concurrent MCs if leads need to attend both?
-Maybe the conference committee can help us avoid such scheduling
-contention?
 
-Our compatibility matrix is a little complicated; Prof. Acher has some
-eye opening statistics, and I'd like to cover why and what "it's
-complicated" currently means for LLVM support for the benefit of CI
-systems, and general info for attendees.
+Cheers.
 -- 
-Thanks,
-~Nick Desaulniers
+Manuel A. Fernandez Montecelo <manuel.montezelo@gmail.com>
