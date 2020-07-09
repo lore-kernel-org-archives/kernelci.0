@@ -1,57 +1,52 @@
-Date: Thu, 9 Jul 2020 15:44:44 +0100
-From: "Mark Brown" <broonie@kernel.org>
+Return-Path: <khilman@baylibre.com>
+From: "Kevin Hilman" <khilman@baylibre.com>
 Subject: Re: plumbers session on CI and LLVM
-Message-ID: <20200709144444.GE4960@sirena.org.uk>
-References: <CAKwvOd=um1y=Ax2hK5YYQBxbxLK4kiQuDs9fZsr77YyNR5r=Ww@mail.gmail.com>
-MIME-Version: 1.0
 In-Reply-To: <CAKwvOd=um1y=Ax2hK5YYQBxbxLK4kiQuDs9fZsr77YyNR5r=Ww@mail.gmail.com>
-Content-Type: multipart/mixed; boundary="Groupsio=kNCxdIB6CqF4wYgoc4mf"
+References: <CAKwvOd=um1y=Ax2hK5YYQBxbxLK4kiQuDs9fZsr77YyNR5r=Ww@mail.gmail.com>
+Date: Thu, 09 Jul 2020 09:19:27 -0700
+Message-ID: <7h36603blc.fsf@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, ndesaulniers@google.com
-Cc: Kevin Hilman <khilman@baylibre.com>, Chen Rong <rong.a.chen@intel.com>, Philip Li <philip.li@intel.com>, Dan Rue <dan.rue@linaro.org>, clang-built-linux <clang-built-linux@googlegroups.com>, Mathieu Acher <mathieu.acher@irisa.fr>, Steven Rostedt <rostedt@goodmis.org>, Sasha Levin <sashal@kernel.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Cc: kernelci@groups.io, Chen Rong <rong.a.chen@intel.com>, Philip Li <philip.li@intel.com>, Dan Rue <dan.rue@linaro.org>, clang-built-linux <clang-built-linux@googlegroups.com>, Mathieu Acher <mathieu.acher@irisa.fr>, Steven Rostedt <rostedt@goodmis.org>, Sasha Levin <sashal@kernel.org>
 
---Groupsio=kNCxdIB6CqF4wYgoc4mf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Nick Desaulniers <ndesaulniers@google.com> writes:
 
-On Wed, Jul 08, 2020 at 12:24:07PM -0700, Nick Desaulniers via groups.io wrote:
-
+> Hi Kevin and folks,
 > I'm trying to put together a Micro Conference for plumbers focused on
 > LLVM.  In particular, I'd like to have a session that focuses on
 > Continuous Integration (KernelCI, 0day bot, tuxbuild, kernel
 > configuration space, and LLVM buildbots).
-
+>
 > I'm curious, are you all planning on attending the conference?
 
-I think most of the KernelCI people will be there.
+Yes, I plan to attend and most KernelCI folks will be there as well as
+we'll have a few topics at the testing/fuzzing microconf.
 
 > If so, would such a session be of interest to attend or speak at?
 
-I'd certainly be interested, I think some of the other Arm people would
-be too.
+Yes.
 
-> the LLVM MC, or even if it is of value or not?  One thing I'm curious
-> is what happens for two concurrent MCs if leads need to attend both?
-> Maybe the conference committee can help us avoid such scheduling
-> contention?
+> I saw the testing MC has already been approved and that Kevin and
+> Sasha are the leads.  I'm still working on the approval for our MC so
+> it may not happen ultimately, but I still would like to have such a
+> session regardless of which MC it's in.
+>
+> Do folks who are planning to attend such a session have thoughts on
+> whether we can carve this out of the existing testing MC vs keep it in
+> the LLVM MC, or even if it is of value or not?
 
-In the past the organizers have tried to avoid scheduling issues when
-they've been highlighted to them.  I'm not sure if the conference being
-online will make that less of an issue than normal.
+If you don't get your approved, feel free to submit to testing/fuzzing,
+but it looks to me that doing so would limit the scope of topics you
+want to discuss.  It sounds to me like you have enough non-CI topics for
+your own MC.
 
---Groupsio=kNCxdIB6CqF4wYgoc4mf
-Content-Type: application/pgp-signature; name="signature.asc"
+> One thing I'm curious is what happens for two concurrent MCs if leads
+> need to attend both?  Maybe the conference committee can help us avoid
+> such scheduling contention?
 
------BEGIN PGP SIGNATURE-----
+When you submit your MC you can request to be scheduled separately from
+testing/fuzzing so we can attend both.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8HLVsACgkQJNaLcl1U
-h9DA1Qf/W4jOGqsAaJRykCnqYtaO0bOsTawuTyyRwdxjmBRuSDXuTGwD3ahNscDj
-mJ9lkfgP8kNohhZhlioD12Z9BcADL3dDoYk1jtW7WEFdKZOGSBN+Y8FaAYwvsRgU
-cb7q2qUrcznUiaL67Kn0JMfq9T2deR+4WsSwn0uLwoiwprjXtpCmzazzCNVM0VaT
-kTCw/7A0J6VbNFUhkSBOiwdlO6owFPvIOg3M/SyEqChTITu0mFzHjPmRFVROSZgD
-AAxQt8txuwQ/+GArfcadV8OVaHPxhkRRzMb5t5i2BJJYxfkj9Wz9owxS750pjnPT
-AzLXVju8uDXzlJDOSZW8LYExk4PzQg==
-=W/OH
------END PGP SIGNATURE-----
-
---Groupsio=kNCxdIB6CqF4wYgoc4mf--
+Kevin
