@@ -1,41 +1,57 @@
-In-Reply-To: <CAPQ4b8mmARmReHpmcgbmRTFBai7za+Ue4VD2ZyZsUcpXGgduWQ@mail.gmail.com>
-From: "Lakshmipathi Ganapathi" <lakshmipathi.ganapathi@collabora.com>
-Date: Thu, 09 Jul 2020 07:52:41 +0100
+Date: Thu, 9 Jul 2020 15:44:44 +0100
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: plumbers session on CI and LLVM
+Message-ID: <20200709144444.GE4960@sirena.org.uk>
+References: <CAKwvOd=um1y=Ax2hK5YYQBxbxLK4kiQuDs9fZsr77YyNR5r=Ww@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <589e-5f06be80-1-54203d00@65318825>
-Subject: Re: Improve kernelci setup for RISC-V
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAKwvOd=um1y=Ax2hK5YYQBxbxLK4kiQuDs9fZsr77YyNR5r=Ww@mail.gmail.com>
+Content-Type: multipart/mixed; boundary="Groupsio=kNCxdIB6CqF4wYgoc4mf"
 List-ID: <kernelci.groups.io>
-To: =?utf-8?q?Manuel_A=2E_Fernandez_Montecelo?= <manuel.montezelo@gmail.com>
-Cc: Karsten Merker <merker@debian.org>, Aurelien Jarno <aurelien@aurel32.net>, David Abdurachmanov <david.abdurachmanov@sifive.com>, Atish Patra <Atish.Patra@wdc.com>, =?utf-8?q?khilman=40baylibre=2Ecom?= <khilman@baylibre.com>, =?utf-8?q?drew=40beagleboard=2Eorg?= <drew@beagleboard.org>, Alistair Francis <Alistair.Francis@wdc.com>, =?utf-8?q?kernelci=40groups=2Eio?= <kernelci@groups.io>, =?utf-8?q?palmer=40dabbelt=2Ecom?= <palmer@dabbelt.com>, =?utf-8?q?raj=2Ekhem=40gmail=2Ecom?= <raj.khem@gmail.com>, =?utf-8?q?clabbe=40baylibre=2Ecom?= <clabbe@baylibre.com>, Manuel Montecelo <mafm@debian.org>
+To: kernelci@groups.io, ndesaulniers@google.com
+Cc: Kevin Hilman <khilman@baylibre.com>, Chen Rong <rong.a.chen@intel.com>, Philip Li <philip.li@intel.com>, Dan Rue <dan.rue@linaro.org>, clang-built-linux <clang-built-linux@googlegroups.com>, Mathieu Acher <mathieu.acher@irisa.fr>, Steven Rostedt <rostedt@goodmis.org>, Sasha Levin <sashal@kernel.org>
 
+--Groupsio=kNCxdIB6CqF4wYgoc4mf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi,
+On Wed, Jul 08, 2020 at 12:24:07PM -0700, Nick Desaulniers via groups.io wrote:
 
-Here is the riscv64 patch for kci_rootfs created by khilman (https://githu=
-b.com/kernelci/kernelci-core/pull/414) and the images can be found here: ht=
-tps://storage.staging.kernelci.org/images/rootfs/debian/sid/2020070601/risc=
-v64/ thanks!
+> I'm trying to put together a Micro Conference for plumbers focused on
+> LLVM.  In particular, I'd like to have a session that focuses on
+> Continuous Integration (KernelCI, 0day bot, tuxbuild, kernel
+> configuration space, and LLVM buildbots).
 
-Cheers.
-Lakshmipathi.G
+> I'm curious, are you all planning on attending the conference?
 
-On Thursday, July 09, 2020 05:01 IST, "Manuel A. Fernandez Montecelo" <man=
-uel.montezelo@gmail.com> wrote:
-=C2=A0Hi again,
+I think most of the KernelCI people will be there.
 
-There's this recipe for debos from Ana, who was working on kernelci
-some time ago, using sid (unstable):
+> If so, would such a session be of interest to attend or speak at?
 
-https://github.com/ana/riscv64-image
+I'd certainly be interested, I think some of the other Arm people would
+be too.
 
-Maybe it is of some help to set things up.
+> the LLVM MC, or even if it is of value or not?  One thing I'm curious
+> is what happens for two concurrent MCs if leads need to attend both?
+> Maybe the conference committee can help us avoid such scheduling
+> contention?
 
+In the past the organizers have tried to avoid scheduling issues when
+they've been highlighted to them.  I'm not sure if the conference being
+online will make that less of an issue than normal.
 
-Cheers.
---
-Manuel A. Fernandez Montecelo <manuel.montezelo@gmail.com>
+--Groupsio=kNCxdIB6CqF4wYgoc4mf
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-=C2=A0
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8HLVsACgkQJNaLcl1U
+h9DA1Qf/W4jOGqsAaJRykCnqYtaO0bOsTawuTyyRwdxjmBRuSDXuTGwD3ahNscDj
+mJ9lkfgP8kNohhZhlioD12Z9BcADL3dDoYk1jtW7WEFdKZOGSBN+Y8FaAYwvsRgU
+cb7q2qUrcznUiaL67Kn0JMfq9T2deR+4WsSwn0uLwoiwprjXtpCmzazzCNVM0VaT
+kTCw/7A0J6VbNFUhkSBOiwdlO6owFPvIOg3M/SyEqChTITu0mFzHjPmRFVROSZgD
+AAxQt8txuwQ/+GArfcadV8OVaHPxhkRRzMb5t5i2BJJYxfkj9Wz9owxS750pjnPT
+AzLXVju8uDXzlJDOSZW8LYExk4PzQg==
+=W/OH
+-----END PGP SIGNATURE-----
+
+--Groupsio=kNCxdIB6CqF4wYgoc4mf--
