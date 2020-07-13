@@ -1,61 +1,27 @@
 Return-Path: <khilman@baylibre.com>
 From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: Participate in build test (MIPS/Loongson)
-In-Reply-To: <bf280d0a-9289-1048-a8a4-f3e2972196d4@flygoat.com>
-References: <17159ea67a7.13d5ba30b1709.5131811758859128540@flygoat.com> <7ho8os4i3c.fsf@baylibre.com> <2821325d-56d7-4770-6027-fb30097f6a7b@flygoat.com> <bf280d0a-9289-1048-a8a4-f3e2972196d4@flygoat.com>
-Date: Mon, 13 Jul 2020 10:21:15 -0700
-Message-ID: <7himerqqk4.fsf@baylibre.com>
+Subject: Re: Branch renames
+In-Reply-To: <CAHRSSEyAgc0FYLtn9ahgFz41nSiM9Dp0e4ZXfK=zPRvCwTTiog@mail.gmail.com>
+References: <CAHRSSEyAgc0FYLtn9ahgFz41nSiM9Dp0e4ZXfK=zPRvCwTTiog@mail.gmail.com>
+Date: Mon, 13 Jul 2020 10:27:17 -0700
+Message-ID: <7heepfqqa2.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, kernelci@groups.io, info <info@kernelci.org>
-Cc: Corentin Labbe <clabbe@baylibre.com>
+To: kernelci@groups.io, tkjos@google.com, kernelci@groups.io
 
-Jiaxun Yang <jiaxun.yang@flygoat.com> writes:
+"Todd Kjos via groups.io" <tkjos=google.com@groups.io> writes:
 
-> =E5=9C=A8 2020/7/7 8:43, Jiaxun Yang =E5=86=99=E9=81=93:
->>
->>
->> =E5=9C=A8 2020/7/7 2:24, Kevin Hilman =E5=86=99=E9=81=93:
->>> Hi Jianxun,
->>>
->>> Jiaxun Yang<jiaxun.yang@flygoat.com>  writes:
->>>
->>>> I'm a maintainer of MIPS/LOONGSON64 and MIPS/LOONGSON2EF support in
->>>> kernel, and I would like to enable build test for these platforms in
->>>> KernelCI. Also I will respond to their build failures.
->>>>
->>>> Currently it's hard for me to provide hardware to perform boot test a=
-s
->>>> a amateur, but Fuloong2E has already accepted by QEMU and we can
->>>> perform boot test on it for LOONGSON2EF.
->>>>
->>>> Please give me some instructions.
->>>>
->>>> Btw: MIPS/malta is not under my maintenance but I can also respond to
->>>> it's build failure and QEMU boot failure. I'd like to apply for this
->>>> platform too if I'm eligible.
->>> I don't think we're doing any MIPS boots on QEMU currently, but we can
->>> probably add that if you can give us a bit of guidance.  I've also cc'=
-d
->>> Corentin who has been working on QEMU support for more platforms.
->>>
->>> Can you share with us more details on QEMU version that is known to wo=
-rk
->>> well for upstream MIPS kernels, and the qemu cmdline that you use to
->>> boot upstream kernels?  With that, we can guide you on how to add
->>> support.
->>
->> Sure, with QEMU 4.2/5.0:
+> We renamed a couple of Android kernel branches, so the old names
+> should be removed from kernelci and the new ones added (the old names
+> still work, but will go away in a few weeks). Also, the android-4.19
+> branch is deprecated (other android-4.19-* branches should still be
+> tested):
 >
-> Forget to mention that I'd also have to select some drivers to get it bo=
-ot.
-> I saw clabbe's work on github. Will discuss here.
+> Repo: repo: https://android.googlesource.com/kernel/common
+> Remove: android-5.4, android-5.4-stable, android-4.19
+> Add: android11-5.4, android12-5.4
 
-Also, can you keep an eye on the MIPS build results?  At least on
-stable, mainline and linux-next?
-
-Thanks,
+Pull request created: https://github.com/kernelci/kernelci-core/pull/429
 
 Kevin
