@@ -1,281 +1,69 @@
-Subject: Re: [kernelci-members] Working with the KernelCI project
-References: <20200707222342.scrz75265etaqlmd@redhat.com>
- <42d15463-e4ee-4c0b-c63f-dce7acb05e35@collabora.com>
- <CACT4Y+ZLoBLFWRM+RcKZJyR2Hh5az9W8_329ShM9JuSg6V4uVw@mail.gmail.com>
- <bbeeb467-1571-5404-7408-9b112d64e928@redhat.com>
- <CACT4Y+a1t-9sT7xz7d=Wmesnn_QoUqfipmoZXBu40_B+GQy=nQ@mail.gmail.com>
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Message-ID: <031d1941-2842-fc79-2a21-66bccb17f91c@redhat.com>
-Date: Fri, 17 Jul 2020 15:22:48 +0300
+Subject: Re: Participate in build test (MIPS/Loongson)
+References: <17159ea67a7.13d5ba30b1709.5131811758859128540@flygoat.com>
+ <7ho8os4i3c.fsf@baylibre.com>
+ <2821325d-56d7-4770-6027-fb30097f6a7b@flygoat.com>
+ <bf280d0a-9289-1048-a8a4-f3e2972196d4@flygoat.com>
+ <7himerqqk4.fsf@baylibre.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Message-ID: <afbf29a2-8a8c-c301-b806-5d9e161f4615@flygoat.com>
+Date: Sat, 18 Jul 2020 10:18:58 +0800
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+a1t-9sT7xz7d=Wmesnn_QoUqfipmoZXBu40_B+GQy=nQ@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <7himerqqk4.fsf@baylibre.com>
+List-ID: <info.kernelci.org>
+List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
+List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/kernelci.org/group/info/subscribe>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, kernelci@groups.io, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
+To: Kevin Hilman <khilman@baylibre.com>, kernelci@groups.io, info <info@kernelci.org>
+Cc: Corentin Labbe <clabbe@baylibre.com>
 
-Hi Dmitry,
 
-+ kernelci maillist and a colleague
 
-On 7/9/20 8:59 PM, Dmitry Vyukov wrote:
- > On Thu, Jul 9, 2020 at 7:53 PM Nikolai Kondrashov
- > <Nikolai.Kondrashov@redhat.com> wrote:
- >> I can take a look at a specific syzbot issue data, try to craft a mock
- >> submission to KCIDB (in JSON), and walk through the potential processing logic
- >> for you. Would that be useful?
- >
- > Yes, it would be very useful...
+在 2020/7/14 1:21, Kevin Hilman 写道:
+> Jiaxun Yang <jiaxun.yang@flygoat.com> writes:
+>
+>> 在 2020/7/7 8:43, Jiaxun Yang 写道:
+>>>
+>>> 在 2020/7/7 2:24, Kevin Hilman 写道:
+>>>> Hi Jianxun,
+>>>>
+>>>> Jiaxun Yang<jiaxun.yang@flygoat.com>  writes:
+>>>>
+>>>>> I'm a maintainer of MIPS/LOONGSON64 and MIPS/LOONGSON2EF support in
+>>>>> kernel, and I would like to enable build test for these platforms in
+>>>>> KernelCI. Also I will respond to their build failures.
+>>>>>
+>>>>> Currently it's hard for me to provide hardware to perform boot test as
+>>>>> a amateur, but Fuloong2E has already accepted by QEMU and we can
+>>>>> perform boot test on it for LOONGSON2EF.
+>>>>>
+>>>>> Please give me some instructions.
+>>>>>
+>>>>> Btw: MIPS/malta is not under my maintenance but I can also respond to
+>>>>> it's build failure and QEMU boot failure. I'd like to apply for this
+>>>>> platform too if I'm eligible.
+>>>> I don't think we're doing any MIPS boots on QEMU currently, but we can
+>>>> probably add that if you can give us a bit of guidance.  I've also cc'd
+>>>> Corentin who has been working on QEMU support for more platforms.
+>>>>
+>>>> Can you share with us more details on QEMU version that is known to work
+>>>> well for upstream MIPS kernels, and the qemu cmdline that you use to
+>>>> boot upstream kernels?  With that, we can guide you on how to add
+>>>> support.
+>>> Sure, with QEMU 4.2/5.0:
+>> Forget to mention that I'd also have to select some drivers to get it boot.
+>> I saw clabbe's work on github. Will discuss here.
+> Also, can you keep an eye on the MIPS build results?  At least on
+> stable, mainline and linux-next?
+I will, just looking at mailing list?
 
-Alright, first a few kcidb basics. You can submit all your data by just piping
-JSON to the "kcidb-submit" tool (providing some options for authentication and
-destination), or you could use the Python 3 API.
-
-The expected JSON data is a dictionary of arrays, along with the schema
-version identifier. Each of the arrays in the dictionary could be missing or
-empty, but otherwise they contain various report objects. The database will
-accept them in any (reasonable) amount, order, or combination, although
-submission order can affect when and how notifications are sent out.
-
-Every object has an ID which can be used to refer to it and link objects
-together, but all the IDs are generated by the submitter, who is making sure
-they're unique. For most of the objects (except revisions at this moment) you
-can just use your CI system's ID for it and prefix it with your CI system's
-name. This way you don't have to maintain a mapping between your system's IDs
-and our IDs when you report results gradually. If you don't have that, you can
-just generate them, for example hash some key fields or, as the last resort,
-use UUIDs. Revisions are just using commit hashes at the moment.
-
-Every object has a special property called "misc" which can contain arbitrary
-data. You could use that to submit data we don't have a schema for yet. The
-users/developers will be able to see it, and we can use that as samples for
-implementing future support.
-
-See example use of "misc" for a KernelCI test and its execution environment
-(yes, it could be formatted better):
-https://staging.kernelci.org:3000/d/test/test?orgId=1&var-id=kernelci:staging.kernelci.org:5ef9ab28baa38e14753eeeec
-
-I mocked up a submission of two syzkaller runs from
-https://syzkaller.appspot.com/bug?id=ca2299cf11b3e3d3d0f44ac479410a14eecbd326
-with the initial support for issues we can implement. Note that there are
-more properties defined by the schema you can add to the submissions, but
-they're not required (same as some of the included).
-
-Let's say you found a new commit or release to test with syzkaller. You can
-submit that information right away:
-
-     {
-         "revisions": [
-             {
-                 "id": "7ae77150d94d3b535c7b85e6b3647113095e79bf",
-                 "origin": "syzbot",
-                 "discovery_time": "2020-06-25T03:21:48+00:00",
-                 "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git",
-                 "git_repository_commit_hash": "7ae77150d94d3b535c7b85e6b3647113095e79bf",
-                 "git_repository_branch": "master",
-                 "valid": true
-             },
-         ],
-         "version": {
-             "major": 3,
-             "minor": 0
-         }
-     }
-
-When you've built it, you can tell us about it:
-
-     {
-         "builds": [
-             {
-                 "id": "syzkaller:d195fe572fb15312",
-                 "revision_id": "7ae77150d94d3b535c7b85e6b3647113095e79bf",
-                 "architecture": "x86_64",
-                 "compiler": "gcc (GCC) 9.0.0 20181231 (experimental)",
-                 "start_time": "2020-06-25T03:21:48+00:00",
-                 "config_url": "https://syzkaller.appspot.com/text?tag=KernelConfig&x=d195fe572fb15312",
-                 "valid": true
-             },
-         ],
-         "version": {
-             "major": 3,
-             "minor": 0
-         }
-     }
-
-If it failed to build you can send us the same data, but with "valid" set to
-"false", and maybe attach the log. You don't have to, though.
-
-Next, after you made it crash with syzkaller, you can send us your test
-result along with links to some output files:
-
-     {
-         "tests": [
-             {
-                 "build_id": "syzkaller:d195fe572fb15312",
-                 "id": "syzkaller:d195fe572fb15312",
-                 "output_files": [
-                     {
-                         "name": "log.txt",
-                         "url": "https://syzkaller.appspot.com/text?tag=CrashLog&x=137c5419100000"
-                     },
-                     {
-                         "name": "report.txt",
-                         "url": "https://syzkaller.appspot.com/text?tag=CrashReport&x=1543f44b100000"
-                     },
-                     {
-                         "name": "repro.syz.txt",
-                         "url": "https://syzkaller.appspot.com/text?tag=ReproSyz&x=12941c03100000"
-                     },
-                     {
-                         "name": "repro.c",
-                         "url": "https://syzkaller.appspot.com/text?tag=ReproC&x=12002cf9100000"
-                     }
-                 ],
-                 "path": "syzkaller",
-                 "start_time": "2020-06-25T03:21:48+00:00",
-                 "status": "FAIL",
-                 "waived": false
-             },
-         ],
-         "version": {
-             "major": 3,
-             "minor": 0
-         }
-     }
-
-We're putting the reproducers into output files here, but later we can add
-dedicated fields, to allow inclusion into notification e-mails, for example.
-
-At this point, some subscriptions watching for any new test failures might
-trigger a notification (e-mail report) to some subscribers
-(developers/maintainers).
-
-Everything described above is currently supported, now onto what I think we
-can do to support the issues (for the start).
-
-Once you've created the issue for the crash you detected above, you can send
-it to us:
-
-     {
-         "issues": [
-             {
-                 "id": "syzkaller:ca2299cf11b3e3d3d0f44ac479410a14eecbd326",
-                 "origin": "syzkaller",
-                 "subject": "WARNING in idr_alloc",
-                 "url": "https://syzkaller.appspot.com/bug?id=ca2299cf11b3e3d3d0f44ac479410a14eecbd326"
-             }
-         ],
-         "version": {
-             "major": 4,
-             "minor": 0
-         }
-     }
-
-You can also send a record of this issue occurring (an "incident") in the test
-run you reported above:
-
-     {
-         "incidents": [
-             {
-                 "test_id": "syzkaller:d195fe572fb15312",
-                 "issue_id": "syzkaller:ca2299cf11b3e3d3d0f44ac479410a14eecbd326",
-                 "origin": "syzkaller"
-             },
-         ],
-         "version": {
-             "major": 4,
-             "minor": 0
-         }
-     }
-
-All of the above could be sent in one go as well. For example you could send
-another record of the same crash occurring in another revision like this:
-
-     {
-         "revisions": [
-             {
-                 "id": "0aea6d5c5be33ce94c16f9ab2f64de1f481f424b",
-                 "origin": "syzbot",
-                 "discovery_time": "2020-07-12T15:56:32+00:00",
-                 "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git",
-                 "git_repository_commit_hash": "0aea6d5c5be33ce94c16f9ab2f64de1f481f424b",
-                 "git_repository_branch": "master",
-                 "valid": true
-             }
-         ],
-         "builds": [
-             {
-                 "id": "syzkaller:66ad203c2bb6d8b",
-                 "revision_id": "0aea6d5c5be33ce94c16f9ab2f64de1f481f424b",
-                 "architecture": "x86_64",
-                 "compiler": "gcc (GCC) 9.0.0 20181231 (experimental)",
-                 "start_time": "2020-07-12T15:56:32+00:00",
-                 "config_url": "https://syzkaller.appspot.com/text?tag=KernelConfig&x=66ad203c2bb6d8b",
-                 "valid": true
-             }
-         ],
-         "tests": [
-             {
-                 "build_id": "syzkaller:66ad203c2bb6d8b",
-                 "id": "syzkaller:66ad203c2bb6d8b",
-                 "output_files": [
-                     {
-                         "name": "log.txt",
-                         "url": "https://syzkaller.appspot.com/text?tag=CrashLog&x=12dcca00900000"
-                     },
-                     {
-                         "name": "report.txt",
-                         "url": "https://syzkaller.appspot.com/text?tag=CrashReport&x=136ebf47100000"
-                     }
-                 ],
-                 "path": "syzkaller",
-                 "start_time": "2020-07-12T15:56:03+00:00",
-                 "status": "FAIL",
-                 "waived": false
-             }
-         ],
-         "incidents": [
-             {
-                 "test_id": "syzkaller:66ad203c2bb6d8b",
-                 "issue_id": "syzkaller:ca2299cf11b3e3d3d0f44ac479410a14eecbd326",
-                 "origin": "syzkaller"
-             }
-         ],
-         "version": {
-             "major": 4,
-             "minor": 0
-         }
-     }
-
-This time the notification system will notice that this failure is linked to
-an already-reported issue and won't issue a notification e-mail.
-
-CI systems which don't track issues would just not report any "issues" or
-"incidents". Any tests arriving without an issue incident in the same JSON
-document, or in the database already, would each be considered incidents of an
-(unknown) new issue, and reported appropriately.
-
-This could be the first step in implementing issue support. After that we can
-work on marking duplicate bugs, perhaps, or explore what we could do with
-marking bugs obsolete. However, we probably don't want to replace a bug
-tracker, but only use issue information in order to produce appropriate
-result notifications and otherwise redirect to a real bug tracker for issue
-discussion, investigation, etc.
-
-You mention extracting an issue reproducer as a separate event. How is that
-done, who would be interested in such an event and how would they be alerted?
-
-Meanwhile, I can help you set up a simple bridge from syzbot to KCIDB sending
-the data we can already support (the above minus "issues" and "incidents",
-plus maybe some extra data), so that we can see how your data can (or can't)
-fit, what kind of load we get, what we can do with notifications and UI, what
-we need to change to accommodate it better, etc.
-
-We could set test status to "DONE" in all your reports (i.e. no "PASS" or
-"FAIL" verdict), so that we don't generate unnecessary notifications until we
-can handle issues.
-
-Nick
-
+Thanks.
+>
+> Thanks,
+>
+> Kevin
