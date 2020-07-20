@@ -1,82 +1,207 @@
-Subject: Re: Participate in build test (MIPS/Loongson)
-References: <17159ea67a7.13d5ba30b1709.5131811758859128540@flygoat.com>
- <7ho8os4i3c.fsf@baylibre.com>
- <2821325d-56d7-4770-6027-fb30097f6a7b@flygoat.com>
- <bf280d0a-9289-1048-a8a4-f3e2972196d4@flygoat.com>
- <7himerqqk4.fsf@baylibre.com>
- <afbf29a2-8a8c-c301-b806-5d9e161f4615@flygoat.com>
+Subject: Re: Contribute to KernelCI in Kubernetes or Cloud
+References: <CAJMT-dGBCdkJnDNRYRRk9aVk=FmJkjGmpXCqsXc73v8hY+yi9w@mail.gmail.com>
+ <7hwo3g4irb.fsf@baylibre.com> <1621E054EEFB3FDC.11249@groups.io>
+ <CAJMT-dGA6ELQbnJt5qDsDhu3aKa6ixQC0Pv1QCNW_-WpGwTNRw@mail.gmail.com>
 From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <baf890b6-2349-7be3-9200-c128d4dc33f0@collabora.com>
-Date: Mon, 20 Jul 2020 08:58:08 +0100
+Message-ID: <d70663cd-3124-a59c-156a-ee959f985380@collabora.com>
+Date: Mon, 20 Jul 2020 09:07:24 +0100
 MIME-Version: 1.0
-In-Reply-To: <afbf29a2-8a8c-c301-b806-5d9e161f4615@flygoat.com>
+In-Reply-To: <CAJMT-dGA6ELQbnJt5qDsDhu3aKa6ixQC0Pv1QCNW_-WpGwTNRw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: jiaxun.yang@flygoat.com, Kevin Hilman <khilman@baylibre.com>
-Cc: kernelci@groups.io, Corentin Labbe <clabbe@baylibre.com>
+To: adityasrivastava301199@gmail.com
+Cc: Kevin Hilman <khilman@baylibre.com>, kernelci@groups.io
 
-On 18/07/2020 03:18, Jiaxun Yang wrote:
->=20
->=20
-> =E5=9C=A8 2020/7/14 1:21, Kevin Hilman =E5=86=99=E9=81=93:
->> Jiaxun Yang <jiaxun.yang@flygoat.com> writes:
+Hi Aditya,
+
+On 17/07/2020 10:40, Aditya Srivastava wrote:
+> On Wed, Jul 15, 2020 at 2:09 PM Aditya Srivastava via groups.io
+> <adityasrivastava301199=gmail.com@groups.io> wrote:
+> 
+>> On Mon, Jul 6, 2020 at 11:40 PM Kevin Hilman <khilman@baylibre.com> wrote:
 >>
->>> =E5=9C=A8 2020/7/7 8:43, Jiaxun Yang =E5=86=99=E9=81=93:
->>>>
->>>> =E5=9C=A8 2020/7/7 2:24, Kevin Hilman =E5=86=99=E9=81=93:
->>>>> Hi Jianxun,
->>>>>
->>>>> Jiaxun Yang<jiaxun.yang@flygoat.com>=C2=A0 writes:
->>>>>
->>>>>> I'm a maintainer of MIPS/LOONGSON64 and MIPS/LOONGSON2EF support in
->>>>>> kernel, and I would like to enable build test for these platforms i=
-n
->>>>>> KernelCI. Also I will respond to their build failures.
->>>>>>
->>>>>> Currently it's hard for me to provide hardware to perform boot test=
- as
->>>>>> a amateur, but Fuloong2E has already accepted by QEMU and we can
->>>>>> perform boot test on it for LOONGSON2EF.
->>>>>>
->>>>>> Please give me some instructions.
->>>>>>
->>>>>> Btw: MIPS/malta is not under my maintenance but I can also respond =
-to
->>>>>> it's build failure and QEMU boot failure. I'd like to apply for thi=
-s
->>>>>> platform too if I'm eligible.
->>>>> I don't think we're doing any MIPS boots on QEMU currently, but we c=
-an
->>>>> probably add that if you can give us a bit of guidance.=C2=A0 I've a=
-lso cc'd
->>>>> Corentin who has been working on QEMU support for more platforms.
->>>>>
->>>>> Can you share with us more details on QEMU version that is known to =
-work
->>>>> well for upstream MIPS kernels, and the qemu cmdline that you use to
->>>>> boot upstream kernels?=C2=A0 With that, we can guide you on how to a=
-dd
->>>>> support.
->>>> Sure, with QEMU 4.2/5.0:
->>> Forget to mention that I'd also have to select some drivers to get it =
-boot.
->>> I saw clabbe's work on github. Will discuss here.
->> Also, can you keep an eye on the MIPS build results?=C2=A0 At least on
->> stable, mainline and linux-next?
-> I will, just looking at mailing list?
+>>> Hello,
+>>>
+>>> Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+>>>
+>>>> Heard the talk on OSS by Kevin Hilman and khouloud touil , I would like
+>>> to
+>>>> help to get KernelCI on K8S or any other help if needed for the same.
+>>>
+>>> Thanks for contacting us.  What's your experience with k8s? and how do
+>>> you want to help?
+>>>
+>>>
+>> Hii Kevin,
+>> I would like to start with apologizing for replying so late. I am sorry.
+>> I was down with a cold and slight fever and pandemic sure gets you worried
+>> over little things.
+>> Then I got a little busy with college stuff.
+>>
+>> I am not very experienced with k8s either,
+>> I am working and learning on the way by setting up a monitoring cluster for
+>> OPNFV project.
+>>
+>>
+>> As you may have learned in my talk, we do *lots* of kernel builds.
+>>>
+>> We have Docker images for each arch/toolchain combination[1], and these
+>>> are the containers we use in the k8s jobs.
+>>>
+>>> Our pipeline is managed by Jenkins, and you can read a bit about the
+>>> Jenkins jobs in the README of the main kernelci-core repo[2].
+>>>
+>>> Where k8s comes in is at the `jenkins/build.jpl` step.  When we get to
+>>> this phase, we're ready to do a build for a specific combination of:
+>>>
+>>> - git tree
+>>> - git branch
+>>> - kernel defconfig
+>>> - arch
+>>> - compiler
+>>>
+>>> The build step then generates a k8s job (from a jinja2 template) based
+>>> on these parameters, and sends it off to a pre-configure k8s cluster
+>>> using kubectl.
+>>>
+>>> Here is the github PR[3] that has the jinja2 template and a python
+>>> script (gen.py) to generate the k8s job yaml.  There's also another
+>>> script (wait.py) which uses the k8s python API to wait for the job to
+>>> complete and then fetch the build logs.
+>>>
+>>> I've been the one working on the k8s tooling, but I'm pretty new to it,
+>>> so I'm assuming that I made some newbie mistakes and that there are
+>>> probably better ways of doing things.
+>>>
+>>> For now, this is already working pretty well and has allowed us to scale
+>>> up our build capacity (thanks to compute donations from gcloud and
+>>> azure), but any help in this area by experienced engineers would be very
+>>> helpful.
+>>>
+>>> I'm particularily interested in your thoughts on improvements on how to
+>>> submit/wait for k8s jobs and then fetch the logs.
+>>
+>>
+>> I would suggest that for fetching logs we can set up
+>> Elasticsearch-Fluentd-Kibana stack (EFK) or
+>> Elasticsearch-Logstash-Kibana stack (ELK) both work in a similar manner...
+>> They can scale and support HA (high availability).
+>>
+>> We can use some alerting system there too, like parse the logs and notify
+>> on failures (which can be
+>> set using alerting rules)
+>>
+>> (Although I see kernelci build logs in my mail daily, so that can be
+>> optional)
+>>
+>>
+>>> It's working OK now,
+>>> but occaisionaly get problems wher kubectl (or wait.py) gets random
+>>> failures, or "connection refused" errors from the k8s cluster.  I cannot
+>>
+>> reliably reproduce these reliably but they happen every few thousand
+>>> builds.
+>>>
+>>
+>> Yes, I understand.
+>> These stacks I am talking about, can themselves be deployed on a VM or as a
+>> k8s cluster itself.
+>> So it'll be like the cluster is sending the logs to us, not we fetching
+>> them.
+>> Here[1] is my one slide presentation for EFK. I know it is not very well
+>> made but I hope it'll be helpful
+>>
+>>
+>> (Similarly we can set up a monitoring stack using prometheus - alertmanager
+>> - granfana to collect metrics
+>> like CPU usage, disk space left, memory used,  if you see the need. My work
+>> (not yet complete) can
+>> be seen here[2])
+>>
+>>
+>>> Anyways, that's a bit of background.  If you have some time to help out,
+>>> please have a look at the current expirments and feel free to ask
+>>> questions.
+>>>
+>>> It also might be worth your time to join our weekly call.  We meet at
+>>> 16h UTC every Tuesday via a jitsi video call[4].
+>>>
+>>> I would love to join next week :D
+>> If not possible, will inform you in advance.
+>>
+>>
+>>> Thanks again for you interest and offer to help,
+>>>
+>>> Kevin
+>>>
+>> Thank you so much Kevin for giving such a detailed reply.
+>> Again, I did go through the files but I would like to visit them again
+>> before I get back to you with my questions.
+>>
+>>>
+>>
+>> [1]
+>>>
+>> https://github.com/kernelci/kernelci-core/tree/master/jenkins/dockerfiles
+>>> [2] https://github.com/kernelci/kernelci-core
+>>> [3]
+>>>
+>> https://github.com/kernelci/kernelci-core/pull/366/commits/b63da26abc216ad8bc8123d63010a485db2ae3a8
+>>> [4] https://meet.kernel.social/kernelci-dev
+>>
+>>
+>>
+>> Thanks and Regards,
+>> Aditya Srivastava
+>>
+>> [1] EFK Slide
+>> <
+>> https://docs.google.com/presentation/d/1yzOEkCblvojPVhR4MIOOG7bg1k8ACXXX9YluVLGHxNI/edit?usp=sharing
+>>>
+>> [2] https://github.com/adi10hero/PAG_K8S
+>>
+>>
+>>
+>>
+> 
+> 
+> I went through the PRs sent by Kevin, I liked the way gen and wait.py were
+> implemented.
+> 
+> I had one concern though, in the jinja2 file[1] the way args are inputted,
+> Can't there be a way to create a config file or something to use instead of
+> writing that huge args part (which can be error prone)
 
-You can subscribe to kernelci-results@groups.io:
+Yes, I actually started working on that last week.  It has always
+been something to be done, and wasn't a blocker for automated
+jobs so it was kept at a lower priority.  But now that logs from
+Kubernetes don't filter out tokens on the command line like
+Jenkins does, we really need config files for all use-cases.
 
-  https://groups.io/g/kernelci-results
-
-Also you can look for results on the web dashboard, for example:
-
-  https://kernelci.org/build/next/branch/master/kernel/next-20200717/
-
-If you type "mips" in the search box you'll see only the MIPS
-builds there.
+I"m planning to do it in a similar way as what is in
+kernelci-deploy, using configparser in Python.  I can send a link
+to the PR when it's ready if you want to review the changes, or
+we can discuss that on IRC.
 
 Thanks,
 Guillaume
+
+
+> Thanks and regards,
+>         Aditya
+> 
+> [1]
+> https://github.com/kernelci/kernelci-core/pull/366/files#diff-80182b682042b9b2a1a71ac7233563e1R54
+> 
+> 
+> ---
+> PS: I wanted to bring it to notice that I am also learning the cloud
+> orchestration (k8s) part,
+>       Monitoring and logging on K8S is what I have some experience in,
+>       My expertise lies in the ML/ DL/ analytics domain.
+> 
+> 
+> 
+
