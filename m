@@ -1,131 +1,444 @@
-Return-Path: <khilman@baylibre.com>
-From: "Kevin Hilman" <khilman@baylibre.com>
-Subject: Re: Contribute to KernelCI in Kubernetes or Cloud
-In-Reply-To: <CAJMT-dGH=_eGqBiFdpSQyRT1UDmQANgzGS7RXxNbQWqx+vnGNA@mail.gmail.com>
-References: <CAJMT-dGBCdkJnDNRYRRk9aVk=FmJkjGmpXCqsXc73v8hY+yi9w@mail.gmail.com> <7hwo3g4irb.fsf@baylibre.com> <CAJMT-dGH=_eGqBiFdpSQyRT1UDmQANgzGS7RXxNbQWqx+vnGNA@mail.gmail.com>
-Date: Tue, 21 Jul 2020 10:14:14 -0700
-Message-ID: <7htuy094ex.fsf@baylibre.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Subject: Re: Working with the KernelCI project
+References: <20200707222342.scrz75265etaqlmd@redhat.com>
+ <20200709110029.GB27682@intel.com>
+ <69138572-7241-1636-8018-34cd380ec540@redhat.com>
+ <20200713001929.GA1812@intel.com>
+Message-ID: <4a5d8379-b96d-6777-0d98-4ef13e56e0b3@redhat.com>
+Date: Wed, 22 Jul 2020 15:42:41 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200713001929.GA1812@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Aditya Srivastava <adityasrivastava301199@gmail.com>
-Cc: kernelci@groups.io
+To: Philip Li <philip.li@intel.com>
+Cc: Don Zickus <dzickus@redhat.com>, dvyukov@google.com, kernelci-members@groups.io, nkondras@redhat.com, julie.du@intel.com, kernelci@groups.io, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
 
-Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+Hi Philip,
 
-> On Mon, Jul 6, 2020 at 11:40 PM Kevin Hilman <khilman@baylibre.com> wrote:
->
->> Hello,
->>
->> Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
->>
->> > Heard the talk on OSS by Kevin Hilman and khouloud touil , I would like
->> to
->> > help to get KernelCI on K8S or any other help if needed for the same.
->>
->> Thanks for contacting us.  What's your experience with k8s? and how do
->> you want to help?
->>
->>
-> Hii Kevin,
-> I would like to start with apologizing for replying so late. I am sorry.
-> I was down with a cold and slight fever and pandemic sure gets you worried
-> over little things.
-> Then I got a little busy with college stuff.
->
-> I am not very experienced with k8s either,
-> I am working and learning on the way by setting up a monitoring cluster for
-> OPNFV project.
->
->
-> As you may have learned in my talk, we do *lots* of kernel builds.
->>
-> We have Docker images for each arch/toolchain combination[1], and these
->> are the containers we use in the k8s jobs.
->>
->> Our pipeline is managed by Jenkins, and you can read a bit about the
->> Jenkins jobs in the README of the main kernelci-core repo[2].
->>
->> Where k8s comes in is at the `jenkins/build.jpl` step.  When we get to
->> this phase, we're ready to do a build for a specific combination of:
->>
->> - git tree
->> - git branch
->> - kernel defconfig
->> - arch
->> - compiler
->>
->> The build step then generates a k8s job (from a jinja2 template) based
->> on these parameters, and sends it off to a pre-configure k8s cluster
->> using kubectl.
->>
->> Here is the github PR[3] that has the jinja2 template and a python
->> script (gen.py) to generate the k8s job yaml.  There's also another
->> script (wait.py) which uses the k8s python API to wait for the job to
->> complete and then fetch the build logs.
->>
->> I've been the one working on the k8s tooling, but I'm pretty new to it,
->> so I'm assuming that I made some newbie mistakes and that there are
->> probably better ways of doing things.
->>
->> For now, this is already working pretty well and has allowed us to scale
->> up our build capacity (thanks to compute donations from gcloud and
->> azure), but any help in this area by experienced engineers would be very
->> helpful.
->>
->> I'm particularily interested in your thoughts on improvements on how to
->> submit/wait for k8s jobs and then fetch the logs.
->
->
-> I would suggest that for fetching logs we can set up
-> Elasticsearch-Fluentd-Kibana stack (EFK) or
-> Elasticsearch-Logstash-Kibana stack (ELK) both work in a similar manner...
-> They can scale and support HA (high availability).
+Re-sending this to add the kernelci maillist and a colleague, sorry.
+Please reply to *this* message instead of the first one.
 
-For now, we are trying to de-couple the build steps from the log
-collection and reporting, and for now we're just looking at k8s for
-scaling the kernel builds.
+On 7/13/20 3:19 AM, Philip Li wrote:
+> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+>> How about I try to take a 0-day report and express it as a KCIDB submission,
+>> as an illustration of how this could work? Would that help you understand what
+>> we're trying to do? If yes, could you give me a link to one?
+> Right, the "accuracy" for all single branch we test is more related to technical
+> problem if we need look for a way to solve it. Here assume we have a report, it
+> does have chance to be aggeragated. You can pick up any link from
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/ (build) or
+> https://lists.01.org/hyperkitty/list/lkp@lists.01.org/ (runtime) for example.
 
-On log collection/reporting, just for your info, he last step of the
-build is to publish logs and related metadata to the
-kernelci-backend[2].  From there we have an existing frontend[2]
-(production instance at kernelci.org) that allows basic viewing of
-data/logs.  We also have a PoC grafana instance (see the KCIDB tab at
-kernelci.org) setup to view some of that data.
+Alright, first I'll copy the KCIDB intro I sent Dmitry in another branch of
+this thread, in case you didn't read it (otherwise skip past END-OF-INTRO):
 
-> We can use some alerting system there too, like parse the logs and
-> notify on failures (which can be set using alerting rules)
+You can submit all your data by just piping
+JSON to the "kcidb-submit" tool (providing some options for authentication and
+destination), or you could use the Python 3 API.
 
-This will be part or the reporting side as well, and is part of kcidb[3]
+The expected JSON data is a dictionary of arrays, along with the schema
+version identifier. Each of the arrays in the dictionary could be missing or
+empty, but otherwise they contain various report objects. The database will
+accept them in any (reasonable) amount, order, or combination, although
+submission order can affect when and how notifications are sent out.
 
-> (Although I see kernelci build logs in my mail daily, so that can be
-> optional)
+Every object has an ID which can be used to refer to it and link objects
+together, but all the IDs are generated by the submitter, who is making sure
+they're unique. For most of the objects (except revisions at this moment) you
+can just use your CI system's ID for it and prefix it with your CI system's
+name. This way you don't have to maintain a mapping between your system's IDs
+and our IDs when you report results gradually. If you don't have that, you can
+just generate them, for example hash some key fields or, as the last resort,
+use UUIDs. Revisions are just using commit hashes at the moment.
+
+Every object has a special property called "misc" which can contain arbitrary
+data. You could use that to submit data we don't have a schema for yet. The
+users/developers will be able to see it, and we can use that as samples for
+implementing future support.
+
+See example use of "misc" for a KernelCI test and its execution environment
+(yes, it could be formatted better):
+https://staging.kernelci.org:3000/d/test/test?orgId=1&var-id=kernelci:staging.kernelci.org:5ef9ab28baa38e14753eeeec
+
+                                END-OF-INTRO
+
+I think it's great that 0-day e-mails contain everything needed to investigate
+and reproduce the issue and are self-sufficient. However, at the moment KCIDB
+doesn't allow embedding artifacts or logs into submissions, but instead
+expects them to be stored somewhere else and have the URLs provided.
+
+At the moment we would need you to do that, at least with .config files, but
+if you can't, we can work on supporting embedding them. We planned on copying
+linked files to KernelCI-managed storage anyway, eventually.
+
+KCIDB also doesn't support embedding the nice error summaries and log excerpts
+you include in your reports, but that should be quite easy to amend by storing
+them in the database itself (provided they're not too big). Just needs a
+little thinking about the exact schema to use.
+
+For now, though, my examples below assume you can provide links to files
+(spoofed here), and you're supplying the excerpts or complete logs with those.
+
+KCIDB doesn't support source code linters and static analysis (such as
+checkpatch, or coverity) at the moment, and we should add that. However,
+a sparse run could be expressed in KCIDB as a build.
+
+Taking this report as a sample:
+
+     https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/GUFRHHPKTWFYNLRH4LE2E2YELI6XG2IE/
+
+this is how a submission could look:
+
+     {
+         "revisions": [
+             {
+                 "id": "391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c",
+                 "origin": "0day",
+                 "discovery_time": "2020-07-08T07:57:24+03:00",
+                 "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/atorgue/stm32.git",
+                 "git_repository_commit_hash": "391e437eedc0dab0a9f2c26997e68e040ae04ea3",
+                 "git_repository_branch": "master",
+                 "patch_mboxes": [
+                     {
+                         "name": "0001-irqchip-stm32-exti-map-direct-event-to-irq-parent.patch",
+                         "url": "https://github.com/0day-ci/linux/commit/3f47dd3217f24edfd442b35784001979e7aeacc7.patch"
+                     }
+                 ],
+                 "message_id": "20200706081106.25125-1-alexandre.torgue@st.com",
+                 "contacts": [
+                     "Alexandre Torgue <alexandre.torgue@st.com>",
+                     "kbuild-all <kbuild-all@lists.01.org>",
+                     "Marc Zyngier <maz@kernel.org>",
+                     "Thomas Gleixner <tglx@linutronix.de>",
+                     "Jason Cooper <jason@lakedaemon.net>",
+                     "LKML <linux-kernel@vger.kernel.org>"
+                 ],
+                 "valid": true
+             }
+         ],
+         "builds": [
+             {
+                 "id": "0day:391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c:sparse",
+                 "origin": "0day",
+                 "revision_id": "391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c",
+                 "architecture": "arm",
+                 "compiler": "arm-linux-gnueabi-gcc (GCC) 9.3.0",
+                 "start_time": "2020-07-08T07:57:24+03:00",
+                 "config_url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/config",
+                 "log_url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/sparse_build.log",
+                 "command": "COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=arm",
+                 "input_files": [
+                     {
+                         "name": "make.cross",
+                         "url": "https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross"
+                     },
+                     {
+                         "name": "instructions.txt",
+                         "url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/sparse_repro.txt"
+                     }
+                 ],
+                 "valid": false
+             }
+         ],
+         "version": {
+             "major": 3,
+             "minor": 0
+         }
+     }
+
+
+The above describes the revision you're testing as a patch being applied to a
+particular commit in the stm32 repo's master branch. The revision has a build,
+which failed, the build has the config URL and the log linked, as well as the
+reproduction instructions linked as one of the "input files". We can work on
+adding a dedicated field for reproduction instructinos for both builds and
+tests, since they're very useful and syzbot also produces them.
+
+A failed W=1 build:
+
+     https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/WEKO2YRAZIPZFUQAY2D4XAOWJGC3HGBD/
+
+Would look similar:
+
+     {
+         "revisions": [
+             {
+                 "id": "c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2",
+                 "origin": "0day",
+                 "discovery_time": "2020-07-08T07:57:24+03:00",
+                 "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git",
+                 "git_repository_commit_hash": "c46ed28dbe95844c1d15addd26ff05499057c4d5",
+                 "git_repository_branch": "for-next",
+                 "patch_mboxes": [
+                     {
+                         "name": "0001-arm64-dts-qcom-sc7180-Add-lpass-cpu-node-for-I2S-dri.patch",
+                         "url": "https://github.com/0day-ci/linux/commit/d20696ca206ae45d9d27fbeffb23fe5431b5de9d.patch"
+                     }
+                 ],
+                 "message_id": "20200716061445.628709-1-cychiang@chromium.org",
+                 "contacts": [
+                     "Ajit Pandey <ajitp@codeaurora.org>",
+                     "Cheng-Yi Chiang <cychiang@chromium.org>",
+                     "kbuild-all <kbuild-all@lists.01.org>",
+                     "Andy Gross <agross@kernel.org>",
+                     "Bjorn Andersson <bjorn.andersson@linaro.org>",
+                     "Rob Herring <robh+dt@kernel.org>",
+                     "linux-arm-msm@vger.kernel.org",
+                     "devicetree@vger.kernel.org"
+                 ],
+                 "valid": true
+             }
+         ],
+         "builds": [
+             {
+                 "id": "0day:c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2:sparse",
+                 "origin": "0day",
+                 "revision_id": "c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2",
+                 "architecture": "arm",
+                 "compiler": "clang version 12.0.0",
+                 "start_time": "2020-07-08T07:57:24+03:00",
+                 "config_url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/config",
+                 "log_url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/w=1_build.log",
+                 "command": "COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=arm64",
+                 "input_files": [
+                     {
+                         "name": "make.cross",
+                         "url": "https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross"
+                     },
+                     {
+                         "name": "instructions.txt",
+                         "url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/w=1_repro.txt"
+                     }
+                 ],
+                 "valid": false
+             }
+         ],
+         "version": {
+             "major": 3,
+             "minor": 0
+         }
+     }
+
+KCIDB also doesn't support non-runtime tests for compiled kernels (such as
+size regression tests you're running), and we should add that, but meanwhile
+we can accommodate them as tests without "environments".
+
+This one:
+
+     https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/PX2O2OJZT2TZ7SU4VUB5ODM4KRBPTXD7/
+
+Could look like this:
+
+     {
+         "revisions": [
+             {
+                 "id": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+                 "origin": "0day",
+                 "discovery_time": "2020-07-17T14:41:52+03:00",
+                 "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git",
+                 "git_repository_commit_hash": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+                 "git_repository_branch": "mount_setattr",
+                 "contacts": [
+                     "Christian Brauner <christian@brauner.io>",
+                     "kbuild-all <kbuild-all@lists.01.org>"
+                 ],
+                 "valid": true
+             }
+         ],
+         "builds": [
+             {
+                 "id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+                 "origin": "0day",
+                 "revision_id": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+                 "start_time": "2020-07-17T14:41:52+03:00",
+                 "valid": true
+             }
+         ],
+         "tests": [
+             {
+                 "id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2:size",
+                 "origin": "0day",
+                 "build_id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+                 "path": "size_regression",
+                 "output_files": [
+                     {
+                         "name": "details.txt",
+                         "url": "https://01.org/0day/aa63af1b08246bd31b77d056bf1d47f775cecbe2/size_regression_details.log",
+                     }
+                 ],
+                 "start_time": "2020-07-17T14:41:52+03:00",
+                 "status": "FAIL",
+                 "waived": false
+             },
+         ],
+         "version": {
+             "major": 3,
+             "minor": 0
+         }
+     }
+
+Since you don't provide any build information in that report, the build object
+doesn't have any data. However, that's still valid according to the current
+schema.
+
+Finally, this runtime test failure:
+
+     https://lists.01.org/hyperkitty/list/lkp@lists.01.org/thread/ULKTFB6NGLORWH2WLEKFSFEQFSIWLT5F/
+
+you can report like this:
+
+     {
+         "revisions": [
+             {
+                 "id": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+                 "origin": "0day",
+                 "discovery_time": "2020-07-17T09:04:55+03:00",
+                 "git_repository_url": "https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git"
+                 "git_repository_commit_hash": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+                 "git_repository_branch": "master",
+                 "contacts": [
+                     "Paul E. McKenney <paulmck@kernel.org>",
+                     "LKP <lkp@lists.01.org>"
+                 ],
+                 "valid": true
+             }
+         ],
+         "builds": [
+             {
+                 "id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c",
+                 "origin": "0day",
+                 "revision_id": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+                 "start_time": "2020-07-17T09:04:55+03:00",
+                 "architecture": "i386",
+                 "command": "make HOSTCC=gcc-9 CC=gcc-9 ARCH=i386 olddefconfig prepare modules_prepare bzImage",
+                 "config_url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/config",
+                 "valid": true
+             }
+         ],
+         "tests": [
+             {
+                 "id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c:trinity",
+                 "origin": "0day",
+                 "build_id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c",
+                 "path": "trinity",
+                 "output_files": [
+                     {
+                         "name": "dmesg.xz",
+                         "url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/dmesg.xz",
+                     },
+                     {
+                         "name": "details.txt",
+                         "url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/trinity_details.log",
+                     }
+                 ],
+                 "environment": {
+                     "description": "qemu-system-i386 -enable-kvm -cpu SandyBridge -smp 2 -m 16G"
+                 },
+                 "start_time": "2020-07-17T09:04:55+03:00",
+                 "status": "FAIL",
+                 "waived": false
+             },
+         ],
+         "version": {
+             "major": 3,
+             "minor": 0
+         }
+     }
+
+Note the "contacts" field all revisions have: this will help us determine who
+to send the reports to.
+
+Perhaps we need to add support for test input files to accommodate your
+reproduction instructions and custom scripts.
+
+I have omitted some fields I could've added, and we need to improve the schema
+to accommodate your reports better, of course.
+
+However, if you'd be interested, we could help you set up forwarding your
+reports to KernelCI. You can start very simple and small, as the schema only
+requires a handful of fields. This will help us see your needs: what data you
+want in reports and on the dashboard, how many reports you want to push (both
+positive and negative), etc.
+
+Don't hesitate to write with questions, suggestions, and hope to "see" you at
+this year's Plumbers, where we hopefully will be presenting more about this
+effort. I'll also be writing a separate article introducing the schema this
+week, will copy both you and Dmitry here.
+
+Nick
+
+On 7/13/20 3:19 AM, Philip Li wrote:
+> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+>> Hi Philip,
+>>
+>> On 7/9/20 2:00 PM, Philip Li wrote:
+>>> The 0-day ci mostly focus on regression and then bisection, and the strategy
+>>> is to merge various branches to run the test. This is not exactly as the
+>>> tranditional CI. The worry here is to know exactly one branch is pass or
+>>> fail currently is not 100% available. For instance, the final merged branch
+>>> is fail doesn't provide fail/pass info of each individual branch. This triggers
+>>> bisection to kick out the bad branch.
+>>>
+>>> Then it need redo the testing of remaining ones, which is not always
+>>> feasible for us (considering the computing power).
+>>
+>> Yes, I think everyone here could sympathise with limited hardware resources :)
+>>
+>>> Especially, sometimes the bisection would fail.
+>>
+>> Can you give an example of how would a bisection fail?
+>> Would that be a flaky test failing on a previously assumed-good commit, for
+>> example?
+> thanks, one example is build issue that breaks the bisectability which can
+> lead to bisect fail.
 >
+>>
+>>> As we focus on regression a lot to bisect to first bad commit, there would
+>>> be uncertainty to draw conclusion for single branch.
+>>
+>> I think not having complete certainty for a project as large as the Linux
+>> kernel is normal. Kernel CI has the bisection system as well, and syzbot is
+>> going to even greater lengths with identifying similar failures. We at CKI
+>> have test maintainers constantly looking at test failures and deciding whether
+>> they're false or not. These are things we just have to handle for common
+>> reporting to work.
+>>
+>>> This requires more careful thinking for us without increasing the needs of
+>>> computing resource. This is one bottleneck I can see so far. Not sure any
+>>> idea or recommendation for this.
+>>
+>> Our aim with common reporting is simply to provide a unified way to reach
+>> developers with testing results, essentially to send them a single e-mail
+>> report, instead of one report per CI system, to make a single database
+>> available for analyzis and a single dashboard UI.
+>>
+>> I.e. instead of sending an e-mail report to a developer we ask you to send a
+>> JSON report to us, and then we try to handle analyzing and reporting for you.
+>>
+>> It is up to the submitting CI system to choose how many, or how little tests
+>> to run, or how much or how little data to send. Kernel CI is not going to ask
+>> you to run any tests, it is up to you.
+>>
+>> In the end, we trust you want the developers to notice and fix the problems
+>> you find, you'll try to provide enough data, and we'd like to make a system
+>> which will help you do that. If you can pinpoint the exact commit - great! If
+>> not, we'll just have some data from you which can be analyzed otherwise.
+>>
+>> How about I try to take a 0-day report and express it as a KCIDB submission,
+>> as an illustration of how this could work? Would that help you understand what
+>> we're trying to do? If yes, could you give me a link to one?
+> Right, the "accuracy" for all single branch we test is more related to technical
+> problem if we need look for a way to solve it. Here assume we have a report, it
+> does have chance to be aggeragated. You can pick up any link from
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/ (build) or
+> https://lists.01.org/hyperkitty/list/lkp@lists.01.org/ (runtime) for example.
 >
->> It's working OK now,
->> but occaisionaly get problems wher kubectl (or wait.py) gets random
->> failures, or "connection refused" errors from the k8s cluster.  I cannot
+> Thanks
 >
-> reliably reproduce these reliably but they happen every few thousand
->> builds.
+>>
+>> Nick
 >>
 >
-> Yes, I understand.
-> These stacks I am talking about, can themselves be deployed on a VM or as a
-> k8s cluster itself.
-> So it'll be like the cluster is sending the logs to us, not we fetching
-> them.
-> Here[1] is my one slide presentation for EFK. I know it is not very well
-> made but I hope it'll be helpful
-
-There have been a couple expeirments already with ELK for the
-visualization parts, but they stalled out mainly due to lack of time so
-didn't get far enough to show how it could be useful, but we're always
-open to examples of how we could better use these tools.
-
-Kevin
-
-[1] https://github.com/kernelci/kernelci-backend
-[2] https://github.com/kernelci/kernelci-frontend
-[3] https://github.com/kernelci/kcidb
 
