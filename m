@@ -1,106 +1,177 @@
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Subject: kernelci.org update - 2020-07-29 #minutes
-Message-ID: <79c70330-da50-86b1-5457-e4fdd161a558@collabora.com>
-Date: Wed, 29 Jul 2020 23:54:13 +0100
+Return-Path: <adityasrivastava301199@gmail.com>
+Date: Fri, 31 Jul 2020 14:08:13 +0530
+From: "Aditya Srivastava" <adityasrivastava301199@gmail.com>
+Subject: Re: Contribute to KernelCI in Kubernetes or Cloud
+Message-ID: <20200731083813.GA7355@kuro>
+References: <7hwo3g4irb.fsf@baylibre.com>
+ <1621E054EEFB3FDC.11249@groups.io>
+ <CAJMT-dGA6ELQbnJt5qDsDhu3aKa6ixQC0Pv1QCNW_-WpGwTNRw@mail.gmail.com>
+ <7hmu3r6ziu.fsf@baylibre.com>
+ <CAJMT-dGLxR0rT1ZsG6BBkC7uNZOB72VuJ8jKEfnAkyOO7n0Lrw@mail.gmail.com>
+ <7hzh7o6976.fsf@baylibre.com>
+ <CAJMT-dGsKh9vObdBxbdTQNoC7_mVx7qgxyX6AN0pXzePepjbFQ@mail.gmail.com>
+ <7hzh7j2qha.fsf@baylibre.com>
+ <CAJMT-dEoEerBUcTeZT97ZfWbqDy3f0UhB8xordgG=Ae8wzOEtQ@mail.gmail.com>
+ <7hlfj03opw.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <7hlfj03opw.fsf@baylibre.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: kernelci@groups.io
 
-Technical Steering Committee minutes - 2020-07-21
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
+On Thu, Jul 30, 2020 at 10:19:23AM -0700, Kevin Hilman wrote:
+> Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+> 
+> > On Wed, Jul 29, 2020 at 4:32 AM Kevin Hilman <khilman@baylibre.com> wrote:
+> >
+> >> Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+> >>
+> >> > On Sat, Jul 25, 2020 at 12:18 AM Kevin Hilman <khilman@baylibre.com>
+> >> wrote:
+> >> >
+> >> >> Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+> >> >>
+> >> >> > On Thu, Jul 23, 2020 at 2:25 AM Kevin Hilman <khilman@baylibre.com>
+> >> >> wrote:
+> >> >> >
+> >> >> >> Aditya Srivastava <adityasrivastava301199@gmail.com> writes:
+> >> >> >>
+> >> >> >> [...]
+> >> >> >>
+> >> >> >> > I had one concern though, in the jinja2 file[1] the way args are
+> >> >> >> inputted,
+> >> >> >> > Can't there be a way to create a config file or something to use
+> >> >> instead
+> >> >> >> of
+> >> >> >> > writing that huge args part (which can be error prone)
+> >> >> >>
+> >> >> >> Yes, as Guillaume said, we need a way to use config files for the
+> >> tools.
+> >> >> >>
+> >> >> >> However, if we go this route, how do you pass the config file to the
+> >> k8s
+> >> >> >> job?  So far, I only know how to start containers with
+> >> >> >> arguments/parameters passed in env variables.
+> >> >> >>
+> >> >> >> Kevin
+> >> >> >>
+> >> >> >
+> >> >> > Hi kevin,
+> >> >> > You can create a persistent volume and mount the file in the pod.
+> >> >> > I can show you an example of how it's done...
+> >> >>
+> >> >> I know about persistent volumes, but how do you push files to the k8s
+> >> >> cluster so they show up in your volume?
+> >> >>
+> >> >> In your example, how does /root/PAG_K8S/prometheus get populated?
+> >> >>
+> >> >>
+> >> >
+> >> > Lets talk with reference to this[1] file
+> >> >
+> >> > So the volume inside the container at line 41 (A) is the same volume
+> >> > (because they have name)
+> >> > written under the volume section on line 49. (B)
+> >> >
+> >> > A : Volume inside the pod / container
+> >> > B:  Volume on the host path, i,e a directory ( /root/PAG_K8S/prometheus )
+> >> >
+> >> > Now root/PAG_K8S/prometheus, is something I need to have already on my
+> >> host
+> >> > before running the kubectl command
+> >> > on the  prometheus-deployment.yaml file.
+> >>
+> >> So this is the important part.  You already have to have the hostPath on
+> >> host running k8s, correct?
+> >>
+> >>
+> > Yes that is correct
+> >
+> >
+> >
+> >> Which means if you wanted to use a custom config file for a given job,
+> >> you have to push/publish that to the k8s host before running kubectl.
+> >>
+> >>
+> > Yes, in my case I have the files already on the hostPath
+> >
+> >
+> >
+> >> > So when I run that file, the volume name which is written under the
+> >> > containers section (lines 39 to 43)
+> >> > It matches the name of the volume mounts from the ones under the Volumes
+> >> > section (lines 46 to 52)
+> >> >
+> >> >
+> >> > And the files /directory(ies) in the volumes section's (volume) paths are
+> >> > mounted inside the container
+> >> > on the paths mentioned under the volumeMounts section's mountPaths.
+> >> >
+> >> > For example,
+> >> > /root/PAG_K8S/prometheus  (hostpath0) is mounted at  /etc/prometheus
+> >> > (hostpath0's path inside the container)
+> >> >
+> >> > Now /root/PAG_K8S/prometheus in my case doesn't get populated in runtime,
+> >> > it has static data....
+> >>
+> >> Right, so my main question is how would you do this same type of thing
+> >> if you have data that needs to be populated at runtime?
+> >>
+> >> Kevin
+> >>
+> >
+> >
+> > 1.  A possibility can be to use config maps, if possible the config map's
+> > yaml
+> >      can be generated with the needed data at runtime and then it is
+> > applied to the pods.
+> 
+> Ah, I think this is what we need.  I wasn't aware of ConfigMap.
+> 
+> > 2. We can try looking at helm charts for this purpose, but I am not very
+> > familiar with them.
+> 
+> I'm not familiar at all with helm.
+> 
+> > I will search more on this, can you give me an example of what is expected
+> > ....
+> > Or maybe go over the actual  problem or goal if possible.
+> >
+> > Knowing exactly what is needed will help me refine my search so....
+> 
+> The overall goal is to get a dynamically generated config file (in
+> python configparser, ini-style format) which can be used by some python
+> tools in the container.
+>
 
-* now moved from buildroot to debian (initramfs + pivot_root)
+I seee... 
 
-* kselftest:
-  * use debian nfsroot, Linaro test-definitions
-  * Draft PR: https://github.com/kernelci/kernelci-core/pull/445
+1. So if you have a host Vm on which  there is a k8s pod running
+you need to generate the config file on the host VM right?
 
-* RISCV: debian (sid): rootfs ready
-  https://github.com/kernelci/kernelci-core/pull/414
+2. And are these VMs ephemeral?
 
-* Uploaded =E2=80=9Ckernelci=E2=80=9D package to PyPI
-  https://pypi.org/project/kernelci/
-
-* KCIDB
-  * Sent an outline of KCIDB support to Dmitry Vyukov of syzbot/syzkaller.
-  * Support for =E2=80=9Cissues=E2=80=9D and =E2=80=9Cincidents=E2=80=9D, =
-and suppressing identical reports
-  * Writing the same for Philip Li of 0-day.
-  * Support for source code and build =E2=80=9Clinting=E2=80=9D
-  * Tailored reports
-  * Writing an introduction to KCIDB schema and submission next.
-  * Thinking of releasing and deploying KCIDB v6 with v3 I/O schema
-  * Bringing revision correlation
-  * Handling duplicate objects
-  * Submission reliability/feedback
-  * Topic for discussion: aggregating results
-  * BQ public data sets: https://cloud.google.com/bigquery/public-data/
-
-* Kubernetes
-  * Had a couple of issues with ansible and k8s
-    https://github.com/kernelci/builder-config2/pull/24
-    https://github.com/kernelci/builder-config2/issues/25
-
-* New guest: Aditya
-  * Discussion with Kevin regarding the logging part and wait.py
-  * Discussion with Guillaume regarding k8s/job-build.jinja2 file
+3. If yes, how do will you generate the config file, I mean even the
+_config-map.yaml_ needs to be generated somewhow, right?
 
 
-Technical Steering Committee minutes - 2020-07-28
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
+> I did a little reading about ConfigMap and it looks like this will do
+> the trick.
+> 
+> Kevin
+> 
+> 
 
-* kci_data: how to submit test results without LAVA callback
-  * will start submitting raw/incomplete data to staging /test API
-  * can be used as beta test /test API backend updates
-  * ToDo: first step is to review and clean-up the fields being accepted a=
-nd
-    required
-  * Next step is to drop the requirement for a kernel build to submit test
-    results (revision/branch/tree should be enough)
-
-* Documentation: =E2=80=9CHow to add new rootfs testsuite and how to add L=
-AVA tests=E2=80=9D
-  https://github.com/kernelci/kernelci-core/pull/444
-  -> Path of least resistance for adding rootfs images, i.e. nfsroot with
-     full-featured Buster base image and test definitions that can install
-     extra test dependencies
-
-* Kubernetes in  production
-  * new Jenkins nodes in USA and Europe, issue with 90+ build-k8s containe=
-rs
-    getting started on node running the trigger jobs
-  * hitting some bottleneck issues
+I hope it works and I will be glad if I helped even a litle.
 
 
-Advisory Board minutes - 2020-07-22
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-* 2020-Q3 plan update: OK except KUnit work hasn't resumed yet
-* Discussing how to provide separate instances of KernelCI for members
-* Also mentioned, xfstests is a good test plan but with stability issues
+Is there anything else I could do to contribute? Something very basic
+maybe, it can help me get familiar with the project and also help you guys a
+little...
 
 
-Summary of changes going into production
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Thanks and regards, 
+Aditya Srivastava
 
-* Fix LKFT job submissions
-* Improve error handling and help messages in kci_* CLI tools
-* Replace the --token CLI arguments with --db-token and --lab-token
-* New riscv64 rootfs based on debian/sid, not used for tests yet
-* New production Jenkins instance using kernelci-jenkins with docker-compo=
-se
-* Kernel builds now running in Kubernetes clusters rather than Jenkins bui=
-lders
-
-
-Best wishes,
-Guillaume
