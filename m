@@ -1,322 +1,490 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Tue, 21 Apr 2020 12:28:48 -0500
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Re: kci_build proposal
-Message-ID: <20200421172848.ko5ydgus5nyp3blw@xps.therub.org>
-References: <20200420163628.wmbc7f7vuvqsbdhw@xps.therub.org>
- <CAH1_8nBL+YSnmWyEkV336+wkq4YP=pHs1srUNxUZ_zhGxOe45Q@mail.gmail.com>
+Subject: Re: Working with the KernelCI project
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+References: <20200707222342.scrz75265etaqlmd@redhat.com>
+ <20200709110029.GB27682@intel.com>
+ <69138572-7241-1636-8018-34cd380ec540@redhat.com>
+ <20200713001929.GA1812@intel.com>
+ <4a5d8379-b96d-6777-0d98-4ef13e56e0b3@redhat.com>
+Message-ID: <e2a97f53-32d9-ae8d-45eb-fd5dddc5836d@redhat.com>
+Date: Mon, 3 Aug 2020 12:11:59 +0300
 MIME-Version: 1.0
-In-Reply-To: <CAH1_8nBL+YSnmWyEkV336+wkq4YP=pHs1srUNxUZ_zhGxOe45Q@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <4a5d8379-b96d-6777-0d98-4ef13e56e0b3@redhat.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>
-Cc: kernelci@groups.io
+To: Philip Li <philip.li@intel.com>
+Cc: Don Zickus <dzickus@redhat.com>, dvyukov@google.com, kernelci-members@groups.io, nkondras@redhat.com, julie.du@intel.com, kernelci@groups.io, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
 
-On Tue, Apr 21, 2020 at 04:46:34PM +0100, Guillaume Tucker wrote:
-> On Mon, Apr 20, 2020 at 5:36 PM Dan Rue <dan.rue@linaro.org> wrote:
-> 
-> > Hey Everyone!
-> >
-> 
-> Nice to have you back on the mailing list :)
-> 
-> 
-> > I've been working on a kernel building service/api that's designed to
-> > perform
-> > massive numbers of builds. The actual kernel build implementation reuses
-> > kernelci's kci_build script.
-> >
-> 
-> Out of interest, how do you manage the builders?
-> 
-> We're looking into Kubernetes now so we might find issues similar
-> to those in your use-case.
+Hi Philip,
 
-We have built a custom cloud-native service to do linux kernel builds
-which has a public API. It's still in limited beta mode but we have a
-number of users, including LKFT, that rely on it. I think it probably
-could be usable by kernelci, because the build implementation is very
-similar, and it's designed for scale.
+On 7/22/20 3:42 PM, Nikolai Kondrashov wrote:
+ > On 7/13/20 3:19 AM, Philip Li wrote:
+ >> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+ >>> How about I try to take a 0-day report and express it as a KCIDB submission,
+ >>> as an illustration of how this could work? Would that help you understand what
+ >>> we're trying to do? If yes, could you give me a link to one?
+ >> Right, the "accuracy" for all single branch we test is more related to technical
+ >> problem if we need look for a way to solve it. Here assume we have a report, it
+ >> does have chance to be aggeragated. You can pick up any link from
+ >> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/ (build) or
+ >> https://lists.01.org/hyperkitty/list/lkp@lists.01.org/ (runtime) for example.
+ >
+ > I have omitted some fields I could've added, and we need to improve the schema
+ > to accommodate your reports better, of course.
+ >
+ > However, if you'd be interested, we could help you set up forwarding your
+ > reports to KernelCI. You can start very simple and small, as the schema only
+ > requires a handful of fields. This will help us see your needs: what data you
+ > want in reports and on the dashboard, how many reports you want to push (both
+ > positive and negative), etc.
+ >
+ > Don't hesitate to write with questions, suggestions, and hope to "see" you at
+ > this year's Plumbers, where we hopefully will be presenting more about this
+ > effort. I'll also be writing a separate article introducing the schema this
+ > week, will copy both you and Dmitry here.
 
-> 
-> 
-> > So far we have not had to modify kernelci-core's kci_build, but we're
-> > approaching a point where we think we're going to have to modify it
-> > fundamentally to meet our needs. I would really like to continue sharing a
-> > build implementation with kernelci, but some of the changes needed are
-> > architectural in nature, and so I'd like to share a brief proposal for
-> > consideration:
-> >
-> > Standalone python-based kernel builder with the following properties:
-> > - Independent python package (library and cli) that only does a local
-> > kernel
-> >   build
-> >
-> 
-> Yes - see my more detailed reply further down.
-> 
-> 
-> > - Takes as arguments things like architecture, toolchain, kernel config,
-> > etc.
-> > - Dockerzed toolchain environments are supported directly (e.g. it will run
-> >   "docker run make")
-> > - Builds are done within the context of an existing kernel tree (doing git
-> >   checkout, git fetch, etc are out of scope)
-> > - Artifacts go to some named or default directory path. Uploading them
-> >   elsewhere is out of scope.
-> > - Exception handling is built in and makes it usable as a python library
-> > - Logging is built in with flexibility in mind (log to console, verbose or
-> >   silent, log to file, etc.)
-> > - Simple, one-line dockerized reproducers are given as a build artifact,
-> > for
-> >   reproducing builds locally.
-> > - Partial build failure support - e.g. what if kselftest fails but the
-> > rest of
-> >   the build passes?
-> >
-> 
-> Another "out of interest" question: have you modified kci_build
-> already to cover kselftest?
-> 
-> We have an open PR for that, if you're already using something in
-> production then it would be worth comparing what you've come up
-> with.
+Did you have time to take a look at my mock-up? It probably looks like too
+much text, but please don't hesitate to reach me with any questions or
+suggestions you have as you look through it, if you haven't already.
 
-No, we haven't implemented kselftest yet either. It's not easy because
-of the reasons I'll get into below.
+Please note that you don't have to start with sending all this data. In fact,
+only a few structural fields are required and we can start with the absolute
+minimum. The mock-up is showing what you *could* already send, but you don't
+have to go that far.
 
-> 
-> 
-> > - Rigorous unit testing
-> > - Implementation is modular enough to support things like a documentation
-> > build
-> >   and other targets in the tree such as various tools/, sparse checker,
-> >   coccinelle, etc.
-> >
-> 
-> Yes, however we need to draw the line somewhere.  I guess that
-> would be, anything that can already be built from a plain kernel
-> source tree.
+I'd like to schedule a hacking session at Plumbers where we go and try to get
+some data out of participants' systems and into KCIDB. Would you be interested
+to attend, perhaps?
 
-I agree that it should be restricted to things in the kernel tree; but
-that is a huge surface area that requires a certain robustness in the
-builder architecture to be able to support so many different targets.
+Nick
 
-For example, let's take kselftest's case (PR #339) - it gets the job
-done, but if it fails the whole build fails. That's probably correct in
-a strict sense, but what if you are building 10 additional targets - do
-you really want the whole build to fail if any one fails? In reality, we
-need to be able to deal with a failure in one part of the tree without
-blocking testing of the rest of the tree.
+On 7/22/20 3:42 PM, Nikolai Kondrashov wrote:
+ > Hi Philip,
+ >
+ > Re-sending this to add the kernelci maillist and a colleague, sorry.
+ > Please reply to *this* message instead of the first one.
+ >
+ > On 7/13/20 3:19 AM, Philip Li wrote:
+ >> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+ >>> How about I try to take a 0-day report and express it as a KCIDB submission,
+ >>> as an illustration of how this could work? Would that help you understand what
+ >>> we're trying to do? If yes, could you give me a link to one?
+ >> Right, the "accuracy" for all single branch we test is more related to technical
+ >> problem if we need look for a way to solve it. Here assume we have a report, it
+ >> does have chance to be aggeragated. You can pick up any link from
+ >> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/ (build) or
+ >> https://lists.01.org/hyperkitty/list/lkp@lists.01.org/ (runtime) for example.
+ >
+ > Alright, first I'll copy the KCIDB intro I sent Dmitry in another branch of
+ > this thread, in case you didn't read it (otherwise skip past END-OF-INTRO):
+ >
+ > You can submit all your data by just piping
+ > JSON to the "kcidb-submit" tool (providing some options for authentication and
+ > destination), or you could use the Python 3 API.
+ >
+ > The expected JSON data is a dictionary of arrays, along with the schema
+ > version identifier. Each of the arrays in the dictionary could be missing or
+ > empty, but otherwise they contain various report objects. The database will
+ > accept them in any (reasonable) amount, order, or combination, although
+ > submission order can affect when and how notifications are sent out.
+ >
+ > Every object has an ID which can be used to refer to it and link objects
+ > together, but all the IDs are generated by the submitter, who is making sure
+ > they're unique. For most of the objects (except revisions at this moment) you
+ > can just use your CI system's ID for it and prefix it with your CI system's
+ > name. This way you don't have to maintain a mapping between your system's IDs
+ > and our IDs when you report results gradually. If you don't have that, you can
+ > just generate them, for example hash some key fields or, as the last resort,
+ > use UUIDs. Revisions are just using commit hashes at the moment.
+ >
+ > Every object has a special property called "misc" which can contain arbitrary
+ > data. You could use that to submit data we don't have a schema for yet. The
+ > users/developers will be able to see it, and we can use that as samples for
+ > implementing future support.
+ >
+ > See example use of "misc" for a KernelCI test and its execution environment
+ > (yes, it could be formatted better):
+ > https://staging.kernelci.org:3000/d/test/test?orgId=1&var-id=kernelci:staging.kernelci.org:5ef9ab28baa38e14753eeeec
+ >
+ >                                 END-OF-INTRO
+ >
+ > I think it's great that 0-day e-mails contain everything needed to investigate
+ > and reproduce the issue and are self-sufficient. However, at the moment KCIDB
+ > doesn't allow embedding artifacts or logs into submissions, but instead
+ > expects them to be stored somewhere else and have the URLs provided.
+ >
+ > At the moment we would need you to do that, at least with .config files, but
+ > if you can't, we can work on supporting embedding them. We planned on copying
+ > linked files to KernelCI-managed storage anyway, eventually.
+ >
+ > KCIDB also doesn't support embedding the nice error summaries and log excerpts
+ > you include in your reports, but that should be quite easy to amend by storing
+ > them in the database itself (provided they're not too big). Just needs a
+ > little thinking about the exact schema to use.
+ >
+ > For now, though, my examples below assume you can provide links to files
+ > (spoofed here), and you're supplying the excerpts or complete logs with those.
+ >
+ > KCIDB doesn't support source code linters and static analysis (such as
+ > checkpatch, or coverity) at the moment, and we should add that. However,
+ > a sparse run could be expressed in KCIDB as a build.
+ >
+ > Taking this report as a sample:
+ >
+ >      https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/GUFRHHPKTWFYNLRH4LE2E2YELI6XG2IE/
+ >
+ > this is how a submission could look:
+ >
+ >      {
+ >          "revisions": [
+ >              {
+ >                  "id": "391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c",
+ >                  "origin": "0day",
+ >                  "discovery_time": "2020-07-08T07:57:24+03:00",
+ >                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/atorgue/stm32.git",
+ >                  "git_repository_commit_hash": "391e437eedc0dab0a9f2c26997e68e040ae04ea3",
+ >                  "git_repository_branch": "master",
+ >                  "patch_mboxes": [
+ >                      {
+ >                          "name": "0001-irqchip-stm32-exti-map-direct-event-to-irq-parent.patch",
+ >                          "url": "https://github.com/0day-ci/linux/commit/3f47dd3217f24edfd442b35784001979e7aeacc7.patch"
+ >                      }
+ >                  ],
+ >                  "message_id": "20200706081106.25125-1-alexandre.torgue@st.com",
+ >                  "contacts": [
+ >                      "Alexandre Torgue <alexandre.torgue@st.com>",
+ >                      "kbuild-all <kbuild-all@lists.01.org>",
+ >                      "Marc Zyngier <maz@kernel.org>",
+ >                      "Thomas Gleixner <tglx@linutronix.de>",
+ >                      "Jason Cooper <jason@lakedaemon.net>",
+ >                      "LKML <linux-kernel@vger.kernel.org>"
+ >                  ],
+ >                  "valid": true
+ >              }
+ >          ],
+ >          "builds": [
+ >              {
+ >                  "id": "0day:391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c:sparse",
+ >                  "origin": "0day",
+ >                  "revision_id": "391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c",
+ >                  "architecture": "arm",
+ >                  "compiler": "arm-linux-gnueabi-gcc (GCC) 9.3.0",
+ >                  "start_time": "2020-07-08T07:57:24+03:00",
+ >                  "config_url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/config",
+ >                  "log_url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/sparse_build.log",
+ >                  "command": "COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=arm",
+ >                  "input_files": [
+ >                      {
+ >                          "name": "make.cross",
+ >                          "url": "https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross"
+ >                      },
+ >                      {
+ >                          "name": "instructions.txt",
+ >                          "url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/sparse_repro.txt"
+ >                      }
+ >                  ],
+ >                  "valid": false
+ >              }
+ >          ],
+ >          "version": {
+ >              "major": 3,
+ >              "minor": 0
+ >          }
+ >      }
+ >
+ >
+ > The above describes the revision you're testing as a patch being applied to a
+ > particular commit in the stm32 repo's master branch. The revision has a build,
+ > which failed, the build has the config URL and the log linked, as well as the
+ > reproduction instructions linked as one of the "input files". We can work on
+ > adding a dedicated field for reproduction instructinos for both builds and
+ > tests, since they're very useful and syzbot also produces them.
+ >
+ > A failed W=1 build:
+ >
+ >      https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/WEKO2YRAZIPZFUQAY2D4XAOWJGC3HGBD/
+ >
+ > Would look similar:
+ >
+ >      {
+ >          "revisions": [
+ >              {
+ >                  "id": "c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2",
+ >                  "origin": "0day",
+ >                  "discovery_time": "2020-07-08T07:57:24+03:00",
+ >                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git",
+ >                  "git_repository_commit_hash": "c46ed28dbe95844c1d15addd26ff05499057c4d5",
+ >                  "git_repository_branch": "for-next",
+ >                  "patch_mboxes": [
+ >                      {
+ >                          "name": "0001-arm64-dts-qcom-sc7180-Add-lpass-cpu-node-for-I2S-dri.patch",
+ >                          "url": "https://github.com/0day-ci/linux/commit/d20696ca206ae45d9d27fbeffb23fe5431b5de9d.patch"
+ >                      }
+ >                  ],
+ >                  "message_id": "20200716061445.628709-1-cychiang@chromium.org",
+ >                  "contacts": [
+ >                      "Ajit Pandey <ajitp@codeaurora.org>",
+ >                      "Cheng-Yi Chiang <cychiang@chromium.org>",
+ >                      "kbuild-all <kbuild-all@lists.01.org>",
+ >                      "Andy Gross <agross@kernel.org>",
+ >                      "Bjorn Andersson <bjorn.andersson@linaro.org>",
+ >                      "Rob Herring <robh+dt@kernel.org>",
+ >                      "linux-arm-msm@vger.kernel.org",
+ >                      "devicetree@vger.kernel.org"
+ >                  ],
+ >                  "valid": true
+ >              }
+ >          ],
+ >          "builds": [
+ >              {
+ >                  "id": "0day:c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2:sparse",
+ >                  "origin": "0day",
+ >                  "revision_id": "c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2",
+ >                  "architecture": "arm",
+ >                  "compiler": "clang version 12.0.0",
+ >                  "start_time": "2020-07-08T07:57:24+03:00",
+ >                  "config_url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/config",
+ >                  "log_url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/w=1_build.log",
+ >                  "command": "COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=arm64",
+ >                  "input_files": [
+ >                      {
+ >                          "name": "make.cross",
+ >                          "url": "https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross"
+ >                      },
+ >                      {
+ >                          "name": "instructions.txt",
+ >                          "url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/w=1_repro.txt"
+ >                      }
+ >                  ],
+ >                  "valid": false
+ >              }
+ >          ],
+ >          "version": {
+ >              "major": 3,
+ >              "minor": 0
+ >          }
+ >      }
+ >
+ > KCIDB also doesn't support non-runtime tests for compiled kernels (such as
+ > size regression tests you're running), and we should add that, but meanwhile
+ > we can accommodate them as tests without "environments".
+ >
+ > This one:
+ >
+ >      https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/PX2O2OJZT2TZ7SU4VUB5ODM4KRBPTXD7/
+ >
+ > Could look like this:
+ >
+ >      {
+ >          "revisions": [
+ >              {
+ >                  "id": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >                  "origin": "0day",
+ >                  "discovery_time": "2020-07-17T14:41:52+03:00",
+ >                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git",
+ >                  "git_repository_commit_hash": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >                  "git_repository_branch": "mount_setattr",
+ >                  "contacts": [
+ >                      "Christian Brauner <christian@brauner.io>",
+ >                      "kbuild-all <kbuild-all@lists.01.org>"
+ >                  ],
+ >                  "valid": true
+ >              }
+ >          ],
+ >          "builds": [
+ >              {
+ >                  "id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >                  "origin": "0day",
+ >                  "revision_id": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >                  "start_time": "2020-07-17T14:41:52+03:00",
+ >                  "valid": true
+ >              }
+ >          ],
+ >          "tests": [
+ >              {
+ >                  "id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2:size",
+ >                  "origin": "0day",
+ >                  "build_id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >                  "path": "size_regression",
+ >                  "output_files": [
+ >                      {
+ >                          "name": "details.txt",
+ >                          "url": "https://01.org/0day/aa63af1b08246bd31b77d056bf1d47f775cecbe2/size_regression_details.log",
+ >                      }
+ >                  ],
+ >                  "start_time": "2020-07-17T14:41:52+03:00",
+ >                  "status": "FAIL",
+ >                  "waived": false
+ >              },
+ >          ],
+ >          "version": {
+ >              "major": 3,
+ >              "minor": 0
+ >          }
+ >      }
+ >
+ > Since you don't provide any build information in that report, the build object
+ > doesn't have any data. However, that's still valid according to the current
+ > schema.
+ >
+ > Finally, this runtime test failure:
+ >
+ >      https://lists.01.org/hyperkitty/list/lkp@lists.01.org/thread/ULKTFB6NGLORWH2WLEKFSFEQFSIWLT5F/
+ >
+ > you can report like this:
+ >
+ >      {
+ >          "revisions": [
+ >              {
+ >                  "id": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >                  "origin": "0day",
+ >                  "discovery_time": "2020-07-17T09:04:55+03:00",
+ >                  "git_repository_url": "https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git"
+ >                  "git_repository_commit_hash": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >                  "git_repository_branch": "master",
+ >                  "contacts": [
+ >                      "Paul E. McKenney <paulmck@kernel.org>",
+ >                      "LKP <lkp@lists.01.org>"
+ >                  ],
+ >                  "valid": true
+ >              }
+ >          ],
+ >          "builds": [
+ >              {
+ >                  "id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >                  "origin": "0day",
+ >                  "revision_id": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >                  "start_time": "2020-07-17T09:04:55+03:00",
+ >                  "architecture": "i386",
+ >                  "command": "make HOSTCC=gcc-9 CC=gcc-9 ARCH=i386 olddefconfig prepare modules_prepare bzImage",
+ >                  "config_url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/config",
+ >                  "valid": true
+ >              }
+ >          ],
+ >          "tests": [
+ >              {
+ >                  "id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c:trinity",
+ >                  "origin": "0day",
+ >                  "build_id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >                  "path": "trinity",
+ >                  "output_files": [
+ >                      {
+ >                          "name": "dmesg.xz",
+ >                          "url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/dmesg.xz",
+ >                      },
+ >                      {
+ >                          "name": "details.txt",
+ >                          "url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/trinity_details.log",
+ >                      }
+ >                  ],
+ >                  "environment": {
+ >                      "description": "qemu-system-i386 -enable-kvm -cpu SandyBridge -smp 2 -m 16G"
+ >                  },
+ >                  "start_time": "2020-07-17T09:04:55+03:00",
+ >                  "status": "FAIL",
+ >                  "waived": false
+ >              },
+ >          ],
+ >          "version": {
+ >              "major": 3,
+ >              "minor": 0
+ >          }
+ >      }
+ >
+ > Note the "contacts" field all revisions have: this will help us determine who
+ > to send the reports to.
+ >
+ > Perhaps we need to add support for test input files to accommodate your
+ > reproduction instructions and custom scripts.
+ >
+ > I have omitted some fields I could've added, and we need to improve the schema
+ > to accommodate your reports better, of course.
+ >
+ > However, if you'd be interested, we could help you set up forwarding your
+ > reports to KernelCI. You can start very simple and small, as the schema only
+ > requires a handful of fields. This will help us see your needs: what data you
+ > want in reports and on the dashboard, how many reports you want to push (both
+ > positive and negative), etc.
+ >
+ > Don't hesitate to write with questions, suggestions, and hope to "see" you at
+ > this year's Plumbers, where we hopefully will be presenting more about this
+ > effort. I'll also be writing a separate article introducing the schema this
+ > week, will copy both you and Dmitry here.
+ >
+ > Nick
+ >
+ > On 7/13/20 3:19 AM, Philip Li wrote:
+ >> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+ >>> Hi Philip,
+ >>>
+ >>> On 7/9/20 2:00 PM, Philip Li wrote:
+ >>>> The 0-day ci mostly focus on regression and then bisection, and the strategy
+ >>>> is to merge various branches to run the test. This is not exactly as the
+ >>>> tranditional CI. The worry here is to know exactly one branch is pass or
+ >>>> fail currently is not 100% available. For instance, the final merged branch
+ >>>> is fail doesn't provide fail/pass info of each individual branch. This triggers
+ >>>> bisection to kick out the bad branch.
+ >>>>
+ >>>> Then it need redo the testing of remaining ones, which is not always
+ >>>> feasible for us (considering the computing power).
+ >>>
+ >>> Yes, I think everyone here could sympathise with limited hardware resources :)
+ >>>
+ >>>> Especially, sometimes the bisection would fail.
+ >>>
+ >>> Can you give an example of how would a bisection fail?
+ >>> Would that be a flaky test failing on a previously assumed-good commit, for
+ >>> example?
+ >> thanks, one example is build issue that breaks the bisectability which can
+ >> lead to bisect fail.
+ >>
+ >>>
+ >>>> As we focus on regression a lot to bisect to first bad commit, there would
+ >>>> be uncertainty to draw conclusion for single branch.
+ >>>
+ >>> I think not having complete certainty for a project as large as the Linux
+ >>> kernel is normal. Kernel CI has the bisection system as well, and syzbot is
+ >>> going to even greater lengths with identifying similar failures. We at CKI
+ >>> have test maintainers constantly looking at test failures and deciding whether
+ >>> they're false or not. These are things we just have to handle for common
+ >>> reporting to work.
+ >>>
+ >>>> This requires more careful thinking for us without increasing the needs of
+ >>>> computing resource. This is one bottleneck I can see so far. Not sure any
+ >>>> idea or recommendation for this.
+ >>>
+ >>> Our aim with common reporting is simply to provide a unified way to reach
+ >>> developers with testing results, essentially to send them a single e-mail
+ >>> report, instead of one report per CI system, to make a single database
+ >>> available for analyzis and a single dashboard UI.
+ >>>
+ >>> I.e. instead of sending an e-mail report to a developer we ask you to send a
+ >>> JSON report to us, and then we try to handle analyzing and reporting for you.
+ >>>
+ >>> It is up to the submitting CI system to choose how many, or how little tests
+ >>> to run, or how much or how little data to send. Kernel CI is not going to ask
+ >>> you to run any tests, it is up to you.
+ >>>
+ >>> In the end, we trust you want the developers to notice and fix the problems
+ >>> you find, you'll try to provide enough data, and we'd like to make a system
+ >>> which will help you do that. If you can pinpoint the exact commit - great! If
+ >>> not, we'll just have some data from you which can be analyzed otherwise.
+ >>>
+ >>> How about I try to take a 0-day report and express it as a KCIDB submission,
+ >>> as an illustration of how this could work? Would that help you understand what
+ >>> we're trying to do? If yes, could you give me a link to one?
+ >> Right, the "accuracy" for all single branch we test is more related to technical
+ >> problem if we need look for a way to solve it. Here assume we have a report, it
+ >> does have chance to be aggeragated. You can pick up any link from
+ >> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/ (build) or
+ >> https://lists.01.org/hyperkitty/list/lkp@lists.01.org/ (runtime) for example.
+ >>
+ >> Thanks
+ >>
+ >>>
+ >>> Nick
+ >>>
+ >>
+ >
 
-e.g. recently -next was broken for syzkaller and lkft, but for different
-reasons. In LKFT's case, it was merely because the perf build failed,
-and caused the entire kernel build to fail. As a result, we had a
-multi-week gap in data and once perf was fixed, we had a backlog of
-problems to deal with.
-
-Different targets also have different build-time requirements. Things
-like the documentation build could have a specific container because of
-its specific requirements, rather than putting all requirements for
-every target into every build container.
-
-> 
-> 
-> > - Support for kernel fragement files or urls in addition to supporting
-> >   individual kernel config arguments
-> >
-> > Use Case Examples:
-> > - Install using pip, build using the cli interface
-> >   - "pip install --user kernel-builder; cd linux; kernel-builder --arch
-> > arm64 --toolchain clang-9"
-> > - Run using a published docker container. This example would need
-> > permission to
-> >   launch additional docker containers to perform the build steps.
-> >   - "docker run kernel-builder --arch arm64 --toolchain clang-9"
-> > - Install using pip, and use it from python as a library
-> >   - "import kernel-builder"
-> >
-> > In the example above, "kernel-builder" is a placeholder for whatever the
-> > name
-> > would be.
-> >
-> > The artifacts produced would be similar to the set of artifacts kci_build
-> > produces today, with the addition of a build reproducer script and probably
-> > some differences in metadata files.
-> >
-> > Docker support would be optional (you could use a locally installed
-> > toolchain),
-> > but allows for arbitrary toolchains to be available and perfect
-> > reproducibility.
-> >
-> 
-> I agree that we need to have a way to fully reproduce builds and
-> that includes having control over the environment, typically a
-> Docker image.  However, I'm a bit skeptical about making the tool
-> call Docker rather than have a wrapper to call it.  I think it's
-> more a matter of hierarchy in the stack, I see it as:
-> 
->   docker -> kernel-builder -> make -> gcc
-> 
-> Say, what if someone wanted to use another environment than
-> Docker?  Rather than make it an optional feature, I think it may
-> be better to keep it one level higher if we can still generate
-> reproducers like you're suggesting.
-
-Aye. This is what caused me to end up here in the first place.
-
-What we did is we wrapped kci_build like the following:
-
-kci_build_wrapper -> docker -> kci_build -> make -> gcc.
-
-Because there's "docker" in between our python wrapper and the kci_build
-implementation, the interface is subprocess() rather than python. And,
-the containers need python and any other kci_build run-time requirements
-installed, even if they're not needed to build the kernel.
-
-One consequence of this is it's really hard for example to tell if a
-kernel build failed or if the defconfig failed to build, because they're
-both done in kci_build build_kernel. The wrapper just sees a bad exit
-code from kci_build and has to try to figure out what went wrong.
-
-So why not move the wrapper into the container then? Then the containers
-would also need any additional run-time requirements of the wrapper,
-which also have nothing to do with building kernels. I don't think it's
-correct to install e.g. boto3 into a linux kernel toolchain container,
-and it makes the containers themselves non-portable.
-
-If the containers' responsibility were to only contain the things
-necessary to perform the kernel build, then their implementation,
-hosting, etc could be shared.
-
-Another problem is user runtime when trying to reproduce builds. You
-have to either publish linux kernel toolchain containers with the
-"kernel-builder" inside it, or you have to explain to users how to
-mount/copy it in, or you have to do reproducers without kernel-builder
-(which makes it a much harder problem). If kernel-builder is inside, now
-you have a container versioning problem because both the toolchain
-version and the kernel-builder version matter; which is to say, they
-should be separate containers each with their own versioning.
-
-Finally, I'll say that it's possible but not easy to reuse kci_build as
-it is today - in part because it leaves docker as an exercise for the
-user. Getting it into a container, getting the python paths correct, and
-dealing with the yaml files are barriers to entry for casual users.
-
-So, the options for keeping kernel-builder unaware of docker are all
-suboptimal. Trust me, I would have much preferred a workaround to what
-I'm proposing here.
-
-> 
-> 
-> > It's hard to change kci_build to be anything like this because it's tightly
-> > coupled with the kernelci-core repo, and kernelci itself. The design above
-> > also
-> > fundamentally changes how the builder interfaces with docker, such that it
-> > becomes supported directly rather than something that's implemented
-> > outside the
-> > scope of the builder.
-> >
-> > It's important that docker is supported directly because it makes the
-> > reproducible build use-case a one-liner, it solves the problem of having
-> > to get
-> > python and the builder into the build containers, and it allows for more
-> > granular control of the build.
-> >
-> > So, thoughts? How close or how far is this from the roadmap for kci_build
-> > as it
-> > stands today? We are likely to start working on this soon, and would really
-> > like to work together on it if possible.
-> >
-> 
-> Above all, thanks for the detailed proposal and for collaborating
-> on a common kernel build utility to share with KernelCI.  What
-> you're suggesting makes a lot of sense to me, and it's broadly in
-> line with where kernelci-core is going.
-> 
-> The initial goal of kernelci-core was to decouple the KernelCI
-> steps from Jenkins or any other execution environment.  It has
-> succeeded in this respect as it's now possible to do everything
-> on the command line or in other systems such as Gitlab CI, and
-> you've been able to reuse kci_build too.  I think it is important
-> that we keep a central repository with the KernelCI specific
-> orchestration logic and tools to handle configuration.  That
-> should become a proper "kernelci" Python package at some point,
-> when the repository has completed its transition.
-> 
-> Now, this kernelci package should ideally be a very thin layer to
-> just link components together and create pipeline steps.  What I
-> think we should have next is a toolbox of low-level stand-alone
-> packages that specialise in only one task, and I believe this is
-> where it would meet your use-case.  For example, I started
-> working on the "scalpel" tool last year to do bisections with the
-> aim of making it independent of KernelCI.  Now I guess we need
-> another tool to do kernel builds following the same approach,
-> maybe call it "spanner" or something constructive like that :)
-> 
-> That way, we may even keep kci_build with its current cli but
-> rather than have all the build steps in kernelci/build.py it
-> would be importing a common module (say, toolbox.spanner for the
-> sake of the argument) and your build service would be doing that
-> too.  Or there would also be some command line tool provided with
-> the package to run a build directly.
-
-I agree with most of that - kci_build stays as is but eventually uses
-some external build library rather than most of what's in build.py
-today.
-
-I'm not sure what you mean about the notion of a "toolbox"? I would make
-the kernel build implementation totally independent of any other tools,
-rather than trying to co-locate them in the same python package/git repo
-(if that's what you meant).
-
-> 
-> Basically, rather than adapting kci_build for other purposes, I'm
-> suggesting to create a generic tool that can be used by kci_build
-> as well as any other kernel CI system.
-> 
-> I don't know how to call this toolbox and where to host it, but
-> it would seem wise imho to keep it separate from KernelCI, LKFT
-> or any other CI system that would be using it.  It would probably
-> also make sense to at least keep it kernel-centric to focus on a
-> group of use-cases.  How does that sound?
-
-If there's agreement to do this together with kernelci, which I'm really
-happy about, then I propose it be something like
-github.com/kernelci/<somename>, where somename is available in the pypi
-namespace (spanner isn't).
-
-I think our requirements are largely the same. We do need to decide
-about the docker bits, and about how opinionated the tool should be.
-
-If there's wide agreement then we could establish such a repository and
-start iterating on a design document. I have someone available to start
-working on the actual implementation in a few weeks.
-
-There are other details to discuss, like how to deal with config (we had
-to do a bit of a workaround for it outside of kci_build), licensing,
-etc.
-
-> 
-> If you agree with this approach, the next steps would be to find
-> the least common denominator between the use-cases that we
-> already know about, which I guess are KernelCI and LKFT.  I think
-> it's largely doable, with probably some compromises on all parts
-> and some built-in flexibility to make this a truly generic tool.
-> The details of how to build each artifact, how to use containers,
-> and the format of the meta-data are probably areas where we may
-> need some custom code to do slightly different things.  But this
-> is like any software library, and it can be done iteratively.
-
-Yea - the nice thing is that if it's usable as a library or a cli, it's
-easy to wrap and transform things like metadata into different use-cases
-to maintain backward compatibility.
-
-> 
-> Best wishes,
-> Guillaume
-
--- 
-Linaro LKFT
-https://lkft.linaro.org
