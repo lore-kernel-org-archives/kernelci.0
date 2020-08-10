@@ -1,344 +1,542 @@
+Subject: Re: Working with the KernelCI project
+References: <20200707222342.scrz75265etaqlmd@redhat.com>
+ <20200709110029.GB27682@intel.com>
+ <69138572-7241-1636-8018-34cd380ec540@redhat.com>
+ <20200713001929.GA1812@intel.com>
+ <4a5d8379-b96d-6777-0d98-4ef13e56e0b3@redhat.com>
+ <20200809022529.GB26573@intel.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <80b657a1-de83-6d59-c26a-aa3352822986@redhat.com>
+Date: Mon, 10 Aug 2020 11:50:33 +0300
 MIME-Version: 1.0
-References: <20200707222342.scrz75265etaqlmd@redhat.com> <42d15463-e4ee-4c0b-c63f-dce7acb05e35@collabora.com>
- <CACT4Y+ZLoBLFWRM+RcKZJyR2Hh5az9W8_329ShM9JuSg6V4uVw@mail.gmail.com>
- <bbeeb467-1571-5404-7408-9b112d64e928@redhat.com> <CACT4Y+a1t-9sT7xz7d=Wmesnn_QoUqfipmoZXBu40_B+GQy=nQ@mail.gmail.com>
- <031d1941-2842-fc79-2a21-66bccb17f91c@redhat.com> <adb7924d-b524-2f86-05fd-dc0233004652@redhat.com>
-In-Reply-To: <adb7924d-b524-2f86-05fd-dc0233004652@redhat.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Wed, 5 Aug 2020 20:44:36 +0200
-Message-ID: <CACT4Y+beU9XoOt5XXLEarKyWvkhyRKC5aJRc6djmHsUqO+AbJA@mail.gmail.com>
-Subject: Re: [kernelci-members] Working with the KernelCI project
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200809022529.GB26573@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
+To: Philip Li <philip.li@intel.com>
+Cc: Don Zickus <dzickus@redhat.com>, dvyukov@google.com, kernelci-members@groups.io, nkondras@redhat.com, julie.du@intel.com, kernelci@groups.io, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
 
-On Mon, Aug 3, 2020 at 11:25 AM Nikolai Kondrashov
-<Nikolai.Kondrashov@redhat.com> wrote:
->
-> Hi Dmitry,
->
-> On 7/17/20 3:22 PM, Nikolai Kondrashov wrote:
->  > On 7/9/20 8:59 PM, Dmitry Vyukov wrote:
->  >  > On Thu, Jul 9, 2020 at 7:53 PM Nikolai Kondrashov
->  >  > <Nikolai.Kondrashov@redhat.com> wrote:
->  >  >> I can take a look at a specific syzbot issue data, try to craft a mock
->  >  >> submission to KCIDB (in JSON), and walk through the potential processing logic
->  >  >> for you. Would that be useful?
->  >  >
->  >  > Yes, it would be very useful...
->  >  >
->  > This could be the first step in implementing issue support. After that we can
->  > work on marking duplicate bugs, perhaps, or explore what we could do with
->  > marking bugs obsolete. However, we probably don't want to replace a bug
->  > tracker, but only use issue information in order to produce appropriate
->  > result notifications and otherwise redirect to a real bug tracker for issue
->  > discussion, investigation, etc.
->  >
->  > You mention extracting an issue reproducer as a separate event. How is that
->  > done, who would be interested in such an event and how would they be alerted?
->  >
->  > Meanwhile, I can help you set up a simple bridge from syzbot to KCIDB sending
->  > the data we can already support (the above minus "issues" and "incidents",
->  > plus maybe some extra data), so that we can see how your data can (or can't)
->  > fit, what kind of load we get, what we can do with notifications and UI, what
->  > we need to change to accommodate it better, etc.
->  >
->  > We could set test status to "DONE" in all your reports (i.e. no "PASS" or
->  > "FAIL" verdict), so that we don't generate unnecessary notifications until we
->  > can handle issues.
->
-> Did you have time to take a look at my mock-up? It probably looks like too
-> much text, but please don't hesitate to reach me with any questions or
-> suggestions you have as you look through it, if you haven't already.
->
-> Please note that you don't have to start with sending all this data. In fact,
-> only a few structural fields are required and we can start with the absolute
-> minimum. The mock-up is showing what you *could* already send, but you don't
-> have to go that far.
->
-> I'd like to schedule a hacking session at Plumbers where we go and try to get
-> some data out of participants' systems and into KCIDB. Would you be interested
-> to attend, perhaps?
+On 8/9/20 5:25 AM, Philip Li wrote:
+ > On Wed, Jul 22, 2020 at 03:42:41PM +0300, Nikolai Kondrashov wrote:
+ >> On 7/13/20 3:19 AM, Philip Li wrote:
+ >>> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+ >> The above describes the revision you're testing as a patch being applied to a
+ >> particular commit in the stm32 repo's master branch. The revision has a build,
+ >> which failed, the build has the config URL and the log linked, as well as the
+ >
+ > Thanks, besides the final result like success or failed, does the db currently
+ > support start but not completed build (or planned but not start)?
 
-Hi Nick,
+Not yet, and we don't support updating the submitted objects yet either. The
+database considers the results final, although you can send them in gradually.
 
-I've seen your reply and seen that you provided an example of how to
-fill in the data. I was starred in my inbox, but I did not have time
-to look at the details yet (we have somewhat crazy intern season). I
-still want to do this.
+This lets us keep the design simpler, so we can concentrate on figuring out
+more controversial topics, such as which objects we need, which data we need
+for each object and how we can represent it. For this reason we need your data
+now, whatever it is, so we can figure it out :) Once we more-or-less settle on
+that, we can consider making reporting more gradual and flexible.
 
-I am not sure how a remote virtual hacking session is different from
-just doing this normally and some email exchange :)
+ >> Since you don't provide any build information in that report, the build object
+ >> doesn't have any data. However, that's still valid according to the current
+ >> schema.
+ >
+ > If the commit from test result is same as build report's commit, does it mean
+ > when uploading test result, we need figure out the revision's id and builds' id
+ > to be part of test result's joson, if they have been uploaded during build result?
 
+You don't need to know the revision ID (the commit hash) when submitting a
+test result, only the build ID. But yes, you have to know it to link your test
+to the build (which links to the revision, in turn). You don't have to include
+the revision/build objects themselves in the same submission.
 
+It's up to you what you use for the build ID, as long as it's unique across
+all the builds you submit. E.g. you could use an existing ID from your system
+which corresponds to a build, and which is available to you when you report
+the test.
 
+ >> Note the "contacts" field all revisions have: this will help us determine who
+ >> to send the reports to.
+ >
+ > is this a feature to be triggered by the db to send reports? As 0day sends
+ > mail to notify the bad commit to related contacts to be aware of the problem.
 
+Yes, this is intended for that. Although we are currently developing the
+notification system and are not sending the reports to real people yet.
 
-> On 7/17/20 3:22 PM, Nikolai Kondrashov wrote:
->  > Hi Dmitry,
->  >
->  > + kernelci maillist and a colleague
->  >
->  > On 7/9/20 8:59 PM, Dmitry Vyukov wrote:
->  >  > On Thu, Jul 9, 2020 at 7:53 PM Nikolai Kondrashov
->  >  > <Nikolai.Kondrashov@redhat.com> wrote:
->  >  >> I can take a look at a specific syzbot issue data, try to craft a mock
->  >  >> submission to KCIDB (in JSON), and walk through the potential processing logic
->  >  >> for you. Would that be useful?
->  >  >
->  >  > Yes, it would be very useful...
->  >
->  > Alright, first a few kcidb basics. You can submit all your data by just piping
->  > JSON to the "kcidb-submit" tool (providing some options for authentication and
->  > destination), or you could use the Python 3 API.
->  >
->  > The expected JSON data is a dictionary of arrays, along with the schema
->  > version identifier. Each of the arrays in the dictionary could be missing or
->  > empty, but otherwise they contain various report objects. The database will
->  > accept them in any (reasonable) amount, order, or combination, although
->  > submission order can affect when and how notifications are sent out.
->  >
->  > Every object has an ID which can be used to refer to it and link objects
->  > together, but all the IDs are generated by the submitter, who is making sure
->  > they're unique. For most of the objects (except revisions at this moment) you
->  > can just use your CI system's ID for it and prefix it with your CI system's
->  > name. This way you don't have to maintain a mapping between your system's IDs
->  > and our IDs when you report results gradually. If you don't have that, you can
->  > just generate them, for example hash some key fields or, as the last resort,
->  > use UUIDs. Revisions are just using commit hashes at the moment.
->  >
->  > Every object has a special property called "misc" which can contain arbitrary
->  > data. You could use that to submit data we don't have a schema for yet. The
->  > users/developers will be able to see it, and we can use that as samples for
->  > implementing future support.
->  >
->  > See example use of "misc" for a KernelCI test and its execution environment
->  > (yes, it could be formatted better):
->  > https://staging.kernelci.org:3000/d/test/test?orgId=1&var-id=kernelci:staging.kernelci.org:5ef9ab28baa38e14753eeeec
->  >
->  > I mocked up a submission of two syzkaller runs from
->  > https://syzkaller.appspot.com/bug?id=ca2299cf11b3e3d3d0f44ac479410a14eecbd326
->  > with the initial support for issues we can implement. Note that there are
->  > more properties defined by the schema you can add to the submissions, but
->  > they're not required (same as some of the included).
->  >
->  > Let's say you found a new commit or release to test with syzkaller. You can
->  > submit that information right away:
->  >
->  >      {
->  >          "revisions": [
->  >              {
->  >                  "id": "7ae77150d94d3b535c7b85e6b3647113095e79bf",
->  >                  "origin": "syzbot",
->  >                  "discovery_time": "2020-06-25T03:21:48+00:00",
->  >                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git",
->  >                  "git_repository_commit_hash": "7ae77150d94d3b535c7b85e6b3647113095e79bf",
->  >                  "git_repository_branch": "master",
->  >                  "valid": true
->  >              },
->  >          ],
->  >          "version": {
->  >              "major": 3,
->  >              "minor": 0
->  >          }
->  >      }
->  >
->  > When you've built it, you can tell us about it:
->  >
->  >      {
->  >          "builds": [
->  >              {
->  >                  "id": "syzkaller:d195fe572fb15312",
->  >                  "revision_id": "7ae77150d94d3b535c7b85e6b3647113095e79bf",
->  >                  "architecture": "x86_64",
->  >                  "compiler": "gcc (GCC) 9.0.0 20181231 (experimental)",
->  >                  "start_time": "2020-06-25T03:21:48+00:00",
->  >                  "config_url": "https://syzkaller.appspot.com/text?tag=KernelConfig&x=d195fe572fb15312",
->  >                  "valid": true
->  >              },
->  >          ],
->  >          "version": {
->  >              "major": 3,
->  >              "minor": 0
->  >          }
->  >      }
->  >
->  > If it failed to build you can send us the same data, but with "valid" set to
->  > "false", and maybe attach the log. You don't have to, though.
->  >
->  > Next, after you made it crash with syzkaller, you can send us your test
->  > result along with links to some output files:
->  >
->  >      {
->  >          "tests": [
->  >              {
->  >                  "build_id": "syzkaller:d195fe572fb15312",
->  >                  "id": "syzkaller:d195fe572fb15312",
->  >                  "output_files": [
->  >                      {
->  >                          "name": "log.txt",
->  >                          "url": "https://syzkaller.appspot.com/text?tag=CrashLog&x=137c5419100000"
->  >                      },
->  >                      {
->  >                          "name": "report.txt",
->  >                          "url": "https://syzkaller.appspot.com/text?tag=CrashReport&x=1543f44b100000"
->  >                      },
->  >                      {
->  >                          "name": "repro.syz.txt",
->  >                          "url": "https://syzkaller.appspot.com/text?tag=ReproSyz&x=12941c03100000"
->  >                      },
->  >                      {
->  >                          "name": "repro.c",
->  >                          "url": "https://syzkaller.appspot.com/text?tag=ReproC&x=12002cf9100000"
->  >                      }
->  >                  ],
->  >                  "path": "syzkaller",
->  >                  "start_time": "2020-06-25T03:21:48+00:00",
->  >                  "status": "FAIL",
->  >                  "waived": false
->  >              },
->  >          ],
->  >          "version": {
->  >              "major": 3,
->  >              "minor": 0
->  >          }
->  >      }
->  >
->  > We're putting the reproducers into output files here, but later we can add
->  > dedicated fields, to allow inclusion into notification e-mails, for example.
->  >
->  > At this point, some subscriptions watching for any new test failures might
->  > trigger a notification (e-mail report) to some subscribers
->  > (developers/maintainers).
->  >
->  > Everything described above is currently supported, now onto what I think we
->  > can do to support the issues (for the start).
->  >
->  > Once you've created the issue for the crash you detected above, you can send
->  > it to us:
->  >
->  >      {
->  >          "issues": [
->  >              {
->  >                  "id": "syzkaller:ca2299cf11b3e3d3d0f44ac479410a14eecbd326",
->  >                  "origin": "syzkaller",
->  >                  "subject": "WARNING in idr_alloc",
->  >                  "url": "https://syzkaller.appspot.com/bug?id=ca2299cf11b3e3d3d0f44ac479410a14eecbd326"
->  >              }
->  >          ],
->  >          "version": {
->  >              "major": 4,
->  >              "minor": 0
->  >          }
->  >      }
->  >
->  > You can also send a record of this issue occurring (an "incident") in the test
->  > run you reported above:
->  >
->  >      {
->  >          "incidents": [
->  >              {
->  >                  "test_id": "syzkaller:d195fe572fb15312",
->  >                  "issue_id": "syzkaller:ca2299cf11b3e3d3d0f44ac479410a14eecbd326",
->  >                  "origin": "syzkaller"
->  >              },
->  >          ],
->  >          "version": {
->  >              "major": 4,
->  >              "minor": 0
->  >          }
->  >      }
->  >
->  > All of the above could be sent in one go as well. For example you could send
->  > another record of the same crash occurring in another revision like this:
->  >
->  >      {
->  >          "revisions": [
->  >              {
->  >                  "id": "0aea6d5c5be33ce94c16f9ab2f64de1f481f424b",
->  >                  "origin": "syzbot",
->  >                  "discovery_time": "2020-07-12T15:56:32+00:00",
->  >                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git",
->  >                  "git_repository_commit_hash": "0aea6d5c5be33ce94c16f9ab2f64de1f481f424b",
->  >                  "git_repository_branch": "master",
->  >                  "valid": true
->  >              }
->  >          ],
->  >          "builds": [
->  >              {
->  >                  "id": "syzkaller:66ad203c2bb6d8b",
->  >                  "revision_id": "0aea6d5c5be33ce94c16f9ab2f64de1f481f424b",
->  >                  "architecture": "x86_64",
->  >                  "compiler": "gcc (GCC) 9.0.0 20181231 (experimental)",
->  >                  "start_time": "2020-07-12T15:56:32+00:00",
->  >                  "config_url": "https://syzkaller.appspot.com/text?tag=KernelConfig&x=66ad203c2bb6d8b",
->  >                  "valid": true
->  >              }
->  >          ],
->  >          "tests": [
->  >              {
->  >                  "build_id": "syzkaller:66ad203c2bb6d8b",
->  >                  "id": "syzkaller:66ad203c2bb6d8b",
->  >                  "output_files": [
->  >                      {
->  >                          "name": "log.txt",
->  >                          "url": "https://syzkaller.appspot.com/text?tag=CrashLog&x=12dcca00900000"
->  >                      },
->  >                      {
->  >                          "name": "report.txt",
->  >                          "url": "https://syzkaller.appspot.com/text?tag=CrashReport&x=136ebf47100000"
->  >                      }
->  >                  ],
->  >                  "path": "syzkaller",
->  >                  "start_time": "2020-07-12T15:56:03+00:00",
->  >                  "status": "FAIL",
->  >                  "waived": false
->  >              }
->  >          ],
->  >          "incidents": [
->  >              {
->  >                  "test_id": "syzkaller:66ad203c2bb6d8b",
->  >                  "issue_id": "syzkaller:ca2299cf11b3e3d3d0f44ac479410a14eecbd326",
->  >                  "origin": "syzkaller"
->  >              }
->  >          ],
->  >          "version": {
->  >              "major": 4,
->  >              "minor": 0
->  >          }
->  >      }
->  >
->  > This time the notification system will notice that this failure is linked to
->  > an already-reported issue and won't issue a notification e-mail.
->  >
->  > CI systems which don't track issues would just not report any "issues" or
->  > "incidents". Any tests arriving without an issue incident in the same JSON
->  > document, or in the database already, would each be considered incidents of an
->  > (unknown) new issue, and reported appropriately.
->  >
->  > This could be the first step in implementing issue support. After that we can
->  > work on marking duplicate bugs, perhaps, or explore what we could do with
->  > marking bugs obsolete. However, we probably don't want to replace a bug
->  > tracker, but only use issue information in order to produce appropriate
->  > result notifications and otherwise redirect to a real bug tracker for issue
->  > discussion, investigation, etc.
->  >
->  > You mention extracting an issue reproducer as a separate event. How is that
->  > done, who would be interested in such an event and how would they be alerted?
->  >
->  > Meanwhile, I can help you set up a simple bridge from syzbot to KCIDB sending
->  > the data we can already support (the above minus "issues" and "incidents",
->  > plus maybe some extra data), so that we can see how your data can (or can't)
->  > fit, what kind of load we get, what we can do with notifications and UI, what
->  > we need to change to accommodate it better, etc.
->  >
->  > We could set test status to "DONE" in all your reports (i.e. no "PASS" or
->  > "FAIL" verdict), so that we don't generate unnecessary notifications until we
->  > can handle issues.
->  >
->  > Nick
->
->
-> 
->
+ >> Perhaps we need to add support for test input files to accommodate your
+ >> reproduction instructions and custom scripts.
+ >>
+ >> I have omitted some fields I could've added, and we need to improve the schema
+ >> to accommodate your reports better, of course.
+ >>
+ >> However, if you'd be interested, we could help you set up forwarding your
+ >> reports to KernelCI. You can start very simple and small, as the schema only
+ >> requires a handful of fields. This will help us see your needs: what data you
+ >> want in reports and on the dashboard, how many reports you want to push (both
+ >> positive and negative), etc.
+ >
+ > Thanks for the offering, the aggregation is a nice feature, but we are fully
+ > occupied by planned effort and it's hard to do actual implementation level thing
+ > in short term. Meanwhile I'd like to know more about it, and look fwd to the
+ > hacking session if i could attend it.
+
+That's understandable, of course. If you make it, I hope I'll be able to show
+how easy it is to start submitting :)
+
+As a primer, this is literally how the interface could look:
+
+     cat report.json | kcidb-submit -p kernelci-production -t kernelci_new
+
+See you at Plumbers!
+
+Nick
+
+On 8/9/20 5:25 AM, Philip Li wrote:
+ > On Wed, Jul 22, 2020 at 03:42:41PM +0300, Nikolai Kondrashov wrote:
+ >> Hi Philip,
+ >>
+ >> Re-sending this to add the kernelci maillist and a colleague, sorry.
+ >> Please reply to *this* message instead of the first one.
+ >>
+ >> On 7/13/20 3:19 AM, Philip Li wrote:
+ >>> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+ >>>> How about I try to take a 0-day report and express it as a KCIDB submission,
+ >>>> as an illustration of how this could work? Would that help you understand what
+ >>>> we're trying to do? If yes, could you give me a link to one?
+ >>> Right, the "accuracy" for all single branch we test is more related to technical
+ >>> problem if we need look for a way to solve it. Here assume we have a report, it
+ >>> does have chance to be aggeragated. You can pick up any link from
+ >>> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/ (build) or
+ >>> https://lists.01.org/hyperkitty/list/lkp@lists.01.org/ (runtime) for example.
+ >>
+ >> Alright, first I'll copy the KCIDB intro I sent Dmitry in another branch of
+ >> this thread, in case you didn't read it (otherwise skip past END-OF-INTRO):
+ >>
+ >> You can submit all your data by just piping
+ >> JSON to the "kcidb-submit" tool (providing some options for authentication and
+ >> destination), or you could use the Python 3 API.
+ >>
+ >> The expected JSON data is a dictionary of arrays, along with the schema
+ >> version identifier. Each of the arrays in the dictionary could be missing or
+ >> empty, but otherwise they contain various report objects. The database will
+ >> accept them in any (reasonable) amount, order, or combination, although
+ >> submission order can affect when and how notifications are sent out.
+ >>
+ >> Every object has an ID which can be used to refer to it and link objects
+ >> together, but all the IDs are generated by the submitter, who is making sure
+ >> they're unique. For most of the objects (except revisions at this moment) you
+ >> can just use your CI system's ID for it and prefix it with your CI system's
+ >> name. This way you don't have to maintain a mapping between your system's IDs
+ >> and our IDs when you report results gradually. If you don't have that, you can
+ >> just generate them, for example hash some key fields or, as the last resort,
+ >> use UUIDs. Revisions are just using commit hashes at the moment.
+ >>
+ >> Every object has a special property called "misc" which can contain arbitrary
+ >> data. You could use that to submit data we don't have a schema for yet. The
+ >> users/developers will be able to see it, and we can use that as samples for
+ >> implementing future support.
+ >>
+ >> See example use of "misc" for a KernelCI test and its execution environment
+ >> (yes, it could be formatted better):
+ >> https://staging.kernelci.org:3000/d/test/test?orgId=1&var-id=kernelci:staging.kernelci.org:5ef9ab28baa38e14753eeeec
+ >>
+ >>                                 END-OF-INTRO
+ >>
+ >> I think it's great that 0-day e-mails contain everything needed to investigate
+ >> and reproduce the issue and are self-sufficient. However, at the moment KCIDB
+ >> doesn't allow embedding artifacts or logs into submissions, but instead
+ >> expects them to be stored somewhere else and have the URLs provided.
+ >>
+ >> At the moment we would need you to do that, at least with .config files, but
+ >> if you can't, we can work on supporting embedding them. We planned on copying
+ >> linked files to KernelCI-managed storage anyway, eventually.
+ >>
+ >> KCIDB also doesn't support embedding the nice error summaries and log excerpts
+ >> you include in your reports, but that should be quite easy to amend by storing
+ >> them in the database itself (provided they're not too big). Just needs a
+ >> little thinking about the exact schema to use.
+ >>
+ >> For now, though, my examples below assume you can provide links to files
+ >> (spoofed here), and you're supplying the excerpts or complete logs with those.
+ > thanks, the samples below are helpful, i have added a few comments to discuss.
+ >
+ >>
+ >> KCIDB doesn't support source code linters and static analysis (such as
+ >> checkpatch, or coverity) at the moment, and we should add that. However,
+ >> a sparse run could be expressed in KCIDB as a build.
+ >>
+ >> Taking this report as a sample:
+ >>
+ >>      https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/GUFRHHPKTWFYNLRH4LE2E2YELI6XG2IE/
+ >>
+ >> this is how a submission could look:
+ >>
+ >>      {
+ >>          "revisions": [
+ >>              {
+ >>                  "id": "391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c",
+ >>                  "origin": "0day",
+ >>                  "discovery_time": "2020-07-08T07:57:24+03:00",
+ >>                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/atorgue/stm32.git",
+ >>                  "git_repository_commit_hash": "391e437eedc0dab0a9f2c26997e68e040ae04ea3",
+ >>                  "git_repository_branch": "master",
+ >>                  "patch_mboxes": [
+ >>                      {
+ >>                          "name": "0001-irqchip-stm32-exti-map-direct-event-to-irq-parent.patch",
+ >>                          "url": "https://github.com/0day-ci/linux/commit/3f47dd3217f24edfd442b35784001979e7aeacc7.patch"
+ >>                      }
+ >>                  ],
+ >>                  "message_id": "20200706081106.25125-1-alexandre.torgue@st.com",
+ >>                  "contacts": [
+ >>                      "Alexandre Torgue <alexandre.torgue@st.com>",
+ >>                      "kbuild-all <kbuild-all@lists.01.org>",
+ >>                      "Marc Zyngier <maz@kernel.org>",
+ >>                      "Thomas Gleixner <tglx@linutronix.de>",
+ >>                      "Jason Cooper <jason@lakedaemon.net>",
+ >>                      "LKML <linux-kernel@vger.kernel.org>"
+ >>                  ],
+ >>                  "valid": true
+ >>              }
+ >>          ],
+ >>          "builds": [
+ >>              {
+ >>                  "id": "0day:391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c:sparse",
+ >>                  "origin": "0day",
+ >>                  "revision_id": "391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c",
+ >>                  "architecture": "arm",
+ >>                  "compiler": "arm-linux-gnueabi-gcc (GCC) 9.3.0",
+ >>                  "start_time": "2020-07-08T07:57:24+03:00",
+ >>                  "config_url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/config",
+ >>                  "log_url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/sparse_build.log",
+ >>                  "command": "COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=arm",
+ >>                  "input_files": [
+ >>                      {
+ >>                          "name": "make.cross",
+ >>                          "url": "https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross"
+ >>                      },
+ >>                      {
+ >>                          "name": "instructions.txt",
+ >>                          "url": "https://01.org/0day/391e437eedc0dab0a9f2c26997e68e040ae04ea3+88b9f2633622d8ca67ee0357740daa51095e59fa672db64895e871d8195d777c/sparse_repro.txt"
+ >>                      }
+ >>                  ],
+ >>                  "valid": false
+ >>              }
+ >>          ],
+ >>          "version": {
+ >>              "major": 3,
+ >>              "minor": 0
+ >>          }
+ >>      }
+ >>
+ >>
+ >> The above describes the revision you're testing as a patch being applied to a
+ >> particular commit in the stm32 repo's master branch. The revision has a build,
+ >> which failed, the build has the config URL and the log linked, as well as the
+ > Thanks, besides the final result like success or failed, does the db currently
+ > support start but not completed build (or planned but not start)?
+ >
+ >> reproduction instructions linked as one of the "input files". We can work on
+ >> adding a dedicated field for reproduction instructinos for both builds and
+ >> tests, since they're very useful and syzbot also produces them.
+ >>
+ >> A failed W=1 build:
+ >>
+ >>      https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/WEKO2YRAZIPZFUQAY2D4XAOWJGC3HGBD/
+ >>
+ >> Would look similar:
+ >>
+ >>      {
+ >>          "revisions": [
+ >>              {
+ >>                  "id": "c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2",
+ >>                  "origin": "0day",
+ >>                  "discovery_time": "2020-07-08T07:57:24+03:00",
+ >>                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git",
+ >>                  "git_repository_commit_hash": "c46ed28dbe95844c1d15addd26ff05499057c4d5",
+ >>                  "git_repository_branch": "for-next",
+ >>                  "patch_mboxes": [
+ >>                      {
+ >>                          "name": "0001-arm64-dts-qcom-sc7180-Add-lpass-cpu-node-for-I2S-dri.patch",
+ >>                          "url": "https://github.com/0day-ci/linux/commit/d20696ca206ae45d9d27fbeffb23fe5431b5de9d.patch"
+ >>                      }
+ >>                  ],
+ >>                  "message_id": "20200716061445.628709-1-cychiang@chromium.org",
+ >>                  "contacts": [
+ >>                      "Ajit Pandey <ajitp@codeaurora.org>",
+ >>                      "Cheng-Yi Chiang <cychiang@chromium.org>",
+ >>                      "kbuild-all <kbuild-all@lists.01.org>",
+ >>                      "Andy Gross <agross@kernel.org>",
+ >>                      "Bjorn Andersson <bjorn.andersson@linaro.org>",
+ >>                      "Rob Herring <robh+dt@kernel.org>",
+ >>                      "linux-arm-msm@vger.kernel.org",
+ >>                      "devicetree@vger.kernel.org"
+ >>                  ],
+ >>                  "valid": true
+ >>              }
+ >>          ],
+ >>          "builds": [
+ >>              {
+ >>                  "id": "0day:c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2:sparse",
+ >>                  "origin": "0day",
+ >>                  "revision_id": "c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2",
+ >>                  "architecture": "arm",
+ >>                  "compiler": "clang version 12.0.0",
+ >>                  "start_time": "2020-07-08T07:57:24+03:00",
+ >>                  "config_url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/config",
+ >>                  "log_url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/w=1_build.log",
+ >>                  "command": "COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=arm64",
+ >>                  "input_files": [
+ >>                      {
+ >>                          "name": "make.cross",
+ >>                          "url": "https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross"
+ >>                      },
+ >>                      {
+ >>                          "name": "instructions.txt",
+ >>                          "url": "https://01.org/0day/c46ed28dbe95844c1d15addd26ff05499057c4d5+3a6bc6d39be8f6c3acc50a89c648859f1ee0d638f4969ec4d2cab6c7135518c2/w=1_repro.txt"
+ >>                      }
+ >>                  ],
+ >>                  "valid": false
+ >>              }
+ >>          ],
+ >>          "version": {
+ >>              "major": 3,
+ >>              "minor": 0
+ >>          }
+ >>      }
+ >>
+ >> KCIDB also doesn't support non-runtime tests for compiled kernels (such as
+ >> size regression tests you're running), and we should add that, but meanwhile
+ >> we can accommodate them as tests without "environments".
+ >>
+ >> This one:
+ >>
+ >>      https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/PX2O2OJZT2TZ7SU4VUB5ODM4KRBPTXD7/
+ >>
+ >> Could look like this:
+ >>
+ >>      {
+ >>          "revisions": [
+ >>              {
+ >>                  "id": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >>                  "origin": "0day",
+ >>                  "discovery_time": "2020-07-17T14:41:52+03:00",
+ >>                  "git_repository_url": "https://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git",
+ >>                  "git_repository_commit_hash": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >>                  "git_repository_branch": "mount_setattr",
+ >>                  "contacts": [
+ >>                      "Christian Brauner <christian@brauner.io>",
+ >>                      "kbuild-all <kbuild-all@lists.01.org>"
+ >>                  ],
+ >>                  "valid": true
+ >>              }
+ >>          ],
+ >>          "builds": [
+ >>              {
+ >>                  "id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >>                  "origin": "0day",
+ >>                  "revision_id": "aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >>                  "start_time": "2020-07-17T14:41:52+03:00",
+ >>                  "valid": true
+ >>              }
+ >>          ],
+ >>          "tests": [
+ >>              {
+ >>                  "id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2:size",
+ >>                  "origin": "0day",
+ >>                  "build_id": "0day:aa63af1b08246bd31b77d056bf1d47f775cecbe2",
+ >>                  "path": "size_regression",
+ >>                  "output_files": [
+ >>                      {
+ >>                          "name": "details.txt",
+ >>                          "url": "https://01.org/0day/aa63af1b08246bd31b77d056bf1d47f775cecbe2/size_regression_details.log",
+ >>                      }
+ >>                  ],
+ >>                  "start_time": "2020-07-17T14:41:52+03:00",
+ >>                  "status": "FAIL",
+ >>                  "waived": false
+ >>              },
+ >>          ],
+ >>          "version": {
+ >>              "major": 3,
+ >>              "minor": 0
+ >>          }
+ >>      }
+ >>
+ >> Since you don't provide any build information in that report, the build object
+ >> doesn't have any data. However, that's still valid according to the current
+ >> schema.
+ > If the commit from test result is same as build report's commit, does it mean
+ > when uploading test result, we need figure out the revision's id and builds' id
+ > to be part of test result's joson, if they have been uploaded during build result?
+ >
+ >>
+ >> Finally, this runtime test failure:
+ >>
+ >>      https://lists.01.org/hyperkitty/list/lkp@lists.01.org/thread/ULKTFB6NGLORWH2WLEKFSFEQFSIWLT5F/
+ >>
+ >> you can report like this:
+ >>
+ >>      {
+ >>          "revisions": [
+ >>              {
+ >>                  "id": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >>                  "origin": "0day",
+ >>                  "discovery_time": "2020-07-17T09:04:55+03:00",
+ >>                  "git_repository_url": "https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git"
+ >>                  "git_repository_commit_hash": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >>                  "git_repository_branch": "master",
+ >>                  "contacts": [
+ >>                      "Paul E. McKenney <paulmck@kernel.org>",
+ >>                      "LKP <lkp@lists.01.org>"
+ >>                  ],
+ >>                  "valid": true
+ >>              }
+ >>          ],
+ >>          "builds": [
+ >>              {
+ >>                  "id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >>                  "origin": "0day",
+ >>                  "revision_id": "5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >>                  "start_time": "2020-07-17T09:04:55+03:00",
+ >>                  "architecture": "i386",
+ >>                  "command": "make HOSTCC=gcc-9 CC=gcc-9 ARCH=i386 olddefconfig prepare modules_prepare bzImage",
+ >>                  "config_url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/config",
+ >>                  "valid": true
+ >>              }
+ >>          ],
+ >>          "tests": [
+ >>              {
+ >>                  "id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c:trinity",
+ >>                  "origin": "0day",
+ >>                  "build_id": "0day:5155be9994e557618a8312389fb4e52dfbf28a3c",
+ >>                  "path": "trinity",
+ >>                  "output_files": [
+ >>                      {
+ >>                          "name": "dmesg.xz",
+ >>                          "url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/dmesg.xz",
+ >>                      },
+ >>                      {
+ >>                          "name": "details.txt",
+ >>                          "url": "https://01.org/0day/5155be9994e557618a8312389fb4e52dfbf28a3c/trinity_details.log",
+ >>                      }
+ >>                  ],
+ >>                  "environment": {
+ >>                      "description": "qemu-system-i386 -enable-kvm -cpu SandyBridge -smp 2 -m 16G"
+ >>                  },
+ >>                  "start_time": "2020-07-17T09:04:55+03:00",
+ >>                  "status": "FAIL",
+ >>                  "waived": false
+ >>              },
+ >>          ],
+ >>          "version": {
+ >>              "major": 3,
+ >>              "minor": 0
+ >>          }
+ >>      }
+ >>
+ >> Note the "contacts" field all revisions have: this will help us determine who
+ >> to send the reports to.
+ > is this a feature to be triggered by the db to send reports? As 0day sends
+ > mail to notify the bad commit to related contacts to be aware of the problem.
+ >
+ >>
+ >> Perhaps we need to add support for test input files to accommodate your
+ >> reproduction instructions and custom scripts.
+ >>
+ >> I have omitted some fields I could've added, and we need to improve the schema
+ >> to accommodate your reports better, of course.
+ >>
+ >> However, if you'd be interested, we could help you set up forwarding your
+ >> reports to KernelCI. You can start very simple and small, as the schema only
+ >> requires a handful of fields. This will help us see your needs: what data you
+ >> want in reports and on the dashboard, how many reports you want to push (both
+ >> positive and negative), etc.
+ > Thanks for the offering, the aggregation is a nice feature, but we are fully
+ > occupied by planned effort and it's hard to do actual implementation level thing
+ > in short term. Meanwhile I'd like to know more about it, and look fwd to the
+ > hacking session if i could attend it.
+ >
+ >>
+ >> Don't hesitate to write with questions, suggestions, and hope to "see" you at
+ >> this year's Plumbers, where we hopefully will be presenting more about this
+ >> effort. I'll also be writing a separate article introducing the schema this
+ >> week, will copy both you and Dmitry here.
+ >>
+ >> Nick
+ >>
+ >> On 7/13/20 3:19 AM, Philip Li wrote:
+ >>> On Thu, Jul 09, 2020 at 10:05:04PM +0300, Nikolai Kondrashov wrote:
+ >>>> Hi Philip,
+ >>>>
+ >>>> On 7/9/20 2:00 PM, Philip Li wrote:
+ >>>>> The 0-day ci mostly focus on regression and then bisection, and the strategy
+ >>>>> is to merge various branches to run the test. This is not exactly as the
+ >>>>> tranditional CI. The worry here is to know exactly one branch is pass or
+ >>>>> fail currently is not 100% available. For instance, the final merged branch
+ >>>>> is fail doesn't provide fail/pass info of each individual branch. This triggers
+ >>>>> bisection to kick out the bad branch.
+ >>>>>
+ >>>>> Then it need redo the testing of remaining ones, which is not always
+ >>>>> feasible for us (considering the computing power).
+ >>>>
+ >>>> Yes, I think everyone here could sympathise with limited hardware resources :)
+ >>>>
+ >>>>> Especially, sometimes the bisection would fail.
+ >>>>
+ >>>> Can you give an example of how would a bisection fail?
+ >>>> Would that be a flaky test failing on a previously assumed-good commit, for
+ >>>> example?
+ >>> thanks, one example is build issue that breaks the bisectability which can
+ >>> lead to bisect fail.
+ >>>
+ >>>>
+ >>>>> As we focus on regression a lot to bisect to first bad commit, there would
+ >>>>> be uncertainty to draw conclusion for single branch.
+ >>>>
+ >>>> I think not having complete certainty for a project as large as the Linux
+ >>>> kernel is normal. Kernel CI has the bisection system as well, and syzbot is
+ >>>> going to even greater lengths with identifying similar failures. We at CKI
+ >>>> have test maintainers constantly looking at test failures and deciding whether
+ >>>> they're false or not. These are things we just have to handle for common
+ >>>> reporting to work.
+ >>>>
+ >>>>> This requires more careful thinking for us without increasing the needs of
+ >>>>> computing resource. This is one bottleneck I can see so far. Not sure any
+ >>>>> idea or recommendation for this.
+ >>>>
+ >>>> Our aim with common reporting is simply to provide a unified way to reach
+ >>>> developers with testing results, essentially to send them a single e-mail
+ >>>> report, instead of one report per CI system, to make a single database
+ >>>> available for analyzis and a single dashboard UI.
+ >>>>
+ >>>> I.e. instead of sending an e-mail report to a developer we ask you to send a
+ >>>> JSON report to us, and then we try to handle analyzing and reporting for you.
+ >>>>
+ >>>> It is up to the submitting CI system to choose how many, or how little tests
+ >>>> to run, or how much or how little data to send. Kernel CI is not going to ask
+ >>>> you to run any tests, it is up to you.
+ >>>>
+ >>>> In the end, we trust you want the developers to notice and fix the problems
+ >>>> you find, you'll try to provide enough data, and we'd like to make a system
+ >>>> which will help you do that. If you can pinpoint the exact commit - great! If
+ >>>> not, we'll just have some data from you which can be analyzed otherwise.
+ >>>>
+ >>>> How about I try to take a 0-day report and express it as a KCIDB submission,
+ >>>> as an illustration of how this could work? Would that help you understand what
+ >>>> we're trying to do? If yes, could you give me a link to one?
+ >>> Right, the "accuracy" for all single branch we test is more related to technical
+ >>> problem if we need look for a way to solve it. Here assume we have a report, it
+ >>> does have chance to be aggeragated. You can pick up any link from
+ >>> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/ (build) or
+ >>> https://lists.01.org/hyperkitty/list/lkp@lists.01.org/ (runtime) for example.
+ >>>
+ >>> Thanks
+ >>>
+ >>>>
+ >>>> Nick
+ >>>>
+ >>>
+ >>
+ >
+
