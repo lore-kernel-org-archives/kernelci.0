@@ -1,83 +1,28 @@
-Subject: Re: [kernelci-members] Working with the KernelCI project
-References: <20200707222342.scrz75265etaqlmd@redhat.com>
- <42d15463-e4ee-4c0b-c63f-dce7acb05e35@collabora.com>
- <CACT4Y+ZLoBLFWRM+RcKZJyR2Hh5az9W8_329ShM9JuSg6V4uVw@mail.gmail.com>
- <bbeeb467-1571-5404-7408-9b112d64e928@redhat.com>
- <CACT4Y+a1t-9sT7xz7d=Wmesnn_QoUqfipmoZXBu40_B+GQy=nQ@mail.gmail.com>
- <031d1941-2842-fc79-2a21-66bccb17f91c@redhat.com>
- <adb7924d-b524-2f86-05fd-dc0233004652@redhat.com>
- <CACT4Y+beU9XoOt5XXLEarKyWvkhyRKC5aJRc6djmHsUqO+AbJA@mail.gmail.com>
+Subject: Re: Working with the KernelCI project
 From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Message-ID: <8d422dcf-d4ef-8e74-be82-f52272d9a966@redhat.com>
-Date: Fri, 21 Aug 2020 13:10:14 +0300
+References: <20200707222342.scrz75265etaqlmd@redhat.com>
+ <20200709110029.GB27682@intel.com>
+ <69138572-7241-1636-8018-34cd380ec540@redhat.com>
+ <20200713001929.GA1812@intel.com>
+ <4a5d8379-b96d-6777-0d98-4ef13e56e0b3@redhat.com>
+ <20200809022529.GB26573@intel.com>
+ <ea1b08f4-d772-a7e7-8347-a268dc5fbbda@redhat.com>
+Message-ID: <a7dd3056-a274-b80e-05d3-3f46e404f518@redhat.com>
+Date: Fri, 21 Aug 2020 13:19:32 +0300
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+beU9XoOt5XXLEarKyWvkhyRKC5aJRc6djmHsUqO+AbJA@mail.gmail.com>
+In-Reply-To: <ea1b08f4-d772-a7e7-8347-a268dc5fbbda@redhat.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>, kernelci@groups.io
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
+To: kernelci@groups.io, philip.li@intel.com
+Cc: Don Zickus <dzickus@redhat.com>, dvyukov@google.com, kernelci-members@groups.io, nkondras@redhat.com, julie.du@intel.com, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
 
-Hi Dmitry,
+On 8/21/20 12:50 PM, Nikolai Kondrashov wrote:
+ > This would allow you to send your build or test with some basic information
+ > first, and e.g. without output files and (importantly) with the status
 
-On 8/5/20 9:44 PM, Dmitry Vyukov wrote:
- > On Mon, Aug 3, 2020 at 11:25 AM Nikolai Kondrashov
- >> Did you have time to take a look at my mock-up? It probably looks like too
- >> much text, but please don't hesitate to reach me with any questions or
- >> suggestions you have as you look through it, if you haven't already.
- >>
- >> Please note that you don't have to start with sending all this data. In fact,
- >> only a few structural fields are required and we can start with the absolute
- >> minimum. The mock-up is showing what you *could* already send, but you don't
- >> have to go that far.
- >>
- >> I'd like to schedule a hacking session at Plumbers where we go and try to get
- >> some data out of participants' systems and into KCIDB. Would you be interested
- >> to attend, perhaps?
- >
- > Hi Nick,
- >
- > I've seen your reply and seen that you provided an example of how to
- > fill in the data. I was starred in my inbox, but I did not have time
- > to look at the details yet (we have somewhat crazy intern season). I
- > still want to do this.
-
-Glad to hear that, and I understand about the time.
-
- > I am not sure how a remote virtual hacking session is different from
- > just doing this normally and some email exchange :)
-
-I would say the low response latency helps move faster :)
-
-We could have a video call in background and/or share a screen or a tmate
-session, as we try to make things work. Even just having someone available in
-an IRC chat for quick responses helps, I'd say.
-
-Everyone has their own preferences, of course, I'm just offering to be there
-and discuss things and maybe work on something :)
-
-As I just wrote to Philip, I've finally published the schema introduction
-article:
-
-     https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
-
-Here's our talk, same MC as yours, but later:
-
-     https://linuxplumbersconf.org/event/7/contributions/730/
-
-and the BoF session next day:
-
-     https://linuxplumbersconf.org/event/7/contributions/731/
-
-Will be glad to meet you there, even though we won't be able to do
-much in the 45 minutes we were allocated.
-
-So please also drop by our "hallway chat", whenever you have time:
-
-     https://chat.2020.linuxplumbersconf.org/channel/kcidb
-
-I'll be there every day of the conference, during Europe's working hours.
+I meant "*without* the status", of course 🤦‍♂️.
 
 Nick
 
