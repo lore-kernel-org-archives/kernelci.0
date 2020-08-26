@@ -1,47 +1,41 @@
-Date: Wed, 26 Aug 2020 19:13:13 +0100
-From: "Mark Brown" <broonie@kernel.org>
 Subject: Re: http://kernelci.org/ gets "Welcome to nginx!" page.
-Message-ID: <20200826181313.GO4965@sirena.org.uk>
 References: <77eb4eeb-d14d-d5d1-65a3-7f8f7b241df1@amd.com>
+ <20200826181313.GO4965@sirena.org.uk>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <841f8796-b4f2-bbb5-8d2c-11a2eb0a4b52@collabora.com>
+Date: Wed, 26 Aug 2020 19:27:46 +0100
 MIME-Version: 1.0
-In-Reply-To: <77eb4eeb-d14d-d5d1-65a3-7f8f7b241df1@amd.com>
-Content-Type: multipart/mixed; boundary="Groupsio=E6UPHQ2KEWAVKXwmyQU3"
+In-Reply-To: <20200826181313.GO4965@sirena.org.uk>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, kim.phillips@amd.com
-Cc: info@kernelci.org
+To: kim.phillips@amd.com
+Cc: kernelci@groups.io, broonie@kernel.org
 
---Groupsio=E6UPHQ2KEWAVKXwmyQU3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 26/08/2020 19:13, Mark Brown wrote:
+> On Wed, Aug 26, 2020 at 12:54:37PM -0500, Kim Phillips wrote:
+>> Hi, I typed kernelci.org in my browser which went to:
+> 
+>> http://kernelci.org/
+> 
+>> which showed a "Welcome to nginx!" page.
+> 
+>> I luckily went to "www.kernelci.org" to see the desired content.
+> 
+>> Please correct the non-redirection issue?
+> 
+> FWIW I've just tested this and it does happen but only for plain HTTP -
+> browsers that do https by default work fine (some of them will
+> automatically try to rewrite any http URIs they see).
 
-On Wed, Aug 26, 2020 at 12:54:37PM -0500, Kim Phillips wrote:
-> Hi, I typed kernelci.org in my browser which went to:
+Fixed, sorry it's the 2nd time this happens.  It's a side effect
+of updating the Let's Encrypt certificates, I need to roll out a
+better fix for it in the nginx config.
 
-> http://kernelci.org/
+See this GitHub issue for more details:
 
-> which showed a "Welcome to nginx!" page.
+  https://github.com/kernelci/kernelci-frontend-config/issues/21
 
-> I luckily went to "www.kernelci.org" to see the desired content.
-
-> Please correct the non-redirection issue?
-
-FWIW I've just tested this and it does happen but only for plain HTTP -
-browsers that do https by default work fine (some of them will
-automatically try to rewrite any http URIs they see).
-
---Groupsio=E6UPHQ2KEWAVKXwmyQU3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9GpjgACgkQJNaLcl1U
-h9BCAwf/df3Do1Teip5SEYwVrZQ0zoiPQSuUFKOBU1LUb7yklOty1nonQmWs+4Gf
-LDWiAqrSoVln3eO4soRe4M2IeksNycqaghlTn0hV127AwDCabVSJMK/hHCTHrse0
-rTuprnSdvHkwn1NwHf/UMD9RAQLmWD2ABEWwh2pozhqw/1wuWkldXaKpruRbFtra
-b8vgI54EOwpuFTpCpVSotEFr9QwbCyx5mSu5FonBPAo+mi7ZPO9KaPnTRGN0h6/K
-CuRbX4U8d8kAVaFqTwnAAE93pM9lFlzuysRW1XERQy3JJB1KzJ1oOrSlhy8Fbg7P
-34hptXJznb1lKIIjrAtjCgysBE0+NA==
-=TegK
------END PGP SIGNATURE-----
-
---Groupsio=E6UPHQ2KEWAVKXwmyQU3--
+Thanks,
+Guillaume
