@@ -1,263 +1,165 @@
-Subject: Re: next/master bisection: baseline.dmesg.alert on imx8mn-ddr4-evk
-References: <5ea44ff8.1c69fb81.f246c.d02d@mx.google.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Message-ID: <8af4842d-d576-fd6f-ac6b-2ef3482742b7@collabora.com>
-Date: Mon, 27 Apr 2020 14:00:37 +0100
+Date: Fri, 18 Sep 2020 16:21:35 +0100
+From: "Cristian Marussi" <cristian.marussi@arm.com>
+Subject: Re: Contributing ARM tests results to KCIDB
+Message-ID: <20200918152135.GA13088@e119603-lin.cambridge.arm.com>
+References: <20200917125044.GA29636@e119603-lin.cambridge.arm.com>
+ <a46c273f-cc69-6748-d74f-02f5034be999@redhat.com>
+ <20200917162242.GA18067@e119603-lin.cambridge.arm.com>
+ <e417bc86-da0f-0ab1-62c7-d771a24d41fb@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <5ea44ff8.1c69fb81.f246c.d02d@mx.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <e417bc86-da0f-0ab1-62c7-d771a24d41fb@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Peng Fan <peng.fan@nxp.com>, Viresh Kumar <viresh.kumar@linaro.org>
-Cc: kernelci@groups.io, Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, NXP Linux Team <linux-imx@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: kernelci@groups.io, broonie@kernel.org, basil.eljuse@arm.com
 
-Please see the bisection report below about a boot failure.
+Hi Nikolai,
 
-Reports aren't automatically sent to the public while we're
-trialing new bisection features on kernelci.org but this one
-looks valid.
-
-The log shows a kernel NULL pointer derefence:
-
-    https://storage.kernelci.org/next/master/next-20200424/arm64/defconfig/gcc-8/lab-baylibre/baseline-imx8mn-ddr4-evk.html#L750
-
-Guillaume
-
-On 25/04/2020 15:58, kernelci.org bot wrote:
-> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-> * This automated bisection report was sent to you on the basis  *
-> * that you may be involved with the breaking commit it has      *
-> * found.  No manual investigation has been done to verify it,   *
-> * and the root cause of the problem may be somewhere else.      *
-> *                                                               *
-> * If you do send a fix, please include this trailer:            *
-> *   Reported-by: "kernelci.org bot" <bot@kernelci.org>          *
-> *                                                               *
-> * Hope this helps!                                              *
-> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+On Thu, Sep 17, 2020 at 08:26:15PM +0300, Nikolai Kondrashov wrote:
+> On 9/17/20 7:22 PM, Cristian Marussi wrote:
+> > It works too ... :D
+> >
+> > https://staging.kernelci.org:3000/d/build/build?orgId=1&var-dataset=playground_kernelci04&var-id=arm:2020-07-07:d3d7689c2cc9503266cac3bc777bb4ddae2e5f2e
 > 
-> next/master bisection: baseline.dmesg.alert on imx8mn-ddr4-evk
+> Whoa, awesome!
 > 
-> Summary:
->   Start:      8bdabd09ec86a Add linux-next specific files for 20200424
->   Plain log:  https://storage.kernelci.org/next/master/next-20200424/arm64/defconfig/gcc-8/lab-baylibre/baseline-imx8mn-ddr4-evk.txt
->   HTML log:   https://storage.kernelci.org/next/master/next-20200424/arm64/defconfig/gcc-8/lab-baylibre/baseline-imx8mn-ddr4-evk.html
->   Result:     2fbd0de2a20fb cpufreq: imx-cpufreq-dt: support i.MX7ULP
+> And you have already uncovered a few issues we need to fix, too!
+> I will deal with them tomorrow.
 > 
-> Checks:
->   revert:     PASS
->   verify:     PASS
+> > ..quick question though....given that now I'll have to play quite a bit
+> > with it and see how's better to present our data, if anythinjg missing etc etc,
+> > is there any chance (or way) that if I submmit the same JSON report multiple
+> > times with slight differences here and there (but with the same IDs clearly)
+> > I'll get my DB updated in the bits I have changed: as an example I've just
+> > resubmitted the same report with added discovery_time and descriptions, and got
+> > NO errors, but I cannot see the changes in the UI (unless they have still to
+> > propagate...)..or maybe I can obtain the same effect by dropping my dataset
+> > before re-submitting ?
 > 
-> Parameters:
->   Tree:       next
->   URL:        https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
->   Branch:     master
->   Target:     imx8mn-ddr4-evk
->   CPU arch:   arm64
->   Lab:        lab-baylibre
->   Compiler:   gcc-8
->   Config:     defconfig
->   Test case:  baseline.dmesg.alert
+> Right now it's not supported (with various possible quirks if attempted).
+> So, preferably, submit only one, complete and final instance of each object
+> (with unique ID) for now.
 > 
-> Breaking commit found:
+> We have a plan to support merging missing properties across multiple reported
+> objects with the same ID.
 > 
-> -------------------------------------------------------------------------------
-> commit 2fbd0de2a20fbea8b1f5250935e9f1f0e4441b0f
-> Author: Peng Fan <peng.fan@nxp.com>
-> Date:   Mon Apr 20 15:55:14 2020 +0800
+>             Object A        Object B    Dashboard/Notifications
 > 
->     cpufreq: imx-cpufreq-dt: support i.MX7ULP
->     
->     i.MX7ULP's ARM core clock design is totally different compared
->     with i.MX7D/8M SoCs which supported by imx-cpufreq-dt. It needs
->     get_intermediate and target_intermedate to configure clk MUX ready,
->     before let OPP configure ARM core clk.
->                                               |---FIRC
->          |------RUN---...---SCS(MUX2) --------|
->     ARM --(MUX1)                              |---SPLL_PFD0(CLK_SET_RATE_GATE)
->          |------HSRUN--...--HSRUN_SCS(MUX3)---|
->                                               |---SRIC
->     
->     FIRC is step clk, SPLL_PFD0 is the normal clk driving ARM core.
->     MUX2 and MUX3 share same inputs. So if MUX2/MUX3 both sources from
->     SPLL_PFD0, both MUXes will lose input when configure SPLL_PFD0.
->     So the target_intermediate will configure MUX2/MUX3 to FIRC, to avoid
->     ARM core lose clk when configure SPLL_PFD0.
->     
->     Signed-off-by: Peng Fan <peng.fan@nxp.com>
->     Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> FieldX:     Foo             Foo         Foo
+> FieldY:                     Bar         Bar
+> FieldZ:     Baz                         Baz
+> FieldU:     Red             Blue        Red/Blue
 > 
-> diff --git a/drivers/cpufreq/imx-cpufreq-dt.c b/drivers/cpufreq/imx-cpufreq-dt.c
-> index de206d2745feb..b019b05940e83 100644
-> --- a/drivers/cpufreq/imx-cpufreq-dt.c
-> +++ b/drivers/cpufreq/imx-cpufreq-dt.c
-> @@ -3,7 +3,9 @@
->   * Copyright 2019 NXP
->   */
->  
-> +#include <linux/clk.h>
->  #include <linux/cpu.h>
-> +#include <linux/cpufreq.h>
->  #include <linux/err.h>
->  #include <linux/init.h>
->  #include <linux/kernel.h>
-> @@ -12,8 +14,11 @@
->  #include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_opp.h>
-> +#include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
->  
-> +#include "cpufreq-dt.h"
-> +
->  #define OCOTP_CFG3_SPEED_GRADE_SHIFT	8
->  #define OCOTP_CFG3_SPEED_GRADE_MASK	(0x3 << 8)
->  #define IMX8MN_OCOTP_CFG3_SPEED_GRADE_MASK	(0xf << 8)
-> @@ -22,13 +27,62 @@
->  #define IMX8MP_OCOTP_CFG3_MKT_SEGMENT_SHIFT    5
->  #define IMX8MP_OCOTP_CFG3_MKT_SEGMENT_MASK     (0x3 << 5)
->  
-> +#define IMX7ULP_MAX_RUN_FREQ	528000
-> +
->  /* cpufreq-dt device registered by imx-cpufreq-dt */
->  static struct platform_device *cpufreq_dt_pdev;
->  static struct opp_table *cpufreq_opp_table;
-> +static struct device *cpu_dev;
-> +
-> +enum IMX7ULP_CPUFREQ_CLKS {
-> +	ARM,
-> +	CORE,
-> +	SCS_SEL,
-> +	HSRUN_CORE,
-> +	HSRUN_SCS_SEL,
-> +	FIRC,
-> +};
-> +
-> +static struct clk_bulk_data imx7ulp_clks[] = {
-> +	{ .id = "arm" },
-> +	{ .id = "core" },
-> +	{ .id = "scs_sel" },
-> +	{ .id = "hsrun_core" },
-> +	{ .id = "hsrun_scs_sel" },
-> +	{ .id = "firc" },
-> +};
-> +
-> +static unsigned int imx7ulp_get_intermediate(struct cpufreq_policy *policy,
-> +					     unsigned int index)
-> +{
-> +	return clk_get_rate(imx7ulp_clks[FIRC].clk);
-> +}
-> +
-> +static int imx7ulp_target_intermediate(struct cpufreq_policy *policy,
-> +					unsigned int index)
-> +{
-> +	unsigned int newfreq = policy->freq_table[index].frequency;
-> +
-> +	clk_set_parent(imx7ulp_clks[SCS_SEL].clk, imx7ulp_clks[FIRC].clk);
-> +	clk_set_parent(imx7ulp_clks[HSRUN_SCS_SEL].clk, imx7ulp_clks[FIRC].clk);
-> +
-> +	if (newfreq > IMX7ULP_MAX_RUN_FREQ)
-> +		clk_set_parent(imx7ulp_clks[ARM].clk,
-> +			       imx7ulp_clks[HSRUN_CORE].clk);
-> +	else
-> +		clk_set_parent(imx7ulp_clks[ARM].clk, imx7ulp_clks[CORE].clk);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct cpufreq_dt_platform_data imx7ulp_data = {
-> +	.target_intermediate = imx7ulp_target_intermediate,
-> +	.get_intermediate = imx7ulp_get_intermediate,
-> +};
->  
->  static int imx_cpufreq_dt_probe(struct platform_device *pdev)
->  {
-> -	struct device *cpu_dev = get_cpu_device(0);
-> +	struct platform_device *dt_pdev;
->  	u32 cell_value, supported_hw[2];
->  	int speed_grade, mkt_segment;
->  	int ret;
-> @@ -36,6 +90,29 @@ static int imx_cpufreq_dt_probe(struct platform_device *pdev)
->  	if (!of_find_property(cpu_dev->of_node, "cpu-supply", NULL))
->  		return -ENODEV;
->  
-> +	cpu_dev = get_cpu_device(0);
-> +
-> +	if (of_machine_is_compatible("fsl,imx7ulp")) {
-> +		ret = clk_bulk_get(cpu_dev, ARRAY_SIZE(imx7ulp_clks),
-> +				   imx7ulp_clks);
-> +		if (ret)
-> +			return ret;
-> +
-> +		dt_pdev = platform_device_register_data(NULL, "cpufreq-dt",
-> +							-1, &imx7ulp_data,
-> +							sizeof(imx7ulp_data));
-> +		if (IS_ERR(dt_pdev)) {
-> +			clk_bulk_put(ARRAY_SIZE(imx7ulp_clks), imx7ulp_clks);
-> +			ret = PTR_ERR(dt_pdev);
-> +			dev_err(&pdev->dev, "Failed to register cpufreq-dt: %d\n", ret);
-> +			return ret;
-> +		}
-> +
-> +		cpufreq_dt_pdev = dt_pdev;
-> +
-> +		return 0;
-> +	}
-> +
->  	ret = nvmem_cell_read_u32(cpu_dev, "speed_grade", &cell_value);
->  	if (ret)
->  		return ret;
-> @@ -98,7 +175,10 @@ static int imx_cpufreq_dt_probe(struct platform_device *pdev)
->  static int imx_cpufreq_dt_remove(struct platform_device *pdev)
->  {
->  	platform_device_unregister(cpufreq_dt_pdev);
-> -	dev_pm_opp_put_supported_hw(cpufreq_opp_table);
-> +	if (!of_machine_is_compatible("fsl,imx7ulp"))
-> +		dev_pm_opp_put_supported_hw(cpufreq_opp_table);
-> +	else
-> +		clk_bulk_put(ARRAY_SIZE(imx7ulp_clks), imx7ulp_clks);
->  
->  	return 0;
->  }
-> -------------------------------------------------------------------------------
+> Since we're using a distributed database we cannot really maintain order
+> (without introducing artificial global lock), so the order of the reports
+> doesn't matter. We can only guarantee that a present value would override
+> missing value. It would be undefined which value would be picked among
+> multiple different values.
 > 
+> This would allow gradual reporting of each object, but no editing, sorry.
 > 
-> Git bisection log:
-> 
-> -------------------------------------------------------------------------------
-> git bisect start
-> # good: [a6d0b83f25073bdf08b8547aeff961a62c6ab229] net: bcmgenet: correct per TX/RX ring statistics
-> git bisect good a6d0b83f25073bdf08b8547aeff961a62c6ab229
-> # bad: [8bdabd09ec86a993419c8c98a4f34c12bc902c6c] Add linux-next specific files for 20200424
-> git bisect bad 8bdabd09ec86a993419c8c98a4f34c12bc902c6c
-> # bad: [556a775f0602376f6d4bf6ec24f817314d7e5cac] Merge remote-tracking branch 'crypto/master'
-> git bisect bad 556a775f0602376f6d4bf6ec24f817314d7e5cac
-> # good: [fa5fcf1b786dcda5965372f84baf252cf50fc849] Merge remote-tracking branch 'btrfs/for-next'
-> git bisect good fa5fcf1b786dcda5965372f84baf252cf50fc849
-> # good: [16aedbb33c21617b2dcdcc50d57f3a17557cc825] Merge remote-tracking branch 'jc_docs/docs-next'
-> git bisect good 16aedbb33c21617b2dcdcc50d57f3a17557cc825
-> # bad: [920b40f1dfe3adc7d9640e95bb7c08464d0ae7ba] Merge remote-tracking branch 'rdma/for-next'
-> git bisect bad 920b40f1dfe3adc7d9640e95bb7c08464d0ae7ba
-> # good: [a735e6b80d911fc1f452cea328c61779445e1054] media: cec/usb: depends on USB_SUPPORT and TTY
-> git bisect good a735e6b80d911fc1f452cea328c61779445e1054
-> # good: [17ce5e6d72d5acc838e8e6218c3fadc2a7abe7da] media: admin-guide: improve cardlist.rst documentation
-> git bisect good 17ce5e6d72d5acc838e8e6218c3fadc2a7abe7da
-> # bad: [a82dbfaeede6ea5c12013c8034f9501dd112a482] Merge remote-tracking branch 'cpufreq-arm/cpufreq/arm/linux-next'
-> git bisect bad a82dbfaeede6ea5c12013c8034f9501dd112a482
-> # good: [4bdbff4da40584ec2225bb429b7c66ad54d19cda] media: tuners: Kconfig: add some missing VIDEO_V4L2 dependencies
-> git bisect good 4bdbff4da40584ec2225bb429b7c66ad54d19cda
-> # good: [01186efb19343e798e90318671e534c272a03723] Documentation: PM: sleep: Update driver flags documentation
-> git bisect good 01186efb19343e798e90318671e534c272a03723
-> # good: [366562a463dd2a93dea0e2743b1b0070f14339a9] Merge branches 'acpi-pci', 'acpi-button' and 'pm-tools' into linux-next
-> git bisect good 366562a463dd2a93dea0e2743b1b0070f14339a9
-> # good: [574f732cdc1c3e7bb1389eb8515b3d87a476d591] Merge remote-tracking branch 'pm/linux-next'
-> git bisect good 574f732cdc1c3e7bb1389eb8515b3d87a476d591
-> # good: [11d89b0a820f8d1edb7780b971597c357864dec7] cpufreq: Add i.MX7ULP to cpufreq-dt-platdev blacklist
-> git bisect good 11d89b0a820f8d1edb7780b971597c357864dec7
-> # bad: [2fbd0de2a20fbea8b1f5250935e9f1f0e4441b0f] cpufreq: imx-cpufreq-dt: support i.MX7ULP
-> git bisect bad 2fbd0de2a20fbea8b1f5250935e9f1f0e4441b0f
-> # first bad commit: [2fbd0de2a20fbea8b1f5250935e9f1f0e4441b0f] cpufreq: imx-cpufreq-dt: support i.MX7ULP
-> -------------------------------------------------------------------------------
+> However, once again, this is a plan with some research done, only.
+> I plan to start implementing it within a few weeks.
 > 
 
+So in order to carry on my experiments, I've just tried to push a new dataset
+with a few changes in my data-layout to mimic what I see other origins do; this
+contained something like 38 builds across 4 different revisions (with brand new
+revisions IDs), but I cannot see anything on the UI: I just keep seeing the old
+push from yesterday.
+
+JSON seems valid and kcidb-submit does not report any error even using -l DEBUG.
+(I pushed >30mins ago)
+
+Any idea ?
+
+Thanks
+
+Cristian
+
+> Nick
+> 
+> On 9/17/20 7:22 PM, Cristian Marussi wrote:
+> > On Thu, Sep 17, 2020 at 04:52:30PM +0300, Nikolai Kondrashov wrote:
+> >> Hi Christian,
+> >>
+> >> On 9/17/20 3:50 PM, Cristian Marussi wrote:
+> >>> Hi Nikolai,
+> >>>
+> >>> I work at ARM in the Kernel team and, in short, we'd like certainly to
+> >>> contribute our internal Kernel test results to KCIDB.
+> >>
+> >> Wonderful!
+> >>
+> >>> After having attended your LPC2020 TestMC and KernelCI/BoF, I've now cooked
+> >>> up some KCIDB JSON test report (seemingly valid against your KCIDB v3 schema)
+> >>> and I'd like to start experimenting with kci-submit (on non-production
+> >>> instances), so as to assess how to fit our results into your schema and maybe
+> >>> contribute with some new KCIDB requirements if strictly needed.
+> >>
+> >> Great, this is exactly what we need, welcome aboard :)
+> >>
+> >> Please don't hesitate to reach out on kernelci@groups.io or on #kernelci on
+> >> freenode.net, if you have any questions, problems, or requirements.
+> >>
+> >>> Is it possible to get some valid credentials and a playground instance to
+> >>> point at ?
+> >>
+> >> Absolutely, I created credentials for you and sent them in a separate message.
+> >>
+> >> You can use origin "arm" for the start, unless you have multiple CI systems
+> >> and want to differentiate them somehow in your reports.
+> >>
+> >> Nick
+> >>
+> >   Thanks !
+> >
+> > It works too ... :D
+> >
+> > https://staging.kernelci.org:3000/d/build/build?orgId=1&var-dataset=playground_kernelci04&var-id=arm:2020-07-07:d3d7689c2cc9503266cac3bc777bb4ddae2e5f2e
+> >
+> > ..quick question though....given that now I'll have to play quite a bit
+> > with it and see how's better to present our data, if anythinjg missing etc etc,
+> > is there any chance (or way) that if I submmit the same JSON report multiple
+> > times with slight differences here and there (but with the same IDs clearly)
+> > I'll get my DB updated in the bits I have changed: as an example I've just
+> > resubmitted the same report with added discovery_time and descriptions, and got
+> > NO errors, but I cannot see the changes in the UI (unless they have still to
+> > propagate...)..or maybe I can obtain the same effect by dropping my dataset
+> > before re-submitting ?
+> >
+> > Regards
+> >
+> > Thanks
+> >
+> > Cristian
+> >
+> >> On 9/17/20 3:50 PM, Cristian Marussi wrote:
+> >>> Hi Nikolai,
+> >>>
+> >>> I work at ARM in the Kernel team and, in short, we'd like certainly to
+> >>> contribute our internal Kernel test results to KCIDB.
+> >>>
+> >>> After having attended your LPC2020 TestMC and KernelCI/BoF, I've now cooked
+> >>> up some KCIDB JSON test report (seemingly valid against your KCIDB v3 schema)
+> >>> and I'd like to start experimenting with kci-submit (on non-production
+> >>> instances), so as to assess how to fit our results into your schema and maybe
+> >>> contribute with some new KCIDB requirements if strictly needed.
+> >>>
+> >>> Is it possible to get some valid credentials and a playground instance to
+> >>> point at ?
+> >>>
+> >>> Thanks
+> >>>
+> >>> Regards
+> >>>
+> >>> Cristian
+> >>>
+> >>>
+> >>> 
+> >>>
+> >>>
+> >>
+> >
+> 
