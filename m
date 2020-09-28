@@ -1,54 +1,106 @@
-Date: Fri, 25 Sep 2020 14:23:14 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: kernelci.org update - 2020-09-23 #minutes
-Message-ID: <20200925132314.GC4841@sirena.org.uk>
-References: <107c1572-ffc5-8797-6ae3-10fbe4e91eee@collabora.com>
- <CAKwvOdkHiRAxCrrqRTq=k09zW-X9cHogyq+7fTuM_aJyntXs4Q@mail.gmail.com>
- <200d3c91-9906-01d6-2642-718fbd356d76@collabora.com>
- <CAKwvOdmAev4-AP3g0cgZ8rV+iR4ACuy1ZQ_XoD09c1d2GF1S7Q@mail.gmail.com>
- <20200924110402.GB4754@sirena.org.uk>
- <CAKwvOdmEf7jM7QWZcPxy761CGsO24sEDY9OWJJcZKsc6jFy9xA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAKwvOdmEf7jM7QWZcPxy761CGsO24sEDY9OWJJcZKsc6jFy9xA@mail.gmail.com>
-Content-Type: multipart/mixed; boundary="Groupsio=k1w9uWBxG5BNuXmtQO5w"
+References: <20200707222342.scrz75265etaqlmd@redhat.com> <42d15463-e4ee-4c0b-c63f-dce7acb05e35@collabora.com>
+ <CACT4Y+ZLoBLFWRM+RcKZJyR2Hh5az9W8_329ShM9JuSg6V4uVw@mail.gmail.com>
+ <bbeeb467-1571-5404-7408-9b112d64e928@redhat.com> <CACT4Y+a1t-9sT7xz7d=Wmesnn_QoUqfipmoZXBu40_B+GQy=nQ@mail.gmail.com>
+ <031d1941-2842-fc79-2a21-66bccb17f91c@redhat.com> <adb7924d-b524-2f86-05fd-dc0233004652@redhat.com>
+ <CACT4Y+beU9XoOt5XXLEarKyWvkhyRKC5aJRc6djmHsUqO+AbJA@mail.gmail.com> <8d422dcf-d4ef-8e74-be82-f52272d9a966@redhat.com>
+In-Reply-To: <8d422dcf-d4ef-8e74-be82-f52272d9a966@redhat.com>
+From: "Dmitry Vyukov" <dvyukov@google.com>
+Date: Mon, 28 Sep 2020 14:48:27 +0200
+Message-ID: <CACT4Y+a5spdA8TZNeaXFYj4QEw_=howfhu9YGsNm3rC8XPAJnA@mail.gmail.com>
+Subject: Re: [kernelci-members] Working with the KernelCI project
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Cc: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, clang-built-linux <clang-built-linux@googlegroups.com>, Todd Kjos <tkjos@google.com>, android-llvm <android-llvm@googlegroups.com>
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
 
---Groupsio=k1w9uWBxG5BNuXmtQO5w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, Aug 21, 2020 at 12:10 PM Nikolai Kondrashov
+<Nikolai.Kondrashov@redhat.com> wrote:
+>
+> Hi Dmitry,
+>
+> On 8/5/20 9:44 PM, Dmitry Vyukov wrote:
+>  > On Mon, Aug 3, 2020 at 11:25 AM Nikolai Kondrashov
+>  >> Did you have time to take a look at my mock-up? It probably looks like too
+>  >> much text, but please don't hesitate to reach me with any questions or
+>  >> suggestions you have as you look through it, if you haven't already.
+>  >>
+>  >> Please note that you don't have to start with sending all this data. In fact,
+>  >> only a few structural fields are required and we can start with the absolute
+>  >> minimum. The mock-up is showing what you *could* already send, but you don't
+>  >> have to go that far.
+>  >>
+>  >> I'd like to schedule a hacking session at Plumbers where we go and try to get
+>  >> some data out of participants' systems and into KCIDB. Would you be interested
+>  >> to attend, perhaps?
+>  >
+>  > Hi Nick,
+>  >
+>  > I've seen your reply and seen that you provided an example of how to
+>  > fill in the data. I was starred in my inbox, but I did not have time
+>  > to look at the details yet (we have somewhat crazy intern season). I
+>  > still want to do this.
+>
+> Glad to hear that, and I understand about the time.
+>
+>  > I am not sure how a remote virtual hacking session is different from
+>  > just doing this normally and some email exchange :)
+>
+> I would say the low response latency helps move faster :)
+>
+> We could have a video call in background and/or share a screen or a tmate
+> session, as we try to make things work. Even just having someone available in
+> an IRC chat for quick responses helps, I'd say.
+>
+> Everyone has their own preferences, of course, I'm just offering to be there
+> and discuss things and maybe work on something :)
+>
+> As I just wrote to Philip, I've finally published the schema introduction
+> article:
+>
+>      https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
+>
+> Here's our talk, same MC as yours, but later:
+>
+>      https://linuxplumbersconf.org/event/7/contributions/730/
+>
+> and the BoF session next day:
+>
+>      https://linuxplumbersconf.org/event/7/contributions/731/
+>
+> Will be glad to meet you there, even though we won't be able to do
+> much in the 45 minutes we were allocated.
+>
+> So please also drop by our "hallway chat", whenever you have time:
+>
+>      https://chat.2020.linuxplumbersconf.org/channel/kcidb
+>
+> I'll be there every day of the conference, during Europe's working hours.
 
-On Thu, Sep 24, 2020 at 12:25:42PM -0700, Nick Desaulniers wrote:
-> On Thu, Sep 24, 2020 at 4:05 AM Mark Brown <broonie@kernel.org> wrote:
 
-> > The thought was that it might be worth using the actual Android
-> > toolchains (including all the out of tree patches and whatnot) with
-> > these branches as well as upstream clang.
+Hi Nikolai,
 
-> Would a Docker image containing AOSP LLVM probably be the easiest to
-> integrate?  If so, I can look at providing such an image.
+The examples are helpful. I think this should be doable. The ability
+to send everything in a single request is handy, and since we don't
+send bulky data (only links), should not cause any issues.
 
-Yes, a docker image would be great - ideally Debian based.  Our current
-docker images are built from:
+I need an API key, right? How are they distributed? Could you send me
+one to my email privately?
 
-    https://github.com/kernelci/kernelci-core/tree/master/jenkins/dockerfiles
+However, we don't use any Python and use of kcidb-submit will be
+problematic as the app is a Go App Engine app.
+I looked what's the actual protocol and got to here:
+https://github.com/kernelci/kcidb/blob/master/kcidb/mq/__init__.py#L69
+and this "client" seems to come from google.cloud.pubsub.
 
-FWIW.
+Go has https://pkg.go.dev/cloud.google.com/go/pubsub package as well,
+it would be much more practical for syzbot to use that directly. But
+what exactly is the protocol? I assume it's that JSON, but is it
+wrapped into some other layers? What's the topic name to publish? Is
+there description/example on this level?
 
---Groupsio=k1w9uWBxG5BNuXmtQO5w
-Content-Type: application/pgp-signature; name="signature.asc"
+Also, how can I test things? Is there a test instance? Or if I push
+something, can I observe it on the KernelCI dashboard or something?
+What would be the procedure for deploying it on the syzbot side?
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9t70EACgkQJNaLcl1U
-h9Apagf8C5vrRMxg9zpjdkpqp1ENXAg7smogtBn9a6gs9rnqdKAmrrYMLSPPGmxn
-CDU5nqcj+0TLsdySEw/bSbsDTr07sIMFDxpwtR5RBCAVGBQZnE3IGM8NqqFIyTUl
-sfddUwBKzZyzmGBuLDEXzpZzVNnTGp061Y8lrAA7axRZNZdHXIA1bhCH859hgKR2
-Wvfw5XmN139hQ8tjfw1JHsKDO/WVrVnfxNmsMMtlOFFZFyzreM2wfDkgAcWZWTSe
-+ADGKpTFJEo8pHOyaSejFyuuBhG+xkL0j8zKCcBG7YKiFzR+mx0aKxPO2F6ees03
-JqNA8dtYYgdrNcmCSKcssbi1AlN+TQ==
-=z1PE
------END PGP SIGNATURE-----
-
---Groupsio=k1w9uWBxG5BNuXmtQO5w--
+Thanks
