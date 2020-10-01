@@ -1,52 +1,107 @@
 MIME-Version: 1.0
-References: <5fdc89c3.1c69fb81.c9707.68bb@mx.google.com> <3e1680ed-94b8-74c9-ffe6-c2bd71f2a705@collabora.com>
- <20201218140018.GZ1551@shell.armlinux.org.uk> <CAMj1kXH-z91_EOpw8_5DCm22DiaU7FxzsCMmWV3-4=uM-FCM1g@mail.gmail.com>
- <CAMj1kXGnLCwXFRJAcmgLxRq6LXH5pyi1T8d0_5DPur4ez7yAPQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXGnLCwXFRJAcmgLxRq6LXH5pyi1T8d0_5DPur4ez7yAPQ@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 18 Dec 2020 20:12:43 +0100
-Message-ID: <CAMj1kXFidG0sOVqxPkP6TbWJy4cE-x9t7RxRsQ7sQfb1-TUEqQ@mail.gmail.com>
-Subject: Re: next/master bisection: baseline.login on ox820-cloudengines-pogoplug-series-3
+References: <20200707222342.scrz75265etaqlmd@redhat.com> <CACT4Y+a5spdA8TZNeaXFYj4QEw_=howfhu9YGsNm3rC8XPAJnA@mail.gmail.com>
+ <d9919812-9763-9c02-3e5d-978fac8fe1f7@redhat.com> <CACT4Y+a3L+_8kpXq-WdNZxJESCvnCvfakJ3CymVwmZZA6kv+0w@mail.gmail.com>
+ <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
+ <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
+ <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com> <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
+ <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com> <16397F50C12D08DD.21243@groups.io>
+ <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
+ <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com> <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
+ <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
+ <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com> <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
+ <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com> <9123a571-721b-5c1b-367e-e028acec4096@redhat.com>
+In-Reply-To: <9123a571-721b-5c1b-367e-e028acec4096@redhat.com>
+From: "Dmitry Vyukov" <dvyukov@google.com>
+Date: Thu, 1 Oct 2020 19:02:42 +0200
+Message-ID: <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
+Subject: Re: [kernelci-members] Working with the KernelCI project
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, kernelci-results@groups.io, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, Abbott Liu <liuwenliang@huawei.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "kernelci@groups.io" <kernelci@groups.io>, Ingo Molnar <mingo@kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
 
-On Fri, 18 Dec 2020 at 20:12, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Thu, Oct 1, 2020 at 6:34 PM Nikolai Kondrashov
+<Nikolai.Kondrashov@redhat.com> wrote:
 >
-> On Fri, 18 Dec 2020 at 15:01, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Fri, 18 Dec 2020 at 15:00, Russell King - ARM Linux admin
-> > <linux@armlinux.org.uk> wrote:
-> > >
-> > > On Fri, Dec 18, 2020 at 01:48:09PM +0000, Guillaume Tucker wrote:
-> > > > Please see the bisection report below about a boot failure on
-> > > > ox820-cloudengines-pogoplug-series-3.  There was also a bisection
-> > > > yesterday with next-20201216 which landed on the same commit, on
-> > > > the same platform and also with oxnas_v6_defconfig.  I'm not
-> > > > aware of any other platform on kernelci.org showing the same
-> > > > regression.
-> > >
-> > > Ah, I bet I know what's happening.
-> > >
-> > > We test for the presence of VFP by issuing an instruction to read
-> > > FPSID. If VFP is not present, this will raise an undefined instruction
-> > > exception, and we expect to head into the vfp_testing_entry code.
-> > >
-> > > I bet Pogoplug, being an ARM11 MPCore platform, either raises an
-> > > exception here.
-> > >
-> > > We probably need to also rework the code in vfp_init() as well to
-> > > register a temporary hook when reading the FPSID.
-> > >
-> >
-> > Thanks for diagnosing that - I wasn't quite sure what was going on.
-> >
-> > I will look into this later today.
+> On 10/1/20 7:00 PM, Dmitry Vyukov wrote:
+>  > On Thu, Oct 1, 2020 at 5:52 PM Nikolai Kondrashov
+>  > <Nikolai.Kondrashov@redhat.com> wrote:
+>  >>
+>  >> On 10/1/20 6:49 PM, Nikolai Kondrashov wrote:
+>  >>> On 10/1/20 5:48 PM, Dmitry Vyukov via groups.io wrote:
+>  >>>   > On Thu, Oct 1, 2020 at 3:32 PM Nikolai Kondrashov
+>  >>>   > <Nikolai.Kondrashov@redhat.com> wrote:
+>  >>>   >>
+>  >>>   >> On 10/1/20 1:48 PM, Nikolai Kondrashov wrote:
+>  >>>   >>   > Here are the things which could be improved:
+>  >>>   >>
+>  >>>   >> Oh, and another thing: could you avoid re-sending the identical
+>  >>>   >> revisions/builds you've already sent? I.e. send them only once, unless you
+>  >>>   >> have fields to add? Each of those costs us a row in the database, which is not
+>  >>>   >> a big deal, but would be good to avoid.
+>  >>>   >
+>  >>>   > Do you see that we send dups? I've added logic to not send dups and
+>  >>>   > from what I see it's working.
+>  >>>
+>  >>> Please find attached a zip archive with seven submissions from about six hours
+>  >>> ago. Each has revisions with the same id and git_commit_hash. Some of those
+>  >>> revisions have different discovery_time, and that alone shouldn't really be
+>  >>> the reason to resend. Each of those submissions have a build object, but some
+>  >>> of them are repeated.
+>  >>>
+>  >>> Revision with that git_commit_hash was submitted at least 72 times.
+>  >>
+>  >> And now the file is attached :D
+>  >
+>  > This is intentional (in the current implementation) and is a
+>  > consequence of the fact that we always send all 3 entities for each
+>  > issue/test failure. It's much simpler on our side this way. If we
+>  > would send a test failure multiple times it would be unintentional.
 >
-> Working again with my fix applied:
+> I see.
+>
+>  > Identical builds should have the same id, though. And if they have
+>  > different id's, then these are different builds.
+>
+> Sure.
+>
+>  > Revisions were discovered separately by different instances, that's
+>  > why they have different discovery time. Consider that as if different
+>  > origin systems would discover it separately. Since discovery time is
+>  > not an inherent property of the commit itself, there is no way they
+>  > can agree on it.
+>
+> Ah, I see now why. Yeah, it's similar to multiple systems submitting the same
+> revision. Although we don't have systems submitting the same build multiple
+> times.
+>
+>  > Will it be better if we don't send discovery time at all?
+>
+> No, it's OK to submit the discover time multiple times, but we can't say which
+> one will be displayed :)
+>
+>  > Amount of duplication for builds/revisions is capped by the number of
+>  > bugs we discover, since build/revision is only sent with a bug once.
+>  > So it's not that it's unlimited.
+>
+> I think it's OK that you have some duplication, and certainly OK for the
+> start. Let's get on with sending the data and see how much actual duplication
+> we get, how it affects performance, and how the de-duplication implementation
+> goes :)
 
-https://kernelci.org/test/plan/id/5fdcebf1a6350e2bd1c94cd3/
+The new format is now published by syzbot itself:
+https://staging.kernelci.org:3000/d/test/test?orgId=1&var-dataset=playground_kernelci04&var-id=syzbot:60b38542a0dfb2e0f746
 
-I'll drop it into the patch system tomorrow (unless there is a
-pressing need to do it earlier)
+So, do we switch to prod instance? Do you receive notifications now?
+Do we need to fix anything else before the switch?
+
+I don't see anything from syzbot at:
+https://groups.io/g/kernelci-results-staging/topics
+How can I see/subscribe to these notifications?
+
+Since syzbot database now memorizes what was published to kcidb to
+avoid dups, the switch will require some manual database surgery to
+make it re-publish bugs. So I want to make sure we did not miss
+something simple that we could do before the switch.
+
+The switch involves just changing the topic to "kernelci_new", right?
