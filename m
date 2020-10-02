@@ -1,89 +1,57 @@
+Subject: Re: [kernelci-members] Working with the KernelCI project
+References: <20200707222342.scrz75265etaqlmd@redhat.com>
+ <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com>
+ <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
+ <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com>
+ <16397F50C12D08DD.21243@groups.io>
+ <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
+ <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com>
+ <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
+ <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
+ <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com>
+ <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
+ <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com>
+ <9123a571-721b-5c1b-367e-e028acec4096@redhat.com>
+ <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
+ <CACT4Y+ZaAJMAwQT=BStb936bDbe68V6mXQw29cHGzb_9712TbA@mail.gmail.com>
+ <6aab4595-8b16-50a9-81ca-78bd08ff7a33@redhat.com>
+ <CACT4Y+aok+-h_pBM4ga-rfo8647Sp2cVBT8k34t8jqNR-vjz8A@mail.gmail.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <10c1d41d-aeaa-ea7b-cc87-76b7afea2aed@redhat.com>
+Date: Fri, 2 Oct 2020 12:08:51 +0300
 MIME-Version: 1.0
-References: <CAPDyKFoP_zTja189oGvUm0NuOe1ihi8u-XfPUwxbz3DVHrjP_w@mail.gmail.com>
-In-Reply-To: <CAPDyKFoP_zTja189oGvUm0NuOe1ihi8u-XfPUwxbz3DVHrjP_w@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@gmail.com>
-Date: Thu, 30 Apr 2020 14:28:32 +0100
-Message-ID: <CAH1_8nDa6f3gJJtdpS8UDDj6ZhTCCW-VPK5Ps_jqxPhH2SETpw@mail.gmail.com>
-Subject: Re: MMC tree not building anymore
-Content-Type: multipart/alternative; boundary="00000000000026b05c05a4820bc2"
+In-Reply-To: <CACT4Y+aok+-h_pBM4ga-rfo8647Sp2cVBT8k34t8jqNR-vjz8A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, ulf.hansson@linaro.org
-Cc: info <info@kernelci.org>
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
 
---00000000000026b05c05a4820bc2
-Content-Type: text/plain; charset="UTF-8"
+On 10/2/20 12:02 PM, Dmitry Vyukov wrote:
+ > On Fri, Oct 2, 2020 at 10:12 AM Nikolai Kondrashov
+ > <Nikolai.Kondrashov@redhat.com> wrote:
+ >>
+ >> On 10/2/20 10:52 AM, Dmitry Vyukov wrote:
+ >>   > On Thu, Oct 1, 2020 at 7:02 PM Dmitry Vyukov <dvyukov@google.com> wrote:
+ >>   >> The switch involves just changing the topic to "kernelci_new", right?
+ >>   >
+ >>   > I am preparing for the switch and will do it unless I hear from you soon.
+ >>   > Since you already gave green light above, I assume we are good now.
+ >>
+ >> Yes, please go ahead :)!
+ >
+ > We are live!
+ > https://staging.kernelci.org:3000/d/home/home?orgId=1&var-origin=syzbot&var-dataset=kernelci04&from=now-90d&to=now
 
-Hi Ulf,
+Whoaaa, awesooomeee!
+Thank you, that was super-fast!
 
-On Thu, Apr 30, 2020 at 2:14 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+Now I'll go fix all the issues the extra traffic has uncovered, and then let's
+do all the features we need :D
 
-> Hi KernelCI folkz,
->
-> My MMC tree seems not to be included in the kernelCI infrastructure
-> anymore, as I receive no more reports.
-> Would it possible to re-enable my tree?
->
+Nick
 
-Sorry, some of our kernel builders had to be turned off
-temporarily and as a result we've had to scale down the number of
-branches being monitored.  We have now started re-enabling some
-gradually to see how much the system can cope with, until we add
-a new set of builders and go back to normal.
+P.S. I thought you were on a US timezone so didn't hurry with my answer
+      earlier, sorry, but now I'll know you're only one hour away :)
 
-I've just enabled your ulfh/next branch again, it should be fine
-if you don't push new revisions more than once a day to limit the
-total number of builds.
-
-Actually, maybe this would also be the opportunity to review the
-number of kernels built from your branch.  Do you need all the
-CPU architectures and all the defconfigs to be built?  For
-example, some maintainers are happy with just the main defconfigs
-such as linusw:
-
-
-https://kernelci.org/build/linusw/branch/for-next/kernel/v5.7-rc2-34-g9e581cd14663/
-
-Some even just need 3 builds, for arm, arm64 and x86_64.  This is
-typically the best tests/build ratio.  Having fewer builds also
-means you'll get email reports quicker.  It's easy enough to
-adjust the KernelCI configuration to make it optimal, please let
-us know.
-
-Thanks,
-Guillaume
-
---00000000000026b05c05a4820bc2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi Ulf,</div><br><div class=3D"gmail_quote"><div dir=
-=3D"ltr" class=3D"gmail_attr">On Thu, Apr 30, 2020 at 2:14 PM Ulf Hansson &=
-lt;<a href=3D"mailto:ulf.hansson@linaro.org">ulf.hansson@linaro.org</a>&gt;=
- wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
-0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Kerne=
-lCI folkz,<br>
-<br>
-My MMC tree seems not to be included in the kernelCI infrastructure<br>
-anymore, as I receive no more reports.<br>
-Would it possible to re-enable my tree?<br></blockquote><div><br></div>Sorr=
-y, some of our kernel builders had to be turned off<br>temporarily and as a=
- result we&#39;ve had to scale down the number of<br>branches being monitor=
-ed.=C2=A0 We have now started re-enabling some<br>gradually to see how much=
- the system can cope with, until we add<br>a new set of builders and go bac=
-k to normal.<br><br>I&#39;ve just enabled your ulfh/next branch again, it s=
-hould be fine<br>if you don&#39;t push new revisions more than once a day t=
-o limit the<br>total number of builds.<br><br>Actually, maybe this would al=
-so be the opportunity to review the<br>number of kernels built from your br=
-anch.=C2=A0 Do you need all the<br>CPU architectures and all the defconfigs=
- to be built?=C2=A0 For<br>example, some maintainers are happy with just th=
-e main defconfigs<br>such as linusw:<br><br>=C2=A0 =C2=A0 <a href=3D"https:=
-//kernelci.org/build/linusw/branch/for-next/kernel/v5.7-rc2-34-g9e581cd1466=
-3/">https://kernelci.org/build/linusw/branch/for-next/kernel/v5.7-rc2-34-g9=
-e581cd14663/</a><br><br><div>Some even just need 3 builds, for arm, arm64 a=
-nd x86_64.=C2=A0 This is<br>typically the best tests/build ratio.=C2=A0 Hav=
-ing fewer builds also<br>means you&#39;ll get email reports quicker.=C2=A0 =
-It&#39;s easy enough to<br>adjust the KernelCI configuration to make it opt=
-imal, please let<br>us know.<br></div><div><br></div><div>Thanks,</div><div=
->Guillaume</div></div></div>
-
---00000000000026b05c05a4820bc2--
