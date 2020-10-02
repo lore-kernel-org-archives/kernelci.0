@@ -17,18 +17,20 @@ References: <20200707222342.scrz75265etaqlmd@redhat.com>
  <6aab4595-8b16-50a9-81ca-78bd08ff7a33@redhat.com>
  <CACT4Y+aok+-h_pBM4ga-rfo8647Sp2cVBT8k34t8jqNR-vjz8A@mail.gmail.com>
 From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Message-ID: <10c1d41d-aeaa-ea7b-cc87-76b7afea2aed@redhat.com>
-Date: Fri, 2 Oct 2020 12:08:51 +0300
+Message-ID: <616ea4fc-e08a-cde5-88f4-8e2b71a752bf@redhat.com>
+Date: Fri, 2 Oct 2020 13:39:56 +0300
 MIME-Version: 1.0
 In-Reply-To: <CACT4Y+aok+-h_pBM4ga-rfo8647Sp2cVBT8k34t8jqNR-vjz8A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="Groupsio=wVWWYALXZ2iwvG5yKCWS"
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
+To: kernelci@groups.io, dvyukov@google.com
+Cc: Nikolai Kondrashov <spbnick@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
 
-On 10/2/20 12:02 PM, Dmitry Vyukov wrote:
+--Groupsio=wVWWYALXZ2iwvG5yKCWS
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 10/2/20 12:02 PM, Dmitry Vyukov via groups.io wrote:
  > On Fri, Oct 2, 2020 at 10:12 AM Nikolai Kondrashov
  > <Nikolai.Kondrashov@redhat.com> wrote:
  >>
@@ -44,14 +46,42 @@ On 10/2/20 12:02 PM, Dmitry Vyukov wrote:
  > We are live!
  > https://staging.kernelci.org:3000/d/home/home?orgId=1&var-origin=syzbot&var-dataset=kernelci04&from=now-90d&to=now
 
-Whoaaa, awesooomeee!
-Thank you, that was super-fast!
-
-Now I'll go fix all the issues the extra traffic has uncovered, and then let's
-do all the features we need :D
+We got a weird report (attached), could you take a look?
+It doesn't validate, and the data doesn't make much sense.
 
 Nick
 
-P.S. I thought you were on a US timezone so didn't hurry with my answer
-      earlier, sorry, but now I'll know you're only one hour away :)
+--Groupsio=wVWWYALXZ2iwvG5yKCWS
+Content-Type: application/json;
+ name="165.data.json"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="165.data.json"
 
+ewogICJyZXZpc2lvbnMiOiBbCiAgICB7CiAgICAgICJkaXNjb3ZlcnlfdGltZSI6ICIyMDIwLTA5
+LTIzVDA2OjM2OjM4WiIsCiAgICAgICJnaXRfcmVwb3NpdG9yeV9icmFuY2giOiAibWFzdGVyIiwK
+ICAgICAgImdpdF9yZXBvc2l0b3J5X3VybCI6ICJodHRwczovL2dpdGh1Yi5jb20vZ29vZ2xlL3N5
+emthbGxlci5naXQiLAogICAgICAiaWQiOiAiIiwKICAgICAgIm9yaWdpbiI6ICJzeXpib3QiLAog
+ICAgICAicHVibGlzaGluZ190aW1lIjogIjAwMDEtMDEtMDFUMDA6MDA6MDBaIiwKICAgICAgInZh
+bGlkIjogdHJ1ZQogICAgfQogIF0sCiAgImJ1aWxkcyI6IFsKICAgIHsKICAgICAgImFyY2hpdGVj
+dHVyZSI6ICJ4ODZfNjQiLAogICAgICAiY29tcGlsZXIiOiAiZ28gdmVyc2lvbiBnbzEuMTQuMyBs
+aW51eC9hbWQ2NCIsCiAgICAgICJpZCI6ICJzeXpib3Q6ZDk4M2YzMDU5ZTI4ZmQ1ZWI0NThlYmQ0
+OTFlZGNlYjRmZGU4MjcyNyIsCiAgICAgICJvcmlnaW4iOiAic3l6Ym90IiwKICAgICAgInJldmlz
+aW9uX2lkIjogIiIsCiAgICAgICJzdGFydF90aW1lIjogIjIwMjAtMDktMjNUMDY6MzY6MzhaIiwK
+ICAgICAgInZhbGlkIjogdHJ1ZQogICAgfQogIF0sCiAgInRlc3RzIjogWwogICAgewogICAgICAi
+YnVpbGRfaWQiOiAic3l6Ym90OmQ5ODNmMzA1OWUyOGZkNWViNDU4ZWJkNDkxZWRjZWI0ZmRlODI3
+MjciLAogICAgICAiZGVzY3JpcHRpb24iOiAic3l6a2FsbGVyOiB0ZXN0aW5nIGZhaWxlZDogZmFp
+bGVkIHRvIHJ1biBbXCJnb1wiIFwidGVzdFwiIFwiLXNob3J0XCIgXCIuLy4uLlwiXTogZXhpdCBz
+dGF0dXMgMSAoMikiLAogICAgICAiaWQiOiAic3l6Ym90OmY5OTIyZDM3NWM0ZWVkY2E5NzdlIiwK
+ICAgICAgIm1pc2MiOiB7CiAgICAgICAgIm9yaWdpbl91cmwiOiAiaHR0cHM6Ly9zeXprYWxsZXIu
+YXBwc3BvdC5jb20vYnVnP2V4dGlkPWY5OTIyZDM3NWM0ZWVkY2E5NzdlIiwKICAgICAgICAicmVw
+b3J0ZWRfYnkiOiAic3l6Ym90K2Y5OTIyZDM3NWM0ZWVkY2E5NzdlQHN5emthbGxlci5hcHBzcG90
+bWFpbC5jb20iCiAgICAgIH0sCiAgICAgICJvcmlnaW4iOiAic3l6Ym90IiwKICAgICAgIm91dHB1
+dF9maWxlcyI6IFsKICAgICAgICB7CiAgICAgICAgICAibmFtZSI6ICJsb2cudHh0IiwKICAgICAg
+ICAgICJ1cmwiOiAiaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20veC9sb2cudHh0P3g9MTIz
+MzYyYzM5MDAwMDAiCiAgICAgICAgfQogICAgICBdLAogICAgICAicGF0aCI6ICJzeXprYWxsZXIi
+LAogICAgICAic3RhcnRfdGltZSI6ICIyMDIwLTA5LTIzVDA2OjM2OjM4WiIsCiAgICAgICJzdGF0
+dXMiOiAiRkFJTCIsCiAgICAgICJ3YWl2ZWQiOiBmYWxzZQogICAgfQogIF0sCiAgInZlcnNpb24i
+OiB7CiAgICAibWFqb3IiOiAzLAogICAgIm1pbm9yIjogMAogIH0KfQo=
+
+--Groupsio=wVWWYALXZ2iwvG5yKCWS--
