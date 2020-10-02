@@ -1,51 +1,89 @@
+Subject: Re: [kernelci-members] Working with the KernelCI project
+References: <20200707222342.scrz75265etaqlmd@redhat.com>
+ <CACT4Y+a3L+_8kpXq-WdNZxJESCvnCvfakJ3CymVwmZZA6kv+0w@mail.gmail.com>
+ <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
+ <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
+ <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com>
+ <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
+ <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com>
+ <16397F50C12D08DD.21243@groups.io>
+ <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
+ <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com>
+ <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
+ <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
+ <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com>
+ <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
+ <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com>
+ <9123a571-721b-5c1b-367e-e028acec4096@redhat.com>
+ <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <802e465b-8578-adea-1107-75da5383fe0c@redhat.com>
+Date: Fri, 2 Oct 2020 11:12:10 +0300
 MIME-Version: 1.0
-References: <20210129212009.GA2659554@localhost> <CAK8P3a19=Zdni0G2LQE58rrdgJ18zNoefio6GwVg36m5B0Eqdg@mail.gmail.com>
- <CAKwvOdm3sFE=hpai0NLJ_UAYNG2RO2mZGY33uHqmFgZm7fy_KQ@mail.gmail.com>
-In-Reply-To: <CAKwvOdm3sFE=hpai0NLJ_UAYNG2RO2mZGY33uHqmFgZm7fy_KQ@mail.gmail.com>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Mon, 1 Feb 2021 22:40:02 +0100
-Message-ID: <CAK8P3a0Wgcp__qHepBU06dPr44PsOxMkL_SvTssqYyWtGA0EQA@mail.gmail.com>
-Subject: Re: Minimum supported version of LLVM
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>, Sedat Dilek <sedat.dilek@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Kees Cook <keescook@chromium.org>, Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Arvind Sankar <nivedita@alum.mit.edu>, Ilie Halip <ilie.halip@gmail.com>, kernelci@groups.io, clang-built-linux <clang-built-linux@googlegroups.com>
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
 
-On Mon, Feb 1, 2021 at 10:19 PM 'Nick Desaulniers' via Clang Built
-Linux <clang-built-linux@googlegroups.com> wrote:
->
-> On Fri, Jan 29, 2021 at 3:36 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> >
-> > I'm actually more worried about the reverse: as there is six year
-> > long-term support for kernels, do we expect to be able to build
-> > the oldest kernel with the latest version of llvm at the end of that?
-> >
-> > E.g. would a linux-5.4 that today can be built with clang-8 through
-> > clang-12 allow being built with clang-8 through clang-21 at the
-> > end of its life in 2025, or do we assume that LTS kernel users also
-> > have to use old compilers?
->
-> I would think so.  The newer compiler should always be better or an
-> improvement.  Can you think of a case where an old compiler must be
-> used for older versions of kernel sources?  Stable has said they will
-> always accept patches for newer toolchain support.
+Hi Dmitry,
 
-The most common reason is compiler warnings. New compiler versions
-tend to add warnings for stuff that used to be accepted by older compilers,
-and that's generally a good thing, but it can clutter up your builds if it
-happens a lot. We generally backport those warning fixes.
+On 10/1/20 8:02 PM, Dmitry Vyukov wrote:
+ > On Thu, Oct 1, 2020 at 6:34 PM Nikolai Kondrashov
+ > <Nikolai.Kondrashov@redhat.com> wrote:
+ >> I think it's OK that you have some duplication, and certainly OK for the
+ >> start. Let's get on with sending the data and see how much actual duplication
+ >> we get, how it affects performance, and how the de-duplication implementation
+ >> goes :)
+ >
+ > The new format is now published by syzbot itself:
+ > https://staging.kernelci.org:3000/d/test/test?orgId=1&var-dataset=playground_kernelci04&var-id=syzbot:60b38542a0dfb2e0f746
 
-Feature removal is another case, but there is clearly nothing to do
-about that: If clang drops support for unmaintained architectures, those
-architectures architectures are frozen in time, and presumably mainline
-clang won't remove them before the kernel has already dropped them
-first.
+Awesome!
 
-The hardest part would be kernel code that accidentally relies on
-undefined behavior, which can get changed by the compiler. There
-are sometimes regressions that cause a kernel not to boot when
-built with a newer kernel. If the kernel fix is too complex, e.g. because
-it requires dropping support for an older compiler in return, backporting
-might get tricky.
+ > So, do we switch to prod instance?
 
-       Arnd
+Yes :)!
+
+ > Do you receive notifications now?
+
+No, more on that below.
+
+ > Do we need to fix anything else before the switch?
+
+No, let's go ahead with the switch. We can figure out the problems as we go if
+we see any. Our "production" instance is not much of a "production" yet.
+
+ > I don't see anything from syzbot at:
+ > https://groups.io/g/kernelci-results-staging/topics
+
+Yes, I'm trying to investigate that currently. We have a few issues working
+together it seems. We're facing database query limit issues, plus whatever
+messages are generated are not getting delivered. You're already having an
+impact :D!
+
+I'll work through that and will notify you once notifications for syzbot
+results are coming through.
+
+ > How can I see/subscribe to these notifications?
+
+You can subscribe to that maillist. Please note, however, even though e-mails
+have real recipients, such as maillists, only this maillist is on their
+envelope. This way we can see they're generated correctly, but don't send them
+anywhere yet.
+
+ > Since syzbot database now memorizes what was published to kcidb to
+ > avoid dups, the switch will require some manual database surgery to
+ > make it re-publish bugs. So I want to make sure we did not miss
+ > something simple that we could do before the switch.
+
+Sure.
+
+ > The switch involves just changing the topic to "kernelci_new", right?
+
+Yes.
+
+Nick
+
