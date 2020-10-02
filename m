@@ -1,113 +1,113 @@
-From: "Wang Mingyu" <wangmy@cn.fujitsu.com>
-Subject: Re: help: how to contribute to the community
-Date: Tue, 26 Jan 2021 05:36:50 +0000
-Message-ID: <5ac3c7e7aaf04148977dfc338fd6ce91@G08CNEXMBPEKD05.g08.fujitsu.local>
-References: <a34a999c78584e0e9953360bbd5797f8@G08CNEXMBPEKD05.g08.fujitsu.local>
- <ec96708e-12d5-ff21-1f21-dfd2262927dc@collabora.com>
- <c2e6b26abf2446e98e8e162b5015fa29@G08CNEXMBPEKD05.g08.fujitsu.local>
- <ffaf7e62-294e-17fb-25e5-d8a5ce8ef9e5@collabora.com>
-In-Reply-To: <ffaf7e62-294e-17fb-25e5-d8a5ce8ef9e5@collabora.com>
 MIME-Version: 1.0
-Content-Language: zh-CN
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+References: <20200707222342.scrz75265etaqlmd@redhat.com> <CACT4Y+a5spdA8TZNeaXFYj4QEw_=howfhu9YGsNm3rC8XPAJnA@mail.gmail.com>
+ <d9919812-9763-9c02-3e5d-978fac8fe1f7@redhat.com> <CACT4Y+a3L+_8kpXq-WdNZxJESCvnCvfakJ3CymVwmZZA6kv+0w@mail.gmail.com>
+ <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
+ <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
+ <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com> <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
+ <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com> <16397F50C12D08DD.21243@groups.io>
+ <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
+ <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com> <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
+ <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
+ <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com> <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
+ <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com>
+ <9123a571-721b-5c1b-367e-e028acec4096@redhat.com> <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
+In-Reply-To: <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
+From: "Dmitry Vyukov" <dvyukov@google.com>
+Date: Fri, 2 Oct 2020 09:52:13 +0200
+Message-ID: <CACT4Y+ZaAJMAwQT=BStb936bDbe68V6mXQw29cHGzb_9712TbA@mail.gmail.com>
+Subject: Re: [kernelci-members] Working with the KernelCI project
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
 
-SGkgR3VpbGxhdW1lLA0KPiBTb3JyeSBmb3IgdGhlIGRlbGF5IGluIHJlcGx5aW5nLCBhbmQgdGhh
-bmsgeW91IGZvciB5b3VyIGNvbnRyaWJ1dGlvbnMuICBUaGUgUFINCj4gdG8gZW5hYmxlIGkzODYg
-Q2xhbmcgYnVpbGRzIGxvb2tzIGZpbmUsIEknbSBkb2luZyBhIGNvdXBsZSBvZiBidWlsZHMgdG8g
-dmVyaWZ5DQo+IGl0J3Mgd29ya2luZyBhcyBleHBlY3RlZCB3aXRoIHRoZSBjdXJyZW50IENsYW5n
-IERvY2tlciBjb250YWluZXJzIGFuZCB0aGUNCj4gZGVmYXVsdCBidWlsZCBvcHRpb25zLiAgSSds
-bCBwdXQgYSBjb21tZW50IG9uIHRoZSBQUi4NCj4gDQo+IFRoZXJlIHdhcyBhIHNtYWxsIGlzc3Vl
-IHdpdGggaG93IHRoZSBQUiB3YXMgY3JlYXRlZCwgdGhlIG9yaWdpbiByZXBvDQo+IGFwcGVhcmVk
-IHRvIGJlICJ1bmtub3duIiByYXRoZXIgdGhhbiB5b3VyIGZvcmsuICBUaGVuIHRoZSBQUiBnb3Qg
-Y2xvc2VkIGJ5DQo+IGFjY2lkZW50IHdoZW4gcmVuYW1pbmcgdGhlICJtYXN0ZXIiIGJyYW5jaCB0
-byAibWFpbiIsIEkgdGhpbmsgaXQncyBiZWNhdXNlDQo+IG9mIHRoZSB1bmtub3duIHJlcG9zaXRv
-cnkuICBJbiBhbnkgY2FzZSwgdGhhbmtzIGZvciByZXBvcnRpbmcgdGhlIGlzc3VlIGFzDQo+IHRo
-ZSBjb2RlIHdhc24ndCBlYXN5IHRvIHVzZS4gIEkndmUgbm93IHJlZmFjdG9yZWQgaXQgd2l0aCBh
-IHNpbXBsZXINCj4gaW1wbGVtZW50YXRpb24gdXNpbmcgbWV0aG9kcyBpbiB0aGUgTEFWQSBjbGFz
-czoNCj4gDQo+ICAgaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNpLWNvcmUvcHVs
-bC81OTANCkdvdCBpdCwgdGhhbmtzIGEgbG90Lg0KDQo+IE9uIGEgZGlmZmVyZW50IHRvcGljLCBo
-YXZlIHlvdSBjb25zaWRlcmVkIHNlbmRpbmcgdGVzdCByZXN1bHRzIGZyb20gYSBGdWppdHN1DQo+
-IHRlc3QgbGFiPyAgWW91IGNvdWxkIHNldCB1cCBhIExBVkEgaW5zdGFuY2UgdG8gaGF2ZSB0ZXN0
-cyBzY2hlZHVsZWQgb24geW91cg0KPiBwbGF0Zm9ybXMgYnkga2VybmVsY2kub3JnLCBvciBpZiB5
-b3UgaGF2ZSBhbiBleGlzdGluZyBhdXRvbWF0ZWQgdGVzdCBzeXN0ZW0NCj4gZm9yIHRoZSB1cHN0
-cmVhbSBrZXJuZWwgeW91IG1heSBzZW5kIHRoZSByZXN1bHRzIGRpcmVjdGx5IHRvIEtDSURCIChv
-ciBkbw0KPiBib3RoKS4NCk5vdyB3ZSBhcmUgc3RpbGwgaW4gdGhlIGludmVzdGlnYXRpb24gc3Rh
-Z2Ugb2Yga2VybmVsY2kgYW5kIGxhdmEuIA0KSWYgaXQgaXMgY29uZmlybWVkIHRoYXQgdGhleSBj
-YW4gYmUgdXNlZCBpbiBvdXIgd29yaywgSSB3aWxsIGRvIHRoaXMgc3RlcCBhZ2Fpbg0KDQoNCkJl
-c3QgcmVnYXJkcw0KV2FuZyBNaW5neXUNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
-PiBGcm9tOiBHdWlsbGF1bWUgVHVja2VyIDxndWlsbGF1bWUudHVja2VyQGNvbGxhYm9yYS5jb20+
-DQo+IFNlbnQ6IFR1ZXNkYXksIEphbnVhcnkgMjYsIDIwMjEgNzoyMiBBTQ0KPiBUbzoga2VybmVs
-Y2lAZ3JvdXBzLmlvOyBXYW5nLCBNaW5neXUv546LIOm4o+eRnCA8d2FuZ215QGNuLmZ1aml0c3Uu
-Y29tPg0KPiBTdWJqZWN0OiBSZTogaGVscDogaG93IHRvIGNvbnRyaWJ1dGUgdG8gdGhlIGNvbW11
-bml0eQ0KPiANCj4gSGVsbG8sDQo+IA0KPiBPbiAwNi8wMS8yMDIxIDAxOjA1LCBXYW5nIE1pbmd5
-dSB3cm90ZToNCj4gPiBIaSBHdWlsbGF1bWUsDQo+ID4NCj4gPiBJJ3ZlIGFscmVhZHkgYWRkZWQg
-aTM4NiB0byB0aGUgbGlzdCBvZiBhcmNoaXRlY3R1cmVzIGJ1aWx0IHdpdGggY2xhbmctMTEgYW5k
-DQo+IGNsYW5nLTEwLg0KPiA+IFBsZWFzZSBjb25maXJtIGlmIHRoZXJlIGlzIGFueSBwcm9ibGVt
-Lg0KPiANCj4gU29ycnkgZm9yIHRoZSBkZWxheSBpbiByZXBseWluZywgYW5kIHRoYW5rIHlvdSBm
-b3IgeW91ciBjb250cmlidXRpb25zLiAgVGhlIFBSDQo+IHRvIGVuYWJsZSBpMzg2IENsYW5nIGJ1
-aWxkcyBsb29rcyBmaW5lLCBJJ20gZG9pbmcgYSBjb3VwbGUgb2YgYnVpbGRzIHRvIHZlcmlmeQ0K
-PiBpdCdzIHdvcmtpbmcgYXMgZXhwZWN0ZWQgd2l0aCB0aGUgY3VycmVudCBDbGFuZyBEb2NrZXIg
-Y29udGFpbmVycyBhbmQgdGhlDQo+IGRlZmF1bHQgYnVpbGQgb3B0aW9ucy4gIEknbGwgcHV0IGEg
-Y29tbWVudCBvbiB0aGUgUFIuDQo+IA0KPiA+IEluIGFkZGl0aW9uLCBwdWxsIHJlcXVlc3QgNTQ1
-IGhhcyBub3QgYmVlbiBjb25maXJtZWQuIElmIHRoZXJlIGFyZSBhbnkNCj4gPiBwcm9ibGVtcywg
-cGxlYXNlIGxldCBtZSBrbm93DQo+IA0KPiBUaGVyZSB3YXMgYSBzbWFsbCBpc3N1ZSB3aXRoIGhv
-dyB0aGUgUFIgd2FzIGNyZWF0ZWQsIHRoZSBvcmlnaW4gcmVwbw0KPiBhcHBlYXJlZCB0byBiZSAi
-dW5rbm93biIgcmF0aGVyIHRoYW4geW91ciBmb3JrLiAgVGhlbiB0aGUgUFIgZ290IGNsb3NlZCBi
-eQ0KPiBhY2NpZGVudCB3aGVuIHJlbmFtaW5nIHRoZSAibWFzdGVyIiBicmFuY2ggdG8gIm1haW4i
-LCBJIHRoaW5rIGl0J3MgYmVjYXVzZQ0KPiBvZiB0aGUgdW5rbm93biByZXBvc2l0b3J5LiAgSW4g
-YW55IGNhc2UsIHRoYW5rcyBmb3IgcmVwb3J0aW5nIHRoZSBpc3N1ZSBhcw0KPiB0aGUgY29kZSB3
-YXNuJ3QgZWFzeSB0byB1c2UuICBJJ3ZlIG5vdyByZWZhY3RvcmVkIGl0IHdpdGggYSBzaW1wbGVy
-DQo+IGltcGxlbWVudGF0aW9uIHVzaW5nIG1ldGhvZHMgaW4gdGhlIExBVkEgY2xhc3M6DQo+IA0K
-PiAgIGh0dHBzOi8vZ2l0aHViLmNvbS9rZXJuZWxjaS9rZXJuZWxjaS1jb3JlL3B1bGwvNTkwDQo+
-IA0KPiANCj4gT24gYSBkaWZmZXJlbnQgdG9waWMsIGhhdmUgeW91IGNvbnNpZGVyZWQgc2VuZGlu
-ZyB0ZXN0IHJlc3VsdHMgZnJvbSBhIEZ1aml0c3UNCj4gdGVzdCBsYWI/ICBZb3UgY291bGQgc2V0
-IHVwIGEgTEFWQSBpbnN0YW5jZSB0byBoYXZlIHRlc3RzIHNjaGVkdWxlZCBvbiB5b3VyDQo+IHBs
-YXRmb3JtcyBieSBrZXJuZWxjaS5vcmcsIG9yIGlmIHlvdSBoYXZlIGFuIGV4aXN0aW5nIGF1dG9t
-YXRlZCB0ZXN0IHN5c3RlbQ0KPiBmb3IgdGhlIHVwc3RyZWFtIGtlcm5lbCB5b3UgbWF5IHNlbmQg
-dGhlIHJlc3VsdHMgZGlyZWN0bHkgdG8gS0NJREIgKG9yIGRvDQo+IGJvdGgpLg0KPiANCj4gQmVz
-dCByZWdhcmRzLA0KPiBHdWlsbGF1bWUNCj4gDQo+ID4gSWYgdGhlcmUgaXMgYW55dGhpbmcgZWxz
-ZSBJIGNhbiBkbywgcGxlYXNlIGxldCBtZSBrbm93LiBUaGFuayB5b3UNCj4gPg0KPiA+IEJlc3Qg
-cmVnYXJkcw0KPiA+IFdhbmcgTWluZ3l1DQo+ID4NCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
-LS0tLS0NCj4gPj4gRnJvbTogR3VpbGxhdW1lIFR1Y2tlciA8Z3VpbGxhdW1lLnR1Y2tlckBjb2xs
-YWJvcmEuY29tPg0KPiA+PiBTZW50OiBUaHVyc2RheSwgRGVjZW1iZXIgMTAsIDIwMjAgNjoxMyBQ
-TQ0KPiA+PiBUbzoga2VybmVsY2lAZ3JvdXBzLmlvOyBXYW5nLCBNaW5neXUv546LIOm4o+eRnA0K
-PiA8d2FuZ215QGNuLmZ1aml0c3UuY29tPg0KPiA+PiBTdWJqZWN0OiBSZTogaGVscDogaG93IHRv
-IGNvbnRyaWJ1dGUgdG8gdGhlIGNvbW11bml0eQ0KPiA+Pg0KPiA+PiBPbiAwOC8xMi8yMDIwIDA3
-OjQzLCBXYW5nIE1pbmd5dSB3cm90ZToNCj4gPj4+IEhpLCBhbGwNCj4gPj4+DQo+ID4+PiBJIGFt
-IGN1cnJlbnRseSB1c2luZyB0aGlzIHRvb2wuDQo+ID4+PiBBbHRob3VnaCBJIGFtIHN0aWxsIG5l
-dywgSSBzdGlsbCB3YW50IHRvIGNvbnRyaWJ1dGUgdG8gdGhlIGNvbW11bml0eS4NCj4gPj4+IElz
-IHRoZXJlIGFueXRoaW5nIEkgY2FuIGRv77yfDQo+ID4+PiBGb3IgZXhhbXBsZSwgYnVnIGZpeCwg
-b3Igc2ltcGxlIG5ldyBwbGFuIHRvIGtlcm5lbGNpLg0KPiA+Pg0KPiA+PiBUaGFuayB5b3UgZm9y
-IHlvdXIgaW50ZXJlc3QsIHRoZXJlIGFyZSBwbGVudHkgb2YgdGhpbmdzIHRoYXQNCj4gPj4gZmly
-c3QtdGltZSBjb250cmlidXRvcnMgY2FuIGRvIGluIEtlcm5lbENJLiAgT25lIHdvdWxkIGJlIHRv
-IGVuYWJsZQ0KPiA+PiBpMzg2IGJ1aWxkcyB3aXRoIENsYW5nLCBhcyBwZXIgdGhpcyBHaXRIdWIg
-aXNzdWU6DQo+ID4+DQo+ID4+ICAgaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNp
-LWNvcmUvaXNzdWVzLzUxNw0KPiA+Pg0KPiA+PiBBdCB0aGUgbW9tZW50LCBrZXJuZWxjaS5vcmcg
-YnVpbGRzIGxpbnV4LW5leHQgd2l0aCBDbGFuZyBvbiBhcm0sDQo+ID4+IGFybTY0LA0KPiA+PiB4
-ODZfNjQgYW5kIHJpc2N2IGFyY2hpdGVjdHVyZXMuICBPZiBhbGwgdGhlIG90aGVyIGFyY2hpdGVj
-dHVyZXMgdGhhdA0KPiA+PiBhcmVuJ3QgYnVpbHQgeWV0LCBpMzg2IHNob3VsZCBiZSB0aGUgZWFz
-aWVzdCBvbmUgdG8gYWRkLiAgRG9pbmcgdGhpcw0KPiA+PiBkb2VzIG5vdCByZXF1aXJlIGFueSBz
-ZXJ2aWNlIHRvIGJlIGluc3RhbGxlZCBsb2NhbGx5LCBhbGwgeW91IG5lZWQgaXMNCj4gPj4gRG9j
-a2VyIGFuZCB0aGUga2VybmVsY2ktY29yZSByZXBvc2l0b3J5LiAgVGhlIHdvcmsgdG8gZG8gaXMg
-YmFzaWNhbGx5Og0KPiA+Pg0KPiA+PiAqIHJ1biBrY2lfYnVpbGQgaW4gS2VybmVsQ0kgRG9ja2Vy
-IGltYWdlcyB3aXRoIHRoZSBjbGFuZy0xMSBhbmQNCj4gPj4gICBjbGFuZy0xMCB0b29sY2hhaW5z
-IHRvIGJ1aWxkIGtlcm5lbHMgZm9yIGkzODYNCj4gPj4NCj4gPj4gKiByZXBvcnQgb3IgZml4IGFu
-eSBidWlsZCBpc3N1ZXMsIHRoaXMgbWlnaHQganVzdCB3b3JrIGJ1dCBpdA0KPiA+PiAgIG5lZWRz
-IHRvIGJlIHZlcmlmaWVkIHdpdGggYm90aCBjbGFuZyB2ZXJzaW9ucw0KPiA+Pg0KPiA+PiAqIGVk
-aXQgYnVpbGQtY29uZmlncy55YW1sIHRvIGFkZCBpMzg2IHRvIHRoZSBsaXN0IG9mDQo+ID4+ICAg
-YXJjaGl0ZWN0dXJlcyBidWlsdCB3aXRoIGNsYW5nLTExIGFuZCBjbGFuZy0xMCBpZiBpdCBhbHNv
-DQo+ID4+ICAgd29ya3MNCj4gPj4NCj4gPj4gKiB2ZXJpZnkgdGhhdCB0aGUgbGlzdCBvZiBidWls
-ZHMgZm9yIGxpbnV4LW5leHQgaW5jbHVkZXMgaTM4Ng0KPiA+PiAgIGRlZmNvbmZpZyB3aXRoIGNs
-YW5nIHVzaW5nICJrY2lfYnVpbGQgbGlzdF9rZXJuZWxfY29uZmlncyINCj4gPj4NCj4gPj4gKiBz
-ZW5kIGEgcHVsbCByZXF1ZXN0IGluIEdpdEh1YiB3aXRoIHRoZSBjaGFuZ2UsIHRoaXMgd2lsbCB0
-aGVuDQo+ID4+ICAgZ2V0IHRlc3RlZCBvbiBzdGFnaW5nLmtlcm5lbGNpLm9yZyBhbmQgcmV2aWV3
-ZWQNCj4gPj4NCj4gPj4gSWYgaXQgd29ya3MgYXMgZXhwZWN0ZWQgb24gc3RhZ2luZy5rZXJuZWxj
-aS5vcmcgYW5kIG9uY2UgdGhlIFBSDQo+ID4+IHJldmlldyBpcyBjb21wbGV0ZSwgdGhpcyB3aWxs
-IHRoZW4gZ2V0IG1lcmdlZCBhbmQgZGVwbG95ZWQgaW4NCj4gPj4gcHJvZHVjdGlvbiBmb3Iga2Vy
-bmVsY2kub3JnLg0KPiA+Pg0KPiA+PiBEb2VzIHRoYXQgc291bmQgbGlrZSBzb21ldGhpbmcgeW91
-IHdvdWxkIGJlIGludGVyZXN0ZWQgdG8gZG8/DQo+ID4+DQo+ID4+IFRoYW5rcywNCj4gPj4gR3Vp
-bGxhdW1lDQo+ID4+DQo+ID4NCj4gPg0KPiA+DQo+ID4NCj4gPg0KPiA+IA0KPiA+DQo+ID4NCj4g
-DQo+IA0KDQoKCg==
+On Thu, Oct 1, 2020 at 7:02 PM Dmitry Vyukov <dvyukov@google.com> wrote:
+>
+> On Thu, Oct 1, 2020 at 6:34 PM Nikolai Kondrashov
+> <Nikolai.Kondrashov@redhat.com> wrote:
+> >
+> > On 10/1/20 7:00 PM, Dmitry Vyukov wrote:
+> >  > On Thu, Oct 1, 2020 at 5:52 PM Nikolai Kondrashov
+> >  > <Nikolai.Kondrashov@redhat.com> wrote:
+> >  >>
+> >  >> On 10/1/20 6:49 PM, Nikolai Kondrashov wrote:
+> >  >>> On 10/1/20 5:48 PM, Dmitry Vyukov via groups.io wrote:
+> >  >>>   > On Thu, Oct 1, 2020 at 3:32 PM Nikolai Kondrashov
+> >  >>>   > <Nikolai.Kondrashov@redhat.com> wrote:
+> >  >>>   >>
+> >  >>>   >> On 10/1/20 1:48 PM, Nikolai Kondrashov wrote:
+> >  >>>   >>   > Here are the things which could be improved:
+> >  >>>   >>
+> >  >>>   >> Oh, and another thing: could you avoid re-sending the identical
+> >  >>>   >> revisions/builds you've already sent? I.e. send them only once, unless you
+> >  >>>   >> have fields to add? Each of those costs us a row in the database, which is not
+> >  >>>   >> a big deal, but would be good to avoid.
+> >  >>>   >
+> >  >>>   > Do you see that we send dups? I've added logic to not send dups and
+> >  >>>   > from what I see it's working.
+> >  >>>
+> >  >>> Please find attached a zip archive with seven submissions from about six hours
+> >  >>> ago. Each has revisions with the same id and git_commit_hash. Some of those
+> >  >>> revisions have different discovery_time, and that alone shouldn't really be
+> >  >>> the reason to resend. Each of those submissions have a build object, but some
+> >  >>> of them are repeated.
+> >  >>>
+> >  >>> Revision with that git_commit_hash was submitted at least 72 times.
+> >  >>
+> >  >> And now the file is attached :D
+> >  >
+> >  > This is intentional (in the current implementation) and is a
+> >  > consequence of the fact that we always send all 3 entities for each
+> >  > issue/test failure. It's much simpler on our side this way. If we
+> >  > would send a test failure multiple times it would be unintentional.
+> >
+> > I see.
+> >
+> >  > Identical builds should have the same id, though. And if they have
+> >  > different id's, then these are different builds.
+> >
+> > Sure.
+> >
+> >  > Revisions were discovered separately by different instances, that's
+> >  > why they have different discovery time. Consider that as if different
+> >  > origin systems would discover it separately. Since discovery time is
+> >  > not an inherent property of the commit itself, there is no way they
+> >  > can agree on it.
+> >
+> > Ah, I see now why. Yeah, it's similar to multiple systems submitting the same
+> > revision. Although we don't have systems submitting the same build multiple
+> > times.
+> >
+> >  > Will it be better if we don't send discovery time at all?
+> >
+> > No, it's OK to submit the discover time multiple times, but we can't say which
+> > one will be displayed :)
+> >
+> >  > Amount of duplication for builds/revisions is capped by the number of
+> >  > bugs we discover, since build/revision is only sent with a bug once.
+> >  > So it's not that it's unlimited.
+> >
+> > I think it's OK that you have some duplication, and certainly OK for the
+> > start. Let's get on with sending the data and see how much actual duplication
+> > we get, how it affects performance, and how the de-duplication implementation
+> > goes :)
+>
+> The new format is now published by syzbot itself:
+> https://staging.kernelci.org:3000/d/test/test?orgId=1&var-dataset=playground_kernelci04&var-id=syzbot:60b38542a0dfb2e0f746
+>
+> So, do we switch to prod instance? Do you receive notifications now?
+> Do we need to fix anything else before the switch?
+>
+> I don't see anything from syzbot at:
+> https://groups.io/g/kernelci-results-staging/topics
+> How can I see/subscribe to these notifications?
+>
+> Since syzbot database now memorizes what was published to kcidb to
+> avoid dups, the switch will require some manual database surgery to
+> make it re-publish bugs. So I want to make sure we did not miss
+> something simple that we could do before the switch.
+>
+> The switch involves just changing the topic to "kernelci_new", right?
+
+I am preparing for the switch and will do it unless I hear from you soon.
+Since you already gave green light above, I assume we are good now.
