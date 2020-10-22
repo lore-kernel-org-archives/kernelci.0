@@ -1,93 +1,91 @@
-Return-Path: <clabbe@baylibre.com>
-Date: Wed, 21 Oct 2020 08:39:14 +0200
-From: "Corentin Labbe" <clabbe@baylibre.com>
-Subject: Re: RFC: dashboards, visualization and analytics for test results
-Message-ID: <20201021063914.GC21391@Red>
-References: <7hk0w2c4i3.fsf@baylibre.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Subject: kernelci.org update - 2020-10-22 #minutes
+Message-ID: <065d07b8-74f0-2872-0660-265ba5948ce0@collabora.com>
+Date: Thu, 22 Oct 2020 21:20:36 +0100
 MIME-Version: 1.0
-In-Reply-To: <7hk0w2c4i3.fsf@baylibre.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, khilman@baylibre.com
-Cc: automated-testing@lists.yoctoproject.org, tools@linux.kernel.org
+To: kernelci@groups.io
 
-On Wed, Oct 07, 2020 at 10:47:32AM -0700, Kevin Hilman wrote:
-> Hello folks interested in kernel testing/automation,
-> 
-> The KernelCI project is starting to look at what's next for dashboards,
-> visualization and analytics for the various Linux focused testing
-> projects.
-> 
-> At Linux Plumbers, we launched some discussions[1] around common ways to
-> collect test results, logs and metadata into a public, shared dataset,
-> and we've already started collecting data from several different
-> sources.
-> 
-> So the next question is... how do we best use all of this data?
-> 
-> We're beginning to brainstorm how to visualize, analyze and learn from
-> this data in useful ways.
-> 
-> To that end, we're starting to collect a set of user stories to help us
-> brainstorm a new design for web based dashboard and analytics, and we'd
-> like to hear from you.
-> 
-> Below is the start of a list of user stories[2], but we want to grow
-> this list with your ideas, so please share them on this thread. 
-> 
-> We're also very interested in talking with any big data people and data
-> scientists who might be willing to look at this growing set of data and
-> help us better plan for the future full of lots of test data.
-> 
-> We appreciate your ideas and feedback,
-> 
-> Kevin (on behalf of the KernelCI team)
-> 
-> 
-> [1] c.f. Unifying Test Reporting with KernelCI from the testing/fuzzing
->     micro-conference:
->     https://linuxplumbersconf.org/event/7/sessions/80/#20200826
-> 
-> 
-> 
-> [2] Example user stories
-> 
-> A kernel developer has sent a patch which caused a regression
->    - Find the details, how to reproduce, check when it’s fixed
-> 
-> A maintainer is getting a branch ready for the next merge window
->   - Compare results against mainline, ensure all tests were run correctly
-> 
-> An OEM or SoC vendor needs to upgrade their kernel or move to upstream
->   - See all results for a particular platform on various stable releases
-> 
-> Regular visitors who want to know how the kernel is doing
->   - Highlight new regressions, show trends for pass/fail and performance
->   - Does kernel X work on my hardware? 
-> 
-> Distro vendor wants to know
->   - Is the latest kernel stable enough for my distro?
->   - Why does this test fail on my distro kernel but not stable kernel?
-> 
-> Stable kernel maintainer wants to know
->   - Is this kernel stable enough to release?
-> 
-> Kernel / subsystem maintainer wants to know
->   - Is my code/subsystem being tested?  How much coverage?
->   - Is the kernel size growing?  Why?  Which subsystems
->   - Is boot time / test execution time increasing/decreasing?  What are the historical trends?
-> 
+Summary of changes going into production
+========================================
 
-Hello
+* use clang-11 on linux-next
+* add LTP test plan with IPC tests
+* add preempt-rt test plan definition
+* add Rob Herring's for-kernelci branch
+* enable new devices and fix minor issues in bootrr
+* add initial documentation on how to add test plans
+* fix kselftest build errors with missing dependencies
+* fix v4l-utils build in buster-v4l2
+* fix performance issue with SoC view on frontend
+* show number of regressions in test email reports
+* fix login test case with LAVA 2020.03 onwards
+* redesign pass/fail/unknown counts on kernelci.org frontend
+* kcidb v8 release https://github.com/kernelci/kcidb/releases/tag/v8
 
-As a maintainer, viewing all boot including a specific hardware/driver.
-Does my xxxx driver works everywhere ?
 
-Recent example:
-- I have added support for PRNG/hash on sun8i-ce, I want to check all boots with this driver.
-More complex recent example:
-- since commit bbc4d71d6354 ("net: phy: realtek: fix rtl8211e rx/tx delay config") many board could loose network, I want to see all boots including this patch with this PHY.
+Technical Steering Committee minutes - 2020-09-29
+=================================================
 
-Regards
+* kcidb: Working with Dmitry Vyukov to start sending syzbot data
+* Kubernetes: cleanup of completed but not removed jobs
+  (mostly because jenkins fails to connect to k8s cluster)
+* LTP: First LTP results on staging thanks to Laks
+* Jenkins: random failures, need to look for alternatives
+* staging.kernelci.org: considering rotation of mainline/stable/next
+* Tekton experiments: https://github.com/threexc/yocto-tekton
+
+Technical Steering Committee minutes - 2020-10-06
+=================================================
+
+* KUnit: works well locally, still needs some things to be adjusted
+  https://github.com/kernelci/kernelci-core/pull/464
+* kcidb: syzbot data is now live
+  https://staging.kernelci.org:3000/d/home/home?orgId=1&refresh=30m&var-origin=syzbot&var-git_repository_url=All&var-dataset=kernelci04
+* kcidb: Grafana dashboard updated to aggregate data better
+
+Technical Steering Committee minutes - 2020-10-13
+=================================================
+
+* clang:
+  * discussing new architectures to build and stable branches
+  * missing build email reports from linux-next
+* kcidb:
+  * v8 released, with support for streaming JSON
+  * issue with missing timezone information in kernelci-backend data
+* LAVA: issue with auto-login-action renamed in 2020.03
+* Tekton / Kubernetes:
+  * making progress with experiments, should plan PoC after ELC-E week
+  * see also useful text-mode control interface: https://k9scli.io/
+
+Technical Steering Committee minutes - 2020-10-20
+=================================================
+
+* kernelci-backend:
+  * fixed timestamp issue in kernelci-backend
+  * adding missing Mongo DB indexes for SoC views
+* kselftests: looking into fixing more build errors
+* Tekton / Kubernetes:
+  * still making progress with https://github.com/threexc/yocto-tekton
+  * see also: https://kubevirt.io/user-guide/#/
+
+
+Advisory Board minutes - 2020-09-30
+===================================
+
+* LPC blog post published
+  https://foundation.kernelci.org/blog/2020/09/23/kernelci-notes-from-plumbers-2020/
+* Discussing options for designing a new web dashboard / user experience
+
+Advisory Board minutes - 2020-10-14
+===================================
+
+* Discuss upcoming talks for ELC-E, things to tweet about
+* Planning a technical meeting to share maintenance work with more people
+
+
+Best wishes,
+Guillaume
