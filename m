@@ -1,42 +1,30 @@
-From: "Chris Paterson" <chris.paterson2@renesas.com>
-Subject: Re: How to submit a patch
-Date: Tue, 27 Oct 2020 07:55:50 +0000
-Message-ID: 
- <OSAPR01MB2385D4E7BAF4ABBECEED0D78B7160@OSAPR01MB2385.jpnprd01.prod.outlook.com>
-References: 
- <8f2d998ba22148adaa5a3bb9053f2dd0@G08CNEXMBPEKD05.g08.fujitsu.local>
-In-Reply-To: 
- <8f2d998ba22148adaa5a3bb9053f2dd0@G08CNEXMBPEKD05.g08.fujitsu.local>
+Date: Sat, 31 Oct 2020 20:37:34 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: License compliance with binary distribution
+Message-ID: <20201031193734.GA571423@kozik-lap>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+List-ID: <info.kernelci.org>
+List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
+List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/kernelci.org/group/info/subscribe>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>, "wangmy@cn.fujitsu.com" <wangmy@cn.fujitsu.com>
+To: info@kernelci.org
 
-SGVsbG8gV2FuZyBNaW5neXUsDQoNCj4gRnJvbToga2VybmVsY2lAZ3JvdXBzLmlvIDxrZXJuZWxj
-aUBncm91cHMuaW8+IE9uIEJlaGFsZiBPZiBXYW5nIE1pbmd5dQ0KPiB2aWEgZ3JvdXBzLmlvDQo+
-IFNlbnQ6IDI3IE9jdG9iZXIgMjAyMCAwMDo1Mg0KPiANCj4gSGksIGFsbA0KPiANCj4gSSdtIGdv
-aW5nIHRvIHN1Ym1pdCBhIHBhdGNoIHRvIGtlcm5lbGNpLWNvcmUuDQoNCkdyZWF0IQ0KDQo+IEhv
-dyBjYW4gSSBkbyB0byBzdWJtaXQgaXQ/DQo+IEkgZGlkbid0IHNlZSB0aGUgY29udHJpYnV0aW9u
-IGluIHRoZSBtYWlsaW5nIGxpc3QNCg0KVGhlcmUgaXMgYSB3aWtpIHBhZ2UgWzBdIHRoYXQgY292
-ZXJzIHRoaXMsIGJ1dCBpdCdzIG9sZCBhbmQgbm90IG92ZXJseSBpbmZvcm1hdGl2ZS4NCg0KVGhl
-IGJlc3QgYXBwcm9hY2ggaXMgdG8gc3VibWl0IGEgcHVsbCByZXF1ZXN0IHRvIHRoZSBrZXJuZWxj
-aS1jb3JlIHJlcG9zaXRvcnkgWzFdIG9uIEdpdEh1Yi4gUmV2aWV3cyBhbmQgQ0kgdGVzdGluZyBh
-bGwgaGFwcGVuIHRoZXJlLg0KWW91J2xsIG5lZWQgdG8gZm9yayB0aGUgcmVwbyBhbmQgcHVzaCB5
-b3VyIGNoYW5nZXMgdG8geW91ciBmb3JrZWQgcmVwbyBiZWZvcmUgeW91IGNyZWF0ZSB0aGUgcHVs
-bCByZXF1ZXN0Lg0KDQpJIHN1Z2dlc3QgeW91IHJlYWQgdGhyb3VnaCB0aGUgZ3VpZGUgdG8gdGhl
-IGRldmVsb3BtZW50IHdvcmtmbG93IFsyXSBiZWZvcmUgc3VibWl0dGluZyB5b3VyIFBSIHRvIHVu
-ZGVyc3RhbmQgdGhlIGludGVncmF0aW9uIHByb2Nlc3MuDQoNClswXSBodHRwczovL2dpdGh1Yi5j
-b20va2VybmVsY2kva2VybmVsY2ktZG9jL3dpa2kvQ29udHJpYnV0aW5nLXRvLUtlcm5lbENJDQpb
-MV0gaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNpLWNvcmUNClsyXSBodHRwczov
-L2dpdGh1Yi5jb20va2VybmVsY2kva2VybmVsY2ktY29yZS9ibG9iL21hc3Rlci9kb2Mvc3RhZ2lu
-Zy5tZA0KDQpLaW5kIHJlZ2FyZHMsIENocmlzDQoNCj4gDQo+IEJlc3QgcmVnYXJkcw0KPiBXYW5n
-IE1pbmd5dQ0KPiANCj4gwqAgLS0NCj4gQmVzdCBSZWdhcmRzDQo+IC0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiBXYW5nIE1pbmd5dQ0KPiBEZXZl
-bG9wbWVudCBEZXB0LkkNCj4gTmFuamluZyBGdWppdHN1IE5hbmRhIFNvZnR3YXJlIFRlY2guIENv
-LiwgTHRkLihGTlNUKSBOby4gNiBXZW56aHUgUm9hZCwNCj4gTmFuamluZywgMjEwMDEyLCBDaGlu
-YQ0KPiBURUw6ICs4NisyNS04NjYzMDU2Ni04NTY4DQo+IENPSU5TOiA3OTk4ODU0OA0KPiBGQVg6
-ICs4NisyNS04MzMxNzY4NQ0KPiBNQUlMOiB3YW5nbXlAY24uZnVqaXRzdS5jb20NCj4gaHR0cDov
-L3d3dy5mdWppdHN1LmNvbS9jbi9mbnN0Lw0KPiANCj4gDQo+IA0KPiANCj4gDQo+IA0KPiANCj4g
-DQoNCg==
+Dear Kernel CI team,
+
+I saw that you keep the compiled Linux kernel binary on
+https://storage.kernelci.org. To be GPLv2 license compliant you might
+need to mention the license and offer the source code. Knowing the
+purpose of Kernel CI, the source code and license are kind of obvious...
+but it might not be that obvious if someone visits the link directly,
+e.g.:
+https://storage.kernelci.org/stable-rc/queue-4.9/v4.9.241-11-g04b990a9881a/arm/omap2plus_defconfig/gcc-8/
+
+Best regards,
+Krzysztof
+
