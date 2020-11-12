@@ -1,39 +1,42 @@
-From: "Santiago.Esteban via info" <santiago.esteban@microchip.com>
-Subject: Contribute to Kernel-CI with a new Lab
-Date: Wed, 11 Nov 2020 18:05:03 +0000
-Message-ID: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
+Message-ID: <ccf0ae0dbd5cce956631a7e4572ca84e0abd45e1.camel@pengutronix.de>
+Subject: Re: Contribute to Kernel-CI with a new Lab
+From: "Jan Luebbe" <jlu@pengutronix.de>
+Date: Thu, 12 Nov 2020 09:49:37 +0100
+In-Reply-To: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
+References: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
 MIME-Version: 1.0
-Reply-To: <Santiago.Esteban@microchip.com>
-List-ID: <info.kernelci.org>
-List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
-List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
- <mailto:info+help@kernelci.org>
-List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
-List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
- <https://groups.google.com/a/kernelci.org/group/info/subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: info@kernelci.org
+To: kernelci@groups.io, santiago.esteban@microchip.com, info@kernelci.org
 
-SGkgS2VybmVsQ0ksDQoNCkEgZmV3IG1vbnRocyBiYWNrIEkgY29udGFjdGVkIHlvdSBhYm91dCBh
-ZGRpbmcgYSBuZXcgbGFiIHRvIEtlcm5lbENJIGluZnJhc3RydWN0dXJlLiBJdCB0b29rIHVzIGxv
-bmdlciB0aGFuIEkgd2lzaGVkLCBidXQgbm93IHdlIGZpbmFsbHkgaGF2ZSBiZWVuIGFibGUgdG8g
-Y29ubmVjdCBvdXIgZmFybSB0byBhbiBpbnRlcm5hbCBLZXJuZWxDSSBkZXBsb3ltZW50ICh1c2lu
-ZyBkb2NrZXIpLg0KDQpBcyBJIGV4cGxhaW5lZCBiZWZvcmUsIG91ciBmYXJtIGhvbGRzIDQgYm9h
-cmRzIHdpdGggZGlmZmVyZW50IFNvQ3MgZnJvbSBNaWNyb2NoaXAgKGFuZCBBdG1lbCk6IFNhbTl4
-NjBlaywgU2FtYTVkMl94cGxhaW5lZCwgU2FtYTVkM194cGxhaW5lZCBhbmQgU2FtYTVkNF94cGxh
-aW5lZC4gQWxsIG9mIHRoZW4gd2l0aCBtYWlubGluZSBzdXBwb3J0Lg0KDQpPdXIgc2V0dXAsIGRv
-ZXMgbm90IHVzZXMgTGF2YSBhbmQgaXQgcmVsaWVzIG9uIExhYmdyaWQgdG8gcGVyZm9ybSB0aGUg
-dGVzdHMuIFdlIHVzZSAia2NpX2RhdGEiIHRvb2wgdG8gcHVibGlzaCB0ZXN0IHJlc3VsdHMgb24g
-S2VybmVsQ0kuDQoNCldlIHdvdWxkIGxpa2UgdG8gd29yayB3aXRoIHlvdSB0byBiZSBhYmxlIHRv
-IHB1Ymxpc2ggdGhlc2UgcmVzdWx0cy4gV2lsbCBpdCBiZSBwb3NzaWJsZSB0byBnZXQgYSB0b2tl
-biBmb3IgdGhlIHN0YWdpbmcgZGF0YWJhc2U/IEknbSBzdXJlIHRoYXQgdGhlcmUgYXJlIHRoaW5n
-cyB0aGF0IG5lZWQgdG8gYmUgcG9saXNoZWQgb24gb3VyIGpzb24gZmlsZXMuDQoNCg0KQmVzdCBy
-ZWdhcmRzLA0KDQpTYW50aQ0KDQoNClNhbnRpYWdvIEVzdGViYW4gWm9yaXRhDQpQcmluY2lwYWwg
-RW5naW5lZXINCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KTWljcm9jaGlwIFRlY2hub2xvZ3kgSW5jLg0KDQpUb3Jy
-ZSBBcmFnb25pYS4NCg0KSnVhbiBQYWJsbyBJSSAzNSwgN8KqIHBsYW50YS4NCjUwLjAwOSBaYXJh
-Z296YSwgU3BhaW4NCg0KDQpEZXNrOiAoKzM0KSA5NzYgMDEwIDMwMA0KDQpzYW50aWFnby5lc3Rl
-YmFuQG1pY3JvY2hpcC5jb208bWFpbHRvOnNhbnRpYWdvLnZhbGVyQG1pY3JvY2hpcC5jb20+DQp3
-d3cubWljcm9jaGlwLmNvbTxodHRwOi8vd3d3Lm1pY3JvY2hpcC5jb20vPg0KDQoNCg0KDQo=
+Hi Santi,
+
+On Wed, 2020-11-11 at 18:05 +0000, Santiago.Esteban via info via groups.io wrote:
+> Hi KernelCI,
+> 
+> A few months back I contacted you about adding a new lab to KernelCI
+> infrastructure. It took us longer than I wished, but now we finally
+> have been able to connect our farm to an internal KernelCI deployment
+> (using docker).
+> 
+> As I explained before, our farm holds 4 boards with different SoCs
+> from Microchip (and Atmel): Sam9x60ek, Sama5d2_xplained,
+> Sama5d3_xplained and Sama5d4_xplained. All of then with mainline
+> support.
+> 
+> Our setup, does not uses Lava and it relies on Labgrid to perform the
+> tests. We use "kci_data" tool to publish test results on KernelCI.
+
+That's very interesting. :) Do you have published the interface code
+somewhere? I've been trying to find some time to do that myself, but it
+seems you've beaten me to it. ;)
+
+Regards
+Jan
+
+> We would like to work with you to be able to publish these results.
+> Will it be possible to get a token for the staging database? I'm sure
+> that there are things that need to be polished on our json files.
+
+
