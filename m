@@ -1,207 +1,106 @@
-Return-Path: <dan.rue@linaro.org>
-Date: Mon, 23 Nov 2020 11:05:13 -0600
-From: "Dan Rue" <dan.rue@linaro.org>
-Subject: Re: TuxBuild Now Supports Clang 11 and 5 new architectures
-Message-ID: <20201123170513.mdfs53skfdcux7jm@jug>
-References: <CAGm4vTM-ozY8wSsuZhqCsz8qnrjaCRkmLnLJVkuYB6sVUaqnuQ@mail.gmail.com>
- <b455831c-1205-551f-6bb2-6bb33b750d17@collabora.com>
+Subject: Re: Contribute to Kernel-CI with a new Lab
+References: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
+ <ccf0ae0dbd5cce956631a7e4572ca84e0abd45e1.camel@pengutronix.de>
+ <b722c06a-057d-c1bb-1013-682d4282bbd7@microchip.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <90ad5257-0690-913a-1a04-d299f6830305@collabora.com>
+Date: Wed, 25 Nov 2020 14:09:10 +0000
 MIME-Version: 1.0
-In-Reply-To: <b455831c-1205-551f-6bb2-6bb33b750d17@collabora.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+In-Reply-To: <b722c06a-057d-c1bb-1013-682d4282bbd7@microchip.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: tuxbuild <tuxbuild@linaro.org>, clang-built-linux <clang-built-linux@googlegroups.com>, kernelci@groups.io
+To: santiago.esteban@microchip.com, jlu@pengutronix.de
+Cc: kernelci@groups.io, ticotimo@gmail.com
 
-On Thu, Nov 19, 2020 at 09:13:41AM +0000, Guillaume Tucker wrote:
-> Hi Dan,
-
-Hi Guillaume!
-
+On 12/11/2020 11:46, Santiago.Esteban via info via groups.io wrote:
+> On 12/11/20 9:49, Jan L=C3=BCbbe wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know =
+the content is safe
+>>
+>> Hi Santi,
+>>
+>> On Wed, 2020-11-11 at 18:05 +0000, Santiago.Esteban via info via groups=
+.io wrote:
+>>> Hi KernelCI,
+>>>
+>>> A few months back I contacted you about adding a new lab to KernelCI
+>>> infrastructure. It took us longer than I wished, but now we finally
+>>> have been able to connect our farm to an internal KernelCI deployment
+>>> (using docker).
+>>>
+>>> As I explained before, our farm holds 4 boards with different SoCs
+>>> from Microchip (and Atmel): Sam9x60ek, Sama5d2_xplained,
+>>> Sama5d3_xplained and Sama5d4_xplained. All of then with mainline
+>>> support.
+>>>
+>>> Our setup, does not uses Lava and it relies on Labgrid to perform the
+>>> tests. We use "kci_data" tool to publish test results on KernelCI.
+>> That's very interesting. :) Do you have published the interface code
+>> somewhere? I've been trying to find some time to do that myself, but it
+>> seems you've beaten me to it. ;)
+>>
+>> Regards
+>> Jan
 >=20
-> On 17/11/2020 21:41, Dan Rue wrote:
-> > Cheers!
-> >=20
-> > Today we've deployed support for clang-11, and we dropped support for c=
-lang 8 and 9 based on user feedback.
-> >=20
-> > In addition, we have added the following architectures with gcc 8, 9, a=
-nd 10:
-> > - s390
-> > - powerpc
-> > - sparc
-> > - hppa
-> > - sh
-> >=20
-> > TuxBuild's full support matrix is as follows:
-> >=20
-> > =A0 =A0 =A0 =A0 =A0arc arm arm64 hppa i386 mips powerpc riscv s390 sh =
-=A0sparc x86_64
-> > clang-10 no =A0yes yes =A0 no =A0 yes =A0yes =A0no =A0 =A0 =A0yes =A0 n=
-o =A0 no =A0no =A0 =A0yes
-> > clang-11 no =A0yes yes =A0 no =A0 yes =A0yes =A0no =A0 =A0 =A0yes =A0 n=
-o =A0 no =A0no =A0 =A0yes
+> Hi Jan,
 >=20
-> Out of interest, are there builds produced with tuxbuild for all
-> the supported configurations that can be downloaded with a build
-> log?
-
-I don't think there's anything published, but Antonio might have
-something related to the container tests that are done in tuxmake before
-publishing new containers.
-
+> No, I haven't publish it, till now. I've never though it would be useful=
+=
+=20
+> to anybody but me=C2=A0 ;)
 >=20
-> I've just been working on building riscv with Clang for KernelCI
-> and there are quite a few issues, we've dropped clang-10 as it's
-> actually broken.  So I wonder if you define "supported" solely by
-> having a Docker image and the ability to start a build, or if
-> it's required to actually complete a kernel build?
+> I have a python script that is tailored (too much) to our systems. It=20
+> performs some actions that depend on our infrastructure and how I've=20
+> implemented the labgrid tests (for example, I grab the results from a=20
+> pytest=C2=A0 json report). At the end, it creates a "tmeta_<board>.json"=
+ file=20
+> (equivalent to the "bmeta.json") that is later published with "kci_data"=
+=
+=20
+> tool.
 >=20
-> See related discussion about riscv here:
+> It could be used as an inspiration to make a more generic=20
+> "kci_labgrid_test" tool if there are interest, but, all kernelci=20
+> important stuff, still needs to be validated ;)
+
+There is already a plugin mechanism behind kci_test to have
+specific implementations for generating the test job description
+data and submitting it to a remote lab.  At the moment, only LAVA
+has an implementation but it sounds like Labgrid would be a neat
+addition.  The main challenge I guess, is that there isn't any
+built-in API for Labgrid to receive job descriptions and run
+them.
+
+One way to address this issue is to provide notifications with
+jobs to run, and a lab using Labgrid would subscribe to it.  As
+we're planning to refactor kernelci-backend and also come up with
+a more generic pipeline mechanis than Jenkins, we should be able
+to have this kind of notification system in place anyway in order
+to corrdinate the different components of the pipeline in a
+modular way.  It would be great to use some Labgrid labs as part
+of this exercise.  If you're interested, we can discuss that when
+we have some clear ideas about the main part of work.
+
+> I have attached it to this email the script and (more important) an=20
+> example of the output it produces.
+
+Thanks!  It's great to see that it doesn't really take much code
+to get some KernelCI jobs to run in Labgrid.
+
+> BR,
 >=20
->   https://github.com/kernelci/kernelci-core/pull/534
-
-If there is a legitimate problem in the kernel sources or in a toolchain
-implementation, the tuxmake would be expected to fail, and tuxmake
-shouldn't work around things that are broken.
-
-If tuxmake is doing the wrong thing, then it's a bug that we should fix.
-
-If a combination might work but currently doesn't, tuxmake can support
-it. If it will never work, we won't bother.
-
-`tuxmake -r podman -t riscv -t clang-10` works for me on v5.10-rc5.
-Here's the tuxbuild of the same, with logs and such:
-https://builds.tuxbuild.com/1khN9GYmp4AKa1g6m4MwM7yhgnE/
-
+> Santi
 >=20
->=20
-> > gcc-10 =A0 no =A0yes yes =A0 yes =A0yes =A0yes =A0yes =A0 =A0 yes =A0 y=
-es =A0yes yes =A0 yes
-> > gcc-8 =A0 =A0yes yes yes =A0 yes =A0yes =A0yes =A0yes =A0 =A0 yes =A0 y=
-es =A0yes yes =A0 yes
-> > gcc-9 =A0 =A0yes yes yes =A0 yes =A0yes =A0yes =A0yes =A0 =A0 yes =A0 y=
-es =A0yes yes =A0 yes
-> >=20
-> > We're still updating the tuxbuild documentation, but the new toolchains=
- and architectures are available immediately without a tuxbuild update (the=
- argument validation is all done server-side).
-> >=20
-> > Now that we have TuxMake integration which is enabling these new featur=
-es, we would like to add tuxmake build reproducers to tuxbuild. A build rep=
-roducer is a simple one-line shell script provided alongside the other tuxb=
-uild artifacts, which contain the tuxmake command-line invocation to perfor=
-m the same build locally. For example:
-> >=20
-> > =A0 =A0 $ cat tuxmake_reproducer.sh
-> > =A0 =A0 tuxmake --runtime docker --image docker.io/tuxmake/arm64_clang-=
-11 <http://docker.io/tuxmake/arm64_clang-11> --target-arch arm64 --kconfig =
-defconfig --kconfig-add "CONFIG_KASAN=3Dy" --toolchain clang-11
->=20
-> That's nice but I believe it would be easier to adopt if the
-> syntax was simpler.  For example:
->=20
->   tuxmake --runtime docker --target-arch arm64 --kconfig defconfig --kcon=
-fig-add "CONFIG_KASAN=3Dy" --toolchain clang-11
->=20
-> or if you really want to keep the docker image mentioned to
-> ensure reproducibility:
->=20
->   tuxmake --runtime docker --image docker.io/tuxmake/arm64_clang-11 --kco=
-nfig defconfig --kconfig-add "CONFIG_KASAN=3Dy"
->=20
-> I can see why you would want to define all the parameters
-> explicitly, but it seems like there's some repetition there.  If
-> the docker image is already arch-specific, then do you also need
-> to specify the arch as a separate parameter?
+>>
+>>> We would like to work with you to be able to publish these results.
+>>> Will it be possible to get a token for the staging database? I'm sure
+>>> that there are things that need to be polished on our json files.
 
-You're right, --image in the above example was superfluous. We were
-struggling to decide how granular to be with reproducers because you can
-be as simple as:
+Absolutely, I'll send you a staging API token privately.  Also,
+are you on IRC?  That would help with discussing things and
+addressing any issues.
 
-    tuxmake --runtime docker --target-arch x86_64 --kconfig defconfig --too=
-lchain gcc
-
-And as "correct" as e.g.:
-
-    tuxmake --image docker.io/tuxmake/x86_64_gcc@sha256:f8218cbfad8ecf6628f=
-c44db864a402070feb87ff43a880e1409649172d4bc8c -r docker --target-arch x86_6=
-4 --kconfig tinyconfig --toolchain gcc -e "KBUILD_BUILD_TIMESTAMP=3D'Tue Ma=
-y 26 16:16:14 2020 -0500'" -e "KBUILD_BUILD_USER=3Dtuxmake" -e "KBUILD_BUIL=
-D_HOST=3Dtuxmake"
-
-The latter provides (at least potentially) an actual reproducible build,
-but the former is simpler and usually sufficient.
-
-We decided to favor simplicity and all tuxbuilds now publish a
-tuxbuild_reproducer.sh and tuxmake_reproducer.sh which consists of the
-simple version of the command.
-
-For example in the risc5/clang-10 build from above, we see the following
-two reproducers now:
-
-tuxbuild_reproducer.sh:
-https://builds.tuxbuild.com/1khN9GYmp4AKa1g6m4MwM7yhgnE/tuxbuild_reproducer=
-.sh
-
-    #!/bin/sh
-
-    tuxbuild build --git-repo https://git.kernel.org/pub/scm/linux/kernel/g=
-it/torvalds/linux.git --git-sha 418baf2c28f3473039f2f7377760bd8f6897ae18 --=
-target-arch riscv --toolchain clang-10 --kconfig defconfig
-
-
-tuxmake_reproducer.sh:
-https://builds.tuxbuild.com/1khN9GYmp4AKa1g6m4MwM7yhgnE/tuxmake_reproducer.=
-sh
-
-    #!/bin/sh
-
-    tuxmake --runtime docker --target-arch riscv --toolchain clang-10 --kco=
-nfig defconfig
-
-
-Hope that helps!
-Dan
-
->=20
-> Best wishes,
-> Guillaume
->=20
-> > As a kernel developer, would you appreciate receiving such a command as=
- a part of a build discussion on a mailing list?
-> >=20
-> > Would you send something like that to your colleagues?
-> >=20
-> > Do you find the concept of a local reproducer helpful?
-> >=20
-> > Thanks again to everyone using and supporting TuxBuild and TuxMake - we=
- see you and we appreciate you,
-> >=20
-> > Dan
-> >=20
-> > p.s. Did you know that it's possible to perform actual reproducible bui=
-lds with tuxmake? It's true. Try it for yourself, and see if your bzImage s=
-ha256sum matches:
-> >=20
-> > =A0 =A0 $ git describe
-> > =A0 =A0 v5.10-rc4
-> > =A0 =A0 $ tuxmake --image docker.io/tuxmake/x86_64_gcc@sha256:f8218cbfa=
-d8ecf6628fc44db864a402070feb87ff43a880e1409649172d4bc8c <http://docker.io/t=
-uxmake/x86_64_gcc@sha256:f8218cbfad8ecf6628fc44db864a402070feb87ff43a880e14=
-09649172d4bc8c> -r docker -k tinyconfig -e "KBUILD_BUILD_TIMESTAMP=3D'Tue M=
-ay 26 16:16:14 2020 -0500'" -e "KBUILD_BUILD_USER=3Dtuxmake" -e "KBUILD_BUI=
-LD_HOST=3Dtuxmake"
-> > =A0 =A0 ...
-> > =A0 =A0 $ sha256sum /home/drue/.cache/tuxmake/builds/634/bzImage=A0
-> > =A0 =A0 5581ed4583fb4b9d76760ee329e248fe7281d7ea3b6ae0737efc7a6a4462aff=
-a =A0/home/drue/.cache/tuxmake/builds/634/bzImage
-> >=20
-> > p.p.s. Did you know that tuxmake also supports podman? Just use -r podm=
-an instead of -r docker.
->=20
-
---=20
-Linaro LKFT
-https://lkft.linaro.org
+Thanks,
+Guillaume
