@@ -1,69 +1,137 @@
+From: "Santiago.Esteban via info" <santiago.esteban@microchip.com>
+Subject: Re: Contribute to Kernel-CI with a new Lab
+Date: Thu, 26 Nov 2020 10:57:14 +0000
+Message-ID: <3ca1ef75-d191-4fdd-6a25-0e375103092f@microchip.com>
+References: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
+ <ccf0ae0dbd5cce956631a7e4572ca84e0abd45e1.camel@pengutronix.de>
+ <b722c06a-057d-c1bb-1013-682d4282bbd7@microchip.com>
+ <90ad5257-0690-913a-1a04-d299f6830305@collabora.com>
+ <b0990fe6-22c7-15e9-8f88-8751b72b6205@microchip.com>
+ <28bb83a2-7b3d-418f-4183-1ed514eb00c1@collabora.com>
+In-Reply-To: <28bb83a2-7b3d-418f-4183-1ed514eb00c1@collabora.com>
 MIME-Version: 1.0
-References: <20200707222342.scrz75265etaqlmd@redhat.com> <CACT4Y+beU9XoOt5XXLEarKyWvkhyRKC5aJRc6djmHsUqO+AbJA@mail.gmail.com>
- <8d422dcf-d4ef-8e74-be82-f52272d9a966@redhat.com> <CACT4Y+a5spdA8TZNeaXFYj4QEw_=howfhu9YGsNm3rC8XPAJnA@mail.gmail.com>
- <d9919812-9763-9c02-3e5d-978fac8fe1f7@redhat.com> <CACT4Y+a3L+_8kpXq-WdNZxJESCvnCvfakJ3CymVwmZZA6kv+0w@mail.gmail.com>
- <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
- <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
- <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com> <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
- <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com> <16397F50C12D08DD.21243@groups.io>
- <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
- <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com> <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
- <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
- <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com> <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
-In-Reply-To: <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Thu, 1 Oct 2020 18:00:57 +0200
-Message-ID: <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com>
-Subject: Re: [kernelci-members] Working with the KernelCI project
-Content-Type: text/plain; charset="UTF-8"
+Return-Path: Santiago.Esteban@microchip.com
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C46AACBE69CAB0408DBD34AFBD2A49C4@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
+To: guillaume.tucker@collabora.com, jlu@pengutronix.de
+Cc: kernelci@groups.io, ticotimo@gmail.com
 
-On Thu, Oct 1, 2020 at 5:52 PM Nikolai Kondrashov
-<Nikolai.Kondrashov@redhat.com> wrote:
->
-> On 10/1/20 6:49 PM, Nikolai Kondrashov wrote:
-> > On 10/1/20 5:48 PM, Dmitry Vyukov via groups.io wrote:
-> >  > On Thu, Oct 1, 2020 at 3:32 PM Nikolai Kondrashov
-> >  > <Nikolai.Kondrashov@redhat.com> wrote:
-> >  >>
-> >  >> On 10/1/20 1:48 PM, Nikolai Kondrashov wrote:
-> >  >>   > Here are the things which could be improved:
-> >  >>
-> >  >> Oh, and another thing: could you avoid re-sending the identical
-> >  >> revisions/builds you've already sent? I.e. send them only once, unless you
-> >  >> have fields to add? Each of those costs us a row in the database, which is not
-> >  >> a big deal, but would be good to avoid.
-> >  >
-> >  > Do you see that we send dups? I've added logic to not send dups and
-> >  > from what I see it's working.
-> >
-> > Please find attached a zip archive with seven submissions from about six hours
-> > ago. Each has revisions with the same id and git_commit_hash. Some of those
-> > revisions have different discovery_time, and that alone shouldn't really be
-> > the reason to resend. Each of those submissions have a build object, but some
-> > of them are repeated.
-> >
-> > Revision with that git_commit_hash was submitted at least 72 times.
->
-> And now the file is attached :D
-
-This is intentional (in the current implementation) and is a
-consequence of the fact that we always send all 3 entities for each
-issue/test failure. It's much simpler on our side this way. If we
-would send a test failure multiple times it would be unintentional.
-
-Identical builds should have the same id, though. And if they have
-different id's, then these are different builds.
-
-Revisions were discovered separately by different instances, that's
-why they have different discovery time. Consider that as if different
-origin systems would discover it separately. Since discovery time is
-not an inherent property of the commit itself, there is no way they
-can agree on it. Will it be better if we don't send discovery time at
-all?
-
-Amount of duplication for builds/revisions is capped by the number of
-bugs we discover, since build/revision is only sent with a bug once.
-So it's not that it's unlimited.
+T24gMjYvMTEvMjAgMTA6MTcsIEd1aWxsYXVtZSBUdWNrZXIgd3JvdGU6DQo+IEVYVEVSTkFMIEVN
+QUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtu
+b3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPg0KPiBPbiAyNi8xMS8yMDIwIDA3OjMwLCBTYW50aWFn
+by5Fc3RlYmFuQG1pY3JvY2hpcC5jb20gd3JvdGU6DQo+PiBPbiAyNS8xMS8yMCAxNTowOSwgR3Vp
+bGxhdW1lIFR1Y2tlciB3cm90ZToNCj4+PiBFWFRFUk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxp
+bmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNzIHlvdSBrbm93IHRoZSBjb250ZW50IGlzIHNh
+ZmUNCj4+Pg0KPj4+IE9uIDEyLzExLzIwMjAgMTE6NDYsIFNhbnRpYWdvLkVzdGViYW4gdmlhIGlu
+Zm8gdmlhIGdyb3Vwcy5pbyB3cm90ZToNCj4+Pj4gT24gMTIvMTEvMjAgOTo0OSwgSmFuIEzDvGJi
+ZSB3cm90ZToNCj4+Pj4+IEVYVEVSTkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3Bl
+biBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPj4+Pj4N
+Cj4+Pj4+IEhpIFNhbnRpLA0KPj4+Pj4NCj4+Pj4+IE9uIFdlZCwgMjAyMC0xMS0xMSBhdCAxODow
+NSArMDAwMCwgU2FudGlhZ28uRXN0ZWJhbiB2aWEgaW5mbyB2aWEgZ3JvdXBzLmlvIHdyb3RlOg0K
+Pj4+Pj4+IEhpIEtlcm5lbENJLA0KPj4+Pj4+DQo+Pj4+Pj4gQSBmZXcgbW9udGhzIGJhY2sgSSBj
+b250YWN0ZWQgeW91IGFib3V0IGFkZGluZyBhIG5ldyBsYWIgdG8gS2VybmVsQ0kNCj4+Pj4+PiBp
+bmZyYXN0cnVjdHVyZS4gSXQgdG9vayB1cyBsb25nZXIgdGhhbiBJIHdpc2hlZCwgYnV0IG5vdyB3
+ZSBmaW5hbGx5DQo+Pj4+Pj4gaGF2ZSBiZWVuIGFibGUgdG8gY29ubmVjdCBvdXIgZmFybSB0byBh
+biBpbnRlcm5hbCBLZXJuZWxDSSBkZXBsb3ltZW50DQo+Pj4+Pj4gKHVzaW5nIGRvY2tlcikuDQo+
+Pj4+Pj4NCj4+Pj4+PiBBcyBJIGV4cGxhaW5lZCBiZWZvcmUsIG91ciBmYXJtIGhvbGRzIDQgYm9h
+cmRzIHdpdGggZGlmZmVyZW50IFNvQ3MNCj4+Pj4+PiBmcm9tIE1pY3JvY2hpcCAoYW5kIEF0bWVs
+KTogU2FtOXg2MGVrLCBTYW1hNWQyX3hwbGFpbmVkLA0KPj4+Pj4+IFNhbWE1ZDNfeHBsYWluZWQg
+YW5kIFNhbWE1ZDRfeHBsYWluZWQuIEFsbCBvZiB0aGVuIHdpdGggbWFpbmxpbmUNCj4+Pj4+PiBz
+dXBwb3J0Lg0KPj4+Pj4+DQo+Pj4+Pj4gT3VyIHNldHVwLCBkb2VzIG5vdCB1c2VzIExhdmEgYW5k
+IGl0IHJlbGllcyBvbiBMYWJncmlkIHRvIHBlcmZvcm0gdGhlDQo+Pj4+Pj4gdGVzdHMuIFdlIHVz
+ZSAia2NpX2RhdGEiIHRvb2wgdG8gcHVibGlzaCB0ZXN0IHJlc3VsdHMgb24gS2VybmVsQ0kuDQo+
+Pj4+PiBUaGF0J3MgdmVyeSBpbnRlcmVzdGluZy4gOikgRG8geW91IGhhdmUgcHVibGlzaGVkIHRo
+ZSBpbnRlcmZhY2UgY29kZQ0KPj4+Pj4gc29tZXdoZXJlPyBJJ3ZlIGJlZW4gdHJ5aW5nIHRvIGZp
+bmQgc29tZSB0aW1lIHRvIGRvIHRoYXQgbXlzZWxmLCBidXQgaXQNCj4+Pj4+IHNlZW1zIHlvdSd2
+ZSBiZWF0ZW4gbWUgdG8gaXQuIDspDQo+Pj4+Pg0KPj4+Pj4gUmVnYXJkcw0KPj4+Pj4gSmFuDQo+
+Pj4+IEhpIEphbiwNCj4+Pj4NCj4+Pj4gTm8sIEkgaGF2ZW4ndCBwdWJsaXNoIGl0LCB0aWxsIG5v
+dy4gSSd2ZSBuZXZlciB0aG91Z2ggaXQgd291bGQgYmUgdXNlZnVsDQo+Pj4+IHRvIGFueWJvZHkg
+YnV0IG1lICA7KQ0KPj4+Pg0KPj4+PiBJIGhhdmUgYSBweXRob24gc2NyaXB0IHRoYXQgaXMgdGFp
+bG9yZWQgKHRvbyBtdWNoKSB0byBvdXIgc3lzdGVtcy4gSXQNCj4+Pj4gcGVyZm9ybXMgc29tZSBh
+Y3Rpb25zIHRoYXQgZGVwZW5kIG9uIG91ciBpbmZyYXN0cnVjdHVyZSBhbmQgaG93IEkndmUNCj4+
+Pj4gaW1wbGVtZW50ZWQgdGhlIGxhYmdyaWQgdGVzdHMgKGZvciBleGFtcGxlLCBJIGdyYWIgdGhl
+IHJlc3VsdHMgZnJvbSBhDQo+Pj4+IHB5dGVzdCAganNvbiByZXBvcnQpLiBBdCB0aGUgZW5kLCBp
+dCBjcmVhdGVzIGEgInRtZXRhXzxib2FyZD4uanNvbiIgZmlsZQ0KPj4+PiAoZXF1aXZhbGVudCB0
+byB0aGUgImJtZXRhLmpzb24iKSB0aGF0IGlzIGxhdGVyIHB1Ymxpc2hlZCB3aXRoICJrY2lfZGF0
+YSINCj4+Pj4gdG9vbC4NCj4+Pj4NCj4+Pj4gSXQgY291bGQgYmUgdXNlZCBhcyBhbiBpbnNwaXJh
+dGlvbiB0byBtYWtlIGEgbW9yZSBnZW5lcmljDQo+Pj4+ICJrY2lfbGFiZ3JpZF90ZXN0IiB0b29s
+IGlmIHRoZXJlIGFyZSBpbnRlcmVzdCwgYnV0LCBhbGwga2VybmVsY2kNCj4+Pj4gaW1wb3J0YW50
+IHN0dWZmLCBzdGlsbCBuZWVkcyB0byBiZSB2YWxpZGF0ZWQgOykNCj4+PiBUaGVyZSBpcyBhbHJl
+YWR5IGEgcGx1Z2luIG1lY2hhbmlzbSBiZWhpbmQga2NpX3Rlc3QgdG8gaGF2ZQ0KPj4+IHNwZWNp
+ZmljIGltcGxlbWVudGF0aW9ucyBmb3IgZ2VuZXJhdGluZyB0aGUgdGVzdCBqb2IgZGVzY3JpcHRp
+b24NCj4+PiBkYXRhIGFuZCBzdWJtaXR0aW5nIGl0IHRvIGEgcmVtb3RlIGxhYi4gIEF0IHRoZSBt
+b21lbnQsIG9ubHkgTEFWQQ0KPj4+IGhhcyBhbiBpbXBsZW1lbnRhdGlvbiBidXQgaXQgc291bmRz
+IGxpa2UgTGFiZ3JpZCB3b3VsZCBiZSBhIG5lYXQNCj4+PiBhZGRpdGlvbi4gIFRoZSBtYWluIGNo
+YWxsZW5nZSBJIGd1ZXNzLCBpcyB0aGF0IHRoZXJlIGlzbid0IGFueQ0KPj4+IGJ1aWx0LWluIEFQ
+SSBmb3IgTGFiZ3JpZCB0byByZWNlaXZlIGpvYiBkZXNjcmlwdGlvbnMgYW5kIHJ1bg0KPj4+IHRo
+ZW0uDQo+PiBIaSBHdWlsbGF1bWUsDQo+Pg0KPj4gTGFiZ3JpZCBkb2VzIG5vdCBwZXJmb3JtIGFu
+eSB0YXNrIHJlbGF0ZWQgdG8gYnVpbGQuIEl0IGZvY3VzZXMgb24NCj4+IHRlc3RpbmcgaW4gcmVh
+bCBoYXJkd2FyZS4gVGhlIGJ1aWxkIHN0YWdlIGlzIHBlcmZvcm1lZCBzb21ld2hlcmUgZWxzZS4N
+Cj4+IEl0IGlzIGEgZGlmZmVyZW50IGFwcHJvYWNoIHRoYW4gS2VybmVsQ0kgYW5kIExBVkEuIElu
+IG91ciBjYXNlLCB3ZQ0KPj4gdHJpZ2dlciB0aGUgYnVpbGRzIGluIEplbmtpbnMgYW5kIGFsc28g
+SmVua2lucyBleGVjdXRlcyB0aGUgTGFiZ3JpZA0KPj4gcHl0ZXN0IHNjcmlwdHMuIEl0IHdvdWxk
+IGJlIGdyZWF0IHRvIGJlIGFibGUgdG8gcHVzaCBLQ0kgam9icyBpbnRvIGENCj4+IGdlbmVyaWMg
+SmVua2lucyBzZXJ2ZXIuIEJ1dCwgZm9yIG1lLCB0aGUgbW9zdCBkaWZmaWN1bHQgcGFydCB3b3Vs
+ZCBiZQ0KPj4gY29udmluY2UgSVQgZGVwYXJ0bWVudCB0byBhbGxvdyBhIGNvbW11bmljYXRpb24g
+ZnJvbSBhIGV4dGVybmFsIHNvdXJjZQ0KPj4gaW50byB0aGUgY29ycG9yYXRlIG5ldHdvcmsuIEkg
+YWxyZWFkeSBrbm93IHRoZSBhbnN3ZXIuLi4uDQo+IEFic29sdXRlbHksIHRoYXQncyB0aGUgc2Ft
+ZSBhcyB3aXRoIExBVkEuICBUaGUgaWRlYSBpcyB0aGF0IHRoZQ0KPiBzYW1lIGJ1aWxkcyBmcm9t
+IGtlcm5lbGNpLm9yZyBjYW4gYmUgdXNlZCBpbiBhbnkgbGFiLCB0aGV5J3JlDQo+IGp1c3QgcGxh
+aW4ga2VybmVsIGJ1aWxkcy4gIFdoYXQgd2UgY291bGQgd29yayBvbiBpcyB0byBtYWtlIGl0DQo+
+IGVhc2llciBmb3IgbGFicyBsaWtlIHlvdXJzIGFuZCBpbiBwYXJ0aWN1bGFyIHdoZW4gdXNpbmcg
+TGFiZ3JpZA0KPiB0byByZWNlaXZlIHNvbWUgZGF0YSB3aGVuIHRoZXJlJ3MgYSBuZXcgdGVzdCB0
+byBydW4uICBUaGF0IHdvdWxkDQo+IGluY2x1ZGUgdGhlIFVSTHMgdG8gZ2V0IHRoZSBrZXJuZWwg
+aW1hZ2UsIG1vZHVsZXMsIGR0YiwNCj4gdXNlci1zcGFjZSwgY29tbWFuZHMgdG8gcnVuIHRoZSB0
+ZXN0cyBldGMuLi4NCj4NCj4+PiBPbmUgd2F5IHRvIGFkZHJlc3MgdGhpcyBpc3N1ZSBpcyB0byBw
+cm92aWRlIG5vdGlmaWNhdGlvbnMgd2l0aA0KPj4+IGpvYnMgdG8gcnVuLCBhbmQgYSBsYWIgdXNp
+bmcgTGFiZ3JpZCB3b3VsZCBzdWJzY3JpYmUgdG8gaXQuICBBcw0KPj4+IHdlJ3JlIHBsYW5uaW5n
+IHRvIHJlZmFjdG9yIGtlcm5lbGNpLWJhY2tlbmQgYW5kIGFsc28gY29tZSB1cCB3aXRoDQo+Pj4g
+YSBtb3JlIGdlbmVyaWMgcGlwZWxpbmUgbWVjaGFuaXMgdGhhbiBKZW5raW5zLCB3ZSBzaG91bGQg
+YmUgYWJsZQ0KPj4+IHRvIGhhdmUgdGhpcyBraW5kIG9mIG5vdGlmaWNhdGlvbiBzeXN0ZW0gaW4g
+cGxhY2UgYW55d2F5IGluIG9yZGVyDQo+Pj4gdG8gY29ycmRpbmF0ZSB0aGUgZGlmZmVyZW50IGNv
+bXBvbmVudHMgb2YgdGhlIHBpcGVsaW5lIGluIGENCj4+PiBtb2R1bGFyIHdheS4gIEl0IHdvdWxk
+IGJlIGdyZWF0IHRvIHVzZSBzb21lIExhYmdyaWQgbGFicyBhcyBwYXJ0DQo+Pj4gb2YgdGhpcyBl
+eGVyY2lzZS4gIElmIHlvdSdyZSBpbnRlcmVzdGVkLCB3ZSBjYW4gZGlzY3VzcyB0aGF0IHdoZW4N
+Cj4+PiB3ZSBoYXZlIHNvbWUgY2xlYXIgaWRlYXMgYWJvdXQgdGhlIG1haW4gcGFydCBvZiB3b3Jr
+Lg0KPj4gQSBwdWJsaXNoL3N1YnNjcmliZSBhcHByb2FjaCB3aWxsIHdvcmsgcGVyZmVjdGx5IHRv
+IG92ZXJjb21lIHRoZQ0KPj4gY29ycG9yYXRlIElUIGh1cmRsZXMuIE9mIGNvdXJzZSwgSSAnbSBp
+bnRlcmVzdGVkLiBQbGVhc2UgbGV0IG1lIGtub3cgaG93DQo+PiBjYW4gSSBiZSBwYXJ0IG9mIHRo
+aXMuDQo+IEdyZWF0LiAgVGhlcmUgaXMgYSByb2FkbWFwIGl0ZW0gb24gR2l0SHViIGFib3V0IHRo
+aXM6DQo+DQo+ICAgIGh0dHBzOi8vZ2l0aHViLmNvbS9rZXJuZWxjaS9rZXJuZWxjaS1jb3JlL2lz
+c3Vlcy8zMTUNCj4NCj4gV2UndmUgb25seSBqdXN0IHN0YXJ0ZWQsIHdpdGggYSB2ZXJ5IGJhc2lj
+IGtjaV9kYXRhDQo+IGltcGxlbWVudGF0aW9uLiAgVGhpcyBzaG91bGQgYmUgYnJva2VuIGRvd24g
+aW50byBhIHNlcmllcyBvZg0KPiB0YXNrcyBzdWNoIGFzOiBjbGVhbmluZyB1cCB0aGUga2VybmVs
+Y2ktYmFja2VuZCBBUEkgZm9yIHJlY2VpdmluZw0KPiByZXN1bHRzLCBwcm92aWRpbmcgYSBzdWJz
+Y3JpcHRpb24gbWVjaGFuaXNtIGFuZCBoYXZpbmcgYQ0KPiByZWFsLXdvcmxkIHJlZmVyZW5jZSBz
+eXN0ZW0gdG8gdGVzdCBpdCAoZS5nLiBhIExhYmdyaWQgbGFiKS4gIFdlDQo+IHByb2JhYmx5IHNo
+b3VsZCBzY2hlZHVsZSBhIG1lZXRpbmcgdG8gZ28gdGhyb3VnaCB0aGF0IGluIEphbnVhcnkuDQo+
+DQo+Pj4+IEkgaGF2ZSBhdHRhY2hlZCBpdCB0byB0aGlzIGVtYWlsIHRoZSBzY3JpcHQgYW5kICht
+b3JlIGltcG9ydGFudCkgYW4NCj4+Pj4gZXhhbXBsZSBvZiB0aGUgb3V0cHV0IGl0IHByb2R1Y2Vz
+Lg0KPj4+IFRoYW5rcyEgIEl0J3MgZ3JlYXQgdG8gc2VlIHRoYXQgaXQgZG9lc24ndCByZWFsbHkg
+dGFrZSBtdWNoIGNvZGUNCj4+PiB0byBnZXQgc29tZSBLZXJuZWxDSSBqb2JzIHRvIHJ1biBpbiBM
+YWJncmlkLg0KPj4gTGFiZ3JpZCBvbmx5IGNhcmVzIGFib3V0ICAzIHRoaW5nczogaW1hZ2UgdG8g
+dGVzdCwgYm9hcmQgaW4gdGhlIGZhcm0gdG8NCj4+IHVzZSBhbmQgdGVzdCB0byBwYXNzLiBNb3N0
+IG9mIHRoZSBjb2RlIGlzIHRvIGNyZWF0ZSBhIGpzb24gb3V0cHV0IHRlc3QNCj4+IHJlc3VsdCBj
+b21wYXRpYmxlIHdpdGggdGhlICJrY2lfZGF0YSIgdG9vbC4NCj4gRXhhY3RseS4NCj4NCj4+Pj4g
+QlIsDQo+Pj4+DQo+Pj4+IFNhbnRpDQo+Pj4+DQo+Pj4+Pj4gV2Ugd291bGQgbGlrZSB0byB3b3Jr
+IHdpdGggeW91IHRvIGJlIGFibGUgdG8gcHVibGlzaCB0aGVzZSByZXN1bHRzLg0KPj4+Pj4+IFdp
+bGwgaXQgYmUgcG9zc2libGUgdG8gZ2V0IGEgdG9rZW4gZm9yIHRoZSBzdGFnaW5nIGRhdGFiYXNl
+PyBJJ20gc3VyZQ0KPj4+Pj4+IHRoYXQgdGhlcmUgYXJlIHRoaW5ncyB0aGF0IG5lZWQgdG8gYmUg
+cG9saXNoZWQgb24gb3VyIGpzb24gZmlsZXMuDQo+Pj4gQWJzb2x1dGVseSwgSSdsbCBzZW5kIHlv
+dSBhIHN0YWdpbmcgQVBJIHRva2VuIHByaXZhdGVseS4gIEFsc28sDQo+Pj4gYXJlIHlvdSBvbiBJ
+UkM/ICBUaGF0IHdvdWxkIGhlbHAgd2l0aCBkaXNjdXNzaW5nIHRoaW5ncyBhbmQNCj4+PiBhZGRy
+ZXNzaW5nIGFueSBpc3N1ZXMuDQo+PiBHcmVhdCEgSSdtIG5vdCB1c3N1YWxseSBpbiBJUkMuLi4u
+IEknbGwgYmUgbW9yZSBhdmFpbGFibGUgdGhlcmUgKGFzDQo+PiAic2VzdGViYW4iKS4gSSdtIHdh
+aXRpbmcgdGhlIHRva2VuIQ0KPiBTZW50ISAgQXdhaXRpbmcgc29tZSBkYXRhIG5vdyA6KQ0KDQpI
+aSBHdWlsbGF1bWUsDQoNCkkndmUgdGhpcyBjcmVkZW50aWFsL3Rva2VuIGVycm9yIHdoZW4gdHJ5
+aW5nIHRvIHB1c2ggYSBrZXJuZWwgYnVpbGQ6DQoNCiDCoMKgwqAgwqDCoMKgIHJlcXVlc3RzLmV4
+Y2VwdGlvbnMuSFRUUEVycm9yOiA0MDMgQ2xpZW50IEVycm9yOiBPcGVyYXRpb24gbm90IA0KcGVy
+bWl0dGVkOiBwcm92aWRlZCB0b2tlbiBpcyBub3QgwqDCoMKgIMKgwqDCoCBhdXRob3JpemVkIGZv
+ciB1cmw6IA0KaHR0cHM6Ly9hcGkuc3RhZ2luZy5rZXJuZWxjaS5vcmcvdXBsb2FkDQogwqDCoMKg
+wqDCoMKgwqAgRXJyb3I6IGNhbiBub3QgcHVzaCBrZXJuZWw6IC4uL2J1aWxkcy9saW51eC1tYWlu
+bGluZSwgDQpodHRwczovL2FwaS5zdGFnaW5nLmtlcm5lbGNpLm9yZy90ZXN0LCAibXktdG9rZW4i
+DQoNClNvbWV0aGluZyBtaXNjb25maWd1cmVkIGluIHRoZSBkYXRhYmFzZT8NCg0KPg0KPiBUaGFu
+a3MsDQo+IEd1aWxsYXVtZQ0KDQpUaGFua3MsDQoNClNhbnRpDQoNCg==
