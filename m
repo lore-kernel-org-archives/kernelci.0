@@ -1,58 +1,103 @@
-Subject: Re: some question
-References: <08f301d69cb8$a8622c50$f92684f0$@ispras.ru>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <74c98edd-59f4-036c-c985-1d124b31da45@collabora.com>
-Date: Wed, 25 Nov 2020 14:19:23 +0000
+From: "Santiago.Esteban via info" <santiago.esteban@microchip.com>
+Subject: Re: Contribute to Kernel-CI with a new Lab
+Date: Thu, 26 Nov 2020 07:30:37 +0000
+Message-ID: <b0990fe6-22c7-15e9-8f88-8751b72b6205@microchip.com>
+References: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
+ <ccf0ae0dbd5cce956631a7e4572ca84e0abd45e1.camel@pengutronix.de>
+ <b722c06a-057d-c1bb-1013-682d4282bbd7@microchip.com>
+ <90ad5257-0690-913a-1a04-d299f6830305@collabora.com>
+In-Reply-To: <90ad5257-0690-913a-1a04-d299f6830305@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <08f301d69cb8$a8622c50$f92684f0$@ispras.ru>
-Content-Type: text/plain; charset=UTF-8
+Return-Path: Santiago.Esteban@microchip.com
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5099B4CCF7437D49A027CDAB6475FB04@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: diam@ispras.ru
-Cc: kernelci@groups.io
+To: guillaume.tucker@collabora.com, jlu@pengutronix.de
+Cc: kernelci@groups.io, ticotimo@gmail.com
 
-On 07/10/2020 15:46, =D0=94=D0=BC=D0=B8=D1=82=D1=80=D0=B8=D0=B9 =D0=9C=D0=
-=BE=D1=81=D0=BA=D0=B0=D0=BB=D0=B5=D0=B2 wrote:
-> Hi!
->=20
-> =C2=A0
->=20
-> I=E2=80=99m participating in small science project, that consist in cent=
-os-base kernel development.
->=20
-> One of the goals is regression testing of memory management from one ver=
-sion to another. And some autotesting system would be a great helpful for t=
-his.
->=20
-> I found *kernelci.org*in web and after reading howto=E2=80=99s have seve=
-ral questions:
->=20
-> 1.=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Could I install kernelCi on local=
- computer(s) so, that it builds and tests our =C2=A0kernel? I think we can=
-=E2=80=99t maintain actual lab, on the other hand testing in remote lab ma=
-y be =C2=A0time-consuming due to coordination exps.
-
-Yes, however setting up a complete KernelCI instance is not
-trivial.  It includes: the kernelci-backend service, a Mongo DB
-database, the kernelci-frontend service (web dashboard), and
-Jenkins to coordinate the builds and submit tests.  Then you
-would also need to have some kind of environment to run tests
-such as a LAVA lab.  But it's entirely possible, it might take a
-few days of work to get something that suits your needs.
-
-> 2.=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Could I add some new tests in tes=
-tplan and what should I do for this?
-
-Is this for your own instance, or to add some tests to run on
-kernelci.org?
-
-You can define tests that run in LAVA labs by creating a job
-template and YAML configuration in the kernelci-core repository.
-There is also some documentation about how to do that, and plenty
-of existing ones to use as a reference:
-
-  https://github.com/kernelci/kernelci-core
-
-Thanks,
-Guillaume
+T24gMjUvMTEvMjAgMTU6MDksIEd1aWxsYXVtZSBUdWNrZXIgd3JvdGU6DQo+IEVYVEVSTkFMIEVN
+QUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtu
+b3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPg0KPiBPbiAxMi8xMS8yMDIwIDExOjQ2LCBTYW50aWFn
+by5Fc3RlYmFuIHZpYSBpbmZvIHZpYSBncm91cHMuaW8gd3JvdGU6DQo+PiBPbiAxMi8xMS8yMCA5
+OjQ5LCBKYW4gTMO8YmJlIHdyb3RlOg0KPj4+IEVYVEVSTkFMIEVNQUlMOiBEbyBub3QgY2xpY2sg
+bGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhlIGNvbnRlbnQgaXMg
+c2FmZQ0KPj4+DQo+Pj4gSGkgU2FudGksDQo+Pj4NCj4+PiBPbiBXZWQsIDIwMjAtMTEtMTEgYXQg
+MTg6MDUgKzAwMDAsIFNhbnRpYWdvLkVzdGViYW4gdmlhIGluZm8gdmlhIGdyb3Vwcy5pbyB3cm90
+ZToNCj4+Pj4gSGkgS2VybmVsQ0ksDQo+Pj4+DQo+Pj4+IEEgZmV3IG1vbnRocyBiYWNrIEkgY29u
+dGFjdGVkIHlvdSBhYm91dCBhZGRpbmcgYSBuZXcgbGFiIHRvIEtlcm5lbENJDQo+Pj4+IGluZnJh
+c3RydWN0dXJlLiBJdCB0b29rIHVzIGxvbmdlciB0aGFuIEkgd2lzaGVkLCBidXQgbm93IHdlIGZp
+bmFsbHkNCj4+Pj4gaGF2ZSBiZWVuIGFibGUgdG8gY29ubmVjdCBvdXIgZmFybSB0byBhbiBpbnRl
+cm5hbCBLZXJuZWxDSSBkZXBsb3ltZW50DQo+Pj4+ICh1c2luZyBkb2NrZXIpLg0KPj4+Pg0KPj4+
+PiBBcyBJIGV4cGxhaW5lZCBiZWZvcmUsIG91ciBmYXJtIGhvbGRzIDQgYm9hcmRzIHdpdGggZGlm
+ZmVyZW50IFNvQ3MNCj4+Pj4gZnJvbSBNaWNyb2NoaXAgKGFuZCBBdG1lbCk6IFNhbTl4NjBlaywg
+U2FtYTVkMl94cGxhaW5lZCwNCj4+Pj4gU2FtYTVkM194cGxhaW5lZCBhbmQgU2FtYTVkNF94cGxh
+aW5lZC4gQWxsIG9mIHRoZW4gd2l0aCBtYWlubGluZQ0KPj4+PiBzdXBwb3J0Lg0KPj4+Pg0KPj4+
+PiBPdXIgc2V0dXAsIGRvZXMgbm90IHVzZXMgTGF2YSBhbmQgaXQgcmVsaWVzIG9uIExhYmdyaWQg
+dG8gcGVyZm9ybSB0aGUNCj4+Pj4gdGVzdHMuIFdlIHVzZSAia2NpX2RhdGEiIHRvb2wgdG8gcHVi
+bGlzaCB0ZXN0IHJlc3VsdHMgb24gS2VybmVsQ0kuDQo+Pj4gVGhhdCdzIHZlcnkgaW50ZXJlc3Rp
+bmcuIDopIERvIHlvdSBoYXZlIHB1Ymxpc2hlZCB0aGUgaW50ZXJmYWNlIGNvZGUNCj4+PiBzb21l
+d2hlcmU/IEkndmUgYmVlbiB0cnlpbmcgdG8gZmluZCBzb21lIHRpbWUgdG8gZG8gdGhhdCBteXNl
+bGYsIGJ1dCBpdA0KPj4+IHNlZW1zIHlvdSd2ZSBiZWF0ZW4gbWUgdG8gaXQuIDspDQo+Pj4NCj4+
+PiBSZWdhcmRzDQo+Pj4gSmFuDQo+PiBIaSBKYW4sDQo+Pg0KPj4gTm8sIEkgaGF2ZW4ndCBwdWJs
+aXNoIGl0LCB0aWxsIG5vdy4gSSd2ZSBuZXZlciB0aG91Z2ggaXQgd291bGQgYmUgdXNlZnVsDQo+
+PiB0byBhbnlib2R5IGJ1dCBtZSAgOykNCj4+DQo+PiBJIGhhdmUgYSBweXRob24gc2NyaXB0IHRo
+YXQgaXMgdGFpbG9yZWQgKHRvbyBtdWNoKSB0byBvdXIgc3lzdGVtcy4gSXQNCj4+IHBlcmZvcm1z
+IHNvbWUgYWN0aW9ucyB0aGF0IGRlcGVuZCBvbiBvdXIgaW5mcmFzdHJ1Y3R1cmUgYW5kIGhvdyBJ
+J3ZlDQo+PiBpbXBsZW1lbnRlZCB0aGUgbGFiZ3JpZCB0ZXN0cyAoZm9yIGV4YW1wbGUsIEkgZ3Jh
+YiB0aGUgcmVzdWx0cyBmcm9tIGENCj4+IHB5dGVzdCAganNvbiByZXBvcnQpLiBBdCB0aGUgZW5k
+LCBpdCBjcmVhdGVzIGEgInRtZXRhXzxib2FyZD4uanNvbiIgZmlsZQ0KPj4gKGVxdWl2YWxlbnQg
+dG8gdGhlICJibWV0YS5qc29uIikgdGhhdCBpcyBsYXRlciBwdWJsaXNoZWQgd2l0aCAia2NpX2Rh
+dGEiDQo+PiB0b29sLg0KPj4NCj4+IEl0IGNvdWxkIGJlIHVzZWQgYXMgYW4gaW5zcGlyYXRpb24g
+dG8gbWFrZSBhIG1vcmUgZ2VuZXJpYw0KPj4gImtjaV9sYWJncmlkX3Rlc3QiIHRvb2wgaWYgdGhl
+cmUgYXJlIGludGVyZXN0LCBidXQsIGFsbCBrZXJuZWxjaQ0KPj4gaW1wb3J0YW50IHN0dWZmLCBz
+dGlsbCBuZWVkcyB0byBiZSB2YWxpZGF0ZWQgOykNCj4gVGhlcmUgaXMgYWxyZWFkeSBhIHBsdWdp
+biBtZWNoYW5pc20gYmVoaW5kIGtjaV90ZXN0IHRvIGhhdmUNCj4gc3BlY2lmaWMgaW1wbGVtZW50
+YXRpb25zIGZvciBnZW5lcmF0aW5nIHRoZSB0ZXN0IGpvYiBkZXNjcmlwdGlvbg0KPiBkYXRhIGFu
+ZCBzdWJtaXR0aW5nIGl0IHRvIGEgcmVtb3RlIGxhYi4gIEF0IHRoZSBtb21lbnQsIG9ubHkgTEFW
+QQ0KPiBoYXMgYW4gaW1wbGVtZW50YXRpb24gYnV0IGl0IHNvdW5kcyBsaWtlIExhYmdyaWQgd291
+bGQgYmUgYSBuZWF0DQo+IGFkZGl0aW9uLiAgVGhlIG1haW4gY2hhbGxlbmdlIEkgZ3Vlc3MsIGlz
+IHRoYXQgdGhlcmUgaXNuJ3QgYW55DQo+IGJ1aWx0LWluIEFQSSBmb3IgTGFiZ3JpZCB0byByZWNl
+aXZlIGpvYiBkZXNjcmlwdGlvbnMgYW5kIHJ1bg0KPiB0aGVtLg0KDQpIaSBHdWlsbGF1bWUsDQoN
+CkxhYmdyaWQgZG9lcyBub3QgcGVyZm9ybSBhbnkgdGFzayByZWxhdGVkIHRvIGJ1aWxkLiBJdCBm
+b2N1c2VzIG9uIA0KdGVzdGluZyBpbiByZWFsIGhhcmR3YXJlLiBUaGUgYnVpbGQgc3RhZ2UgaXMg
+cGVyZm9ybWVkIHNvbWV3aGVyZSBlbHNlLiANCkl0IGlzIGEgZGlmZmVyZW50IGFwcHJvYWNoIHRo
+YW4gS2VybmVsQ0kgYW5kIExBVkEuIEluIG91ciBjYXNlLCB3ZSANCnRyaWdnZXIgdGhlIGJ1aWxk
+cyBpbiBKZW5raW5zIGFuZCBhbHNvIEplbmtpbnMgZXhlY3V0ZXMgdGhlIExhYmdyaWQgDQpweXRl
+c3Qgc2NyaXB0cy4gSXQgd291bGQgYmUgZ3JlYXQgdG8gYmUgYWJsZSB0byBwdXNoIEtDSSBqb2Jz
+IGludG8gYSANCmdlbmVyaWMgSmVua2lucyBzZXJ2ZXIuIEJ1dCwgZm9yIG1lLCB0aGUgbW9zdCBk
+aWZmaWN1bHQgcGFydCB3b3VsZCBiZSANCmNvbnZpbmNlIElUIGRlcGFydG1lbnQgdG8gYWxsb3cg
+YSBjb21tdW5pY2F0aW9uIGZyb20gYSBleHRlcm5hbCBzb3VyY2UgDQppbnRvIHRoZSBjb3Jwb3Jh
+dGUgbmV0d29yay4gSSBhbHJlYWR5IGtub3cgdGhlIGFuc3dlci4uLi4NCg0KPiBPbmUgd2F5IHRv
+IGFkZHJlc3MgdGhpcyBpc3N1ZSBpcyB0byBwcm92aWRlIG5vdGlmaWNhdGlvbnMgd2l0aA0KPiBq
+b2JzIHRvIHJ1biwgYW5kIGEgbGFiIHVzaW5nIExhYmdyaWQgd291bGQgc3Vic2NyaWJlIHRvIGl0
+LiAgQXMNCj4gd2UncmUgcGxhbm5pbmcgdG8gcmVmYWN0b3Iga2VybmVsY2ktYmFja2VuZCBhbmQg
+YWxzbyBjb21lIHVwIHdpdGgNCj4gYSBtb3JlIGdlbmVyaWMgcGlwZWxpbmUgbWVjaGFuaXMgdGhh
+biBKZW5raW5zLCB3ZSBzaG91bGQgYmUgYWJsZQ0KPiB0byBoYXZlIHRoaXMga2luZCBvZiBub3Rp
+ZmljYXRpb24gc3lzdGVtIGluIHBsYWNlIGFueXdheSBpbiBvcmRlcg0KPiB0byBjb3JyZGluYXRl
+IHRoZSBkaWZmZXJlbnQgY29tcG9uZW50cyBvZiB0aGUgcGlwZWxpbmUgaW4gYQ0KPiBtb2R1bGFy
+IHdheS4gIEl0IHdvdWxkIGJlIGdyZWF0IHRvIHVzZSBzb21lIExhYmdyaWQgbGFicyBhcyBwYXJ0
+DQo+IG9mIHRoaXMgZXhlcmNpc2UuICBJZiB5b3UncmUgaW50ZXJlc3RlZCwgd2UgY2FuIGRpc2N1
+c3MgdGhhdCB3aGVuDQo+IHdlIGhhdmUgc29tZSBjbGVhciBpZGVhcyBhYm91dCB0aGUgbWFpbiBw
+YXJ0IG9mIHdvcmsuDQpBIHB1Ymxpc2gvc3Vic2NyaWJlIGFwcHJvYWNoIHdpbGwgd29yayBwZXJm
+ZWN0bHkgdG8gb3ZlcmNvbWUgdGhlIA0KY29ycG9yYXRlIElUIGh1cmRsZXMuIE9mIGNvdXJzZSwg
+SSAnbSBpbnRlcmVzdGVkLiBQbGVhc2UgbGV0IG1lIGtub3cgaG93IA0KY2FuIEkgYmUgcGFydCBv
+ZiB0aGlzLg0KPj4gSSBoYXZlIGF0dGFjaGVkIGl0IHRvIHRoaXMgZW1haWwgdGhlIHNjcmlwdCBh
+bmQgKG1vcmUgaW1wb3J0YW50KSBhbg0KPj4gZXhhbXBsZSBvZiB0aGUgb3V0cHV0IGl0IHByb2R1
+Y2VzLg0KPiBUaGFua3MhICBJdCdzIGdyZWF0IHRvIHNlZSB0aGF0IGl0IGRvZXNuJ3QgcmVhbGx5
+IHRha2UgbXVjaCBjb2RlDQo+IHRvIGdldCBzb21lIEtlcm5lbENJIGpvYnMgdG8gcnVuIGluIExh
+YmdyaWQuDQpMYWJncmlkIG9ubHkgY2FyZXMgYWJvdXTCoCAzIHRoaW5nczogaW1hZ2UgdG8gdGVz
+dCwgYm9hcmQgaW4gdGhlIGZhcm0gdG8gDQp1c2UgYW5kIHRlc3QgdG8gcGFzcy4gTW9zdCBvZiB0
+aGUgY29kZSBpcyB0byBjcmVhdGUgYSBqc29uIG91dHB1dCB0ZXN0IA0KcmVzdWx0IGNvbXBhdGli
+bGUgd2l0aCB0aGUgImtjaV9kYXRhIiB0b29sLg0KPj4gQlIsDQo+Pg0KPj4gU2FudGkNCj4+DQo+
+Pj4+IFdlIHdvdWxkIGxpa2UgdG8gd29yayB3aXRoIHlvdSB0byBiZSBhYmxlIHRvIHB1Ymxpc2gg
+dGhlc2UgcmVzdWx0cy4NCj4+Pj4gV2lsbCBpdCBiZSBwb3NzaWJsZSB0byBnZXQgYSB0b2tlbiBm
+b3IgdGhlIHN0YWdpbmcgZGF0YWJhc2U/IEknbSBzdXJlDQo+Pj4+IHRoYXQgdGhlcmUgYXJlIHRo
+aW5ncyB0aGF0IG5lZWQgdG8gYmUgcG9saXNoZWQgb24gb3VyIGpzb24gZmlsZXMuDQo+IEFic29s
+dXRlbHksIEknbGwgc2VuZCB5b3UgYSBzdGFnaW5nIEFQSSB0b2tlbiBwcml2YXRlbHkuICBBbHNv
+LA0KPiBhcmUgeW91IG9uIElSQz8gIFRoYXQgd291bGQgaGVscCB3aXRoIGRpc2N1c3NpbmcgdGhp
+bmdzIGFuZA0KPiBhZGRyZXNzaW5nIGFueSBpc3N1ZXMuDQoNCkdyZWF0ISBJJ20gbm90IHVzc3Vh
+bGx5IGluIElSQy4uLi4gSSdsbCBiZSBtb3JlIGF2YWlsYWJsZSB0aGVyZSAoYXMgDQoic2VzdGVi
+YW4iKS4gSSdtIHdhaXRpbmcgdGhlIHRva2VuIQ0KDQo+IFRoYW5rcywNCj4gR3VpbGxhdW1lDQoN
+CkJlc3QgcmVnYXJkcywNCg0KU2FudGkNCg0K
