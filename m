@@ -1,137 +1,177 @@
-From: "Santiago.Esteban via info" <santiago.esteban@microchip.com>
-Subject: Re: Contribute to Kernel-CI with a new Lab
-Date: Thu, 26 Nov 2020 10:57:14 +0000
-Message-ID: <3ca1ef75-d191-4fdd-6a25-0e375103092f@microchip.com>
-References: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
- <ccf0ae0dbd5cce956631a7e4572ca84e0abd45e1.camel@pengutronix.de>
- <b722c06a-057d-c1bb-1013-682d4282bbd7@microchip.com>
- <90ad5257-0690-913a-1a04-d299f6830305@collabora.com>
- <b0990fe6-22c7-15e9-8f88-8751b72b6205@microchip.com>
- <28bb83a2-7b3d-418f-4183-1ed514eb00c1@collabora.com>
-In-Reply-To: <28bb83a2-7b3d-418f-4183-1ed514eb00c1@collabora.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Subject: kernelci.org update - 2020-11-30 #minutes
+Message-ID: <b807cd1d-750f-ce19-4da6-579ce5ac104a@collabora.com>
+Date: Mon, 30 Nov 2020 19:51:57 +0000
 MIME-Version: 1.0
-Return-Path: Santiago.Esteban@microchip.com
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C46AACBE69CAB0408DBD34AFBD2A49C4@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: guillaume.tucker@collabora.com, jlu@pengutronix.de
-Cc: kernelci@groups.io, ticotimo@gmail.com
+To: kernelci@groups.io
 
-T24gMjYvMTEvMjAgMTA6MTcsIEd1aWxsYXVtZSBUdWNrZXIgd3JvdGU6DQo+IEVYVEVSTkFMIEVN
-QUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtu
-b3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPg0KPiBPbiAyNi8xMS8yMDIwIDA3OjMwLCBTYW50aWFn
-by5Fc3RlYmFuQG1pY3JvY2hpcC5jb20gd3JvdGU6DQo+PiBPbiAyNS8xMS8yMCAxNTowOSwgR3Vp
-bGxhdW1lIFR1Y2tlciB3cm90ZToNCj4+PiBFWFRFUk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxp
-bmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNzIHlvdSBrbm93IHRoZSBjb250ZW50IGlzIHNh
-ZmUNCj4+Pg0KPj4+IE9uIDEyLzExLzIwMjAgMTE6NDYsIFNhbnRpYWdvLkVzdGViYW4gdmlhIGlu
-Zm8gdmlhIGdyb3Vwcy5pbyB3cm90ZToNCj4+Pj4gT24gMTIvMTEvMjAgOTo0OSwgSmFuIEzDvGJi
-ZSB3cm90ZToNCj4+Pj4+IEVYVEVSTkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3Bl
-biBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPj4+Pj4N
-Cj4+Pj4+IEhpIFNhbnRpLA0KPj4+Pj4NCj4+Pj4+IE9uIFdlZCwgMjAyMC0xMS0xMSBhdCAxODow
-NSArMDAwMCwgU2FudGlhZ28uRXN0ZWJhbiB2aWEgaW5mbyB2aWEgZ3JvdXBzLmlvIHdyb3RlOg0K
-Pj4+Pj4+IEhpIEtlcm5lbENJLA0KPj4+Pj4+DQo+Pj4+Pj4gQSBmZXcgbW9udGhzIGJhY2sgSSBj
-b250YWN0ZWQgeW91IGFib3V0IGFkZGluZyBhIG5ldyBsYWIgdG8gS2VybmVsQ0kNCj4+Pj4+PiBp
-bmZyYXN0cnVjdHVyZS4gSXQgdG9vayB1cyBsb25nZXIgdGhhbiBJIHdpc2hlZCwgYnV0IG5vdyB3
-ZSBmaW5hbGx5DQo+Pj4+Pj4gaGF2ZSBiZWVuIGFibGUgdG8gY29ubmVjdCBvdXIgZmFybSB0byBh
-biBpbnRlcm5hbCBLZXJuZWxDSSBkZXBsb3ltZW50DQo+Pj4+Pj4gKHVzaW5nIGRvY2tlcikuDQo+
-Pj4+Pj4NCj4+Pj4+PiBBcyBJIGV4cGxhaW5lZCBiZWZvcmUsIG91ciBmYXJtIGhvbGRzIDQgYm9h
-cmRzIHdpdGggZGlmZmVyZW50IFNvQ3MNCj4+Pj4+PiBmcm9tIE1pY3JvY2hpcCAoYW5kIEF0bWVs
-KTogU2FtOXg2MGVrLCBTYW1hNWQyX3hwbGFpbmVkLA0KPj4+Pj4+IFNhbWE1ZDNfeHBsYWluZWQg
-YW5kIFNhbWE1ZDRfeHBsYWluZWQuIEFsbCBvZiB0aGVuIHdpdGggbWFpbmxpbmUNCj4+Pj4+PiBz
-dXBwb3J0Lg0KPj4+Pj4+DQo+Pj4+Pj4gT3VyIHNldHVwLCBkb2VzIG5vdCB1c2VzIExhdmEgYW5k
-IGl0IHJlbGllcyBvbiBMYWJncmlkIHRvIHBlcmZvcm0gdGhlDQo+Pj4+Pj4gdGVzdHMuIFdlIHVz
-ZSAia2NpX2RhdGEiIHRvb2wgdG8gcHVibGlzaCB0ZXN0IHJlc3VsdHMgb24gS2VybmVsQ0kuDQo+
-Pj4+PiBUaGF0J3MgdmVyeSBpbnRlcmVzdGluZy4gOikgRG8geW91IGhhdmUgcHVibGlzaGVkIHRo
-ZSBpbnRlcmZhY2UgY29kZQ0KPj4+Pj4gc29tZXdoZXJlPyBJJ3ZlIGJlZW4gdHJ5aW5nIHRvIGZp
-bmQgc29tZSB0aW1lIHRvIGRvIHRoYXQgbXlzZWxmLCBidXQgaXQNCj4+Pj4+IHNlZW1zIHlvdSd2
-ZSBiZWF0ZW4gbWUgdG8gaXQuIDspDQo+Pj4+Pg0KPj4+Pj4gUmVnYXJkcw0KPj4+Pj4gSmFuDQo+
-Pj4+IEhpIEphbiwNCj4+Pj4NCj4+Pj4gTm8sIEkgaGF2ZW4ndCBwdWJsaXNoIGl0LCB0aWxsIG5v
-dy4gSSd2ZSBuZXZlciB0aG91Z2ggaXQgd291bGQgYmUgdXNlZnVsDQo+Pj4+IHRvIGFueWJvZHkg
-YnV0IG1lICA7KQ0KPj4+Pg0KPj4+PiBJIGhhdmUgYSBweXRob24gc2NyaXB0IHRoYXQgaXMgdGFp
-bG9yZWQgKHRvbyBtdWNoKSB0byBvdXIgc3lzdGVtcy4gSXQNCj4+Pj4gcGVyZm9ybXMgc29tZSBh
-Y3Rpb25zIHRoYXQgZGVwZW5kIG9uIG91ciBpbmZyYXN0cnVjdHVyZSBhbmQgaG93IEkndmUNCj4+
-Pj4gaW1wbGVtZW50ZWQgdGhlIGxhYmdyaWQgdGVzdHMgKGZvciBleGFtcGxlLCBJIGdyYWIgdGhl
-IHJlc3VsdHMgZnJvbSBhDQo+Pj4+IHB5dGVzdCAganNvbiByZXBvcnQpLiBBdCB0aGUgZW5kLCBp
-dCBjcmVhdGVzIGEgInRtZXRhXzxib2FyZD4uanNvbiIgZmlsZQ0KPj4+PiAoZXF1aXZhbGVudCB0
-byB0aGUgImJtZXRhLmpzb24iKSB0aGF0IGlzIGxhdGVyIHB1Ymxpc2hlZCB3aXRoICJrY2lfZGF0
-YSINCj4+Pj4gdG9vbC4NCj4+Pj4NCj4+Pj4gSXQgY291bGQgYmUgdXNlZCBhcyBhbiBpbnNwaXJh
-dGlvbiB0byBtYWtlIGEgbW9yZSBnZW5lcmljDQo+Pj4+ICJrY2lfbGFiZ3JpZF90ZXN0IiB0b29s
-IGlmIHRoZXJlIGFyZSBpbnRlcmVzdCwgYnV0LCBhbGwga2VybmVsY2kNCj4+Pj4gaW1wb3J0YW50
-IHN0dWZmLCBzdGlsbCBuZWVkcyB0byBiZSB2YWxpZGF0ZWQgOykNCj4+PiBUaGVyZSBpcyBhbHJl
-YWR5IGEgcGx1Z2luIG1lY2hhbmlzbSBiZWhpbmQga2NpX3Rlc3QgdG8gaGF2ZQ0KPj4+IHNwZWNp
-ZmljIGltcGxlbWVudGF0aW9ucyBmb3IgZ2VuZXJhdGluZyB0aGUgdGVzdCBqb2IgZGVzY3JpcHRp
-b24NCj4+PiBkYXRhIGFuZCBzdWJtaXR0aW5nIGl0IHRvIGEgcmVtb3RlIGxhYi4gIEF0IHRoZSBt
-b21lbnQsIG9ubHkgTEFWQQ0KPj4+IGhhcyBhbiBpbXBsZW1lbnRhdGlvbiBidXQgaXQgc291bmRz
-IGxpa2UgTGFiZ3JpZCB3b3VsZCBiZSBhIG5lYXQNCj4+PiBhZGRpdGlvbi4gIFRoZSBtYWluIGNo
-YWxsZW5nZSBJIGd1ZXNzLCBpcyB0aGF0IHRoZXJlIGlzbid0IGFueQ0KPj4+IGJ1aWx0LWluIEFQ
-SSBmb3IgTGFiZ3JpZCB0byByZWNlaXZlIGpvYiBkZXNjcmlwdGlvbnMgYW5kIHJ1bg0KPj4+IHRo
-ZW0uDQo+PiBIaSBHdWlsbGF1bWUsDQo+Pg0KPj4gTGFiZ3JpZCBkb2VzIG5vdCBwZXJmb3JtIGFu
-eSB0YXNrIHJlbGF0ZWQgdG8gYnVpbGQuIEl0IGZvY3VzZXMgb24NCj4+IHRlc3RpbmcgaW4gcmVh
-bCBoYXJkd2FyZS4gVGhlIGJ1aWxkIHN0YWdlIGlzIHBlcmZvcm1lZCBzb21ld2hlcmUgZWxzZS4N
-Cj4+IEl0IGlzIGEgZGlmZmVyZW50IGFwcHJvYWNoIHRoYW4gS2VybmVsQ0kgYW5kIExBVkEuIElu
-IG91ciBjYXNlLCB3ZQ0KPj4gdHJpZ2dlciB0aGUgYnVpbGRzIGluIEplbmtpbnMgYW5kIGFsc28g
-SmVua2lucyBleGVjdXRlcyB0aGUgTGFiZ3JpZA0KPj4gcHl0ZXN0IHNjcmlwdHMuIEl0IHdvdWxk
-IGJlIGdyZWF0IHRvIGJlIGFibGUgdG8gcHVzaCBLQ0kgam9icyBpbnRvIGENCj4+IGdlbmVyaWMg
-SmVua2lucyBzZXJ2ZXIuIEJ1dCwgZm9yIG1lLCB0aGUgbW9zdCBkaWZmaWN1bHQgcGFydCB3b3Vs
-ZCBiZQ0KPj4gY29udmluY2UgSVQgZGVwYXJ0bWVudCB0byBhbGxvdyBhIGNvbW11bmljYXRpb24g
-ZnJvbSBhIGV4dGVybmFsIHNvdXJjZQ0KPj4gaW50byB0aGUgY29ycG9yYXRlIG5ldHdvcmsuIEkg
-YWxyZWFkeSBrbm93IHRoZSBhbnN3ZXIuLi4uDQo+IEFic29sdXRlbHksIHRoYXQncyB0aGUgc2Ft
-ZSBhcyB3aXRoIExBVkEuICBUaGUgaWRlYSBpcyB0aGF0IHRoZQ0KPiBzYW1lIGJ1aWxkcyBmcm9t
-IGtlcm5lbGNpLm9yZyBjYW4gYmUgdXNlZCBpbiBhbnkgbGFiLCB0aGV5J3JlDQo+IGp1c3QgcGxh
-aW4ga2VybmVsIGJ1aWxkcy4gIFdoYXQgd2UgY291bGQgd29yayBvbiBpcyB0byBtYWtlIGl0DQo+
-IGVhc2llciBmb3IgbGFicyBsaWtlIHlvdXJzIGFuZCBpbiBwYXJ0aWN1bGFyIHdoZW4gdXNpbmcg
-TGFiZ3JpZA0KPiB0byByZWNlaXZlIHNvbWUgZGF0YSB3aGVuIHRoZXJlJ3MgYSBuZXcgdGVzdCB0
-byBydW4uICBUaGF0IHdvdWxkDQo+IGluY2x1ZGUgdGhlIFVSTHMgdG8gZ2V0IHRoZSBrZXJuZWwg
-aW1hZ2UsIG1vZHVsZXMsIGR0YiwNCj4gdXNlci1zcGFjZSwgY29tbWFuZHMgdG8gcnVuIHRoZSB0
-ZXN0cyBldGMuLi4NCj4NCj4+PiBPbmUgd2F5IHRvIGFkZHJlc3MgdGhpcyBpc3N1ZSBpcyB0byBw
-cm92aWRlIG5vdGlmaWNhdGlvbnMgd2l0aA0KPj4+IGpvYnMgdG8gcnVuLCBhbmQgYSBsYWIgdXNp
-bmcgTGFiZ3JpZCB3b3VsZCBzdWJzY3JpYmUgdG8gaXQuICBBcw0KPj4+IHdlJ3JlIHBsYW5uaW5n
-IHRvIHJlZmFjdG9yIGtlcm5lbGNpLWJhY2tlbmQgYW5kIGFsc28gY29tZSB1cCB3aXRoDQo+Pj4g
-YSBtb3JlIGdlbmVyaWMgcGlwZWxpbmUgbWVjaGFuaXMgdGhhbiBKZW5raW5zLCB3ZSBzaG91bGQg
-YmUgYWJsZQ0KPj4+IHRvIGhhdmUgdGhpcyBraW5kIG9mIG5vdGlmaWNhdGlvbiBzeXN0ZW0gaW4g
-cGxhY2UgYW55d2F5IGluIG9yZGVyDQo+Pj4gdG8gY29ycmRpbmF0ZSB0aGUgZGlmZmVyZW50IGNv
-bXBvbmVudHMgb2YgdGhlIHBpcGVsaW5lIGluIGENCj4+PiBtb2R1bGFyIHdheS4gIEl0IHdvdWxk
-IGJlIGdyZWF0IHRvIHVzZSBzb21lIExhYmdyaWQgbGFicyBhcyBwYXJ0DQo+Pj4gb2YgdGhpcyBl
-eGVyY2lzZS4gIElmIHlvdSdyZSBpbnRlcmVzdGVkLCB3ZSBjYW4gZGlzY3VzcyB0aGF0IHdoZW4N
-Cj4+PiB3ZSBoYXZlIHNvbWUgY2xlYXIgaWRlYXMgYWJvdXQgdGhlIG1haW4gcGFydCBvZiB3b3Jr
-Lg0KPj4gQSBwdWJsaXNoL3N1YnNjcmliZSBhcHByb2FjaCB3aWxsIHdvcmsgcGVyZmVjdGx5IHRv
-IG92ZXJjb21lIHRoZQ0KPj4gY29ycG9yYXRlIElUIGh1cmRsZXMuIE9mIGNvdXJzZSwgSSAnbSBp
-bnRlcmVzdGVkLiBQbGVhc2UgbGV0IG1lIGtub3cgaG93DQo+PiBjYW4gSSBiZSBwYXJ0IG9mIHRo
-aXMuDQo+IEdyZWF0LiAgVGhlcmUgaXMgYSByb2FkbWFwIGl0ZW0gb24gR2l0SHViIGFib3V0IHRo
-aXM6DQo+DQo+ICAgIGh0dHBzOi8vZ2l0aHViLmNvbS9rZXJuZWxjaS9rZXJuZWxjaS1jb3JlL2lz
-c3Vlcy8zMTUNCj4NCj4gV2UndmUgb25seSBqdXN0IHN0YXJ0ZWQsIHdpdGggYSB2ZXJ5IGJhc2lj
-IGtjaV9kYXRhDQo+IGltcGxlbWVudGF0aW9uLiAgVGhpcyBzaG91bGQgYmUgYnJva2VuIGRvd24g
-aW50byBhIHNlcmllcyBvZg0KPiB0YXNrcyBzdWNoIGFzOiBjbGVhbmluZyB1cCB0aGUga2VybmVs
-Y2ktYmFja2VuZCBBUEkgZm9yIHJlY2VpdmluZw0KPiByZXN1bHRzLCBwcm92aWRpbmcgYSBzdWJz
-Y3JpcHRpb24gbWVjaGFuaXNtIGFuZCBoYXZpbmcgYQ0KPiByZWFsLXdvcmxkIHJlZmVyZW5jZSBz
-eXN0ZW0gdG8gdGVzdCBpdCAoZS5nLiBhIExhYmdyaWQgbGFiKS4gIFdlDQo+IHByb2JhYmx5IHNo
-b3VsZCBzY2hlZHVsZSBhIG1lZXRpbmcgdG8gZ28gdGhyb3VnaCB0aGF0IGluIEphbnVhcnkuDQo+
-DQo+Pj4+IEkgaGF2ZSBhdHRhY2hlZCBpdCB0byB0aGlzIGVtYWlsIHRoZSBzY3JpcHQgYW5kICht
-b3JlIGltcG9ydGFudCkgYW4NCj4+Pj4gZXhhbXBsZSBvZiB0aGUgb3V0cHV0IGl0IHByb2R1Y2Vz
-Lg0KPj4+IFRoYW5rcyEgIEl0J3MgZ3JlYXQgdG8gc2VlIHRoYXQgaXQgZG9lc24ndCByZWFsbHkg
-dGFrZSBtdWNoIGNvZGUNCj4+PiB0byBnZXQgc29tZSBLZXJuZWxDSSBqb2JzIHRvIHJ1biBpbiBM
-YWJncmlkLg0KPj4gTGFiZ3JpZCBvbmx5IGNhcmVzIGFib3V0ICAzIHRoaW5nczogaW1hZ2UgdG8g
-dGVzdCwgYm9hcmQgaW4gdGhlIGZhcm0gdG8NCj4+IHVzZSBhbmQgdGVzdCB0byBwYXNzLiBNb3N0
-IG9mIHRoZSBjb2RlIGlzIHRvIGNyZWF0ZSBhIGpzb24gb3V0cHV0IHRlc3QNCj4+IHJlc3VsdCBj
-b21wYXRpYmxlIHdpdGggdGhlICJrY2lfZGF0YSIgdG9vbC4NCj4gRXhhY3RseS4NCj4NCj4+Pj4g
-QlIsDQo+Pj4+DQo+Pj4+IFNhbnRpDQo+Pj4+DQo+Pj4+Pj4gV2Ugd291bGQgbGlrZSB0byB3b3Jr
-IHdpdGggeW91IHRvIGJlIGFibGUgdG8gcHVibGlzaCB0aGVzZSByZXN1bHRzLg0KPj4+Pj4+IFdp
-bGwgaXQgYmUgcG9zc2libGUgdG8gZ2V0IGEgdG9rZW4gZm9yIHRoZSBzdGFnaW5nIGRhdGFiYXNl
-PyBJJ20gc3VyZQ0KPj4+Pj4+IHRoYXQgdGhlcmUgYXJlIHRoaW5ncyB0aGF0IG5lZWQgdG8gYmUg
-cG9saXNoZWQgb24gb3VyIGpzb24gZmlsZXMuDQo+Pj4gQWJzb2x1dGVseSwgSSdsbCBzZW5kIHlv
-dSBhIHN0YWdpbmcgQVBJIHRva2VuIHByaXZhdGVseS4gIEFsc28sDQo+Pj4gYXJlIHlvdSBvbiBJ
-UkM/ICBUaGF0IHdvdWxkIGhlbHAgd2l0aCBkaXNjdXNzaW5nIHRoaW5ncyBhbmQNCj4+PiBhZGRy
-ZXNzaW5nIGFueSBpc3N1ZXMuDQo+PiBHcmVhdCEgSSdtIG5vdCB1c3N1YWxseSBpbiBJUkMuLi4u
-IEknbGwgYmUgbW9yZSBhdmFpbGFibGUgdGhlcmUgKGFzDQo+PiAic2VzdGViYW4iKS4gSSdtIHdh
-aXRpbmcgdGhlIHRva2VuIQ0KPiBTZW50ISAgQXdhaXRpbmcgc29tZSBkYXRhIG5vdyA6KQ0KDQpI
-aSBHdWlsbGF1bWUsDQoNCkkndmUgdGhpcyBjcmVkZW50aWFsL3Rva2VuIGVycm9yIHdoZW4gdHJ5
-aW5nIHRvIHB1c2ggYSBrZXJuZWwgYnVpbGQ6DQoNCiDCoMKgwqAgwqDCoMKgIHJlcXVlc3RzLmV4
-Y2VwdGlvbnMuSFRUUEVycm9yOiA0MDMgQ2xpZW50IEVycm9yOiBPcGVyYXRpb24gbm90IA0KcGVy
-bWl0dGVkOiBwcm92aWRlZCB0b2tlbiBpcyBub3QgwqDCoMKgIMKgwqDCoCBhdXRob3JpemVkIGZv
-ciB1cmw6IA0KaHR0cHM6Ly9hcGkuc3RhZ2luZy5rZXJuZWxjaS5vcmcvdXBsb2FkDQogwqDCoMKg
-wqDCoMKgwqAgRXJyb3I6IGNhbiBub3QgcHVzaCBrZXJuZWw6IC4uL2J1aWxkcy9saW51eC1tYWlu
-bGluZSwgDQpodHRwczovL2FwaS5zdGFnaW5nLmtlcm5lbGNpLm9yZy90ZXN0LCAibXktdG9rZW4i
-DQoNClNvbWV0aGluZyBtaXNjb25maWd1cmVkIGluIHRoZSBkYXRhYmFzZT8NCg0KPg0KPiBUaGFu
-a3MsDQo+IEd1aWxsYXVtZQ0KDQpUaGFua3MsDQoNClNhbnRpDQoNCg==
+Summary of changes going into production
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+* Fix main kselftest build issues, remaining ones are likely due to kselft=
+est
+* Enable clang-10 builds on mainline
+* Enable RISC-V builds with clang-11 on linux-next
+* Enable initial subset of IGT tests on i915
+* Fix boot bisection following callback data changes in recent versions of=
+ LAVA
+* Fix Renesas board names due to devicetree changes after v5.4
+* Update Renesas and CIP email settings (addresses, test plans)
+* Change dove-cubox to mach mvebu
+* Add lab-kontron with 2 initial devices and baseline-nfs test plan
+
+
+Technical Steering Committee minutes - 2020-11-10
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+Special topic: Tekton
+
+Tim and Trevor shared with us their recent experiments using Tekton.  It's
+particularly interesting for KernelCI as we're facing on-going issues with
+Jenkins while we're also leaning towards running more things in the Cloud.
+
+* CI/CD framework for Kubernetes
+* All in YAML, dashboard, CLI
+* Setup: using kubeadm (not Minikube) single node rather than a proper clo=
+ud
+  cluster
+* Example: meta-python OE layer
+  https://github.com/threexc/yocto-tekton
+* See also: https://hub-preview.tekton.dev/
+* Initial implementation (very rough):
+  https://github.com/moto-timo/kernelci-core/tree/tekton/tekton
+
+
+Technical Steering Committee minutes - 2020-11-17
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+Extra meeting: KCIDB
+
+We spent an extra hour before the weekly to review the situation with KCID=
+B.
+
+* how to get kernelci.org production data sent to KCIDB
+  -> manage pool of open KCIDB connections as properties of Celery tasks
+* review any known issues with KCIDB schema
+  -> how to group results for generating email reports
+* status of the various CI systems interested to send data
+  -> send a regular (monthly?) email with status update
+* plan to start sending email reports to public mailing lists
+  -> get production kernelci.org native results in KCIDB
+  -> work out any changes needed in the schema
+  -> start with a minimal schema with required fields
+  -> extend gradually and maybe drop =E2=80=9Cincomplete=E2=80=9D data as =
+submitters adjust
+
+Main meeting
+
+* KCIDB
+  ARM now sending results to KCIDB playground
+  Gentoo making progress, no results yet
+  Renaming "revisions" to "checkouts" with origin-generated IDs and patchs=
+et
+
+* Jenkins
+  k8s runner issues, almost all jobs are timing out
+  -> resolved by garbage collecting incomplete k8s jobs
+
+* kci_build
+  * Splitting =E2=80=9Ckci_build build_kernel=E2=80=9D with new JSON forma=
+t for intermediary
+    state, potentially aligning with tuxmake to ease transition later on
+  * Separate build logs for kselftest or anything =E2=80=9Cextra=E2=80=9D =
+other than kernel
+    build
+
+* LTP
+  * ltp-ipc is now in production, other LAVA labs can run it
+  * ltp-crypto is getting added next
+    -> see with montjoie if his tests can be added to LTP crypto
+    -> follow-up: they appear to be rather different things, can be both a=
+dded
+       separately and maybe consolidated together later on
+
+* Tim's Tekton experiments
+  * KubeCon is on now
+    https://events.linuxfoundation.org/kubecon-cloudnativecon-north-americ=
+a/?utm_source=3Dkuberntes.io&utm_medium=3Dsearch&utm_campaign=3DKC_CNC_Virt=
+ual
+  * cri-o/cri-o-runc/k8s/tekton-operator installed on debian-10 system (no
+    flannel or calico container networking, just cri-o bridge networking)
+  * The tekton operator makes it simple to install tekton:
+    https://github.com/tektoncd/operator
+
+* User Guide: initial version now available with example to add btrfs test=
+ plan
+
+* backend: Login test case backend fixes now in production
+
+* Build emails:
+  https://github.com/kernelci/kernelci-core/issues/516
+  =E2=80=9Cnext/master build: 225 builds: 14 failed, 211 passed, 1097 erro=
+rs, 458 warnings (next-20200924)=E2=80=9D
+  -> this may be due to the size of some of these emails, with a huge amou=
+nt of
+     Clang and kselftest warnings
+
+* See also: Hardware to be added to BayLibre=E2=80=99s lab
+  https://twitter.com/BayLibre/status/1328465742690275328
+
+
+Technical Steering Committee minutes - 2020-11-24
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+* KCIDB
+  * Worked more on designing KCIDB notification system this week, decided =
+a
+    custom solution would be complex and is better avoided.
+  * Studied SQLAlchemy, which has a nice layered design. It seems to suppo=
+rt
+    BigQuery (as well as most of everything else), got through a tutorial.
+
+* New test plans
+  * Hardly any other lab than lab-collabora is running tests other than
+    baseline.  Maybe each lab should take a look at what makes sense for t=
+hem
+    to run too (we now have 10 LAVA labs + 2 non-LAVA).
+  * Ramping up LTP and kselftest
+
+* kselftest
+  Working on kselftests build and testing other kernel makefile options to
+  selftests. Maybe all and merge can help to fix problems during build rel=
+ated
+  to missing config and wrong headers directories.
+
+
+Advisory Board minutes - 2020-11-11
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+* Short meeting with not all regular attendees
+* Discussing how to better spread the load across the team
+
+
+Advisory Board minutes - 2020-11-25
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+* Discussing roles in the project for the year ahead
+* Reviewing Travis CI's new billing plans, looking for free alternatives
+  https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing
+* Agreed to use the Azure and GCE clusters for Tekton experiments
+* Planning blog post with roadmap and last year in review
+
+
+Best wishes,
+Guillaume
