@@ -1,209 +1,320 @@
+Subject: Re: Contributing ARM tests results to KCIDB
+References: <20200917125044.GA29636@e119603-lin.cambridge.arm.com>
+ <a46c273f-cc69-6748-d74f-02f5034be999@redhat.com>
+ <20200917162242.GA18067@e119603-lin.cambridge.arm.com>
+ <e417bc86-da0f-0ab1-62c7-d771a24d41fb@redhat.com>
+ <20200918152135.GA13088@e119603-lin.cambridge.arm.com>
+ <3e86960e-9780-3e18-3d12-cb4ec3959d63@redhat.com>
+ <be42f631-897d-0cdf-0225-5d01256f39e5@redhat.com>
+ <20200918164228.GA16509@e119603-lin.cambridge.arm.com>
+ <20201105184631.GD24640@e120937-lin>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <4db924ab-2f38-ac63-1b71-51ead907ba1f@redhat.com>
+Date: Wed, 2 Dec 2020 10:05:05 +0200
 MIME-Version: 1.0
-References: <b807cd1d-750f-ce19-4da6-579ce5ac104a@collabora.com>
-In-Reply-To: <b807cd1d-750f-ce19-4da6-579ce5ac104a@collabora.com>
-From: "Nick Desaulniers" <ndesaulniers@google.com>
-Date: Mon, 30 Nov 2020 11:58:57 -0800
-Message-ID: <CAKwvOdnhEu8MDyarQzmTCddSN+E-Re6vTj5Z=KwoaJStamcLJA@mail.gmail.com>
-Subject: Re: kernelci.org update - 2020-11-30 #minutes
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201105184631.GD24640@e120937-lin>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>
+To: kernelci@groups.io, cristian.marussi@arm.com
+Cc: broonie@kernel.org, basil.eljuse@arm.com
 
-On Mon, Nov 30, 2020 at 11:52 AM Guillaume Tucker
-<guillaume.tucker@collabora.com> wrote:
->
-> Summary of changes going into production
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> * Fix main kselftest build issues, remaining ones are likely due to ksel=
-ftest
-> * Enable clang-10 builds on mainline
-> * Enable RISC-V builds with clang-11 on linux-next
-> * Enable initial subset of IGT tests on i915
-> * Fix boot bisection following callback data changes in recent versions =
-of LAVA
-> * Fix Renesas board names due to devicetree changes after v5.4
-> * Update Renesas and CIP email settings (addresses, test plans)
-> * Change dove-cubox to mach mvebu
-> * Add lab-kontron with 2 initial devices and baseline-nfs test plan
->
->
-> Technical Steering Committee minutes - 2020-11-10
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
->
-> Special topic: Tekton
->
-> Tim and Trevor shared with us their recent experiments using Tekton.  It=
-'s
-> particularly interesting for KernelCI as we're facing on-going issues wi=
-th
-> Jenkins while we're also leaning towards running more things in the Clou=
-d.
->
-> * CI/CD framework for Kubernetes
-> * All in YAML, dashboard, CLI
-> * Setup: using kubeadm (not Minikube) single node rather than a proper c=
-loud
->   cluster
-> * Example: meta-python OE layer
->   https://github.com/threexc/yocto-tekton
-> * See also: https://hub-preview.tekton.dev/
-> * Initial implementation (very rough):
->   https://github.com/moto-timo/kernelci-core/tree/tekton/tekton
->
->
-> Technical Steering Committee minutes - 2020-11-17
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
->
-> Extra meeting: KCIDB
->
-> We spent an extra hour before the weekly to review the situation with KC=
-IDB.
->
-> * how to get kernelci.org production data sent to KCIDB
->   -> manage pool of open KCIDB connections as properties of Celery tasks
-> * review any known issues with KCIDB schema
->   -> how to group results for generating email reports
-> * status of the various CI systems interested to send data
->   -> send a regular (monthly?) email with status update
-> * plan to start sending email reports to public mailing lists
->   -> get production kernelci.org native results in KCIDB
->   -> work out any changes needed in the schema
->   -> start with a minimal schema with required fields
->   -> extend gradually and maybe drop =E2=80=9Cincomplete=E2=80=9D data a=
-s submitters adjust
->
-> Main meeting
->
-> * KCIDB
->   ARM now sending results to KCIDB playground
->   Gentoo making progress, no results yet
->   Renaming "revisions" to "checkouts" with origin-generated IDs and patc=
-hset
->
-> * Jenkins
->   k8s runner issues, almost all jobs are timing out
->   -> resolved by garbage collecting incomplete k8s jobs
->
-> * kci_build
->   * Splitting =E2=80=9Ckci_build build_kernel=E2=80=9D with new JSON for=
-mat for intermediary
->     state, potentially aligning with tuxmake to ease transition later on
->   * Separate build logs for kselftest or anything =E2=80=9Cextra=E2=80=
-=9D other than kernel
->     build
->
-> * LTP
->   * ltp-ipc is now in production, other LAVA labs can run it
->   * ltp-crypto is getting added next
->     -> see with montjoie if his tests can be added to LTP crypto
->     -> follow-up: they appear to be rather different things, can be both=
- added
->        separately and maybe consolidated together later on
->
-> * Tim's Tekton experiments
->   * KubeCon is on now
->     https://events.linuxfoundation.org/kubecon-cloudnativecon-north-amer=
-ica/?utm_source=3Dkuberntes.io&utm_medium=3Dsearch&utm_campaign=3DKC_CNC_Vi=
-rtual
->   * cri-o/cri-o-runc/k8s/tekton-operator installed on debian-10 system (=
-no
->     flannel or calico container networking, just cri-o bridge networking=
-)
->   * The tekton operator makes it simple to install tekton:
->     https://github.com/tektoncd/operator
->
-> * User Guide: initial version now available with example to add btrfs te=
-st plan
->
-> * backend: Login test case backend fixes now in production
->
-> * Build emails:
->   https://github.com/kernelci/kernelci-core/issues/516
->   =E2=80=9Cnext/master build: 225 builds: 14 failed, 211 passed, 1097 er=
-rors, 458 warnings (next-20200924)=E2=80=9D
->   -> this may be due to the size of some of these emails, with a huge am=
-ount of
->      Clang and kselftest warnings
+Hi Cristian,
 
-These look resolved now (we landed a series of fixes for ld.lld-10
-upstream), just received a build report email (likely "mid air
-collision" on my last email and this one). Thanks!
+On 11/5/20 8:46 PM, Cristian Marussi wrote:
+ > Hi Nick,
+ >
+ > after past month few experiments on ARM KCIDB submissions against your
+ > KCIDB staging instance , I was dragged a bit away from this by other stuff
+ > before effectively deploying some real automation on our side to push our
+ > daily results to KCIDB...now I'm back at it and I'll keep on testing
+ > some automation on our side for a bit against your KCIDB staging instance
+ > before asking you to move to production eventually.
 
->
-> * See also: Hardware to be added to BayLibre=E2=80=99s lab
->   https://twitter.com/BayLibre/status/1328465742690275328
->
->
-> Technical Steering Committee minutes - 2020-11-24
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
->
-> * KCIDB
->   * Worked more on designing KCIDB notification system this week, decide=
-d a
->     custom solution would be complex and is better avoided.
->   * Studied SQLAlchemy, which has a nice layered design. It seems to sup=
-port
->     BigQuery (as well as most of everything else), got through a tutoria=
-l.
->
-> * New test plans
->   * Hardly any other lab than lab-collabora is running tests other than
->     baseline.  Maybe each lab should take a look at what makes sense for=
- them
->     to run too (we now have 10 LAVA labs + 2 non-LAVA).
->   * Ramping up LTP and kselftest
->
-> * kselftest
->   Working on kselftests build and testing other kernel makefile options =
-to
->   selftests. Maybe all and merge can help to fix problems during build r=
-elated
->   to missing config and wrong headers directories.
->
->
-> Advisory Board minutes - 2020-11-11
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> * Short meeting with not all regular attendees
-> * Discussing how to better spread the load across the team
->
->
-> Advisory Board minutes - 2020-11-25
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> * Discussing roles in the project for the year ahead
-> * Reviewing Travis CI's new billing plans, looking for free alternatives
->   https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing
-> * Agreed to use the Azure and GCE clusters for Tekton experiments
-> * Planning blog post with roadmap and last year in review
->
->
-> Best wishes,
-> Guillaume
->
->
->=20
->
->
+I see your data has been steadily trickling into our playground database and
+it looks quite good. Would you like to move to the production instance?
 
+I can review your data for you, we can fix the remaining issues if we find
+them, and I can give you the permissions to push to production. Then you will
+only need to change the topic you push to from "playground_kernelci_new" to
+"kernelci_new".
 
---=20
-Thanks,
-~Nick Desaulniers
+Nick
+
+On 11/5/20 8:46 PM, Cristian Marussi wrote:
+ > Hi Nick,
+ >
+ > after past month few experiments on ARM KCIDB submissions against your
+ > KCIDB staging instance , I was dragged a bit away from this by other stuff
+ > before effectively deploying some real automation on our side to push our
+ > daily results to KCIDB...now I'm back at it and I'll keep on testing
+ > some automation on our side for a bit against your KCIDB staging instance
+ > before asking you to move to production eventually.
+ >
+ > But, today I realized, though, that I cannot push anymore data successfully
+ > into staging even using the same test script I used one month ago to push
+ > some new test data seems to fail now (I tested a few different days and
+ > JSON validates fine with jsonschema...with proper dates with hours...)...
+ > ...I cannot see any of my today tests' pushes on:
+ >
+ > https://staging.kernelci.org:3000/d/home/home?orgId=1&from=now-1y&to=now&refresh=30m&var-origin=arm&var-git_repository_url=All&var-dataset=playground_kernelci04
+ >
+ > Auth seems to proceed fine, but I cannot find any submission dated after
+ > the old ~15/18-09-2020 submissions. I'm using the same kci-submit tools
+ > version installed past months from your github though.
+ >
+ > Do you see any errors on your side that can shed a light on this ?
+ >
+ > Thanks
+ >
+ > Regards
+ >
+ > Cristian
+ >
+ > On Fri, Sep 18, 2020 at 05:42:28PM +0100, Cristian Marussi wrote:
+ >> Hi Nick,
+ >>
+ >> On Fri, Sep 18, 2020 at 06:53:28PM +0300, Nikolai Kondrashov wrote:
+ >>> On 9/18/20 6:30 PM, Nikolai Kondrashov wrote:
+ >>>> Yes, I think it's one of the problems you uncovered :)
+ >>>>
+ >>>> The schema allows for fully-compliant RFC3339 timestamps, but the BigQuery
+ >>>> database on the backend doesn't understand some of them. In particular it
+ >>>> doesn't understand the date-only timestamps you send. E.g. "2020-09-13".
+ >>>> That's what I wanted to fix today, but ran out of time.
+ >>>
+ >>> Looking at this more it seems that Python's jsonschema module simply doesn't
+ >>> enforce the requirements we put on those fields 🤦. You can send essentially
+ >>> what you want and then hit BigQuery, which is serious about them.
+ >>
+ >> ...in fact on my side I check too with jsonschema in my script before using kcidb :D
+ >>>
+ >>> Sorry about that.
+ >>>
+ >>
+ >> No worries.
+ >>
+ >>> I opened an issue for this: https://github.com/kernelci/kcidb/issues/108
+ >>>
+ >>> For now please just make sure your timestamp comply with RFC3339.
+ >>>
+ >>> You can produce such a timestamp e.g. using "date --rfc-3339=s".
+ >>
+ >> I'll anyway fix my data on my side too, to have the real discovery timestamp.
+ >>
+ >>>
+ >>> Nick
+ >>>
+ >>
+ >> Thanks
+ >>
+ >> Cristian
+ >>
+ >>> On 9/18/20 6:30 PM, Nikolai Kondrashov wrote:
+ >>>> On 9/18/20 6:21 PM, Cristian Marussi wrote:
+ >>>>   > So in order to carry on my experiments, I've just tried to push a new dataset
+ >>>>   > with a few changes in my data-layout to mimic what I see other origins do; this
+ >>>>   > contained something like 38 builds across 4 different revisions (with brand new
+ >>>>   > revisions IDs), but I cannot see anything on the UI: I just keep seeing the old
+ >>>>   > push from yesterday.
+ >>>>   >
+ >>>>   > JSON seems valid and kcidb-submit does not report any error even using -l DEBUG.
+ >>>>   > (I pushed >30mins ago)
+ >>>>   >
+ >>>>   > Any idea ?
+ >>>>
+ >>>> Yes, I think it's one of the problems you uncovered :)
+ >>>>
+ >>>> The schema allows for fully-compliant RFC3339 timestamps, but the BigQuery
+ >>>> database on the backend doesn't understand some of them. In particular it
+ >>>> doesn't understand the date-only timestamps you send. E.g. "2020-09-13".
+ >>>> That's what I wanted to fix today, but ran out of time.
+ >>>>
+ >>>> Additionally, the backend doesn't have a way to report a problem to the
+ >>>> submitter at the moment. We intend to fix that, but for now it's possible only
+ >>>> through us looking at the logs and sending a message to the submitter :)
+ >>>>
+ >>>> To work around this you can pad your timestamps with dummy date and time
+ >>>> data.
+ >>>>
+ >>>> E.g. instead of sending:
+ >>>>
+ >>>>       2020-09-13
+ >>>>
+ >>>> you can send:
+ >>>>
+ >>>>       2020-09-13 00:00:00+00:00
+ >>>>
+ >>>> Hopefully that's the only problem. It could be, since you managed to send data
+ >>>> before :)
+ >>>>
+ >>>> Nick
+ >>>>
+ >>>> On 9/18/20 6:21 PM, Cristian Marussi wrote:
+ >>>>   > Hi Nikolai,
+ >>>>   >
+ >>>>   > On Thu, Sep 17, 2020 at 08:26:15PM +0300, Nikolai Kondrashov wrote:
+ >>>>   >> On 9/17/20 7:22 PM, Cristian Marussi wrote:
+ >>>>   >>> It works too ... :D
+ >>>>   >>>
+ >>>>   >>> https://staging.kernelci.org:3000/d/build/build?orgId=1&var-dataset=playground_kernelci04&var-id=arm:2020-07-07:d3d7689c2cc9503266cac3bc777bb4ddae2e5f2e
+ >>>>   >>
+ >>>>   >> Whoa, awesome!
+ >>>>   >>
+ >>>>   >> And you have already uncovered a few issues we need to fix, too!
+ >>>>   >> I will deal with them tomorrow.
+ >>>>   >>
+ >>>>   >>> ..quick question though....given that now I'll have to play quite a bit
+ >>>>   >>> with it and see how's better to present our data, if anythinjg missing etc etc,
+ >>>>   >>> is there any chance (or way) that if I submmit the same JSON report multiple
+ >>>>   >>> times with slight differences here and there (but with the same IDs clearly)
+ >>>>   >>> I'll get my DB updated in the bits I have changed: as an example I've just
+ >>>>   >>> resubmitted the same report with added discovery_time and descriptions, and got
+ >>>>   >>> NO errors, but I cannot see the changes in the UI (unless they have still to
+ >>>>   >>> propagate...)..or maybe I can obtain the same effect by dropping my dataset
+ >>>>   >>> before re-submitting ?
+ >>>>   >>
+ >>>>   >> Right now it's not supported (with various possible quirks if attempted).
+ >>>>   >> So, preferably, submit only one, complete and final instance of each object
+ >>>>   >> (with unique ID) for now.
+ >>>>   >>
+ >>>>   >> We have a plan to support merging missing properties across multiple reported
+ >>>>   >> objects with the same ID.
+ >>>>   >>
+ >>>>   >>              Object A        Object B    Dashboard/Notifications
+ >>>>   >>
+ >>>>   >> FieldX:     Foo             Foo         Foo
+ >>>>   >> FieldY:                     Bar         Bar
+ >>>>   >> FieldZ:     Baz                         Baz
+ >>>>   >> FieldU:     Red             Blue        Red/Blue
+ >>>>   >>
+ >>>>   >> Since we're using a distributed database we cannot really maintain order
+ >>>>   >> (without introducing artificial global lock), so the order of the reports
+ >>>>   >> doesn't matter. We can only guarantee that a present value would override
+ >>>>   >> missing value. It would be undefined which value would be picked among
+ >>>>   >> multiple different values.
+ >>>>   >>
+ >>>>   >> This would allow gradual reporting of each object, but no editing, sorry.
+ >>>>   >>
+ >>>>   >> However, once again, this is a plan with some research done, only.
+ >>>>   >> I plan to start implementing it within a few weeks.
+ >>>>   >>
+ >>>>   >
+ >>>>   > So in order to carry on my experiments, I've just tried to push a new dataset
+ >>>>   > with a few changes in my data-layout to mimic what I see other origins do; this
+ >>>>   > contained something like 38 builds across 4 different revisions (with brand new
+ >>>>   > revisions IDs), but I cannot see anything on the UI: I just keep seeing the old
+ >>>>   > push from yesterday.
+ >>>>   >
+ >>>>   > JSON seems valid and kcidb-submit does not report any error even using -l DEBUG.
+ >>>>   > (I pushed >30mins ago)
+ >>>>   >
+ >>>>   > Any idea ?
+ >>>>   >
+ >>>>   > Thanks
+ >>>>   >
+ >>>>   > Cristian
+ >>>>   >
+ >>>>   >> Nick
+ >>>>   >>
+ >>>>   >> On 9/17/20 7:22 PM, Cristian Marussi wrote:
+ >>>>   >>> On Thu, Sep 17, 2020 at 04:52:30PM +0300, Nikolai Kondrashov wrote:
+ >>>>   >>>> Hi Christian,
+ >>>>   >>>>
+ >>>>   >>>> On 9/17/20 3:50 PM, Cristian Marussi wrote:
+ >>>>   >>>>> Hi Nikolai,
+ >>>>   >>>>>
+ >>>>   >>>>> I work at ARM in the Kernel team and, in short, we'd like certainly to
+ >>>>   >>>>> contribute our internal Kernel test results to KCIDB.
+ >>>>   >>>>
+ >>>>   >>>> Wonderful!
+ >>>>   >>>>
+ >>>>   >>>>> After having attended your LPC2020 TestMC and KernelCI/BoF, I've now cooked
+ >>>>   >>>>> up some KCIDB JSON test report (seemingly valid against your KCIDB v3 schema)
+ >>>>   >>>>> and I'd like to start experimenting with kci-submit (on non-production
+ >>>>   >>>>> instances), so as to assess how to fit our results into your schema and maybe
+ >>>>   >>>>> contribute with some new KCIDB requirements if strictly needed.
+ >>>>   >>>>
+ >>>>   >>>> Great, this is exactly what we need, welcome aboard :)
+ >>>>   >>>>
+ >>>>   >>>> Please don't hesitate to reach out on kernelci@groups.io or on #kernelci on
+ >>>>   >>>> freenode.net, if you have any questions, problems, or requirements.
+ >>>>   >>>>
+ >>>>   >>>>> Is it possible to get some valid credentials and a playground instance to
+ >>>>   >>>>> point at ?
+ >>>>   >>>>
+ >>>>   >>>> Absolutely, I created credentials for you and sent them in a separate message.
+ >>>>   >>>>
+ >>>>   >>>> You can use origin "arm" for the start, unless you have multiple CI systems
+ >>>>   >>>> and want to differentiate them somehow in your reports.
+ >>>>   >>>>
+ >>>>   >>>> Nick
+ >>>>   >>>>
+ >>>>   >>>    Thanks !
+ >>>>   >>>
+ >>>>   >>> It works too ... :D
+ >>>>   >>>
+ >>>>   >>> https://staging.kernelci.org:3000/d/build/build?orgId=1&var-dataset=playground_kernelci04&var-id=arm:2020-07-07:d3d7689c2cc9503266cac3bc777bb4ddae2e5f2e
+ >>>>   >>>
+ >>>>   >>> ..quick question though....given that now I'll have to play quite a bit
+ >>>>   >>> with it and see how's better to present our data, if anythinjg missing etc etc,
+ >>>>   >>> is there any chance (or way) that if I submmit the same JSON report multiple
+ >>>>   >>> times with slight differences here and there (but with the same IDs clearly)
+ >>>>   >>> I'll get my DB updated in the bits I have changed: as an example I've just
+ >>>>   >>> resubmitted the same report with added discovery_time and descriptions, and got
+ >>>>   >>> NO errors, but I cannot see the changes in the UI (unless they have still to
+ >>>>   >>> propagate...)..or maybe I can obtain the same effect by dropping my dataset
+ >>>>   >>> before re-submitting ?
+ >>>>   >>>
+ >>>>   >>> Regards
+ >>>>   >>>
+ >>>>   >>> Thanks
+ >>>>   >>>
+ >>>>   >>> Cristian
+ >>>>   >>>
+ >>>>   >>>> On 9/17/20 3:50 PM, Cristian Marussi wrote:
+ >>>>   >>>>> Hi Nikolai,
+ >>>>   >>>>>
+ >>>>   >>>>> I work at ARM in the Kernel team and, in short, we'd like certainly to
+ >>>>   >>>>> contribute our internal Kernel test results to KCIDB.
+ >>>>   >>>>>
+ >>>>   >>>>> After having attended your LPC2020 TestMC and KernelCI/BoF, I've now cooked
+ >>>>   >>>>> up some KCIDB JSON test report (seemingly valid against your KCIDB v3 schema)
+ >>>>   >>>>> and I'd like to start experimenting with kci-submit (on non-production
+ >>>>   >>>>> instances), so as to assess how to fit our results into your schema and maybe
+ >>>>   >>>>> contribute with some new KCIDB requirements if strictly needed.
+ >>>>   >>>>>
+ >>>>   >>>>> Is it possible to get some valid credentials and a playground instance to
+ >>>>   >>>>> point at ?
+ >>>>   >>>>>
+ >>>>   >>>>> Thanks
+ >>>>   >>>>>
+ >>>>   >>>>> Regards
+ >>>>   >>>>>
+ >>>>   >>>>> Cristian
+ >>>>   >>>>>
+ >>>>   >>>>>
+ >>>>   >>>>>
+ >>>>   >>>>>
+ >>>>   >>>>>
+ >>>>   >>>>
+ >>>>   >>>
+ >>>>   >>
+ >>>>   >
+ >>>>   >
+ >>>>   > >
+ >>>>   >
+ >>>>
+ >>>>
+ >>>>
+ >>>>
+ >>>>
+ >>>>
+ >>>
+ >
+ >
+ > 
+ >
+ >
+
