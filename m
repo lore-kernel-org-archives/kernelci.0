@@ -1,54 +1,42 @@
-Subject: Re: RFC: dashboards, visualization and analytics for test results
-From: "Chris Fiege" <cfi@pengutronix.de>
 MIME-Version: 1.0
-Date: Mon, 07 Dec 2020 03:26:18 -0800
-References: <7hk0w2c4i3.fsf@baylibre.com>
-In-Reply-To: <7hk0w2c4i3.fsf@baylibre.com>
-Message-ID: <8699.1607340378432797045@groups.io>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+References: <X84nbdgv0a/ak2ef@mwanda> <20201207131446.GA852@paasikivi.fi.intel.com>
+ <CAHp75Vftvtn4DhOU73w7hgOYpw9pJbJCJ0dSW6wUrQHA5HMn-A@mail.gmail.com>
+In-Reply-To: <CAHp75Vftvtn4DhOU73w7hgOYpw9pJbJCJ0dSW6wUrQHA5HMn-A@mail.gmail.com>
+From: "Dmitry Vyukov" <dvyukov@google.com>
+Date: Mon, 7 Dec 2020 17:01:56 +0100
+Message-ID: <CACT4Y+a3MnDamodmVi6C79+fUEse+71DSG8xPQH7S3Eg4i=S_A@mail.gmail.com>
+Subject: Re: [PATCH] media: i2c: ov02a10: fix an uninitialized return
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Kevin Hilman <khilman@baylibre.com>, kernelci@groups.io
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Arnd Bergmann <arnd.bergmann@linaro.org>, kbuild test robot <lkp@intel.com>, Dan Carpenter <dan.carpenter@oracle.com>, Dongchun Zhu <dongchun.zhu@mediatek.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, kernel-janitors@vger.kernel.org, workflows@vger.kernel.org, kernelci@groups.io
 
-Hey Kevin,
-
-On Wed, Oct  7, 2020 at 10:47 AM, Kevin Hilman wrote:
-
+On Mon, Dec 7, 2020 at 4:55 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> The KernelCI project is starting to look at what's next for dashboards,
-> visualization and analytics for the various Linux focused testing
-> projects.
->=20
-> (...)
->=20
-> So the next question is... how do we best use all of this data?
->=20
-> To that end, we're starting to collect a set of user stories to help us
-> brainstorm a new design for web based dashboard and analytics, and we'd
-> like to hear from you.
+> +Cc: some people who involved in different kernel source checkers
+>
+> On Mon, Dec 7, 2020 at 3:19 PM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> > On Mon, Dec 07, 2020 at 04:00:29PM +0300, Dan Carpenter wrote:
+> > > The "ret" variable isn't set on the no-op path where we are setting to
+> > > on/off and it's in the on or off state already.
+> > >
+> > > Fixes: 91807efbe8ec ("media: i2c: add OV02A10 image sensor driver")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> >
+> > Thanks for the patch.
+> >
+> > This issue has been fixed by another patch here:
+> >
+> > <URL:https://patchwork.linuxtv.org/project/linux-media/patch/20201204082037.1658297-1-arnd@kernel.org/>
+>
+> This has been reported by 3 or 4 different people. I'm wondering if
+> it's possible to introduce a common database to somehow reduce the
+> amount of patches against the same findings.
 
-for us at Pengutronix Kernel-CI has always been a good way to present our
-Kernel maintenance / development activities to our customers.
++workflows and kernelci re multiple reports/patches for the same kernel bug
 
-We are currently missing a few of the old views. I'll try to describe our
-use-cases in some short user stories. Feel free to ask for more details.
-
-A customer tries to evaluate whether to use  mainline Linux or a vendor ke=
-rnel:
-  - View of list of all hardware / SoC currently tested in all labs
-  - View job history on all devices with a specific hardware / SoC
-  - View statistics of failing / passing Tests over time for a specific ha=
-rdware / SoC.
-
-A member of sales department uses the contribution to Kernel-CI as an indi=
-cation
-for our effort to maintain systems for a long time.
-  - View a list of hardware / SoC in a specific lab.
-  - Send a link to said list to a costumer.
-  - View the status of hardware in a specific lab:
-    Are jobs scheduled for a specific hardware?
-  - View the history of jobs for a specific lab.
-
-
-Regards,
-Chris
+I think KernelCI DB effort has a goal of fighting this duplication of
+efforts. But as far as I understand the exact mechanism for
+deduplication is an open question.
