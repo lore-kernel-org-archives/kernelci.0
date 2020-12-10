@@ -1,78 +1,835 @@
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Subject: KCIDB: Renaming "descriptions" to "comments"
-Message-ID: <4b84dd0b-a0c2-c577-ee36-daacac25f953@redhat.com>
-Date: Thu, 10 Dec 2020 14:01:01 +0200
+Date: Thu, 10 Dec 2020 17:23:16 +0000
+From: "Cristian Marussi" <cristian.marussi@arm.com>
+Subject: Re: Contributing ARM tests results to KCIDB
+Message-ID: <20201210172243.GD8455@e120937-lin>
+References: <20200918152135.GA13088@e119603-lin.cambridge.arm.com>
+ <3e86960e-9780-3e18-3d12-cb4ec3959d63@redhat.com>
+ <be42f631-897d-0cdf-0225-5d01256f39e5@redhat.com>
+ <20200918164228.GA16509@e119603-lin.cambridge.arm.com>
+ <20201105184631.GD24640@e120937-lin>
+ <4db924ab-2f38-ac63-1b71-51ead907ba1f@redhat.com>
+ <20201202092340.GB8455@e120937-lin>
+ <d0c2936f-fab5-3aea-fbd0-22b59df9bfd3@redhat.com>
+ <20201202120105.GC8455@e120937-lin>
+ <008d1ca4-1b3f-c24f-9245-b19eb21c63a6@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <008d1ca4-1b3f-c24f-9245-b19eb21c63a6@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>, Dmitry Vyukov <dvyukov@google.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Alice Ferrazzi <alicef@gentoo.org>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>, kernelci@groups.io
+To: kernelci@groups.io, Nikolai.Kondrashov@redhat.com
+Cc: broonie@kernel.org, basil.eljuse@arm.com
 
-Hi everyone,
+Hi Nick
 
-To anyone involved/interested in contributing to KernelCI's KCIDB data and
-code, I'd like to announce a small, but noticeable change to the schema to let
-us develop result notifications further, and to move closer to reaching
-developers with our data.
+On Wed, Dec 02, 2020 at 03:38:19PM +0200, Nikolai Kondrashov via groups.io=
+ wrote:
+> On 12/2/20 2:01 PM, Cristian Marussi wrote:
+> >>  From POV of KCIDB, what you're sending now is overwriting the same t=
+est runs
+> >> over and over, and we can't really tell which one of those objects is=
+ the
+> >> final version.
+> >
+> >
+> > Ah, that was exactly what I used to do in my first initial experiments=
+ and then,
+> > looking at the data on the UI, I was dumb enough to decide that I shou=
+ld have got
+> > it wrong and I started using the test_id instead of the test_execution=
+_id, because
+> > I thought that, anyway, you can recognize the different test execution=
+s of the
+> > same test_id looking at the different build_id is part of (which for u=
+s represent
+> > the different test suite runs)....but I suppose this wrong assumption =
+of mine
+> > sparked from the relational data model I use on our side. I'll fix it.
+>=20
+> Yes, that would work, but then we get a "foreign key explosion" as we st=
+art
+> linking to tests from other objects beside builds. So, for now we're sti=
+cking
+> to the "one ID column per table" policy.
+>=20
+> Thanks for bearing with us, and am glad to hear you already have
+> `test_execution_id` in your database, so the fix shouldn't take long :)
+>=20
+> > Sure, in fact, as of now I still have to ask for some changes in our r=
+eporting
+> > backend, (which generates the original data stored in our DB and then =
+pushed
+> > to you), so I have to admit the git commit hash are partially faked (s=
+ince I
+> > have only a git describe string to start from) and as a consequence th=
+ey won't
+> > really be so much useful for comparisons amongst different origins (gi=
+ven
+> > they don't refer real kernel commits), BUT I thought this NOT to be a
+> > blocking problem for now, so that I can start pushing data to KCIDB an=
+d
+> > then later on (once I get real full hashes on my side) I'll start push=
+ing the
+> > real valid ones, does it sounds good ?
+>=20
+> Yes, no problem. We don't have maintainers/developers to get angry yet :=
+D
+>=20
+> I'm looking forward to having four-origin revisions in the dashboard, th=
+ough,
+> one more than e.g. this one:
+>=20
+>     https://staging.kernelci.org:3000/d/revision/revision?var-id=3D3650b=
+228f83adda7e5ee532e2b90429c03f7b9ec
+>=20
 
-We'd like to rename the "description" fields in all objects to "comment".
+I fixed the issue about uniqueness of the tests IDs but left the valid
+flag on the revision undefined as of now given the revision hash is
+temporarily faked (as I told you)...just to have an indication that the
+revision is bogus.
+Anyway I'll have that fixed in our backend soon, and once I'll start
+receiving a proper real hash the system 'should' automatically start
+tagging revisions as valid: True.
 
-The name "description" suggests the field contains a description of its object
-as a whole. E.g. that a build's "description" could contain something like
-this, coming from one CI system:
+> > Side question...for dynamic schema validation purposes...is there any =
+URL
+> > where I can fetch the latest currently valid schema ... something like=
+:
+> >
+> > https://github.com/kernelci/kcidb/releases/kcidb.latest.schema.json
+> >
+> > so that I can check automatically against the latest greatest instead =
+of
+> > using a builtin predownloaded one (or is it a bad idea in your opinion=
+ ?)
+>=20
+> The JSON schemas we generate with `kcidb-schema`, and use inside KCIDB, =
+only
+> validate *one* major version. So v3 data would only validate with v3 sch=
+ema,
+> but not with e.g. v4.
+>=20
+> So if you e.g. download and validate against the latest-release schema
+> automatically, validation will start failing the moment a release with v=
+4
+> comes out.
+>=20
+> Automatic data upgrades between major versions are done in Python whenev=
+er we
+> see a difference between the numbers.
+>=20
+> OTOH, minor version bumps of the schema are backwards-compatible, and yo=
+u
+> would be fine upgrading validation to those. However, we don't have many=
+ of
+> those at all yet, as we're still changing the schema a lot.
+>=20
+> So, I think a reasonable workflow right now is to download and switch to=
+ a new
+> version at the same time you're upgrading your submission code to the ne=
+xt
+> major release of the schema. You'll need more work on the code than just
+> switching the schema, anyway.
+>=20
+> However, let's get back to this further along the way, perhaps we can th=
+ink of
+> something smoother and more automated. E.g. set up a way to have automat=
+ic
+> upgrades between minor versions.
 
-     Debian Clang 10.0.1 / arm / BeagleBone Black
+Agreed, using v3 for the moment.
 
-and another CI system could send:
+Moreover, after fixing a few more annoyances on my side, today I switched =
+to
+KCIDB production and pushed December results; from tomorrow morning it sho=
+uld
+start feeding daily data to KCIDB production.
 
-     BeagleBone Black (Clang 10.0.1 / arm)
+Thanks for the support and patience.
 
-However, we would have formalized fields for most of that information already
-(i.e. "compiler", and "architecture"), and we would rather generate our own
-build description from *those* in our email notifications/dashboards, for
-consistency.
+Cristian
 
-This way we could e.g. send email notifications with a consistent subject, no
-matter which CI system sent the reports. For (a theoretical) example:
-
-     BUILD FAILED: Clang 10.0.1 / arm
-
-However, even as we keep on improving the schema, we recognize that CI systems
-will always have something extra to add about their builds/tests, which they
-would want the recipients to see. We have the "misc" field for the arbitrary
-structured data, but since it's non-formalized, we cannot put it into e.g. our
-reports in any meaningful way (except as a JSON dump).
-
-For that purpose, in place of the "description" field, we're adding the
-"comment" field, which would mean just that: any extra information you'd like
-to add to your object, which has no formal place yet, for humans to see.
-Basically, it's a (smaller) human-readable analogue of "misc".
-
-Taking the example above, it could be just that target name:
-
-     BeagleBone Black
-
-because e.g. the submitter considers that important to the recipients, and we
-don't have that field yet. Then we could e.g. append it to our subjects in a
-consistent way:
-
-     BUILD FAILED: Clang 10.0.1 / arm / BeagleBone Black
-
-The specific change is up for review here:
-
-     https://github.com/kernelci/kcidb-io/pull/19
-
-and will be included into the next schema version (v4). When automatically
-converting the v3 data the "description" field values will simply go into
-"comment" as is. You won't need to change your reporting code until you switch
-to sending data complying to v4, or later schema (after it is released), and
-then please reconsider what you put there.
-
-Please don't hesitate to respond with any comments, objections, or
-suggestions.
-
-If there are no objections, I'll merge this change next week.
-
-Nick
-
+>=20
+> Thanks :)
+> Nick
+>=20
+> On 12/2/20 2:01 PM, Cristian Marussi wrote:
+> > On Wed, Dec 02, 2020 at 12:16:10PM +0200, Nikolai Kondrashov wrote:
+> >> On 12/2/20 11:23 AM, Cristian Marussi wrote:
+> >>> On Wed, Dec 02, 2020 at 10:05:05AM +0200, Nikolai Kondrashov via gro=
+ups.io wrote:
+> >>>> On 11/5/20 8:46 PM, Cristian Marussi wrote:
+> >>>>> after past month few experiments on ARM KCIDB submissions against =
+your
+> >>>>> KCIDB staging instance , I was dragged a bit away from this by oth=
+er stuff
+> >>>>> before effectively deploying some real automation on our side to p=
+ush our
+> >>>>> daily results to KCIDB...now I'm back at it and I'll keep on testi=
+ng
+> >>>>> some automation on our side for a bit against your KCIDB staging i=
+nstance
+> >>>>> before asking you to move to production eventually.
+> >>>>
+> >>>> I see your data has been steadily trickling into our playground dat=
+abase and
+> >>>> it looks quite good. Would you like to move to the production insta=
+nce?
+> >>>>
+> >>>> I can review your data for you, we can fix the remaining issues if =
+we find
+> >>>> them, and I can give you the permissions to push to production. The=
+n you will
+> >>>> only need to change the topic you push to from "playground_kernelci=
+_new" to
+> >>>> "kernelci_new".
+> >>>
+> >>> In fact I left one staging instance on our side to push data on your
+> >>> staging instance to verify remaining issues on our side *and there a=
+re a
+> >>> couple of minor ones I spotted that I'd like to fix indeed);
+> >>
+> >> Sure, it's up to you when you decide to switch. However, if you'd lik=
+e, list
+> >> your issues here, and I would be able to tell you if those are import=
+ant from
+> >> KCIDB POV.
+> >>
+> >> Looking at your data, I can only find one serious issue: the test run=
+ ("test")
+> >> IDs are not unique. E.g. there are 1460 objects with ID "arm:LTP:11" =
+which
+> >> use 643 distinct build_id's among them.
+> >>
+> >> The test run IDs should correspond to a single execution of a test. O=
+therwise
+> >> we won't be able to tell them apart. You can send multiple reports co=
+ntaining
+> >> test runs ("tests") with the same ID, but that would still mean the s=
+ame
+> >> execution, only repeating the same data, or adding more.
+> >>
+> >> A little more explanation:
+> >> https://github.com/kernelci/kcidb/blob/master/SUBMISSION_HOWTO.md#sub=
+mitting-objects-multiple-times
+> >>
+> >>  From POV of KCIDB, what you're sending now is overwriting the same t=
+est runs
+> >> over and over, and we can't really tell which one of those objects is=
+ the
+> >> final version.
+> >
+> >
+> > Ah, that was exactly what I used to do in my first initial experiments=
+ and then,
+> > looking at the data on the UI, I was dumb enough to decide that I shou=
+ld have got
+> > it wrong and I started using the test_id instead of the test_execution=
+_id, because
+> > I thought that, anyway, you can recognize the different test execution=
+s of the
+> > same test_id looking at the different build_id is part of (which for u=
+s represent
+> > the different test suite runs)....but I suppose this wrong assumption =
+of mine
+> > sparked from the relational data model I use on our side. I'll fix it.
+> >
+> >>
+> >> Aside from that, you might want to add `"valid": true` to your "revis=
+ion"
+> >> objects to indicate they're alright. You never seem to send patched r=
+evisions,
+> >> so it should always be true for you. Then instead of the blank "Statu=
+s" field:
+> >>
+> >>      https://staging.kernelci.org:3000/d/revision/revision?orgId=3D1&=
+var-dataset=3Dplayground_kernelci04&var-id=3Df0d5c8f71bbb1aa1e98cb1a89adb9d=
+57c04ede3d
+> >>
+> >> you would get a nice green check mark, like this:
+> >>
+> >>      https://staging.kernelci.org:3000/d/revision/revision?orgId=3D1&=
+var-dataset=3Dkernelci04&var-id=3D8af5fe40bd59d8aa26dd76d9971435177aacbfce
+> >>
+> >
+> > Ah I missed this valid flag on revision too, I'll fix.
+> >
+> >> Finally, at this stage we really need a breadth of data coming from
+> >> different CI system, rather than its depth or precision, so we can un=
+derstand
+> >> the problem at hand better and faster. It would do us no good to conc=
+entrate
+> >> on just a few, and solidify the design around them. That would make i=
+t more
+> >> difficult for others to join.
+> >>
+> >> You can refine and add more data afterwards.
+> >>
+> >
+> > Sure, in fact, as of now I still have to ask for some changes in our r=
+eporting
+> > backend, (which generates the original data stored in our DB and then =
+pushed
+> > to you), so I have to admit the git commit hash are partially faked (s=
+ince I
+> > have only a git describe string to start from) and as a consequence th=
+ey won't
+> > really be so much useful for comparisons amongst different origins (gi=
+ven
+> > they don't refer real kernel commits), BUT I thought this NOT to be a
+> > blocking problem for now, so that I can start pushing data to KCIDB an=
+d
+> > then later on (once I get real full hashes on my side) I'll start push=
+ing the
+> > real valid ones, does it sounds good ?
+> >
+> >
+> >>> moreover I saw a little while a go that you're going to switch to sc=
+hema v4
+> >>> with some minor changes in revisions and commit_hashes so I wanted t=
+o
+> >>> conform to that once it's published (even though you're back compati=
+ble with
+> >>> v3 AFAIU)....
+> >>
+> >> I would rather you didn't wait for that, as I'm neck deep in research=
+ for the
+> >> next release right now, and it doesn't seem like it's gonna come out =
+soon.
+> >> I'm concentrating on getting our result notifications in a good shape=
+ so we
+> >> can reach actual kernel developers ASAP.
+> >>
+> >> We can work on upgrading your setup later, when it comes out. And the=
+re are
+> >> going to be other changes, anyway. So, I'd rather we released early a=
+nd
+> >> iterated.
+> >>
+> >
+> > Good I'l stick to v3.
+> >
+> > Side question...for dynamic schema validation purposes...is there any =
+URL
+> > where I can fetch the latest currently valid schema ... something like=
+:
+> >
+> > https://github.com/kernelci/kcidb/releases/kcidb.latest.schema.json
+> >
+> > so that I can check automatically against the latest greatest instead =
+of
+> > using a builtin predownloaded one (or is it a bad idea in your opinion=
+ ?)
+> >
+> >>> ... then I've got dragged away again from this past week :D
+> >>>
+> >>> In fact my next steps (possibly next week) would have been (beside m=
+y fixes)
+> >>> to ask you how to proceed further to production KCIDB.
+> >>
+> >> There's never enough time for everything :)
+> >>
+> >
+> > eh..
+> >
+> >>> Would you want me to stop flooding your staging instance in the mean=
+time (:D)
+> >>> till I'm back at it at least , I think I have enugh data now to debu=
+g anyway.
+> >>> (I could made a few more check next week though)
+> >>
+> >> Don't worry about that, and keep pushing, maybe you'll manage to brea=
+k it
+> >> again and then we can fix it :)
+> >>
+> >
+> > Fine :D
+> >
+> >>> If it's just a matter of switching project (once got enhanced permis=
+sions
+> >>> from you) please do it, and I'll try to finalize all next week on ou=
+r
+> >>> side and move to production.
+> >>
+> >> Permission granted! Switch when you feel ready, and don't hesitate to=
+ ping me
+> >> for another review, if you need it.
+> >>
+> >> Just replace "playground_kernelci_new" topic with "kernelci_new" in y=
+our
+> >> setup when you're ready.
+> >>
+> >
+> > Cool, thanks.
+> >
+> >>> Thanks for the patience
+> >>
+> >> Thank you for your effort, we need your data :D
+> >>
+> >> Nick
+> >>
+> >
+> > Thank you Nick
+> >
+> > Cheers,
+> >
+> > Cristian
+> >
+> >
+> >> On 12/2/20 11:23 AM, Cristian Marussi wrote:
+> >>> Hi Nick
+> >>>
+> >>> On Wed, Dec 02, 2020 at 10:05:05AM +0200, Nikolai Kondrashov via gro=
+ups.io wrote:
+> >>>> Hi Cristian,
+> >>>>
+> >>>> On 11/5/20 8:46 PM, Cristian Marussi wrote:
+> >>>>> Hi Nick,
+> >>>>>
+> >>>>> after past month few experiments on ARM KCIDB submissions against =
+your
+> >>>>> KCIDB staging instance , I was dragged a bit away from this by oth=
+er stuff
+> >>>>> before effectively deploying some real automation on our side to p=
+ush our
+> >>>>> daily results to KCIDB...now I'm back at it and I'll keep on testi=
+ng
+> >>>>> some automation on our side for a bit against your KCIDB staging i=
+nstance
+> >>>>> before asking you to move to production eventually.
+> >>>>
+> >>>> I see your data has been steadily trickling into our playground dat=
+abase and
+> >>>> it looks quite good. Would you like to move to the production insta=
+nce?
+> >>>>
+> >>>> I can review your data for you, we can fix the remaining issues if =
+we find
+> >>>> them, and I can give you the permissions to push to production. The=
+n you will
+> >>>> only need to change the topic you push to from "playground_kernelci=
+_new" to
+> >>>> "kernelci_new".
+> >>>
+> >>> In fact I left one staging instance on our side to push data on your
+> >>> staging instance to verify remaining issues on our side *and there a=
+re a
+> >>> couple of minor ones I spotted that I'd like to fix indeed); moreove=
+r I saw
+> >>> a little while a go that you're going to switch to schema v4 with so=
+me minor
+> >>> changes in revisions and commit_hashes so I wanted to conform to tha=
+t once
+> >>> it's published (even though you're back compatible with v3 AFAIU)...=
+.
+> >>>
+> >>> ... then I've got dragged away again from this past week :D
+> >>>
+> >>> In fact my next steps (possibly next week) would have been (beside m=
+y fixes)
+> >>> to ask you how to proceed further to production KCIDB.
+> >>>
+> >>> Would you want me to stop flooding your staging instance in the mean=
+time (:D)
+> >>> till I'm back at it at least , I think I have enugh data now to debu=
+g anyway.
+> >>> (I could made a few more check next week though)
+> >>>
+> >>> If it's just a matter of switching project (once got enhanced permis=
+sions
+> >>> from you) please do it, and I'll try to finalize all next week on ou=
+r
+> >>> side and move to production.
+> >>>
+> >>> Thanks for the patience
+> >>>
+> >>> Cristian
+> >>>
+> >>>
+> >>>>
+> >>>> Nick
+> >>>>
+> >>>> On 11/5/20 8:46 PM, Cristian Marussi wrote:
+> >>>>> Hi Nick,
+> >>>>>
+> >>>>> after past month few experiments on ARM KCIDB submissions against =
+your
+> >>>>> KCIDB staging instance , I was dragged a bit away from this by oth=
+er stuff
+> >>>>> before effectively deploying some real automation on our side to p=
+ush our
+> >>>>> daily results to KCIDB...now I'm back at it and I'll keep on testi=
+ng
+> >>>>> some automation on our side for a bit against your KCIDB staging i=
+nstance
+> >>>>> before asking you to move to production eventually.
+> >>>>>
+> >>>>> But, today I realized, though, that I cannot push anymore data suc=
+cessfully
+> >>>>> into staging even using the same test script I used one month ago =
+to push
+> >>>>> some new test data seems to fail now (I tested a few different day=
+s and
+> >>>>> JSON validates fine with jsonschema...with proper dates with hours=
+...)...
+> >>>>> ...I cannot see any of my today tests' pushes on:
+> >>>>>
+> >>>>> https://staging.kernelci.org:3000/d/home/home?orgId=3D1&from=3Dnow=
+-1y&to=3Dnow&refresh=3D30m&var-origin=3Darm&var-git_repository_url=3DAll&va=
+r-dataset=3Dplayground_kernelci04
+> >>>>>
+> >>>>> Auth seems to proceed fine, but I cannot find any submission dated=
+ after
+> >>>>> the old ~15/18-09-2020 submissions. I'm using the same kci-submit =
+tools
+> >>>>> version installed past months from your github though.
+> >>>>>
+> >>>>> Do you see any errors on your side that can shed a light on this ?
+> >>>>>
+> >>>>> Thanks
+> >>>>>
+> >>>>> Regards
+> >>>>>
+> >>>>> Cristian
+> >>>>>
+> >>>>> On Fri, Sep 18, 2020 at 05:42:28PM +0100, Cristian Marussi wrote:
+> >>>>>> Hi Nick,
+> >>>>>>
+> >>>>>> On Fri, Sep 18, 2020 at 06:53:28PM +0300, Nikolai Kondrashov wrot=
+e:
+> >>>>>>> On 9/18/20 6:30 PM, Nikolai Kondrashov wrote:
+> >>>>>>>> Yes, I think it's one of the problems you uncovered :)
+> >>>>>>>>
+> >>>>>>>> The schema allows for fully-compliant RFC3339 timestamps, but t=
+he BigQuery
+> >>>>>>>> database on the backend doesn't understand some of them. In par=
+ticular it
+> >>>>>>>> doesn't understand the date-only timestamps you send. E.g. "202=
+0-09-13".
+> >>>>>>>> That's what I wanted to fix today, but ran out of time.
+> >>>>>>>
+> >>>>>>> Looking at this more it seems that Python's jsonschema module si=
+mply doesn't
+> >>>>>>> enforce the requirements we put on those fields =F0=9F=A4=A6. Yo=
+u can send essentially
+> >>>>>>> what you want and then hit BigQuery, which is serious about them=
+.
+> >>>>>>
+> >>>>>> ...in fact on my side I check too with jsonschema in my script be=
+fore using kcidb :D
+> >>>>>>>
+> >>>>>>> Sorry about that.
+> >>>>>>>
+> >>>>>>
+> >>>>>> No worries.
+> >>>>>>
+> >>>>>>> I opened an issue for this: https://github.com/kernelci/kcidb/is=
+sues/108
+> >>>>>>>
+> >>>>>>> For now please just make sure your timestamp comply with RFC3339=
+.
+> >>>>>>>
+> >>>>>>> You can produce such a timestamp e.g. using "date --rfc-3339=3Ds=
+".
+> >>>>>>
+> >>>>>> I'll anyway fix my data on my side too, to have the real discover=
+y timestamp.
+> >>>>>>
+> >>>>>>>
+> >>>>>>> Nick
+> >>>>>>>
+> >>>>>>
+> >>>>>> Thanks
+> >>>>>>
+> >>>>>> Cristian
+> >>>>>>
+> >>>>>>> On 9/18/20 6:30 PM, Nikolai Kondrashov wrote:
+> >>>>>>>> On 9/18/20 6:21 PM, Cristian Marussi wrote:
+> >>>>>>>>     > So in order to carry on my experiments, I've just tried t=
+o push a new dataset
+> >>>>>>>>     > with a few changes in my data-layout to mimic what I see =
+other origins do; this
+> >>>>>>>>     > contained something like 38 builds across 4 different rev=
+isions (with brand new
+> >>>>>>>>     > revisions IDs), but I cannot see anything on the UI: I ju=
+st keep seeing the old
+> >>>>>>>>     > push from yesterday.
+> >>>>>>>>     >
+> >>>>>>>>     > JSON seems valid and kcidb-submit does not report any err=
+or even using -l DEBUG.
+> >>>>>>>>     > (I pushed >30mins ago)
+> >>>>>>>>     >
+> >>>>>>>>     > Any idea ?
+> >>>>>>>>
+> >>>>>>>> Yes, I think it's one of the problems you uncovered :)
+> >>>>>>>>
+> >>>>>>>> The schema allows for fully-compliant RFC3339 timestamps, but t=
+he BigQuery
+> >>>>>>>> database on the backend doesn't understand some of them. In par=
+ticular it
+> >>>>>>>> doesn't understand the date-only timestamps you send. E.g. "202=
+0-09-13".
+> >>>>>>>> That's what I wanted to fix today, but ran out of time.
+> >>>>>>>>
+> >>>>>>>> Additionally, the backend doesn't have a way to report a proble=
+m to the
+> >>>>>>>> submitter at the moment. We intend to fix that, but for now it'=
+s possible only
+> >>>>>>>> through us looking at the logs and sending a message to the sub=
+mitter :)
+> >>>>>>>>
+> >>>>>>>> To work around this you can pad your timestamps with dummy date=
+ and time
+> >>>>>>>> data.
+> >>>>>>>>
+> >>>>>>>> E.g. instead of sending:
+> >>>>>>>>
+> >>>>>>>>         2020-09-13
+> >>>>>>>>
+> >>>>>>>> you can send:
+> >>>>>>>>
+> >>>>>>>>         2020-09-13 00:00:00+00:00
+> >>>>>>>>
+> >>>>>>>> Hopefully that's the only problem. It could be, since you manag=
+ed to send data
+> >>>>>>>> before :)
+> >>>>>>>>
+> >>>>>>>> Nick
+> >>>>>>>>
+> >>>>>>>> On 9/18/20 6:21 PM, Cristian Marussi wrote:
+> >>>>>>>>     > Hi Nikolai,
+> >>>>>>>>     >
+> >>>>>>>>     > On Thu, Sep 17, 2020 at 08:26:15PM +0300, Nikolai Kondras=
+hov wrote:
+> >>>>>>>>     >> On 9/17/20 7:22 PM, Cristian Marussi wrote:
+> >>>>>>>>     >>> It works too ... :D
+> >>>>>>>>     >>>
+> >>>>>>>>     >>> https://staging.kernelci.org:3000/d/build/build?orgId=
+=3D1&var-dataset=3Dplayground_kernelci04&var-id=3Darm:2020-07-07:d3d7689c2=
+cc9503266cac3bc777bb4ddae2e5f2e
+> >>>>>>>>     >>
+> >>>>>>>>     >> Whoa, awesome!
+> >>>>>>>>     >>
+> >>>>>>>>     >> And you have already uncovered a few issues we need to f=
+ix, too!
+> >>>>>>>>     >> I will deal with them tomorrow.
+> >>>>>>>>     >>
+> >>>>>>>>     >>> ..quick question though....given that now I'll have to =
+play quite a bit
+> >>>>>>>>     >>> with it and see how's better to present our data, if an=
+ythinjg missing etc etc,
+> >>>>>>>>     >>> is there any chance (or way) that if I submmit the same=
+ JSON report multiple
+> >>>>>>>>     >>> times with slight differences here and there (but with =
+the same IDs clearly)
+> >>>>>>>>     >>> I'll get my DB updated in the bits I have changed: as a=
+n example I've just
+> >>>>>>>>     >>> resubmitted the same report with added discovery_time a=
+nd descriptions, and got
+> >>>>>>>>     >>> NO errors, but I cannot see the changes in the UI (unle=
+ss they have still to
+> >>>>>>>>     >>> propagate...)..or maybe I can obtain the same effect by=
+ dropping my dataset
+> >>>>>>>>     >>> before re-submitting ?
+> >>>>>>>>     >>
+> >>>>>>>>     >> Right now it's not supported (with various possible quir=
+ks if attempted).
+> >>>>>>>>     >> So, preferably, submit only one, complete and final inst=
+ance of each object
+> >>>>>>>>     >> (with unique ID) for now.
+> >>>>>>>>     >>
+> >>>>>>>>     >> We have a plan to support merging missing properties acr=
+oss multiple reported
+> >>>>>>>>     >> objects with the same ID.
+> >>>>>>>>     >>
+> >>>>>>>>     >>              Object A        Object B    Dashboard/Notif=
+ications
+> >>>>>>>>     >>
+> >>>>>>>>     >> FieldX:     Foo             Foo         Foo
+> >>>>>>>>     >> FieldY:                     Bar         Bar
+> >>>>>>>>     >> FieldZ:     Baz                         Baz
+> >>>>>>>>     >> FieldU:     Red             Blue        Red/Blue
+> >>>>>>>>     >>
+> >>>>>>>>     >> Since we're using a distributed database we cannot reall=
+y maintain order
+> >>>>>>>>     >> (without introducing artificial global lock), so the ord=
+er of the reports
+> >>>>>>>>     >> doesn't matter. We can only guarantee that a present val=
+ue would override
+> >>>>>>>>     >> missing value. It would be undefined which value would b=
+e picked among
+> >>>>>>>>     >> multiple different values.
+> >>>>>>>>     >>
+> >>>>>>>>     >> This would allow gradual reporting of each object, but n=
+o editing, sorry.
+> >>>>>>>>     >>
+> >>>>>>>>     >> However, once again, this is a plan with some research d=
+one, only.
+> >>>>>>>>     >> I plan to start implementing it within a few weeks.
+> >>>>>>>>     >>
+> >>>>>>>>     >
+> >>>>>>>>     > So in order to carry on my experiments, I've just tried t=
+o push a new dataset
+> >>>>>>>>     > with a few changes in my data-layout to mimic what I see =
+other origins do; this
+> >>>>>>>>     > contained something like 38 builds across 4 different rev=
+isions (with brand new
+> >>>>>>>>     > revisions IDs), but I cannot see anything on the UI: I ju=
+st keep seeing the old
+> >>>>>>>>     > push from yesterday.
+> >>>>>>>>     >
+> >>>>>>>>     > JSON seems valid and kcidb-submit does not report any err=
+or even using -l DEBUG.
+> >>>>>>>>     > (I pushed >30mins ago)
+> >>>>>>>>     >
+> >>>>>>>>     > Any idea ?
+> >>>>>>>>     >
+> >>>>>>>>     > Thanks
+> >>>>>>>>     >
+> >>>>>>>>     > Cristian
+> >>>>>>>>     >
+> >>>>>>>>     >> Nick
+> >>>>>>>>     >>
+> >>>>>>>>     >> On 9/17/20 7:22 PM, Cristian Marussi wrote:
+> >>>>>>>>     >>> On Thu, Sep 17, 2020 at 04:52:30PM +0300, Nikolai Kondr=
+ashov wrote:
+> >>>>>>>>     >>>> Hi Christian,
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>> On 9/17/20 3:50 PM, Cristian Marussi wrote:
+> >>>>>>>>     >>>>> Hi Nikolai,
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>> I work at ARM in the Kernel team and, in short, we'd =
+like certainly to
+> >>>>>>>>     >>>>> contribute our internal Kernel test results to KCIDB.
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>> Wonderful!
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>>> After having attended your LPC2020 TestMC and KernelC=
+I/BoF, I've now cooked
+> >>>>>>>>     >>>>> up some KCIDB JSON test report (seemingly valid again=
+st your KCIDB v3 schema)
+> >>>>>>>>     >>>>> and I'd like to start experimenting with kci-submit (=
+on non-production
+> >>>>>>>>     >>>>> instances), so as to assess how to fit our results in=
+to your schema and maybe
+> >>>>>>>>     >>>>> contribute with some new KCIDB requirements if strict=
+ly needed.
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>> Great, this is exactly what we need, welcome aboard :)
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>> Please don't hesitate to reach out on kernelci@groups.=
+io or on #kernelci on
+> >>>>>>>>     >>>> freenode.net, if you have any questions, problems, or =
+requirements.
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>>> Is it possible to get some valid credentials and a pl=
+ayground instance to
+> >>>>>>>>     >>>>> point at ?
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>> Absolutely, I created credentials for you and sent the=
+m in a separate message.
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>> You can use origin "arm" for the start, unless you hav=
+e multiple CI systems
+> >>>>>>>>     >>>> and want to differentiate them somehow in your reports=
+.
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>> Nick
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>    Thanks !
+> >>>>>>>>     >>>
+> >>>>>>>>     >>> It works too ... :D
+> >>>>>>>>     >>>
+> >>>>>>>>     >>> https://staging.kernelci.org:3000/d/build/build?orgId=
+=3D1&var-dataset=3Dplayground_kernelci04&var-id=3Darm:2020-07-07:d3d7689c2=
+cc9503266cac3bc777bb4ddae2e5f2e
+> >>>>>>>>     >>>
+> >>>>>>>>     >>> ..quick question though....given that now I'll have to =
+play quite a bit
+> >>>>>>>>     >>> with it and see how's better to present our data, if an=
+ythinjg missing etc etc,
+> >>>>>>>>     >>> is there any chance (or way) that if I submmit the same=
+ JSON report multiple
+> >>>>>>>>     >>> times with slight differences here and there (but with =
+the same IDs clearly)
+> >>>>>>>>     >>> I'll get my DB updated in the bits I have changed: as a=
+n example I've just
+> >>>>>>>>     >>> resubmitted the same report with added discovery_time a=
+nd descriptions, and got
+> >>>>>>>>     >>> NO errors, but I cannot see the changes in the UI (unle=
+ss they have still to
+> >>>>>>>>     >>> propagate...)..or maybe I can obtain the same effect by=
+ dropping my dataset
+> >>>>>>>>     >>> before re-submitting ?
+> >>>>>>>>     >>>
+> >>>>>>>>     >>> Regards
+> >>>>>>>>     >>>
+> >>>>>>>>     >>> Thanks
+> >>>>>>>>     >>>
+> >>>>>>>>     >>> Cristian
+> >>>>>>>>     >>>
+> >>>>>>>>     >>>> On 9/17/20 3:50 PM, Cristian Marussi wrote:
+> >>>>>>>>     >>>>> Hi Nikolai,
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>> I work at ARM in the Kernel team and, in short, we'd =
+like certainly to
+> >>>>>>>>     >>>>> contribute our internal Kernel test results to KCIDB.
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>> After having attended your LPC2020 TestMC and KernelC=
+I/BoF, I've now cooked
+> >>>>>>>>     >>>>> up some KCIDB JSON test report (seemingly valid again=
+st your KCIDB v3 schema)
+> >>>>>>>>     >>>>> and I'd like to start experimenting with kci-submit (=
+on non-production
+> >>>>>>>>     >>>>> instances), so as to assess how to fit our results in=
+to your schema and maybe
+> >>>>>>>>     >>>>> contribute with some new KCIDB requirements if strict=
+ly needed.
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>> Is it possible to get some valid credentials and a pl=
+ayground instance to
+> >>>>>>>>     >>>>> point at ?
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>> Thanks
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>> Regards
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>> Cristian
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>>
+> >>>>>>>>     >>>>
+> >>>>>>>>     >>>
+> >>>>>>>>     >>
+> >>>>>>>>     >
+> >>>>>>>>     >
+> >>>>>>>>     > >
+> >>>>>>>>     >
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>
+> >>>>>
+> >>>>>
+> >>>>>>
+> >>>>>
+> >>>>
+> >>>>
+> >>>>
+> >>>> >>>>
+> >>>>
+> >>>
+> >>
+> >
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
