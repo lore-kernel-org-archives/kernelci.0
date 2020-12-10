@@ -1,73 +1,78 @@
-Subject: Re: [kernelci-members] Working with the KernelCI project
-References: <20200707222342.scrz75265etaqlmd@redhat.com>
- <d9919812-9763-9c02-3e5d-978fac8fe1f7@redhat.com>
- <CACT4Y+a3L+_8kpXq-WdNZxJESCvnCvfakJ3CymVwmZZA6kv+0w@mail.gmail.com>
- <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
- <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
- <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com>
- <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
- <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com>
- <16397F50C12D08DD.21243@groups.io>
- <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
- <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com>
- <CACT4Y+Zet9NdAZ_bwAoKgpf-socRfwCf=-QQNFdXhKDMLzyZ-Q@mail.gmail.com>
- <dbbd05dd-75aa-48ff-300d-1ed0b2f51341@redhat.com>
- <CACT4Y+aMcNECTka7WeYXp+izqPrewTpM2zOiMNw+sL0PPZcYMQ@mail.gmail.com>
- <e85bbeb2-3ccb-4950-8171-3c48b3c1bff0@gmail.com>
- <CACT4Y+ai-DJhuSHddS__izrwaKzWzNtbry43WXd0meQwsgHK6A@mail.gmail.com>
 From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Message-ID: <f9f48e77-fd34-2981-14aa-ebcdfc77a3e4@redhat.com>
-Date: Thu, 1 Oct 2020 19:28:47 +0300
+Subject: KCIDB: Renaming "descriptions" to "comments"
+Message-ID: <4b84dd0b-a0c2-c577-ee36-daacac25f953@redhat.com>
+Date: Thu, 10 Dec 2020 14:01:01 +0200
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+ai-DJhuSHddS__izrwaKzWzNtbry43WXd0meQwsgHK6A@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, dvyukov@google.com, Nikolai Kondrashov <spbnick@gmail.com>
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>
+To: Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>, Dmitry Vyukov <dvyukov@google.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Alice Ferrazzi <alicef@gentoo.org>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>, kernelci@groups.io
 
-On 10/1/20 7:03 PM, Dmitry Vyukov via groups.io wrote:
- > On Thu, Oct 1, 2020 at 5:55 PM Nikolai Kondrashov <spbnick@gmail.com> wrote:
- >>
- >> On 10/1/20 6:36 PM, Dmitry Vyukov via groups.io wrote:
- >>   > On Thu, Oct 1, 2020 at 5:12 PM Nikolai Kondrashov
- >>   > <Nikolai.Kondrashov@redhat.com> wrote:
- >>   >>
- >>   >> On 10/1/20 6:01 PM, Dmitry Vyukov wrote:
- >>   >>   > On Thu, Oct 1, 2020 at 12:48 PM Nikolai Kondrashov
- >>   >>   > <Nikolai.Kondrashov@redhat.com> wrote:
- >>   >>   >> * Could you move the "dashboard" link out of test's "output_files", and into
- >>   >>   >>     a "misc" field? It won't be presented as a link in Grafana unfortunately,
- >>   >>   >>     but "output_files" is for something which could be useful when downloaded
- >>   >>   >>     (and e.g. re-hosted by KCIDB), and the linked HTML doesn't seem to be.
- >>   >>   >>     Let's deal with the dashboard link issue in
- >>   >>   >>     https://github.com/kernelci/kcidb/issues/93
- >>   >>   >
- >>   >>   > Any suggestions/precedents for the name?
- >>   >>   > dashboard_link? origin_link? master_link?
- >>   >>
- >>   >> There's a PR linked which adds "origin_url":
- >>   >> https://github.com/kernelci/kcidb/pull/94
- >>   >
- >>   > I've implemented all suggested improvements, please check this one:
- >>   > https://staging.kernelci.org:3000/d/test/test?orgId=1&var-dataset=playground_kernelci04&var-id=syzkcidb:0a89a7b56db04c21a656
- >>   >
- >>   > Here is top-level link, look for the "https:" one:
- >>   > https://staging.kernelci.org:3000/d/home/home?orgId=1&refresh=30m&from=now-90d&to=now&var-origin=syzkcidb&var-git_repository_url=All&var-dataset=playground_kernelci04
- >>
- >> Niice!
- >>
- >> Although, can you use just the "syzbot" origin? It's going to be easier to
- >> identify and remember for everyone, as it matches your branding.
- >
- > That's a different origin for entries I submit manually for testing purposes.
- > The actual production implementation will submit everything as "syzbot".
- > I am not sure what origin I should use for the manual tool. Using a
- > different origin has some advantages, e.g. we can see that there are 3
- > dups but that was submitted manually.
+Hi everyone,
 
-Ah, I see. Yes, that's useful.
+To anyone involved/interested in contributing to KernelCI's KCIDB data and
+code, I'd like to announce a small, but noticeable change to the schema to let
+us develop result notifications further, and to move closer to reaching
+developers with our data.
+
+We'd like to rename the "description" fields in all objects to "comment".
+
+The name "description" suggests the field contains a description of its object
+as a whole. E.g. that a build's "description" could contain something like
+this, coming from one CI system:
+
+     Debian Clang 10.0.1 / arm / BeagleBone Black
+
+and another CI system could send:
+
+     BeagleBone Black (Clang 10.0.1 / arm)
+
+However, we would have formalized fields for most of that information already
+(i.e. "compiler", and "architecture"), and we would rather generate our own
+build description from *those* in our email notifications/dashboards, for
+consistency.
+
+This way we could e.g. send email notifications with a consistent subject, no
+matter which CI system sent the reports. For (a theoretical) example:
+
+     BUILD FAILED: Clang 10.0.1 / arm
+
+However, even as we keep on improving the schema, we recognize that CI systems
+will always have something extra to add about their builds/tests, which they
+would want the recipients to see. We have the "misc" field for the arbitrary
+structured data, but since it's non-formalized, we cannot put it into e.g. our
+reports in any meaningful way (except as a JSON dump).
+
+For that purpose, in place of the "description" field, we're adding the
+"comment" field, which would mean just that: any extra information you'd like
+to add to your object, which has no formal place yet, for humans to see.
+Basically, it's a (smaller) human-readable analogue of "misc".
+
+Taking the example above, it could be just that target name:
+
+     BeagleBone Black
+
+because e.g. the submitter considers that important to the recipients, and we
+don't have that field yet. Then we could e.g. append it to our subjects in a
+consistent way:
+
+     BUILD FAILED: Clang 10.0.1 / arm / BeagleBone Black
+
+The specific change is up for review here:
+
+     https://github.com/kernelci/kcidb-io/pull/19
+
+and will be included into the next schema version (v4). When automatically
+converting the v3 data the "description" field values will simply go into
+"comment" as is. You won't need to change your reporting code until you switch
+to sending data complying to v4, or later schema (after it is released), and
+then please reconsider what you put there.
+
+Please don't hesitate to respond with any comments, objections, or
+suggestions.
+
+If there are no objections, I'll merge this change next week.
 
 Nick
 
