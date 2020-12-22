@@ -1,107 +1,49 @@
+From: "Chris Paterson" <chris.paterson2@renesas.com>
+Subject: Re: [Automated-testing] RFC: dashboards, visualization and analytics for test results
+Date: Tue, 22 Dec 2020 15:37:43 +0000
+Message-ID: 
+ <OSAPR01MB238522F29BB2F3FF21668445B7DF0@OSAPR01MB2385.jpnprd01.prod.outlook.com>
+References: <7hk0w2c4i3.fsf@baylibre.com>
+In-Reply-To: <7hk0w2c4i3.fsf@baylibre.com>
 MIME-Version: 1.0
-References: <20200707222342.scrz75265etaqlmd@redhat.com> <CACT4Y+a5spdA8TZNeaXFYj4QEw_=howfhu9YGsNm3rC8XPAJnA@mail.gmail.com>
- <d9919812-9763-9c02-3e5d-978fac8fe1f7@redhat.com> <CACT4Y+a3L+_8kpXq-WdNZxJESCvnCvfakJ3CymVwmZZA6kv+0w@mail.gmail.com>
- <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
- <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
- <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com> <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
- <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com> <16397F50C12D08DD.21243@groups.io>
- <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
- <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com> <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
- <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
- <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com> <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
- <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com> <9123a571-721b-5c1b-367e-e028acec4096@redhat.com>
-In-Reply-To: <9123a571-721b-5c1b-367e-e028acec4096@redhat.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Thu, 1 Oct 2020 19:02:42 +0200
-Message-ID: <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
-Subject: Re: [kernelci-members] Working with the KernelCI project
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
+To: "khilman@baylibre.com" <khilman@baylibre.com>, "automated-testing@lists.yoctoproject.org" <automated-testing@lists.yoctoproject.org>, "kernelci@groups.io" <kernelci@groups.io>
+Cc: "tools@linux.kernel.org" <tools@linux.kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>
 
-On Thu, Oct 1, 2020 at 6:34 PM Nikolai Kondrashov
-<Nikolai.Kondrashov@redhat.com> wrote:
->
-> On 10/1/20 7:00 PM, Dmitry Vyukov wrote:
->  > On Thu, Oct 1, 2020 at 5:52 PM Nikolai Kondrashov
->  > <Nikolai.Kondrashov@redhat.com> wrote:
->  >>
->  >> On 10/1/20 6:49 PM, Nikolai Kondrashov wrote:
->  >>> On 10/1/20 5:48 PM, Dmitry Vyukov via groups.io wrote:
->  >>>   > On Thu, Oct 1, 2020 at 3:32 PM Nikolai Kondrashov
->  >>>   > <Nikolai.Kondrashov@redhat.com> wrote:
->  >>>   >>
->  >>>   >> On 10/1/20 1:48 PM, Nikolai Kondrashov wrote:
->  >>>   >>   > Here are the things which could be improved:
->  >>>   >>
->  >>>   >> Oh, and another thing: could you avoid re-sending the identical
->  >>>   >> revisions/builds you've already sent? I.e. send them only once, unless you
->  >>>   >> have fields to add? Each of those costs us a row in the database, which is not
->  >>>   >> a big deal, but would be good to avoid.
->  >>>   >
->  >>>   > Do you see that we send dups? I've added logic to not send dups and
->  >>>   > from what I see it's working.
->  >>>
->  >>> Please find attached a zip archive with seven submissions from about six hours
->  >>> ago. Each has revisions with the same id and git_commit_hash. Some of those
->  >>> revisions have different discovery_time, and that alone shouldn't really be
->  >>> the reason to resend. Each of those submissions have a build object, but some
->  >>> of them are repeated.
->  >>>
->  >>> Revision with that git_commit_hash was submitted at least 72 times.
->  >>
->  >> And now the file is attached :D
->  >
->  > This is intentional (in the current implementation) and is a
->  > consequence of the fact that we always send all 3 entities for each
->  > issue/test failure. It's much simpler on our side this way. If we
->  > would send a test failure multiple times it would be unintentional.
->
-> I see.
->
->  > Identical builds should have the same id, though. And if they have
->  > different id's, then these are different builds.
->
-> Sure.
->
->  > Revisions were discovered separately by different instances, that's
->  > why they have different discovery time. Consider that as if different
->  > origin systems would discover it separately. Since discovery time is
->  > not an inherent property of the commit itself, there is no way they
->  > can agree on it.
->
-> Ah, I see now why. Yeah, it's similar to multiple systems submitting the same
-> revision. Although we don't have systems submitting the same build multiple
-> times.
->
->  > Will it be better if we don't send discovery time at all?
->
-> No, it's OK to submit the discover time multiple times, but we can't say which
-> one will be displayed :)
->
->  > Amount of duplication for builds/revisions is capped by the number of
->  > bugs we discover, since build/revision is only sent with a bug once.
->  > So it's not that it's unlimited.
->
-> I think it's OK that you have some duplication, and certainly OK for the
-> start. Let's get on with sending the data and see how much actual duplication
-> we get, how it affects performance, and how the de-duplication implementation
-> goes :)
-
-The new format is now published by syzbot itself:
-https://staging.kernelci.org:3000/d/test/test?orgId=1&var-dataset=playground_kernelci04&var-id=syzbot:60b38542a0dfb2e0f746
-
-So, do we switch to prod instance? Do you receive notifications now?
-Do we need to fix anything else before the switch?
-
-I don't see anything from syzbot at:
-https://groups.io/g/kernelci-results-staging/topics
-How can I see/subscribe to these notifications?
-
-Since syzbot database now memorizes what was published to kcidb to
-avoid dups, the switch will require some manual database surgery to
-make it re-publish bugs. So I want to make sure we did not miss
-something simple that we could do before the switch.
-
-The switch involves just changing the topic to "kernelci_new", right?
+SGVsbG8gS2V2aW4sDQoNCj4gRnJvbTogYXV0b21hdGVkLXRlc3RpbmdAbGlzdHMueW9jdG9wcm9q
+ZWN0Lm9yZyA8YXV0b21hdGVkLQ0KPiB0ZXN0aW5nQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc+IE9u
+IEJlaGFsZiBPZiBLZXZpbiBIaWxtYW4gdmlhDQo+IGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4g
+U2VudDogMDcgT2N0b2JlciAyMDIwIDE4OjQ4DQoNClsuLi5dDQoNCj4gDQo+IEJlbG93IGlzIHRo
+ZSBzdGFydCBvZiBhIGxpc3Qgb2YgdXNlciBzdG9yaWVzWzJdLCBidXQgd2Ugd2FudCB0byBncm93
+DQo+IHRoaXMgbGlzdCB3aXRoIHlvdXIgaWRlYXMsIHNvIHBsZWFzZSBzaGFyZSB0aGVtIG9uIHRo
+aXMgdGhyZWFkLg0KPiANCg0KWy4uLl0NCg0KPiANCj4gWzJdIEV4YW1wbGUgdXNlciBzdG9yaWVz
+DQo+IA0KPiBBIGtlcm5lbCBkZXZlbG9wZXIgaGFzIHNlbnQgYSBwYXRjaCB3aGljaCBjYXVzZWQg
+YSByZWdyZXNzaW9uDQo+ICAgIC0gRmluZCB0aGUgZGV0YWlscywgaG93IHRvIHJlcHJvZHVjZSwg
+Y2hlY2sgd2hlbiBpdOKAmXMgZml4ZWQNCj4gDQo+IEEgbWFpbnRhaW5lciBpcyBnZXR0aW5nIGEg
+YnJhbmNoIHJlYWR5IGZvciB0aGUgbmV4dCBtZXJnZSB3aW5kb3cNCj4gICAtIENvbXBhcmUgcmVz
+dWx0cyBhZ2FpbnN0IG1haW5saW5lLCBlbnN1cmUgYWxsIHRlc3RzIHdlcmUgcnVuIGNvcnJlY3Rs
+eQ0KDQpBcyBwYXJ0IG9mIHRoaXMsIGl0IG1heSBiZSBnb29kIHRvIGhpZGUgdGhlIGZhaWx1cmVz
+IHJlcG9ydGVkIHRoYXQgYXJlIGFsc28gcmVwb3J0ZWQgb24gbWFpbmxpbmUsIHNvIHRoZSBtYWlu
+dGFpbmVyIGtub3dzIHRoZSByZWdyZXNzaW9ucyBkaXJlY3RseSBjYXVzZWQgYnkgdGhlaXIgdHJl
+ZS4NClBlcmhhcHMgdGhpcyBjaGFuZ2UgY291bGQgYWxzbyBiZSBtYWRlIGZvciB0aGUgZW1haWwg
+cmVwb3J0cy4NCg0KU3VnZ2VzdGVkLWJ5OiBHZWVydCBVeXR0ZXJob2V2ZW4gPGdlZXJ0K3JlbmVz
+YXNAZ2xpZGVyLmJlPg0KDQpLaW5kIHJlZ2FyZHMsIENocmlzDQoNCj4gDQo+IEFuIE9FTSBvciBT
+b0MgdmVuZG9yIG5lZWRzIHRvIHVwZ3JhZGUgdGhlaXIga2VybmVsIG9yIG1vdmUgdG8gdXBzdHJl
+YW0NCj4gICAtIFNlZSBhbGwgcmVzdWx0cyBmb3IgYSBwYXJ0aWN1bGFyIHBsYXRmb3JtIG9uIHZh
+cmlvdXMgc3RhYmxlIHJlbGVhc2VzDQo+IA0KPiBSZWd1bGFyIHZpc2l0b3JzIHdobyB3YW50IHRv
+IGtub3cgaG93IHRoZSBrZXJuZWwgaXMgZG9pbmcNCj4gICAtIEhpZ2hsaWdodCBuZXcgcmVncmVz
+c2lvbnMsIHNob3cgdHJlbmRzIGZvciBwYXNzL2ZhaWwgYW5kIHBlcmZvcm1hbmNlDQo+ICAgLSBE
+b2VzIGtlcm5lbCBYIHdvcmsgb24gbXkgaGFyZHdhcmU/DQo+IA0KPiBEaXN0cm8gdmVuZG9yIHdh
+bnRzIHRvIGtub3cNCj4gICAtIElzIHRoZSBsYXRlc3Qga2VybmVsIHN0YWJsZSBlbm91Z2ggZm9y
+IG15IGRpc3Rybz8NCj4gICAtIFdoeSBkb2VzIHRoaXMgdGVzdCBmYWlsIG9uIG15IGRpc3RybyBr
+ZXJuZWwgYnV0IG5vdCBzdGFibGUga2VybmVsPw0KPiANCj4gU3RhYmxlIGtlcm5lbCBtYWludGFp
+bmVyIHdhbnRzIHRvIGtub3cNCj4gICAtIElzIHRoaXMga2VybmVsIHN0YWJsZSBlbm91Z2ggdG8g
+cmVsZWFzZT8NCj4gDQo+IEtlcm5lbCAvIHN1YnN5c3RlbSBtYWludGFpbmVyIHdhbnRzIHRvIGtu
+b3cNCj4gICAtIElzIG15IGNvZGUvc3Vic3lzdGVtIGJlaW5nIHRlc3RlZD8gIEhvdyBtdWNoIGNv
+dmVyYWdlPw0KPiAgIC0gSXMgdGhlIGtlcm5lbCBzaXplIGdyb3dpbmc/ICBXaHk/ICBXaGljaCBz
+dWJzeXN0ZW1zDQo+ICAgLSBJcyBib290IHRpbWUgLyB0ZXN0IGV4ZWN1dGlvbiB0aW1lIGluY3Jl
+YXNpbmcvZGVjcmVhc2luZz8gIFdoYXQgYXJlIHRoZQ0KPiBoaXN0b3JpY2FsIHRyZW5kcz8NCj4g
+DQoNCg==
