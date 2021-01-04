@@ -1,49 +1,46 @@
-From: "Chris Paterson" <chris.paterson2@renesas.com>
-Subject: Re: [Automated-testing] RFC: dashboards, visualization and analytics for test results
-Date: Tue, 22 Dec 2020 15:37:43 +0000
-Message-ID: 
- <OSAPR01MB238522F29BB2F3FF21668445B7DF0@OSAPR01MB2385.jpnprd01.prod.outlook.com>
-References: <7hk0w2c4i3.fsf@baylibre.com>
-In-Reply-To: <7hk0w2c4i3.fsf@baylibre.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Joel Stanley <joel@jms.id.au>
+Date: Mon, 4 Jan 2021 03:37:02 +0000
+Message-ID: <CACPK8Xdfxkj3fRzF6UezOcBY2tJwsG0bhXNPZV+1M8ZYKxRHNA@mail.gmail.com>
+Subject: Adding BMC systems
+List-ID: <info.kernelci.org>
+List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
+List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/kernelci.org/group/info/subscribe>
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: "khilman@baylibre.com" <khilman@baylibre.com>, "automated-testing@lists.yoctoproject.org" <automated-testing@lists.yoctoproject.org>, "kernelci@groups.io" <kernelci@groups.io>
-Cc: "tools@linux.kernel.org" <tools@linux.kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>
+To: info@kernelci.org
 
-SGVsbG8gS2V2aW4sDQoNCj4gRnJvbTogYXV0b21hdGVkLXRlc3RpbmdAbGlzdHMueW9jdG9wcm9q
-ZWN0Lm9yZyA8YXV0b21hdGVkLQ0KPiB0ZXN0aW5nQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc+IE9u
-IEJlaGFsZiBPZiBLZXZpbiBIaWxtYW4gdmlhDQo+IGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4g
-U2VudDogMDcgT2N0b2JlciAyMDIwIDE4OjQ4DQoNClsuLi5dDQoNCj4gDQo+IEJlbG93IGlzIHRo
-ZSBzdGFydCBvZiBhIGxpc3Qgb2YgdXNlciBzdG9yaWVzWzJdLCBidXQgd2Ugd2FudCB0byBncm93
-DQo+IHRoaXMgbGlzdCB3aXRoIHlvdXIgaWRlYXMsIHNvIHBsZWFzZSBzaGFyZSB0aGVtIG9uIHRo
-aXMgdGhyZWFkLg0KPiANCg0KWy4uLl0NCg0KPiANCj4gWzJdIEV4YW1wbGUgdXNlciBzdG9yaWVz
-DQo+IA0KPiBBIGtlcm5lbCBkZXZlbG9wZXIgaGFzIHNlbnQgYSBwYXRjaCB3aGljaCBjYXVzZWQg
-YSByZWdyZXNzaW9uDQo+ICAgIC0gRmluZCB0aGUgZGV0YWlscywgaG93IHRvIHJlcHJvZHVjZSwg
-Y2hlY2sgd2hlbiBpdOKAmXMgZml4ZWQNCj4gDQo+IEEgbWFpbnRhaW5lciBpcyBnZXR0aW5nIGEg
-YnJhbmNoIHJlYWR5IGZvciB0aGUgbmV4dCBtZXJnZSB3aW5kb3cNCj4gICAtIENvbXBhcmUgcmVz
-dWx0cyBhZ2FpbnN0IG1haW5saW5lLCBlbnN1cmUgYWxsIHRlc3RzIHdlcmUgcnVuIGNvcnJlY3Rs
-eQ0KDQpBcyBwYXJ0IG9mIHRoaXMsIGl0IG1heSBiZSBnb29kIHRvIGhpZGUgdGhlIGZhaWx1cmVz
-IHJlcG9ydGVkIHRoYXQgYXJlIGFsc28gcmVwb3J0ZWQgb24gbWFpbmxpbmUsIHNvIHRoZSBtYWlu
-dGFpbmVyIGtub3dzIHRoZSByZWdyZXNzaW9ucyBkaXJlY3RseSBjYXVzZWQgYnkgdGhlaXIgdHJl
-ZS4NClBlcmhhcHMgdGhpcyBjaGFuZ2UgY291bGQgYWxzbyBiZSBtYWRlIGZvciB0aGUgZW1haWwg
-cmVwb3J0cy4NCg0KU3VnZ2VzdGVkLWJ5OiBHZWVydCBVeXR0ZXJob2V2ZW4gPGdlZXJ0K3JlbmVz
-YXNAZ2xpZGVyLmJlPg0KDQpLaW5kIHJlZ2FyZHMsIENocmlzDQoNCj4gDQo+IEFuIE9FTSBvciBT
-b0MgdmVuZG9yIG5lZWRzIHRvIHVwZ3JhZGUgdGhlaXIga2VybmVsIG9yIG1vdmUgdG8gdXBzdHJl
-YW0NCj4gICAtIFNlZSBhbGwgcmVzdWx0cyBmb3IgYSBwYXJ0aWN1bGFyIHBsYXRmb3JtIG9uIHZh
-cmlvdXMgc3RhYmxlIHJlbGVhc2VzDQo+IA0KPiBSZWd1bGFyIHZpc2l0b3JzIHdobyB3YW50IHRv
-IGtub3cgaG93IHRoZSBrZXJuZWwgaXMgZG9pbmcNCj4gICAtIEhpZ2hsaWdodCBuZXcgcmVncmVz
-c2lvbnMsIHNob3cgdHJlbmRzIGZvciBwYXNzL2ZhaWwgYW5kIHBlcmZvcm1hbmNlDQo+ICAgLSBE
-b2VzIGtlcm5lbCBYIHdvcmsgb24gbXkgaGFyZHdhcmU/DQo+IA0KPiBEaXN0cm8gdmVuZG9yIHdh
-bnRzIHRvIGtub3cNCj4gICAtIElzIHRoZSBsYXRlc3Qga2VybmVsIHN0YWJsZSBlbm91Z2ggZm9y
-IG15IGRpc3Rybz8NCj4gICAtIFdoeSBkb2VzIHRoaXMgdGVzdCBmYWlsIG9uIG15IGRpc3RybyBr
-ZXJuZWwgYnV0IG5vdCBzdGFibGUga2VybmVsPw0KPiANCj4gU3RhYmxlIGtlcm5lbCBtYWludGFp
-bmVyIHdhbnRzIHRvIGtub3cNCj4gICAtIElzIHRoaXMga2VybmVsIHN0YWJsZSBlbm91Z2ggdG8g
-cmVsZWFzZT8NCj4gDQo+IEtlcm5lbCAvIHN1YnN5c3RlbSBtYWludGFpbmVyIHdhbnRzIHRvIGtu
-b3cNCj4gICAtIElzIG15IGNvZGUvc3Vic3lzdGVtIGJlaW5nIHRlc3RlZD8gIEhvdyBtdWNoIGNv
-dmVyYWdlPw0KPiAgIC0gSXMgdGhlIGtlcm5lbCBzaXplIGdyb3dpbmc/ICBXaHk/ICBXaGljaCBz
-dWJzeXN0ZW1zDQo+ICAgLSBJcyBib290IHRpbWUgLyB0ZXN0IGV4ZWN1dGlvbiB0aW1lIGluY3Jl
-YXNpbmcvZGVjcmVhc2luZz8gIFdoYXQgYXJlIHRoZQ0KPiBoaXN0b3JpY2FsIHRyZW5kcz8NCj4g
-DQoNCg==
+Hello,
+
+I work on the OpenBMC project, a yocto based distro for baseboard
+management controllers (BMCs). I spend most of my time on the Linux
+kernel, where we support two vendor's SoC families: I maintain the
+Aspeed platform and help others maintain the Nuvoton platform.
+
+We have good upstream support for both soc families. The OpenBMC
+project has a staging/integration tree where we accept patches that
+are destined for but not yet upstream.
+
+I have a collection of evaluation boards that I have for bringup
+purposes that are now mostly unused. I would like to do hardware boot
+and regression testing of these systems.
+
+ - AST2500 EVB
+ - AST2600 EVB
+ - NPCM750 EVB
+
+We also have upstream qemu support for these SoC families, as well as
+the NPCM730 (a cut down variant of hte 750) and the AST2400.
+
+Does adding these to the ci runs sound like something that fits the
+goals of kernelci?
+
+I am employed by IBM in my day job.
+
+Cheers,
+
+Joel
