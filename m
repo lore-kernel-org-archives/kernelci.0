@@ -1,57 +1,73 @@
-From: "Wang Mingyu" <wangmy@cn.fujitsu.com>
-Subject: Re: help: how to contribute to the community
-Date: Wed, 6 Jan 2021 01:05:33 +0000
-Message-ID: <c2e6b26abf2446e98e8e162b5015fa29@G08CNEXMBPEKD05.g08.fujitsu.local>
-References: <a34a999c78584e0e9953360bbd5797f8@G08CNEXMBPEKD05.g08.fujitsu.local>
- <ec96708e-12d5-ff21-1f21-dfd2262927dc@collabora.com>
-In-Reply-To: <ec96708e-12d5-ff21-1f21-dfd2262927dc@collabora.com>
+Return-Path: <dan.rue@linaro.org>
+Date: Tue, 12 Jan 2021 18:13:20 -0600
+From: "Dan Rue" <dan.rue@linaro.org>
+Subject: tuxbuilds in kcidb?
+Message-ID: <20210113001320.qreaohq2hzzmlxxu@jug>
 MIME-Version: 1.0
-Content-Language: zh-CN
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: kernelci@groups.io
+Cc: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
 
-SGkgR3VpbGxhdW1lLA0KDQpJJ3ZlIGFscmVhZHkgYWRkZWQgaTM4NiB0byB0aGUgbGlzdCBvZiBh
-cmNoaXRlY3R1cmVzIGJ1aWx0IHdpdGggY2xhbmctMTEgYW5kIGNsYW5nLTEwLg0KUGxlYXNlIGNv
-bmZpcm0gaWYgdGhlcmUgaXMgYW55IHByb2JsZW0uDQoNCkluIGFkZGl0aW9uLCBwdWxsIHJlcXVl
-c3QgNTQ1IGhhcyBub3QgYmVlbiBjb25maXJtZWQuIElmIHRoZXJlIGFyZSBhbnkgcHJvYmxlbXMs
-IHBsZWFzZSBsZXQgbWUga25vdw0KDQpJZiB0aGVyZSBpcyBhbnl0aGluZyBlbHNlIEkgY2FuIGRv
-LCBwbGVhc2UgbGV0IG1lIGtub3cuIFRoYW5rIHlvdQ0KDQpCZXN0IHJlZ2FyZHMNCldhbmcgTWlu
-Z3l1DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogR3VpbGxhdW1lIFR1
-Y2tlciA8Z3VpbGxhdW1lLnR1Y2tlckBjb2xsYWJvcmEuY29tPg0KPiBTZW50OiBUaHVyc2RheSwg
-RGVjZW1iZXIgMTAsIDIwMjAgNjoxMyBQTQ0KPiBUbzoga2VybmVsY2lAZ3JvdXBzLmlvOyBXYW5n
-LCBNaW5neXUv546LIOm4o+eRnCA8d2FuZ215QGNuLmZ1aml0c3UuY29tPg0KPiBTdWJqZWN0OiBS
-ZTogaGVscDogaG93IHRvIGNvbnRyaWJ1dGUgdG8gdGhlIGNvbW11bml0eQ0KPiANCj4gT24gMDgv
-MTIvMjAyMCAwNzo0MywgV2FuZyBNaW5neXUgd3JvdGU6DQo+ID4gSGksIGFsbA0KPiA+DQo+ID4g
-SSBhbSBjdXJyZW50bHkgdXNpbmcgdGhpcyB0b29sLg0KPiA+IEFsdGhvdWdoIEkgYW0gc3RpbGwg
-bmV3LCBJIHN0aWxsIHdhbnQgdG8gY29udHJpYnV0ZSB0byB0aGUgY29tbXVuaXR5Lg0KPiA+IElz
-IHRoZXJlIGFueXRoaW5nIEkgY2FuIGRv77yfDQo+ID4gRm9yIGV4YW1wbGUsIGJ1ZyBmaXgsIG9y
-IHNpbXBsZSBuZXcgcGxhbiB0byBrZXJuZWxjaS4NCj4gDQo+IFRoYW5rIHlvdSBmb3IgeW91ciBp
-bnRlcmVzdCwgdGhlcmUgYXJlIHBsZW50eSBvZiB0aGluZ3MgdGhhdCBmaXJzdC10aW1lDQo+IGNv
-bnRyaWJ1dG9ycyBjYW4gZG8gaW4gS2VybmVsQ0kuICBPbmUgd291bGQgYmUgdG8gZW5hYmxlIGkz
-ODYgYnVpbGRzIHdpdGgNCj4gQ2xhbmcsIGFzIHBlciB0aGlzIEdpdEh1YiBpc3N1ZToNCj4gDQo+
-ICAgaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNpLWNvcmUvaXNzdWVzLzUxNw0K
-PiANCj4gQXQgdGhlIG1vbWVudCwga2VybmVsY2kub3JnIGJ1aWxkcyBsaW51eC1uZXh0IHdpdGgg
-Q2xhbmcgb24gYXJtLCBhcm02NCwNCj4geDg2XzY0IGFuZCByaXNjdiBhcmNoaXRlY3R1cmVzLiAg
-T2YgYWxsIHRoZSBvdGhlciBhcmNoaXRlY3R1cmVzIHRoYXQgYXJlbid0DQo+IGJ1aWx0IHlldCwg
-aTM4NiBzaG91bGQgYmUgdGhlIGVhc2llc3Qgb25lIHRvIGFkZC4gIERvaW5nIHRoaXMgZG9lcyBu
-b3QgcmVxdWlyZQ0KPiBhbnkgc2VydmljZSB0byBiZSBpbnN0YWxsZWQgbG9jYWxseSwgYWxsIHlv
-dSBuZWVkIGlzIERvY2tlciBhbmQgdGhlIGtlcm5lbGNpLWNvcmUNCj4gcmVwb3NpdG9yeS4gIFRo
-ZSB3b3JrIHRvIGRvIGlzIGJhc2ljYWxseToNCj4gDQo+ICogcnVuIGtjaV9idWlsZCBpbiBLZXJu
-ZWxDSSBEb2NrZXIgaW1hZ2VzIHdpdGggdGhlIGNsYW5nLTExIGFuZA0KPiAgIGNsYW5nLTEwIHRv
-b2xjaGFpbnMgdG8gYnVpbGQga2VybmVscyBmb3IgaTM4Ng0KPiANCj4gKiByZXBvcnQgb3IgZml4
-IGFueSBidWlsZCBpc3N1ZXMsIHRoaXMgbWlnaHQganVzdCB3b3JrIGJ1dCBpdA0KPiAgIG5lZWRz
-IHRvIGJlIHZlcmlmaWVkIHdpdGggYm90aCBjbGFuZyB2ZXJzaW9ucw0KPiANCj4gKiBlZGl0IGJ1
-aWxkLWNvbmZpZ3MueWFtbCB0byBhZGQgaTM4NiB0byB0aGUgbGlzdCBvZg0KPiAgIGFyY2hpdGVj
-dHVyZXMgYnVpbHQgd2l0aCBjbGFuZy0xMSBhbmQgY2xhbmctMTAgaWYgaXQgYWxzbw0KPiAgIHdv
-cmtzDQo+IA0KPiAqIHZlcmlmeSB0aGF0IHRoZSBsaXN0IG9mIGJ1aWxkcyBmb3IgbGludXgtbmV4
-dCBpbmNsdWRlcyBpMzg2DQo+ICAgZGVmY29uZmlnIHdpdGggY2xhbmcgdXNpbmcgImtjaV9idWls
-ZCBsaXN0X2tlcm5lbF9jb25maWdzIg0KPiANCj4gKiBzZW5kIGEgcHVsbCByZXF1ZXN0IGluIEdp
-dEh1YiB3aXRoIHRoZSBjaGFuZ2UsIHRoaXMgd2lsbCB0aGVuDQo+ICAgZ2V0IHRlc3RlZCBvbiBz
-dGFnaW5nLmtlcm5lbGNpLm9yZyBhbmQgcmV2aWV3ZWQNCj4gDQo+IElmIGl0IHdvcmtzIGFzIGV4
-cGVjdGVkIG9uIHN0YWdpbmcua2VybmVsY2kub3JnIGFuZCBvbmNlIHRoZSBQUiByZXZpZXcgaXMN
-Cj4gY29tcGxldGUsIHRoaXMgd2lsbCB0aGVuIGdldCBtZXJnZWQgYW5kIGRlcGxveWVkIGluIHBy
-b2R1Y3Rpb24gZm9yDQo+IGtlcm5lbGNpLm9yZy4NCj4gDQo+IERvZXMgdGhhdCBzb3VuZCBsaWtl
-IHNvbWV0aGluZyB5b3Ugd291bGQgYmUgaW50ZXJlc3RlZCB0byBkbz8NCj4gDQo+IFRoYW5rcywN
-Cj4gR3VpbGxhdW1lDQo+IA0KDQoKCg==
+Hi Nikolai,
+
+I'm looking to see what it would take to integrate tuxbuild results with
+kcidb, for users that opt-in. Would that be useful? The volume would
+typically be something in the single digit thousands per day.
+
+I took a look at the schema and came up with something like the
+following:
+
+    {
+        "builds": [
+            {
+                "architecture": "arm64",
+                "compiler": "clang-10",
+                "config_name": "defconfig",
+                "config_url": "https://builds.tuxbuild.com/1myooFaScyEWNS87IO8HSMCu46d/config",
+                "id": "tuxsuite:1myooFaScyEWNS87IO8HSMCu46d",
+                "log_url": "https://builds.tuxbuild.com/1myooFaScyEWNS87IO8HSMCu46d/build.log",
+                "origin": "tuxsuite",
+                "revision_id": "e609571b5ffa3528bf85292de1ceaddac342bc1c",
+                "valid": true
+            }
+        ],
+        "revisions": [
+            {
+                "git_commit_hash": "e609571b5ffa3528bf85292de1ceaddac342bc1c",
+                "git_commit_name": "v5.11-rc3-32-ge609571b5ffa",
+                "git_repository_url": "https://gitlab.com/Linaro/lkft/mirrors/torvalds/linux-mainline",
+                "id": "e609571b5ffa3528bf85292de1ceaddac342bc1c",
+                "origin": "tuxsuite"
+            }
+        ],
+        "version": {
+            "major": 3,
+            "minor": 0
+        }
+    }
+
+I'm not sure how to represent the result of the build (pass/fail) - I
+used "valid". I'm not sure how to represent config - in this build's
+case, the config was built from the following config target and
+fragments:
+
+    "kconfig": [
+        "defconfig",
+        "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/lkft.config",
+        "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/lkft-crypto.config",
+        "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/distro-overrides.config",
+        "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/systemd.config",
+        "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/virtio.config",
+        "CONFIG_ARM64_MODULE_PLTS=y"
+    ],
+
+There were some other fields I wasn't sure about, and I'm not sure how
+specific some, like compiler, should be ("clang-10" vs "Debian clang
+version 10.0.1-8+b1").
+
+Let me know what you think!
+
+Thanks,
+Dan
