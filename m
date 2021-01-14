@@ -1,189 +1,101 @@
-Subject: Re: tuxbuilds in kcidb?
-References: <20210113001320.qreaohq2hzzmlxxu@jug>
- <0fd95437-74c4-1ab0-d53e-41fd6fe4f759@redhat.com>
- <20210113162845.xugh6v5p6talrm7h@jug>
 From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Message-ID: <b2ad5b05-3c8f-1255-3633-b32afc2b27fb@redhat.com>
-Date: Thu, 14 Jan 2021 14:01:32 +0200
+Subject: KCIDB: Requiring IDs for test environments #KCIDB
+Message-ID: <e76ed580-0cd9-6b58-c812-cfafb03c6f08@redhat.com>
+Date: Thu, 14 Jan 2021 18:47:16 +0200
 MIME-Version: 1.0
-In-Reply-To: <20210113162845.xugh6v5p6talrm7h@jug>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Dan Rue <dan.rue@linaro.org>
-Cc: kernelci@groups.io
+To: Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>, Dmitry Vyukov <dvyukov@google.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Alice Ferrazzi <alicef@gentoo.org>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>, kernelci@groups.io, Dan Rue <dan.rue@linaro.org>
 
-Hi Dan,
+Hi everyone,
 
-On 1/13/21 6:28 PM, Dan Rue wrote:
- > On Wed, Jan 13, 2021 at 01:00:11PM +0200, Nikolai Kondrashov wrote:
- >> Only it would be good to add `"valid": true` to revisions (non-patched
- >> revisions are always valid).
- >
- > Done.
+To anyone involved/interested in contributing to KernelCI's KCIDB data and
+code, I'd like to announce a small, but noticeable change to the schema to let
+us develop result notifications further, and to move closer to reaching
+developers with our data.
 
-👍
+We'd like to start requiring unique IDs for test environments.
 
- >> Just one question: is "tuxsuite" a (to-be) generally-known name of the
- >> system which will be sending this? E.g. would you use this name at a
- >> conference?
- >
- > TuxSuite (https://tuxsuite.com) is the umbrella brand for all of the
- > tools and services that we're building. I started with using "tuxbuild"
- > as the origin but we're working on a high-volume/highly-reliable testing
- > service (tuxtest), at which time we'd have to have two terms. So, I
- > think tuxsuite is the way to go here.
+Test "environment" is an optional object within the test object. So far it has
+only contained a "description" and a "misc" field.
 
-That's a suitable (ha-ha 😳) name and a very well put-together website!
+We would like to start grouping tests by environments (hosts/VMs) they
+executed in, on our dashboards and in e-mail notifications. To do that we need
+a way to identify them, and that's where environment IDs come in.
 
-I'm surprised you resisted linking the name to tuxedos somehow.
-I know I wouldn't be able to, but then I'm not good at marketing 😂
+The environment IDs would need to be in the same format as "builds" and
+"tests" use in v3 schema, as well as "checkouts" are going to use in v4:
+the origin name (e.g. "syzbot"), followed by a colon, followed by an
+origin-unique ID.
 
- >> Just want to make sure it stays (relatively) stable and is recognizable.
- >>
- >>> I'm not sure how to represent the result of the build (pass/fail) - I
- >>> used "valid".
- >>
- >> Yes, that's the right field for now.
- >>
- >> I'm thinking about replacing it with "PASS"/"FAIL" "status", to match tests
- >> after all, but not sure about that yet.
- >
- > So if a build passes, i'll set it to True. Otherwise, False.
+The origin-unique ID can be whatever uniquely identifies the environment
+inside the origin CI system. It could be just a straight hostname, or e.g. a
+hashed hostname if you'd like to keep it secret.
 
-Yep, that's how we interpret it.
+E.g. a Red Hat test report could look like this:
 
- > Note that sometimes users do somewhat foul things (i'm looking at you,
- > ClangBuiltLinux), which cause builds to fail through no fault of the
- > source tree. Things like setting various binutils to llvm variants, or
- > building configs which don't pass with llvm. In other words, these
- > aren't necessarily curated expected-to-pass builds in all cases. But I
- > plan to just start with the production LKFT builds, which are expected
- > to pass in pretty much all cases.
+     {
+       "version": {
+         "major": 4,
+         "minor": 0
+       },
+       "tests": [
+         {
+           "build_id": "redhat:1071310",
+           "id": "redhat:120299463",
+           "origin": "redhat",
+           "environment": {
+             "id": "redhat:kernelci-1.s390.bos.redhat.com",
+             "comment": "kernelci-1.s390.bos.redhat.com"
+           },
+           "path": "boot",
+           "comment": "Boot test",
+           "status": "PASS",
+           "waived": false,
+           "start_time": "2021-01-14T10:01:43+00:00",
+           "duration": 161
+         }
+       ]
+     }
 
-Yes, that could be a problem. Do you have a way to distinguish those from real
-failures automatically already?
+Reports in v3 and older formats will have environment IDs generated
+automatically by sha256-hashing a stable JSON representation of "environment"
+objects, if any are present and are not empty. Empty "environment" objects
+will be discarded. E.g. this v3 environment:
 
- >>> I'm not sure how to represent config - in this build's
- >>> case, the config was built from the following config target and
- >>> fragments:
- >>>
- >>>       "kconfig": [
- >>>           "defconfig",
- >>>           "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/lkft.config",
- >>>           "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/lkft-crypto.config",
- >>>           "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/distro-overrides.config",
- >>>           "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/systemd.config",
- >>>           "https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/virtio.config",
- >>>           "CONFIG_ARM64_MODULE_PLTS=y"
- >>>       ],
- >>
- >> The schema accepts a URL for a single monolithic config file so far. This
- >> might be inconvenient for some setups, but is more universal. You can specify
- >> it using "config_url", and also specify a human-targeted and descriptive
- >> "config_name". And you seem to be using them just fine in your sample :)
- >>
- >> If you want to provide the above details, put them into the build's "misc"
- >> object, and if there's demand for it, we can work on formalizing it.
- >
- > I'll pass config_url, but I'm wondering about config_name. It's not
- > right to say "defconfig". I could say "defconfig+6" but that also is
- > really ambiguous, since each additional item can be many config items.
+     "environment": {
+       "description": "rk3288-veyron-jaq in lab-collabora",
+       "misc": {
+         "instance": "rk3288-veyron-jaq-cbg-1",
+         "device": "rk3288-veyron-jaq",
+         "mach": "rockchip",
+         "lab": "lab-collabora"
+       }
+     }
 
-Yes, that needs some more consideration. For now we can just use something
-short and mildly descriptive. Like "tuxbuild" 😅
+will be upgraded to this v4 environment:
 
-We're not using the names to identify configs so far, just to give a hint at
-what the configs behind them are.
+     "environment": {
+         "id": "_:c04ecf73a79cf29bdd9140ad4f50172c8f9783ff51895c63afb6d8ad448a3f3e",
+         "comment": "rk3288-veyron-jaq in lab-collabora"
+         "misc": {
+             "instance": "rk3288-veyron-jaq-cbg-1",
+             "device": "rk3288-veyron-jaq",
+             "mach": "rockchip",
+             "lab": "lab-collabora",
+         },
+     }
 
- > It needs similar treatment to what you're doing to id for describing
- > patches, I guess (with sha256 of the contents)?
+The PR for the corresponding code change is up at:
 
-Hmm, good idea! I haven't got that far yet.
+     https://github.com/kernelci/kcidb-io/pull/20
 
- > I've toyed with an idea for a sort of "git describe", but for kconfig,
- > which I hesitate to suggest, but it looks like this:
- >
- >      y2618-m598-n4097-s536f9fa1d577
- >
- > Where it's the number of y's in a config, followed by the number of m's,
- > followed by n's, followed by a truncated sha256 hash (beginning with
- > "s").
- >
- > Implementation is as follows:
- >
- >      #!/bin/sh
- >
- >      Y_COUNT=$(grep -c "=y$" $1)
- >      N_COUNT=$(grep -c "is not set$" $1)
- >      M_COUNT=$(grep -c "=m$" $1)
- >      SHA=$(sha256sum $1 | cut -c-12)
- >
- >      echo "y${Y_COUNT}-m${M_COUNT}-n${N_COUNT}-s${SHA}"
- >
- > To give you an idea of what it looks like, an allmodconfig looks
- > something like:
- >
- >      y3954-m7392-n116-sb650e98ffff6
- >
- > allnoconfig:
- >
- >      y310-m0-n487-s5b1396a578cd
- >
- > allyesconfig:
- >
- >      y11548-m55-n123-s82f7c03fd5be
- >
- > defconfig:
- >
- >      y2363-m555-n3979-s4dc1ccbc556a
- >
- > tinyconfig:
- >
- >      y308-m0-n483-sdef367a531eb
- >
- > etc.
+Please don't hesitate to respond with any comments, objections, or
+suggestions.
 
-I love short implementations and simple ideas like this :) I think this could
-work as a concise summary of config's flavour. Perhaps KCIDB could use
-something like that in the dashboard and reports eventually.
-
-However, as a config ID a plain hash over contents would work better. One more
-item on the TODO for me, definitely :)
-
- >>> There were some other fields I wasn't sure about, and I'm not sure how
- >>> specific some, like compiler, should be ("clang-10" vs "Debian clang
- >>> version 10.0.1-8+b1").
- >>
- >> The schema doesn't specify this so far, but most reports seem to be using the
- >> latter. E.g.:
- >>
- >>      https://staging.kernelci.org:3000/d/build/build?orgId=1&var-dataset=kernelci04&var-id=kernelci:staging.kernelci.org:5ffe77964e2859804da07580
- >
- > Ok, I'll use the full string (the output of `gcc --version` or `clang
- > --version`)
-
-👍
-
- >> Regarding other fields, we can figure them out as we move forward. Your sample
- >> is certainly good enough to start submitting.
- >>
- >> Would you like to get credentials and submission parameters to start sending
- >> your data to our "playground" setup, either manually or automatically?
- >> I can send them to you right away.
- >
- > Sure, please send them over.
-
-Awesome, done!
-
- > Nice work on all of this Nick - it's really fun to see what this has
- > become.
-
-Thanks, Dan!
+If there are no objections, I'll merge this change on Tuesday, Jan 19.
 
 Nick
-
-* rushes back to coding to back his numerous promises and ideas
-   before people notice nothing is implemented yet 😅
 
