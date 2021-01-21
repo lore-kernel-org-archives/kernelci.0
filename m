@@ -1,100 +1,89 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
-Message-ID: <cde7e97bceec089445cda3c31d6ff9ed9d3f2e08.camel@linuxfoundation.org>
 Subject: Re: [Automated-testing] KCIDB engagement report #kcidb
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-Date: Thu, 21 Jan 2021 11:01:21 +0000
-In-Reply-To: <ef0cf85a-1bb3-c3eb-7193-da39d7d8152f@redhat.com>
 References: <ef0cf85a-1bb3-c3eb-7193-da39d7d8152f@redhat.com>
+ <cde7e97bceec089445cda3c31d6ff9ed9d3f2e08.camel@linuxfoundation.org>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <c0995fe0-508b-1115-c584-6bf7e5ee317d@redhat.com>
+Date: Thu, 21 Jan 2021 14:46:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cde7e97bceec089445cda3c31d6ff9ed9d3f2e08.camel@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>, kernelci@groups.io, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
+To: kernelci@groups.io, richard.purdie@linuxfoundation.org, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
 Cc: Bruce Ashfield <bruce.ashfield@gmail.com>
 
-On Thu, 2021-01-21 at 12:07 +0200, Nikolai Kondrashov wrote:
-> Hi everyone,
-> 
-> Below is the monthly report on KCIDB* engagement. It lists various CI systems
-> and their status of engagement with KCIDB, and once we get to that, will list
-> developer engagement.
-> 
-> Lines with updates are marked with "!".
-> 
-> The main news is that Gentoo GKernelCI have started sending their preliminary
-> data to our "playground" setup. Linaro have also started work on sending
-> tuxmake build results, but no reports have arrived yet.
-> 
->      KernelCI native
->          Sending staging results.
->          Transitioning to production results is at 50%
->          (KCIDB support done, backend work started).
->          https://staging.kernelci.org:3000/?var-origin=kernelci
-> 
->      Red Hat CKI
->          Sending production results.
->          https://staging.kernelci.org:3000/?var-origin=redhat
-> 
->      Google Syzbot
->          Sending a subset of production results (failures only).
->          https://staging.kernelci.org:3000/?var-origin=syzbot
-> 
->      ARM
->          Sending production results to "production" KCIDB.
->          Full commit hashes are currently not available, are spoofed, and don't
->          match the ones reported by others. To be fixed soon.
->          https://staging.kernelci.org:3000/?var-origin=arm
-> 
->      Sony Fuego
->          Internal design in progress.
-> 
-> !   Gentoo GKernelCI
-> !       Preliminary data (revisions and builds) have started flowing into
-> !       "playground" KCIDB. No timestamps yet.
-> !       https://staging.kernelci.org:3000/d/home/home?var-origin=gkernelci&var-dataset=playground_kernelci04
-> 
->      Intel 0day
->          Initial conversation concluded, general interest expressed,
->          no contact since.
-> 
-> !   Linaro
-> !       Work has started on sending tuxmake build results
-> !       (a part of https://tuxsuite.com/). No reports have arrived yet.
-> 
-> Please respond with corrections or suggestions of other CI systems to contact.
+Hi Richard,
 
-I noticed Yocto Project isn't mentioned here but we do a lot of builds
-of complete systems for multiple architectures and we include kernels
-in those. We probably have two kernel versions under testing in any
-given project release series.
+On 1/21/21 1:01 PM, Richard Purdie wrote:
+ > On Thu, 2021-01-21 at 12:07 +0200, Nikolai Kondrashov wrote:
+ >> Please respond with corrections or suggestions of other CI systems to contact.
+ >
+ > I noticed Yocto Project isn't mentioned here but we do a lot of builds
+ > of complete systems for multiple architectures and we include kernels
+ > in those. We probably have two kernel versions under testing in any
+ > given project release series.
+ >
+ > Would it be useful to get data from us? If so, what kind of data?
 
-Would it be useful to get data from us? If so, what kind of data?
+Absolutely! Thanks for reaching out :)
 
-We're generally building linux-yocto from:
-https://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto/
-which is derived from upstream kernel releases as their baseline.
+ > We're generally building linux-yocto from:
+ > https://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto/
+ > which is derived from upstream kernel releases as their baseline.
+ >
+ > Testing wise, we build them, then usually boot them under qemu with a
+ > variety of userspaces. We also run ltp, some lsb and the tests from a
+ > variety of projects like lttng.
+ >
+ > An example output report we use is:
+ >
+ > https://autobuilder.yocto.io/pub/non-release/20210120-9/testresults/testresult-report.txt
+ >
+ > So far I'd assumed you were interested in bleeding edge kernel CI but
+ > if there is interest around general kernel testing of older kernels, we
+ > do have a lot of data. There are some details we don't currently log
+ > (e.g. which kernel version in in a given test target) but we can change
+ > that if we need it.
 
-Testing wise, we build them, then usually boot them under qemu with a
-variety of userspaces. We also run ltp, some lsb and the tests from a
-variety of projects like lttng.
+Wow, that's a lot of tests, very cool!
 
-An example output report we use is:
+We would definitely welcome reports for older kernel versions as well.
+Any data helping track down issues is welcome.
 
-https://autobuilder.yocto.io/pub/non-release/20210120-9/testresults/testresult-report.txt
+We could use build/test results, and logs.
 
-So far I'd assumed you were interested in bleeding edge kernel CI but
-if there is interest around general kernel testing of older kernels, we
-do have a lot of data. There are some details we don't currently log
-(e.g. which kernel version in in a given test target) but we can change
-that if we need it.
+It would help if you could separate the upstream commit your branches are
+based on and the patches you apply on top, and identify them separately.
+However, it's OK if you can't, only mention the base version (e.g. using "git
+describe"), and otherwise refer to your own repo and commits directly.
 
-Cheers,
+In any case, that would be good enough for the start. We're still in research
+stage (and will be for a while), trying to bring the data from various sources
+together and do something with it.
 
-Richard
+Our strategy is get the data first, organize later :)
 
+We would be glad to have you on board and sending whatever data you have.
 
+Please take a look at our Submission HOWTO for an overview of how things work:
 
+     https://github.com/kernelci/kcidb/blob/main/SUBMISSION_HOWTO.md
 
+If you'd like to try it out, I can send you credentials and parameters for
+submitting to our "playground" instance. You can submit data there (either
+manually or automatically) and experiment freely without worrying about
+breaking anything. The data will appear on this dashboard (GKernelCI is
+currently submitting there):
 
+     https://staging.kernelci.org:3000/d/home/home?var-dataset=playground_kernelci04
 
+Once you're confident with how things work, it would only take a permission
+tweak on my side and one parameter change on your side to switch to
+production.
+
+Don't hesitate to ping us on the maillist,
+or on the freenode's #kernelci channel!
+
+Nick
 
