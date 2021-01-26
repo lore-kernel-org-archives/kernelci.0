@@ -1,113 +1,127 @@
+Subject: Re: [Automated-testing] KCIDB engagement report
+References: <ef0cf85a-1bb3-c3eb-7193-da39d7d8152f@redhat.com>
+ <cde7e97bceec089445cda3c31d6ff9ed9d3f2e08.camel@linuxfoundation.org>
+ <c0995fe0-508b-1115-c584-6bf7e5ee317d@redhat.com>
+ <51992e6d2f8ada0349aa9432759409d6076aa34a.camel@linuxfoundation.org>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <d27808f6-9b9b-164a-6adc-b782e03f26e5@redhat.com>
+Date: Tue, 26 Jan 2021 17:19:25 +0200
 MIME-Version: 1.0
-References: <20200707222342.scrz75265etaqlmd@redhat.com> <CACT4Y+a5spdA8TZNeaXFYj4QEw_=howfhu9YGsNm3rC8XPAJnA@mail.gmail.com>
- <d9919812-9763-9c02-3e5d-978fac8fe1f7@redhat.com> <CACT4Y+a3L+_8kpXq-WdNZxJESCvnCvfakJ3CymVwmZZA6kv+0w@mail.gmail.com>
- <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
- <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
- <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com> <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
- <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com> <16397F50C12D08DD.21243@groups.io>
- <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
- <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com> <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
- <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
- <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com> <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
- <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com>
- <9123a571-721b-5c1b-367e-e028acec4096@redhat.com> <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
-In-Reply-To: <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Fri, 2 Oct 2020 09:52:13 +0200
-Message-ID: <CACT4Y+ZaAJMAwQT=BStb936bDbe68V6mXQw29cHGzb_9712TbA@mail.gmail.com>
-Subject: Re: [kernelci-members] Working with the KernelCI project
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <51992e6d2f8ada0349aa9432759409d6076aa34a.camel@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>, kernelci@groups.io, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
+Cc: Bruce Ashfield <bruce.ashfield@gmail.com>
 
-On Thu, Oct 1, 2020 at 7:02 PM Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> On Thu, Oct 1, 2020 at 6:34 PM Nikolai Kondrashov
-> <Nikolai.Kondrashov@redhat.com> wrote:
-> >
-> > On 10/1/20 7:00 PM, Dmitry Vyukov wrote:
-> >  > On Thu, Oct 1, 2020 at 5:52 PM Nikolai Kondrashov
-> >  > <Nikolai.Kondrashov@redhat.com> wrote:
-> >  >>
-> >  >> On 10/1/20 6:49 PM, Nikolai Kondrashov wrote:
-> >  >>> On 10/1/20 5:48 PM, Dmitry Vyukov via groups.io wrote:
-> >  >>>   > On Thu, Oct 1, 2020 at 3:32 PM Nikolai Kondrashov
-> >  >>>   > <Nikolai.Kondrashov@redhat.com> wrote:
-> >  >>>   >>
-> >  >>>   >> On 10/1/20 1:48 PM, Nikolai Kondrashov wrote:
-> >  >>>   >>   > Here are the things which could be improved:
-> >  >>>   >>
-> >  >>>   >> Oh, and another thing: could you avoid re-sending the identical
-> >  >>>   >> revisions/builds you've already sent? I.e. send them only once, unless you
-> >  >>>   >> have fields to add? Each of those costs us a row in the database, which is not
-> >  >>>   >> a big deal, but would be good to avoid.
-> >  >>>   >
-> >  >>>   > Do you see that we send dups? I've added logic to not send dups and
-> >  >>>   > from what I see it's working.
-> >  >>>
-> >  >>> Please find attached a zip archive with seven submissions from about six hours
-> >  >>> ago. Each has revisions with the same id and git_commit_hash. Some of those
-> >  >>> revisions have different discovery_time, and that alone shouldn't really be
-> >  >>> the reason to resend. Each of those submissions have a build object, but some
-> >  >>> of them are repeated.
-> >  >>>
-> >  >>> Revision with that git_commit_hash was submitted at least 72 times.
-> >  >>
-> >  >> And now the file is attached :D
-> >  >
-> >  > This is intentional (in the current implementation) and is a
-> >  > consequence of the fact that we always send all 3 entities for each
-> >  > issue/test failure. It's much simpler on our side this way. If we
-> >  > would send a test failure multiple times it would be unintentional.
-> >
-> > I see.
-> >
-> >  > Identical builds should have the same id, though. And if they have
-> >  > different id's, then these are different builds.
-> >
-> > Sure.
-> >
-> >  > Revisions were discovered separately by different instances, that's
-> >  > why they have different discovery time. Consider that as if different
-> >  > origin systems would discover it separately. Since discovery time is
-> >  > not an inherent property of the commit itself, there is no way they
-> >  > can agree on it.
-> >
-> > Ah, I see now why. Yeah, it's similar to multiple systems submitting the same
-> > revision. Although we don't have systems submitting the same build multiple
-> > times.
-> >
-> >  > Will it be better if we don't send discovery time at all?
-> >
-> > No, it's OK to submit the discover time multiple times, but we can't say which
-> > one will be displayed :)
-> >
-> >  > Amount of duplication for builds/revisions is capped by the number of
-> >  > bugs we discover, since build/revision is only sent with a bug once.
-> >  > So it's not that it's unlimited.
-> >
-> > I think it's OK that you have some duplication, and certainly OK for the
-> > start. Let's get on with sending the data and see how much actual duplication
-> > we get, how it affects performance, and how the de-duplication implementation
-> > goes :)
->
-> The new format is now published by syzbot itself:
-> https://staging.kernelci.org:3000/d/test/test?orgId=1&var-dataset=playground_kernelci04&var-id=syzbot:60b38542a0dfb2e0f746
->
-> So, do we switch to prod instance? Do you receive notifications now?
-> Do we need to fix anything else before the switch?
->
-> I don't see anything from syzbot at:
-> https://groups.io/g/kernelci-results-staging/topics
-> How can I see/subscribe to these notifications?
->
-> Since syzbot database now memorizes what was published to kcidb to
-> avoid dups, the switch will require some manual database surgery to
-> make it re-publish bugs. So I want to make sure we did not miss
-> something simple that we could do before the switch.
->
-> The switch involves just changing the topic to "kernelci_new", right?
+Hi Richard,
 
-I am preparing for the switch and will do it unless I hear from you soon.
-Since you already gave green light above, I assume we are good now.
+On 1/26/21 5:10 PM, Richard Purdie wrote:
+ > Thanks, that is all good info. The biggest issue right now is we don't
+ > record the kernel version information anywhere that our test results
+ > processing is going to be able to find it. That isn't too hard to fix
+ > but there are a few systems involved.
+ >
+ > I'm not sure when or who will have the time to make this happen but I
+ > do like the idea and don't want it to get lost. I put an entry into our
+ > bug/feature tracker:
+ >
+ > https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
+
+Great! Don't hesitate to write if you'd like to discuss something, and feel free to
+join either one of the monthly "Automated Testing" conference calls,
+or a weekly KernelCI call, if you'd like a quick high-bandwidth chat :)
+
+Nick
+
+On 1/26/21 5:10 PM, Richard Purdie wrote:
+> On Thu, 2021-01-21 at 14:46 +0200, Nikolai Kondrashov wrote:
+>> Hi Richard,
+>>
+>> On 1/21/21 1:01 PM, Richard Purdie wrote:
+>>   > On Thu, 2021-01-21 at 12:07 +0200, Nikolai Kondrashov wrote:
+>>   >> Please respond with corrections or suggestions of other CI systems to contact.
+>>   >
+>>   > I noticed Yocto Project isn't mentioned here but we do a lot of builds
+>>   > of complete systems for multiple architectures and we include kernels
+>>   > in those. We probably have two kernel versions under testing in any
+>>   > given project release series.
+>>   >
+>>   > Would it be useful to get data from us? If so, what kind of data?
+>>
+>> Absolutely! Thanks for reaching out :)
+>>
+>>   > We're generally building linux-yocto from:
+>>   > https://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto/
+>>   > which is derived from upstream kernel releases as their baseline.
+>>   >
+>>   > Testing wise, we build them, then usually boot them under qemu with a
+>>   > variety of userspaces. We also run ltp, some lsb and the tests from a
+>>   > variety of projects like lttng.
+>>   >
+>>   > An example output report we use is:
+>>   >
+>>   > https://autobuilder.yocto.io/pub/non-release/20210120-9/testresults/testresult-report.txt
+>>   >
+>>   > So far I'd assumed you were interested in bleeding edge kernel CI but
+>>   > if there is interest around general kernel testing of older kernels, we
+>>   > do have a lot of data. There are some details we don't currently log
+>>   > (e.g. which kernel version in in a given test target) but we can change
+>>   > that if we need it.
+>>
+>> Wow, that's a lot of tests, very cool!
+>>
+>> We would definitely welcome reports for older kernel versions as well.
+>> Any data helping track down issues is welcome.
+>>
+>> We could use build/test results, and logs.
+>>
+>> It would help if you could separate the upstream commit your branches are
+>> based on and the patches you apply on top, and identify them separately.
+>> However, it's OK if you can't, only mention the base version (e.g. using "git
+>> describe"), and otherwise refer to your own repo and commits directly.
+>>
+>> In any case, that would be good enough for the start. We're still in research
+>> stage (and will be for a while), trying to bring the data from various sources
+>> together and do something with it.
+>>
+>> Our strategy is get the data first, organize later :)
+>>
+>> We would be glad to have you on board and sending whatever data you have.
+>>
+>> Please take a look at our Submission HOWTO for an overview of how things work:
+>>
+>>       https://github.com/kernelci/kcidb/blob/main/SUBMISSION_HOWTO.md
+>>
+>> If you'd like to try it out, I can send you credentials and parameters for
+>> submitting to our "playground" instance. You can submit data there (either
+>> manually or automatically) and experiment freely without worrying about
+>> breaking anything. The data will appear on this dashboard (GKernelCI is
+>> currently submitting there):
+>>
+>>       https://staging.kernelci.org:3000/d/home/home?var-dataset=playground_kernelci04
+>>
+>> Once you're confident with how things work, it would only take a permission
+>> tweak on my side and one parameter change on your side to switch to
+>> production.
+>>
+>> Don't hesitate to ping us on the maillist,
+>> or on the freenode's #kernelci channel!
+> 
+> Thanks, that is all good info. The biggest issue right now is we don't
+> record the kernel version information anywhere that our test results
+> processing is going to be able to find it. That isn't too hard to fix
+> but there are a few systems involved.
+> 
+> I'm not sure when or who will have the time to make this happen but I
+> do like the idea and don't want it to get lost. I put an entry into our
+> bug/feature tracker:
+> 
+> https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
+> 
+> Cheers,
+> 
+> Richard
+> 
+
