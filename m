@@ -1,124 +1,113 @@
+From: "Wang Mingyu" <wangmy@cn.fujitsu.com>
 Subject: Re: help: how to contribute to the community
+Date: Tue, 26 Jan 2021 05:36:50 +0000
+Message-ID: <5ac3c7e7aaf04148977dfc338fd6ce91@G08CNEXMBPEKD05.g08.fujitsu.local>
 References: <a34a999c78584e0e9953360bbd5797f8@G08CNEXMBPEKD05.g08.fujitsu.local>
  <ec96708e-12d5-ff21-1f21-dfd2262927dc@collabora.com>
  <c2e6b26abf2446e98e8e162b5015fa29@G08CNEXMBPEKD05.g08.fujitsu.local>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <ffaf7e62-294e-17fb-25e5-d8a5ce8ef9e5@collabora.com>
-Date: Mon, 25 Jan 2021 23:21:54 +0000
+ <ffaf7e62-294e-17fb-25e5-d8a5ce8ef9e5@collabora.com>
+In-Reply-To: <ffaf7e62-294e-17fb-25e5-d8a5ce8ef9e5@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <c2e6b26abf2446e98e8e162b5015fa29@G08CNEXMBPEKD05.g08.fujitsu.local>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Language: zh-CN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, wangmy@cn.fujitsu.com
+To: Guillaume Tucker <guillaume.tucker@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-Hello,
-
-On 06/01/2021 01:05, Wang Mingyu wrote:
-> Hi Guillaume,
->=20
-> I've already added i386 to the list of architectures built with clang-11=
- and clang-10.
-> Please confirm if there is any problem.
-
-Sorry for the delay in replying, and thank you for your
-contributions.  The PR to enable i386 Clang builds looks fine,
-I'm doing a couple of builds to verify it's working as expected
-with the current Clang Docker containers and the default build
-options.  I'll put a comment on the PR.
-
-> In addition, pull request 545 has not been confirmed. If there are any p=
-roblems, please let me know
-
-There was a small issue with how the PR was created, the origin
-repo appeared to be "unknown" rather than your fork.  Then the PR
-got closed by accident when renaming the "master" branch
-to "main", I think it's because of the unknown repository.  In
-any case, thanks for reporting the issue as the code wasn't easy
-to use.  I've now refactored it with a simpler implementation
-using methods in the LAVA class:
-
-  https://github.com/kernelci/kernelci-core/pull/590
-
-
-On a different topic, have you considered sending test results
-from a Fujitsu test lab?  You could set up a LAVA instance to
-have tests scheduled on your platforms by kernelci.org, or if you
-have an existing automated test system for the upstream kernel
-you may send the results directly to KCIDB (or do both).
-
-Best regards,
-Guillaume
-
-> If there is anything else I can do, please let me know. Thank you
->=20
-> Best regards
-> Wang Mingyu
->=20
->> -----Original Message-----
->> From: Guillaume Tucker <guillaume.tucker@collabora.com>
->> Sent: Thursday, December 10, 2020 6:13 PM
->> To: kernelci@groups.io; Wang, Mingyu/=E7=8E=8B =E9=B8=A3=E7=91=9C <wang=
-my@cn.fujitsu.com>
->> Subject: Re: help: how to contribute to the community
->>
->> On 08/12/2020 07:43, Wang Mingyu wrote:
->>> Hi, all
->>>
->>> I am currently using this tool.
->>> Although I am still new, I still want to contribute to the community.
->>> Is there anything I can do=EF=BC=9F
->>> For example, bug fix, or simple new plan to kernelci.
->>
->> Thank you for your interest, there are plenty of things that first-time
->> contributors can do in KernelCI.  One would be to enable i386 builds wi=
-th
->> Clang, as per this GitHub issue:
->>
->>   https://github.com/kernelci/kernelci-core/issues/517
->>
->> At the moment, kernelci.org builds linux-next with Clang on arm, arm64,
->> x86_64 and riscv architectures.  Of all the other architectures that ar=
-en't
->> built yet, i386 should be the easiest one to add.  Doing this does not =
-require
->> any service to be installed locally, all you need is Docker and the ker=
-nelci-core
->> repository.  The work to do is basically:
->>
->> * run kci_build in KernelCI Docker images with the clang-11 and
->>   clang-10 toolchains to build kernels for i386
->>
->> * report or fix any build issues, this might just work but it
->>   needs to be verified with both clang versions
->>
->> * edit build-configs.yaml to add i386 to the list of
->>   architectures built with clang-11 and clang-10 if it also
->>   works
->>
->> * verify that the list of builds for linux-next includes i386
->>   defconfig with clang using "kci_build list_kernel_configs"
->>
->> * send a pull request in GitHub with the change, this will then
->>   get tested on staging.kernelci.org and reviewed
->>
->> If it works as expected on staging.kernelci.org and once the PR review =
-is
->> complete, this will then get merged and deployed in production for
->> kernelci.org.
->>
->> Does that sound like something you would be interested to do?
->>
->> Thanks,
->> Guillaume
->>
->=20
->=20
->=20
->=20
->=20
->=20
->=20
->=20
-
+SGkgR3VpbGxhdW1lLA0KPiBTb3JyeSBmb3IgdGhlIGRlbGF5IGluIHJlcGx5aW5nLCBhbmQgdGhh
+bmsgeW91IGZvciB5b3VyIGNvbnRyaWJ1dGlvbnMuICBUaGUgUFINCj4gdG8gZW5hYmxlIGkzODYg
+Q2xhbmcgYnVpbGRzIGxvb2tzIGZpbmUsIEknbSBkb2luZyBhIGNvdXBsZSBvZiBidWlsZHMgdG8g
+dmVyaWZ5DQo+IGl0J3Mgd29ya2luZyBhcyBleHBlY3RlZCB3aXRoIHRoZSBjdXJyZW50IENsYW5n
+IERvY2tlciBjb250YWluZXJzIGFuZCB0aGUNCj4gZGVmYXVsdCBidWlsZCBvcHRpb25zLiAgSSds
+bCBwdXQgYSBjb21tZW50IG9uIHRoZSBQUi4NCj4gDQo+IFRoZXJlIHdhcyBhIHNtYWxsIGlzc3Vl
+IHdpdGggaG93IHRoZSBQUiB3YXMgY3JlYXRlZCwgdGhlIG9yaWdpbiByZXBvDQo+IGFwcGVhcmVk
+IHRvIGJlICJ1bmtub3duIiByYXRoZXIgdGhhbiB5b3VyIGZvcmsuICBUaGVuIHRoZSBQUiBnb3Qg
+Y2xvc2VkIGJ5DQo+IGFjY2lkZW50IHdoZW4gcmVuYW1pbmcgdGhlICJtYXN0ZXIiIGJyYW5jaCB0
+byAibWFpbiIsIEkgdGhpbmsgaXQncyBiZWNhdXNlDQo+IG9mIHRoZSB1bmtub3duIHJlcG9zaXRv
+cnkuICBJbiBhbnkgY2FzZSwgdGhhbmtzIGZvciByZXBvcnRpbmcgdGhlIGlzc3VlIGFzDQo+IHRo
+ZSBjb2RlIHdhc24ndCBlYXN5IHRvIHVzZS4gIEkndmUgbm93IHJlZmFjdG9yZWQgaXQgd2l0aCBh
+IHNpbXBsZXINCj4gaW1wbGVtZW50YXRpb24gdXNpbmcgbWV0aG9kcyBpbiB0aGUgTEFWQSBjbGFz
+czoNCj4gDQo+ICAgaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNpLWNvcmUvcHVs
+bC81OTANCkdvdCBpdCwgdGhhbmtzIGEgbG90Lg0KDQo+IE9uIGEgZGlmZmVyZW50IHRvcGljLCBo
+YXZlIHlvdSBjb25zaWRlcmVkIHNlbmRpbmcgdGVzdCByZXN1bHRzIGZyb20gYSBGdWppdHN1DQo+
+IHRlc3QgbGFiPyAgWW91IGNvdWxkIHNldCB1cCBhIExBVkEgaW5zdGFuY2UgdG8gaGF2ZSB0ZXN0
+cyBzY2hlZHVsZWQgb24geW91cg0KPiBwbGF0Zm9ybXMgYnkga2VybmVsY2kub3JnLCBvciBpZiB5
+b3UgaGF2ZSBhbiBleGlzdGluZyBhdXRvbWF0ZWQgdGVzdCBzeXN0ZW0NCj4gZm9yIHRoZSB1cHN0
+cmVhbSBrZXJuZWwgeW91IG1heSBzZW5kIHRoZSByZXN1bHRzIGRpcmVjdGx5IHRvIEtDSURCIChv
+ciBkbw0KPiBib3RoKS4NCk5vdyB3ZSBhcmUgc3RpbGwgaW4gdGhlIGludmVzdGlnYXRpb24gc3Rh
+Z2Ugb2Yga2VybmVsY2kgYW5kIGxhdmEuIA0KSWYgaXQgaXMgY29uZmlybWVkIHRoYXQgdGhleSBj
+YW4gYmUgdXNlZCBpbiBvdXIgd29yaywgSSB3aWxsIGRvIHRoaXMgc3RlcCBhZ2Fpbg0KDQoNCkJl
+c3QgcmVnYXJkcw0KV2FuZyBNaW5neXUNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
+PiBGcm9tOiBHdWlsbGF1bWUgVHVja2VyIDxndWlsbGF1bWUudHVja2VyQGNvbGxhYm9yYS5jb20+
+DQo+IFNlbnQ6IFR1ZXNkYXksIEphbnVhcnkgMjYsIDIwMjEgNzoyMiBBTQ0KPiBUbzoga2VybmVs
+Y2lAZ3JvdXBzLmlvOyBXYW5nLCBNaW5neXUv546LIOm4o+eRnCA8d2FuZ215QGNuLmZ1aml0c3Uu
+Y29tPg0KPiBTdWJqZWN0OiBSZTogaGVscDogaG93IHRvIGNvbnRyaWJ1dGUgdG8gdGhlIGNvbW11
+bml0eQ0KPiANCj4gSGVsbG8sDQo+IA0KPiBPbiAwNi8wMS8yMDIxIDAxOjA1LCBXYW5nIE1pbmd5
+dSB3cm90ZToNCj4gPiBIaSBHdWlsbGF1bWUsDQo+ID4NCj4gPiBJJ3ZlIGFscmVhZHkgYWRkZWQg
+aTM4NiB0byB0aGUgbGlzdCBvZiBhcmNoaXRlY3R1cmVzIGJ1aWx0IHdpdGggY2xhbmctMTEgYW5k
+DQo+IGNsYW5nLTEwLg0KPiA+IFBsZWFzZSBjb25maXJtIGlmIHRoZXJlIGlzIGFueSBwcm9ibGVt
+Lg0KPiANCj4gU29ycnkgZm9yIHRoZSBkZWxheSBpbiByZXBseWluZywgYW5kIHRoYW5rIHlvdSBm
+b3IgeW91ciBjb250cmlidXRpb25zLiAgVGhlIFBSDQo+IHRvIGVuYWJsZSBpMzg2IENsYW5nIGJ1
+aWxkcyBsb29rcyBmaW5lLCBJJ20gZG9pbmcgYSBjb3VwbGUgb2YgYnVpbGRzIHRvIHZlcmlmeQ0K
+PiBpdCdzIHdvcmtpbmcgYXMgZXhwZWN0ZWQgd2l0aCB0aGUgY3VycmVudCBDbGFuZyBEb2NrZXIg
+Y29udGFpbmVycyBhbmQgdGhlDQo+IGRlZmF1bHQgYnVpbGQgb3B0aW9ucy4gIEknbGwgcHV0IGEg
+Y29tbWVudCBvbiB0aGUgUFIuDQo+IA0KPiA+IEluIGFkZGl0aW9uLCBwdWxsIHJlcXVlc3QgNTQ1
+IGhhcyBub3QgYmVlbiBjb25maXJtZWQuIElmIHRoZXJlIGFyZSBhbnkNCj4gPiBwcm9ibGVtcywg
+cGxlYXNlIGxldCBtZSBrbm93DQo+IA0KPiBUaGVyZSB3YXMgYSBzbWFsbCBpc3N1ZSB3aXRoIGhv
+dyB0aGUgUFIgd2FzIGNyZWF0ZWQsIHRoZSBvcmlnaW4gcmVwbw0KPiBhcHBlYXJlZCB0byBiZSAi
+dW5rbm93biIgcmF0aGVyIHRoYW4geW91ciBmb3JrLiAgVGhlbiB0aGUgUFIgZ290IGNsb3NlZCBi
+eQ0KPiBhY2NpZGVudCB3aGVuIHJlbmFtaW5nIHRoZSAibWFzdGVyIiBicmFuY2ggdG8gIm1haW4i
+LCBJIHRoaW5rIGl0J3MgYmVjYXVzZQ0KPiBvZiB0aGUgdW5rbm93biByZXBvc2l0b3J5LiAgSW4g
+YW55IGNhc2UsIHRoYW5rcyBmb3IgcmVwb3J0aW5nIHRoZSBpc3N1ZSBhcw0KPiB0aGUgY29kZSB3
+YXNuJ3QgZWFzeSB0byB1c2UuICBJJ3ZlIG5vdyByZWZhY3RvcmVkIGl0IHdpdGggYSBzaW1wbGVy
+DQo+IGltcGxlbWVudGF0aW9uIHVzaW5nIG1ldGhvZHMgaW4gdGhlIExBVkEgY2xhc3M6DQo+IA0K
+PiAgIGh0dHBzOi8vZ2l0aHViLmNvbS9rZXJuZWxjaS9rZXJuZWxjaS1jb3JlL3B1bGwvNTkwDQo+
+IA0KPiANCj4gT24gYSBkaWZmZXJlbnQgdG9waWMsIGhhdmUgeW91IGNvbnNpZGVyZWQgc2VuZGlu
+ZyB0ZXN0IHJlc3VsdHMgZnJvbSBhIEZ1aml0c3UNCj4gdGVzdCBsYWI/ICBZb3UgY291bGQgc2V0
+IHVwIGEgTEFWQSBpbnN0YW5jZSB0byBoYXZlIHRlc3RzIHNjaGVkdWxlZCBvbiB5b3VyDQo+IHBs
+YXRmb3JtcyBieSBrZXJuZWxjaS5vcmcsIG9yIGlmIHlvdSBoYXZlIGFuIGV4aXN0aW5nIGF1dG9t
+YXRlZCB0ZXN0IHN5c3RlbQ0KPiBmb3IgdGhlIHVwc3RyZWFtIGtlcm5lbCB5b3UgbWF5IHNlbmQg
+dGhlIHJlc3VsdHMgZGlyZWN0bHkgdG8gS0NJREIgKG9yIGRvDQo+IGJvdGgpLg0KPiANCj4gQmVz
+dCByZWdhcmRzLA0KPiBHdWlsbGF1bWUNCj4gDQo+ID4gSWYgdGhlcmUgaXMgYW55dGhpbmcgZWxz
+ZSBJIGNhbiBkbywgcGxlYXNlIGxldCBtZSBrbm93LiBUaGFuayB5b3UNCj4gPg0KPiA+IEJlc3Qg
+cmVnYXJkcw0KPiA+IFdhbmcgTWluZ3l1DQo+ID4NCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
+LS0tLS0NCj4gPj4gRnJvbTogR3VpbGxhdW1lIFR1Y2tlciA8Z3VpbGxhdW1lLnR1Y2tlckBjb2xs
+YWJvcmEuY29tPg0KPiA+PiBTZW50OiBUaHVyc2RheSwgRGVjZW1iZXIgMTAsIDIwMjAgNjoxMyBQ
+TQ0KPiA+PiBUbzoga2VybmVsY2lAZ3JvdXBzLmlvOyBXYW5nLCBNaW5neXUv546LIOm4o+eRnA0K
+PiA8d2FuZ215QGNuLmZ1aml0c3UuY29tPg0KPiA+PiBTdWJqZWN0OiBSZTogaGVscDogaG93IHRv
+IGNvbnRyaWJ1dGUgdG8gdGhlIGNvbW11bml0eQ0KPiA+Pg0KPiA+PiBPbiAwOC8xMi8yMDIwIDA3
+OjQzLCBXYW5nIE1pbmd5dSB3cm90ZToNCj4gPj4+IEhpLCBhbGwNCj4gPj4+DQo+ID4+PiBJIGFt
+IGN1cnJlbnRseSB1c2luZyB0aGlzIHRvb2wuDQo+ID4+PiBBbHRob3VnaCBJIGFtIHN0aWxsIG5l
+dywgSSBzdGlsbCB3YW50IHRvIGNvbnRyaWJ1dGUgdG8gdGhlIGNvbW11bml0eS4NCj4gPj4+IElz
+IHRoZXJlIGFueXRoaW5nIEkgY2FuIGRv77yfDQo+ID4+PiBGb3IgZXhhbXBsZSwgYnVnIGZpeCwg
+b3Igc2ltcGxlIG5ldyBwbGFuIHRvIGtlcm5lbGNpLg0KPiA+Pg0KPiA+PiBUaGFuayB5b3UgZm9y
+IHlvdXIgaW50ZXJlc3QsIHRoZXJlIGFyZSBwbGVudHkgb2YgdGhpbmdzIHRoYXQNCj4gPj4gZmly
+c3QtdGltZSBjb250cmlidXRvcnMgY2FuIGRvIGluIEtlcm5lbENJLiAgT25lIHdvdWxkIGJlIHRv
+IGVuYWJsZQ0KPiA+PiBpMzg2IGJ1aWxkcyB3aXRoIENsYW5nLCBhcyBwZXIgdGhpcyBHaXRIdWIg
+aXNzdWU6DQo+ID4+DQo+ID4+ICAgaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbGNpL2tlcm5lbGNp
+LWNvcmUvaXNzdWVzLzUxNw0KPiA+Pg0KPiA+PiBBdCB0aGUgbW9tZW50LCBrZXJuZWxjaS5vcmcg
+YnVpbGRzIGxpbnV4LW5leHQgd2l0aCBDbGFuZyBvbiBhcm0sDQo+ID4+IGFybTY0LA0KPiA+PiB4
+ODZfNjQgYW5kIHJpc2N2IGFyY2hpdGVjdHVyZXMuICBPZiBhbGwgdGhlIG90aGVyIGFyY2hpdGVj
+dHVyZXMgdGhhdA0KPiA+PiBhcmVuJ3QgYnVpbHQgeWV0LCBpMzg2IHNob3VsZCBiZSB0aGUgZWFz
+aWVzdCBvbmUgdG8gYWRkLiAgRG9pbmcgdGhpcw0KPiA+PiBkb2VzIG5vdCByZXF1aXJlIGFueSBz
+ZXJ2aWNlIHRvIGJlIGluc3RhbGxlZCBsb2NhbGx5LCBhbGwgeW91IG5lZWQgaXMNCj4gPj4gRG9j
+a2VyIGFuZCB0aGUga2VybmVsY2ktY29yZSByZXBvc2l0b3J5LiAgVGhlIHdvcmsgdG8gZG8gaXMg
+YmFzaWNhbGx5Og0KPiA+Pg0KPiA+PiAqIHJ1biBrY2lfYnVpbGQgaW4gS2VybmVsQ0kgRG9ja2Vy
+IGltYWdlcyB3aXRoIHRoZSBjbGFuZy0xMSBhbmQNCj4gPj4gICBjbGFuZy0xMCB0b29sY2hhaW5z
+IHRvIGJ1aWxkIGtlcm5lbHMgZm9yIGkzODYNCj4gPj4NCj4gPj4gKiByZXBvcnQgb3IgZml4IGFu
+eSBidWlsZCBpc3N1ZXMsIHRoaXMgbWlnaHQganVzdCB3b3JrIGJ1dCBpdA0KPiA+PiAgIG5lZWRz
+IHRvIGJlIHZlcmlmaWVkIHdpdGggYm90aCBjbGFuZyB2ZXJzaW9ucw0KPiA+Pg0KPiA+PiAqIGVk
+aXQgYnVpbGQtY29uZmlncy55YW1sIHRvIGFkZCBpMzg2IHRvIHRoZSBsaXN0IG9mDQo+ID4+ICAg
+YXJjaGl0ZWN0dXJlcyBidWlsdCB3aXRoIGNsYW5nLTExIGFuZCBjbGFuZy0xMCBpZiBpdCBhbHNv
+DQo+ID4+ICAgd29ya3MNCj4gPj4NCj4gPj4gKiB2ZXJpZnkgdGhhdCB0aGUgbGlzdCBvZiBidWls
+ZHMgZm9yIGxpbnV4LW5leHQgaW5jbHVkZXMgaTM4Ng0KPiA+PiAgIGRlZmNvbmZpZyB3aXRoIGNs
+YW5nIHVzaW5nICJrY2lfYnVpbGQgbGlzdF9rZXJuZWxfY29uZmlncyINCj4gPj4NCj4gPj4gKiBz
+ZW5kIGEgcHVsbCByZXF1ZXN0IGluIEdpdEh1YiB3aXRoIHRoZSBjaGFuZ2UsIHRoaXMgd2lsbCB0
+aGVuDQo+ID4+ICAgZ2V0IHRlc3RlZCBvbiBzdGFnaW5nLmtlcm5lbGNpLm9yZyBhbmQgcmV2aWV3
+ZWQNCj4gPj4NCj4gPj4gSWYgaXQgd29ya3MgYXMgZXhwZWN0ZWQgb24gc3RhZ2luZy5rZXJuZWxj
+aS5vcmcgYW5kIG9uY2UgdGhlIFBSDQo+ID4+IHJldmlldyBpcyBjb21wbGV0ZSwgdGhpcyB3aWxs
+IHRoZW4gZ2V0IG1lcmdlZCBhbmQgZGVwbG95ZWQgaW4NCj4gPj4gcHJvZHVjdGlvbiBmb3Iga2Vy
+bmVsY2kub3JnLg0KPiA+Pg0KPiA+PiBEb2VzIHRoYXQgc291bmQgbGlrZSBzb21ldGhpbmcgeW91
+IHdvdWxkIGJlIGludGVyZXN0ZWQgdG8gZG8/DQo+ID4+DQo+ID4+IFRoYW5rcywNCj4gPj4gR3Vp
+bGxhdW1lDQo+ID4+DQo+ID4NCj4gPg0KPiA+DQo+ID4NCj4gPg0KPiA+IA0KPiA+DQo+ID4NCj4g
+DQo+IA0KDQoKCg==
