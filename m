@@ -1,115 +1,145 @@
-Date: Fri, 29 Jan 2021 14:20:09 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-Subject: Minimum supported version of LLVM
-Message-ID: <20210129212009.GA2659554@localhost>
+Reply-To: tstellar@redhat.com
+Subject: Re: Minimum supported version of LLVM
+References: <20210129212009.GA2659554@localhost>
+From: Tom Stellard <tstellar@redhat.com>
+Message-ID: <0422fd4f-a706-219d-d8d2-066541fd24b1@redhat.com>
+Date: Fri, 29 Jan 2021 13:59:37 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20210129212009.GA2659554@localhost>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Nick Desaulniers <ndesaulniers@google.com>, Sedat Dilek <sedat.dilek@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Kees Cook <keescook@chromium.org>, Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Arvind Sankar <nivedita@alum.mit.edu>, Ilie Halip <ilie.halip@gmail.com>
+To: Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Sedat Dilek <sedat.dilek@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Kees Cook <keescook@chromium.org>, Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Arvind Sankar <nivedita@alum.mit.edu>, Ilie Halip <ilie.halip@gmail.com>
 Cc: kernelci@groups.io, clang-built-linux@googlegroups.com
 
-Hi all,
+On 1/29/21 1:20 PM, Nathan Chancellor wrote:
+> Hi all,
+> 
+> I am starting this thread to spur some discussion about our support
+> model for the minimum supported version of LLVM and how that might
+> impact bumping the minimum supported version of LLVM/Clang in the
+> future. I am adding what I hope are relevant parties (individual testers
+> and maintainers/lists of CI systems). Feel free to add anyone that I
+> might have missed.
+> 
+> Some history:
+> 
+> For the longest time, ClangBuiltLinux as a project rejected the idea of
+> a minimum supported version as we did not have as many resources for
+> testing or a good idea of "what works" and "what doesn't work". After
+> Linux Plumbers 2020, we decided that we would support from clang 10.0.1
+> on, which resulted in commit 1f7a44f63e6c ("compiler-clang: add build
+> check for clang 10.0.1").
+> 
+> The problem:
+> 
+> I would say there are three different levels of support:
+> 
+> 1. CC=clang: Compiling with clang, GNU binutils for everything else
+> 2. LLVM=1: Compiling with clang, LLVM binutils, GNU as
+> 3. LLVM=1 LLVM_IAS=1: Compiling with clang, LLVM binutils, and LLVM's
+>     integrated assembler.
+> 
+> We have started to address these different levels of support in the LLVM
+> documentation in the kernel:
+> 
+> https://lore.kernel.org/linux-doc/20210114003447.7363-1-natechancellor@gmail.com/
+> 
+> The issue that has been coming up more recently is whether or not the
+> minimum supported version of clang (the first tier of support) equals
+> the minimum supported version of LLVM (the second and third tier of
+> support) when it comes to inserting workarounds or disabling configs
+> that are known broken.
+> 
+> Some considerations:
+> 
+> 1. LLVM 10.0.1 has a few issues that are not present in LLVM 11.x that
+>     will or have required workarounds in the kernel:
+> 
+>     * https://github.com/ClangBuiltLinux/linux/issues/732
+>     * https://github.com/ClangBuiltLinux/linux/issues/1187
+> 
+> 2. There are still outstanding issues with LLVM utilities that prevent
+>     recommending LLVM=1 for some architectures so committing to a minimum
+>     supported version might mean we would need to insert more workarounds
+>     as time goes on. For example:
+> 
+>     * ld.lld for MIPS big-endian:
+>       https://github.com/ClangBuiltLinux/linux/issues/1025
+>     * ld.lld and llvm-objdump for PowerPC64 big-endian:
+>       https://github.com/ClangBuiltLinux/linux/issues/602
+>       https://github.com/ClangBuiltLinux/linux/issues/666
+>     * ld.lld for PowerPC64 little-endian:
+>       https://github.com/ClangBuiltLinux/linux/issues/811
+>     * ld.lld for RISC-V:
+>       https://github.com/ClangBuiltLinux/linux/issues/1020
+> 
+> Questions to address:
+> 
 
-I am starting this thread to spur some discussion about our support
-model for the minimum supported version of LLVM and how that might
-impact bumping the minimum supported version of LLVM/Clang in the
-future. I am adding what I hope are relevant parties (individual testers
-and maintainers/lists of CI systems). Feel free to add anyone that I
-might have missed.
+I think it's going to be difficult to support a minimum version of LLVM for an
+extended period of time.  The reason being that upstream only 'supports' a
+released version of LLVM for 3 months (i.e. 12.0.0 is released, 3 months later
+12.0.1 is released, and then there are no more 12.x releases).
 
-Some history:
+My recommendation would be to support 2 versions only: the latest released
+versions (e.g. right now this is 11.0.1) and the latest snapshot build from
+git.  Any version older than that is just going to continue to accumulate
+workarounds in the kernel, since upstream is no longer fixing bugs.
 
-For the longest time, ClangBuiltLinux as a project rejected the idea of
-a minimum supported version as we did not have as many resources for
-testing or a good idea of "what works" and "what doesn't work". After
-Linux Plumbers 2020, we decided that we would support from clang 10.0.1
-on, which resulted in commit 1f7a44f63e6c ("compiler-clang: add build
-check for clang 10.0.1").
+If you want to try to support more versions than 2, then I think it would be
+worth starting a conversation with upstream LLVM about what it would take to
+extend the support lifetime of the releases.
 
-The problem:
+> I believe the first place to start is answering the question is there a
+> minimum supported version of LLVM? Is it LLVM as a whole or one
+> particular utility (such as ld.lld)?
+> 
 
-I would say there are three different levels of support:
+I would recommend using the same minimum supported version for all of the
+LLVM sub-projects (e.g. llvm, clang, and lld).  Most of the time users have the
+same versions of all these tools installed anyway, and toolchains that mismatch
+versions of clang and lld don't likely get a lot of testing.
 
-1. CC=clang: Compiling with clang, GNU binutils for everything else
-2. LLVM=1: Compiling with clang, LLVM binutils, GNU as
-3. LLVM=1 LLVM_IAS=1: Compiling with clang, LLVM binutils, and LLVM's
-   integrated assembler.
+-Tom
 
-We have started to address these different levels of support in the LLVM
-documentation in the kernel:
+> If there is a minimum supported version of LLVM or ld.lld, is it the
+> same as clang?
+> 
+> If there is not a minimum supported version of LLVM, do we insert
+> workarounds for issues that we know are fixed with newer versions of
+> LLVM or do we just tell people to upgrade the version of LLVM they are
+> using?
+> 
+> If we decide that it is worth defining a minimum supported version of
+> LLVM, I would vote that it be LLVM 11.0.0. If we decide that that
+> version should stay in sync with the supported clang version, then I
+> would vote that we update that for Linux 5.12. Taking a look across
+> various distributions:
+> 
+> archlinux/base:latest: clang version 11.0.1
+> debian:stable-slim: clang version 7.0.1-8+deb10u2 (tags/RELEASE_701/final)
+> debian:testing-slim: Debian clang version 11.0.1-2
+> debian:unstable-slim: Debian clang version 11.0.1-2
+> fedora:latest: clang version 11.0.0 (Fedora 11.0.0-2.fc33)
+> fedora:rawhide: clang version 11.1.0 (Fedora 11.1.0-0.3.rc2.fc34)
+> opensuse/leap:latest: clang version 9.0.1
+> opensuse/tumbleweed:latest: clang version 11.0.1
+> ubuntu:18.04: clang version 6.0.0-1ubuntu2 (tags/RELEASE_600/final)
+> ubuntu:20.04: clang version 10.0.0-4ubuntu1
+> ubuntu:latest: clang version 10.0.0-4ubuntu1
+> ubuntu:rolling: Ubuntu clang version 11.0.0-2
+> ubuntu:devel: Ubuntu clang version 11.0.1-2
+> 
+> I am not so concerned for Ubuntu and Debian, as there are updated
+> versions of LLVM available from apt.llvm.org and OpenSUSE Leap is
+> already unable to build the upstream kernel with its version of
+> clang. Everyone else should be unaffected by that bump.
+> 
+> Hopefully all of that makes sense and spurs some good discussion.
+> 
+> Cheers,
+> Nathan
+> 
 
-https://lore.kernel.org/linux-doc/20210114003447.7363-1-natechancellor@gmail.com/
-
-The issue that has been coming up more recently is whether or not the
-minimum supported version of clang (the first tier of support) equals
-the minimum supported version of LLVM (the second and third tier of
-support) when it comes to inserting workarounds or disabling configs
-that are known broken.
-
-Some considerations:
-
-1. LLVM 10.0.1 has a few issues that are not present in LLVM 11.x that
-   will or have required workarounds in the kernel:
-
-   * https://github.com/ClangBuiltLinux/linux/issues/732
-   * https://github.com/ClangBuiltLinux/linux/issues/1187
-
-2. There are still outstanding issues with LLVM utilities that prevent
-   recommending LLVM=1 for some architectures so committing to a minimum
-   supported version might mean we would need to insert more workarounds
-   as time goes on. For example:
-
-   * ld.lld for MIPS big-endian:
-     https://github.com/ClangBuiltLinux/linux/issues/1025
-   * ld.lld and llvm-objdump for PowerPC64 big-endian:
-     https://github.com/ClangBuiltLinux/linux/issues/602
-     https://github.com/ClangBuiltLinux/linux/issues/666
-   * ld.lld for PowerPC64 little-endian:
-     https://github.com/ClangBuiltLinux/linux/issues/811
-   * ld.lld for RISC-V:
-     https://github.com/ClangBuiltLinux/linux/issues/1020
-
-Questions to address:
-
-I believe the first place to start is answering the question is there a
-minimum supported version of LLVM? Is it LLVM as a whole or one
-particular utility (such as ld.lld)?
-
-If there is a minimum supported version of LLVM or ld.lld, is it the
-same as clang?
-
-If there is not a minimum supported version of LLVM, do we insert
-workarounds for issues that we know are fixed with newer versions of
-LLVM or do we just tell people to upgrade the version of LLVM they are
-using?
-
-If we decide that it is worth defining a minimum supported version of
-LLVM, I would vote that it be LLVM 11.0.0. If we decide that that
-version should stay in sync with the supported clang version, then I
-would vote that we update that for Linux 5.12. Taking a look across
-various distributions:
-
-archlinux/base:latest: clang version 11.0.1
-debian:stable-slim: clang version 7.0.1-8+deb10u2 (tags/RELEASE_701/final)
-debian:testing-slim: Debian clang version 11.0.1-2
-debian:unstable-slim: Debian clang version 11.0.1-2
-fedora:latest: clang version 11.0.0 (Fedora 11.0.0-2.fc33)
-fedora:rawhide: clang version 11.1.0 (Fedora 11.1.0-0.3.rc2.fc34)
-opensuse/leap:latest: clang version 9.0.1
-opensuse/tumbleweed:latest: clang version 11.0.1
-ubuntu:18.04: clang version 6.0.0-1ubuntu2 (tags/RELEASE_600/final)
-ubuntu:20.04: clang version 10.0.0-4ubuntu1
-ubuntu:latest: clang version 10.0.0-4ubuntu1
-ubuntu:rolling: Ubuntu clang version 11.0.0-2
-ubuntu:devel: Ubuntu clang version 11.0.1-2
-
-I am not so concerned for Ubuntu and Debian, as there are updated
-versions of LLVM available from apt.llvm.org and OpenSUSE Leap is
-already unable to build the upstream kernel with its version of
-clang. Everyone else should be unaffected by that bump.
-
-Hopefully all of that makes sense and spurs some good discussion.
-
-Cheers,
-Nathan
