@@ -1,30 +1,49 @@
-From: "Santiago.Esteban via info" <santiago.esteban@microchip.com>
-Subject: KCIDB contribuition #KCIDB
-Date: Mon, 22 Feb 2021 08:02:47 +0000
-Message-ID: <a91111f8-158d-f811-5309-feb6571d3412@microchip.com>
+Subject: Re: KCIDB contribuition #KCIDB
+References: <a91111f8-158d-f811-5309-feb6571d3412@microchip.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <5d6fbc94-bdfd-9822-3bb0-0502751294b0@redhat.com>
+Date: Mon, 22 Feb 2021 11:41:20 +0200
 MIME-Version: 1.0
-Return-Path: Santiago.Esteban@microchip.com
+In-Reply-To: <a91111f8-158d-f811-5309-feb6571d3412@microchip.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A37251D6985B3845BF614B923247EFB7@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Nikolai.Kondrashov@redhat.com
+To: kernelci@groups.io, santiago.esteban@microchip.com, Guillaume Tucker <guillaume.tucker@collabora.com>
 
-R29vZCBtb3JuaW5nIEtlcm5lbENJLCBOaWtvbGFpLA0KDQpBcyBJIG1lbnRpb24gaGVyZSBiZWZv
-cmUsIEkgd29yayBhdCBNaWNyb2NoaXAsIGFuZCB3ZSBhcmUgYnVpbGRpbmcgYSANCnRlc3QgZmFy
-bSBiYXNlZCBvbiBMYWJncmlkIHdoaWNoIGN1cnJlbnRseSwgYWxsb3cgdXMgdG8gdGVzdCBMaW51
-eCANCmtlcm5lbHMgaW4gc2V2ZXJhbCBBUk0gU29DIGRldmljZXMgKENvcnRleC1BNSwgQVJNOSB2
-YXJpYW50cykuIFdlIHdvdWxkIA0KbGlrZSB0byBjb250cmlidXRlIHRvIEtlcm5lbENJIGVmZm9y
-dCB3aXRoIG91ciBidWlsZHMvdGVzdHMgYnV0IHN1cHBvcnQgDQpmb3Igbm9uIExhdmEgZXh0ZXJu
-YWwgbGFicyBpcyBub3QgYXZhaWxhYmxlIHlldC4NCg0KVGhlcmVmb3JlLCBJdCBzZWVtcyB0aGF0
-IEtDSURCIGlzIHRoZSBwbGFjZSBmb3IgdXMuIFdlIHdvdWxkIGxpa2UgdG8gDQpzdGFydCBjb250
-cmlidXRpbmcgb3VyIGJ1aWxkcy90ZXN0cyB0byB0aGlzIHByb2plY3QuDQoNCkFzIHBhcnQgb2Yg
-b3VyIGN1cnJlbnQgZWZmb3J0cywgd2UgaGF2ZSBidWlsZCBhIGxvY2FsIGluc3RhbmNlIG9mIHRo
-ZSANCktlcm5lbENJIGluZnJhc3RydWN0dXJlLiBJJ3ZlIGFscmVhZHkgYXNrZWQgTmljb2xhaSBA
-RGV2Q29uZiwgYnV0IGhlcmUsIA0KYXQgYSB3aWRlciBhdWRpZW5jZSwgQXJlIHRoZXJlIGFueSB0
-b29sIHRoYXQgYWxsb3dzIHRvIHN1Ym1taXTCoCANCiJzdGFuZGFyZCIgS2VybmVsQ0kgZm9ybWF0
-dGVkIGRhdGEgaW50byB0aGUgS0NJREIgZGF0YWJhc2U/DQoNCg0KQmVzdCByZWdhcmRzLA0KDQpT
-YW50aWFnbyBFc3RlYmFuDQoNCnBzLiBOaWtvbGFpLCBJIGxpa2VkIGEgbG90IHlvdXIgcHJlc2Vu
-dGF0aW9uIEBEZXZDb25mLCBpdCBoZWxwZWQgbWUgdG8gDQp1bmRlcnN0YW5kIHNvbWUgYXNwZWN0
-IG9mIEtlcm5lbENJwqAgYW5kIEtDSURCIHRvIG1lLg0KDQo=
+Hello Santiago,
+
+On 2/22/21 10:02 AM, Santiago.Esteban via info via groups.io wrote:
+> Good morning KernelCI, Nikolai,
+> 
+> As I mention here before, I work at Microchip, and we are building a
+> test farm based on Labgrid which currently, allow us to test Linux
+> kernels in several ARM SoC devices (Cortex-A5, ARM9 variants). We would
+> like to contribute to KernelCI effort with our builds/tests but support
+> for non Lava external labs is not available yet.
+> 
+> Therefore, It seems that KCIDB is the place for us. We would like to
+> start contributing our builds/tests to this project.
+> 
+> As part of our current efforts, we have build a local instance of the
+> KernelCI infrastructure. I've already asked Nicolai @DevConf, but here,
+> at a wider audience, Are there any tool that allows to submmit
+> "standard" KernelCI formatted data into the KCIDB database?
+
+I suppose if you already drive everything with an instance of KernelCI
+infrastructure, you can just use the KCIDB interface code that was merged
+there. However, I think Guillaume would be able to help you better here.
+
+Guillaume, do you think that would work?
+
+> Best regards,
+> 
+> Santiago Esteban
+> 
+> ps. Nikolai, I liked a lot your presentation @DevConf, it helped me to
+> understand some aspect of KernelCI  and KCIDB to me.
+
+Ah, glad to hear that, thanks :)
+
+Nick
+
