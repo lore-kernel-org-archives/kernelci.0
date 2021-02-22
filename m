@@ -1,4 +1,7 @@
+From: "Santiago.Esteban via info" <santiago.esteban@microchip.com>
 Subject: Re: Contribute to Kernel-CI with a new Lab
+Date: Mon, 22 Feb 2021 11:48:23 +0000
+Message-ID: <170ccbc3-8a57-09fc-7cfe-44c75d7e3e2d@microchip.com>
 References: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
  <ccf0ae0dbd5cce956631a7e4572ca84e0abd45e1.camel@pengutronix.de>
  <b722c06a-057d-c1bb-1013-682d4282bbd7@microchip.com>
@@ -11,356 +14,277 @@ References: <f3a51005-7e51-e9b0-7a07-c5a268ab00ce@microchip.com>
  <50b8bfe1-d13f-290d-2653-ade756eaa712@collabora.com>
  <224f5b41-6f5d-ad10-33cc-1191cd56b692@microchip.com>
  <4194befd-a140-5425-dd98-99f503afeb6f@microchip.com>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <f67eb664-fce4-60d4-b654-03b6b9e2ded5@collabora.com>
-Date: Mon, 22 Feb 2021 10:44:51 +0000
+ <f67eb664-fce4-60d4-b654-03b6b9e2ded5@collabora.com>
+In-Reply-To: <f67eb664-fce4-60d4-b654-03b6b9e2ded5@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <4194befd-a140-5425-dd98-99f503afeb6f@microchip.com>
-Content-Type: text/plain; charset=utf-8
+Return-Path: Santiago.Esteban@microchip.com
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D5A3D67B2B97CC42ACAF2C3C8EC9C078@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Santiago.Esteban@microchip.com
+To: guillaume.tucker@collabora.com
 Cc: kernelci@groups.io
 
-On 27/01/2021 12:11, Santiago.Esteban@microchip.com wrote:
-> On 11/12/20 19:40, Santiago Esteban - M44029 wrote:
->> On 7/12/20 10:08, Guillaume Tucker wrote:
->>> EXTERNAL EMAIL: Do not click links or open attachments unless you know=
- the content is safe
->>>
->>> On 04/12/2020 11:46, Santiago.Esteban@microchip.com wrote:
->>>> On 3/12/20 15:01, Guillaume Tucker wrote:
->>>>> EXTERNAL EMAIL: Do not click links or open attachments unless you kn=
-ow the content is safe
->>>>>
->>>>> On 26/11/2020 10:57, Santiago.Esteban@microchip.com wrote:
->>>>>> On 26/11/20 10:17, Guillaume Tucker wrote:
->>>>>>> EXTERNAL EMAIL: Do not click links or open attachments unless you =
-know the content is safe
->>>>>>>
->>>>>>> On 26/11/2020 07:30, Santiago.Esteban@microchip.com wrote:
->>>>>>>> On 25/11/20 15:09, Guillaume Tucker wrote:
->>>>>>>>> EXTERNAL EMAIL: Do not click links or open attachments unless yo=
-u know the content is safe
->>>>>>>>>
->>>>>>>>> On 12/11/2020 11:46, Santiago.Esteban via info via groups.io wro=
-te:
->>>>>>>>>> On 12/11/20 9:49, Jan L=C3=BCbbe wrote:
->>>>>>>>>>> EXTERNAL EMAIL: Do not click links or open attachments unless =
-you know the content is safe
->>>>>>>>>>>
->>>>>>>>>>> Hi Santi,
->>>>>>>>>>>
->>>>>>>>>>> On Wed, 2020-11-11 at 18:05 +0000, Santiago.Esteban via info v=
-ia groups.io wrote:
->>>>>>>>>>>> Hi KernelCI,
->>>>>>>>>>>>
->>>>>>>>>>>> A few months back I contacted you about adding a new lab to K=
-ernelCI
->>>>>>>>>>>> infrastructure. It took us longer than I wished, but now we f=
-inally
->>>>>>>>>>>> have been able to connect our farm to an internal KernelCI de=
-ployment
->>>>>>>>>>>> (using docker).
->>>>>>>>>>>>
->>>>>>>>>>>> As I explained before, our farm holds 4 boards with different=
- SoCs
->>>>>>>>>>>> from Microchip (and Atmel): Sam9x60ek, Sama5d2_xplained,
->>>>>>>>>>>> Sama5d3_xplained and Sama5d4_xplained. All of then with mainl=
-ine
->>>>>>>>>>>> support.
->>>>>>>>>>>>
->>>>>>>>>>>> Our setup, does not uses Lava and it relies on Labgrid to per=
-form the
->>>>>>>>>>>> tests. We use "kci_data" tool to publish test results on Kern=
-elCI.
->>>>>>>>>>> That's very interesting. :) Do you have published the interfac=
-e code
->>>>>>>>>>> somewhere? I've been trying to find some time to do that mysel=
-f, but it
->>>>>>>>>>> seems you've beaten me to it. ;)
->>>>>>>>>>>
->>>>>>>>>>> Regards
->>>>>>>>>>> Jan
->>>>>>>>>> Hi Jan,
->>>>>>>>>>
->>>>>>>>>> No, I haven't publish it, till now. I've never though it would =
-be useful
->>>>>>>>>> to anybody but me  ;)
->>>>>>>>>>
->>>>>>>>>> I have a python script that is tailored (too much) to our syste=
-ms. It
->>>>>>>>>> performs some actions that depend on our infrastructure and how=
- I've
->>>>>>>>>> implemented the labgrid tests (for example, I grab the results =
-from a
->>>>>>>>>> pytest  json report). At the end, it creates a "tmeta_<board>.j=
-son" file
->>>>>>>>>> (equivalent to the "bmeta.json") that is later published with "=
-kci_data"
->>>>>>>>>> tool.
->>>>>>>>>>
->>>>>>>>>> It could be used as an inspiration to make a more generic
->>>>>>>>>> "kci_labgrid_test" tool if there are interest, but, all kernelc=
-i
->>>>>>>>>> important stuff, still needs to be validated ;)
->>>>>>>>> There is already a plugin mechanism behind kci_test to have
->>>>>>>>> specific implementations for generating the test job description
->>>>>>>>> data and submitting it to a remote lab.  At the moment, only LAV=
-A
->>>>>>>>> has an implementation but it sounds like Labgrid would be a neat
->>>>>>>>> addition.  The main challenge I guess, is that there isn't any
->>>>>>>>> built-in API for Labgrid to receive job descriptions and run
->>>>>>>>> them.
->>>>>>>> Hi Guillaume,
->>>>>>>>
->>>>>>>> Labgrid does not perform any task related to build. It focuses on
->>>>>>>> testing in real hardware. The build stage is performed somewhere =
-else.
->>>>>>>> It is a different approach than KernelCI and LAVA. In our case, w=
-e
->>>>>>>> trigger the builds in Jenkins and also Jenkins executes the Labgr=
-id
->>>>>>>> pytest scripts. It would be great to be able to push KCI jobs int=
-o a
->>>>>>>> generic Jenkins server. But, for me, the most difficult part woul=
-d be
->>>>>>>> convince IT department to allow a communication from a external s=
-ource
->>>>>>>> into the corporate network. I already know the answer....
->>>>>>> Absolutely, that's the same as with LAVA.  The idea is that the
->>>>>>> same builds from kernelci.org can be used in any lab, they're
->>>>>>> just plain kernel builds.  What we could work on is to make it
->>>>>>> easier for labs like yours and in particular when using Labgrid
->>>>>>> to receive some data when there's a new test to run.  That would
->>>>>>> include the URLs to get the kernel image, modules, dtb,
->>>>>>> user-space, commands to run the tests etc...
->>>>>>>
->>>>>>>>> One way to address this issue is to provide notifications with
->>>>>>>>> jobs to run, and a lab using Labgrid would subscribe to it.  As
->>>>>>>>> we're planning to refactor kernelci-backend and also come up wit=
-h
->>>>>>>>> a more generic pipeline mechanis than Jenkins, we should be able
->>>>>>>>> to have this kind of notification system in place anyway in orde=
-r
->>>>>>>>> to corrdinate the different components of the pipeline in a
->>>>>>>>> modular way.  It would be great to use some Labgrid labs as part
->>>>>>>>> of this exercise.  If you're interested, we can discuss that whe=
-n
->>>>>>>>> we have some clear ideas about the main part of work.
->>>>>>>> A publish/subscribe approach will work perfectly to overcome the
->>>>>>>> corporate IT hurdles. Of course, I 'm interested. Please let me k=
-now how
->>>>>>>> can I be part of this.
->>>>>>> Great.  There is a roadmap item on GitHub about this:
->>>>>>>
->>>>>>>       https://github.com/kernelci/kernelci-core/issues/315
->>>>>>>
->>>>>>> We've only just started, with a very basic kci_data
->>>>>>> implementation.  This should be broken down into a series of
->>>>>>> tasks such as: cleaning up the kernelci-backend API for receiving
->>>>>>> results, providing a subscription mechanism and having a
->>>>>>> real-world reference system to test it (e.g. a Labgrid lab).  We
->>>>>>> probably should schedule a meeting to go through that in January.
->>>>>>>
->>>>>>>>>> I have attached it to this email the script and (more important=
-) an
->>>>>>>>>> example of the output it produces.
->>>>>>>>> Thanks!  It's great to see that it doesn't really take much code
->>>>>>>>> to get some KernelCI jobs to run in Labgrid.
->>>>>>>> Labgrid only cares about  3 things: image to test, board in the f=
-arm to
->>>>>>>> use and test to pass. Most of the code is to create a json output=
- test
->>>>>>>> result compatible with the "kci_data" tool.
->>>>>>> Exactly.
->>>>>>>
->>>>>>>>>> BR,
->>>>>>>>>>
->>>>>>>>>> Santi
->>>>>>>>>>
->>>>>>>>>>>> We would like to work with you to be able to publish these re=
-sults.
->>>>>>>>>>>> Will it be possible to get a token for the staging database? =
-I'm sure
->>>>>>>>>>>> that there are things that need to be polished on our json fi=
-les.
->>>>>>>>> Absolutely, I'll send you a staging API token privately.  Also,
->>>>>>>>> are you on IRC?  That would help with discussing things and
->>>>>>>>> addressing any issues.
->>>>>>>> Great! I'm not ussually in IRC.... I'll be more available there (=
-as
->>>>>>>> "sesteban"). I'm waiting the token!
->>>>>>> Sent!  Awaiting some data now :)
->>>>>> Hi Guillaume,
->>>>>>
->>>>>> I've this credential/token error when trying to push a kernel build=
-:
->>>>>>
->>>>>>             requests.exceptions.HTTPError: 403 Client Error: Operat=
-ion not
->>>>>> permitted: provided token is not         authorized for url:
->>>>>> https://api.staging.kernelci.org/upload
->>>>>>             Error: can not push kernel: ../builds/linux-mainline,
->>>>>> https://api.staging.kernelci.org/test, "my-token"
->>>>>>
->>>>>> Something misconfigured in the database?
->>>>> Yes, it looks like an oversight in the part of the code that adds
->>>>> lab tokens as it doesn't enable the permission to send results
->>>>> via the generic test API...  I've fixed that directly in the
->>>>> database and tried your token with kci_data, it works now.
->>>>>
->>>>> Also I've created this issue on GitHub to fix it properly:
->>>>>
->>>>>      https://github.com/kernelci/kernelci-backend/issues/268
->>>>>
->>>>>
->>>>> Let's hope this works for you, and please let us know how it goes
->>>>> with the Labgrid integration.
->>>> Hi,
->>>>
->>>> I think I had the same problem with my local instance of KernelCI. I =
-had
->>>> to manually update the properties for the lab. At the time, I thought
->>>> that it was not a bug and that somehow LAVA could do it right.
->>>>
->>>> Unfortunatelly, the problem persists.
->>>>
->>>> Traceback (most recent call last):
->>>>      File "./kci_build", line 353, in <module>
->>>>        status =3D opts.command(configs, opts)
->>>>      File "./kci_build", line 316, in __call__
->>>>        args.install_path)
->>>>      File "/opt/mpuci-kernelci/kernelci-core/kernelci/build.py", line=
- 890,
->>>> in push_kernel
->>>>        upload_files(api, token, upload_path, artifacts)
->>>>      File "/opt/mpuci-kernelci/kernelci-core/kernelci/storage.py", li=
-ne
->>>> 44, in upload_files
->>>>        resp.raise_for_status()requests.exceptions.HTTPError: 403 Clie=
-nt
->>>> Error: Operation not permitted: provided token is not authorized for
->>>> url: https://api.staging.kernelci.org/upload
->>>>            Error: can not push kernel: ../builds/linux-mainline,
->>>> https://api.staging.kernelci.org/test, "my token"
->>>>
->>>> If you tested the token locally and it works, it might be a problem
->>>> related to the IP address allowed to push data in the lab...
->>> The token works, but it's a "lab" token with permissions to
->>> submit test results.  It's not for submitting kernel builds,
->>> which is what you're trying to do here.
->>>
->>> Can you try using builds from storage.kernelci.org?  They come
->>> with a bmeta.json file to get the kernel revision and all related
->>> meta-data you need when submitting the test results for a given
->>> kernel build.
->>>
->>> If you want to test some kernel revisions not currently built on
->>> kernelci.org you can open a GitHub issue to request it:
->>>
->>>     https://github.com/kernelci/kernelci-core/issues/new?assignees=3D&=
-labels=3D&template=3Dnew-kernel-branch.md&title=3DAdd+branch+BRANCH+from+TR=
-EE
->>>
->>> Thanks,
->>> Guillaume
->> Hi Guillaume,
->>
->> I have finally push some results in the staging database. I'm sorry tha=
-t
->> took me so long, but we just had a bank holiday here in Spain :)
->>
->> https://staging.kernelci.org/soc/at91/job/mainline/kernel/v5.10-rc7-10-=
-ga68a0262abda/plan/baseline/
->>
->> At first glance looks ok, but if you click on the "Full results"
->> (https://staging.kernelci.org/test/plan/id/5fd21e6c81bee0f1bf417ce4/)
->> the page is broken... Well,=C2=A0 the results received from the databas=
-e are
->> not complete. I checked the javascript in view-tests-plan-id.2020.10.js
->> and I found that=C2=A0 there are missing fields like "build_id". It see=
-ms
->> that not all the build information are available to all=C2=A0 "defconfi=
-gs" at
->> the staging database. The /test/plan/id page works fine in my local
->> kernelci deployment.
->>
->> I chose the build manually, because the token that you provide cannot
->> access the https://api.staging.kernelci.org/build information.
->>
->> While the issue #315 is solved, could we find a easy way to publish
->> results?I could poll the backend to check for new builds, do the tests,
->> and finally publish them.
-
-Yes that is what other non-LAVA labs already do.  It's strange
-your token doesn't let you read the build data, I'll check the
-permissions associated with it.  What is the query you're using?
-
->> As how to solve #315 for good, I would suggest using Autobahn
->> (https://autobahn.readthedocs.io/en/latest/). Labgrid is build around i=
-t
->> and works like a charm. I'm no expert, maybe Pengutronix people can
->> share their experience and recommend this path or another.
-
-OK thanks for sharing this.  I've started to look at CloudEvents:
-
-  https://cloudevents.io/
-
-I guess it would be good to list all the existing potential
-solutions and compare to choose what works best for the KernelCI
-use-case.
-
->> Best regards,
->>
->> Santi
->>
->> p.s I have attached the json file that I have pushed into the staging
->> database using kci_data, in case you need to look at it.
->=20
-> Hi Guillaume,
-
-Sorry for the delay in replying, we've been going through a lot
-of things with KernelCI lately to grow our team of maintainers.
-Hopefully communication should become smoother now :)
-
-> About pushing data into staging... Could you add some kernel builds with=
-=
-=20
-> "sama5_defconfig" and "at91_dt_defconfig" configurations for=20
-> mainline/master(or any other tree/branch )? I have not found those=20
-> configurations in the staging database, I would like to test this=20
-> thoroughly.
-
-We can have them built once on staging, but we're not going to
-enable them all the time because staging builds have to remain
-limited to the bare minimum.  You can however get those builds
-from production:
-
-* sama5_defconfig https://kernelci.org/build/id/60331b14c9b222ae1aaddd1a/
-* at91_dt_defconfig https://kernelci.org/build/id/60331a4b0b58f1585faddcb6=
-/
-
-You can download the build artifacts and the meta-data from there
-and should be able to run some tests with these builds.  Would
-that work for you?
-
-> In a (kind of) different topic, what is the status of Generic Lab=20
-> Support #315? Are there any plans to implement this soon? I could=20
-> dedicate time to push forward this task, but definitively, I would need=
-=20
-> some steering to avoid wasting both my time and your time.
-
-As mentioned in my earlier email about KCIDB, we've been trying
-to fix the blocking issues with submitting data from
-kernelci-bakend to KCIDB.  This should get resolved in a week or
-two hopefully, then kernelci-backend will need to go through some
-redesign.  With the code and experience we have, I think it will
-be a rather straightforward development "sprint" but it might
-take a couple of months of maturing to get that working really
-well and enable it in production.  We should have a dedicated
-meeting to discuss that in greater detail in the coming weeks.
-
-Best wishes,
-Guillaume
+T24gMjIvMi8yMSAxMTo0NCwgR3VpbGxhdW1lIFR1Y2tlciB3cm90ZToNCj4gRVhURVJOQUwgRU1B
+SUw6IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3Uga25v
+dyB0aGUgY29udGVudCBpcyBzYWZlDQo+DQo+IE9uIDI3LzAxLzIwMjEgMTI6MTEsIFNhbnRpYWdv
+LkVzdGViYW5AbWljcm9jaGlwLmNvbSB3cm90ZToNCj4+IE9uIDExLzEyLzIwIDE5OjQwLCBTYW50
+aWFnbyBFc3RlYmFuIC0gTTQ0MDI5IHdyb3RlOg0KPj4+IE9uIDcvMTIvMjAgMTA6MDgsIEd1aWxs
+YXVtZSBUdWNrZXIgd3JvdGU6DQo+Pj4+IEVYVEVSTkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlu
+a3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2Fm
+ZQ0KPj4+Pg0KPj4+PiBPbiAwNC8xMi8yMDIwIDExOjQ2LCBTYW50aWFnby5Fc3RlYmFuQG1pY3Jv
+Y2hpcC5jb20gd3JvdGU6DQo+Pj4+PiBPbiAzLzEyLzIwIDE1OjAxLCBHdWlsbGF1bWUgVHVja2Vy
+IHdyb3RlOg0KPj4+Pj4+IEVYVEVSTkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3Bl
+biBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPj4+Pj4+
+DQo+Pj4+Pj4gT24gMjYvMTEvMjAyMCAxMDo1NywgU2FudGlhZ28uRXN0ZWJhbkBtaWNyb2NoaXAu
+Y29tIHdyb3RlOg0KPj4+Pj4+PiBPbiAyNi8xMS8yMCAxMDoxNywgR3VpbGxhdW1lIFR1Y2tlciB3
+cm90ZToNCj4+Pj4+Pj4+IEVYVEVSTkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3Bl
+biBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPj4+Pj4+
+Pj4NCj4+Pj4+Pj4+IE9uIDI2LzExLzIwMjAgMDc6MzAsIFNhbnRpYWdvLkVzdGViYW5AbWljcm9j
+aGlwLmNvbSB3cm90ZToNCj4+Pj4+Pj4+PiBPbiAyNS8xMS8yMCAxNTowOSwgR3VpbGxhdW1lIFR1
+Y2tlciB3cm90ZToNCj4+Pj4+Pj4+Pj4gRVhURVJOQUwgRU1BSUw6IERvIG5vdCBjbGljayBsaW5r
+cyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3Uga25vdyB0aGUgY29udGVudCBpcyBzYWZl
+DQo+Pj4+Pj4+Pj4+DQo+Pj4+Pj4+Pj4+IE9uIDEyLzExLzIwMjAgMTE6NDYsIFNhbnRpYWdvLkVz
+dGViYW4gdmlhIGluZm8gdmlhIGdyb3Vwcy5pbyB3cm90ZToNCj4+Pj4+Pj4+Pj4+IE9uIDEyLzEx
+LzIwIDk6NDksIEphbiBMw7xiYmUgd3JvdGU6DQo+Pj4+Pj4+Pj4+Pj4gRVhURVJOQUwgRU1BSUw6
+IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3Uga25vdyB0
+aGUgY29udGVudCBpcyBzYWZlDQo+Pj4+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4+PiBIaSBTYW50aSwN
+Cj4+Pj4+Pj4+Pj4+Pg0KPj4+Pj4+Pj4+Pj4+IE9uIFdlZCwgMjAyMC0xMS0xMSBhdCAxODowNSAr
+MDAwMCwgU2FudGlhZ28uRXN0ZWJhbiB2aWEgaW5mbyB2aWEgZ3JvdXBzLmlvIHdyb3RlOg0KPj4+
+Pj4+Pj4+Pj4+PiBIaSBLZXJuZWxDSSwNCj4+Pj4+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4+Pj4gQSBm
+ZXcgbW9udGhzIGJhY2sgSSBjb250YWN0ZWQgeW91IGFib3V0IGFkZGluZyBhIG5ldyBsYWIgdG8g
+S2VybmVsQ0kNCj4+Pj4+Pj4+Pj4+Pj4gaW5mcmFzdHJ1Y3R1cmUuIEl0IHRvb2sgdXMgbG9uZ2Vy
+IHRoYW4gSSB3aXNoZWQsIGJ1dCBub3cgd2UgZmluYWxseQ0KPj4+Pj4+Pj4+Pj4+PiBoYXZlIGJl
+ZW4gYWJsZSB0byBjb25uZWN0IG91ciBmYXJtIHRvIGFuIGludGVybmFsIEtlcm5lbENJIGRlcGxv
+eW1lbnQNCj4+Pj4+Pj4+Pj4+Pj4gKHVzaW5nIGRvY2tlcikuDQo+Pj4+Pj4+Pj4+Pj4+DQo+Pj4+
+Pj4+Pj4+Pj4+IEFzIEkgZXhwbGFpbmVkIGJlZm9yZSwgb3VyIGZhcm0gaG9sZHMgNCBib2FyZHMg
+d2l0aCBkaWZmZXJlbnQgU29Dcw0KPj4+Pj4+Pj4+Pj4+PiBmcm9tIE1pY3JvY2hpcCAoYW5kIEF0
+bWVsKTogU2FtOXg2MGVrLCBTYW1hNWQyX3hwbGFpbmVkLA0KPj4+Pj4+Pj4+Pj4+PiBTYW1hNWQz
+X3hwbGFpbmVkIGFuZCBTYW1hNWQ0X3hwbGFpbmVkLiBBbGwgb2YgdGhlbiB3aXRoIG1haW5saW5l
+DQo+Pj4+Pj4+Pj4+Pj4+IHN1cHBvcnQuDQo+Pj4+Pj4+Pj4+Pj4+DQo+Pj4+Pj4+Pj4+Pj4+IE91
+ciBzZXR1cCwgZG9lcyBub3QgdXNlcyBMYXZhIGFuZCBpdCByZWxpZXMgb24gTGFiZ3JpZCB0byBw
+ZXJmb3JtIHRoZQ0KPj4+Pj4+Pj4+Pj4+PiB0ZXN0cy4gV2UgdXNlICJrY2lfZGF0YSIgdG9vbCB0
+byBwdWJsaXNoIHRlc3QgcmVzdWx0cyBvbiBLZXJuZWxDSS4NCj4+Pj4+Pj4+Pj4+PiBUaGF0J3Mg
+dmVyeSBpbnRlcmVzdGluZy4gOikgRG8geW91IGhhdmUgcHVibGlzaGVkIHRoZSBpbnRlcmZhY2Ug
+Y29kZQ0KPj4+Pj4+Pj4+Pj4+IHNvbWV3aGVyZT8gSSd2ZSBiZWVuIHRyeWluZyB0byBmaW5kIHNv
+bWUgdGltZSB0byBkbyB0aGF0IG15c2VsZiwgYnV0IGl0DQo+Pj4+Pj4+Pj4+Pj4gc2VlbXMgeW91
+J3ZlIGJlYXRlbiBtZSB0byBpdC4gOykNCj4+Pj4+Pj4+Pj4+Pg0KPj4+Pj4+Pj4+Pj4+IFJlZ2Fy
+ZHMNCj4+Pj4+Pj4+Pj4+PiBKYW4NCj4+Pj4+Pj4+Pj4+IEhpIEphbiwNCj4+Pj4+Pj4+Pj4+DQo+
+Pj4+Pj4+Pj4+PiBObywgSSBoYXZlbid0IHB1Ymxpc2ggaXQsIHRpbGwgbm93LiBJJ3ZlIG5ldmVy
+IHRob3VnaCBpdCB3b3VsZCBiZSB1c2VmdWwNCj4+Pj4+Pj4+Pj4+IHRvIGFueWJvZHkgYnV0IG1l
+ICA7KQ0KPj4+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4+IEkgaGF2ZSBhIHB5dGhvbiBzY3JpcHQgdGhh
+dCBpcyB0YWlsb3JlZCAodG9vIG11Y2gpIHRvIG91ciBzeXN0ZW1zLiBJdA0KPj4+Pj4+Pj4+Pj4g
+cGVyZm9ybXMgc29tZSBhY3Rpb25zIHRoYXQgZGVwZW5kIG9uIG91ciBpbmZyYXN0cnVjdHVyZSBh
+bmQgaG93IEkndmUNCj4+Pj4+Pj4+Pj4+IGltcGxlbWVudGVkIHRoZSBsYWJncmlkIHRlc3RzIChm
+b3IgZXhhbXBsZSwgSSBncmFiIHRoZSByZXN1bHRzIGZyb20gYQ0KPj4+Pj4+Pj4+Pj4gcHl0ZXN0
+ICBqc29uIHJlcG9ydCkuIEF0IHRoZSBlbmQsIGl0IGNyZWF0ZXMgYSAidG1ldGFfPGJvYXJkPi5q
+c29uIiBmaWxlDQo+Pj4+Pj4+Pj4+PiAoZXF1aXZhbGVudCB0byB0aGUgImJtZXRhLmpzb24iKSB0
+aGF0IGlzIGxhdGVyIHB1Ymxpc2hlZCB3aXRoICJrY2lfZGF0YSINCj4+Pj4+Pj4+Pj4+IHRvb2wu
+DQo+Pj4+Pj4+Pj4+Pg0KPj4+Pj4+Pj4+Pj4gSXQgY291bGQgYmUgdXNlZCBhcyBhbiBpbnNwaXJh
+dGlvbiB0byBtYWtlIGEgbW9yZSBnZW5lcmljDQo+Pj4+Pj4+Pj4+PiAia2NpX2xhYmdyaWRfdGVz
+dCIgdG9vbCBpZiB0aGVyZSBhcmUgaW50ZXJlc3QsIGJ1dCwgYWxsIGtlcm5lbGNpDQo+Pj4+Pj4+
+Pj4+PiBpbXBvcnRhbnQgc3R1ZmYsIHN0aWxsIG5lZWRzIHRvIGJlIHZhbGlkYXRlZCA7KQ0KPj4+
+Pj4+Pj4+PiBUaGVyZSBpcyBhbHJlYWR5IGEgcGx1Z2luIG1lY2hhbmlzbSBiZWhpbmQga2NpX3Rl
+c3QgdG8gaGF2ZQ0KPj4+Pj4+Pj4+PiBzcGVjaWZpYyBpbXBsZW1lbnRhdGlvbnMgZm9yIGdlbmVy
+YXRpbmcgdGhlIHRlc3Qgam9iIGRlc2NyaXB0aW9uDQo+Pj4+Pj4+Pj4+IGRhdGEgYW5kIHN1Ym1p
+dHRpbmcgaXQgdG8gYSByZW1vdGUgbGFiLiAgQXQgdGhlIG1vbWVudCwgb25seSBMQVZBDQo+Pj4+
+Pj4+Pj4+IGhhcyBhbiBpbXBsZW1lbnRhdGlvbiBidXQgaXQgc291bmRzIGxpa2UgTGFiZ3JpZCB3
+b3VsZCBiZSBhIG5lYXQNCj4+Pj4+Pj4+Pj4gYWRkaXRpb24uICBUaGUgbWFpbiBjaGFsbGVuZ2Ug
+SSBndWVzcywgaXMgdGhhdCB0aGVyZSBpc24ndCBhbnkNCj4+Pj4+Pj4+Pj4gYnVpbHQtaW4gQVBJ
+IGZvciBMYWJncmlkIHRvIHJlY2VpdmUgam9iIGRlc2NyaXB0aW9ucyBhbmQgcnVuDQo+Pj4+Pj4+
+Pj4+IHRoZW0uDQo+Pj4+Pj4+Pj4gSGkgR3VpbGxhdW1lLA0KPj4+Pj4+Pj4+DQo+Pj4+Pj4+Pj4g
+TGFiZ3JpZCBkb2VzIG5vdCBwZXJmb3JtIGFueSB0YXNrIHJlbGF0ZWQgdG8gYnVpbGQuIEl0IGZv
+Y3VzZXMgb24NCj4+Pj4+Pj4+PiB0ZXN0aW5nIGluIHJlYWwgaGFyZHdhcmUuIFRoZSBidWlsZCBz
+dGFnZSBpcyBwZXJmb3JtZWQgc29tZXdoZXJlIGVsc2UuDQo+Pj4+Pj4+Pj4gSXQgaXMgYSBkaWZm
+ZXJlbnQgYXBwcm9hY2ggdGhhbiBLZXJuZWxDSSBhbmQgTEFWQS4gSW4gb3VyIGNhc2UsIHdlDQo+
+Pj4+Pj4+Pj4gdHJpZ2dlciB0aGUgYnVpbGRzIGluIEplbmtpbnMgYW5kIGFsc28gSmVua2lucyBl
+eGVjdXRlcyB0aGUgTGFiZ3JpZA0KPj4+Pj4+Pj4+IHB5dGVzdCBzY3JpcHRzLiBJdCB3b3VsZCBi
+ZSBncmVhdCB0byBiZSBhYmxlIHRvIHB1c2ggS0NJIGpvYnMgaW50byBhDQo+Pj4+Pj4+Pj4gZ2Vu
+ZXJpYyBKZW5raW5zIHNlcnZlci4gQnV0LCBmb3IgbWUsIHRoZSBtb3N0IGRpZmZpY3VsdCBwYXJ0
+IHdvdWxkIGJlDQo+Pj4+Pj4+Pj4gY29udmluY2UgSVQgZGVwYXJ0bWVudCB0byBhbGxvdyBhIGNv
+bW11bmljYXRpb24gZnJvbSBhIGV4dGVybmFsIHNvdXJjZQ0KPj4+Pj4+Pj4+IGludG8gdGhlIGNv
+cnBvcmF0ZSBuZXR3b3JrLiBJIGFscmVhZHkga25vdyB0aGUgYW5zd2VyLi4uLg0KPj4+Pj4+Pj4g
+QWJzb2x1dGVseSwgdGhhdCdzIHRoZSBzYW1lIGFzIHdpdGggTEFWQS4gIFRoZSBpZGVhIGlzIHRo
+YXQgdGhlDQo+Pj4+Pj4+PiBzYW1lIGJ1aWxkcyBmcm9tIGtlcm5lbGNpLm9yZyBjYW4gYmUgdXNl
+ZCBpbiBhbnkgbGFiLCB0aGV5J3JlDQo+Pj4+Pj4+PiBqdXN0IHBsYWluIGtlcm5lbCBidWlsZHMu
+ICBXaGF0IHdlIGNvdWxkIHdvcmsgb24gaXMgdG8gbWFrZSBpdA0KPj4+Pj4+Pj4gZWFzaWVyIGZv
+ciBsYWJzIGxpa2UgeW91cnMgYW5kIGluIHBhcnRpY3VsYXIgd2hlbiB1c2luZyBMYWJncmlkDQo+
+Pj4+Pj4+PiB0byByZWNlaXZlIHNvbWUgZGF0YSB3aGVuIHRoZXJlJ3MgYSBuZXcgdGVzdCB0byBy
+dW4uICBUaGF0IHdvdWxkDQo+Pj4+Pj4+PiBpbmNsdWRlIHRoZSBVUkxzIHRvIGdldCB0aGUga2Vy
+bmVsIGltYWdlLCBtb2R1bGVzLCBkdGIsDQo+Pj4+Pj4+PiB1c2VyLXNwYWNlLCBjb21tYW5kcyB0
+byBydW4gdGhlIHRlc3RzIGV0Yy4uLg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4gT25lIHdheSB0byBh
+ZGRyZXNzIHRoaXMgaXNzdWUgaXMgdG8gcHJvdmlkZSBub3RpZmljYXRpb25zIHdpdGgNCj4+Pj4+
+Pj4+Pj4gam9icyB0byBydW4sIGFuZCBhIGxhYiB1c2luZyBMYWJncmlkIHdvdWxkIHN1YnNjcmli
+ZSB0byBpdC4gIEFzDQo+Pj4+Pj4+Pj4+IHdlJ3JlIHBsYW5uaW5nIHRvIHJlZmFjdG9yIGtlcm5l
+bGNpLWJhY2tlbmQgYW5kIGFsc28gY29tZSB1cCB3aXRoDQo+Pj4+Pj4+Pj4+IGEgbW9yZSBnZW5l
+cmljIHBpcGVsaW5lIG1lY2hhbmlzIHRoYW4gSmVua2lucywgd2Ugc2hvdWxkIGJlIGFibGUNCj4+
+Pj4+Pj4+Pj4gdG8gaGF2ZSB0aGlzIGtpbmQgb2Ygbm90aWZpY2F0aW9uIHN5c3RlbSBpbiBwbGFj
+ZSBhbnl3YXkgaW4gb3JkZXINCj4+Pj4+Pj4+Pj4gdG8gY29ycmRpbmF0ZSB0aGUgZGlmZmVyZW50
+IGNvbXBvbmVudHMgb2YgdGhlIHBpcGVsaW5lIGluIGENCj4+Pj4+Pj4+Pj4gbW9kdWxhciB3YXku
+ICBJdCB3b3VsZCBiZSBncmVhdCB0byB1c2Ugc29tZSBMYWJncmlkIGxhYnMgYXMgcGFydA0KPj4+
+Pj4+Pj4+PiBvZiB0aGlzIGV4ZXJjaXNlLiAgSWYgeW91J3JlIGludGVyZXN0ZWQsIHdlIGNhbiBk
+aXNjdXNzIHRoYXQgd2hlbg0KPj4+Pj4+Pj4+PiB3ZSBoYXZlIHNvbWUgY2xlYXIgaWRlYXMgYWJv
+dXQgdGhlIG1haW4gcGFydCBvZiB3b3JrLg0KPj4+Pj4+Pj4+IEEgcHVibGlzaC9zdWJzY3JpYmUg
+YXBwcm9hY2ggd2lsbCB3b3JrIHBlcmZlY3RseSB0byBvdmVyY29tZSB0aGUNCj4+Pj4+Pj4+PiBj
+b3Jwb3JhdGUgSVQgaHVyZGxlcy4gT2YgY291cnNlLCBJICdtIGludGVyZXN0ZWQuIFBsZWFzZSBs
+ZXQgbWUga25vdyBob3cNCj4+Pj4+Pj4+PiBjYW4gSSBiZSBwYXJ0IG9mIHRoaXMuDQo+Pj4+Pj4+
+PiBHcmVhdC4gIFRoZXJlIGlzIGEgcm9hZG1hcCBpdGVtIG9uIEdpdEh1YiBhYm91dCB0aGlzOg0K
+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+ICAgICAgICBodHRwczovL2dpdGh1Yi5jb20va2VybmVsY2kva2Vy
+bmVsY2ktY29yZS9pc3N1ZXMvMzE1DQo+Pj4+Pj4+Pg0KPj4+Pj4+Pj4gV2UndmUgb25seSBqdXN0
+IHN0YXJ0ZWQsIHdpdGggYSB2ZXJ5IGJhc2ljIGtjaV9kYXRhDQo+Pj4+Pj4+PiBpbXBsZW1lbnRh
+dGlvbi4gIFRoaXMgc2hvdWxkIGJlIGJyb2tlbiBkb3duIGludG8gYSBzZXJpZXMgb2YNCj4+Pj4+
+Pj4+IHRhc2tzIHN1Y2ggYXM6IGNsZWFuaW5nIHVwIHRoZSBrZXJuZWxjaS1iYWNrZW5kIEFQSSBm
+b3IgcmVjZWl2aW5nDQo+Pj4+Pj4+PiByZXN1bHRzLCBwcm92aWRpbmcgYSBzdWJzY3JpcHRpb24g
+bWVjaGFuaXNtIGFuZCBoYXZpbmcgYQ0KPj4+Pj4+Pj4gcmVhbC13b3JsZCByZWZlcmVuY2Ugc3lz
+dGVtIHRvIHRlc3QgaXQgKGUuZy4gYSBMYWJncmlkIGxhYikuICBXZQ0KPj4+Pj4+Pj4gcHJvYmFi
+bHkgc2hvdWxkIHNjaGVkdWxlIGEgbWVldGluZyB0byBnbyB0aHJvdWdoIHRoYXQgaW4gSmFudWFy
+eS4NCj4+Pj4+Pj4+DQo+Pj4+Pj4+Pj4+PiBJIGhhdmUgYXR0YWNoZWQgaXQgdG8gdGhpcyBlbWFp
+bCB0aGUgc2NyaXB0IGFuZCAobW9yZSBpbXBvcnRhbnQpIGFuDQo+Pj4+Pj4+Pj4+PiBleGFtcGxl
+IG9mIHRoZSBvdXRwdXQgaXQgcHJvZHVjZXMuDQo+Pj4+Pj4+Pj4+IFRoYW5rcyEgIEl0J3MgZ3Jl
+YXQgdG8gc2VlIHRoYXQgaXQgZG9lc24ndCByZWFsbHkgdGFrZSBtdWNoIGNvZGUNCj4+Pj4+Pj4+
+Pj4gdG8gZ2V0IHNvbWUgS2VybmVsQ0kgam9icyB0byBydW4gaW4gTGFiZ3JpZC4NCj4+Pj4+Pj4+
+PiBMYWJncmlkIG9ubHkgY2FyZXMgYWJvdXQgIDMgdGhpbmdzOiBpbWFnZSB0byB0ZXN0LCBib2Fy
+ZCBpbiB0aGUgZmFybSB0bw0KPj4+Pj4+Pj4+IHVzZSBhbmQgdGVzdCB0byBwYXNzLiBNb3N0IG9m
+IHRoZSBjb2RlIGlzIHRvIGNyZWF0ZSBhIGpzb24gb3V0cHV0IHRlc3QNCj4+Pj4+Pj4+PiByZXN1
+bHQgY29tcGF0aWJsZSB3aXRoIHRoZSAia2NpX2RhdGEiIHRvb2wuDQo+Pj4+Pj4+PiBFeGFjdGx5
+Lg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4+IEJSLA0KPj4+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4+IFNh
+bnRpDQo+Pj4+Pj4+Pj4+Pg0KPj4+Pj4+Pj4+Pj4+PiBXZSB3b3VsZCBsaWtlIHRvIHdvcmsgd2l0
+aCB5b3UgdG8gYmUgYWJsZSB0byBwdWJsaXNoIHRoZXNlIHJlc3VsdHMuDQo+Pj4+Pj4+Pj4+Pj4+
+IFdpbGwgaXQgYmUgcG9zc2libGUgdG8gZ2V0IGEgdG9rZW4gZm9yIHRoZSBzdGFnaW5nIGRhdGFi
+YXNlPyBJJ20gc3VyZQ0KPj4+Pj4+Pj4+Pj4+PiB0aGF0IHRoZXJlIGFyZSB0aGluZ3MgdGhhdCBu
+ZWVkIHRvIGJlIHBvbGlzaGVkIG9uIG91ciBqc29uIGZpbGVzLg0KPj4+Pj4+Pj4+PiBBYnNvbHV0
+ZWx5LCBJJ2xsIHNlbmQgeW91IGEgc3RhZ2luZyBBUEkgdG9rZW4gcHJpdmF0ZWx5LiAgQWxzbywN
+Cj4+Pj4+Pj4+Pj4gYXJlIHlvdSBvbiBJUkM/ICBUaGF0IHdvdWxkIGhlbHAgd2l0aCBkaXNjdXNz
+aW5nIHRoaW5ncyBhbmQNCj4+Pj4+Pj4+Pj4gYWRkcmVzc2luZyBhbnkgaXNzdWVzLg0KPj4+Pj4+
+Pj4+IEdyZWF0ISBJJ20gbm90IHVzc3VhbGx5IGluIElSQy4uLi4gSSdsbCBiZSBtb3JlIGF2YWls
+YWJsZSB0aGVyZSAoYXMNCj4+Pj4+Pj4+PiAic2VzdGViYW4iKS4gSSdtIHdhaXRpbmcgdGhlIHRv
+a2VuIQ0KPj4+Pj4+Pj4gU2VudCEgIEF3YWl0aW5nIHNvbWUgZGF0YSBub3cgOikNCj4+Pj4+Pj4g
+SGkgR3VpbGxhdW1lLA0KPj4+Pj4+Pg0KPj4+Pj4+PiBJJ3ZlIHRoaXMgY3JlZGVudGlhbC90b2tl
+biBlcnJvciB3aGVuIHRyeWluZyB0byBwdXNoIGEga2VybmVsIGJ1aWxkOg0KPj4+Pj4+Pg0KPj4+
+Pj4+PiAgICAgICAgICAgICAgcmVxdWVzdHMuZXhjZXB0aW9ucy5IVFRQRXJyb3I6IDQwMyBDbGll
+bnQgRXJyb3I6IE9wZXJhdGlvbiBub3QNCj4+Pj4+Pj4gcGVybWl0dGVkOiBwcm92aWRlZCB0b2tl
+biBpcyBub3QgICAgICAgICBhdXRob3JpemVkIGZvciB1cmw6DQo+Pj4+Pj4+IGh0dHBzOi8vYXBp
+LnN0YWdpbmcua2VybmVsY2kub3JnL3VwbG9hZA0KPj4+Pj4+PiAgICAgICAgICAgICAgRXJyb3I6
+IGNhbiBub3QgcHVzaCBrZXJuZWw6IC4uL2J1aWxkcy9saW51eC1tYWlubGluZSwNCj4+Pj4+Pj4g
+aHR0cHM6Ly9hcGkuc3RhZ2luZy5rZXJuZWxjaS5vcmcvdGVzdCwgIm15LXRva2VuIg0KPj4+Pj4+
+Pg0KPj4+Pj4+PiBTb21ldGhpbmcgbWlzY29uZmlndXJlZCBpbiB0aGUgZGF0YWJhc2U/DQo+Pj4+
+Pj4gWWVzLCBpdCBsb29rcyBsaWtlIGFuIG92ZXJzaWdodCBpbiB0aGUgcGFydCBvZiB0aGUgY29k
+ZSB0aGF0IGFkZHMNCj4+Pj4+PiBsYWIgdG9rZW5zIGFzIGl0IGRvZXNuJ3QgZW5hYmxlIHRoZSBw
+ZXJtaXNzaW9uIHRvIHNlbmQgcmVzdWx0cw0KPj4+Pj4+IHZpYSB0aGUgZ2VuZXJpYyB0ZXN0IEFQ
+SS4uLiAgSSd2ZSBmaXhlZCB0aGF0IGRpcmVjdGx5IGluIHRoZQ0KPj4+Pj4+IGRhdGFiYXNlIGFu
+ZCB0cmllZCB5b3VyIHRva2VuIHdpdGgga2NpX2RhdGEsIGl0IHdvcmtzIG5vdy4NCj4+Pj4+Pg0K
+Pj4+Pj4+IEFsc28gSSd2ZSBjcmVhdGVkIHRoaXMgaXNzdWUgb24gR2l0SHViIHRvIGZpeCBpdCBw
+cm9wZXJseToNCj4+Pj4+Pg0KPj4+Pj4+ICAgICAgIGh0dHBzOi8vZ2l0aHViLmNvbS9rZXJuZWxj
+aS9rZXJuZWxjaS1iYWNrZW5kL2lzc3Vlcy8yNjgNCj4+Pj4+Pg0KPj4+Pj4+DQo+Pj4+Pj4gTGV0
+J3MgaG9wZSB0aGlzIHdvcmtzIGZvciB5b3UsIGFuZCBwbGVhc2UgbGV0IHVzIGtub3cgaG93IGl0
+IGdvZXMNCj4+Pj4+PiB3aXRoIHRoZSBMYWJncmlkIGludGVncmF0aW9uLg0KPj4+Pj4gSGksDQo+
+Pj4+Pg0KPj4+Pj4gSSB0aGluayBJIGhhZCB0aGUgc2FtZSBwcm9ibGVtIHdpdGggbXkgbG9jYWwg
+aW5zdGFuY2Ugb2YgS2VybmVsQ0kuIEkgaGFkDQo+Pj4+PiB0byBtYW51YWxseSB1cGRhdGUgdGhl
+IHByb3BlcnRpZXMgZm9yIHRoZSBsYWIuIEF0IHRoZSB0aW1lLCBJIHRob3VnaHQNCj4+Pj4+IHRo
+YXQgaXQgd2FzIG5vdCBhIGJ1ZyBhbmQgdGhhdCBzb21laG93IExBVkEgY291bGQgZG8gaXQgcmln
+aHQuDQo+Pj4+Pg0KPj4+Pj4gVW5mb3J0dW5hdGVsbHksIHRoZSBwcm9ibGVtIHBlcnNpc3RzLg0K
+Pj4+Pj4NCj4+Pj4+IFRyYWNlYmFjayAobW9zdCByZWNlbnQgY2FsbCBsYXN0KToNCj4+Pj4+ICAg
+ICAgIEZpbGUgIi4va2NpX2J1aWxkIiwgbGluZSAzNTMsIGluIDxtb2R1bGU+DQo+Pj4+PiAgICAg
+ICAgIHN0YXR1cyA9IG9wdHMuY29tbWFuZChjb25maWdzLCBvcHRzKQ0KPj4+Pj4gICAgICAgRmls
+ZSAiLi9rY2lfYnVpbGQiLCBsaW5lIDMxNiwgaW4gX19jYWxsX18NCj4+Pj4+ICAgICAgICAgYXJn
+cy5pbnN0YWxsX3BhdGgpDQo+Pj4+PiAgICAgICBGaWxlICIvb3B0L21wdWNpLWtlcm5lbGNpL2tl
+cm5lbGNpLWNvcmUva2VybmVsY2kvYnVpbGQucHkiLCBsaW5lIDg5MCwNCj4+Pj4+IGluIHB1c2hf
+a2VybmVsDQo+Pj4+PiAgICAgICAgIHVwbG9hZF9maWxlcyhhcGksIHRva2VuLCB1cGxvYWRfcGF0
+aCwgYXJ0aWZhY3RzKQ0KPj4+Pj4gICAgICAgRmlsZSAiL29wdC9tcHVjaS1rZXJuZWxjaS9rZXJu
+ZWxjaS1jb3JlL2tlcm5lbGNpL3N0b3JhZ2UucHkiLCBsaW5lDQo+Pj4+PiA0NCwgaW4gdXBsb2Fk
+X2ZpbGVzDQo+Pj4+PiAgICAgICAgIHJlc3AucmFpc2VfZm9yX3N0YXR1cygpcmVxdWVzdHMuZXhj
+ZXB0aW9ucy5IVFRQRXJyb3I6IDQwMyBDbGllbnQNCj4+Pj4+IEVycm9yOiBPcGVyYXRpb24gbm90
+IHBlcm1pdHRlZDogcHJvdmlkZWQgdG9rZW4gaXMgbm90IGF1dGhvcml6ZWQgZm9yDQo+Pj4+PiB1
+cmw6IGh0dHBzOi8vYXBpLnN0YWdpbmcua2VybmVsY2kub3JnL3VwbG9hZA0KPj4+Pj4gICAgICAg
+ICAgICAgRXJyb3I6IGNhbiBub3QgcHVzaCBrZXJuZWw6IC4uL2J1aWxkcy9saW51eC1tYWlubGlu
+ZSwNCj4+Pj4+IGh0dHBzOi8vYXBpLnN0YWdpbmcua2VybmVsY2kub3JnL3Rlc3QsICJteSB0b2tl
+biINCj4+Pj4+DQo+Pj4+PiBJZiB5b3UgdGVzdGVkIHRoZSB0b2tlbiBsb2NhbGx5IGFuZCBpdCB3
+b3JrcywgaXQgbWlnaHQgYmUgYSBwcm9ibGVtDQo+Pj4+PiByZWxhdGVkIHRvIHRoZSBJUCBhZGRy
+ZXNzIGFsbG93ZWQgdG8gcHVzaCBkYXRhIGluIHRoZSBsYWIuLi4NCj4+Pj4gVGhlIHRva2VuIHdv
+cmtzLCBidXQgaXQncyBhICJsYWIiIHRva2VuIHdpdGggcGVybWlzc2lvbnMgdG8NCj4+Pj4gc3Vi
+bWl0IHRlc3QgcmVzdWx0cy4gIEl0J3Mgbm90IGZvciBzdWJtaXR0aW5nIGtlcm5lbCBidWlsZHMs
+DQo+Pj4+IHdoaWNoIGlzIHdoYXQgeW91J3JlIHRyeWluZyB0byBkbyBoZXJlLg0KPj4+Pg0KPj4+
+PiBDYW4geW91IHRyeSB1c2luZyBidWlsZHMgZnJvbSBzdG9yYWdlLmtlcm5lbGNpLm9yZz8gIFRo
+ZXkgY29tZQ0KPj4+PiB3aXRoIGEgYm1ldGEuanNvbiBmaWxlIHRvIGdldCB0aGUga2VybmVsIHJl
+dmlzaW9uIGFuZCBhbGwgcmVsYXRlZA0KPj4+PiBtZXRhLWRhdGEgeW91IG5lZWQgd2hlbiBzdWJt
+aXR0aW5nIHRoZSB0ZXN0IHJlc3VsdHMgZm9yIGEgZ2l2ZW4NCj4+Pj4ga2VybmVsIGJ1aWxkLg0K
+Pj4+Pg0KPj4+PiBJZiB5b3Ugd2FudCB0byB0ZXN0IHNvbWUga2VybmVsIHJldmlzaW9ucyBub3Qg
+Y3VycmVudGx5IGJ1aWx0IG9uDQo+Pj4+IGtlcm5lbGNpLm9yZyB5b3UgY2FuIG9wZW4gYSBHaXRI
+dWIgaXNzdWUgdG8gcmVxdWVzdCBpdDoNCj4+Pj4NCj4+Pj4gICAgICBodHRwczovL2dpdGh1Yi5j
+b20va2VybmVsY2kva2VybmVsY2ktY29yZS9pc3N1ZXMvbmV3P2Fzc2lnbmVlcz0mbGFiZWxzPSZ0
+ZW1wbGF0ZT1uZXcta2VybmVsLWJyYW5jaC5tZCZ0aXRsZT1BZGQrYnJhbmNoK0JSQU5DSCtmcm9t
+K1RSRUUNCj4+Pj4NCj4+Pj4gVGhhbmtzLA0KPj4+PiBHdWlsbGF1bWUNCj4+PiBIaSBHdWlsbGF1
+bWUsDQo+Pj4NCj4+PiBJIGhhdmUgZmluYWxseSBwdXNoIHNvbWUgcmVzdWx0cyBpbiB0aGUgc3Rh
+Z2luZyBkYXRhYmFzZS4gSSdtIHNvcnJ5IHRoYXQNCj4+PiB0b29rIG1lIHNvIGxvbmcsIGJ1dCB3
+ZSBqdXN0IGhhZCBhIGJhbmsgaG9saWRheSBoZXJlIGluIFNwYWluIDopDQo+Pj4NCj4+PiBodHRw
+czovL3N0YWdpbmcua2VybmVsY2kub3JnL3NvYy9hdDkxL2pvYi9tYWlubGluZS9rZXJuZWwvdjUu
+MTAtcmM3LTEwLWdhNjhhMDI2MmFiZGEvcGxhbi9iYXNlbGluZS8NCj4+Pg0KPj4+IEF0IGZpcnN0
+IGdsYW5jZSBsb29rcyBvaywgYnV0IGlmIHlvdSBjbGljayBvbiB0aGUgIkZ1bGwgcmVzdWx0cyIN
+Cj4+PiAoaHR0cHM6Ly9zdGFnaW5nLmtlcm5lbGNpLm9yZy90ZXN0L3BsYW4vaWQvNWZkMjFlNmM4
+MWJlZTBmMWJmNDE3Y2U0LykNCj4+PiB0aGUgcGFnZSBpcyBicm9rZW4uLi4gV2VsbCwgIHRoZSBy
+ZXN1bHRzIHJlY2VpdmVkIGZyb20gdGhlIGRhdGFiYXNlIGFyZQ0KPj4+IG5vdCBjb21wbGV0ZS4g
+SSBjaGVja2VkIHRoZSBqYXZhc2NyaXB0IGluIHZpZXctdGVzdHMtcGxhbi1pZC4yMDIwLjEwLmpz
+DQo+Pj4gYW5kIEkgZm91bmQgdGhhdCAgdGhlcmUgYXJlIG1pc3NpbmcgZmllbGRzIGxpa2UgImJ1
+aWxkX2lkIi4gSXQgc2VlbXMNCj4+PiB0aGF0IG5vdCBhbGwgdGhlIGJ1aWxkIGluZm9ybWF0aW9u
+IGFyZSBhdmFpbGFibGUgdG8gYWxsICAiZGVmY29uZmlncyIgYXQNCj4+PiB0aGUgc3RhZ2luZyBk
+YXRhYmFzZS4gVGhlIC90ZXN0L3BsYW4vaWQgcGFnZSB3b3JrcyBmaW5lIGluIG15IGxvY2FsDQo+
+Pj4ga2VybmVsY2kgZGVwbG95bWVudC4NCj4+Pg0KPj4+IEkgY2hvc2UgdGhlIGJ1aWxkIG1hbnVh
+bGx5LCBiZWNhdXNlIHRoZSB0b2tlbiB0aGF0IHlvdSBwcm92aWRlIGNhbm5vdA0KPj4+IGFjY2Vz
+cyB0aGUgaHR0cHM6Ly9hcGkuc3RhZ2luZy5rZXJuZWxjaS5vcmcvYnVpbGQgaW5mb3JtYXRpb24u
+DQo+Pj4NCj4+PiBXaGlsZSB0aGUgaXNzdWUgIzMxNSBpcyBzb2x2ZWQsIGNvdWxkIHdlIGZpbmQg
+YSBlYXN5IHdheSB0byBwdWJsaXNoDQo+Pj4gcmVzdWx0cz9JIGNvdWxkIHBvbGwgdGhlIGJhY2tl
+bmQgdG8gY2hlY2sgZm9yIG5ldyBidWlsZHMsIGRvIHRoZSB0ZXN0cywNCj4+PiBhbmQgZmluYWxs
+eSBwdWJsaXNoIHRoZW0uDQo+IFllcyB0aGF0IGlzIHdoYXQgb3RoZXIgbm9uLUxBVkEgbGFicyBh
+bHJlYWR5IGRvLiAgSXQncyBzdHJhbmdlDQo+IHlvdXIgdG9rZW4gZG9lc24ndCBsZXQgeW91IHJl
+YWQgdGhlIGJ1aWxkIGRhdGEsIEknbGwgY2hlY2sgdGhlDQo+IHBlcm1pc3Npb25zIGFzc29jaWF0
+ZWQgd2l0aCBpdC4gIFdoYXQgaXMgdGhlIHF1ZXJ5IHlvdSdyZSB1c2luZz8NCj4NCj4+PiBBcyBo
+b3cgdG8gc29sdmUgIzMxNSBmb3IgZ29vZCwgSSB3b3VsZCBzdWdnZXN0IHVzaW5nIEF1dG9iYWhu
+DQo+Pj4gKGh0dHBzOi8vYXV0b2JhaG4ucmVhZHRoZWRvY3MuaW8vZW4vbGF0ZXN0LykuIExhYmdy
+aWQgaXMgYnVpbGQgYXJvdW5kIGl0DQo+Pj4gYW5kIHdvcmtzIGxpa2UgYSBjaGFybS4gSSdtIG5v
+IGV4cGVydCwgbWF5YmUgUGVuZ3V0cm9uaXggcGVvcGxlIGNhbg0KPj4+IHNoYXJlIHRoZWlyIGV4
+cGVyaWVuY2UgYW5kIHJlY29tbWVuZCB0aGlzIHBhdGggb3IgYW5vdGhlci4NCj4gT0sgdGhhbmtz
+IGZvciBzaGFyaW5nIHRoaXMuICBJJ3ZlIHN0YXJ0ZWQgdG8gbG9vayBhdCBDbG91ZEV2ZW50czoN
+Cj4NCj4gICAgaHR0cHM6Ly9jbG91ZGV2ZW50cy5pby8NCj4NCj4gSSBndWVzcyBpdCB3b3VsZCBi
+ZSBnb29kIHRvIGxpc3QgYWxsIHRoZSBleGlzdGluZyBwb3RlbnRpYWwNCj4gc29sdXRpb25zIGFu
+ZCBjb21wYXJlIHRvIGNob29zZSB3aGF0IHdvcmtzIGJlc3QgZm9yIHRoZSBLZXJuZWxDSQ0KPiB1
+c2UtY2FzZS4NCkknbGwgbG9vayBhdCBpdC4NCj4NCj4+PiBCZXN0IHJlZ2FyZHMsDQo+Pj4NCj4+
+PiBTYW50aQ0KPj4+DQo+Pj4gcC5zIEkgaGF2ZSBhdHRhY2hlZCB0aGUganNvbiBmaWxlIHRoYXQg
+SSBoYXZlIHB1c2hlZCBpbnRvIHRoZSBzdGFnaW5nDQo+Pj4gZGF0YWJhc2UgdXNpbmcga2NpX2Rh
+dGEsIGluIGNhc2UgeW91IG5lZWQgdG8gbG9vayBhdCBpdC4NCj4+IEhpIEd1aWxsYXVtZSwNCj4g
+U29ycnkgZm9yIHRoZSBkZWxheSBpbiByZXBseWluZywgd2UndmUgYmVlbiBnb2luZyB0aHJvdWdo
+IGEgbG90DQo+IG9mIHRoaW5ncyB3aXRoIEtlcm5lbENJIGxhdGVseSB0byBncm93IG91ciB0ZWFt
+IG9mIG1haW50YWluZXJzLg0KPiBIb3BlZnVsbHkgY29tbXVuaWNhdGlvbiBzaG91bGQgYmVjb21l
+IHNtb290aGVyIG5vdyA6KQ0KPg0KPj4gQWJvdXQgcHVzaGluZyBkYXRhIGludG8gc3RhZ2luZy4u
+LiBDb3VsZCB5b3UgYWRkIHNvbWUga2VybmVsIGJ1aWxkcyB3aXRoDQo+PiAic2FtYTVfZGVmY29u
+ZmlnIiBhbmQgImF0OTFfZHRfZGVmY29uZmlnIiBjb25maWd1cmF0aW9ucyBmb3INCj4+IG1haW5s
+aW5lL21hc3RlcihvciBhbnkgb3RoZXIgdHJlZS9icmFuY2ggKT8gSSBoYXZlIG5vdCBmb3VuZCB0
+aG9zZQ0KPj4gY29uZmlndXJhdGlvbnMgaW4gdGhlIHN0YWdpbmcgZGF0YWJhc2UsIEkgd291bGQg
+bGlrZSB0byB0ZXN0IHRoaXMNCj4+IHRob3JvdWdobHkuDQo+IFdlIGNhbiBoYXZlIHRoZW0gYnVp
+bHQgb25jZSBvbiBzdGFnaW5nLCBidXQgd2UncmUgbm90IGdvaW5nIHRvDQo+IGVuYWJsZSB0aGVt
+IGFsbCB0aGUgdGltZSBiZWNhdXNlIHN0YWdpbmcgYnVpbGRzIGhhdmUgdG8gcmVtYWluDQo+IGxp
+bWl0ZWQgdG8gdGhlIGJhcmUgbWluaW11bS4gIFlvdSBjYW4gaG93ZXZlciBnZXQgdGhvc2UgYnVp
+bGRzDQo+IGZyb20gcHJvZHVjdGlvbjoNCj4NCj4gKiBzYW1hNV9kZWZjb25maWcgaHR0cHM6Ly9r
+ZXJuZWxjaS5vcmcvYnVpbGQvaWQvNjAzMzFiMTRjOWIyMjJhZTFhYWRkZDFhLw0KPiAqIGF0OTFf
+ZHRfZGVmY29uZmlnIGh0dHBzOi8va2VybmVsY2kub3JnL2J1aWxkL2lkLzYwMzMxYTRiMGI1OGYx
+NTg1ZmFkZGNiNi8NCj4NCj4gWW91IGNhbiBkb3dubG9hZCB0aGUgYnVpbGQgYXJ0aWZhY3RzIGFu
+ZCB0aGUgbWV0YS1kYXRhIGZyb20gdGhlcmUNCj4gYW5kIHNob3VsZCBiZSBhYmxlIHRvIHJ1biBz
+b21lIHRlc3RzIHdpdGggdGhlc2UgYnVpbGRzLiAgV291bGQNCj4gdGhhdCB3b3JrIGZvciB5b3U/
+DQoNCkknbGwgY2hlY2sgd2l0aCB0aG9zZSBidWlsZHMuIFRoYW5rcy4NCg0KPj4gSW4gYSAoa2lu
+ZCBvZikgZGlmZmVyZW50IHRvcGljLCB3aGF0IGlzIHRoZSBzdGF0dXMgb2YgR2VuZXJpYyBMYWIN
+Cj4+IFN1cHBvcnQgIzMxNT8gQXJlIHRoZXJlIGFueSBwbGFucyB0byBpbXBsZW1lbnQgdGhpcyBz
+b29uPyBJIGNvdWxkDQo+PiBkZWRpY2F0ZSB0aW1lIHRvIHB1c2ggZm9yd2FyZCB0aGlzIHRhc2ss
+IGJ1dCBkZWZpbml0aXZlbHksIEkgd291bGQgbmVlZA0KPj4gc29tZSBzdGVlcmluZyB0byBhdm9p
+ZCB3YXN0aW5nIGJvdGggbXkgdGltZSBhbmQgeW91ciB0aW1lLg0KPiBBcyBtZW50aW9uZWQgaW4g
+bXkgZWFybGllciBlbWFpbCBhYm91dCBLQ0lEQiwgd2UndmUgYmVlbiB0cnlpbmcNCj4gdG8gZml4
+IHRoZSBibG9ja2luZyBpc3N1ZXMgd2l0aCBzdWJtaXR0aW5nIGRhdGEgZnJvbQ0KPiBrZXJuZWxj
+aS1iYWtlbmQgdG8gS0NJREIuICBUaGlzIHNob3VsZCBnZXQgcmVzb2x2ZWQgaW4gYSB3ZWVrIG9y
+DQo+IHR3byBob3BlZnVsbHksIHRoZW4ga2VybmVsY2ktYmFja2VuZCB3aWxsIG5lZWQgdG8gZ28g
+dGhyb3VnaCBzb21lDQo+IHJlZGVzaWduLiAgV2l0aCB0aGUgY29kZSBhbmQgZXhwZXJpZW5jZSB3
+ZSBoYXZlLCBJIHRoaW5rIGl0IHdpbGwNCj4gYmUgYSByYXRoZXIgc3RyYWlnaHRmb3J3YXJkIGRl
+dmVsb3BtZW50ICJzcHJpbnQiIGJ1dCBpdCBtaWdodA0KPiB0YWtlIGEgY291cGxlIG9mIG1vbnRo
+cyBvZiBtYXR1cmluZyB0byBnZXQgdGhhdCB3b3JraW5nIHJlYWxseQ0KPiB3ZWxsIGFuZCBlbmFi
+bGUgaXQgaW4gcHJvZHVjdGlvbi4gIFdlIHNob3VsZCBoYXZlIGEgZGVkaWNhdGVkDQo+IG1lZXRp
+bmcgdG8gZGlzY3VzcyB0aGF0IGluIGdyZWF0ZXIgZGV0YWlsIGluIHRoZSBjb21pbmcgd2Vla3Mu
+DQo+DQo+IEJlc3Qgd2lzaGVzLA0KPiBHdWlsbGF1bWUNCg0KSSdsbCBiZSBwYXRpZW5jZSA7KQ0K
+DQpUaGFuayB5b3UgdmVyeSBtdWNoLA0KDQpTYW50aQ0KDQoNCg==
