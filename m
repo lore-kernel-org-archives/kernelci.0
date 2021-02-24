@@ -1,47 +1,60 @@
-From: "Santiago.Esteban via info" <santiago.esteban@microchip.com>
 Subject: Re: KCIDB contribuition #KCIDB
-Date: Wed, 24 Feb 2021 09:42:09 +0000
-Message-ID: <ef0f014c-f01a-6a7b-c636-44fdf54d9800@microchip.com>
 References: <a91111f8-158d-f811-5309-feb6571d3412@microchip.com>
  <5d6fbc94-bdfd-9822-3bb0-0502751294b0@redhat.com>
  <a64c7a34-8c61-a0bd-0969-6304a3cbe3da@collabora.com>
  <dfbd079c-d8a1-c238-18be-f179483a5856@redhat.com>
-In-Reply-To: <dfbd079c-d8a1-c238-18be-f179483a5856@redhat.com>
+ <ef0f014c-f01a-6a7b-c636-44fdf54d9800@microchip.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <d287ecc9-af55-dffc-db72-1ce21c2b4dda@redhat.com>
+Date: Wed, 24 Feb 2021 11:51:01 +0200
 MIME-Version: 1.0
-Return-Path: Santiago.Esteban@microchip.com
+In-Reply-To: <ef0f014c-f01a-6a7b-c636-44fdf54d9800@microchip.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3F4FF33379CD0C4FBBB05235C4176358@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Nikolai.Kondrashov@redhat.com, guillaume.tucker@collabora.com, kernelci@groups.io
+To: kernelci@groups.io, santiago.esteban@microchip.com, guillaume.tucker@collabora.com
 
-T24gMjIvMi8yMSAxMTozMSwgTmlrb2xhaSBLb25kcmFzaG92IHdyb3RlOg0KPiBFWFRFUk5BTCBF
-TUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNzIHlvdSBr
-bm93IA0KPiB0aGUgY29udGVudCBpcyBzYWZlDQo+DQo+IE9uIDIvMjIvMjEgMTI6MjUgUE0sIEd1
-aWxsYXVtZSBUdWNrZXIgd3JvdGU6DQo+PiBPbiAyMi8wMi8yMDIxIDA5OjQxLCBOaWtvbGFpIEtv
-bmRyYXNob3Ygd3JvdGU6DQo+Pj4gSSBzdXBwb3NlIGlmIHlvdSBhbHJlYWR5IGRyaXZlIGV2ZXJ5
-dGhpbmcgd2l0aCBhbiBpbnN0YW5jZSBvZiBLZXJuZWxDSQ0KPj4+IGluZnJhc3RydWN0dXJlLCB5
-b3UgY2FuIGp1c3QgdXNlIHRoZSBLQ0lEQiBpbnRlcmZhY2UgY29kZSB0aGF0IHdhcyANCj4+PiBt
-ZXJnZWQNCj4+PiB0aGVyZS4gSG93ZXZlciwgSSB0aGluayBHdWlsbGF1bWUgd291bGQgYmUgYWJs
-ZSB0byBoZWxwIHlvdSBiZXR0ZXIgDQo+Pj4gaGVyZS4NCj4+Pg0KPj4+IEd1aWxsYXVtZSwgZG8g
-eW91IHRoaW5rIHRoYXQgd291bGQgd29yaz8NCj4+DQo+PiBUaGUgcHJvZHVjdGlvbiBpbnN0YW5j
-ZSBvZiBrZXJuZWxjaS5vcmcgaXMgbm90IHN1Ym1pdHRpbmcgZGF0YSB0bw0KPj4gS0NJREIgeWV0
-IGJlY2F1c2Ugb2YgdGhlIG92ZXJoZWFkIHJlbGF0ZWQgdG8gb3BlbmluZyBCaWdRdWVyeQ0KPj4g
-Y29ubmVjdGlvbnMuwqAgVW50aWwgdGhlIHdvcmsgdG8gdXNlIHRoZSBzdHJlYW1pbmcgaW50ZXJm
-YWNlIHdpdGgNCj4+IGEgcGVyc2lzdGVudCBjb25uZWN0aW9uIGlzIGltcGxlbWVudGVkLCBhbmQg
-cG90ZW50aWFsbHkgYSBtb3JlDQo+PiBsb25nZXItdGVybSBpbXBsZW1lbnRhdGlvbiBpcyBpbiBw
-bGFjZSAoaS5lLiBub3QgZG9pbmcgaXQgaW4NCj4+IGtlcm5lbGNpLWJhY2tlbmQpLCBJIHdvdWxk
-IG5vdCByZWNvbW1lbmQgZG9pbmcgdGhhdC4NCj4NCj4gWWVhaCwgdGhlIGN1cnJlbnQgaW1wbGVt
-ZW50YXRpb24gd291bGQgYmUgYm9nZ2VkIGRvd24gYnkgdGhlIGFtb3VudCBvZg0KPiByZXN1bHRz
-IEtlcm5lbENJIHByb2R1Y3Rpb24gaXMgcHJvZHVjaW5nLiBIb3dldmVyLCBTYW50aWFnbywgaG93
-IG1hbnkNCj4gYnVpbGRzL3Rlc3RzIGRvIHlvdSBzZWUgcHJvZHVjZWQgcGVyIGRheT8gUGVyaGFw
-cyBpdCdzIHdvcnRoIGEgdHJ5DQo+IHRvIHNlZSBob3cgdGhhdCdzIGhhbmRsZWQsIGFuZCBtYXli
-ZSBpdCdzIG5vdCB0b28gYmFkPyBNZWFud2hpbGUNCj4gTWljaGFsIGNvdWxkIHBlcmhhcHMgZmlu
-aXNoIHRoZSByZXdvcmsgbmVlZGVkIGZvciBmYXN0ZXIgc3RyZWFtaW5nPw0KPg0KPiBOaWNrDQo+
-DQpPdXIgQ0kgcmlnaHQgbm93IGZvY3VzIG9uIGRhaWx5IGJ1aWxkcyBvZsKgIGxpbnV4LW5leHQg
-YW5kIGxpbnV4LW1haW5saW5lIA0KcmVwb3NpdG9yaWVzIHdpdGggb25seSB0d28gdGFyZ2V0cyAo
-c2FtYTVfZGVmY29uZiwgYXQ5MV9kdF9kZWZjb25mKTogNCANCmJ1aWxkcyB0ZXN0ZWQgaW4gNyBi
-b2FyZHMgKGFuZCB0d28gY29tcGlsZXJzKSA9IDU2IHJlc3VsdHMgZGFpbHkuDQoNCkkgZ3Vlc3Ms
-IG5vdCBhIGxvdCwgY29uc2lkZXJpbmcgdGhlIGFtb3VudCBvZiBkYXRhIHRoYXQgYmlnZ2VyIENJ
-J3MgDQpmYXJtcyBwcm9kdWNlLg0KDQpCUiwNCg0KU2FudGkNCg0KDQo=
+On 2/24/21 11:42 AM, Santiago.Esteban via info via groups.io wrote:
+> On 22/2/21 11:31, Nikolai Kondrashov wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know
+>> the content is safe
+>>
+>> On 2/22/21 12:25 PM, Guillaume Tucker wrote:
+>>> On 22/02/2021 09:41, Nikolai Kondrashov wrote:
+>>>> I suppose if you already drive everything with an instance of KernelCI
+>>>> infrastructure, you can just use the KCIDB interface code that was
+>>>> merged
+>>>> there. However, I think Guillaume would be able to help you better
+>>>> here.
+>>>>
+>>>> Guillaume, do you think that would work?
+>>>
+>>> The production instance of kernelci.org is not submitting data to
+>>> KCIDB yet because of the overhead related to opening BigQuery
+>>> connections.  Until the work to use the streaming interface with
+>>> a persistent connection is implemented, and potentially a more
+>>> longer-term implementation is in place (i.e. not doing it in
+>>> kernelci-backend), I would not recommend doing that.
+>>
+>> Yeah, the current implementation would be bogged down by the amount of
+>> results KernelCI production is producing. However, Santiago, how many
+>> builds/tests do you see produced per day? Perhaps it's worth a try
+>> to see how that's handled, and maybe it's not too bad? Meanwhile
+>> Michal could perhaps finish the rework needed for faster streaming?
+>>
+>> Nick
+>>
+> Our CI right now focus on daily builds of  linux-next and linux-mainline
+> repositories with only two targets (sama5_defconf, at91_dt_defconf): 4
+> builds tested in 7 boards (and two compilers) = 56 results daily.
+> 
+> I guess, not a lot, considering the amount of data that bigger CI's
+> farms produce.
+
+Yeah, that's not much, and you could probably manage with the current
+KCIDB-submission code in kernelci. However, if you're going to have your
+lab connected anyway soon, the setup effort might not be worth it.
+
+Nick
+
