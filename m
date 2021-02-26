@@ -1,36 +1,95 @@
+Subject: Re: 5.10 LTS Kernel: 2 or 6 years?
+References: <ef30af4d-2081-305d-cd63-cb74da819a6d@broadcom.com>
+ <YA/E1bHRmZb50MlS@kroah.com>
+ <595affb4-36e8-0a63-ebb3-a4fd0e3c243a@huawei.com>
+ <2a7ff382-1d35-0eeb-6fb6-bad37aa4c1d7@redhat.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <4abea94d-5232-19ab-3139-569e485403b3@huawei.com>
+Date: Fri, 26 Feb 2021 16:03:19 +0800
 MIME-Version: 1.0
-References: <20200707222342.scrz75265etaqlmd@redhat.com> <CACT4Y+aFc7DoUBF=DLh2oBHy=3pKLACnhb3v88Tt4bkjarGUTg@mail.gmail.com>
- <CACT4Y+YR-Gv5NnTbs+04gjA7LABRnCidAkbE9_tE=YrGDgYL2Q@mail.gmail.com>
- <863511a8-090a-6ee1-ddce-f32d70458ee8@redhat.com> <CACT4Y+biFKO-Bauixm_DtEGTAUzHXTf0iXuFx1A=WTLmBhvSDg@mail.gmail.com>
- <1ff4a09c-4529-017c-5b0b-43712575771b@redhat.com> <16397F50C12D08DD.21243@groups.io>
- <CACT4Y+aqdTZ7r-tvFcajqcX5n7gO1RJ+9_vsbsYJPsypeYH3vQ@mail.gmail.com>
- <521cc33e-62fc-55c1-aeb2-682007243d97@redhat.com> <ff5139e8-b8e5-93dc-9654-d53e4888c2bc@redhat.com>
- <CACT4Y+Y561P7oJYYNn7XuqieTS-dJmaFH+NTS7OzRi=X_STD3w@mail.gmail.com>
- <ac531987-4600-f48c-4fe6-8a1abd8ccf51@gmail.com> <8c580a6a-e24e-4c67-5202-ec35612094f3@redhat.com>
- <CACT4Y+bO_FZsDkrBh2LtxQ+QyxXP5S7e+szO-HYxuj=GyKjUMA@mail.gmail.com>
- <9123a571-721b-5c1b-367e-e028acec4096@redhat.com> <CACT4Y+Z=ipTEY1VHkwZcnoegU1VOTJN2G6rzZTpPqnPS_ze5CA@mail.gmail.com>
- <CACT4Y+ZaAJMAwQT=BStb936bDbe68V6mXQw29cHGzb_9712TbA@mail.gmail.com> <6aab4595-8b16-50a9-81ca-78bd08ff7a33@redhat.com>
-In-Reply-To: <6aab4595-8b16-50a9-81ca-78bd08ff7a33@redhat.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Fri, 2 Oct 2020 11:02:42 +0200
-Message-ID: <CACT4Y+aok+-h_pBM4ga-rfo8647Sp2cVBT8k34t8jqNR-vjz8A@mail.gmail.com>
-Subject: Re: [kernelci-members] Working with the KernelCI project
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <2a7ff382-1d35-0eeb-6fb6-bad37aa4c1d7@redhat.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Philip Li <philip.li@intel.com>, kernelci-members@groups.io, nkondras@redhat.com, Don Zickus <dzickus@redhat.com>, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Scott Branden <scott.branden@broadcom.com>
+Cc: Huxinwei <huxinwei@huawei.com>, LKML <linux-kernel@vger.kernel.org>, Yanjin <yanjin.yan@huawei.com>, BCM Kernel Feedback <bcm-kernel-feedback-list@broadcom.com>, Zhaohongjiang <zhaohongjiang@huawei.com>, "Zhangdianfang (Dianfang, OS Lab)" <zhangdianfang@huawei.com>, PEIXIN HOU <PEIXIN.HOU@huawei.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, kernelci@groups.io, Wei Yongjun <weiyongjun1@huawei.com>, Lijinyue <lijinyue@huawei.com>
 
-On Fri, Oct 2, 2020 at 10:12 AM Nikolai Kondrashov
-<Nikolai.Kondrashov@redhat.com> wrote:
->
-> On 10/2/20 10:52 AM, Dmitry Vyukov wrote:
->  > On Thu, Oct 1, 2020 at 7:02 PM Dmitry Vyukov <dvyukov@google.com> wrote:
->  >> The switch involves just changing the topic to "kernelci_new", right?
->  >
->  > I am preparing for the switch and will do it unless I hear from you soon.
->  > Since you already gave green light above, I assume we are good now.
->
-> Yes, please go ahead :)!
+Hi Nick,
 
-We are live!
-https://staging.kernelci.org:3000/d/home/home?orgId=1&var-origin=syzbot&var-dataset=kernelci04&from=now-90d&to=now
+Sorry for taking so long to reply you, we had discussions on how to
+corporate with KCIDB, please see my comments inline.
+
+On 2021/2/19 22:45, Nikolai Kondrashov wrote:
+> Hi Hanjun,
+> 
+> On 2/19/21 10:54 AM, Hanjun Guo wrote:
+>  > In specific, we will start from the testing work, using HULK robot
+>  > (reports lots of bugs to mainline kernel) testing framework to test
+>  > compile, reboot, functional testing, and will extend to basic
+>  > performance regression testing in the future.
+> 
+> I heard about Huawei ramping up kernel testing from someone at FOSDEM
+> 2019. I wonder if it was you :) Nice to see your progress and the company
+> stepping up to help with testing!
+
+I Cced Yongjun and Jinyue, they are the key persons :)
+
+> 
+> Would you be interested in working with the Linux Foundation KernelCI 
+> project
+> on submitting your build and test results to the common database - KCIDB?
+
+Yes, we are willing to sent the test results to KCIDB.
+
+For now, all the tests are inside the company, which blocks us to
+directly sent the test results out of the test machine due to the
+security policy, it takes us sometime to discuss how to send out
+the test results, and we may need do the test in a public cloud.
+
+> 
+> We are working on aggregating results from various testing systems so we 
+> can
+> provide a dashboard, and a single, aggregated e-mail report to subscribed
+> maintainers and developers.
+> 
+> We have a prototype dashboard at https://staging.kernelci.org:3000/ and are
+> working hard on making the e-mail reports good enough to start reaching 
+> out to
+> maintainers.
+> 
+> We already have ARM, Google Syzbot, Gentoo GKernelCI, Red Hat CKI, and, of
+> course, KernelCI native tests sending data to the database. Linaro 
+> Tuxsuite is
+> starting sending today. We could use your data, and of course any 
+> development
+> help you could spare :)
+
+How can we connect to the KCIDB? Can we send the test data out by email
+first?
+
+> 
+> I wish I could show you my today's KCIDB presentation at DevConf.cz, but 
+> the
+> recording is not out yet. Meanwhile you can take a look at our 
+> presentation at
+> last year's Linux Plumbers: https://youtu.be/y9Glc90WUN0?t=10739
+> 
+> Or see our intro in an older blog post:
+> https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/ 
+> 
+> 
+> Anyone wishing to contribute to KCIDB gets credentials and permissions to
+> submit to our "playground" setup where they can send their data, see it 
+> in a
+> dashboard, experiment without worrying about breaking anything, and 
+> decide if
+> they like it or n >
+> If you're interested, take a look at our Submission HOWTO:
+> https://github.com/kernelci/kcidb/blob/v8/SUBMISSION_HOWTO.md
+> and send an email to kernelci@groups.io (CC'd), or come over to the 
+> #kernelci
+> channel on freenode.net!
+
+Thanks!
+Hanjun
