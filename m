@@ -1,174 +1,58 @@
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Subject: KernelCI backend redesign and generic lab support
-Message-ID: <a78c7329-36dd-185e-5c3e-ec90686ad7d3@collabora.com>
-Date: Fri, 5 Mar 2021 20:55:22 +0000
+Subject: Re: Contributing ARM tests results to KCIDB
+References: <20200917162242.GA18067@e119603-lin.cambridge.arm.com>
+ <e417bc86-da0f-0ab1-62c7-d771a24d41fb@redhat.com>
+ <20200918152135.GA13088@e119603-lin.cambridge.arm.com>
+ <3e86960e-9780-3e18-3d12-cb4ec3959d63@redhat.com>
+ <be42f631-897d-0cdf-0225-5d01256f39e5@redhat.com>
+ <20200918164228.GA16509@e119603-lin.cambridge.arm.com>
+ <20201105184631.GD24640@e120937-lin>
+ <4db924ab-2f38-ac63-1b71-51ead907ba1f@redhat.com>
+ <20201202092340.GB8455@e120937-lin>
+ <d0c2936f-fab5-3aea-fbd0-22b59df9bfd3@redhat.com>
+ <20201202120105.GC8455@e120937-lin>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Message-ID: <ff3d77ee-ab47-17d3-70e9-c21a682f76b5@redhat.com>
+Date: Mon, 15 Mar 2021 11:00:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20201202120105.GC8455@e120937-lin>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: =?UTF-8?B?TWljaGHFgiBHYcWCa2E=?= <michal.galka@collabora.com>, ticotimo@gmail.com, Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>, Michael Grzeschik <m.grzeschik@pengutronix.de>, santiago.esteban@microchip.com, =?UTF-8?Q?Jan_L=c3=bcbbe?= <j.luebbe@pengutronix.de>
-Cc: "kernelci@groups.io" <kernelci@groups.io>, automated-testing@lists.yoctoproject.org
+To: Cristian Marussi <cristian.marussi@arm.com>
+Cc: kernelci@groups.io, broonie@kernel.org, basil.eljuse@arm.com
 
-Hello,
+Hi Cristian,
 
-As it has been mentioned multiple times recently, the
-kernelci-backend code is ageing pretty badly: it's doing too
-many things so it's hard to maintain, there are better ways to
-implement a backend now with less code, and it's still Python
-2.7.  Also, there is a need to better support non-LAVA labs such
-as Labgrid.  Finally, in order to really implement a modular
-KernelCI pipeline, we need a good messaging system to
-orchestrate the different components - which is similar to
-having a generic way to notify labs about tests to run.  For all
-these reasons, it's now time to seriously consider how we should
-replace it with a better architecture.
+On 12/2/20 2:01 PM, Cristian Marussi wrote:
+> On Wed, Dec 02, 2020 at 12:16:10PM +0200, Nikolai Kondrashov wrote:
+>> Finally, at this stage we really need a breadth of data coming from
+>> different CI system, rather than its depth or precision, so we can understand
+>> the problem at hand better and faster. It would do us no good to concentrate
+>> on just a few, and solidify the design around them. That would make it more
+>> difficult for others to join.
+>>
+>> You can refine and add more data afterwards.
+>>
+> 
+> Sure, in fact, as of now I still have to ask for some changes in our reporting
+> backend, (which generates the original data stored in our DB and then pushed
+> to you), so I have to admit the git commit hash are partially faked (since I
+> have only a git describe string to start from) and as a consequence they won't
+> really be so much useful for comparisons amongst different origins (given
+> they don't refer real kernel commits), BUT I thought this NOT to be a
+> blocking problem for now, so that I can start pushing data to KCIDB and
+> then later on (once I get real full hashes on my side) I'll start pushing the
+> real valid ones, does it sounds good ?
 
-I've gathered some ideas in this email regarding how we might go
-about doing that.  It seems like there are several people
-motivated to help on different aspects of the work, so it would
-be really great to organise this as a community development
-effort.
+Is there any progress towards having the full commit hashes available?
 
-Please feel free to share your thoughts about any of the points
-below, and tell whether you're interested to take part in any of
-it.  If there appears to be enough interest, we should schedule
-a meeting to kick-start this in a couple of weeks or so.
+I'm working on aggregating testing data for notification e-mails and I could
+use a few samples of data which has both summarized LTP results from Red Hat's
+CKI and the detailed LTP results from ARM, under the same revision.
 
+Plus, we're moving ever closer to reaching out to developers with our data,
+and it would be good to have the right hashes in your data :)
 
-* Design ideas
+Nick
 
-  * REST API to submit / retrieve data
-    * same idea as existing one but simplified implementation using jsonschema
-    * auth tokens but if possible using existing frameworks to simplify code
-
-  * interface to database
-    * same idea as now but with better models implementation
-
-  * pub/sub mechanism to coordinate pipeline with events
-    * new feature, framework to be decided (Cloud Events? Autobahn?)
-    * no logic in backend, only messages
-    * send notifications when things get added in database
-
-
-* Client side
-
-  Some features currently in kernelci-backend should be moved to client side
-  and rely on the pub/sub and API instead:
-
-  * LAVA callback handling (receive from LAVA, push via API)
-  * log parsing (subscribe to events, get log when notified, send results)
-  * email reports (subscribe to events, generate reports and send directly)
-  * KCIDB bridge (subscribe to events, forward to KCIDB API)
-
-  About getting tests to run in labs, this could then be unified
-  to in fact deal with LAVA labs in the same way as non-LAVA
-  ones.  At the moment, the Jenkins pipeline knows when builds
-  are completed and directly schedules LAVA jobs to run.
-  Instead, we should have a service listening to events to know
-  when builds are available, and schedule LAVA jobs then.  Other
-  labs could do that too, by receiving the same events but then
-  performing actions that are specific to their own
-  implementation.  For common ones such as LabGrid and
-  Kubernetes, some code could be added to kernelci-core like we
-  currently have for LAVA to facilitate translating KernelCI
-  events into "lab dialects".
-
-  About emails, we could also have a micro-service listening for
-  emails such as replies to reports previously sent (say, to
-  automatically change the status of a tracked regression...) or
-  for specific ones such as stable reviews.
-
-
-* Implementation ideas
-
-  The current Python 2.7 implementation uses Tornado as the web
-  framework, Redis for object caching and locking, Celery for
-  asynchronous processing and interfaces with MongoDB.  Here's
-  what I propose to do:
-
-  * start new design using Python 3.x (minor version TBD) using current one as
-    reference rather than doing a straight port
-
-  * keep Tornado as the web framework since it still has a good community and
-    is well suited for backend applications
-
-  * keep Redis for caching and locking, but also use it for the pub/sub
-    mechanism provided out of the box (we may host it on Azure)
-
-  * see if we really need to keep Celery when we have client-side services
-
-  * keep MongoDB as it's been working well for us, also to reduce the effort
-    with the new design and have the ability to directly import existing data
-    (we may host it in Azure)
-
-  * separate the "storage" server from the backend, as it currently relies on
-    it to be on the same host which is causing bad design and unnecessary
-    dependencies (the backend shouldn't even need to read anything from
-    storage, only client code would be doing this using URLs stored in the
-    database)
-
-  * use the "kernelci" Python package from kernelci-core to define common code
-    as appropriate such as YAML configuration handling and JSON schema
-    validation, to be shared between the backend and client code
-
-
-* Schema
-
-  The current schema has worked well for many years, but it has
-  also become inconsistent and hard to maintain.  For example,
-  the names of the fields are getting translated in several
-  places from "tree" to "job", from "kernel" to "git_describe",
-  from "build_environment" to "compiler"...  So it needs a big
-  refresh.
-
-  Also, one important thing to consider would be to have common
-  object properties for all the database entries so we could
-  make a tree structure with them.  For example, tests may
-  depend on other tests and also on builds, and also on
-  revisions.  Pretty much like object inheritance, we could have
-  a basic "type" and then derivatives such as build and test.
-  So I think we should take this opportunity to start with a new
-  schema design, taking inspiration from the current one and
-  what has been done with KCIDB in terms of content.
-
-  It would somehow relate to the YAML configuration where
-  dependencies should be better expressed (i.e. run this test
-  once this build has completed, and this other test once the
-  first test has completed...).  This is the same dependency
-  tree as in the results, just without the runtime details and
-  actual results.
-
-  All this would deserve a discussion of its own, and I think we
-  should start with an over-simplified schema to get the
-  components up and running with the new design.
-
-
-* Development
-
-  It would seem like the different pieces can be worked on in
-  parallel to some extent, so it would be good to create a
-  backlog on GitHub to define some high-level objectives
-  accordingly.  Then people who are interested can assign issues
-  to them.
-
-  We should try to have this working in Docker from the start,
-  to it easier for all the contributors to have a a compatible
-  environement and also to actually deploy it.  We can run an
-  instance of it on staging.kernelci.org with an alternative
-  port number than the current REST API.
-
-  I believe it should be fine to ignore the web frontend
-  initially, we can then adjust it to make it use the newly
-  designed API.  We however have to keep its use-case in mind
-  and the type of queries it would be typically making.  We may
-  have a minimal frontend instance reworked with only one view
-  as a basic end-to-end test.
-
-
-How does that all sound?
-
-Have a good week-end!
-
-Best wishes,
-Guillaume
