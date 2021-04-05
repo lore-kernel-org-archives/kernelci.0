@@ -1,243 +1,37 @@
-Subject: Re: Linking CIP testing with KernelCI
-References: <OSAPR01MB2385E0367B8CA545E1D66422B7890@OSAPR01MB2385.jpnprd01.prod.outlook.com>
- <CAH1_8nDMbmG-_Kgq51zgkwWXurfUC=OiACakeAbPz3Edh+xvhA@mail.gmail.com>
- <OSBPR01MB2392D13C9278C9A1F555DC79B7810@OSBPR01MB2392.jpnprd01.prod.outlook.com>
+Subject: Re: can't access kernelci results
+References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
+ <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
 From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <00e8563c-355d-24b1-d9b7-90cdaf91c87b@collabora.com>
-Date: Thu, 24 Jun 2021 20:31:25 +0100
+Message-ID: <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
+Date: Mon, 5 Apr 2021 21:58:33 +0100
 MIME-Version: 1.0
-In-Reply-To: <OSBPR01MB2392D13C9278C9A1F555DC79B7810@OSBPR01MB2392.jpnprd01.prod.outlook.com>
+In-Reply-To: <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: chris.paterson2@renesas.com, Alice Ferrazzi <alicef@gentoo.org>
-Cc: Kevin Hilman <khilman@baylibre.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: kernelci@groups.io, groeck@google.com, Todd Kjos <tkjos@google.com>
+Cc: Kevin Hilman <khilman@baylibre.com>
 
-+Alice
-
-It's been one year already since the last reply on this thread!
-
-On 12/06/2020 12:03, Chris Paterson wrote:
-> Hello Guillaume,
->
-> Thank you for the feedback.
-> I=E2=80=99ve added some comments below (sorry, email didn=E2=80=99t come=
- through in plan text=E2=80=A6)
->
-> Kind regards, Chris
->
->> From: Guillaume Tucker <guillaume.tucker@gmail.com>
->> Sent: 11 June 2020 22:12
->> To: Chris Paterson <Chris.Paterson2@renesas.com>
->> Cc: Kevin Hilman <khilman@baylibre.com>; kernelci@groups.io
->> Subject: Re: Linking CIP testing with KernelCI
+On 05/04/2021 21:39, Guenter Roeck via groups.io wrote:
+> On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via groups.io
+> <tkjos=google.com@groups.io> wrote:
 >>
->> + kernelci@groups.io<mailto:kernelci@groups.io> as discussed
+>> I get errors when attempting to access https://linux.kernelci.org/job/android/. Is this a known issue? Any ETA for a fix?
 >>
->> Hi Chris,
->>
->> Thanks for starting this discussion, connecting the CIP test
->> system with KernelCI sounds like a perfect example of how the
->> project can grow.
->>
->> On Thu, Jun 4, 2020 at 11:15 AM Chris Paterson <Chris.Paterson2@renesas=
-.com<mailto:Chris.Paterson2@renesas.com> wrote:
->>> Hello Guillaume, Kevin,
->>>
->>> I'd really like to get CIP linked into KernelCI somehow before ELC-NA =
-in a few weeks.
->>> Are you both available for a quick chat this week/next to determine wh=
-at kind of integration would be suitable, and how we can go about achieving=
- it?
->>
->> Sure, let's try to find a slot next week.
+> Looks like the problem is not limited to android. I get error 500 for
+> jobs and build results.
 
-This did happen, we enabled some CIP branches on the main
-KernelCI instance:
+That was another case of the mongod service stopping, it's pretty
+rare but has happened a couple of times before.  Things are now
+back to normal, but we've missed a few results while it was down.
+Sorry for the disruption.
 
-  https://linux.kernelci.org/job/cip/
-
-It's running regular KernelCI tests, just with these CIP branches
-which are like "special" LTS branches.
-
->>> Some ramblings below to start the discussion...
->>>
->>> # Background on the current CIP CI setup
->>> - We have a GitLab mirror of our kernel.org kernel repo
->>> - Our branches contain a simple .gitlab-ci.yml file that links to our =
-build/test GitLab CI pipeline repository
->>> - Kernel builds are kicked off using the various arches/configs suppor=
-ted by CIP
->>> - Test jobs are then submitted to our LAVA master
->>> - We currently run simple boot tests, spectre/meltdown checker, cyclic=
-test+hackbench (RT configs only) and LTP (only run on CIP release candidate=
-s)
->>> - If the builds and tests finish okay then GitLab shows a green tick, =
-if there is some kind of build error, or test infrastructure error then Git=
-Lab shows a red cross
->>> - If individual test cases fail, or there is a test regression, curren=
-tly there is no way of knowing in the Gitlab UI. This is why I want to star=
-t using KernelCI
->>> - We follow a similar process for Greg's stable-rc 4.4 and 4.19 branch=
-es, but don't run LTP
->>
->> This sounds very similar to the experiment Kevin did with his own
->> tree and Gitlab CI, except he's using the command line tools from
->> kernelci-core.
->>
->>> # Options for KernelCI integration (?)
->>> 1) Keep our current build/test pipeline the same, just add a notify se=
-ction to the LAVA jobs to send the results to kernelci.org
->>> - We'd need to include the correct metadata etc.
->>
->> I think we might be able to have commands that generate just the
->> meta-data for a given kernel build without actually doing a
->> build.  That would allow you to keep your current build system
->> and also stay in sync with the kernelci meta-data definitions.
->
-> CPA: Sounds sensible.
-
-What I've heard this time is that maybe CIP would like to
-completely adopt KernelCI's build tools.  Is that right?
-
-If that was the case, it would of course be easier to integrate
-CIP tests with KernelCI.  In the same way that we're starting to
-have specific kernel builds on chromeos.kernelci.org using the
-same Kubernetes build infrastructure as the main instance, we
-could do that for CIP kernels with particular defconfigs or
-toolchains.
-
->>> - Would this work if there is no corresponding 'build job'?
->>
->> I don't think anyone is doing this right now but in any case it's
->> something we need to support, for example with static analysis
->> and other tests that don't require any build.  The only thing
->> that should be really required is the kernel revision (tree,
->> branch, sha1, git describe).  So, "yes" this needs to work.
->
-> CPA: Presumably this information could be provided as part of the LAVA j=
-ob notification?
->
->>> - Would you allow test results from the CIP SLTS Kernels on kernelci.o=
-rg? Or would we need to set up our own instance?
->>
->> Ideally, only upstream-oriented branches should be built and
->> tested on kernelci.org to keep it in line with the project's
->> mission and upstream kernel development.  If the CIP branches
->> consist only of backported patches from mainline, maybe it could
->> be accepted in the same way that we have stable branches.  If
->> however there are patches that are not intended to get merged
->> upstream and are there for specific products, then in my opinion
->> that would not be acceptable - see below for an alternative as
->> you suggested.
->>
-> CPA: CIP follow an upstream first policy, so almost every patch comes fr=
-om mainline, mostly via the stable LTS releases.
-> CPA: The SLTS Kernels aren=E2=80=99t focused at a particular product. It=
-=
-=E2=80=99s meant to be part of a base layer for end users.
-> CPA: They consist of LTS + some extra board support that has been backpo=
-rted from mainline. Sometimes a novel patch is required when adding the ext=
-ra board support, as v5.7 is a lot different to v4.4.
-> CPA: When LTS support from Greg ends on the Kernels CIP are using (curre=
-ntly v4.4 & v4.19) CIP aims to pick up a very similar role.
-
-As mentioned earlier, this has now been enabled as the branches
-are considered close enough to upstream.
-
->>> 1b) Same as 1) but using either cip.kernelci.org or kernelci.ciplatfor=
-m.org
->>
->> Yes, having a separate instance would enable a separate
->> configuration, separate database, special features etc... so no
->> possible interference with the main kernelci.org
->> activities.  Having it as cip.kernelci.org means it would
->> probably be managed by the KernelCI LF project, I guess that
->> would make sense for a member.  But then if you host and manage
->> your own instance on kernelci.ciplatform.org you're of course
->> free to do anything you want with it.
->
-> CPA: I agree that it may make most sense to have a separate frontend for=
- CIP=E2=80=99s test efforts =E2=80=93 this will avoid confusion. Especially=
- as many would consider CIP=E2=80=99s Kernels a =E2=80=98downstream=E2=80=
-=99 product.
-> CPA: cip.kernelci.org, (partly)managed by the KernelCI project would sho=
-uld a good benefit of joining the KernelCI project, perhaps helping attract=
- new members.
-
-Do you still agree it would be worthwhile having a separate
-frontend on cip.kernelci.org with extra tests and special builds
-that aren't on linux.kernelci.org?
-
->>> 2) kernelci.org starts monitoring/building/testing the CIP SLTS Kernel=
-s
->>> - Tests would run through our LAVA master
->>> - Perhaps kernelci.org could make use of our build infrastructure?
->>> 2b) Same as 2) but using either cip.kernelci.org or kernelci.ciplatfor=
-m.org
->>
->> The question of kernelci.org vs another instance remains the
->> same, in my opinion it all hinges on what is on the branches.
->>
->> Doing this would give you automated bisection since the KernelCI
->> pipeline would be able to run arbitrary jobs in the LAVA lab.
->> Using your own build infrastructure would probably be another
->> argument in favour of a separate instance (e.g. cip.kernelci.org)
->> as this would be a custom use-case, unless you're happy to have
->> any kernelci.org kernel builds run on your infrastructure.
->
-> CPA: This would be something to explore at a later point. We=E2=80=99d h=
-ave to evaluate the cost impact etc.
-=20
-What are your thoughts on this now?  Would you want to keep using
-your own build tools, or use kci_build but with your build infra,
-or just rely on the KernelCI Kubernetes build infra as mentioned
-earlier?
-
->>> 3) kernelci.org start submitting their usual test jobs to the CIP LAVA=
- master
->>> - CIP currently have 11 different device-types (20 boards in total) wh=
-ich should help expand what is available to KernelCI
->>
->> Maybe we could do that anyway, with filters to limit the upstream
->> branches and test suites to run if you want, and also work out a
->> solution for the CIP SLTS branches?
->>
-> CPA: This would be easy to set up and I=E2=80=99m all for it, seeing as =
-we=E2=80=99re members of the project
-> CPA: Our current testing load isn=E2=80=99t huge.
-
-That's already done, for regular KernelCI tests.
-
->>> My preferred option would be 1) as it would be nice not to lose all th=
-e work spent on the GitLab CI setup
->>> (or perhaps integrating the GitLab CI approach into KernelCI's setup i=
-s a worthwhile task, but it'll take time)
->>
->> Yes I think Option 1 would be good given the timeframe you've
->> set.  Also it's going to be a recurring use-case, KernelCI is all
->> about being flexible enough to integrate existing CI systems with
->> no real modifications to them.  We can try things out with
->> staging.kernelci.org initially.  Option 2 could be done as a
->> follow-up if you think the added features justify the extra
->> efforts.
->>
->> And Option 3 seems really straightforward to me, any LAVA lab can
->> be added to kernelci.org with an API token and a bit of YAML
->> configuration.  That would definitely be a quick win if you want
->> to be sure to have something to show at ELC-NA :)
->
-> CPA: Fantastic. Thanks Guillaume.
-
-I guess all these aspects are still relevant, except the ones
-that have already been implemented.  Basically, has CIP's point
-of view changed since last year with regards to your existing
-Gitlab CI system?
-
-It would probably be good to go through this again in next
-Tuesday's meeting if Chris can make it.  Otherwise we can
-schedule a specific meeting at another time.
+We've deployed a monitoring tool on some servers but not yet on
+this one, it should happen soon so this kind of issues would be
+detected much quicker.  We've also started looking into using a
+Mongo database in Azure rather than a manual install to reduce
+maintenance work.
 
 Best wishes,
 Guillaume
