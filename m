@@ -1,137 +1,90 @@
-From: Simon Xiao <sixiao@microsoft.com>
-Subject: run kernelci test on Microsoft Azure VMs
-Date: Tue, 3 Aug 2021 19:43:15 +0000
-Message-ID: 
- <CO1PR21MB1284A336E5D08818DC665D1EC4F09@CO1PR21MB1284.namprd21.prod.outlook.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: multipart/alternative;
-	boundary="_000_CO1PR21MB1284A336E5D08818DC665D1EC4F09CO1PR21MB1284namp_"
+References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
+ <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com> <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
+In-Reply-To: <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Mon, 5 Apr 2021 16:14:50 -0700
+Message-ID: <CAHRSSEwnBrT0wnc+-dA2FXvu1udstwArFRYtHu+f-79fZgd2JQ@mail.gmail.com>
+Subject: Re: can't access kernelci results
+Content-Type: multipart/alternative; boundary="00000000000026774f05bf41debd"
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>
-Cc: Johnson George <Johnson.George@microsoft.com>, Isaiah Duncan <isaiahduncan@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, khilman <khilman@baylibre.com>
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: kernelci@groups.io, Guenter Roeck <groeck@google.com>, Kevin Hilman <khilman@baylibre.com>
 
---_000_CO1PR21MB1284A336E5D08818DC665D1EC4F09CO1PR21MB1284namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+--00000000000026774f05bf41debd
+Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Working again. Thanks Guillaume.
 
-Johnson, Isaiah and me come from Microsoft Azure Linux System Group, and we=
- are looking at possible ways to run kernelci test on Azure to cover the Hy=
-perV virtual hardware environment.
+On Mon, Apr 5, 2021 at 1:58 PM Guillaume Tucker <
+guillaume.tucker@collabora.com> wrote:
 
-Looks like there are a lot of existing things we can leverage, including th=
-e builds from kernelci with various of config options, and with covered mul=
-tiple branches and trees.
-We are going to consume those kernels and run LISA (https://github.com/micr=
-osoft/lisa/) smoke test on Azure with different hardware configuration opti=
-ons (which are represented by various of Azure VM SKUs, for example, GPU, R=
-DMA, NVMe, etc VM SKUs). We are also looking for ways to report results bac=
-k to kernelci dashboard too.
-
-Currently we are interested in validating the kernel revisions from stable,=
- next and the HyperV tree (https://git.kernel.org/pub/scm/linux/kernel/git/=
-hyperv/linux.git).
-After we have run the smoke test in kernelci successfully, we will run more=
- applicable LISA test cases in kernelci.
-
-Can you please share any comments to this plan, and/or share any best pract=
-ice to onboard the Azure VM tests to kernelci please?
-
-Thanks,
-Simon
-
-
-
---_000_CO1PR21MB1284A336E5D08818DC665D1EC4F09CO1PR21MB1284namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:x=3D"urn:schemas-microsoft-com:office:excel" xmlns:m=3D"http://schema=
-s.microsoft.com/office/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html=
-40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+> On 05/04/2021 21:39, Guenter Roeck via groups.io wrote:
+> > On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via groups.io
+> > <tkjos=google.com@groups.io> wrote:
+> >>
+> >> I get errors when attempting to access
+> https://linux.kernelci.org/job/android/. Is this a known issue? Any ETA
+> for a fix?
+> >>
+> > Looks like the problem is not limited to android. I get error 500 for
+> > jobs and build results.
 >
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:DengXian;
-	panose-1:2 1 6 0 3 1 1 1 1 1;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:"\@DengXian";
-	panose-1:2 1 6 0 3 1 1 1 1 1;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-family:"Calibri",sans-serif;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:=
-break-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hello,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Johnson, Isaiah and me come from Microsoft Azure Lin=
-ux System Group, and we are looking at possible ways to run kernelci test o=
-n Azure to cover the HyperV virtual hardware environment.<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Looks like there are a lot of existing things we can=
- leverage, including the builds from kernelci with various of config option=
-s, and with covered multiple branches and trees.
-<o:p></o:p></p>
-<p class=3D"MsoNormal">We are going to consume those kernels and run LISA (=
-https://github.com/microsoft/lisa/) smoke test on Azure with different hard=
-ware configuration options (which are represented by various of Azure VM SK=
-Us, for example, GPU, RDMA, NVMe,
- etc VM SKUs). We are also looking for ways to report results back to kerne=
-lci dashboard too.<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Currently we are interested in validating the kernel=
- revisions from stable, next and the HyperV tree (https://git.kernel.org/pu=
-b/scm/linux/kernel/git/hyperv/linux.git).<o:p></o:p></p>
-<p class=3D"MsoNormal">After we have run the smoke test in kernelci success=
-fully, we will run more applicable LISA test cases in kernelci.<o:p></o:p><=
-/p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Can you please share any comments to this plan, and/=
-or share any best practice to onboard the Azure VM tests to kernelci please=
-?<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Thanks,<o:p></o:p></p>
-<p class=3D"MsoNormal">Simon<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</body>
-</html>
+> That was another case of the mongod service stopping, it's pretty
+> rare but has happened a couple of times before.  Things are now
+> back to normal, but we've missed a few results while it was down.
+> Sorry for the disruption.
+>
+> We've deployed a monitoring tool on some servers but not yet on
+> this one, it should happen soon so this kind of issues would be
+> detected much quicker.  We've also started looking into using a
+> Mongo database in Azure rather than a manual install to reduce
+> maintenance work.
+>
+> Best wishes,
+> Guillaume
+>
 
---_000_CO1PR21MB1284A336E5D08818DC665D1EC4F09CO1PR21MB1284namp_--
+--00000000000026774f05bf41debd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Working again. Thanks Guillaume.</div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Apr 5, 2021 =
+at 1:58 PM Guillaume Tucker &lt;<a href=3D"mailto:guillaume.tucker@collabor=
+a.com">guillaume.tucker@collabora.com</a>&gt; wrote:<br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">On 05/04/2021 21:39, Guenter Roeck via=
+ <a href=3D"http://groups.io" rel=3D"noreferrer" target=3D"_blank">groups.i=
+o</a> wrote:<br>
+&gt; On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via <a href=3D"http://groups=
+.io" rel=3D"noreferrer" target=3D"_blank">groups.io</a><br>
+&gt; &lt;tkjos=3D<a href=3D"mailto:google.com@groups.io" target=3D"_blank">=
+google.com@groups.io</a>&gt; wrote:<br>
+&gt;&gt;<br>
+&gt;&gt; I get errors when attempting to access <a href=3D"https://linux.ke=
+rnelci.org/job/android/" rel=3D"noreferrer" target=3D"_blank">https://linux=
+.kernelci.org/job/android/</a>. Is this a known issue? Any ETA for a fix?<b=
+r>
+&gt;&gt;<br>
+&gt; Looks like the problem is not limited to android. I get error 500 for<=
+br>
+&gt; jobs and build results.<br>
+<br>
+That was another case of the mongod service stopping, it&#39;s pretty<br>
+rare but has happened a couple of times before.=C2=A0 Things are now<br>
+back to normal, but we&#39;ve missed a few results while it was down.<br>
+Sorry for the disruption.<br>
+<br>
+We&#39;ve deployed a monitoring tool on some servers but not yet on<br>
+this one, it should happen soon so this kind of issues would be<br>
+detected much quicker.=C2=A0 We&#39;ve also started looking into using a<br=
+>
+Mongo database in Azure rather than a manual install to reduce<br>
+maintenance work.<br>
+<br>
+Best wishes,<br>
+Guillaume<br>
+</blockquote></div></div>
+
+--00000000000026774f05bf41debd--
