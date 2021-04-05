@@ -1,38 +1,24 @@
-Return-Path: <keescook@chromium.org>
-From: Kees Cook <keescook@chromium.org>
-Subject: [PATCH 2/9] selftests/lkdtm: Fix expected text for CR4 pinning
-Date: Wed, 23 Jun 2021 13:39:29 -0700
-Message-Id: <20210623203936.3151093-3-keescook@chromium.org>
-In-Reply-To: <20210623203936.3151093-1-keescook@chromium.org>
-References: <20210623203936.3151093-1-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
+In-Reply-To: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
+From: "Guenter Roeck" <groeck@google.com>
+Date: Mon, 5 Apr 2021 13:39:34 -0700
+Message-ID: <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
+Subject: Re: can't access kernelci results
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kees Cook <keescook@chromium.org>, stable@vger.kernel.org, Guillaume Tucker <guillaume.tucker@collabora.com>, David Laight <David.Laight@ACULAB.COM>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
+To: kernelci@groups.io, Todd Kjos <tkjos@google.com>
+Cc: Kevin Hilman <khilman@baylibre.com>
 
-The error text for CR4 pinning changed. Update the test to match.
+On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via groups.io
+<tkjos=google.com@groups.io> wrote:
+>
+> I get errors when attempting to access https://linux.kernelci.org/job/android/. Is this a known issue? Any ETA for a fix?
+>
+Looks like the problem is not limited to android. I get error 500 for
+jobs and build results.
 
-Fixes: a13b9d0b9721 ("x86/cpu: Use pinning mask for CR4 bits needing to be 0")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- tools/testing/selftests/lkdtm/tests.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Guenter
 
-diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-index 11ef159be0fd..a5fce7fd4520 100644
---- a/tools/testing/selftests/lkdtm/tests.txt
-+++ b/tools/testing/selftests/lkdtm/tests.txt
-@@ -11,7 +11,7 @@ CORRUPT_LIST_ADD list_add corruption
- CORRUPT_LIST_DEL list_del corruption
- STACK_GUARD_PAGE_LEADING
- STACK_GUARD_PAGE_TRAILING
--UNSET_SMEP CR4 bits went missing
-+UNSET_SMEP pinned CR4 bits changed:
- DOUBLE_FAULT
- CORRUPT_PAC
- UNALIGNED_LOAD_STORE_WRITE
--- 
-2.30.2
-
+> -Todd
+> 
