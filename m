@@ -1,42 +1,48 @@
-Return-Path: <ilias.apalodimas@linaro.org>
-Date: Mon, 15 Nov 2021 20:48:30 +0200
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: Re: [PATCH net-next v6] page_pool: disable dma mapping support for 32-bit arch with 64-bit DMA
-Message-ID: <YZKrfvt01uTosWc8@apalos.home>
-References: <20211013091920.1106-1-linyunsheng@huawei.com>
- <b9c0e7ef-a7a2-66ad-3a19-94cc545bd557@collabora.com>
- <1090744a-3de6-1dc2-5efe-b7caae45223a@huawei.com>
- <644e10ca-87b8-b553-db96-984c0b2c6da1@collabora.com>
- <93173400-1d37-09ed-57ef-931550b5a582@huawei.com>
- <YZJKNLEm6YTkygHM@apalos.home>
- <YZKgFqwJOIEObMg7@infradead.org>
+Date: Fri, 9 Apr 2021 19:04:41 +0100
+From: "Mark Brown" <broonie@kernel.org>
+Subject: Re: Please add/remove android kernels
+Message-ID: <20210409180441.GF4436@sirena.org.uk>
+References: <CAHRSSEzfP_NbK+b5M3_AAR7H7ujhdTdJ9W2JCiSMvNDZzGVykw@mail.gmail.com>
+ <CAHRSSEzpdAVDcn5C4yYEWn6c_rgaFSwp+JvT4MP9kv80MZV=3A@mail.gmail.com>
+ <CAHRSSEwrm5SVkuus8y5ycqp_tAQF4UOSo+hFLhVKKNu6s2b_KA@mail.gmail.com>
+ <CAHRSSEzc_UJx6BEKBLhJAY+KgW3Ya6QnMFPdyK0epgea_jwkAw@mail.gmail.com>
+ <CAHRSSEwZKaVu=7HaP3Pad5RiKaCpFTiAAXZZm1HbdZaVoJ0oRA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <YZKgFqwJOIEObMg7@infradead.org>
+In-Reply-To: <CAHRSSEwZKaVu=7HaP3Pad5RiKaCpFTiAAXZZm1HbdZaVoJ0oRA@mail.gmail.com>
+Content-Type: multipart/mixed; boundary="Groupsio=ApAFve6WYkapbAb0RQH6"
+List-ID: <kernelci.groups.io>
+To: kernelci@groups.io, tkjos@google.com
+Cc: Kevin Hilman <khilman@baylibre.com>
+
+--Groupsio=ApAFve6WYkapbAb0RQH6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-List-ID: <kernelci.groups.io>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org, hawk@kernel.org, akpm@linux-foundation.org, peterz@infradead.org, will@kernel.org, jhubbard@nvidia.com, yuzhao@google.com, mcroce@microsoft.com, fenghua.yu@intel.com, feng.tang@intel.com, jgg@ziepe.ca, aarcange@redhat.com, guro@fb.com, "kernelci@groups.io" <kernelci@groups.io>
 
-Hi Christoph,
+On Fri, Apr 09, 2021 at 09:22:33AM -0700, Todd Kjos via groups.io wrote:
+> Is email still the right way for me to request this sort of thing? Or
+> should I be self-serving by submitting the proposed changes myself?
 
-On Mon, Nov 15, 2021 at 09:59:50AM -0800, Christoph Hellwig wrote:
-> This is just popping out of nowhere on lkml, but yes ARM LPAE
-> uses a 64-bit dma_addr_t, as a 64-bit phys_addr_t implies that.
-> Same for x86-32 PAE and similar cases on MIPS and probably a few
-> other architectures.
-> 
-> But what is the actual problem with a 32-bit virtual and 64-bit
-> pysical/dma address?  That is a pretty common setup and absolutely
-> needs to be deal with in drivers and inrastructure.
+Email is still fine, but if you want to submit pull requests that'd also
+be fine - it'd cut out the middleman a bit and reduce the potential for
+transcription errors I guess.  In any case:
 
-page_pool (the API in question), apart from allocating memory can manage
-the mappings for you.  However while doing so it stores some parts (incl
-the dma addr) in struct page.  The code in there could be simplified if 
-we skipped support of the 'mapping' feature for 32-bit architectures with 
-64-bit DMA.  We thought no driver was using the mapping feature (on 32bits)
-and cleaned up that part, but apparently we missed 
-'32-bit -- LPAE -- page pool manages DMA mappings'
+   https://github.com/kernelci/kernelci-core/pull/641
 
-Regards
-/Ilias
+hopefully does everything (some of the removals had already happened).
+
+--Groupsio=ApAFve6WYkapbAb0RQH6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmBwlzkACgkQJNaLcl1U
+h9CSLgf9FQrouM8LMPQvMQ5lcMMEvZWDlSNrfs3vj8zBfv0RcAFT+2Ao/5uXVZpO
+ttHtVyHSGq0GCL8VOtKdKYX+X184A2rhYYGXmpZ+Dxc7E0MYyc8agmNYSlELbVV0
+GTNtI49jWK47vQSqS0YAgM22hQ3vOIGp/OzaXc6p5GYoVTzULcaedS6Q3d0ych5y
+wiQAoAgwDQQkj4qUznSHSAJvui/uKBR0FSSkdPGt6g/KTTsnSERzMFC3xYO9+HsQ
+zFa8ttND+OP6gWwzWqn6PGsRijbp73jzy8ZZWHYbNuztwQ6pp5MV2PZaV6BBFw+D
+MJPIodDmlpt0zc3tolOXZj4Bis2BNw==
+=r7tW
+-----END PGP SIGNATURE-----
+
+--Groupsio=ApAFve6WYkapbAb0RQH6--
