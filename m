@@ -1,80 +1,48 @@
-Return-Path: <nkondras@redhat.com>
-From: Nikolai Kondrashov <nkondras@redhat.com>
-Subject: #KCIDB engagement report
-Message-ID: <61ecb5a8-66fb-7ffd-fc30-79811e0e60db@redhat.com>
-Date: Thu, 15 Apr 2021 11:54:25 +0300
+Return-Path: <spbnick@gmail.com>
+From: "Nikolai Kondrashov" <spbnick@gmail.com>
+Subject: Sharing Compass CI results with KCIDB
+Message-ID: <96af4c4f-4fa4-2d59-1e8b-d286c319e314@gmail.com>
+Date: Wed, 21 Apr 2021 10:28:14 +0300
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
+To: Wu Fengguang <wufengguang@huawei.com>
+Cc: kernelci@groups.io
 
-Hi everyone,
+Hi Fengguang,
 
-Below is the monthly report on KCIDB* engagement. It lists various CI systems
-and their status of engagement with KCIDB, and once we get to that, will list
-developer engagement.
+Tim Bird has recommended I contact you regarding Compass CI, which you 
+presented at Linaro Connect this year.
 
-Lines with updates are marked with "!".
+We at Linux Foundation's KernelCI project are developing a system for 
+aggregating kernel testing reports into a single database, dashboard, and 
+e-mail notification system for use by kernel maintainers, developers, and 
+researchers. The system is called "KCIDB" and I presented it at the same 
+Linaro Connect this year:
 
-Main news are KernelCI now sending all production data, which boosted the
-average number of reports we're getting every day: over 50 revisions, some 10K
-builds, and around 100K tests.
+     https://connect.linaro.org/resources/lvc21/lvc21-310/
 
-We're also getting closer to a new release and starting reaching developers
-with e-mail notifications.
+We're already collecting data from six different kernel CI systems in our 
+prototype database and dashboard:
 
-     KernelCI native
-!       Sending (a lot of) production build and test results.
-!       https://staging.kernelci.org:3000/?var-origin=kernelci
+     https://kcidb.kernelci.org
 
-     Red Hat CKI
-         Sending production results.
-         https://staging.kernelci.org:3000/?var-origin=redhat
+We are working on reaching developers with our data next.
 
-     Google Syzbot
-         Sending a subset of production results (failures only).
-         https://staging.kernelci.org:3000/?var-origin=syzbot
+I was wondering if you're doing any testing of public kernel trees at Compass 
+CI, and if so, whether you'd be interested in contributing testing results to 
+KCIDB as well.
 
-     ARM
-         Sending production results.
-         Full commit hashes are currently not available, are spoofed, and don't
-         match the ones reported by others. To be fixed soon.
-         https://staging.kernelci.org:3000/?var-origin=arm
+We hope to make it easier for developers to access all testing resultsm and to 
+replace the multiple different e-mail reports and dashboards they're receiving 
+and accessing, with a single one, thus saving them time, effort, and 
+frustration. Having your data in the database, your requirements accounted for 
+in our implementation, and hearing your ideas of how this could be done, would 
+help us towards that goal.
 
-     Sony Fuego
-         Internal design in progress.
+Would you be interested in joining us and contributing your data to KCIDB?
 
-     Gentoo GKernelCI
-         Sending production results.
-         Only builds (a few architectures), no configs, no logs, and no tests
-         for now, but working on growing contributions.
-         https://staging.kernelci.org:3000/?var-origin=gkernelci
-
-     Intel 0day
-         Initial conversation concluded, general interest expressed,
-         no contact since.
-
-     Linaro
-         Sending (a lot of) Tuxsuite build results to "production" KCIDB.
-         https://staging.kernelci.org:3000/?var-origin=tuxsuite
-
-     TuxML
-         Initial contact in response to a report.
-         There's a plan to approach us and start work in the coming months.
-
-     Yocto Project
-         Initial contact in response to a report.
-         Would like to start sending build and test results, particularly for
-         older kernels. Would like to separate upstream commits from project
-         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
-
-Please respond with corrections or suggestions of other CI systems to contact.
-
+Thank you.
 Nick
-
-*KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
-  Foundation's KernelCI project:
-  https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
-
