@@ -1,82 +1,85 @@
-Mime-Version: 1.0
-Date: Fri, 21 May 2021 10:47:18 -0300
-Message-Id: <CBIYXUHIO2UY.Z2ZEJCSV5RES@notapiano>
-From: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
-Subject: [RESEND] Running libcamera on KernelCI to detect regressions in the media subsystem
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+Return-Path: <Nikolai.Kondrashov@redhat.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Subject: #KCIDB engagement report
+Message-ID: <5a9bf050-0671-3273-cc4f-1b131445c1fe@redhat.com>
+Date: Mon, 24 May 2021 10:50:43 +0300
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: libcamera-devel@lists.libcamera.org, linux-media@vger.kernel.org, kernelci@groups.io
-Cc: kernel@collabora.com
+To: kernelci@groups.io, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
 
-(Resending since the previous one didn't reach KernelCI, sorry for the nois=
-e)
+Hi everyone,
 
-Hello,
+Below is the monthly report on KCIDB* engagement. It lists various CI systems
+and their status of engagement with KCIDB, and once we get to that, will list
+developer engagement.
 
-as part of an effort to detect regressions in the kernel's media subsystem=
- that
-affects real use cases, I want to present a proposal and ask for feedback =
-and
-ideas.
+Lines with updates are marked with "!".
 
-Why?
-=3D=3D=3D=3D
+Not much news this time, as I had to tend to CKI matters, and had a couple 
+weeks of vacation. I still have to tie some loose CKI ends before I return to
+working on a new KCIDB release and reaching developers with e-mail
+notifications.
 
-There's been increasing interest in catching regressions in the kernel ear=
-ly, to
-minimize the impact on userspace, and the media subsystem is no different.=
- The
-main test tool there is v4l2-compliance [1], but its focus is to purely ex=
-ercise
-the uAPI. There's currently nothing in place to test real use cases.
+However, I did try to contact Huawei's Compass CI with an invitation for 
+cooperation, but got no response so far.
 
-What to do?
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+     KernelCI native
+         Sending (a lot of) production build and test results.
+         https://staging.kernelci.org:3000/?var-origin=kernelci
 
-libcamera [2] is a library that works on top of the Media Controller and V=
-4L2
-APIs and abstracts away the hardware-specific pipeline configuration from =
-the
-application. It is a real user of the v4l2 uAPI.
+     Red Hat CKI
+         Sending production results.
+         https://staging.kernelci.org:3000/?var-origin=redhat
 
-Just recently an initial implementation of a testing tool for libcamera, c=
-alled
-lc-compliance, was merged [3]. It currently has only a few tests, but they
-already test the capture of images for different purposes (raw images,
-high-quality video capturing, etc), which exercise different media topolog=
-y
-configurations and pixelformats.
+     Google Syzbot
+         Sending a subset of production results (failures only).
+         https://staging.kernelci.org:3000/?var-origin=syzbot
 
-Although from the point of view of libcamera lc-compliance is a compliance=
- tool,
-from v4l2's perspective it is a real use case test rather than a pure API
-compliance test like v4l2-compliance.
+     ARM
+         Sending production results.
+         Full commit hashes are currently not available, are spoofed, and don't
+         match the ones reported by others. To be fixed soon.
+         https://staging.kernelci.org:3000/?var-origin=arm
 
-I'm currently in the process of refactoring lc-compliance to have a better=
- test
-framework [4], and make it ready to be automatically run on a CI.
+     Sony Fuego
+         Internal design in progress.
 
-By having lc-compliance run on actual hardware at KernelCI, we can exercis=
-e real
-use cases of cameras and catch any kernel regressions that impact them as =
-soon
-as they happen.
+     Gentoo GKernelCI
+         Sending production results.
+         Only builds (a few architectures), no configs, no logs, and no tests
+         for now, but working on growing contributions.
+         https://staging.kernelci.org:3000/?var-origin=gkernelci
 
-Feedback
-=3D=3D=3D=3D=3D=3D=3D=3D
+     Intel 0day
+         Initial conversation concluded, general interest expressed,
+         no contact since.
 
-So, how can we best ensure we catch real use case regressions on the media
-subsystem using lc-compliance? What kind of information should be present =
-on the
-test results? Any other suggestions?
+     Linaro
+         Sending (a lot of) Tuxsuite build results to "production" KCIDB.
+         https://staging.kernelci.org:3000/?var-origin=tuxsuite
 
-Thanks,
-N=C3=ADcolas
+     TuxML
+         Initial contact in response to a report.
+         There's a plan to approach us and start work in the coming months.
 
+     Yocto Project
+         Initial contact in response to a report.
+         Would like to start sending build and test results, particularly for
+         older kernels. Would like to separate upstream commits from project
+         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
 
-[1] https://git.linuxtv.org/v4l-utils.git/tree/utils/v4l2-compliance
-[2] https://libcamera.org
-[3] https://git.linuxtv.org/libcamera.git/tree/src/lc-compliance
-[4] https://lists.libcamera.org/pipermail/libcamera-devel/2021-May/020382.=
-html
+!   Huawei Compass CI
+!       Sent a message to Fengguang Wu, who was presenting it at LVC 2021.
+!       No response so far.
+
+Please respond with corrections or suggestions of other CI systems to contact.
+
+Nick
+
+*KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
+  Foundation's KernelCI project:
+  https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
+
