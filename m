@@ -1,69 +1,40 @@
-Subject: Re: [PATCH v2] selftests/lkdtm: Use /bin/sh not $SHELL
-References: <20210619025834.2505201-1-keescook@chromium.org>
- <e958209b-8621-57ca-01d6-2e76b05dab4c@collabora.com>
- <202106230734.78A239D@keescook>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <b290a69c-6c24-a0f3-392b-33dc4985af2b@collabora.com>
-Date: Wed, 23 Jun 2021 16:19:41 +0100
+Return-Path: <keescook@chromium.org>
+From: Kees Cook <keescook@chromium.org>
+Subject: [PATCH 3/9] selftests/lkdtm: Fix expected text for free poison
+Date: Wed, 23 Jun 2021 13:39:30 -0700
+Message-Id: <20210623203936.3151093-4-keescook@chromium.org>
+In-Reply-To: <20210623203936.3151093-1-keescook@chromium.org>
+References: <20210623203936.3151093-1-keescook@chromium.org>
 MIME-Version: 1.0
-In-Reply-To: <202106230734.78A239D@keescook>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Kees Cook <keescook@chromium.org>
-Cc: Shuah Khan <shuah@kernel.org>, stable@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, "kernelci@groups.io" <kernelci@groups.io>, Collabora Kernel ML <kernel@collabora.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kees Cook <keescook@chromium.org>, Guillaume Tucker <guillaume.tucker@collabora.com>, David Laight <David.Laight@ACULAB.COM>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
 
-+kernelci +collabora
+Freed memory poisoning can be tested a few ways, so update the expected
+text to reflect the non-Oopsing alternative.
 
-On 23/06/2021 15:38, Kees Cook wrote:
-> On Wed, Jun 23, 2021 at 01:39:57PM +0100, Guillaume Tucker wrote:
->> On 19/06/2021 03:58, Kees Cook wrote:
->>> Some environments do not set $SHELL when running tests. There's no need
->>> to use $SHELL here anyway, so just replace it with hard-coded path
->>> instead. Additionally avoid using bash-isms in the command, so that
->>> regular /bin/sh can be used.
->>>
->>> Suggested-by: Guillaume Tucker <guillaume.tucker@collabora.com>
->>> Fixes: 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Kees Cook <keescook@chromium.org>
->>
->>
->> Tested-by: "kernelci.org bot" <bot@kernelci.org> 
->>
->>
->> Sample staging results with this patch applied on top of
->> next-20210622:
->>
->> https://staging.kernelci.org/test/plan/id/60d2dbdc3cfb88da0924bf41/
->>
->> Full log:
->>
->> https://storage.staging.kernelci.org/kernelci/staging-next/staging-next-20210623.0/x86_64/x86_64_defconfig+x86-chromebook+kselftest/clang-13/lab-collabora/kselftest-lkdtm-asus-C523NA-A20057-coral.html
-> 
-> Awesome! This looks great. :)
-> 
-> What's needed to build these kernels will different CONFIGs? I see a
-> bunch of things (commonly found in distro kernels) that are not set:
-> 
-> CONFIG_SLAB_FREELIST_HARDENED=y
-> CONFIG_FORTIFY_SOURCE=y
-> CONFIG_HARDENED_USERCOPY=y
-> # CONFIG_HARDENED_USERCOPY_FALLBACK is not set
-> 
-> Should I add these to the kselftest "config" file for LKDTM?
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ tools/testing/selftests/lkdtm/tests.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Yes, that's the current way to do it.
+diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
+index a5fce7fd4520..a94d4d8eeb5c 100644
+--- a/tools/testing/selftests/lkdtm/tests.txt
++++ b/tools/testing/selftests/lkdtm/tests.txt
+@@ -17,9 +17,9 @@ CORRUPT_PAC
+ UNALIGNED_LOAD_STORE_WRITE
+ #OVERWRITE_ALLOCATION Corrupts memory on failure
+ #WRITE_AFTER_FREE Corrupts memory on failure
+-READ_AFTER_FREE
++READ_AFTER_FREE call trace:|Memory correctly poisoned
+ #WRITE_BUDDY_AFTER_FREE Corrupts memory on failure
+-READ_BUDDY_AFTER_FREE
++READ_BUDDY_AFTER_FREE call trace:|Memory correctly poisoned
+ SLAB_FREE_DOUBLE
+ SLAB_FREE_CROSS
+ SLAB_FREE_PAGE
+-- 
+2.30.2
 
-KernelCI is simply concatenating all the config files found under
-tools/testing/selftests into one big kselftest fragment which is
-then merged with the defconfig.  We could enable arbitrary things
-for KernelCI but of course it's much better to not do that and
-stick to what's in the kernel tree.
-
-If you do send such a patch, please CC kernelci@groups.io or
-myself and we can give it a spin on staging.kernelci.org as well.
-
-Best wishes,
-Guillaume
