@@ -1,59 +1,69 @@
-Subject: Re: can't access kernelci results
-References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
- <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
- <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
- <CAHRSSEwnBrT0wnc+-dA2FXvu1udstwArFRYtHu+f-79fZgd2JQ@mail.gmail.com>
- <CAHRSSEwtCOjxp4-GVRD+31bASw3k+isZbguABmUX_V82tu8T=Q@mail.gmail.com>
- <285b11ad-40dc-eb88-427e-f32c4a422c85@collabora.com>
- <CAHRSSEy6nOgPG8LVcMh9e-rxkWpAZNOeC5B=L2KKuE66Qynv3Q@mail.gmail.com>
+Subject: Re: [PATCH v2] selftests/lkdtm: Use /bin/sh not $SHELL
+References: <20210619025834.2505201-1-keescook@chromium.org>
+ <e958209b-8621-57ca-01d6-2e76b05dab4c@collabora.com>
+ <202106230734.78A239D@keescook>
 From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <b12def92-d4cc-ec89-9e6d-d3e710970ccd@collabora.com>
-Date: Tue, 22 Jun 2021 16:16:56 +0100
+Message-ID: <b290a69c-6c24-a0f3-392b-33dc4985af2b@collabora.com>
+Date: Wed, 23 Jun 2021 16:19:41 +0100
 MIME-Version: 1.0
-In-Reply-To: <CAHRSSEy6nOgPG8LVcMh9e-rxkWpAZNOeC5B=L2KKuE66Qynv3Q@mail.gmail.com>
+In-Reply-To: <202106230734.78A239D@keescook>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Todd Kjos <tkjos@google.com>, =?UTF-8?B?TWljaGHFgiBHYcWCa2E=?= <michal.galka@collabora.com>
-Cc: kernelci@groups.io, Guenter Roeck <groeck@google.com>, Kevin Hilman <khilman@baylibre.com>
+To: Kees Cook <keescook@chromium.org>
+Cc: Shuah Khan <shuah@kernel.org>, stable@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, "kernelci@groups.io" <kernelci@groups.io>, Collabora Kernel ML <kernel@collabora.com>
 
-On 22/06/2021 16:07, Todd Kjos wrote:
-> Hmm, it's still=C2=A0not working for me -- did it break again?
++kernelci +collabora
 
-Yes there was an OOM issue:
+On 23/06/2021 15:38, Kees Cook wrote:
+> On Wed, Jun 23, 2021 at 01:39:57PM +0100, Guillaume Tucker wrote:
+>> On 19/06/2021 03:58, Kees Cook wrote:
+>>> Some environments do not set $SHELL when running tests. There's no need
+>>> to use $SHELL here anyway, so just replace it with hard-coded path
+>>> instead. Additionally avoid using bash-isms in the command, so that
+>>> regular /bin/sh can be used.
+>>>
+>>> Suggested-by: Guillaume Tucker <guillaume.tucker@collabora.com>
+>>> Fixes: 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>>
+>>
+>> Tested-by: "kernelci.org bot" <bot@kernelci.org> 
+>>
+>>
+>> Sample staging results with this patch applied on top of
+>> next-20210622:
+>>
+>> https://staging.kernelci.org/test/plan/id/60d2dbdc3cfb88da0924bf41/
+>>
+>> Full log:
+>>
+>> https://storage.staging.kernelci.org/kernelci/staging-next/staging-next-20210623.0/x86_64/x86_64_defconfig+x86-chromebook+kselftest/clang-13/lab-collabora/kselftest-lkdtm-asus-C523NA-A20057-coral.html
+> 
+> Awesome! This looks great. :)
+> 
+> What's needed to build these kernels will different CONFIGs? I see a
+> bunch of things (commonly found in distro kernels) that are not set:
+> 
+> CONFIG_SLAB_FREELIST_HARDENED=y
+> CONFIG_FORTIFY_SOURCE=y
+> CONFIG_HARDENED_USERCOPY=y
+> # CONFIG_HARDENED_USERCOPY_FALLBACK is not set
+> 
+> Should I add these to the kselftest "config" file for LKDTM?
 
-[4316410.416514] Killed process 20620 (mongod) total-vm:20171340kB, anon-r=
-ss:18654740kB, file-rss:0kB, shmem-rss:0kB
-[4316412.060511] oom_reaper: reaped process 20620 (mongod), now anon-rss:0=
-kB, file-rss:0kB, shmem-rss:0kB
+Yes, that's the current way to do it.
 
-We're looking into moving the Mongo DB instance to the cloud in
-Azure.  Hopefully that will save us fixing this kind of
-maintenance issues.  Meanwhile, we should take a look and see if
-there's some config option to limit the amount of RAM used by
-Mongo DB to work around the problem.
+KernelCI is simply concatenating all the config files found under
+tools/testing/selftests into one big kselftest fragment which is
+then merged with the defconfig.  We could enable arbitrary things
+for KernelCI but of course it's much better to not do that and
+stick to what's in the kernel tree.
+
+If you do send such a patch, please CC kernelci@groups.io or
+myself and we can give it a spin on staging.kernelci.org as well.
 
 Best wishes,
 Guillaume
-
-
-> On Tue, Jun 22, 2021 at 2:43 AM Micha=C5=82 Ga=C5=82ka <michal.galka@col=
-labora.com <mailto:michal.galka@collabora.com>> wrote:
->=20
->     On 21.06.2021 21:59, Todd Kjos via groups.io <http://groups.io> wrot=
-e:
->     > I'm having this issue again (can't access kernelci results
->     > at=C2=A0https://linux.kernelci.org/job/android/
->     > <https://linux.kernelci.org/job/android/>). Is the mongod service =
-borked
->     > again?
->     >
->=20
->     Yes, there was an issue with mongod service again. It's working now,
->     celery processed pending tasks and everything seems responsive.
->=20
->     Thanks,
->     Micha=C5=82
->=20
-
