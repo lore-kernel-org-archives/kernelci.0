@@ -1,8 +1,8 @@
 Return-Path: <keescook@chromium.org>
 From: Kees Cook <keescook@chromium.org>
-Subject: [PATCH 9/9] lkdtm/heap: Add init_on_alloc tests
-Date: Wed, 23 Jun 2021 13:39:36 -0700
-Message-Id: <20210623203936.3151093-10-keescook@chromium.org>
+Subject: [PATCH 7/9] lkdtm: Add CONFIG hints in errors where possible
+Date: Wed, 23 Jun 2021 13:39:34 -0700
+Message-Id: <20210623203936.3151093-8-keescook@chromium.org>
 In-Reply-To: <20210623203936.3151093-1-keescook@chromium.org>
 References: <20210623203936.3151093-1-keescook@chromium.org>
 MIME-Version: 1.0
@@ -11,142 +11,286 @@ List-ID: <kernelci.groups.io>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Kees Cook <keescook@chromium.org>, Guillaume Tucker <guillaume.tucker@collabora.com>, David Laight <David.Laight@ACULAB.COM>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
 
-Add SLAB and page allocator tests for init_on_alloc. Testing for
-init_on_free was already happening via the poisoning tests.
+For various failure conditions, try to include some details about where
+to look for reasons about the failure.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/misc/lkdtm/core.c               |  2 +
- drivers/misc/lkdtm/heap.c               | 65 +++++++++++++++++++++++++
- drivers/misc/lkdtm/lkdtm.h              |  2 +
- tools/testing/selftests/lkdtm/config    |  1 +
- tools/testing/selftests/lkdtm/tests.txt |  2 +
- 5 files changed, 72 insertions(+)
+ drivers/misc/lkdtm/bugs.c                     |  8 ++-
+ drivers/misc/lkdtm/cfi.c                      |  3 +-
+ drivers/misc/lkdtm/core.c                     | 51 +++++++++++++++++++
+ drivers/misc/lkdtm/fortify.c                  |  3 +-
+ drivers/misc/lkdtm/heap.c                     | 10 ++--
+ drivers/misc/lkdtm/lkdtm.h                    | 41 +++++++++++++++
+ drivers/misc/lkdtm/stackleak.c                |  4 +-
+ drivers/misc/lkdtm/usercopy.c                 |  7 ++-
+ .../testing/selftests/lkdtm/stack-entropy.sh  |  1 +
+ 9 files changed, 117 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index c185ae4719c3..9dda87c6b54a 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -127,6 +127,8 @@ static const struct crashtype crashtypes[] = {
- 	CRASHTYPE(READ_AFTER_FREE),
- 	CRASHTYPE(WRITE_BUDDY_AFTER_FREE),
- 	CRASHTYPE(READ_BUDDY_AFTER_FREE),
-+	CRASHTYPE(SLAB_INIT_ON_ALLOC),
-+	CRASHTYPE(BUDDY_INIT_ON_ALLOC),
- 	CRASHTYPE(SLAB_FREE_DOUBLE),
- 	CRASHTYPE(SLAB_FREE_CROSS),
- 	CRASHTYPE(SLAB_FREE_PAGE),
-diff --git a/drivers/misc/lkdtm/heap.c b/drivers/misc/lkdtm/heap.c
-index a3bb0577ed8b..3d9aae5821a0 100644
---- a/drivers/misc/lkdtm/heap.c
-+++ b/drivers/misc/lkdtm/heap.c
-@@ -174,6 +174,71 @@ void lkdtm_READ_BUDDY_AFTER_FREE(void)
- 	kfree(val);
+diff --git a/drivers/misc/lkdtm/bugs.c b/drivers/misc/lkdtm/bugs.c
+index 9ff02bdf3153..7c7335506c45 100644
+--- a/drivers/misc/lkdtm/bugs.c
++++ b/drivers/misc/lkdtm/bugs.c
+@@ -303,8 +303,10 @@ void lkdtm_CORRUPT_LIST_ADD(void)
+ 
+ 	if (target[0] == NULL && target[1] == NULL)
+ 		pr_err("Overwrite did not happen, but no BUG?!\n");
+-	else
++	else {
+ 		pr_err("list_add() corruption not detected!\n");
++		pr_expected_config(CONFIG_DEBUG_LIST);
++	}
  }
  
-+void lkdtm_SLAB_INIT_ON_ALLOC(void)
+ void lkdtm_CORRUPT_LIST_DEL(void)
+@@ -328,8 +330,10 @@ void lkdtm_CORRUPT_LIST_DEL(void)
+ 
+ 	if (target[0] == NULL && target[1] == NULL)
+ 		pr_err("Overwrite did not happen, but no BUG?!\n");
+-	else
++	else {
+ 		pr_err("list_del() corruption not detected!\n");
++		pr_expected_config(CONFIG_DEBUG_LIST);
++	}
+ }
+ 
+ /* Test that VMAP_STACK is actually allocating with a leading guard page */
+diff --git a/drivers/misc/lkdtm/cfi.c b/drivers/misc/lkdtm/cfi.c
+index e73ebdbfa806..c9aeddef1044 100644
+--- a/drivers/misc/lkdtm/cfi.c
++++ b/drivers/misc/lkdtm/cfi.c
+@@ -38,5 +38,6 @@ void lkdtm_CFI_FORWARD_PROTO(void)
+ 	func = (void *)lkdtm_increment_int;
+ 	func(&called_count);
+ 
+-	pr_info("Fail: survived mismatched prototype function call!\n");
++	pr_err("FAIL: survived mismatched prototype function call!\n");
++	pr_expected_config(CONFIG_CFI_CLANG);
+ }
+diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+index 2c89fc18669f..c185ae4719c3 100644
+--- a/drivers/misc/lkdtm/core.c
++++ b/drivers/misc/lkdtm/core.c
+@@ -26,6 +26,7 @@
+ #include <linux/init.h>
+ #include <linux/slab.h>
+ #include <linux/debugfs.h>
++#include <linux/init.h>
+ 
+ #define DEFAULT_COUNT 10
+ 
+@@ -398,6 +399,56 @@ static ssize_t direct_entry(struct file *f, const char __user *user_buf,
+ 	return count;
+ }
+ 
++#ifndef MODULE
++/*
++ * To avoid needing to export parse_args(), just don't use this code
++ * when LKDTM is built as a module.
++ */
++struct check_cmdline_args {
++	const char *param;
++	int value;
++};
++
++static int lkdtm_parse_one(char *param, char *val,
++			   const char *unused, void *arg)
 +{
-+	u8 *first;
-+	u8 *val;
++	struct check_cmdline_args *args = arg;
 +
-+	first = kmalloc(512, GFP_KERNEL);
-+	if (!first) {
-+		pr_info("Unable to allocate 512 bytes the first time.\n");
-+		return;
-+	}
++	/* short circuit if we already found a value. */
++	if (args->value != -ESRCH)
++		return 0;
++	if (strncmp(param, args->param, strlen(args->param)) == 0) {
++		bool bool_result;
++		int ret;
 +
-+	memset(first, 0xAB, 512);
-+	kfree(first);
-+
-+	val = kmalloc(512, GFP_KERNEL);
-+	if (!val) {
-+		pr_info("Unable to allocate 512 bytes the second time.\n");
-+		return;
++		ret = kstrtobool(val, &bool_result);
++		if (ret == 0)
++			args->value = bool_result;
 +	}
-+	if (val != first) {
-+		pr_warn("Reallocation missed clobbered memory.\n");
-+	}
-+
-+	if (memchr(val, 0xAB, 512) == NULL) {
-+		pr_info("Memory appears initialized (%x, no earlier values)\n", *val);
-+	} else {
-+		pr_err("FAIL: Slab was not initialized\n");
-+		pr_expected_config_param(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, "init_on_alloc");
-+	}
-+	kfree(val);
++	return 0;
 +}
 +
-+void lkdtm_BUDDY_INIT_ON_ALLOC(void)
++int lkdtm_check_bool_cmdline(const char *param)
 +{
-+	u8 *first;
-+	u8 *val;
++	char *command_line;
++	struct check_cmdline_args args = {
++		.param = param,
++		.value = -ESRCH,
++	};
 +
-+	first = (u8 *)__get_free_page(GFP_KERNEL);
-+	if (!first) {
-+		pr_info("Unable to allocate first free page\n");
-+		return;
-+	}
++	command_line = kstrdup(saved_command_line, GFP_KERNEL);
++	if (!command_line)
++		return -ENOMEM;
 +
-+	memset(first, 0xAB, PAGE_SIZE);
-+	free_page((unsigned long)first);
++	parse_args("Setting sysctl args", command_line,
++		   NULL, 0, -1, -1, &args, lkdtm_parse_one);
 +
-+	val = (u8 *)__get_free_page(GFP_KERNEL);
-+	if (!val) {
-+		pr_info("Unable to allocate second free page\n");
-+		return;
-+	}
++	kfree(command_line);
 +
-+	if (val != first) {
-+		pr_warn("Reallocation missed clobbered memory.\n");
-+	}
-+
-+	if (memchr(val, 0xAB, PAGE_SIZE) == NULL) {
-+		pr_info("Memory appears initialized (%x, no earlier values)\n", *val);
-+	} else {
-+		pr_err("FAIL: Slab was not initialized\n");
-+		pr_expected_config_param(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, "init_on_alloc");
-+	}
-+	free_page((unsigned long)val);
++	return args.value;
 +}
++#endif
 +
- void lkdtm_SLAB_FREE_DOUBLE(void)
- {
- 	int *val;
+ static struct dentry *lkdtm_debugfs_root;
+ 
+ static int __init lkdtm_module_init(void)
+diff --git a/drivers/misc/lkdtm/fortify.c b/drivers/misc/lkdtm/fortify.c
+index faf29cf04baa..0f51d31b57ca 100644
+--- a/drivers/misc/lkdtm/fortify.c
++++ b/drivers/misc/lkdtm/fortify.c
+@@ -76,7 +76,8 @@ void lkdtm_FORTIFIED_STRSCPY(void)
+ 	 */
+ 	strscpy(dst, src, strlen(src));
+ 
+-	pr_warn("FAIL: No overflow in above strscpy()\n");
++	pr_err("FAIL: strscpy() overflow not detected!\n");
++	pr_expected_config(CONFIG_FORTIFY_SOURCE);
+ 
+ 	kfree(src);
+ }
+diff --git a/drivers/misc/lkdtm/heap.c b/drivers/misc/lkdtm/heap.c
+index 36be5e353cd0..a3bb0577ed8b 100644
+--- a/drivers/misc/lkdtm/heap.c
++++ b/drivers/misc/lkdtm/heap.c
+@@ -109,9 +109,10 @@ void lkdtm_READ_AFTER_FREE(void)
+ 	if (saw != *val) {
+ 		/* Good! Poisoning happened, so declare a win. */
+ 		pr_info("Memory correctly poisoned (%x)\n", saw);
+-		BUG();
++	} else {
++		pr_err("FAIL: Memory was not poisoned!\n");
++		pr_expected_config_param(CONFIG_INIT_ON_FREE_DEFAULT_ON, "init_on_free");
+ 	}
+-	pr_info("Memory was not poisoned\n");
+ 
+ 	kfree(val);
+ }
+@@ -165,9 +166,10 @@ void lkdtm_READ_BUDDY_AFTER_FREE(void)
+ 	if (saw != *val) {
+ 		/* Good! Poisoning happened, so declare a win. */
+ 		pr_info("Memory correctly poisoned (%x)\n", saw);
+-		BUG();
++	} else {
++		pr_err("FAIL: Buddy page was not poisoned!\n");
++		pr_expected_config_param(CONFIG_INIT_ON_FREE_DEFAULT_ON, "init_on_free");
+ 	}
+-	pr_info("Buddy page was not poisoned\n");
+ 
+ 	kfree(val);
+ }
 diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index e491bc571808..6a30b60519f3 100644
+index c6baf4f1e1db..e491bc571808 100644
 --- a/drivers/misc/lkdtm/lkdtm.h
 +++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -86,6 +86,8 @@ void lkdtm_WRITE_AFTER_FREE(void);
- void lkdtm_READ_AFTER_FREE(void);
- void lkdtm_WRITE_BUDDY_AFTER_FREE(void);
- void lkdtm_READ_BUDDY_AFTER_FREE(void);
-+void lkdtm_SLAB_INIT_ON_ALLOC(void);
-+void lkdtm_BUDDY_INIT_ON_ALLOC(void);
- void lkdtm_SLAB_FREE_DOUBLE(void);
- void lkdtm_SLAB_FREE_CROSS(void);
- void lkdtm_SLAB_FREE_PAGE(void);
-diff --git a/tools/testing/selftests/lkdtm/config b/tools/testing/selftests/lkdtm/config
-index 849799bcfa95..013446e87f1f 100644
---- a/tools/testing/selftests/lkdtm/config
-+++ b/tools/testing/selftests/lkdtm/config
-@@ -5,3 +5,4 @@ CONFIG_FORTIFY_SOURCE=y
- CONFIG_HARDENED_USERCOPY=y
- # CONFIG_HARDENED_USERCOPY_FALLBACK is not set
- CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT=y
-+CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y
-diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-index 30080cc15623..846cfd508d3c 100644
---- a/tools/testing/selftests/lkdtm/tests.txt
-+++ b/tools/testing/selftests/lkdtm/tests.txt
-@@ -21,6 +21,8 @@ VMALLOC_LINEAR_OVERFLOW
- READ_AFTER_FREE call trace:|Memory correctly poisoned
- #WRITE_BUDDY_AFTER_FREE Corrupts memory on failure
- READ_BUDDY_AFTER_FREE call trace:|Memory correctly poisoned
-+SLAB_INIT_ON_ALLOC Memory appears initialized
-+BUDDY_INIT_ON_ALLOC Memory appears initialized
- SLAB_FREE_DOUBLE
- SLAB_FREE_CROSS
- SLAB_FREE_PAGE
+@@ -6,6 +6,47 @@
+ 
+ #include <linux/kernel.h>
+ 
++#define pr_expected_config(kconfig)				\
++{								\
++	if (IS_ENABLED(kconfig)) 				\
++		pr_err("Unexpected! This kernel was built with " #kconfig "=y\n"); \
++	else							\
++		pr_warn("This is probably expected, since this kernel was built *without* " #kconfig "=y\n"); \
++}
++
++#ifndef MODULE
++int lkdtm_check_bool_cmdline(const char *param);
++#define pr_expected_config_param(kconfig, param)		\
++{								\
++	if (IS_ENABLED(kconfig)) {				\
++		switch (lkdtm_check_bool_cmdline(param)) {	\
++		case 0:						\
++			pr_warn("This is probably expected, since this kernel was built with " #kconfig "=y but booted with '" param "=N'\n"); \
++			break;					\
++		case 1:						\
++			pr_err("Unexpected! This kernel was built with " #kconfig "=y and booted with '" param "=Y'\n"); \
++			break;					\
++		default:					\
++			pr_err("Unexpected! This kernel was built with " #kconfig "=y (and booted without '" param "' specified)\n"); \
++		}						\
++	} else {						\
++		switch (lkdtm_check_bool_cmdline(param)) {	\
++		case 0:						\
++			pr_warn("This is probably expected, as kernel was built *without* " #kconfig "=y and booted with '" param "=N'\n"); \
++			break;					\
++		case 1:						\
++			pr_err("Unexpected! This kernel was built *without* " #kconfig "=y but booted with '" param "=Y'\n"); \
++			break;					\
++		default:					\
++			pr_err("This is probably expected, since this kernel was built *without* " #kconfig "=y (and booted without '" param "' specified)\n"); \
++			break;					\
++		}						\
++	}							\
++}
++#else
++#define pr_expected_config_param(kconfig, param) pr_expected_config(kconfig)
++#endif
++
+ /* bugs.c */
+ void __init lkdtm_bugs_init(int *recur_param);
+ void lkdtm_PANIC(void);
+diff --git a/drivers/misc/lkdtm/stackleak.c b/drivers/misc/lkdtm/stackleak.c
+index d1a5c0705be3..00db21ff115e 100644
+--- a/drivers/misc/lkdtm/stackleak.c
++++ b/drivers/misc/lkdtm/stackleak.c
+@@ -74,8 +74,8 @@ void lkdtm_STACKLEAK_ERASING(void)
+ 
+ end:
+ 	if (test_failed) {
+-		pr_err("FAIL: the thread stack is NOT properly erased\n");
+-		dump_stack();
++		pr_err("FAIL: the thread stack is NOT properly erased!\n");
++		pr_expected_config(CONFIG_GCC_PLUGIN_STACKLEAK);
+ 	} else {
+ 		pr_info("OK: the rest of the thread stack is properly erased\n");
+ 	}
+diff --git a/drivers/misc/lkdtm/usercopy.c b/drivers/misc/lkdtm/usercopy.c
+index 15d220ef35a5..9161ce7ed47a 100644
+--- a/drivers/misc/lkdtm/usercopy.c
++++ b/drivers/misc/lkdtm/usercopy.c
+@@ -173,6 +173,8 @@ static void do_usercopy_heap_size(bool to_user)
+ 			goto free_user;
+ 		}
+ 	}
++	pr_err("FAIL: bad usercopy not detected!\n");
++	pr_expected_config_param(CONFIG_HARDENED_USERCOPY, "hardened_usercopy");
+ 
+ free_user:
+ 	vm_munmap(user_addr, PAGE_SIZE);
+@@ -248,6 +250,8 @@ static void do_usercopy_heap_whitelist(bool to_user)
+ 			goto free_user;
+ 		}
+ 	}
++	pr_err("FAIL: bad usercopy not detected!\n");
++	pr_expected_config_param(CONFIG_HARDENED_USERCOPY, "hardened_usercopy");
+ 
+ free_user:
+ 	vm_munmap(user_alloc, PAGE_SIZE);
+@@ -319,7 +323,8 @@ void lkdtm_USERCOPY_KERNEL(void)
+ 		pr_warn("copy_to_user failed, but lacked Oops\n");
+ 		goto free_user;
+ 	}
+-	pr_err("FAIL: survived bad copy_to_user()\n");
++	pr_err("FAIL: bad copy_to_user() not detected!\n");
++	pr_expected_config_param(CONFIG_HARDENED_USERCOPY, "hardened_usercopy");
+ 
+ free_user:
+ 	vm_munmap(user_addr, PAGE_SIZE);
+diff --git a/tools/testing/selftests/lkdtm/stack-entropy.sh b/tools/testing/selftests/lkdtm/stack-entropy.sh
+index b1b8a5097cbb..1b4d95d575f8 100755
+--- a/tools/testing/selftests/lkdtm/stack-entropy.sh
++++ b/tools/testing/selftests/lkdtm/stack-entropy.sh
+@@ -30,6 +30,7 @@ rm -f "$log"
+ 
+ # We would expect any functional stack randomization to be at least 5 bits.
+ if [ "$bits" -lt 5 ]; then
++	echo "Stack entropy is low! Booted without 'randomize_kstack_offset=y'?"
+ 	exit 1
+ else
+ 	exit 0
 -- 
 2.30.2
 
