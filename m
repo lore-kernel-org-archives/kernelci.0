@@ -1,41 +1,152 @@
 Return-Path: <keescook@chromium.org>
 From: Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6/9] lkdtm: Enable DOUBLE_FAULT on all architectures
-Date: Wed, 23 Jun 2021 13:39:33 -0700
-Message-Id: <20210623203936.3151093-7-keescook@chromium.org>
+Subject: [PATCH 9/9] lkdtm/heap: Add init_on_alloc tests
+Date: Wed, 23 Jun 2021 13:39:36 -0700
+Message-Id: <20210623203936.3151093-10-keescook@chromium.org>
 In-Reply-To: <20210623203936.3151093-1-keescook@chromium.org>
 References: <20210623203936.3151093-1-keescook@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kees Cook <keescook@chromium.org>, stable@vger.kernel.org, Guillaume Tucker <guillaume.tucker@collabora.com>, David Laight <David.Laight@ACULAB.COM>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>, Guillaume Tucker <guillaume.tucker@collabora.com>, David Laight <David.Laight@ACULAB.COM>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
 
-Where feasible, I prefer to have all tests visible on all architectures,
-but to have them wired to XFAIL. DOUBLE_FAIL was set up to XFAIL, but
-wasn't actually being added to the test list.
+Add SLAB and page allocator tests for init_on_alloc. Testing for
+init_on_free was already happening via the poisoning tests.
 
-Fixes: cea23efb4de2 ("lkdtm/bugs: Make double-fault test always available")
-Cc: stable@vger.kernel.org
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/misc/lkdtm/core.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/misc/lkdtm/core.c               |  2 +
+ drivers/misc/lkdtm/heap.c               | 65 +++++++++++++++++++++++++
+ drivers/misc/lkdtm/lkdtm.h              |  2 +
+ tools/testing/selftests/lkdtm/config    |  1 +
+ tools/testing/selftests/lkdtm/tests.txt |  2 +
+ 5 files changed, 72 insertions(+)
 
 diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index 645b31e98c77..2c89fc18669f 100644
+index c185ae4719c3..9dda87c6b54a 100644
 --- a/drivers/misc/lkdtm/core.c
 +++ b/drivers/misc/lkdtm/core.c
-@@ -178,9 +178,7 @@ static const struct crashtype crashtypes[] = {
- 	CRASHTYPE(STACKLEAK_ERASING),
- 	CRASHTYPE(CFI_FORWARD_PROTO),
- 	CRASHTYPE(FORTIFIED_STRSCPY),
--#ifdef CONFIG_X86_32
- 	CRASHTYPE(DOUBLE_FAULT),
--#endif
- #ifdef CONFIG_PPC_BOOK3S_64
- 	CRASHTYPE(PPC_SLB_MULTIHIT),
- #endif
+@@ -127,6 +127,8 @@ static const struct crashtype crashtypes[] = {
+ 	CRASHTYPE(READ_AFTER_FREE),
+ 	CRASHTYPE(WRITE_BUDDY_AFTER_FREE),
+ 	CRASHTYPE(READ_BUDDY_AFTER_FREE),
++	CRASHTYPE(SLAB_INIT_ON_ALLOC),
++	CRASHTYPE(BUDDY_INIT_ON_ALLOC),
+ 	CRASHTYPE(SLAB_FREE_DOUBLE),
+ 	CRASHTYPE(SLAB_FREE_CROSS),
+ 	CRASHTYPE(SLAB_FREE_PAGE),
+diff --git a/drivers/misc/lkdtm/heap.c b/drivers/misc/lkdtm/heap.c
+index a3bb0577ed8b..3d9aae5821a0 100644
+--- a/drivers/misc/lkdtm/heap.c
++++ b/drivers/misc/lkdtm/heap.c
+@@ -174,6 +174,71 @@ void lkdtm_READ_BUDDY_AFTER_FREE(void)
+ 	kfree(val);
+ }
+ 
++void lkdtm_SLAB_INIT_ON_ALLOC(void)
++{
++	u8 *first;
++	u8 *val;
++
++	first = kmalloc(512, GFP_KERNEL);
++	if (!first) {
++		pr_info("Unable to allocate 512 bytes the first time.\n");
++		return;
++	}
++
++	memset(first, 0xAB, 512);
++	kfree(first);
++
++	val = kmalloc(512, GFP_KERNEL);
++	if (!val) {
++		pr_info("Unable to allocate 512 bytes the second time.\n");
++		return;
++	}
++	if (val != first) {
++		pr_warn("Reallocation missed clobbered memory.\n");
++	}
++
++	if (memchr(val, 0xAB, 512) == NULL) {
++		pr_info("Memory appears initialized (%x, no earlier values)\n", *val);
++	} else {
++		pr_err("FAIL: Slab was not initialized\n");
++		pr_expected_config_param(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, "init_on_alloc");
++	}
++	kfree(val);
++}
++
++void lkdtm_BUDDY_INIT_ON_ALLOC(void)
++{
++	u8 *first;
++	u8 *val;
++
++	first = (u8 *)__get_free_page(GFP_KERNEL);
++	if (!first) {
++		pr_info("Unable to allocate first free page\n");
++		return;
++	}
++
++	memset(first, 0xAB, PAGE_SIZE);
++	free_page((unsigned long)first);
++
++	val = (u8 *)__get_free_page(GFP_KERNEL);
++	if (!val) {
++		pr_info("Unable to allocate second free page\n");
++		return;
++	}
++
++	if (val != first) {
++		pr_warn("Reallocation missed clobbered memory.\n");
++	}
++
++	if (memchr(val, 0xAB, PAGE_SIZE) == NULL) {
++		pr_info("Memory appears initialized (%x, no earlier values)\n", *val);
++	} else {
++		pr_err("FAIL: Slab was not initialized\n");
++		pr_expected_config_param(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, "init_on_alloc");
++	}
++	free_page((unsigned long)val);
++}
++
+ void lkdtm_SLAB_FREE_DOUBLE(void)
+ {
+ 	int *val;
+diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
+index e491bc571808..6a30b60519f3 100644
+--- a/drivers/misc/lkdtm/lkdtm.h
++++ b/drivers/misc/lkdtm/lkdtm.h
+@@ -86,6 +86,8 @@ void lkdtm_WRITE_AFTER_FREE(void);
+ void lkdtm_READ_AFTER_FREE(void);
+ void lkdtm_WRITE_BUDDY_AFTER_FREE(void);
+ void lkdtm_READ_BUDDY_AFTER_FREE(void);
++void lkdtm_SLAB_INIT_ON_ALLOC(void);
++void lkdtm_BUDDY_INIT_ON_ALLOC(void);
+ void lkdtm_SLAB_FREE_DOUBLE(void);
+ void lkdtm_SLAB_FREE_CROSS(void);
+ void lkdtm_SLAB_FREE_PAGE(void);
+diff --git a/tools/testing/selftests/lkdtm/config b/tools/testing/selftests/lkdtm/config
+index 849799bcfa95..013446e87f1f 100644
+--- a/tools/testing/selftests/lkdtm/config
++++ b/tools/testing/selftests/lkdtm/config
+@@ -5,3 +5,4 @@ CONFIG_FORTIFY_SOURCE=y
+ CONFIG_HARDENED_USERCOPY=y
+ # CONFIG_HARDENED_USERCOPY_FALLBACK is not set
+ CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT=y
++CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y
+diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
+index 30080cc15623..846cfd508d3c 100644
+--- a/tools/testing/selftests/lkdtm/tests.txt
++++ b/tools/testing/selftests/lkdtm/tests.txt
+@@ -21,6 +21,8 @@ VMALLOC_LINEAR_OVERFLOW
+ READ_AFTER_FREE call trace:|Memory correctly poisoned
+ #WRITE_BUDDY_AFTER_FREE Corrupts memory on failure
+ READ_BUDDY_AFTER_FREE call trace:|Memory correctly poisoned
++SLAB_INIT_ON_ALLOC Memory appears initialized
++BUDDY_INIT_ON_ALLOC Memory appears initialized
+ SLAB_FREE_DOUBLE
+ SLAB_FREE_CROSS
+ SLAB_FREE_PAGE
 -- 
 2.30.2
 
