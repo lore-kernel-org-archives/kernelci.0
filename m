@@ -1,24 +1,49 @@
+Return-Path: <keescook@chromium.org>
+From: Kees Cook <keescook@chromium.org>
+Subject: [PATCH 0/9] LKDTM: Improvements for kernelci.org
+Date: Wed, 23 Jun 2021 13:39:27 -0700
+Message-Id: <20210623203936.3151093-1-keescook@chromium.org>
 MIME-Version: 1.0
-References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
-In-Reply-To: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
-From: "Guenter Roeck" <groeck@google.com>
-Date: Mon, 5 Apr 2021 13:39:34 -0700
-Message-ID: <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
-Subject: Re: can't access kernelci results
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Todd Kjos <tkjos@google.com>
-Cc: Kevin Hilman <khilman@baylibre.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kees Cook <keescook@chromium.org>, Guillaume Tucker <guillaume.tucker@collabora.com>, David Laight <David.Laight@ACULAB.COM>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
 
-On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via groups.io
-<tkjos=google.com@groups.io> wrote:
->
-> I get errors when attempting to access https://linux.kernelci.org/job/android/. Is this a known issue? Any ETA for a fix?
->
-Looks like the problem is not limited to android. I get error 500 for
-jobs and build results.
+This is a bunch of LKDTM clean-ups to improve and expand testing,
+given feedback from testing at kernelci.org. Adds a few new tests as
+well.
 
-Guenter
+(If a pull-request is preferred, please let me know.)
 
-> -Todd
-> 
+Thanks!
+
+-Kees
+
+Kees Cook (9):
+  selftests/lkdtm: Avoid needing explicit sub-shell
+  selftests/lkdtm: Fix expected text for CR4 pinning
+  selftests/lkdtm: Fix expected text for free poison
+  lkdtm/bugs: XFAIL UNALIGNED_LOAD_STORE_WRITE
+  lkdtm/heap: Add vmalloc linear overflow test
+  lkdtm: Enable DOUBLE_FAULT on all architectures
+  lkdtm: Add CONFIG hints in errors where possible
+  selftests/lkdtm: Enable various testable CONFIGs
+  lkdtm/heap: Add init_on_alloc tests
+
+ drivers/misc/lkdtm/bugs.c                     | 11 ++-
+ drivers/misc/lkdtm/cfi.c                      |  3 +-
+ drivers/misc/lkdtm/core.c                     | 58 ++++++++++-
+ drivers/misc/lkdtm/fortify.c                  |  3 +-
+ drivers/misc/lkdtm/heap.c                     | 97 ++++++++++++++++++-
+ drivers/misc/lkdtm/lkdtm.h                    | 46 ++++++++-
+ drivers/misc/lkdtm/stackleak.c                |  4 +-
+ drivers/misc/lkdtm/usercopy.c                 |  7 +-
+ tools/testing/selftests/lkdtm/config          |  7 ++
+ tools/testing/selftests/lkdtm/run.sh          | 12 ++-
+ .../testing/selftests/lkdtm/stack-entropy.sh  |  1 +
+ tools/testing/selftests/lkdtm/tests.txt       | 11 ++-
+ 12 files changed, 236 insertions(+), 24 deletions(-)
+
+-- 
+2.30.2
+
