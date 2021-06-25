@@ -1,37 +1,54 @@
-Subject: Re: can't access kernelci results
-References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
- <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
+Subject: Re: [PATCH 0/9] LKDTM: Improvements for kernelci.org
+References: <20210623203936.3151093-1-keescook@chromium.org>
 From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
-Date: Mon, 5 Apr 2021 21:58:33 +0100
+Message-ID: <030c022b-985a-16eb-b9d7-73b6fed2d5a9@collabora.com>
+Date: Fri, 25 Jun 2021 07:22:01 +0100
 MIME-Version: 1.0
-In-Reply-To: <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
+In-Reply-To: <20210623203936.3151093-1-keescook@chromium.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, groeck@google.com, Todd Kjos <tkjos@google.com>
-Cc: Kevin Hilman <khilman@baylibre.com>
+To: Kees Cook <keescook@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: David Laight <David.Laight@ACULAB.COM>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org, Collabora Kernel ML <kernel@collabora.com>
 
-On 05/04/2021 21:39, Guenter Roeck via groups.io wrote:
-> On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via groups.io
-> <tkjos=google.com@groups.io> wrote:
->>
->> I get errors when attempting to access https://linux.kernelci.org/job/android/. Is this a known issue? Any ETA for a fix?
->>
-> Looks like the problem is not limited to android. I get error 500 for
-> jobs and build results.
+On 23/06/2021 21:39, Kees Cook wrote:
+> This is a bunch of LKDTM clean-ups to improve and expand testing,
+> given feedback from testing at kernelci.org. Adds a few new tests as
+> well.
+> 
+> (If a pull-request is preferred, please let me know.)
+> 
+> Thanks!
+> 
+> -Kees
+> 
+> Kees Cook (9):
+>   selftests/lkdtm: Avoid needing explicit sub-shell
+>   selftests/lkdtm: Fix expected text for CR4 pinning
+>   selftests/lkdtm: Fix expected text for free poison
+>   lkdtm/bugs: XFAIL UNALIGNED_LOAD_STORE_WRITE
+>   lkdtm/heap: Add vmalloc linear overflow test
+>   lkdtm: Enable DOUBLE_FAULT on all architectures
+>   lkdtm: Add CONFIG hints in errors where possible
+>   selftests/lkdtm: Enable various testable CONFIGs
+>   lkdtm/heap: Add init_on_alloc tests
 
-That was another case of the mongod service stopping, it's pretty
-rare but has happened a couple of times before.  Things are now
-back to normal, but we've missed a few results while it was down.
-Sorry for the disruption.
+Tested-by: "kernelci.org bot" <bot@kernelci.org>
 
-We've deployed a monitoring tool on some servers but not yet on
-this one, it should happen soon so this kind of issues would be
-detected much quicker.  We've also started looking into using a
-Mongo database in Azure rather than a manual install to reduce
-maintenance work.
 
-Best wishes,
+This whole series was tested on top of next-20210623, here are a
+couple of sample results from KernelCI staging:
+
+Clang 13 on AMD x86_64:
+https://staging.kernelci.org/test/plan/id/60d4a5ce3d2bc535d924bf25/
+
+GCC 8 on Intel x86_64:
+https://staging.kernelci.org/test/plan/id/60d570711a3d6beefe24bf26/
+
+And this is where the series was applied:
+https://github.com/kernelci/linux/commits/a9f4387015268e426c77fd51ed846c9756938828
+
+
+Thanks,
 Guillaume
