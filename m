@@ -1,214 +1,67 @@
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Subject: KernelCI working group: Web Dashboard
+Message-ID: <f3874e7d-ccfe-4a2d-d054-9b7bf9e8b44d@collabora.com>
+Date: Tue, 27 Jul 2021 16:54:46 +0100
 MIME-Version: 1.0
-References: <60f9c3b4.1c69fb81.7d558.2406@mx.google.com> <CAMj1kXFtZjTKOifJUMSiVkJ2hi7u5YZVnCWZ76TdaLYbAb2Mjg@mail.gmail.com>
- <d893a710-aa21-382e-c4a7-d81f611a7d31@collabora.com>
-In-Reply-To: <d893a710-aa21-382e-c4a7-d81f611a7d31@collabora.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 26 Jul 2021 15:57:56 +0200
-Message-ID: <CAMj1kXGca24NywoX=LMc4jgiyaBiMou+UxNaR16xZt0LN+32Tg@mail.gmail.com>
-Subject: Re: efi/urgent build: 3 builds: 0 failed, 3 passed (efi-urgent-for-v5.14-rc2-2-g5bb60b28ce5be)
-Content-Type: multipart/alternative; boundary="0000000000008eac4705c8072484"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: kernelci@groups.io, info@kernelci.org
+To: "kernelci@groups.io" <kernelci@groups.io>
+Cc: kernelci-members <kernelci-members@groups.io>, automated-testing@lists.yoctoproject.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
 
---0000000000008eac4705c8072484
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Last year's KernelCI Community Survey[1] showed the importance of
+having a good web dashboard.  About 70% of respondents would use
+one if it provided the information they needed efficiently.
+While other things are arguably even more important, such as
+testing patches from mailing lists, replying to stable reviews
+and sending email reports directly to contributors in a "natural"
+workflow, the web dashboard has been a sticking point for a
+while.
 
-On Fri, 23 Jul 2021 at 20:07, Guillaume Tucker <
-guillaume.tucker@collabora.com> wrote:
+There have been several attempts at solving this problem, using
+Elastic Stack and Grafana among other things, but there isn't a
+single framework able to directly provide an off-the-shelf
+solution to the community's needs.  In fact, the first issue is
+the lack of understanding of these needs: who wants to use the
+web dashboard, and how?  Then, how does one translate those needs
+into a user interface?  Doing this requires skills that engineers
+who regularly contribute to KernelCI typically don't have.  As
+such, a dedicated working group is being created in order to fill
+this gap.
 
-> On 23/07/2021 15:22, Ard Biesheuvel wrote:
->
-> Hello all,
->
-> Please see the report below: this used to list 4 configs that are tested
-> with my EFI branches, but for some reason, arm64 is no longer included.
->
-> Thanks for reporting this.  It looks like a bug in the email report
-> generator, the arm64 defconfig was built according to the web dashboard:
->
-> https://linux.kernelci.org/build/efi/branch/urgent/kernel/efi-urgent-for=
--v5.14-rc2-2-g5bb60b28ce5be/
->
-> We'll take a look, and at least you should be able to see the results
-> there in the meantime.
->
+The aim is to coordinate efforts and try to follow best practices
+to make steady progress and avoid repeating the same mistakes.
+Most likely, we will need some help from proper web developers
+who aren't part of the usual KernelCI community.  This may be
+facilitated by the KernelCI LF project budget if approved by the
+governing board.
 
-Good to know.
-
-Thanks,
-Ard.
-
-
+In order to get started, we would need to have maybe 3 to 5
+people available to focus on this.  It doesn't necessarily mean a
+lot of hours spent but actions to be carried out on a daily or
+weekly basis.  So far we have Gustavo Padovan as our new KernelCI
+Project Manager and a few people have expressed interest but we
+still need formal confirmation.
 
 
->
->
->
-> On Thu, 22 Jul 2021 at 21:15, kernelci.org bot <bot@kernelci.org> wrote:
->
->> *efi/urgent build: 3 builds: 0 failed, 3 passed
->> (efi-urgent-for-v5.14-rc2-2-g5bb60b28ce5be)*
->> Full Build Summary:
->> https://kernelci.org/build/efi/branch/urgent/kernel/efi-urgent-for-v5.1=
-4-rc2-2-g5bb60b28ce5be/
->>
->> Tree: efi
->> Branch: urgent
->> Git Describe: efi-urgent-for-v5.14-rc2-2-g5bb60b28ce5be
->> Git Commit: 5bb60b28ce5bee48838c3fdc667c7247e722b34d
->> Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
->> <https://git.kernel.org/cgit/linux/kernel/git/efi/efi.git/commit/?id=3D=
-5bb60b28ce5bee48838c3fdc667c7247e722b34d>
->> Built: 3 unique architectures
->>
->> *Detailed per-defconfig build reports:*
->>
->> *i386_defconfig* (i386, gcc-8) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
-section
->> mismatches
->>
->> *multi_v7_defconfig* (arm, gcc-8) =E2=80=94 PASS, 0 errors, 0 warnings,=
- 0
->> section mismatches
->>
->> *x86_64_defconfig* (x86_64, gcc-8) =E2=80=94 PASS, 0 errors, 0 warnings=
-, 0
->> section mismatches
->>
->> =E2=94=80
->> For more info write to <info@kernelci.org>
->>
->=20
->
->
->
+Here's a GitHub project dedicated to the new web dashboard:
 
---0000000000008eac4705c8072484
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  https://github.com/orgs/kernelci/projects/4
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Fri, 23 Jul 2021 at 20:07, Guillau=
-me Tucker &lt;<a href=3D"mailto:guillaume.tucker@collabora.com">guillaume.t=
-ucker@collabora.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex">
-  
-    
-  
-  <div>
-    <div>On 23/07/2021 15:22, Ard Biesheuvel
-      wrote:<br>
-    </div>
-    <blockquote type=3D"cite">
-      
-      <div dir=3D"ltr">
-        <div>Hello all,</div>
-        <div><br>
-        </div>
-        <div>Please see the report below: this used to list 4 configs
-          that are tested with my EFI branches, but for some reason,
-          arm64 is no longer included.</div>
-      </div>
-    </blockquote>
-    <p>Thanks for reporting this.=C2=A0 It looks like a bug in the email
-      report generator, the arm64 defconfig was built according to the
-      web dashboard:<br>
-<a href=3D"https://linux.kernelci.org/build/efi/branch/urgent/kernel/efi-u=
-rgent-for-v5.14-rc2-2-g5bb60b28ce5be/" target=3D"_blank">https://linux.kern=
-elci.org/build/efi/branch/urgent/kernel/efi-urgent-for-v5.14-rc2-2-g5bb60b2=
-8ce5be/</a></p>
-    <p>We&#39;ll take a look, and at least you should be able to see the
-      results there in the meantime.<br></p></div></blockquote><div><br></=
-div><div>Good to know.</div><div><br></div><div>Thanks,</div><div>Ard.</div=
-><div>=C2=A0</div><div><br></div><div>=C2=A0</div><blockquote class=3D"gmai=
-l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
-4,204);padding-left:1ex"><div><blockquote type=3D"cite"><div dir=3D"ltr"><d=
-iv>
-        </div>
-        <div><br>
-        </div>
-        <div><br>
-        </div>
-        <br>
-        <div class=3D"gmail_quote">
-          <div dir=3D"ltr" class=3D"gmail_attr">On Thu, 22 Jul 2021 at
-            21:15, <a href=3D"http://kernelci.org" target=3D"_blank">kerne=
-lci.org</a>
-            bot &lt;<a href=3D"mailto:bot@kernelci.org" target=3D"_blank">=
-bot@kernelci.org</a>&gt; wrote:<br>
-          </div>
-          <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
-8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-            <div> <span><strong>efi/urgent build: 3 builds: 0 failed, 3
-                  passed (efi-urgent-for-v5.14-rc2-2-g5bb60b28ce5be)</stro=
-ng></span>
-              <br>
-              <table style=3D"border:none;padding-top:15px;padding-bottom:=
-15px">
-                <tbody>
-                  <tr>
-                    <td>Full Build Summary: <a href=3D"https://kernelci.or=
-g/build/efi/branch/urgent/kernel/efi-urgent-for-v5.14-rc2-2-g5bb60b28ce5be/=
-" target=3D"_blank">https://kernelci.org/build/efi/branch/urgent/kernel/efi=
--urgent-for-v5.14-rc2-2-g5bb60b28ce5be/</a></td>
-                  </tr>
-                  <tr>
-                    <td style=3D"padding-top:25px"><br>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Tree: efi</td>
-                  </tr>
-                  <tr>
-                    <td>Branch: urgent</td>
-                  </tr>
-                  <tr>
-                    <td>Git Describe:
-                      efi-urgent-for-v5.14-rc2-2-g5bb60b28ce5be</td>
-                  </tr>
-                  <tr>
-                    <td>Git Commit:
-                      5bb60b28ce5bee48838c3fdc667c7247e722b34d</td>
-                  </tr>
-                  <tr>
-                    <td>Git URL: <a href=3D"https://git.kernel.org/cgit/li=
-nux/kernel/git/efi/efi.git/commit/?id=3D5bb60b28ce5bee48838c3fdc667c7247e72=
-2b34d" target=3D"_blank">https://git.kernel.org/pub/scm/linux/kernel/git/ef=
-i/efi.git</a></td>
-                  </tr>
-                  <tr>
-                    <td>Built: 3 unique architectures</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p style=3D"padding-bottom:5px"><strong>Detailed
-                  per-defconfig build reports:</strong></p>
-              <p> <strong>i386_defconfig</strong> (i386, gcc-8) =E2=80=94 =
-PASS,
-                0 errors, 0 warnings, 0 section mismatches </p>
-              <p> <strong>multi_v7_defconfig</strong> (arm, gcc-8) =E2=80=
-=94
-                PASS, 0 errors, 0 warnings, 0 section mismatches </p>
-              <p> <strong>x86_64_defconfig</strong> (x86_64, gcc-8) =E2=80=
-=
-=94
-                PASS, 0 errors, 0 warnings, 0 section mismatches </p>
-              <p style=3D"padding-top:10px"> =E2=94=80 <br>
-                For more info write to &lt;<a href=3D"mailto:info@kernelci=
-.org" target=3D"_blank">info@kernelci.org</a>&gt; </p>
-            </div>
-          </blockquote>
-        </div>
-      </div>
-      
-    </blockquote>
-    <p><br>
-    </p>
-  </div>
+I've created a couple of issues to get started about user
+stories, and some initial milestones as a basic skeleton:
 
-</blockquote></div></div>
+  https://github.com/kernelci/kernelci-project/milestones
 
---0000000000008eac4705c8072484--
+
+This is ultimately a community-driven effort to address the needs
+of the kernel community.  Please share any thoughts you may have
+on this, whether you want to add some user stories, share some
+expertise, be officially in the working group or take part in
+this effort in any other way.
+
+Best wishes,
+Guillaume
+
+[1] https://foundation.kernelci.org/blog/2020/07/09/kernelci-community-survey-report/
