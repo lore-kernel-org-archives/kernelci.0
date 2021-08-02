@@ -1,72 +1,57 @@
-Date: Tue, 27 Jul 2021 17:58:45 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [kernelci-members] KernelCI working group: Web Dashboard
-Message-ID: <YQAtNc4R1K3o6rxb@kroah.com>
-References: <f3874e7d-ccfe-4a2d-d054-9b7bf9e8b44d@collabora.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Subject: KernelCI Hackfest #2 - Sept 6-10 2021
+Message-ID: <74f7b4cf-926f-d8bd-19c2-375cfe7a12b2@collabora.com>
+Date: Mon, 2 Aug 2021 10:00:15 +0100
 MIME-Version: 1.0
-In-Reply-To: <f3874e7d-ccfe-4a2d-d054-9b7bf9e8b44d@collabora.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci-members@groups.io
-Cc: "kernelci@groups.io" <kernelci@groups.io>, automated-testing@lists.yoctoproject.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
+To: "kernelci@groups.io" <kernelci@groups.io>
+Cc: kernelci-members <kernelci-members@groups.io>, automated-testing@lists.yoctoproject.org, Collabora Kernel ML <kernel@collabora.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jesse Barnes <jsbarnes@google.com>, Summer Wang <wangsummer@google.com>, linux-kselftest@vger.kernel.org, workflows@vger.kernel.org, kunit-dev@googlegroups.com, clang-built-linux <clang-built-linux@googlegroups.com>
 
-On Tue, Jul 27, 2021 at 04:54:46PM +0100, Guillaume Tucker wrote:
-> Last year's KernelCI Community Survey[1] showed the importance of
-> having a good web dashboard.  About 70% of respondents would use
-> one if it provided the information they needed efficiently.
-> While other things are arguably even more important, such as
-> testing patches from mailing lists, replying to stable reviews
-> and sending email reports directly to contributors in a "natural"
-> workflow, the web dashboard has been a sticking point for a
-> while.
-> 
-> There have been several attempts at solving this problem, using
-> Elastic Stack and Grafana among other things, but there isn't a
-> single framework able to directly provide an off-the-shelf
-> solution to the community's needs.  In fact, the first issue is
-> the lack of understanding of these needs: who wants to use the
-> web dashboard, and how?  Then, how does one translate those needs
-> into a user interface?  Doing this requires skills that engineers
-> who regularly contribute to KernelCI typically don't have.  As
-> such, a dedicated working group is being created in order to fill
-> this gap.
-> 
-> The aim is to coordinate efforts and try to follow best practices
-> to make steady progress and avoid repeating the same mistakes.
-> Most likely, we will need some help from proper web developers
-> who aren't part of the usual KernelCI community.  This may be
-> facilitated by the KernelCI LF project budget if approved by the
-> governing board.
-> 
-> In order to get started, we would need to have maybe 3 to 5
-> people available to focus on this.  It doesn't necessarily mean a
-> lot of hours spent but actions to be carried out on a daily or
-> weekly basis.  So far we have Gustavo Padovan as our new KernelCI
-> Project Manager and a few people have expressed interest but we
-> still need formal confirmation.
-> 
-> 
-> Here's a GitHub project dedicated to the new web dashboard:
-> 
->   https://github.com/orgs/kernelci/projects/4
-> 
-> I've created a couple of issues to get started about user
-> stories, and some initial milestones as a basic skeleton:
-> 
->   https://github.com/kernelci/kernelci-project/milestones
-> 
-> 
-> This is ultimately a community-driven effort to address the needs
-> of the kernel community.  Please share any thoughts you may have
-> on this, whether you want to add some user stories, share some
-> expertise, be officially in the working group or take part in
-> this effort in any other way.
+The first KernelCI hackfest[1] early June was successful in getting
+a number of kernel developers to work alongside the core KernelCI
+team.  Test coverage was increased in particular with kselftest,
+LTP, KUnit and a new test suite for libcamera.  We're now improving
+documentation and tooling to make it easier for anyone to get
+started.  Find out more about KernelCI on https://kernelci.org.
 
-How do we "join" the working group?  I'm willing to help out from the
-"user who will use this a lot and complain about things that do not
-work well" point of view :)
+The second hackfest is scheduled for the 6th-10th September.  It
+should be a good opportunity to start discussing and working on
+upstream kernel testing topics ahead of the Linux Plumbers
+Conference[2].
 
-thanks,
+Here's the project board where anyone can already add some ideas:
 
-greg k-h
+  https://github.com/orgs/kernelci/projects/5
+
+There is no registration system, but please reply to this email or
+send a message on IRC (#kernelci libera.chat) or kernelci.slack.com
+if you would like to take part so you'll get email updates and
+invitations to the meetings and open hours sessions online.  You
+may just drop in and out at any point during the hackfest as you
+see fit.
+
+The hackfest features:
+
+* Daily open hours online using Big Blue Button to discuss things
+  and get support from the KernelCI team
+
+* KernelCI team members available across most time zones to provide
+  quick feedback
+
+* A curated list of topics and a project board to help set
+  objectives and coordinate efforts between all contributors
+
+
+As always, KernelCI is at the service of the kernel community so
+please share any feedback you may have to help shape this upcoming
+hackfest in the best possible way.
+
+Thanks,
+Guillaume
+
+
+[1] https://foundation.kernelci.org/blog/2021/06/24/the-first-ever-kernelci-hackfest/
+[2] https://www.linuxplumbersconf.org/event/11/page/104-accepted-microconferences#cont-test
