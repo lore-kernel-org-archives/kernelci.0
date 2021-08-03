@@ -1,57 +1,44 @@
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Subject: KernelCI Hackfest #2 - Sept 6-10 2021
-Message-ID: <74f7b4cf-926f-d8bd-19c2-375cfe7a12b2@collabora.com>
-Date: Mon, 2 Aug 2021 10:00:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <74f7b4cf-926f-d8bd-19c2-375cfe7a12b2@collabora.com>
+In-Reply-To: <74f7b4cf-926f-d8bd-19c2-375cfe7a12b2@collabora.com>
+From: "Alice Ferrazzi" <alice.ferrazzi@miraclelinux.com>
+Date: Wed, 4 Aug 2021 01:46:58 +0900
+Message-ID: <CANgtXuPjD0rW-A=gMNUd7mdF1Bynz+QQmDHLy7vh9UODd8NtbA@mail.gmail.com>
+Subject: Re: KernelCI Hackfest #2 - Sept 6-10 2021
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>
+To: kernelci@groups.io, guillaume.tucker@collabora.com
 Cc: kernelci-members <kernelci-members@groups.io>, automated-testing@lists.yoctoproject.org, Collabora Kernel ML <kernel@collabora.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jesse Barnes <jsbarnes@google.com>, Summer Wang <wangsummer@google.com>, linux-kselftest@vger.kernel.org, workflows@vger.kernel.org, kunit-dev@googlegroups.com, clang-built-linux <clang-built-linux@googlegroups.com>
 
-The first KernelCI hackfest[1] early June was successful in getting
-a number of kernel developers to work alongside the core KernelCI
-team.  Test coverage was increased in particular with kselftest,
-LTP, KUnit and a new test suite for libcamera.  We're now improving
-documentation and tooling to make it easier for anyone to get
-started.  Find out more about KernelCI on https://kernelci.org.
+Hello,
 
-The second hackfest is scheduled for the 6th-10th September.  It
-should be a good opportunity to start discussing and working on
-upstream kernel testing topics ahead of the Linux Plumbers
-Conference[2].
+On Mon, Aug 2, 2021 at 6:00 PM Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
+>
+> The first KernelCI hackfest[1] early June was successful in getting
+> a number of kernel developers to work alongside the core KernelCI
+> team.  Test coverage was increased in particular with kselftest,
+> LTP, KUnit and a new test suite for libcamera.  We're now improving
+> documentation and tooling to make it easier for anyone to get
+> started.  Find out more about KernelCI on https://kernelci.org.
+>
+> The second hackfest is scheduled for the 6th-10th September.  It
+> should be a good opportunity to start discussing and working on
+> upstream kernel testing topics ahead of the Linux Plumbers
+> Conference[2].
+>
+> Here's the project board where anyone can already add some ideas:
+>
+>   https://github.com/orgs/kernelci/projects/5
 
-Here's the project board where anyone can already add some ideas:
-
-  https://github.com/orgs/kernelci/projects/5
-
-There is no registration system, but please reply to this email or
-send a message on IRC (#kernelci libera.chat) or kernelci.slack.com
-if you would like to take part so you'll get email updates and
-invitations to the meetings and open hours sessions online.  You
-may just drop in and out at any point during the hackfest as you
-see fit.
-
-The hackfest features:
-
-* Daily open hours online using Big Blue Button to discuss things
-  and get support from the KernelCI team
-
-* KernelCI team members available across most time zones to provide
-  quick feedback
-
-* A curated list of topics and a project board to help set
-  objectives and coordinate efforts between all contributors
-
-
-As always, KernelCI is at the service of the kernel community so
-please share any feedback you may have to help shape this upcoming
-hackfest in the best possible way.
+I cannot add topics to the project board.
 
 Thanks,
-Guillaume
+Alice
 
-
-[1] https://foundation.kernelci.org/blog/2021/06/24/the-first-ever-kernelci-hackfest/
-[2] https://www.linuxplumbersconf.org/event/11/page/104-accepted-microconferences#cont-test
+-- 
+======================================
+Cybertrust Japan Co.,Ltd.
+Alice Ferrazzi
+alice.ferrazzi@miraclelinux.com
+======================================
