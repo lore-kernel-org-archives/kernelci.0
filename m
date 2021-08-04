@@ -1,90 +1,87 @@
+From: "Gustavo Padovan" <gustavo.padovan@collabora.com>
+Subject: Weekly Meeting 2021-08-03
+Message-ID: <5fdef8ee-e32e-b60f-69fa-417c87a6c14a@collabora.com>
+Date: Wed, 4 Aug 2021 07:23:19 -0300
 MIME-Version: 1.0
-References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
- <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com> <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
-In-Reply-To: <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Mon, 5 Apr 2021 16:14:50 -0700
-Message-ID: <CAHRSSEwnBrT0wnc+-dA2FXvu1udstwArFRYtHu+f-79fZgd2JQ@mail.gmail.com>
-Subject: Re: can't access kernelci results
-Content-Type: multipart/alternative; boundary="00000000000026774f05bf41debd"
-List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: kernelci@groups.io, Guenter Roeck <groeck@google.com>, Kevin Hilman <khilman@baylibre.com>
-
---00000000000026774f05bf41debd
-Content-Type: text/plain; charset="UTF-8"
-
-Working again. Thanks Guillaume.
-
-On Mon, Apr 5, 2021 at 1:58 PM Guillaume Tucker <
-guillaume.tucker@collabora.com> wrote:
-
-> On 05/04/2021 21:39, Guenter Roeck via groups.io wrote:
-> > On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via groups.io
-> > <tkjos=google.com@groups.io> wrote:
-> >>
-> >> I get errors when attempting to access
-> https://linux.kernelci.org/job/android/. Is this a known issue? Any ETA
-> for a fix?
-> >>
-> > Looks like the problem is not limited to android. I get error 500 for
-> > jobs and build results.
->
-> That was another case of the mongod service stopping, it's pretty
-> rare but has happened a couple of times before.  Things are now
-> back to normal, but we've missed a few results while it was down.
-> Sorry for the disruption.
->
-> We've deployed a monitoring tool on some servers but not yet on
-> this one, it should happen soon so this kind of issues would be
-> detected much quicker.  We've also started looking into using a
-> Mongo database in Azure rather than a manual install to reduce
-> maintenance work.
->
-> Best wishes,
-> Guillaume
->
-
---00000000000026774f05bf41debd
-Content-Type: text/html; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
+List-ID: <kernelci.groups.io>
+To: "kernelci@groups.io" <kernelci@groups.io>
 
-<div dir=3D"ltr"><div>Working again. Thanks Guillaume.</div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Apr 5, 2021 =
-at 1:58 PM Guillaume Tucker &lt;<a href=3D"mailto:guillaume.tucker@collabor=
-a.com">guillaume.tucker@collabora.com</a>&gt; wrote:<br></div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">On 05/04/2021 21:39, Guenter Roeck via=
- <a href=3D"http://groups.io" rel=3D"noreferrer" target=3D"_blank">groups.i=
-o</a> wrote:<br>
-&gt; On Mon, Apr 5, 2021 at 12:30 PM Todd Kjos via <a href=3D"http://groups=
-.io" rel=3D"noreferrer" target=3D"_blank">groups.io</a><br>
-&gt; &lt;tkjos=3D<a href=3D"mailto:google.com@groups.io" target=3D"_blank">=
-google.com@groups.io</a>&gt; wrote:<br>
-&gt;&gt;<br>
-&gt;&gt; I get errors when attempting to access <a href=3D"https://linux.ke=
-rnelci.org/job/android/" rel=3D"noreferrer" target=3D"_blank">https://linux=
-.kernelci.org/job/android/</a>. Is this a known issue? Any ETA for a fix?<b=
-r>
-&gt;&gt;<br>
-&gt; Looks like the problem is not limited to android. I get error 500 for<=
-br>
-&gt; jobs and build results.<br>
-<br>
-That was another case of the mongod service stopping, it&#39;s pretty<br>
-rare but has happened a couple of times before.=C2=A0 Things are now<br>
-back to normal, but we&#39;ve missed a few results while it was down.<br>
-Sorry for the disruption.<br>
-<br>
-We&#39;ve deployed a monitoring tool on some servers but not yet on<br>
-this one, it should happen soon so this kind of issues would be<br>
-detected much quicker.=C2=A0 We&#39;ve also started looking into using a<br=
->
-Mongo database in Azure rather than a manual install to reduce<br>
-maintenance work.<br>
-<br>
-Best wishes,<br>
-Guillaume<br>
-</blockquote></div></div>
+Attendees: Guillaume, Nikolai, Michal, Gustavo, Nick, Kevin, Isaiah,=20
+Mark, Alicef, Alex
 
---00000000000026774f05bf41debd--
+Agenda:
+
+
+gtucker
+
+- Hackfest #2 - Sept 6-10
+https://groups.io/g/kernelci/topic/kernelci_hackfest_2_sept/84607239
+- Moving all remaining content on the old wiki to kernelci.org/docs
+https://github.com/kernelci/kernelci-doc/wiki
+	- it would be good if more people could look at it and review
+
+Nikolai
+
+- Feeling better, but still recovering. Spending all available hours on=20
+CKI, unfortunately.
+- Starting a two-week vacation next week.
+
+broonie
+
+- LAVA update: Linaro are very busy ATM, they are doing patch review and=
+=20
+are aware that it=E2=80=99s very slow. Probably going to continue for a wh=
+ile.
+- Guillaume mentioned Issue to be able to create a MR. Some people, even=
+=20
+with a gitlab account can't create a MR. Mark will poke some people from=
+=20
+LAVA
+- Generating kubernetes jobs: it could be interesting to generalize this=
+=20
+out of the jenkins jobs.
+	-Guillaume suggested it could be treated as just another runtime.
+	- Kevin mentioned the possibility of using tuxmake instead
+
+Nick
+
+- Making changes to LLVM=3D1 builds
+	- CROSS_COMPILE inference=20
+https://lore.kernel.org/lkml/20210802183910.1802120-1-ndesaulniers@google.=
+com/=20
+
+	- LLVM_IAS=3D1 on by default=20
+https://lore.kernel.org/lkml/20210802234304.3519577-1-ndesaulniers@google.=
+com/=20
+
+	- To build architectures that don=E2=80=99t support it yet (PowerPC, s390=
+),=20
+use LLVM_IAS=3D0=09
+- RISCV, Hexagon support
+	- Need to update Documentation/
+	- riscv https://linux.kernelci.org/build/id/6108b9fa598cb4ccf6b13669/
+- Clang-13 branch cut
+- Having better tools to compare with other builds would be great (gcc=20
+vs Clang)
+	- This is an extension to the idea of enabling =E2=80=9C2nd derivative=E2=
+=
+=80=9D=20
+regressions, to look at the diff between regressions with one build=20
+compared to another build.=C2=A0 The first step would probably be to=20
+comparewith other revisions (e.g. maintainer branch on top of mainline=E2=
+=80=A6).
+
+
+CIP instance
+
+- cip.kernelci.org to redirect to https://linux.kernelci.org/job/cip/
+- No need right now for a full CIP dedicated instance
+- DNS update: CNAME kernelci.org, then nginx config to redirect to the=20
+URL with the CIP tree
+
+--=20
+Gustavo Padovan
+Collabora Ltd.
