@@ -1,87 +1,38 @@
-From: "Gustavo Padovan" <gustavo.padovan@collabora.com>
-Subject: Weekly Meeting 2021-08-03
-Message-ID: <5fdef8ee-e32e-b60f-69fa-417c87a6c14a@collabora.com>
-Date: Wed, 4 Aug 2021 07:23:19 -0300
+From: alexandra.pereira@collabora.com
+Subject: Bi-Weekly Meeting 2021-08-(10&17)
+Message-ID: <fe87f17d-c4bb-97af-6e70-218c758d124e@collabora.com>
+Date: Tue, 17 Aug 2021 15:27:41 -0300
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>
+To: kernelci@groups.io, alexandra.pereira@collabora.com
 
-Attendees: Guillaume, Nikolai, Michal, Gustavo, Nick, Kevin, Isaiah,=20
-Mark, Alicef, Alex
+2021-08-17
+
+Attendees: Micha=C5=82, Mark, Isaiah, Alicef, Alice, Kevin, Alex
 
 Agenda:
 
-
-gtucker
-
-- Hackfest #2 - Sept 6-10
-https://groups.io/g/kernelci/topic/kernelci_hackfest_2_sept/84607239
-- Moving all remaining content on the old wiki to kernelci.org/docs
-https://github.com/kernelci/kernelci-doc/wiki
-	- it would be good if more people could look at it and review
-
-Nikolai
-
-- Feeling better, but still recovering. Spending all available hours on=20
-CKI, unfortunately.
-- Starting a two-week vacation next week.
-
-broonie
-
-- LAVA update: Linaro are very busy ATM, they are doing patch review and=
-=20
-are aware that it=E2=80=99s very slow. Probably going to continue for a wh=
-ile.
-- Guillaume mentioned Issue to be able to create a MR. Some people, even=
-=20
-with a gitlab account can't create a MR. Mark will poke some people from=
-=20
-LAVA
-- Generating kubernetes jobs: it could be interesting to generalize this=
-=20
-out of the jenkins jobs.
-	-Guillaume suggested it could be treated as just another runtime.
-	- Kevin mentioned the possibility of using tuxmake instead
-
-Nick
-
-- Making changes to LLVM=3D1 builds
-	- CROSS_COMPILE inference=20
-https://lore.kernel.org/lkml/20210802183910.1802120-1-ndesaulniers@google.=
-com/=20
-
-	- LLVM_IAS=3D1 on by default=20
-https://lore.kernel.org/lkml/20210802234304.3519577-1-ndesaulniers@google.=
-com/=20
-
-	- To build architectures that don=E2=80=99t support it yet (PowerPC, s390=
-),=20
-use LLVM_IAS=3D0=09
-- RISCV, Hexagon support
-	- Need to update Documentation/
-	- riscv https://linux.kernelci.org/build/id/6108b9fa598cb4ccf6b13669/
-- Clang-13 branch cut
-- Having better tools to compare with other builds would be great (gcc=20
-vs Clang)
-	- This is an extension to the idea of enabling =E2=80=9C2nd derivative=E2=
-=
-=80=9D=20
-regressions, to look at the diff between regressions with one build=20
-compared to another build.=C2=A0 The first step would probably be to=20
-comparewith other revisions (e.g. maintainer branch on top of mainline=E2=
-=80=A6).
+- Micha=C5=82 - Working on new local instance setup guide - Initially aimin=
+g=20
+in covering a minimal setup - Gradually extending the scope
 
 
-CIP instance
+2021-08-10
 
-- cip.kernelci.org to redirect to https://linux.kernelci.org/job/cip/
-- No need right now for a full CIP dedicated instance
-- DNS update: CNAME kernelci.org, then nginx config to redirect to the=20
-URL with the CIP tree
+Attendees: Alex, Mgalka, Broonie, Isaiah, Alicef
 
---=20
-Gustavo Padovan
-Collabora Ltd.
+Agenda:
+
+- Alex - Enabled more tests due to new Chromebooks - Working on=20
+skiplists, some issues with linaro=E2=80=99s definition - Was always showin=
+g the=20
+output from skipped tests even if only running some specific collection=20
+- Micha=C5=82 - Added buildroot support to kci_rootfs - Additional=20
+rootfs_type - =E2=80=9Cbuildroot=E2=80=9D - Docker image (kernelci/buildroo=
+t) created -=20
+Contains all dependencies needed to use buildroot - Uses buildroot=20
+attached as a volume - Next step: change current buildroot creation job=20
+to use docker and kci_rootfs
+
