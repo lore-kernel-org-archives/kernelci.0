@@ -1,54 +1,81 @@
 Return-Path: <keescook@chromium.org>
 From: Kees Cook <keescook@chromium.org>
-Subject: [PATCH 4/4] lkdtm/heap: Avoid __alloc_size hint warning for VMALLOC_LINEAR_OVERFLOW
-Date: Wed, 18 Aug 2021 10:48:55 -0700
-Message-Id: <20210818174855.2307828-5-keescook@chromium.org>
+Subject: [PATCH 3/4] lkdtm: Add kernel version to failure hints
+Date: Wed, 18 Aug 2021 10:48:54 -0700
+Message-Id: <20210818174855.2307828-4-keescook@chromium.org>
 In-Reply-To: <20210818174855.2307828-1-keescook@chromium.org>
 References: <20210818174855.2307828-1-keescook@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Guillaume Tucker <guillaume.tucker@collabora.com>, linux-kernel@vger.kernel.org, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
 
-Once __alloc_size hints have been added, the compiler will (correctly!)
-see this as an overflow. We are, however, trying to test for this
-condition at run-time (not compile-time), so work around it with a
-volatile int offset.
+In an effort to keep as much information in once place as possible in
+CI logs, report the kernel version and architecture in the failure hints.
 
 Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: kernelci@groups.io
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/misc/lkdtm/heap.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/misc/lkdtm/lkdtm.h | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/heap.c b/drivers/misc/lkdtm/heap.c
-index 3d9aae5821a0..8a92f5a800fa 100644
---- a/drivers/misc/lkdtm/heap.c
-+++ b/drivers/misc/lkdtm/heap.c
-@@ -12,6 +12,13 @@ static struct kmem_cache *double_free_cache;
- static struct kmem_cache *a_cache;
- static struct kmem_cache *b_cache;
+diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
+index f2e61581c1ae..d7d64d9765eb 100644
+--- a/drivers/misc/lkdtm/lkdtm.h
++++ b/drivers/misc/lkdtm/lkdtm.h
+@@ -5,13 +5,17 @@
+ #define pr_fmt(fmt) "lkdtm: " fmt
  
-+/*
-+ * Using volatile here means the compiler cannot ever make assumptions
-+ * about this value. This means compile-time length checks involving
-+ * this variable cannot be performed; only run-time checks.
-+ */
-+static volatile int __offset = 1;
+ #include <linux/kernel.h>
++#include <generated/compile.h>
++#include <generated/utsrelease.h>
 +
- /*
-  * If there aren't guard pages, it's likely that a consecutive allocation will
-  * let us overflow into the second allocation without overwriting something real.
-@@ -24,7 +31,7 @@ void lkdtm_VMALLOC_LINEAR_OVERFLOW(void)
- 	two = vzalloc(PAGE_SIZE);
++#define LKDTM_KERNEL "kernel (" UTS_RELEASE " " UTS_MACHINE ")"
  
- 	pr_info("Attempting vmalloc linear overflow ...\n");
--	memset(one, 0xAA, PAGE_SIZE + 1);
-+	memset(one, 0xAA, PAGE_SIZE + __offset);
+ #define pr_expected_config(kconfig)				\
+ {								\
+ 	if (IS_ENABLED(kconfig)) 				\
+-		pr_err("Unexpected! This kernel was built with " #kconfig "=y\n"); \
++		pr_err("Unexpected! This " LKDTM_KERNEL " was built with " #kconfig "=y\n"); \
+ 	else							\
+-		pr_warn("This is probably expected, since this kernel was built *without* " #kconfig "=y\n"); \
++		pr_warn("This is probably expected, since this " LKDTM_KERNEL " was built *without* " #kconfig "=y\n"); \
+ }
  
- 	vfree(two);
- 	vfree(one);
+ #ifndef MODULE
+@@ -21,24 +25,24 @@ int lkdtm_check_bool_cmdline(const char *param);
+ 	if (IS_ENABLED(kconfig)) {				\
+ 		switch (lkdtm_check_bool_cmdline(param)) {	\
+ 		case 0:						\
+-			pr_warn("This is probably expected, since this kernel was built with " #kconfig "=y but booted with '" param "=N'\n"); \
++			pr_warn("This is probably expected, since this " LKDTM_KERNEL " was built with " #kconfig "=y but booted with '" param "=N'\n"); \
+ 			break;					\
+ 		case 1:						\
+-			pr_err("Unexpected! This kernel was built with " #kconfig "=y and booted with '" param "=Y'\n"); \
++			pr_err("Unexpected! This " LKDTM_KERNEL " was built with " #kconfig "=y and booted with '" param "=Y'\n"); \
+ 			break;					\
+ 		default:					\
+-			pr_err("Unexpected! This kernel was built with " #kconfig "=y (and booted without '" param "' specified)\n"); \
++			pr_err("Unexpected! This " LKDTM_KERNEL " was built with " #kconfig "=y (and booted without '" param "' specified)\n"); \
+ 		}						\
+ 	} else {						\
+ 		switch (lkdtm_check_bool_cmdline(param)) {	\
+ 		case 0:						\
+-			pr_warn("This is probably expected, as kernel was built *without* " #kconfig "=y and booted with '" param "=N'\n"); \
++			pr_warn("This is probably expected, as this " LKDTM_KERNEL " was built *without* " #kconfig "=y and booted with '" param "=N'\n"); \
+ 			break;					\
+ 		case 1:						\
+-			pr_err("Unexpected! This kernel was built *without* " #kconfig "=y but booted with '" param "=Y'\n"); \
++			pr_err("Unexpected! This " LKDTM_KERNEL " was built *without* " #kconfig "=y but booted with '" param "=Y'\n"); \
+ 			break;					\
+ 		default:					\
+-			pr_err("This is probably expected, since this kernel was built *without* " #kconfig "=y (and booted without '" param "' specified)\n"); \
++			pr_err("This is probably expected, since this " LKDTM_KERNEL " was built *without* " #kconfig "=y (and booted without '" param "' specified)\n"); \
+ 			break;					\
+ 		}						\
+ 	}							\
 -- 
 2.30.2
 
