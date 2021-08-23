@@ -1,63 +1,80 @@
-Return-Path: <keescook@chromium.org>
-From: Kees Cook <keescook@chromium.org>
-Subject: [PATCH 1/4] lkdtm/bugs: Add ARRAY_BOUNDS to selftests
-Date: Wed, 18 Aug 2021 10:48:52 -0700
-Message-Id: <20210818174855.2307828-2-keescook@chromium.org>
-In-Reply-To: <20210818174855.2307828-1-keescook@chromium.org>
-References: <20210818174855.2307828-1-keescook@chromium.org>
+Return-Path: <Nikolai.Kondrashov@redhat.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Subject: #KCIDB engagement report
+Message-ID: <36616be8-52dc-6ff6-8f21-b6ab68931511@redhat.com>
+Date: Mon, 23 Aug 2021 15:37:43 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kees Cook <keescook@chromium.org>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
+To: kernelci@groups.io, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
 
-Add CONFIG hints about why the ARRAY_BOUNDS test might fail, and
-similarly include the CONFIGs needed to pass the ARRAY_BOUNDS test via
-the selftests, and add to selftests.
+Hi everyone,
 
-Cc: kernelci@groups.io
-Suggested-by: Guillaume Tucker <guillaume.tucker@collabora.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/misc/lkdtm/bugs.c               | 1 +
- tools/testing/selftests/lkdtm/config    | 2 ++
- tools/testing/selftests/lkdtm/tests.txt | 1 +
- 3 files changed, 4 insertions(+)
+Below is the monthly report on KCIDB* engagement. It lists various CI systems
+and their status of engagement with KCIDB, as well as developer engagement.
 
-diff --git a/drivers/misc/lkdtm/bugs.c b/drivers/misc/lkdtm/bugs.c
-index 88c218a9f8b3..03171e412356 100644
---- a/drivers/misc/lkdtm/bugs.c
-+++ b/drivers/misc/lkdtm/bugs.c
-@@ -267,6 +267,7 @@ void lkdtm_ARRAY_BOUNDS(void)
- 	kfree(not_checked);
- 	kfree(checked);
- 	pr_err("FAIL: survived array bounds overflow!\n");
-+	pr_expected_config(CONFIG_UBSAN_BOUNDS);
- }
- 
- void lkdtm_CORRUPT_LIST_ADD(void)
-diff --git a/tools/testing/selftests/lkdtm/config b/tools/testing/selftests/lkdtm/config
-index 013446e87f1f..38edea25631b 100644
---- a/tools/testing/selftests/lkdtm/config
-+++ b/tools/testing/selftests/lkdtm/config
-@@ -6,3 +6,5 @@ CONFIG_HARDENED_USERCOPY=y
- # CONFIG_HARDENED_USERCOPY_FALLBACK is not set
- CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT=y
- CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y
-+CONFIG_UBSAN_BOUNDS=y
-+CONFIG_UBSAN_TRAP=y
-diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-index 846cfd508d3c..6a33dbea8491 100644
---- a/tools/testing/selftests/lkdtm/tests.txt
-+++ b/tools/testing/selftests/lkdtm/tests.txt
-@@ -7,6 +7,7 @@ EXCEPTION
- #EXHAUST_STACK Corrupts memory on failure
- #CORRUPT_STACK Crashes entire system on success
- #CORRUPT_STACK_STRONG Crashes entire system on success
-+ARRAY_BOUNDS
- CORRUPT_LIST_ADD list_add corruption
- CORRUPT_LIST_DEL list_del corruption
- STACK_GUARD_PAGE_LEADING
--- 
-2.30.2
+This is a belated report, and has no news, as I was on vacation half of the
+time, and the other half was occupied with CKI Project. Now my breaks
+are over, and I hope to wrap up CKI work soon, to get back to KCIDB.
+
+CI Engagement Status
+
+     KernelCI native
+         Sending (a lot of) production build and test results.
+         https://kcidb.kernelci.org/?var-origin=kernelci
+
+     Red Hat CKI
+         Sending production results.
+         https://kcidb.kernelci.org/?var-origin=redhat
+
+     Google Syzbot
+         Sending a subset of production results (failures only).
+         https://kcidb.kernelci.org/?var-origin=syzbot
+
+     ARM
+         Sending production results.
+         Full commit hashes are currently not available, are spoofed, and don't
+         match the ones reported by others. To be fixed soon.
+         https://kcidb.kernelci.org/?var-origin=arm
+
+     Sony Fuego
+         Internal design in progress.
+
+     Gentoo GKernelCI
+         Sending production results.
+         Only builds (a few architectures), no configs, no logs, and no tests
+         for now, but working on growing contributions.
+         https://kcidb.kernelci.org/?var-origin=gkernelci
+
+     Intel 0day
+         Initial conversation concluded, general interest expressed,
+         no contact since.
+
+     Linaro
+         Sending (a lot of) Tuxsuite build results to "production" KCIDB.
+         https://kcidb.kernelci.org/?var-origin=tuxsuite
+
+     TuxML
+         Initial contact in response to a report.
+         There's a plan to approach us and start work in the coming months.
+
+     Yocto Project
+         Initial contact in response to a report.
+         Would like to start sending build and test results, particularly for
+         older kernels. Would like to separate upstream commits from project
+         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
+
+     Huawei Compass CI
+         Sent a message to Fengguang Wu, who was presenting it at LVC 2021.
+         No response so far.
+
+Please respond with corrections or suggestions of other CI systems to contact.
+
+Nick
+
+*KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
+  Foundation's KernelCI project:
+  https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
 
