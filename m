@@ -2,26 +2,47 @@ MIME-Version: 1.0
 References: <CA+GJov6tdjvY9x12JsJT14qn6c7NViJxqaJk+r-K1YJzPggFDQ@mail.gmail.com>
  <202108272330.AE55FCD@keescook>
 In-Reply-To: <202108272330.AE55FCD@keescook>
-From: David Gow <davidgow@google.com>
-Date: Tue, 31 Aug 2021 07:39:27 +0800
-Message-ID: <CABVgOSkOu=h4pC60fn2FrwPd-XbdaDd=_3pV01rtO+bMrncgMQ@mail.gmail.com>
+From: Rae Moar <rmoar@google.com>
+Date: Mon, 30 Aug 2021 22:14:59 -0400
+Message-ID: <CA+GJov5cjPapO8fek=hpZR4fTq2pmBRrEpvS-i9hPFOdLwsAWw@mail.gmail.com>
 Subject: Re: RFC - kernel test result specification (KTAP)
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
 To: Kees Cook <keescook@chromium.org>
-Cc: Rae Moar <rmoar@google.com>, Brendan Higgins <brendanhiggins@google.com>, "Bird, Tim" <Tim.Bird@sony.com>, Shuah Khan <shuah@kernel.org>, Daniel Latypov <dlatypov@google.com>, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Brendan Higgins <brendanhiggins@google.com>, David Gow <davidgow@google.com>, Tim.Bird@sony.com, Shuah Khan <shuah@kernel.org>, Daniel Latypov <dlatypov@google.com>, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>
 
-On Sat, Aug 28, 2021 at 4:20 PM Kees Cook <keescook@chromium.org> wrote:
+Hello everyone! Thank you for all of your comments! I am glad to see some
+discussion on this email. First of all, my primary goal with this email is to
+advocate for a documented specification for the kernel's test output.  I
+presented my first email largely from the perspective of KUnit and thus, I
+am not surprised there are points of contention in the proposed specification.
+That being said my comments are as follows:
+
+On Sat, Aug 28, 2021 at 4:20 AM Kees Cook <keescook@chromium.org> wrote:
 >
 > [+kernelci, +Guillaume]
 >
 > Hi!
 >
-> Please keep me in CC for these kinds of proposals. And thanks for looking
+> Please keep me in CC for these kinds of proposals.
+
+Very sorry for not including you as a CC. I will be sure to do this in the
+future.
+
+> And thanks for looking
 > at this again! Please understand that while I may be coming across as
 > rather negative here, I would like to have a rational and documented
 > specification for the kernel's test output, too. My main objection here
-> is that we already _have_ a specification, and it's already being parsed
+> is that we already _have_ a specification,
+
+I totally agree that the documented specification should generally follow
+the agreed upon formats for kernel test results. However, there seems to be
+some prominent differences in the formats of test results between KUnit and
+kselftests, as well as within kselftests (requiring test plan line, use of
+different directives). So I am primarily advocating for the specification to be
+agreed upon and documented.
+
+> and it's already being parsed
 > by machines, so making changes without strong justification is going to
 > be met with resistance. :) So, with that in mind, on to my reply...
 >
@@ -53,26 +74,6 @@ On Sat, Aug 28, 2021 at 4:20 PM Kees Cook <keescook@chromium.org> wrote:
 > [2] https://git.kernel.org/linus/b0df366bbd701c45e93af0dcb87ce22398589d1d
 > [3] https://git.kernel.org/linus/e80068be21824e4d2726eeea41cac6178d212415
 >
-
-Thanks a lot for doing this, by the way!
-
-I think many of the issues here stem from the original TAP spec having
-been insufficient for kernel stuff, and a bit of divergent evolution
-having occurred between kselftest, KUnit, and the dormant TAP 14 spec.
-This proposed spec does approach things more from the KUnit side, just
-because that's what we're more familiar with, but I agree that
-kselftest and LAVA are the bigger fish in this pond. KUnit's parser
-has also been a bit stricter in what it accepts, and the TAP producing
-code is shared between all of the KUnit tests, which makes prototyping
-changes a bit easier.
-
-Fortunately, most of these differences seem pretty minor in the grand
-scheme of things, so I'm sure we can adapt this spec to fit what
-kselftest is doing better, while still leaving enough of the structure
-the KUnit tooling requires.
-
-In any case, here are some of my initial thoughts:
-
 > > Additionally, this specification was heavily inspired by the KTAP
 > > specification draft by Tim Bird
 > > (https://lore.kernel.org/linux-kselftest/CY4PR13MB1175B804E31E502221BC8163FD830@CY4PR13MB1175.namprd13.prod.outlook.com/T/).
@@ -103,19 +104,25 @@ In any case, here are some of my initial thoughts:
 > > - Test case result lines
 >
 > These are required.
+
+Agreed.
+
 >
 > > - Diagnostic lines
 >
 > This is optional.
+
+Agreed.
+
 >
 > > - A bail out line
 >
 > Bail out should be optional, and possibly not included at all. (See
 > below.)
+
+I am fine with the Bail out line being removed if it is not in use.
+
 >
-
-Yeah, I'd happily jettison this totally if no-one's using it.
-
 > >
 > > An important component in this specification of KTAP is the
 > > specification of the format of nested tests. This can be found in the
@@ -134,13 +141,13 @@ Yeah, I'd happily jettison this totally if no-one's using it.
 >
 > Maybe "TAP version Linux.1" ? I don't want to needlessly break existing
 > parsers.
+
+I think it would be best to maintain a numerical version number. So I
+would prefer to either maintain 'TAP version #' or 'KTAP version 1', to
+indicate the test results follow the newly specified KTAP. However, I
+am flexible on this.
+
 >
-
-I'd be okay with this. I personally think "KTAP" better describes how
-much of a deviation this is turning out to be from the official TAP
-specs, but if this fixes more parsers than it breaks, it's worth
-doing.
-
 > >
 > > Plan lines
 > > ----------
@@ -156,10 +163,7 @@ doing.
 > tests".
 >
 
-I don't think there's fundamentally a distinction worth preserving
-here. "Subtests" is the language used by the TAP 14 spec, but if we
-want to reframe it as nested tests, that's not a problem (and I agree
-'subtests' is a little misleading here).
+I am fine changing this concept. It might be slightly clearer.
 
 > >
 > > Test case result lines
@@ -171,6 +175,18 @@ want to reframe it as nested tests, that's not a problem (and I agree
 >
 > "[<diagnostic data>]" is not defined below. I think what you mean is
 > "directive details".
+
+I should have defined the [<diagnostic data>] more fully. My intention was
+that the diagnostic data would accommodate including information in the
+test result that is not a directive or the description of the test. For example,
+this would accommodate the examples that Tim Bird mentioned:
+ok 5 - check return code # rcode=0
+
+Note that both the directive and diagnostic data would be after a # symbol.
+So the more exact format I was intending would be as follows:
+
+<result> <number> [-] [<description>] [# [<directive>][<diagnostic data>]]
+
 >
 > I suggest:
 >
@@ -190,10 +206,6 @@ want to reframe it as nested tests, that's not a problem (and I agree
 > Yes, though parsers should handle ordering failures and missed test
 > results (this is the purpose of the "plan" line).
 >
-
-For the record, KUnit's parser prints an error for each test with the
-"wrong number", but still reports its result.
-
 > >
 > > The "-" character is optional.
 > >
@@ -203,11 +215,15 @@ For the record, KUnit's parser prints an error for each test with the
 >
 > Yes, though the optional "- " is strictly part of the optional
 > description.
+
+Does this mean you would want the "-" parsed as part of
+the description? I think having "-" at the beginning of test descriptions
+might be confusing.
+
+Additionally, I am flexible on whether the "-" is necessary. I personally
+think it looks a bit better with the "-" but that is preference.
+
 >
-
-I think the goal of specifying the "- " explicitly is that it's very
-ugly to have test names/descriptions start with a "-" if one is used.
-
 > > The directive is used to indicate if a test was skipped. The format
 >
 > The directive is a single word -- currently only "SKIP" is recognized
@@ -217,23 +233,12 @@ ugly to have test names/descriptions start with a "-" if one is used.
 >
 > (This could also be called "context" rather than "directive".)
 >
-
-The name here matches the TAP spec, but I don't think we need to be
-too beholden to it.
-
-Personally, I think it'd make more sense to have SKIP, XFAIL, etc be
-different statuses like "ok" and "not ok", rather than a directive
-after the name, but that's possibly too radical a departure from TAP.
-
 > > for the directive is: "# SKIP [<skip_description>]". The
 > > skip_description is optional and can be any string of words to
 > > describe why the test was skipped.
 >
 > I would call this "directive details".
 >
-
-Agreed.
-
 > > The result of the test case result
 > > line can be either "ok" or "not ok" if the skip directive is used.
 > > Finally, note that TAP 14 specification includes TODO directives but
@@ -254,6 +259,10 @@ Agreed.
 > >     not_ok 1 - test_case_name
 >
 > This isn't valid. No "_" is recognized for "ok" vs "not ok".
+
+Oops. My typo here. I meant:
+not ok 1 - test_case_name
+
 >
 > >
 > > Diagnostic lines
@@ -270,30 +279,20 @@ Agreed.
 > the dmesg output may be intermixed, and possibly temporally offset. Such
 > lines may not be useful, and may not be strictly correlated, where-as
 > the output from kselftest is at least self-consistent.
+
+I would be fine with maintaining that distinction.
+
 >
-
-I'm in two minds about this. On one hand, I totally agree that there's
-a useful distinction here, and that a lot of dmesg output can get
-nondeterministically mixed in. On the other, there are some tests for
-which the dmesg output which gets mixed in is important output which
-shouldn't be stripped out (for example, the KUnit KASAN tests print
-KASAN reports, which we want to treat as "diagnostics" because they're
-useful to understand what's happening in the tests.
-
-That being said, there's nothing actually stopping us from maintaining
-this distinction, and just having the KUnit parser treat "unknown"
-lines the same as "diagnostic" lines, while maintaining the
-distinction in theory.
-
 > > Diagnostic lines can be
 > > anywhere in the test output after the first two lines.
 >
 > I don't see a reason for this strictness. They can be anywhere.
 >
 
-I think this was just there because because we wanted to have room for
-the TAP version header (or the 'Subtest' line in this spec/TAP14) and
-the test plan, which needed to be the first two lines.
+This was an attempt to ensure that the first two lines of the KTAP
+results are the
+version line and the test plan. However, looking back on this, it was a bit too
+strict.
 
 > > There are a few
 > > special diagnostic lines.
@@ -304,20 +303,6 @@ the test plan, which needed to be the first two lines.
 > for embedding the test names. :( There is a need for parsers to discover
 > the name of a given test, though, so we do likely need something for this.
 >
-
-Yeah: the problem here is that we do have a pretty random mix of lines
-starting with "#" which need parsing, and those which don't. Some of
-this is inherited from the TAP or TAP14 spec. Using "# " for nesting
-makes this a bit confusing as well.
-
-Maybe this just needs reframing to something like "lines starting with
-'#' which are not parseable as any of the following are diagnostic
-lines", rather than the current implication that it's "anything that
-starts with '#'".
-
-Or we could try to clean up the mess and get rid of the leading '#'
-everywhere else, but that's also a fair bit of work.
-
 > > Diagnostic lines of the format "# Subtest:
 > > <test_name>" indicate the start of a test with subtests. Also,
 > > diagnostic lines of the format "# <test_name>: <description>" refer to
@@ -344,31 +329,11 @@ everywhere else, but that's also a fair bit of work.
 >
 > # FAILED: 85 / 87 tests passed.
 > # Totals: pass:83 fail:2 xfail:0 xpass:0 skip:2 error:0
-
-KUnit has just added a similar line, though it's optional, and is
-mainly used as a way of providing sums of nested tests at different
-levels:
-https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git/commit/?h=kunit&id=acd8e8407b8fcc3229d6d8558cac338bea801aed
-
-It's currently optional, though, so we might want to change that if we
-rely on it.
-
-In general, though, I agree that "Bail out!" is pretty useless. I
-suspect it's here mostly because "it was in the TAP spec" rather than
-"it's something we actually want to use".
-
 >
 > Also, parsers should treat a new "TAP version..." line at the same
 > nesting level as indication that the prior test has ended (and any tests
 > without result lines should be considered failed).
 >
-
-I do like this idea as a way of making it possible to just cat test
-results together and get a sensibly merged result.
-I think we want to count any tests without result lines marked as
-"error" (test execution didn't complete/crashed/etc), rather than
-"failed", but that's just a detail.
-
 > >
 > > Nested tests
 > > ------------
@@ -391,22 +356,24 @@ I think we want to count any tests without result lines marked as
 > the executing test, and it must have the same output, nested or not. (e.g.
 > running the test alone or running the test under a full kselftest run,
 > the only difference is the indentation level.)
+
+To clarify if this was implemented in kselftests, I believe the parent test
+would print this subtest header. So the executing test would not have
+this knowledge about the execution depth and thus, if the test was not
+nested, it would not print this subtest header. This is my understanding.
+
+Additionally, this is the current format for nested tests for KUnit.
+As David mentioned, KUnit adopted this format from the proposed
+TAP 14 draft spec
+(https://github.com/TestAnything/testanything.github.io/pull/36/files).
+Currently KUnit relies on this Subtest header line to parse nested tests.
+I hope this is taken into account with discussions.
+
+However, I hope we can decide on a singular format for these nested
+tests. I am flexible with this specification. I would be fine with including
+the nested version lines.
+
 >
-
-This originally came from the draft TAP 14 spec here:
-https://github.com/TestAnything/testanything.github.io/pull/36/files
-
-On the KUnit side, we were labouring under the impression TAP 14 would
-be ratified and implemented, so a lot of TAP 14 things ended up in our
-implementation, including this line. Given that it stalled a long time
-ago and no-one seems to care, I don't think that compatibility with it
-needs to be an explicit goal any more, but it is still something that
-KUnit uses at the moment.
-
-The other thing worth noting is that, in KUnit, while nested test
-support is limited, the framework does need to keep track of the
-nesting depth in order to print the indentation.
-
 > > The second line of the test must be the plan line, which is formatted
 > > as "1..N", where N is the number of subtests.
 > >
@@ -464,6 +431,11 @@ nesting depth in order to print the indentation.
 >
 > A plan line is required. No special cases are needed. :)
 >
+
+I am good with this. This was an attempt to be flexible because
+it does seem there are tests that leave out the test plan or
+place the test plan at the end of the test.
+
 > If nesting level is lost, a parser will understand the nested test to
 > have ended, but probably so did the test runner:
 >
@@ -482,19 +454,34 @@ nesting depth in order to print the indentation.
 > > Lastly, indentation is also recommended for improved readability.
 >
 > Indentation is _required_. :)
+
+I think this could be a little strict to require indentation. For example,
+in the instance of a nested test with a prefix, there could be difficulties
+with correctly parsing the indentation level:
+
+TAP version 13
+1..1
+[batch_id 4] TAP version 13
+[batch_id 4] 1..2
+[batch_id 4] ok 1 - cyclictest with 1000 cycles
+[batch_id 4] # problem setting CLOCK_REALTIME
+[batch_id 4] not ok 2 - cyclictest with CLOCK_REALTIME
+not ok 1 - check realtime
+
+(using a truncated version of an example Tim Bird used - note
+he used it for a different point)
+
+This could mostly be corrected with the use of "# " as the indentation. But
+I personally prefer "  " as an indentation because the use of "# " can be
+confusing with the format of diagnostic lines also starting with "# ". Thus,
+I think it is safer to use the version lines or a subtest header lines to parse
+nested tests.
+
 >
 > Whether this is "# " or "  " I don't really care, as long as the change
 > is coordinated. "  " is easier for humans to read, but may make parsing of
 > "unknown" lines more difficult for machines.
 >
-
-As one of the people who has an irrational distaste for syntactically
-significant indentation, I'd prefer using something like the TAP
-version header or the test plan as a way of indicating nesting. The
-TAP 14 spec says that they should be indented four spaces, but "# " is
-probably better, even if it doesn't gel perfectly with my mental model
-of "#" lines not needing parsing (which went out the window ages ago).
-
 > >
 > > Major differences between TAP 14 and KTAP specification
 > > -------------------------------------------------------
@@ -509,21 +496,15 @@ of "#" lines not needing parsing (which went out the window ages ago).
 > > - TODO directive not allowed
 >
 > I would just say "unrecognized".
+
+I am good with this change.
+
 >
-
-I think this is actually supported in at least some versions of
-TAP...? So maybe this isn't a difference at all.
-
 > > - KTAP allows for an arbitrary number of tests to be nested with
 > > specified nested test format
 >
 > Yup.
 >
-
-Again, I think this is actually a difference between TAP14/KTAP and
-KUnit's current logic. TAP 14 does support nested tests using this
-format, but KUnit only supported one level of nesting (Suite->Test).
-
 > >
 > > Example of KTAP
 > > ---------------
@@ -575,6 +556,10 @@ format, but KUnit only supported one level of nesting (Suite->Test).
 > Yes. (Though "exit=" is a mistake in runner.sh -- this should probably
 > be reported without the '#')
 >
+
+Sounds good. Are there specific directives that should or should not
+be included?
+
 > >
 > > However, the general format for kselftests with nested test results
 > > seems to differ from the above specification. It seems that a general
@@ -611,14 +596,6 @@ format, but KUnit only supported one level of nesting (Suite->Test).
 > a good reason to change it, we should avoid the churn with the existing
 > parsers.
 >
-
-Like with the "Subtests" line, this came from the draft TAP 14 spec, via KUnit.
-Personally, I prefer the whitespace indent from a readability point of
-view, and because it gels a bit better with my idea of what the "#"
-was supposed to represent: a non-parseable additional diagnostic,
-though that's not consistently been the case for ages, so I don't care
-too much.
-
 > > ====
 > >
 > > So what do people think about the above specification?
@@ -626,18 +603,18 @@ too much.
 >
 > I'm probably a broken record by now, but kselftests _is_ the
 > specification. ;) What about it needs changing, and why?
+
+I think the change that needs to happen is that the specification is
+documented so it is accessible to everyone. Otherwise I hope this
+proposed specification helps to incite needed discussion so we
+hopefully can create this accepted specification. Again thank you
+to everyone for their comments.
+
 >
-
-I think there's value in describing the spec more explicitly,
-particularly since there's also the TAP spec, TAP 14 draft spec, and
-KUnit's implementation, all of which are different in some ways. And
-while a lot of the implicit spec can be gleaned from reading example
-kselftest tests, that only tells you what is valid, not what isn't,
-which makes writing parsers a bit trickier.
-
 > > If this specification is accepted, where should the specification be documented?
 >
 > I imagine some .rst file under Documentation/dev-tools/, linked to from
 > kselftest.rst and kunit/...rst
 >
-Agreed.
+> --
+> Kees Cook
