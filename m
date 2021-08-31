@@ -1,30 +1,64 @@
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Subject: #KCIDB Collecting UX user stories
-Message-ID: <31fc9687-b394-82af-26b3-fbd56cd4d24d@redhat.com>
-Date: Thu, 18 Mar 2021 13:07:01 +0200
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Subject: Testing & Fuzzing Micro-Conference at Linux Plumbers Conference 2021
+Message-ID: <c801f7b9-1f70-e69c-99f6-5bc5c5622991@collabora.com>
+Date: Tue, 31 Aug 2021 11:25:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
-Cc: mathieu.acher@irisa.fr, Richard Purdie <richard.purdie@linuxfoundation.org>, Cristian Marussi <cristian.marussi@arm.com>, Alice Ferrazzi <alicef@gentoo.org>, Vishal Bhoj <vishal.bhoj@linaro.org>, Veronika Kabatova <vkabatov@redhat.com>, Don Zickus <dzickus@redhat.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>, Dmitry Vyukov <dvyukov@google.com>, Tim Bird <Tim.Bird@sony.com>
+To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, automated-testing@lists.yoctoproject.org, linux-kselftest@vger.kernel.org, "kernelci@groups.io" <kernelci@groups.io>, syzkaller <syzkaller@googlegroups.com>
+Cc: Sasha Levin <sashal@kernel.org>, "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 
-Hi everyone involved with or interested in KCIDB,
+The Testing & Fuzzing Micro-Conference[1] at Linux Plumbers 2021 will
+remain open to new proposals for talks and discussion topics until the
+end of next week (Friday 10th Sept).  Please feel free to submit yours
+with the "Submit new proposal" form on this page:
 
-A while ago we at KernelCI started collecting possible user stories for the 
-new KernelCI dashboard, accommodating KCIDB among other things:
+  https://linuxplumbersconf.org/event/11/abstracts/
 
-     https://github.com/kernelci/kernelci-core/discussions/618
+The MC is currently scheduled for Wednesday 22nd.  This is where the
+timetable will appear as submissions get accepted:
 
-It would help us build the best possible dashboard if maintainers of other CI 
-and testing systems could share their experience, what their users do, or what 
-they want to do, what works and what doesn't.
+  https://linuxplumbersconf.org/event/11/sessions/110/#20210922
 
-If you have user stories to share, or simply any ideas for how to build the 
-best dashboard for data aggregated with KCIDB, please leave your comments at 
-the link above.
 
-Thank you!
-Nick
+Last year's edition was very effective in spite of being fully online
+rather than in-person.  Topics around testing were mentioned in many
+other tracks too, such as real-time and toolchains.  See also the
+related KernelCI blog post with community notes[2].  We're looking
+forward to having an equally good virtual experience this time again.
+
+Best wishes,
+Guillaume
+
+
+[1] https://www.linuxplumbersconf.org/blog/2021/index.php/2021/07/09/testing-and-fuzzing-microconference-accepted-into-2021-linux-plumbers-conference/
+
+The Testing and Fuzzing microconference focuses on advancing the current
+state of testing of the Linux kernel. We aim to create connections
+between folks working on similar projects, and help individual projects
+make progress.
+
+We ask that any topic discussions will focus on issues/problems they are
+facing and possible alternatives to resolving them. The Microconference
+is open to all topics related to testing & fuzzing on Linux, not
+necessarily in the kernel space.
+
+Suggested topics:
+
+  KernelCI: Extending coverage and improving user experience.
+  Growing KCIDB, integrating more sources.
+  Better sanitizers: KFENCE, improving KCSAN.
+  Using Clang for better testing coverage.
+  How to spread KUnit throughout the kernel?
+  Testing in-kernel Rust code.
+
+MC leads:
+
+  Sasha Levin <sashal@kernel.org>
+  Guillaume Tucker <guillaume.tucker@collabora.com>
+
+
+[2] https://foundation.kernelci.org/blog/2020/09/23/kernelci-notes-from-plumbers-2020/
 
