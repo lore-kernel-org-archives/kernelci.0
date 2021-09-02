@@ -1,72 +1,99 @@
+Subject: Re: KernelCI Hackfest #2 - Sept 6-10 2021
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Reply-To: kernelci@groups.io, guillaume.tucker@collabora.com
+References: <169771B791E5E075.25031@groups.io>
+Message-ID: <259a2ea9-63da-b5df-3496-676c2b76700b@collabora.com>
+Date: Thu, 2 Sep 2021 21:22:56 +0100
 MIME-Version: 1.0
-References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
- <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
- <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com> <CAHRSSEwnBrT0wnc+-dA2FXvu1udstwArFRYtHu+f-79fZgd2JQ@mail.gmail.com>
- <CAHRSSEwtCOjxp4-GVRD+31bASw3k+isZbguABmUX_V82tu8T=Q@mail.gmail.com>
- <285b11ad-40dc-eb88-427e-f32c4a422c85@collabora.com> <CAHRSSEy6nOgPG8LVcMh9e-rxkWpAZNOeC5B=L2KKuE66Qynv3Q@mail.gmail.com>
- <b12def92-d4cc-ec89-9e6d-d3e710970ccd@collabora.com> <CAHRSSEyvTz9BhenBec79ieXdURYKOMaqk78uKjeZciHNSeSKag@mail.gmail.com>
-In-Reply-To: <CAHRSSEyvTz9BhenBec79ieXdURYKOMaqk78uKjeZciHNSeSKag@mail.gmail.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Thu, 2 Sep 2021 12:28:28 -0700
-Message-ID: <CAHRSSEzAsiLrrJ_XjmykMjn96JcN+-F3iugSfFaG124UhS3W8w@mail.gmail.com>
-Subject: Re: can't access kernelci results
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <169771B791E5E075.25031@groups.io>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: =?UTF-8?B?TWljaGHFgiBHYcWCa2E=?= <michal.galka@collabora.com>, kernelci@groups.io, Guenter Roeck <groeck@google.com>, Kevin Hilman <khilman@baylibre.com>
+To: "kernelci@groups.io" <kernelci@groups.io>
+Cc: kernelci-members <kernelci-members@groups.io>, automated-testing@lists.yoctoproject.org, Collabora Kernel ML <kernel@collabora.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jesse Barnes <jsbarnes@google.com>, Summer Wang <wangsummer@google.com>, linux-kselftest@vger.kernel.org, workflows@vger.kernel.org, kunit-dev@googlegroups.com, clang-built-linux <clang-built-linux@googlegroups.com>
 
-It's working again. Thanks.
+On 02/08/2021 10:00, Guillaume Tucker wrote:
+> The first KernelCI hackfest[1] early June was successful in getting
+> a number of kernel developers to work alongside the core KernelCI
+> team.  Test coverage was increased in particular with kselftest,
+> LTP, KUnit and a new test suite for libcamera.  We're now improving
+> documentation and tooling to make it easier for anyone to get
+> started.  Find out more about KernelCI on https://kernelci.org.
+> 
+> The second hackfest is scheduled for the 6th-10th September.  It
+> should be a good opportunity to start discussing and working on
+> upstream kernel testing topics ahead of the Linux Plumbers
+> Conference[2].
 
-On Thu, Sep 2, 2021 at 8:58 AM Todd Kjos <tkjos@google.com> wrote:
->
-> I'm getting errors again when attempting to access
-> https://linux.kernelci.org/job/android/. mongod issues again?
->
-> "Error while loading data from the server (error code: 500). Please
-> contact the website administrator"
->
-> On Tue, Jun 22, 2021 at 8:17 AM Guillaume Tucker
-> <guillaume.tucker@collabora.com> wrote:
-> >
-> > On 22/06/2021 16:07, Todd Kjos wrote:
-> > > Hmm, it's still not working for me -- did it break again?
-> >
-> > Yes there was an OOM issue:
-> >
-> > [4316410.416514] Killed process 20620 (mongod) total-vm:20171340kB, ano=
-n-rss:18654740kB, file-rss:0kB, shmem-rss:0kB
-> > [4316412.060511] oom_reaper: reaped process 20620 (mongod), now anon-rs=
-s:0kB, file-rss:0kB, shmem-rss:0kB
-> >
-> > We're looking into moving the Mongo DB instance to the cloud in
-> > Azure.  Hopefully that will save us fixing this kind of
-> > maintenance issues.  Meanwhile, we should take a look and see if
-> > there's some config option to limit the amount of RAM used by
-> > Mongo DB to work around the problem.
-> >
-> > Best wishes,
-> > Guillaume
-> >
-> >
-> > > On Tue, Jun 22, 2021 at 2:43 AM Micha=C5=82 Ga=C5=82ka <michal.galka@=
-collabora.com <mailto:michal.galka@collabora.com>> wrote:
-> > >
-> > >     On 21.06.2021 21:59, Todd Kjos via groups.io <http://groups.io> w=
-rote:
-> > >     > I'm having this issue again (can't access kernelci results
-> > >     > at https://linux.kernelci.org/job/android/ <https://linux.kerne=
-lci.org/job/android/>
-> > >     > <https://linux.kernelci.org/job/android/ <https://linux.kernelc=
-i.org/job/android/>>). Is the mongod service borked
-> > >     > again?
-> > >     >
-> > >
-> > >     Yes, there was an issue with mongod service again. It's working n=
-ow,
-> > >     celery processed pending tasks and everything seems responsive.
-> > >
-> > >     Thanks,
-> > >     Micha=C5=82
-> > >
-> >
+Please find below some extra information for the KernelCI
+Hackfest which is taking place next week.  We're expecting at
+least some contributors from the Civil Infrastructure Platform
+project, the Google Chrome OS kernel team, Collabora kernel
+developers and a few more from the wider Linux kernel community.
+
+If you need any direct support, please reply to this email or ask
+on kernelci.slack.com or IRC #kernelci (libera.chat).
+
+
+> Here's the project board where anyone can already add some ideas:
+> 
+>   https://github.com/orgs/kernelci/projects/5
+
+In order to add an issue to the workboard, please first create
+one in a KernelCI GitHub repository such as kernelci-core:
+
+  https://github.com/kernelci/kernelci-core/issues
+
+Each contributor to the hackfest should be added to the
+KernelCI "hackers" team, which has permission to edit the
+workboard.  If you aren't part of this team yet, please ask and
+you'll be invited.
+
+Note: Having a GitHub account is not mandatory for taking part in
+the hackfest.  It's mainly there to facilitate coordination, even
+though it is required in order to contribute to the KernelCI
+GitHub repositories.  Contributions as part of the hackfest may
+also be in the kernel tree such as improvements to kselftest,
+KUnit or bug fixes, or other test suites such as LTP etc.
+
+
+> The hackfest features:
+> 
+> * Daily open hours online using Big Blue Button to discuss things
+>   and get support from the KernelCI team
+> 
+> * KernelCI team members available across most time zones to provide
+>   quick feedback
+> 
+> * A curated list of topics and a project board to help set
+>   objectives and coordinate efforts between all contributors
+
+Please see the table below with the proposed daily open hours to
+accommodate most time zones:
+
+Region        Zone    Time 1       Time 2
+East Asia     GMT+10  17:00-19:00  03:00-05:00
+Europe        GMT+2   09:00-11:00  19:00-21:00
+              UTC     07:00-09:00  17:00-19:00
+West America  GMT-7   00:00-02:00  10:00-12:00
+
+
+They will be held as a Big Blue Button virtual conference with
+the same URL as the last hackfest.  It's not being shared
+publicly to avoid any potential abuse, so please ask if you don't
+have it already.
+
+On Monday, the focus should be put on getting started and
+reviewing the backlog on the hackfest workboard to distribute
+things among people or help new contributors find topics suitable
+for them.  Open hours are otherwise opportunities to get more
+direct support from the KernelCI team or discuss any topic.
+
+See you there!
+
+Best wishes,
+Guillaume
+
+> [1] https://foundation.kernelci.org/blog/2021/06/24/the-first-ever-kernelci-hackfest/
+> [2] https://www.linuxplumbersconf.org/event/11/page/104-accepted-microconferences#cont-test
