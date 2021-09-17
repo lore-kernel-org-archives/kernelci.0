@@ -1,34 +1,43 @@
-Return-Path: <Nikolai.Kondrashov@redhat.com>
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Subject: Syzbot sends URLs in config names to KCIDB
-Message-ID: <73b0f3cd-a382-4f77-1d2e-e081e4e05cc2@redhat.com>
-Date: Fri, 17 Sep 2021 18:45:29 +0300
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="Groupsio=q9jtg3UN7gWCs54XBJ7X"
+References: <73b0f3cd-a382-4f77-1d2e-e081e4e05cc2@redhat.com>
+In-Reply-To: <73b0f3cd-a382-4f77-1d2e-e081e4e05cc2@redhat.com>
+From: "Dmitry Vyukov" <dvyukov@google.com>
+Date: Fri, 17 Sep 2021 17:49:21 +0200
+Message-ID: <CACT4Y+YKgm63c8idp0o=3y1SZKOWzx4nqYduCcz78p1W5L8iew@mail.gmail.com>
+Subject: Re: Syzbot sends URLs in config names to KCIDB
+Content-Type: multipart/mixed; boundary="Groupsio=Fa3sYQxHBfcVYCiRIDPk"
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>, kernelci@groups.io
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: kernelci@groups.io, syzkaller <syzkaller@googlegroups.com>
 
---Groupsio=q9jtg3UN7gWCs54XBJ7X
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--Groupsio=Fa3sYQxHBfcVYCiRIDPk
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Dmitry,
+On Fri, 17 Sept 2021 at 17:45, Nikolai Kondrashov
+<Nikolai.Kondrashov@redhat.com> wrote:
+>
+> Hi Dmitry,
+>
+> I've just noticed, but Syzbot has been sending URLs in build "config_name"
+> fields for a while (see attached example), whereas the field is intended for a
+> descriptive, human-readable name instead.
+>
+> Do you think you could fix that?
+>
+> Thank you.
+> Nick
 
-I've just noticed, but Syzbot has been sending URLs in build "config_name" 
-fields for a while (see attached example), whereas the field is intended for a 
-descriptive, human-readable name instead.
+Hi Nick,
 
-Do you think you could fix that?
+The attached info does not look like info from syzbot. It does not use
+tuxbuild. That's somebody else.
 
-Thank you.
-Nick
-
---Groupsio=q9jtg3UN7gWCs54XBJ7X
-Content-Type: application/json;
- name="365.data.json"
+--Groupsio=Fa3sYQxHBfcVYCiRIDPk
+Content-Type: application/json; name="365.data.json"
+Content-Disposition: attachment; filename="365.data.json"
 Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="365.data.json"
+Content-ID: <17bf4722602c3bef3f02>
+X-Attachment-Id: 17bf4722602c3bef3f02
 
 ewogICJyZXZpc2lvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICI1MmM3YjcyNzU4MWZlNzI1Zjhi
 OGEyODNhZjIxZmUwNjUxYzczYzQ4IiwKICAgICAgIm9yaWdpbiI6ICJ0dXhzdWl0ZSIsCiAgICAg
@@ -51,4 +60,4 @@ WlcyRVlJMUs4VmFTVjNXSUxVZGxVN2VXL2J1aWxkLmxvZyIsCiAgICAgICJzdGFydF90aW1lIjog
 IjIwMjEtMDgtMzFUMTI6MDc6MzUrMDA6MDAiLAogICAgICAidmFsaWQiOiBmYWxzZQogICAgfQog
 IF0sCiAgInZlcnNpb24iOiB7CiAgICAibWFqb3IiOiAzLAogICAgIm1pbm9yIjogMAogIH0KfQo=
 
---Groupsio=q9jtg3UN7gWCs54XBJ7X--
+--Groupsio=Fa3sYQxHBfcVYCiRIDPk--
