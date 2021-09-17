@@ -1,48 +1,54 @@
+Return-Path: <Nikolai.Kondrashov@redhat.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Subject: Syzbot sends URLs in config names to KCIDB
+Message-ID: <73b0f3cd-a382-4f77-1d2e-e081e4e05cc2@redhat.com>
+Date: Fri, 17 Sep 2021 18:45:29 +0300
 MIME-Version: 1.0
-From: "Veronika Kabatova" <vkabatov@redhat.com>
-Date: Thu, 16 Sep 2021 18:41:31 +0200
-Message-ID: <CA+tGwnnZv6HzFanwVcyAc=DQb-Eh1pdA9JnE+mcLYS-UiUOFFg@mail.gmail.com>
-Subject: CKI DataWarehouse now publicly available
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/mixed; boundary="Groupsio=q9jtg3UN7gWCs54XBJ7X"
 List-ID: <kernelci.groups.io>
-To: automated-testing@lists.yoctoproject.org, kernelci@groups.io
-Cc: "Malerba, Inaki" <imalerba@redhat.com>, Ondrej Kinst <okinst@redhat.com>
+To: Dmitry Vyukov <dvyukov@google.com>, kernelci@groups.io
 
-Hello,
+--Groupsio=q9jtg3UN7gWCs54XBJ7X
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-after a very long time, we're excited to announce the CKI DataWarehouse is now
-publicly available at
+Hi Dmitry,
 
-https://datawarehouse.cki-project.org/
+I've just noticed, but Syzbot has been sending URLs in build "config_name" 
+fields for a while (see attached example), whereas the field is intended for a 
+descriptive, human-readable name instead.
 
-DataWarehouse is a kernel test result database and web dashboard based on
-KCIDB. On top of KCIDB structure, it offers known issue detection as the main
-feature, as well as some statistics about test and host confidence.
+Do you think you could fix that?
 
-The database will be populated with new CKI results as testing runs.
+Thank you.
+Nick
 
+--Groupsio=q9jtg3UN7gWCs54XBJ7X
+Content-Type: application/json;
+ name="365.data.json"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="365.data.json"
 
-All code is publicly available and welcomes contributions ;) :
+ewogICJyZXZpc2lvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICI1MmM3YjcyNzU4MWZlNzI1Zjhi
+OGEyODNhZjIxZmUwNjUxYzczYzQ4IiwKICAgICAgIm9yaWdpbiI6ICJ0dXhzdWl0ZSIsCiAgICAg
+ICJnaXRfcmVwb3NpdG9yeV91cmwiOiAiaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xp
+bnV4L2tlcm5lbC9naXQvbmV4dC9saW51eC1uZXh0LmdpdCIsCiAgICAgICJnaXRfY29tbWl0X2hh
+c2giOiAiNTJjN2I3Mjc1ODFmZTcyNWY4YjhhMjgzYWYyMWZlMDY1MWM3M2M0OCIsCiAgICAgICJn
+aXRfY29tbWl0X25hbWUiOiAibmV4dC0yMDIxMDgzMSIsCiAgICAgICJkaXNjb3ZlcnlfdGltZSI6
+ICIyMDIxLTA4LTMxVDEyOjA3OjM1KzAwOjAwIiwKICAgICAgInZhbGlkIjogdHJ1ZSwKICAgICAg
+ImdpdF9yZXBvc2l0b3J5X2JyYW5jaCI6ICJtYXN0ZXIiCiAgICB9CiAgXSwKICAiYnVpbGRzIjog
+WwogICAgewogICAgICAiaWQiOiAidHV4c3VpdGU6MXhVWlcyRVlJMUs4VmFTVjNXSUxVZGxVN2VX
+IiwKICAgICAgInJldmlzaW9uX2lkIjogIjUyYzdiNzI3NTgxZmU3MjVmOGI4YTI4M2FmMjFmZTA2
+NTFjNzNjNDgiLAogICAgICAib3JpZ2luIjogInR1eHN1aXRlIiwKICAgICAgImFyY2hpdGVjdHVy
+ZSI6ICJhcm0iLAogICAgICAiY29tcGlsZXIiOiAiRGViaWFuIGNsYW5nIHZlcnNpb24gMTMuMC4w
+LSsrMjAyMTA3MTUwOTM1MTErYWZjNzYwZWYzNTI3LTF+ZXhwMSIsCiAgICAgICJjb25maWdfbmFt
+ZSI6ICJodHRwczovL3NyYy5mZWRvcmFwcm9qZWN0Lm9yZy9ycG1zL2tlcm5lbC9yYXcvcmF3aGlk
+ZS9mL2tlcm5lbC1hcm12N2hsLWZlZG9yYS5jb25maWcrIiwKICAgICAgImNvbmZpZ191cmwiOiAi
+aHR0cHM6Ly9idWlsZHMudHV4YnVpbGQuY29tLzF4VVpXMkVZSTFLOFZhU1YzV0lMVWRsVTdlVy9j
+b25maWciLAogICAgICAibG9nX3VybCI6ICJodHRwczovL2J1aWxkcy50dXhidWlsZC5jb20vMXhV
+WlcyRVlJMUs4VmFTVjNXSUxVZGxVN2VXL2J1aWxkLmxvZyIsCiAgICAgICJzdGFydF90aW1lIjog
+IjIwMjEtMDgtMzFUMTI6MDc6MzUrMDA6MDAiLAogICAgICAidmFsaWQiOiBmYWxzZQogICAgfQog
+IF0sCiAgInZlcnNpb24iOiB7CiAgICAibWFqb3IiOiAzLAogICAgIm1pbm9yIjogMAogIH0KfQo=
 
-DataWarehouse: https://gitlab.com/cki-project/datawarehouse
-Python API wrapper: https://gitlab.com/cki-project/datawarehouse-api-lib/
-
-Some documentation is available at https://cki-project.gitlab.io/datawarehouse/
-
-
-It is possible to generate text reports via reporter:
-
-https://gitlab.com/cki-project/reporter
-
-Reporter uses the API wrapper on the background, and can be used to create an
-email friendly report out of the data in DataWarehouse.
-
-
-Everyone is welcome to look around, please let us know if you have any
-questions or ideas for improvement! And of course, all the praise for this
-work goes to Inaki and Ondrej as the maintainers of DataWarehouse and reporter,
-respectively.
-
-
-Veronika and the CKI team
-
+--Groupsio=q9jtg3UN7gWCs54XBJ7X--
