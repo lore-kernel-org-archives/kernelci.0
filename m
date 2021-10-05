@@ -1,88 +1,99 @@
-Message-ID: <ad9e9763-8345-1a6f-f138-73cd4d8a7458@collabora.com>
-Date: Tue, 5 Oct 2021 10:20:31 -0300
 MIME-Version: 1.0
-Subject: Re: [kernelci-members] KernelCI working group: Web Dashboard
-From: "Gustavo Padovan" <gustavo.padovan@collabora.com>
-Reply-To: kernelci-members@groups.io
-References: <1695B2FF4ECA569A.21772@groups.io>
-In-Reply-To: <1695B2FF4ECA569A.21772@groups.io>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <13C9FF88-C1F6-4127-AAA1-E38A1D59AB96@oracle.com> <405b7acc-3b85-145f-eaf9-50bb432bacab@collabora.com>
+In-Reply-To: <405b7acc-3b85-145f-eaf9-50bb432bacab@collabora.com>
+From: Bruce Fields <bfields@redhat.com>
+Date: Tue, 5 Oct 2021 09:47:46 -0400
+Message-ID: <CAPL3RVHKUVxiqqkQZ_8+fVnsaX=3kMRLE7h2U7S3cskb9TnHdg@mail.gmail.com>
+Subject: Re: Using kernelci.org for testing Linux NFSD
+List-ID: <info.kernelci.org>
+List-Post: <https://groups.google.com/a/kernelci.org/group/info/post>, <mailto:info@kernelci.org>
+List-Help: <https://support.google.com/a/kernelci.org/bin/topic.py?topic=25838>,
+ <mailto:info+help@kernelci.org>
+List-Archive: <https://groups.google.com/a/kernelci.org/group/info/>
+List-Unsubscribe: <mailto:googlegroups-manage+1098402462627+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/kernelci.org/group/info/subscribe>
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci-members@groups.io
-Cc: "kernelci@groups.io" <kernelci@groups.io>, automated-testing@lists.yoctoproject.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
+To: Gustavo Padovan <gustavo.padovan@collabora.com>
+Cc: kernelci@groups.io, Chuck Lever <chuck.lever@oracle.com>, "info@kernelci.org" <info@kernelci.org>
 
-
-On 7/27/21 13:34, Gustavo Padovan wrote:
-> Hi Greg,
+On Tue, Oct 5, 2021 at 9:18 AM Gustavo Padovan
+<gustavo.padovan@collabora.com> wrote:
+> On 10/1/21 16:01, Chuck Lever III wrote:
+> > We have some questions about what can be supported on
+> > kernelci.org. For example, the tests we need to run involve
+> > at least two hosts (an NFS client and an NFS server). How
+> > easy is it to set up that kind of test?
 >
-> On Tuesday, July 27, 2021 12:58 -03, "Greg KH" <gregkh@linuxfoundation.org> wrote:
+> We don't have support right now for testing across two different hosts.
+> Can you share more the details of what you want to achieve?
+
+Personally for basic regression testing I use two VMs, one configured
+as an NFS client and one as an NFS server, and I have bash scripts
+that ssh into the client and do things like mount the server with
+various options and run xfstests.
+
+> Do you have
+> some scripts or tests code somewhere that you can share with us?
+
+I don't know if my thicket of test scripts will make much sense to
+anyone but me, but for what it's worth, I keep them all here:
+
+  http://git.linux-nfs.org/?p=bfields/testd.git;a=tree;hb=HEAD
+
+The thing I usually run before submitting is in bin/do-all.
+
+> eg. are
+> both the client and server subject of the tests at the same time or do
+> you test changes one side against a fixed version of the other side
+> (when it is possible).
+
+I normally boot both client and server to the kernel under test.
+However it's useful to have the option to vary the kernel on just one
+side or the other, as that occasionally helps pin down which side is
+at fault for a regression.
+
+> Also, is there any kind of simple/smoke tests that we can run with only
+> one host (eg as part of kselftests or LTP)?
+
+I like using two hosts:  It's a more realistic setup.  When there's a
+crash or other problem, it makes it more obvious which side was at
+fault.  Etc.
+
+But, sure, as a basic smoke test, we could do something like (untested
+for now, off the top of my head):
+
+  git clone git://git.linux-nfs.org/projects/steved/cthon04.git
+  cd cthon04
+  make
+  mkdir /export
+  chmod a+rwx /export
+  echo "/export *(lo)" >/etc/exports
+  systemctl start nfs-server
+  mount localhost:/export /mnt/
+  NFSTESTDIR=/mnt/TMP ./runtests -a -f
+
+That cthon04 test hardly ever changes, so it really only needs to be
+downloaded once. Better would probably be to put /export on a separate
+filesystem.  And more tests would be better, but cthon04 is something
+that will basically always pass unless something is extremely wrong.
+
+> That helps us enables the
+> most basic stuff more easily, as the above will need some design and
+> discussion between the KernelCI team.
+
+Understood.
+
+Thanks for your interest.
+
+--b.
+
+> > If we want to test features that involve Kerberos, is there
+> > a KDC available, or would we need to provide a KDC image
+> > that can be used for our tests?
 >
->> On Tue, Jul 27, 2021 at 04:54:46PM +0100, Guillaume Tucker wrote:
->>> Last year's KernelCI Community Survey[1] showed the importance of
->>> having a good web dashboard.  About 70% of respondents would use
->>> one if it provided the information they needed efficiently.
->>> While other things are arguably even more important, such as
->>> testing patches from mailing lists, replying to stable reviews
->>> and sending email reports directly to contributors in a "natural"
->>> workflow, the web dashboard has been a sticking point for a
->>> while.
->>>
->>> There have been several attempts at solving this problem, using
->>> Elastic Stack and Grafana among other things, but there isn't a
->>> single framework able to directly provide an off-the-shelf
->>> solution to the community's needs.  In fact, the first issue is
->>> the lack of understanding of these needs: who wants to use the
->>> web dashboard, and how?  Then, how does one translate those needs
->>> into a user interface?  Doing this requires skills that engineers
->>> who regularly contribute to KernelCI typically don't have.  As
->>> such, a dedicated working group is being created in order to fill
->>> this gap.
->>>
->>> The aim is to coordinate efforts and try to follow best practices
->>> to make steady progress and avoid repeating the same mistakes.
->>> Most likely, we will need some help from proper web developers
->>> who aren't part of the usual KernelCI community.  This may be
->>> facilitated by the KernelCI LF project budget if approved by the
->>> governing board.
->>>
->>> In order to get started, we would need to have maybe 3 to 5
->>> people available to focus on this.  It doesn't necessarily mean a
->>> lot of hours spent but actions to be carried out on a daily or
->>> weekly basis.  So far we have Gustavo Padovan as our new KernelCI
->>> Project Manager and a few people have expressed interest but we
->>> still need formal confirmation.
->>>
->>>
->>> Here's a GitHub project dedicated to the new web dashboard:
->>>
->>>    https://github.com/orgs/kernelci/projects/4
->>>
->>> I've created a couple of issues to get started about user
->>> stories, and some initial milestones as a basic skeleton:
->>>
->>>    https://github.com/kernelci/kernelci-project/milestones
->>>
->>>
->>> This is ultimately a community-driven effort to address the needs
->>> of the kernel community.  Please share any thoughts you may have
->>> on this, whether you want to add some user stories, share some
->>> expertise, be officially in the working group or take part in
->>> this effort in any other way.
->> How do we "join" the working group?  I'm willing to help out from the
->> "user who will use this a lot and complain about things that do not
->> work well" point of view :)
-> Congratulations! You are now part of the working group. :) For now, anyone that is interested can step up, and maybe in a few weeks we can formalize with those who wants to take on the journey together with us in this working group.
->
-> Based on the replies to this thread I can put together an initial agenda and follow up with the potential times for a kick-off meeting.
-
-Here's a poll with some proposed times for us to schedule the first 
-meeting next week: https://doodle.com/poll/pbhpeu5cbxp49ghz
-
-Please reply to it ASAP.
-
-Regards,
-
-Gustavo
+> We don't have any provision for that yet (because no one ever needed
+> it!). It might be easier if you just provide an image that serves you
+> the best. I'd need to check with the team the details to make it
+> available to your tests.
 
