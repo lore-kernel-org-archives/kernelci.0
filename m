@@ -1,139 +1,70 @@
-From: Chuck Lever III <chuck.lever@oracle.com>
+Return-Path: <bjorn.andersson@linaro.org>
+Date: Tue, 5 Oct 2021 09:57:11 -0700
+From: "Bjorn Andersson" <bjorn.andersson@linaro.org>
 Subject: Re: Using kernelci.org for testing Linux NFSD
-Date: Tue, 5 Oct 2021 14:33:08 +0000
-Message-ID: <520658CE-09F2-4FC6-9FBB-A46A8852CA7B@oracle.com>
+Message-ID: <YVyD59X4yXPh2KzX@ripper>
 References: <13C9FF88-C1F6-4127-AAA1-E38A1D59AB96@oracle.com>
- <405b7acc-3b85-145f-eaf9-50bb432bacab@collabora.com>
- <CAPL3RVHKUVxiqqkQZ_8+fVnsaX=3kMRLE7h2U7S3cskb9TnHdg@mail.gmail.com>
-In-Reply-To: 
- <CAPL3RVHKUVxiqqkQZ_8+fVnsaX=3kMRLE7h2U7S3cskb9TnHdg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <42847CF534E4BD44A778FB1121E0A213@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <13C9FF88-C1F6-4127-AAA1-E38A1D59AB96@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Gustavo Padovan <gustavo.padovan@collabora.com>
-Cc: Bruce Fields <bfields@redhat.com>, "kernelci@groups.io" <kernelci@groups.io>, "info@kernelci.org" <info@kernelci.org>
+To: kernelci@groups.io, chuck.lever@oracle.com
+Cc: "info@kernelci.org" <info@kernelci.org>, Bruce Fields <bfields@redhat.com>
 
-Hello Gustavo, good to meet you. More inline.
+On Fri 01 Oct 12:01 PDT 2021, Chuck Lever III wrote:
 
+> Hi-
+> 
 
-> On Oct 5, 2021, at 9:47 AM, Bruce Fields <bfields@redhat.com> wrote:
->=20
-> On Tue, Oct 5, 2021 at 9:18 AM Gustavo Padovan
-> <gustavo.padovan@collabora.com> wrote:
->> On 10/1/21 16:01, Chuck Lever III wrote:
->>> We have some questions about what can be supported on
->>> kernelci.org. For example, the tests we need to run involve
->>> at least two hosts (an NFS client and an NFS server). How
->>> easy is it to set up that kind of test?
->>=20
->> We don't have support right now for testing across two different hosts.
+Hi Chuck,
 
-Other network filesystems and block storage subsystems might
-also be interested in a two-host arrangement, fwiw.
+> As co-maintainers of NFSD, we're interested in bringing up a
+> CI platform for automating a lot of the tests we do before
+> requesting a pull into the Linux kernel. The kernelci.org
+> platform caught my eye last week during the talk at LPC.
+> 
+> We have some questions about what can be supported on
+> kernelci.org. For example, the tests we need to run involve
+> at least two hosts (an NFS client and an NFS server). How
+> easy is it to set up that kind of test?
+> 
+> If we want to test features that involve Kerberos, is there
+> a KDC available, or would we need to provide a KDC image
+> that can be used for our tests?
+> 
+> Thanks for any guidance!
+> 
 
+In my view, kernelci.org provides two things:
 
->> Can you share more the details of what you want to achieve?
->=20
-> Personally for basic regression testing I use two VMs, one configured
-> as an NFS client and one as an NFS server, and I have bash scripts
-> that ssh into the client and do things like mount the server with
-> various options and run xfstests.
->=20
->> Do you have
->> some scripts or tests code somewhere that you can share with us?
->=20
-> I don't know if my thicket of test scripts will make much sense to
-> anyone but me, but for what it's worth, I keep them all here:
->=20
->  http://git.linux-nfs.org/?p=3Dbfields/testd.git;a=3Dtree;hb=3DHEAD
->=20
-> The thing I usually run before submitting is in bin/do-all.
->=20
->> eg. are
->> both the client and server subject of the tests at the same time or do
->> you test changes one side against a fixed version of the other side
->> (when it is possible).
->=20
-> I normally boot both client and server to the kernel under test.
-> However it's useful to have the option to vary the kernel on just one
-> side or the other, as that occasionally helps pin down which side is
-> at fault for a regression.
+1) A platform that provide build artifacts (i.e kernel images) of
+various trees and collects test results from labs booting these builds,
+running tests and reporting back results.
 
-I agree, two hosts is best. A loopback NFS mount could be used,
-but that is generally a fraught and uncommon configuration. For
-one thing, the memory needs of the client and server can often
-interact, and sometimes that results in system deadlock.
+2) A set of labs, with pretty much standardized way of running these
+tests on artifacts coming from the builder and reporting the results
+back.
 
 
->> Also, is there any kind of simple/smoke tests that we can run with only
->> one host (eg as part of kselftests or LTP)?
->=20
-> I like using two hosts:  It's a more realistic setup.  When there's a
-> crash or other problem, it makes it more obvious which side was at
-> fault.  Etc.
->=20
-> But, sure, as a basic smoke test, we could do something like (untested
-> for now, off the top of my head):
->=20
->  git clone git://git.linux-nfs.org/projects/steved/cthon04.git
->  cd cthon04
->  make
->  mkdir /export
->  chmod a+rwx /export
->  echo "/export *(lo)" >/etc/exports
->  systemctl start nfs-server
->  mount localhost:/export /mnt/
->  NFSTESTDIR=3D/mnt/TMP ./runtests -a -f
->=20
-> That cthon04 test hardly ever changes, so it really only needs to be
-> downloaded once. Better would probably be to put /export on a separate
-> filesystem.  And more tests would be better, but cthon04 is something
-> that will basically always pass unless something is extremely wrong.
+Given that your testing setup and test cases do differ quite a bit from
+what's today seem to happen in the existing labs ("boot a kernel on one
+board, run common tests, gather results") my suggestion is that you
+automate the process done by these labs on your end and use the common
+infrastructure.
 
-cthon04 is simple to set up, and hits enough of the basic NFS
-functionality that it is a commonly used smoke test.
+I.e. build something that takes a kernel image, boots this on your
+machines and runs your test and generate test results in a structured
+form.
 
-Typically you want to exercise all versions of NFS (2, 3, 4.0,
-4.1, and 4.2), which requires a separate cthon run for each
-NFS version.=20
-
-We'd like to get some code coverage analysis of any tests that
-are run, and that should be simple for you to enable from the
-start?
-
-Single-host testing is not useful for us outside of the usual
-source code analysis tools (does it build on all platforms, are
-there new warnings or build problems, and so on). But that stuff
-is already covered by 0-day bots.
+Then you can plug this in with kernelci (#1 above) using the available
+REST API, to get the kernel images and to report the results.
 
 
->> That helps us enables the
->> most basic stuff more easily, as the above will need some design and
->> discussion between the KernelCI team.
->=20
-> Understood.
->=20
-> Thanks for your interest.
->=20
-> --b.
->=20
->>> If we want to test features that involve Kerberos, is there
->>> a KDC available, or would we need to provide a KDC image
->>> that can be used for our tests?
->>=20
->> We don't have any provision for that yet (because no one ever needed
->> it!). It might be easier if you just provide an image that serves you
->> the best. I'd need to check with the team the details to make it
->> available to your tests.
+This is what I do for the Qualcomm boards in my lab, where I'm not able
+to run the standard lab setup (not sure if that even was a thing when I
+started) and it allows me to run more board specific tests - with all
+the results reported back to a single place.
 
-Kerberos can be a stretch goal. Certainly not something we
-require on day one.
-
---
-Chuck Lever
-
-
-
+Regards,
+Bjorn
