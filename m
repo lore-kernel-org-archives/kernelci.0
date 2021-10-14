@@ -1,35 +1,36 @@
-Return-Path: <spbnick@gmail.com>
-Subject: Re: Outreachy (Dec-Mar) Cohort #KCIDB
-References: <PrDE.1633797566661502425.uitz@groups.io>
-From: "Nikolai Kondrashov" <spbnick@gmail.com>
-Message-ID: <ec645688-d32b-d3b0-88e6-57555a484861@gmail.com>
-Date: Sun, 10 Oct 2021 17:53:38 +0300
 MIME-Version: 1.0
-In-Reply-To: <PrDE.1633797566661502425.uitz@groups.io>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From: Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>
+Date: Thu, 14 Oct 2021 20:28:56 +0200
+Message-ID: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
+Subject: Notifications signup
+Content-Type: multipart/alternative; boundary="00000000000007a0ff05ce544184"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, ssharma2412@outlook.com
+To: kernelci@groups.io
 
-Hi Surbhi,
+--00000000000007a0ff05ce544184
+Content-Type: text/plain; charset="UTF-8"
 
-On 10/9/21 7:39 PM, Surbhi Sharma wrote:
- > Hi everyone! It's Surbhi Sharma, from India. I want to participate in the 
-upcoming Outreachy cohort. I am excited about the project : Improve Unified 
-Kernel Test Result Database System ("KCIDB"). Looking forward to learn more 
-about the project.
+Hello,
 
-Welcome!
+   I would like to sign up for receiving notifications of incoming build
+results. In addition, I would like to ask if there is an API for the public
+to fetch the build results in json format.
 
-Don't hesitate to hit us with questions here, or on IRC (#kernelci on 
-libera.chat).
+Thanks,
 
-I think I've left a few links in the Outreachy project submission which could 
-help you get started.
+Kind Regards,
+Aya Saif El-yazal Mahfouz
 
-Nick,
-The KCIDB project mentor.
+--00000000000007a0ff05ce544184
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/9/21 7:39 PM, Surbhi Sharma wrote:
-> Hi everyone! It's Surbhi Sharma, from India. I want to participate in the upcoming Outreachy cohort. I am excited about the project : Improve Unified Kernel Test Result Database System ("KCIDB"). Looking forward to learn more about the project.
+<div dir=3D"ltr"><div>Hello,</div><div><br></div><div>=C2=A0=C2=A0 I would =
+like to sign up for receiving notifications of incoming build results. In a=
+ddition, I would like to ask if there is an API for the public to fetch the=
+ build results in json format.</div><div><br></div><div>Thanks,</div><div><=
+br></div><div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartmai=
+l=3D"gmail_signature"><div dir=3D"ltr">Kind Regards,<br>Aya Saif El-yazal M=
+ahfouz<br></div></div></div></div></div>
+
+--00000000000007a0ff05ce544184--
