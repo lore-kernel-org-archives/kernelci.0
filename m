@@ -1,120 +1,51 @@
-MIME-Version: 1.0
+Subject: Re: Notifications signup
 References: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
  <4663533c-5d82-0780-a77d-2cb870b7b33a@gmail.com>
-In-Reply-To: <4663533c-5d82-0780-a77d-2cb870b7b33a@gmail.com>
-From: Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>
-Date: Fri, 15 Oct 2021 17:39:23 +0200
-Message-ID: <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
-Subject: Re: Notifications signup
-Content-Type: multipart/alternative; boundary="000000000000a4016405ce6600b2"
+ <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <6697fbb3-59cf-a15e-84aa-9216c95306dd@collabora.com>
+Date: Fri, 15 Oct 2021 17:01:03 +0100
+MIME-Version: 1.0
+In-Reply-To: <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <spbnick@gmail.com>
-Cc: kernelci@groups.io
+To: mahfouz.saif.elyazal@gmail.com, Nikolai Kondrashov <spbnick@gmail.com>
+Cc: "kernelci@groups.io" <kernelci@groups.io>
 
---000000000000a4016405ce6600b2
-Content-Type: text/plain; charset="UTF-8"
-
-Hello Nikolai,
-
-  I am looking for generic reports so any possible builds will be good.
-
-Thanks,
-
-Kind Regards,
-Aya Saif El-yazal Mahfouz
-
-
-On Fri, Oct 15, 2021 at 11:16 AM Nikolai Kondrashov <spbnick@gmail.com>
-wrote:
-
-> Hi Aya,
->
-> On 10/14/21 9:28 PM, Aya Mahfouz wrote:
->  > Hello,
->  >
->  >     I would like to sign up for receiving notifications of incoming
-> build
->  > results. In addition, I would like to ask if there is an API for the
-> public to
->  > fetch the build results in json format.
->
-> Do you want to receive native KernelCI build result notifications, or the
-> KCIDB build notifications, which include build results from multiple other
-> CI
-> systems?
->
-> Which criteria do you want the notifications to be filtered by? Particular
-> tree, repo, architecture, and so on?
->
-> Nick
->
-> On 10/14/21 9:28 PM, Aya Mahfouz wrote:
-> > Hello,
-> >
-> >     I would like to sign up for receiving notifications of incoming
-> build
-> > results. In addition, I would like to ask if there is an API for the
-> public to
-> > fetch the build results in json format.
-> >
-> > Thanks,
-> >
-> > Kind Regards,
-> > Aya Saif El-yazal Mahfouz
-> > 
->
->
-
---000000000000a4016405ce6600b2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hello Nikolai,</div><div><br></div><div>=C2=A0 I am l=
-ooking for generic reports so any possible builds will be good.</div><div><=
-br></div><div>Thanks,<br></div><div>=C2=A0 <br></div><div><div><div dir=3D"=
-ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=
-=3D"ltr">Kind Regards,<br>Aya Saif El-yazal Mahfouz<br></div></div></div><b=
-r></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmai=
-l_attr">On Fri, Oct 15, 2021 at 11:16 AM Nikolai Kondrashov &lt;<a href=3D"=
-mailto:spbnick@gmail.com">spbnick@gmail.com</a>&gt; wrote:<br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
-x solid rgb(204,204,204);padding-left:1ex">Hi Aya,<br>
-<br>
-On 10/14/21 9:28 PM, Aya Mahfouz wrote:<br>
-=C2=A0&gt; Hello,<br>
-=C2=A0&gt;<br>
-=C2=A0&gt;=C2=A0 =C2=A0 =C2=A0I would like to sign up for receiving notific=
-ations of incoming build<br>
-=C2=A0&gt; results. In addition, I would like to ask if there is an API for=
- the public to<br>
-=C2=A0&gt; fetch the build results in json format.<br>
-<br>
-Do you want to receive native KernelCI build result notifications, or the <=
-br>
-KCIDB build notifications, which include build results from multiple other =
-CI <br>
-systems?<br>
-<br>
-Which criteria do you want the notifications to be filtered by? Particular =
-<br>
-tree, repo, architecture, and so on?<br>
-<br>
-Nick<br>
-<br>
-On 10/14/21 9:28 PM, Aya Mahfouz wrote:<br>
-&gt; Hello,<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0=C2=A0 I would like to sign up for receiving notifications=
- of incoming build <br>
-&gt; results. In addition, I would like to ask if there is an API for the p=
-ublic to <br>
-&gt; fetch the build results in json format.<br>
-&gt; <br>
-&gt; Thanks,<br>
-&gt; <br>
-&gt; Kind Regards,<br>
-&gt; Aya Saif El-yazal Mahfouz
-<br>
-</blockquote></div>
-
---000000000000a4016405ce6600b2--
+T24gMTUvMTAvMjAyMSAxNjozOSwgQXlhIE1haGZvdXogd3JvdGU6DQo+IEhlbGxvIE5pa29sYWks
+DQo+IA0KPiDCoCBJIGFtIGxvb2tpbmcgZm9yIGdlbmVyaWMgcmVwb3J0cyBzbyBhbnkgcG9zc2li
+bGUgYnVpbGRzIHdpbGwgYmUgZ29vZC4NCg0KVGhlIHNpbXBsZXN0IHdheSB0byBnZXQgZW1haWwg
+bm90aWZpY2F0aW9ucyBpcyB0byBzdWJzY3JpYmUgdG8NCnRoZSBrZXJuZWxjaS1yZXN1bHRzIG1h
+aWxpbmcgbGlzdDoNCg0KICBodHRwczovL2dyb3Vwcy5pby9nL2tlcm5lbGNpLXJlc3VsdHMNCg0K
+SXQncyBxdWl0ZSBoaWdoIHZvbHVtZSB0aG91Z2gsIGFzIHlvdSBjYW4gc2VlIGluIHRoZSBhcmNo
+aXZlOg0KDQogIGh0dHBzOi8vZ3JvdXBzLmlvL2cva2VybmVsY2ktcmVzdWx0cy90b3BpY3MNCg0K
+RW1haWxzIGFyZSBhbHNvIHNlbnQgdG8ga2VybmVsIG1haW50YWluZXJzIGFuZCBzcGVjaWZpYyBt
+YWlsaW5nDQpsaXN0cyB3aXRoIHJlbGV2YW50IHJlcG9ydHMuICBGb3IgZXhhbXBsZSwgeW91IG1h
+eSBzdWJzY3JpYmUgdG8NCnRoZSBsaW51eC1uZXh0IG1haWxpbmcgbGlzdCB3aGVyZSByZXBvcnRz
+IGZyb20ga2VybmVsY2kub3JnIGFyZQ0KYWxzbyBzZW50IGJ1dCBvbmx5IGZvciB0aGUgbGludXgt
+bmV4dCBnaXQgdHJlZToNCg0KICBodHRwOi8vdmdlci5rZXJuZWwub3JnL3ZnZXItbGlzdHMuaHRt
+bCNsaW51eC1uZXh0DQoNClNlZSBhbHNvIHRoZSBhcmNoaXZlIG9uIExvcmU6DQoNCiAgaHR0cHM6
+Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtbmV4dC8NCg0KQmVzdCB3aXNoZXMsDQpHdWlsbGF1bWUN
+Cg0KPiBPbiBGcmksIE9jdCAxNSwgMjAyMSBhdCAxMToxNiBBTSBOaWtvbGFpIEtvbmRyYXNob3Yg
+PHNwYm5pY2tAZ21haWwuY29tIDxtYWlsdG86c3Bibmlja0BnbWFpbC5jb20+PiB3cm90ZToNCj4g
+DQo+ICAgICBIaSBBeWEsDQo+IA0KPiAgICAgT24gMTAvMTQvMjEgOToyOCBQTSwgQXlhIE1haGZv
+dXogd3JvdGU6DQo+ICAgICDCoD4gSGVsbG8sDQo+ICAgICDCoD4NCj4gICAgIMKgPsKgIMKgIMKg
+SSB3b3VsZCBsaWtlIHRvIHNpZ24gdXAgZm9yIHJlY2VpdmluZyBub3RpZmljYXRpb25zIG9mIGlu
+Y29taW5nIGJ1aWxkDQo+ICAgICDCoD4gcmVzdWx0cy4gSW4gYWRkaXRpb24sIEkgd291bGQgbGlr
+ZSB0byBhc2sgaWYgdGhlcmUgaXMgYW4gQVBJIGZvciB0aGUgcHVibGljIHRvDQo+ICAgICDCoD4g
+ZmV0Y2ggdGhlIGJ1aWxkIHJlc3VsdHMgaW4ganNvbiBmb3JtYXQuDQo+IA0KPiAgICAgRG8geW91
+IHdhbnQgdG8gcmVjZWl2ZSBuYXRpdmUgS2VybmVsQ0kgYnVpbGQgcmVzdWx0IG5vdGlmaWNhdGlv
+bnMsIG9yIHRoZQ0KPiAgICAgS0NJREIgYnVpbGQgbm90aWZpY2F0aW9ucywgd2hpY2ggaW5jbHVk
+ZSBidWlsZCByZXN1bHRzIGZyb20gbXVsdGlwbGUgb3RoZXIgQ0kNCj4gICAgIHN5c3RlbXM/DQo+
+IA0KPiAgICAgV2hpY2ggY3JpdGVyaWEgZG8geW91IHdhbnQgdGhlIG5vdGlmaWNhdGlvbnMgdG8g
+YmUgZmlsdGVyZWQgYnk/IFBhcnRpY3VsYXINCj4gICAgIHRyZWUsIHJlcG8sIGFyY2hpdGVjdHVy
+ZSwgYW5kIHNvIG9uPw0KPiANCj4gICAgIE5pY2sNCj4gDQo+ICAgICBPbiAxMC8xNC8yMSA5OjI4
+IFBNLCBBeWEgTWFoZm91eiB3cm90ZToNCj4gICAgID4gSGVsbG8sDQo+ICAgICA+DQo+ICAgICA+
+wqAgwqDCoCBJIHdvdWxkIGxpa2UgdG8gc2lnbiB1cCBmb3IgcmVjZWl2aW5nIG5vdGlmaWNhdGlv
+bnMgb2YgaW5jb21pbmcgYnVpbGQNCj4gICAgID4gcmVzdWx0cy4gSW4gYWRkaXRpb24sIEkgd291
+bGQgbGlrZSB0byBhc2sgaWYgdGhlcmUgaXMgYW4gQVBJIGZvciB0aGUgcHVibGljIHRvDQo+ICAg
+ICA+IGZldGNoIHRoZSBidWlsZCByZXN1bHRzIGluIGpzb24gZm9ybWF0Lg0KPiAgICAgPg0KPiAg
+ICAgPiBUaGFua3MsDQo+ICAgICA+DQo+ICAgICA+IEtpbmQgUmVnYXJkcywNCj4gICAgID4gQXlh
+IFNhaWYgRWwteWF6YWwgTWFoZm91eg0KPiANCj4gDQoNCg==
