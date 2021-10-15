@@ -1,64 +1,221 @@
-Subject: Re: [PATCH] arm64: defconfig: enable regulator to fix mt8173 regression
-References: <20211011125301.3440033-1-adrian.ratiu@collabora.com>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <d34874d6-b55c-546f-d9c8-651a98814815@collabora.com>
-Date: Fri, 15 Oct 2021 17:20:51 +0100
 MIME-Version: 1.0
-In-Reply-To: <20211011125301.3440033-1-adrian.ratiu@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
+ <4663533c-5d82-0780-a77d-2cb870b7b33a@gmail.com> <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
+ <6697fbb3-59cf-a15e-84aa-9216c95306dd@collabora.com>
+In-Reply-To: <6697fbb3-59cf-a15e-84aa-9216c95306dd@collabora.com>
+From: Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>
+Date: Fri, 15 Oct 2021 20:04:35 +0200
+Message-ID: <CAJBmjuh2L3_u1qwmU_wyhH=Vw+dLqYfi-oHvNVQWJ93-5M2rcA@mail.gmail.com>
+Subject: Re: Notifications signup
+Content-Type: multipart/alternative; boundary="000000000000e1621605ce680706"
 List-ID: <kernelci.groups.io>
-To: Adrian Ratiu <adrian.ratiu@collabora.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>
-Cc: linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kernel@collabora.com, Enric Balletbo Serra <eballetbo@gmail.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Nikolai Kondrashov <spbnick@gmail.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-On 11/10/2021 13:53, Adrian Ratiu wrote:
-> A regression was introduced on some mediatek boards starting with
-> v5.15-rc1 in commit 109fd20601e2b ("arm64: dts: mediatek: mt8173:
-> Add domain supply for mfg_async") which effectively changed the
-> regulator from the always-on dummy to DA9211 without explicitely
-> enabling it, causing failures like the these caught by KernelCI
-> on Hana Chromebooks [1]:
-> 
-> mtk-power-controller 10006000.syscon:power-controller: supply domain not found, using dummy regulator
-> mtu3 11271000.usb: supply vbus not found, using dummy regulator
-> xhci-mtk 11270000.usb: supply vbus not found, using dummy regulator
-> 
-> There might be another bug linking these power domains in the
-> mediatek PM driver, but that is a separate issue wich needs
-> addressing, for now just fix the obvious regression due to the
-> new regulator requirement.
-> 
-> [1] https://github.com/kernelci/kernelci-project/issues/66
-> Reported-by: "kernelci.org bot" <bot@kernelci.org>
-> Cc: Guillaume Tucker <guillaume.tucker@collabora.com>
-> Suggested-by: Enric Balletbo Serra <eballetbo@gmail.com>
-> Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+--000000000000e1621605ce680706
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: "kernelci.org bot" <bot@kernelci.org>
+On Fri, Oct 15, 2021 at 6:01 PM Guillaume Tucker <
+guillaume.tucker@collabora.com> wrote:
 
+> On 15/10/2021 16:39, Aya Mahfouz wrote:
+> > Hello Nikolai,
+> >
+> >   I am looking for generic reports so any possible builds will be good.
+>
+> The simplest way to get email notifications is to subscribe to
+> the kernelci-results mailing list:
+>
+>   https://groups.io/g/kernelci-results
+>
+> It's quite high volume though, as you can see in the archive:
+>
+>   https://groups.io/g/kernelci-results/topics
+>
+> Emails are also sent to kernel maintainers and specific mailing
+> lists with relevant reports.  For example, you may subscribe to
+> the linux-next mailing list where reports from kernelci.org are
+> also sent but only for the linux-next git tree:
+>
+>   http://vger.kernel.org/vger-lists.html#linux-next
+>
+> See also the archive on Lore:
+>
+>   https://lore.kernel.org/linux-next/
+>
+> Hello Guillaume,
 
-https://staging.kernelci.org/test/plan/id/616945b4043bf9aafba6c453/
+Yes, the archive would suffice for me but I am interested in json data.
 
+If I am not mistaken, you are the main contributor in:
+ https://github.com/kernelci/kernelci-backend
+and
+ https://github.com/kernelci/kernelci-api
+
+For the first, I understand that I would need to have an authentication
+token.
+In addition, it will be replaced by the second project. For the second,
+Will I
+need to have an authentication token too for fetching build reports in json
+format?
 
 Thanks,
-Guillaume
 
-> ---
->  arch/arm64/configs/defconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-> index 156d96afbbfc..4901cc1213bb 100644
-> --- a/arch/arm64/configs/defconfig
-> +++ b/arch/arm64/configs/defconfig
-> @@ -616,6 +616,7 @@ CONFIG_REGULATOR_FIXED_VOLTAGE=y
->  CONFIG_REGULATOR_AXP20X=y
->  CONFIG_REGULATOR_BD718XX=y
->  CONFIG_REGULATOR_BD9571MWV=y
-> +CONFIG_REGULATOR_DA9211=y
->  CONFIG_REGULATOR_FAN53555=y
->  CONFIG_REGULATOR_GPIO=y
->  CONFIG_REGULATOR_HI6421V530=y
-> 
+Kind Regards,
+Aya Saif El-yazal Mahfouz
 
+Best wishes,
+> Guillaume
+>
+> > On Fri, Oct 15, 2021 at 11:16 AM Nikolai Kondrashov <spbnick@gmail.com
+> <mailto:spbnick@gmail.com>> wrote:
+> >
+> >     Hi Aya,
+> >
+> >     On 10/14/21 9:28 PM, Aya Mahfouz wrote:
+> >      > Hello,
+> >      >
+> >      >     I would like to sign up for receiving notifications of
+> incoming build
+> >      > results. In addition, I would like to ask if there is an API for
+> the public to
+> >      > fetch the build results in json format.
+> >
+> >     Do you want to receive native KernelCI build result notifications,
+> or the
+> >     KCIDB build notifications, which include build results from multipl=
+e
+> other CI
+> >     systems?
+> >
+> >     Which criteria do you want the notifications to be filtered by?
+> Particular
+> >     tree, repo, architecture, and so on?
+> >
+> >     Nick
+> >
+> >     On 10/14/21 9:28 PM, Aya Mahfouz wrote:
+> >     > Hello,
+> >     >
+> >     >     I would like to sign up for receiving notifications of
+> incoming build
+> >     > results. In addition, I would like to ask if there is an API for
+> the public to
+> >     > fetch the build results in json format.
+> >     >
+> >     > Thanks,
+> >     >
+> >     > Kind Regards,
+> >     > Aya Saif El-yazal Mahfouz
+> >
+> >=20
+>
+>
+
+--000000000000e1621605ce680706
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
+ dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 15, 2021 at 6:01 PM Guillaume=
+ Tucker &lt;<a href=3D"mailto:guillaume.tucker@collabora.com">guillaume.tuc=
+ker@collabora.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
+adding-left:1ex">On 15/10/2021 16:39, Aya Mahfouz wrote:<br>
+&gt; Hello Nikolai,<br>
+&gt; <br>
+&gt; =C2=A0 I am looking for generic reports so any possible builds will be=
+ good.<br>
+<br>
+The simplest way to get email notifications is to subscribe to<br>
+the kernelci-results mailing list:<br>
+<br>
+=C2=A0 <a href=3D"https://groups.io/g/kernelci-results" rel=3D"noreferrer" =
+target=3D"_blank">https://groups.io/g/kernelci-results</a><br>
+<br>
+It&#39;s quite high volume though, as you can see in the archive:<br>
+<br>
+=C2=A0 <a href=3D"https://groups.io/g/kernelci-results/topics" rel=3D"noref=
+errer" target=3D"_blank">https://groups.io/g/kernelci-results/topics</a><br=
+>
+<br>
+Emails are also sent to kernel maintainers and specific mailing<br>
+lists with relevant reports.=C2=A0 For example, you may subscribe to<br>
+the linux-next mailing list where reports from <a href=3D"http://kernelci.o=
+rg" rel=3D"noreferrer" target=3D"_blank">kernelci.org</a> are<br>
+also sent but only for the linux-next git tree:<br>
+<br>
+=C2=A0 <a href=3D"http://vger.kernel.org/vger-lists.html#linux-next" rel=3D=
+"noreferrer" target=3D"_blank">http://vger.kernel.org/vger-lists.html#linux=
+-next</a><br>
+<br>
+See also the archive on Lore:<br>
+<br>
+=C2=A0 <a href=3D"https://lore.kernel.org/linux-next/" rel=3D"noreferrer" t=
+arget=3D"_blank">https://lore.kernel.org/linux-next/</a><br>
+<br></blockquote><div>Hello=20
+Guillaume,</div><div><br></div><div>Yes, the archive would suffice for me b=
+ut I am interested in json data.</div><div><br></div><div>If I am not mista=
+ken, you are the main contributor in:<br></div><div>=C2=A0<a href=3D"https:=
+//github.com/kernelci/kernelci-backend">https://github.com/kernelci/kernelc=
+i-backend</a></div><div>and<br></div><div>=C2=A0<a href=3D"https://github.c=
+om/kernelci/kernelci-api">https://github.com/kernelci/kernelci-api</a></div=
+><div><br></div><div>For the first, I understand that I would need to have =
+an authentication token.</div><div>In addition, it will be replaced by the =
+second project. For the second, Will I</div><div>need to have an authentica=
+tion token too for fetching build reports in json</div><div>format?</div><d=
+iv><br></div><div>Thanks,</div><div><br></div><div>Kind Regards,</div><div>=
+Aya Saif El-yazal Mahfouz<br></div><div><br></div><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
+4,204);padding-left:1ex">
+Best wishes,<br>
+Guillaume<br>
+<br>
+&gt; On Fri, Oct 15, 2021 at 11:16 AM Nikolai Kondrashov &lt;<a href=3D"mai=
+lto:spbnick@gmail.com" target=3D"_blank">spbnick@gmail.com</a> &lt;mailto:<=
+a href=3D"mailto:spbnick@gmail.com" target=3D"_blank">spbnick@gmail.com</a>=
+&gt;&gt; wrote:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0Hi Aya,<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0On 10/14/21 9:28 PM, Aya Mahfouz wrote:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0&gt; Hello,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0&gt;=C2=A0 =C2=A0 =C2=A0I would like to sign =
+up for receiving notifications of incoming build<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0&gt; results. In addition, I would like to as=
+k if there is an API for the public to<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0&gt; fetch the build results in json format.<=
+br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0Do you want to receive native KernelCI build result=
+ notifications, or the<br>
+&gt;=C2=A0 =C2=A0 =C2=A0KCIDB build notifications, which include build resu=
+lts from multiple other CI<br>
+&gt;=C2=A0 =C2=A0 =C2=A0systems?<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0Which criteria do you want the notifications to be =
+filtered by? Particular<br>
+&gt;=C2=A0 =C2=A0 =C2=A0tree, repo, architecture, and so on?<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0Nick<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0On 10/14/21 9:28 PM, Aya Mahfouz wrote:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Hello,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0=C2=A0 I would like to sign up for=
+ receiving notifications of incoming build<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; results. In addition, I would like to ask if t=
+here is an API for the public to<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; fetch the build results in json format.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Thanks,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Kind Regards,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Aya Saif El-yazal Mahfouz<br>
+&gt;=20
+<br>
+</blockquote></div></div>
+
+--000000000000e1621605ce680706--
