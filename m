@@ -1,51 +1,94 @@
+Return-Path: <spbnick@gmail.com>
 Subject: Re: Notifications signup
 References: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
  <4663533c-5d82-0780-a77d-2cb870b7b33a@gmail.com>
  <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <6697fbb3-59cf-a15e-84aa-9216c95306dd@collabora.com>
-Date: Fri, 15 Oct 2021 17:01:03 +0100
+From: "Nikolai Kondrashov" <spbnick@gmail.com>
+Message-ID: <49aa7dab-07eb-e218-4709-c28c0d0001aa@gmail.com>
+Date: Fri, 15 Oct 2021 19:13:02 +0300
 MIME-Version: 1.0
 In-Reply-To: <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Language: en-US
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: mahfouz.saif.elyazal@gmail.com, Nikolai Kondrashov <spbnick@gmail.com>
-Cc: "kernelci@groups.io" <kernelci@groups.io>
+To: Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>
+Cc: kernelci@groups.io
 
-T24gMTUvMTAvMjAyMSAxNjozOSwgQXlhIE1haGZvdXogd3JvdGU6DQo+IEhlbGxvIE5pa29sYWks
-DQo+IA0KPiDCoCBJIGFtIGxvb2tpbmcgZm9yIGdlbmVyaWMgcmVwb3J0cyBzbyBhbnkgcG9zc2li
-bGUgYnVpbGRzIHdpbGwgYmUgZ29vZC4NCg0KVGhlIHNpbXBsZXN0IHdheSB0byBnZXQgZW1haWwg
-bm90aWZpY2F0aW9ucyBpcyB0byBzdWJzY3JpYmUgdG8NCnRoZSBrZXJuZWxjaS1yZXN1bHRzIG1h
-aWxpbmcgbGlzdDoNCg0KICBodHRwczovL2dyb3Vwcy5pby9nL2tlcm5lbGNpLXJlc3VsdHMNCg0K
-SXQncyBxdWl0ZSBoaWdoIHZvbHVtZSB0aG91Z2gsIGFzIHlvdSBjYW4gc2VlIGluIHRoZSBhcmNo
-aXZlOg0KDQogIGh0dHBzOi8vZ3JvdXBzLmlvL2cva2VybmVsY2ktcmVzdWx0cy90b3BpY3MNCg0K
-RW1haWxzIGFyZSBhbHNvIHNlbnQgdG8ga2VybmVsIG1haW50YWluZXJzIGFuZCBzcGVjaWZpYyBt
-YWlsaW5nDQpsaXN0cyB3aXRoIHJlbGV2YW50IHJlcG9ydHMuICBGb3IgZXhhbXBsZSwgeW91IG1h
-eSBzdWJzY3JpYmUgdG8NCnRoZSBsaW51eC1uZXh0IG1haWxpbmcgbGlzdCB3aGVyZSByZXBvcnRz
-IGZyb20ga2VybmVsY2kub3JnIGFyZQ0KYWxzbyBzZW50IGJ1dCBvbmx5IGZvciB0aGUgbGludXgt
-bmV4dCBnaXQgdHJlZToNCg0KICBodHRwOi8vdmdlci5rZXJuZWwub3JnL3ZnZXItbGlzdHMuaHRt
-bCNsaW51eC1uZXh0DQoNClNlZSBhbHNvIHRoZSBhcmNoaXZlIG9uIExvcmU6DQoNCiAgaHR0cHM6
-Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtbmV4dC8NCg0KQmVzdCB3aXNoZXMsDQpHdWlsbGF1bWUN
-Cg0KPiBPbiBGcmksIE9jdCAxNSwgMjAyMSBhdCAxMToxNiBBTSBOaWtvbGFpIEtvbmRyYXNob3Yg
-PHNwYm5pY2tAZ21haWwuY29tIDxtYWlsdG86c3Bibmlja0BnbWFpbC5jb20+PiB3cm90ZToNCj4g
-DQo+ICAgICBIaSBBeWEsDQo+IA0KPiAgICAgT24gMTAvMTQvMjEgOToyOCBQTSwgQXlhIE1haGZv
-dXogd3JvdGU6DQo+ICAgICDCoD4gSGVsbG8sDQo+ICAgICDCoD4NCj4gICAgIMKgPsKgIMKgIMKg
-SSB3b3VsZCBsaWtlIHRvIHNpZ24gdXAgZm9yIHJlY2VpdmluZyBub3RpZmljYXRpb25zIG9mIGlu
-Y29taW5nIGJ1aWxkDQo+ICAgICDCoD4gcmVzdWx0cy4gSW4gYWRkaXRpb24sIEkgd291bGQgbGlr
-ZSB0byBhc2sgaWYgdGhlcmUgaXMgYW4gQVBJIGZvciB0aGUgcHVibGljIHRvDQo+ICAgICDCoD4g
-ZmV0Y2ggdGhlIGJ1aWxkIHJlc3VsdHMgaW4ganNvbiBmb3JtYXQuDQo+IA0KPiAgICAgRG8geW91
-IHdhbnQgdG8gcmVjZWl2ZSBuYXRpdmUgS2VybmVsQ0kgYnVpbGQgcmVzdWx0IG5vdGlmaWNhdGlv
-bnMsIG9yIHRoZQ0KPiAgICAgS0NJREIgYnVpbGQgbm90aWZpY2F0aW9ucywgd2hpY2ggaW5jbHVk
-ZSBidWlsZCByZXN1bHRzIGZyb20gbXVsdGlwbGUgb3RoZXIgQ0kNCj4gICAgIHN5c3RlbXM/DQo+
-IA0KPiAgICAgV2hpY2ggY3JpdGVyaWEgZG8geW91IHdhbnQgdGhlIG5vdGlmaWNhdGlvbnMgdG8g
-YmUgZmlsdGVyZWQgYnk/IFBhcnRpY3VsYXINCj4gICAgIHRyZWUsIHJlcG8sIGFyY2hpdGVjdHVy
-ZSwgYW5kIHNvIG9uPw0KPiANCj4gICAgIE5pY2sNCj4gDQo+ICAgICBPbiAxMC8xNC8yMSA5OjI4
-IFBNLCBBeWEgTWFoZm91eiB3cm90ZToNCj4gICAgID4gSGVsbG8sDQo+ICAgICA+DQo+ICAgICA+
-wqAgwqDCoCBJIHdvdWxkIGxpa2UgdG8gc2lnbiB1cCBmb3IgcmVjZWl2aW5nIG5vdGlmaWNhdGlv
-bnMgb2YgaW5jb21pbmcgYnVpbGQNCj4gICAgID4gcmVzdWx0cy4gSW4gYWRkaXRpb24sIEkgd291
-bGQgbGlrZSB0byBhc2sgaWYgdGhlcmUgaXMgYW4gQVBJIGZvciB0aGUgcHVibGljIHRvDQo+ICAg
-ICA+IGZldGNoIHRoZSBidWlsZCByZXN1bHRzIGluIGpzb24gZm9ybWF0Lg0KPiAgICAgPg0KPiAg
-ICAgPiBUaGFua3MsDQo+ICAgICA+DQo+ICAgICA+IEtpbmQgUmVnYXJkcywNCj4gICAgID4gQXlh
-IFNhaWYgRWwteWF6YWwgTWFoZm91eg0KPiANCj4gDQoNCg==
+Hi Aya,
+
+On 10/15/21 6:39 PM, Aya Mahfouz wrote:
+ >    I am looking for generic reports so any possible builds will be good.
+
+If the maillists Guillaume suggest don't work for you, I'll be able to 
+subscribe you to notification emails with the next release of KCIDB, coming 
+this Autumn. Those would be human-targeted, though.
+
+An alternative to get *structured* KCIDB data could be to mine our dataset 
+directly with SQL. See examples in the slides for a presentation I did, 
+starting from this one:
+
+ 
+https://docs.google.com/presentation/d/1ZrU0z1LvQYYoLOb9vmXUH7aZ9jSFviaenZRcYtEWqVg/edit#slide=id.gbcaa06c4d2_0_44
+
+Links at the bottom of slides should work. Beside the SQL console, there are 
+of course APIs available for querying.
+
+Another alternative is to subscribe to our submission message queue to receive 
+build (as well as test) results in (relative) real time, as they come in. We 
+have a formal, documented schema for those JSON messages.
+
+You can check out what data is available in KCIDB on the dashboard:
+
+     https://kcidb.kernelci.org/
+
+Nick
+
+On 10/15/21 6:39 PM, Aya Mahfouz wrote:
+> Hello Nikolai,
+> 
+>    I am looking for generic reports so any possible builds will be good.
+> 
+> Thanks,
+> 
+> Kind Regards,
+> Aya Saif El-yazal Mahfouz
+> 
+> 
+> On Fri, Oct 15, 2021 at 11:16 AM Nikolai Kondrashov <spbnick@gmail.com 
+> <mailto:spbnick@gmail.com>> wrote:
+> 
+>     Hi Aya,
+> 
+>     On 10/14/21 9:28 PM, Aya Mahfouz wrote:
+>       > Hello,
+>       >
+>       >     I would like to sign up for receiving notifications of incoming build
+>       > results. In addition, I would like to ask if there is an API for the
+>     public to
+>       > fetch the build results in json format.
+> 
+>     Do you want to receive native KernelCI build result notifications, or the
+>     KCIDB build notifications, which include build results from multiple other CI
+>     systems?
+> 
+>     Which criteria do you want the notifications to be filtered by? Particular
+>     tree, repo, architecture, and so on?
+> 
+>     Nick
+> 
+>     On 10/14/21 9:28 PM, Aya Mahfouz wrote:
+>      > Hello,
+>      >
+>      >     I would like to sign up for receiving notifications of incoming build
+>      > results. In addition, I would like to ask if there is an API for the
+>     public to
+>      > fetch the build results in json format.
+>      >
+>      > Thanks,
+>      >
+>      > Kind Regards,
+>      > Aya Saif El-yazal Mahfouz
+>      > 
+> 
+
