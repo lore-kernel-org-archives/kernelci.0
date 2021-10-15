@@ -1,36 +1,45 @@
+Return-Path: <spbnick@gmail.com>
+Subject: Re: Notifications signup
+References: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
+From: "Nikolai Kondrashov" <spbnick@gmail.com>
+Message-ID: <4663533c-5d82-0780-a77d-2cb870b7b33a@gmail.com>
+Date: Fri, 15 Oct 2021 12:16:29 +0300
 MIME-Version: 1.0
-From: Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>
-Date: Thu, 14 Oct 2021 20:28:56 +0200
-Message-ID: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
-Subject: Notifications signup
-Content-Type: multipart/alternative; boundary="00000000000007a0ff05ce544184"
+In-Reply-To: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, mahfouz.saif.elyazal@gmail.com
 
---00000000000007a0ff05ce544184
-Content-Type: text/plain; charset="UTF-8"
+Hi Aya,
 
-Hello,
+On 10/14/21 9:28 PM, Aya Mahfouz wrote:
+ > Hello,
+ >
+ >     I would like to sign up for receiving notifications of incoming build
+ > results. In addition, I would like to ask if there is an API for the public to
+ > fetch the build results in json format.
 
-   I would like to sign up for receiving notifications of incoming build
-results. In addition, I would like to ask if there is an API for the public
-to fetch the build results in json format.
+Do you want to receive native KernelCI build result notifications, or the 
+KCIDB build notifications, which include build results from multiple other CI 
+systems?
 
-Thanks,
+Which criteria do you want the notifications to be filtered by? Particular 
+tree, repo, architecture, and so on?
 
-Kind Regards,
-Aya Saif El-yazal Mahfouz
+Nick
 
---00000000000007a0ff05ce544184
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 10/14/21 9:28 PM, Aya Mahfouz wrote:
+> Hello,
+> 
+>     I would like to sign up for receiving notifications of incoming build 
+> results. In addition, I would like to ask if there is an API for the public to 
+> fetch the build results in json format.
+> 
+> Thanks,
+> 
+> Kind Regards,
+> Aya Saif El-yazal Mahfouz
+> 
 
-<div dir=3D"ltr"><div>Hello,</div><div><br></div><div>=C2=A0=C2=A0 I would =
-like to sign up for receiving notifications of incoming build results. In a=
-ddition, I would like to ask if there is an API for the public to fetch the=
- build results in json format.</div><div><br></div><div>Thanks,</div><div><=
-br></div><div><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartmai=
-l=3D"gmail_signature"><div dir=3D"ltr">Kind Regards,<br>Aya Saif El-yazal M=
-ahfouz<br></div></div></div></div></div>
-
---00000000000007a0ff05ce544184--
