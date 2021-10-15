@@ -1,94 +1,64 @@
-Return-Path: <spbnick@gmail.com>
-Subject: Re: Notifications signup
-References: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
- <4663533c-5d82-0780-a77d-2cb870b7b33a@gmail.com>
- <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
-From: "Nikolai Kondrashov" <spbnick@gmail.com>
-Message-ID: <49aa7dab-07eb-e218-4709-c28c0d0001aa@gmail.com>
-Date: Fri, 15 Oct 2021 19:13:02 +0300
+Subject: Re: [PATCH] arm64: defconfig: enable regulator to fix mt8173 regression
+References: <20211011125301.3440033-1-adrian.ratiu@collabora.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <d34874d6-b55c-546f-d9c8-651a98814815@collabora.com>
+Date: Fri, 15 Oct 2021 17:20:51 +0100
 MIME-Version: 1.0
-In-Reply-To: <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
+In-Reply-To: <20211011125301.3440033-1-adrian.ratiu@collabora.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>
-Cc: kernelci@groups.io
+To: Adrian Ratiu <adrian.ratiu@collabora.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>
+Cc: linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kernel@collabora.com, Enric Balletbo Serra <eballetbo@gmail.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-Hi Aya,
+On 11/10/2021 13:53, Adrian Ratiu wrote:
+> A regression was introduced on some mediatek boards starting with
+> v5.15-rc1 in commit 109fd20601e2b ("arm64: dts: mediatek: mt8173:
+> Add domain supply for mfg_async") which effectively changed the
+> regulator from the always-on dummy to DA9211 without explicitely
+> enabling it, causing failures like the these caught by KernelCI
+> on Hana Chromebooks [1]:
+> 
+> mtk-power-controller 10006000.syscon:power-controller: supply domain not found, using dummy regulator
+> mtu3 11271000.usb: supply vbus not found, using dummy regulator
+> xhci-mtk 11270000.usb: supply vbus not found, using dummy regulator
+> 
+> There might be another bug linking these power domains in the
+> mediatek PM driver, but that is a separate issue wich needs
+> addressing, for now just fix the obvious regression due to the
+> new regulator requirement.
+> 
+> [1] https://github.com/kernelci/kernelci-project/issues/66
+> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+> Cc: Guillaume Tucker <guillaume.tucker@collabora.com>
+> Suggested-by: Enric Balletbo Serra <eballetbo@gmail.com>
+> Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-On 10/15/21 6:39 PM, Aya Mahfouz wrote:
- >    I am looking for generic reports so any possible builds will be good.
+Tested-by: "kernelci.org bot" <bot@kernelci.org>
 
-If the maillists Guillaume suggest don't work for you, I'll be able to 
-subscribe you to notification emails with the next release of KCIDB, coming 
-this Autumn. Those would be human-targeted, though.
 
-An alternative to get *structured* KCIDB data could be to mine our dataset 
-directly with SQL. See examples in the slides for a presentation I did, 
-starting from this one:
+https://staging.kernelci.org/test/plan/id/616945b4043bf9aafba6c453/
 
- 
-https://docs.google.com/presentation/d/1ZrU0z1LvQYYoLOb9vmXUH7aZ9jSFviaenZRcYtEWqVg/edit#slide=id.gbcaa06c4d2_0_44
 
-Links at the bottom of slides should work. Beside the SQL console, there are 
-of course APIs available for querying.
+Thanks,
+Guillaume
 
-Another alternative is to subscribe to our submission message queue to receive 
-build (as well as test) results in (relative) real time, as they come in. We 
-have a formal, documented schema for those JSON messages.
-
-You can check out what data is available in KCIDB on the dashboard:
-
-     https://kcidb.kernelci.org/
-
-Nick
-
-On 10/15/21 6:39 PM, Aya Mahfouz wrote:
-> Hello Nikolai,
+> ---
+>  arch/arm64/configs/defconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
->    I am looking for generic reports so any possible builds will be good.
-> 
-> Thanks,
-> 
-> Kind Regards,
-> Aya Saif El-yazal Mahfouz
-> 
-> 
-> On Fri, Oct 15, 2021 at 11:16 AM Nikolai Kondrashov <spbnick@gmail.com 
-> <mailto:spbnick@gmail.com>> wrote:
-> 
->     Hi Aya,
-> 
->     On 10/14/21 9:28 PM, Aya Mahfouz wrote:
->       > Hello,
->       >
->       >     I would like to sign up for receiving notifications of incoming build
->       > results. In addition, I would like to ask if there is an API for the
->     public to
->       > fetch the build results in json format.
-> 
->     Do you want to receive native KernelCI build result notifications, or the
->     KCIDB build notifications, which include build results from multiple other CI
->     systems?
-> 
->     Which criteria do you want the notifications to be filtered by? Particular
->     tree, repo, architecture, and so on?
-> 
->     Nick
-> 
->     On 10/14/21 9:28 PM, Aya Mahfouz wrote:
->      > Hello,
->      >
->      >     I would like to sign up for receiving notifications of incoming build
->      > results. In addition, I would like to ask if there is an API for the
->     public to
->      > fetch the build results in json format.
->      >
->      > Thanks,
->      >
->      > Kind Regards,
->      > Aya Saif El-yazal Mahfouz
->      > 
+> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+> index 156d96afbbfc..4901cc1213bb 100644
+> --- a/arch/arm64/configs/defconfig
+> +++ b/arch/arm64/configs/defconfig
+> @@ -616,6 +616,7 @@ CONFIG_REGULATOR_FIXED_VOLTAGE=y
+>  CONFIG_REGULATOR_AXP20X=y
+>  CONFIG_REGULATOR_BD718XX=y
+>  CONFIG_REGULATOR_BD9571MWV=y
+> +CONFIG_REGULATOR_DA9211=y
+>  CONFIG_REGULATOR_FAN53555=y
+>  CONFIG_REGULATOR_GPIO=y
+>  CONFIG_REGULATOR_HI6421V530=y
 > 
 
