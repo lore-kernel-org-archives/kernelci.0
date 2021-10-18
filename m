@@ -1,77 +1,33 @@
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Subject: #KCIDB engagement report
-Message-ID: <6369bcba-8103-8730-c574-6846ca578fd9@redhat.com>
-Date: Thu, 18 Mar 2021 12:34:37 +0200
+Return-Path: <spbnick@gmail.com>
+Subject: Re: Notifications signup
+References: <CAJBmjuiicSdw8wr4ecGf+5VrCWsg6nO2HU-5UbBE40LXKk0zDQ@mail.gmail.com>
+ <4663533c-5d82-0780-a77d-2cb870b7b33a@gmail.com>
+ <CAJBmjuggPYrFPOt=+7Cc_QSpa+yhf77VWgLJRP2Eq=cfhzm66w@mail.gmail.com>
+ <49aa7dab-07eb-e218-4709-c28c0d0001aa@gmail.com>
+ <CAJBmjuhcEk+gj7VhLvGP=9T=ML2WvRjLBgRAtBbq9x+9X9nTLw@mail.gmail.com>
+ <7867af2b-a8aa-769d-0aca-deb4da94ae46@redhat.com>
+ <CAJBmjujoPCJ6PyP=JjYn+gLMq=zB0Q+YKQ+=9CDnKzTw-Fkd9w@mail.gmail.com>
+ <16AF15C1A99967B5.13161@groups.io>
+From: "Nikolai Kondrashov" <spbnick@gmail.com>
+Message-ID: <545ad9b7-2315-8664-18b3-9d0c92567947@gmail.com>
+Date: Mon, 18 Oct 2021 12:27:35 +0300
 MIME-Version: 1.0
+In-Reply-To: <16AF15C1A99967B5.13161@groups.io>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>
+To: kernelci@groups.io, Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>, Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
 
-Hi everyone,
+On 10/18/21 12:25 PM, Nikolai Kondrashov via groups.io wrote:
+> And here's an example query on the console as well:
+> 
+> https://docs.google.com/presentation/d/1ZrU0z1LvQYYoLOb9vmXUH7aZ9jSFviaenZRcYtEWqVg/edit#slide=id.gbcaa06c4d2_0_107 
 
-Below is the monthly report on KCIDB* engagement. It lists various CI systems
-and their status of engagement with KCIDB, and once we get to that, will list
-developer engagement.
+Ah, should've used the direct link instead:
 
-Lines with updates are marked with "!".
+https://console.cloud.google.com/bigquery?sq=415818378487:d9e3fb7e270949f397ff4bcce9514a6a
 
-Main news are KernelCI closing in on sending production data, Tuxsuite sending
-to production, and GKernelCI building more architectures.
-
-     KernelCI native
-!       Improved-throughput code is in the last stages of testing, sending
-!       results to "playground" right now. Will start sending production
-!       data in a few days.
-!       https://staging.kernelci.org:3000/?var-origin=kernelci&var-dataset=playground_kernelci04
-
-     Red Hat CKI
-         Sending production results.
-         https://staging.kernelci.org:3000/?var-origin=redhat
-
-     Google Syzbot
-         Sending a subset of production results (failures only).
-         https://staging.kernelci.org:3000/?var-origin=syzbot
-
-     ARM
-         Sending production results.
-         Full commit hashes are currently not available, are spoofed, and don't
-         match the ones reported by others. To be fixed soon.
-         https://staging.kernelci.org:3000/?var-origin=arm
-
-     Sony Fuego
-         Internal design in progress.
-
-     Gentoo GKernelCI
-         Sending production results.
-!       Only builds (a few architectures), no configs, no logs, and no tests
-!       for now, but working on growing contributions.
-         https://staging.kernelci.org:3000/?var-origin=gkernelci
-
-     Intel 0day
-         Initial conversation concluded, general interest expressed,
-         no contact since.
-
-     Linaro
-!       Sending (a lot of) Tuxsuite build results to "production" KCIDB.
-!       https://staging.kernelci.org:3000/?var-origin=tuxsuite
-
-     TuxML
-         Initial contact in response to a report.
-         There's a plan to approach us and start work in the coming months.
-
-     Yocto Project
-         Initial contact in response to a report.
-         Would like to start sending build and test results, particularly for
-         older kernels. Would like to separate upstream commits from project
-         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
-
-Please respond with corrections or suggestions of other CI systems to contact.
+Just click "Run" on this and the other one, and it will execute.
 
 Nick
-
-*KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
-  Foundation's KernelCI project:
-  https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
-
