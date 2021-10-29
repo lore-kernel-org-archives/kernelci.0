@@ -1,161 +1,62 @@
-From: Chuck Lever III <chuck.lever@oracle.com>
-Subject: Re: Using kernelci.org for testing Linux NFSD
-Date: Tue, 26 Oct 2021 16:51:56 +0000
-Message-ID: <F1355468-FAD8-454D-A2B5-94F28967653D@oracle.com>
-References: <13C9FF88-C1F6-4127-AAA1-E38A1D59AB96@oracle.com>
- <405b7acc-3b85-145f-eaf9-50bb432bacab@collabora.com>
- <CAPL3RVHKUVxiqqkQZ_8+fVnsaX=3kMRLE7h2U7S3cskb9TnHdg@mail.gmail.com>
- <520658CE-09F2-4FC6-9FBB-A46A8852CA7B@oracle.com>
-In-Reply-To: <520658CE-09F2-4FC6-9FBB-A46A8852CA7B@oracle.com>
+Subject: Re: [PATCH] arm64: defconfig: Enable SC7180 interconnect driver
+References: <20211011154003.904355-1-angelogioacchino.delregno@collabora.com>
+ <5fd543da-fd49-23c5-f4ba-531aaf8cb377@kernel.org>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <f8dbb399-9f18-4b7a-4863-1719263cc615@collabora.com>
+Date: Fri, 29 Oct 2021 09:30:43 +0100
 MIME-Version: 1.0
+In-Reply-To: <5fd543da-fd49-23c5-f4ba-531aaf8cb377@kernel.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1944C72C22865B4F89103B80E7F0436C@namprd10.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Gustavo Padovan <gustavo.padovan@collabora.com>
-Cc: Bruce Fields <bfields@redhat.com>, "kernelci@groups.io" <kernelci@groups.io>, "info@kernelci.org" <info@kernelci.org>
+To: Georgi Djakov <djakov@kernel.org>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-arm-kernel@lists.infradead.org, bjorn.andersson@linaro.org
+Cc: catalin.marinas@arm.com, will@kernel.org, shawnguo@kernel.org, krzk@kernel.org, geert+renesas@glider.be, vkoul@kernel.org, jagan@amarulasolutions.com, agx@sigxcpu.org, biju.das.jz@bp.renesas.com, aford173@gmail.com, nm@ti.com, andrey.zhizhikin@leica-geosystems.com, saravanak@google.com, linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org, marijn.suijten@somainline.org, martin.botka@somainline.org, Collabora Kernel ML <kernel@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>
 
+On 12/10/2021 11:49, Georgi Djakov wrote:
+> On 11.10.21 18:40, AngeloGioacchino Del Regno wrote:
+>> On SC7180 device trees, almost all of the nodes are declaring
+>> interconnect properties, including the QUP nodes: at least on
+>> some machines, leaving this configuration option disabled, or
+>> as a module, the kernel appears to hang while initializing the
+>> QUP node containing the UART device.
+>>
+>> To solve this issue, enable the interconnect driver for this
+>> SoC as built-in.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@col=
+labora.com>
+>=20
+> Acked-by: Georgi Djakov <djakov@kernel.org>
 
+Tested-by: "kernelci.org bot" <bot@kernelci.org>
 
-> On Oct 5, 2021, at 10:33 AM, Chuck Lever III <chuck.lever@oracle.com> wro=
-te:
->=20
-> Hello Gustavo, good to meet you. More inline.
->=20
->=20
->> On Oct 5, 2021, at 9:47 AM, Bruce Fields <bfields@redhat.com> wrote:
->>=20
->> On Tue, Oct 5, 2021 at 9:18 AM Gustavo Padovan
->> <gustavo.padovan@collabora.com> wrote:
->>> On 10/1/21 16:01, Chuck Lever III wrote:
->>>> We have some questions about what can be supported on
->>>> kernelci.org. For example, the tests we need to run involve
->>>> at least two hosts (an NFS client and an NFS server). How
->>>> easy is it to set up that kind of test?
->>>=20
->>> We don't have support right now for testing across two different hosts.
->=20
-> Other network filesystems and block storage subsystems might
-> also be interested in a two-host arrangement, fwiw.
->=20
->=20
->>> Can you share more the details of what you want to achieve?
->>=20
->> Personally for basic regression testing I use two VMs, one configured
->> as an NFS client and one as an NFS server, and I have bash scripts
->> that ssh into the client and do things like mount the server with
->> various options and run xfstests.
->>=20
->>> Do you have
->>> some scripts or tests code somewhere that you can share with us?
->>=20
->> I don't know if my thicket of test scripts will make much sense to
->> anyone but me, but for what it's worth, I keep them all here:
->>=20
->> http://git.linux-nfs.org/?p=3Dbfields/testd.git;a=3Dtree;hb=3DHEAD
->>=20
->> The thing I usually run before submitting is in bin/do-all.
->>=20
->>> eg. are
->>> both the client and server subject of the tests at the same time or do
->>> you test changes one side against a fixed version of the other side
->>> (when it is possible).
->>=20
->> I normally boot both client and server to the kernel under test.
->> However it's useful to have the option to vary the kernel on just one
->> side or the other, as that occasionally helps pin down which side is
->> at fault for a regression.
->=20
-> I agree, two hosts is best. A loopback NFS mount could be used,
-> but that is generally a fraught and uncommon configuration. For
-> one thing, the memory needs of the client and server can often
-> interact, and sometimes that results in system deadlock.
->=20
->=20
->>> Also, is there any kind of simple/smoke tests that we can run with only
->>> one host (eg as part of kselftests or LTP)?
->>=20
->> I like using two hosts:  It's a more realistic setup.  When there's a
->> crash or other problem, it makes it more obvious which side was at
->> fault.  Etc.
->>=20
->> But, sure, as a basic smoke test, we could do something like (untested
->> for now, off the top of my head):
->>=20
->> git clone git://git.linux-nfs.org/projects/steved/cthon04.git
->> cd cthon04
->> make
->> mkdir /export
->> chmod a+rwx /export
->> echo "/export *(lo)" >/etc/exports
->> systemctl start nfs-server
->> mount localhost:/export /mnt/
->> NFSTESTDIR=3D/mnt/TMP ./runtests -a -f
->>=20
->> That cthon04 test hardly ever changes, so it really only needs to be
->> downloaded once. Better would probably be to put /export on a separate
->> filesystem.  And more tests would be better, but cthon04 is something
->> that will basically always pass unless something is extremely wrong.
->=20
-> cthon04 is simple to set up, and hits enough of the basic NFS
-> functionality that it is a commonly used smoke test.
->=20
-> Typically you want to exercise all versions of NFS (2, 3, 4.0,
-> 4.1, and 4.2), which requires a separate cthon run for each
-> NFS version.=20
->=20
-> We'd like to get some code coverage analysis of any tests that
-> are run, and that should be simple for you to enable from the
-> start?
->=20
-> Single-host testing is not useful for us outside of the usual
-> source code analysis tools (does it build on all platforms, are
-> there new warnings or build problems, and so on). But that stuff
-> is already covered by 0-day bots.
+https://staging.kernelci.org/test/plan/id/6177be0c2554c2fd1ba6c464/
 
-A member of the Linux NFS community built some Jenkins infrastructure
-several years ago to provide continuous integration testing.
+Thanks,
+Guillaume
 
-http://git.linux-nfs.org/?p=3Danna/nfs-ordeal.git;a=3Dsummary
-
-The README describes what's in the repository. It includes the
-aforementioned cthon04 and also xfstests.
-
-It looks like one host is booted, and a pair of guests on that
-host act as the systems under test. The host drives the testing
-by ssh'ing into the client guest.
-
-I hope this is helpful to explain what we're looking for.
-
-
->>> That helps us enables the
->>> most basic stuff more easily, as the above will need some design and
->>> discussion between the KernelCI team.
->>=20
->> Understood.
->>=20
->> Thanks for your interest.
->>=20
->> --b.
->>=20
->>>> If we want to test features that involve Kerberos, is there
->>>> a KDC available, or would we need to provide a KDC image
->>>> that can be used for our tests?
->>>=20
->>> We don't have any provision for that yet (because no one ever needed
->>> it!). It might be easier if you just provide an image that serves you
->>> the best. I'd need to check with the team the details to make it
->>> available to your tests.
+>> ---
+>> =C2=A0 arch/arm64/configs/defconfig | 1 +
+>> =C2=A0 1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+>> index fc40ae9e9bdb..171848ace3ac 100644
+>> --- a/arch/arm64/configs/defconfig
+>> +++ b/arch/arm64/configs/defconfig
+>> @@ -1172,6 +1172,7 @@ CONFIG_INTERCONNECT_IMX8MQ=3Dm
+>> =C2=A0 CONFIG_INTERCONNECT_QCOM=3Dy
+>> =C2=A0 CONFIG_INTERCONNECT_QCOM_MSM8916=3Dm
+>> =C2=A0 CONFIG_INTERCONNECT_QCOM_OSM_L3=3Dm
+>> +CONFIG_INTERCONNECT_QCOM_SC7180=3Dy
+>> =C2=A0 CONFIG_INTERCONNECT_QCOM_SDM845=3Dy
+>> =C2=A0 CONFIG_INTERCONNECT_QCOM_SM8150=3Dm
+>> =C2=A0 CONFIG_INTERCONNECT_QCOM_SM8250=3Dm
+>>
 >=20
-> Kerberos can be a stretch goal. Certainly not something we
-> require on day one.
 >=20
-> --
-> Chuck Lever
-
---
-Chuck Lever
-
-
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
