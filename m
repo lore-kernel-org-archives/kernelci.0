@@ -1,69 +1,268 @@
+Date: Mon, 1 Nov 2021 14:03:39 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: Re: next/master build: 230 builds: 25 failed, 205 passed, 449 errors, 236 warnings (next-20211101)
+Message-ID: <YYBWK21wi/J997sL@archlinux-ax161>
+References: <61800dfa.1c69fb81.4a3c4.4034@mx.google.com>
 MIME-Version: 1.0
-References: <163425193558.1688384.15520943968787313145@swboyd.mtv.corp.google.com>
- <20211015120559.3515645-1-martin.blumenstingl@googlemail.com> <04a58d50-634b-fa20-95b4-eb6831f77e85@collabora.com>
-In-Reply-To: <04a58d50-634b-fa20-95b4-eb6831f77e85@collabora.com>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Mon, 1 Nov 2021 21:58:38 +0100
-Message-ID: <CAFBinCAEt9_EfLYWZEzTBK6iN97+Wacho7pNd2LYDPX3+goMzg@mail.gmail.com>
-Subject: Re: [PATCH] clk: composite: Also consider .determine_rate for rate + mux composites
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <61800dfa.1c69fb81.4a3c4.4034@mx.google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: sboyd@kernel.org, heiko@sntech.de, knaerzche@gmail.com, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org, "kernelci@groups.io" <kernelci@groups.io>, Collabora Kernel ML <kernel@collabora.com>, Chen-Yu Tsai <wens@csie.org>
+To: "kernelci.org bot" <bot@kernelci.org>
+Cc: llvm@lists.linux.dev, kernelci@groups.io
 
-Hi Guillaume,
+Hello,
 
-On Mon, Nov 1, 2021 at 9:19 PM Guillaume Tucker
-<guillaume.tucker@collabora.com> wrote:
->
-> Hi Martin,
->
-> Please see the bisection report below about a boot failure on
-> rk3328-rock64.
->
-> Reports aren't automatically sent to the public while we're
-> trialing new bisection features on kernelci.org but this one
-> looks valid.
->
-> Some more details can be found here:
->
->   https://linux.kernelci.org/test/case/id/617f11f5c157b666fb3358e6/
->
-> Here's what appears to be the cause of the problem:
->
-> [    0.033465] CPU: CPUs started in inconsistent modes
-> [    0.033557] Unexpected kernel BRK exception at EL1
-> [    0.034432] Internal error: BRK handler: f2000800 [#1] PREEMPT SMP
->
-> There doesn't appear to be any other platform in KernelCI showing
-> the same issue.
-That's a strange error for the changes from my patch.
-At first glance I don't see any relation to clk-composite code:
-- the call trace doesn't have any references to CCF or rockchip clock drivers
-- clk-rk3328.c uses drivers/clk/rockchip/clk-cpu.c to register the CPU
-clock which does not use clk-composite
+I will comment on the LLVM/clang errors.
 
-Chen-Yu has tested this patch (plus [0]) on RK3399 and didn't observe
-any problems.
-So maybe this is a RK3328 specific issue?
-Anyways, I am interested in fixing this issue because reverting is
-becoming more and more complex (since I think we're at eight commits
-which would need to be reverted in total).
+On Mon, Nov 01, 2021 at 08:55:38AM -0700, kernelci.org bot wrote:
+>     3    clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
-> Please let us know if you need help debugging the issue or if you
-> have a fix to try.
-Could you please try [0] which is the second patch in the series which
-finally made it upstream.
-This second patch is not in 5.15 because I believed that it's only
-something to make the code in clk-composite.c more future-proof. It's
-not a condition that I am aware of.
+I believe this is fixed with
 
-I don't have any Rockchip boards myself.
-So I am thankful for any help I can get.
+https://lore.kernel.org/r/87fsslasgz.fsf@collabora.com/
 
+which should now be picked up for -next:
 
-Best regards,
-Martin
+https://lore.kernel.org/r/20211101114222.GA21679@quack2.suse.cz/
 
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:98:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:96:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:94:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:92:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:90:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:88:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:86:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:84:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:82:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:80:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:7:11: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:78:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:76:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:74:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:72:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:70:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:68:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:66:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:64:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:62:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:60:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:5:11: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:58:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:56:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:54:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:52:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:50:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:48:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:46:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:44:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:42:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:40:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:38:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:36:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:34:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:32:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:30:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:28:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:26:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:263:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:261:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:258:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:256:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:254:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:252:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:250:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:24:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:248:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:246:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:244:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:242:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:240:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:238:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:236:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:234:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:232:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:230:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:22:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:228:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:226:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:224:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:222:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:220:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:218:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:216:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:214:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:212:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:210:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:20:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:208:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:206:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:204:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:202:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:200:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:198:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:196:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:194:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:192:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:190:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:18:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:188:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:186:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:184:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:182:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:180:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:178:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:176:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:174:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:172:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:170:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:16:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:168:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:166:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:164:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:162:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:160:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:158:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:156:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:154:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:152:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:150:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:14:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:148:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:146:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:144:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:142:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:140:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:138:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:136:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:134:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:132:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:130:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:12:12: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:128:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:126:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:124:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:122:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:120:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:118:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:116:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:114:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:112:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:110:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:10:11: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:108:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:106:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:104:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:102:13: error: unknown relocation name
+>     3    arch/arm64/kvm/hyp/nvhe/hyp-reloc.S:100:13: error: unknown relocation name
 
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git/commit/?h=clk-next&id=6594988fd625ff0d9a8f90f1788e16185358a3e6
+This is a deficiency in LLVM 10's integrated assembler that was fixed by
+
+https://github.com/llvm/llvm-project/commit/34d77516b826f07e964fab364b02511ba6002209
+
+in LLVM 11, according to my reverse bisect. This error was exposed in
+the kernel by changing the default value of LLVM_IAS in commit
+f12b034afeb3 ("scripts/Makefile.clang: default to LLVM_IAS=1"). There
+are a few different things we can explore for fixing this:
+
+1. Bump the minimum required version of LLVM to 11.0.0.
+2. Explicitly pass LLVM_IAS=0 for clang-10 in KernelCI's make command.
+3. Change the default of LLVM_IAS for clang-10 in the kernel's source.
+
+We have done number 2 in our own CI:
+
+https://github.com/ClangBuiltLinux/continuous-integration2/commit/e4bdcdd4682b8792b04083e58bb590f369f047db
+
+Number 3 has some merits because it would benefit all CI systems. Number
+1 might be worth considering now that clang-11+ is available in most
+distros:
+
+Arch Linux: clang version 12.0.1
+Debian (buster): clang version 7.0.1-8+deb10u2
+Debian (bullseye): Debian clang version 11.0.1-2
+Debian (sid): Debian clang version 11.1.0-4
+Fedora (34): clang version 12.0.1 (Fedora 12.0.1-1.fc34)
+Fedora (rawhide): clang version 13.0.0 (Fedora 13.0.0-4.fc36)
+OpenSUSE (Leap 15.3): clang version 11.0.1
+OpenSUSE (Tumbleweed): clang version 13.0.0
+Ubuntu (18.04): clang version 6.0.0-1ubuntu2
+Ubuntu (20.04): clang version 10.0.0-4ubuntu1
+Ubuntu (21.10): Ubuntu clang version 13.0.0-2
+
+Every distribution that has a clang older than 11.0.0 has one older than
+10.0.1 so it already cannot build the kernel without building LLVM from
+source so not much should change.
+
+>     3    arch/arm/kernel/entry-armv.S:503:4: error: invalid instruction, any one of the following would fix this:
+>     3    arch/arm/kernel/entry-armv.S:499:4: error: invalid instruction, any one of the following would fix this:
+
+https://github.com/ClangBuiltLinux/linux/issues/909S
+
+This should be fixed in the same manner as the arm64 issue above.
+
+>     2    <instantiation>:2:2: error: unknown use of instruction mnemonic without a size suffix
+
+https://github.com/ClangBuiltLinux/linux/issues/1079
+
+This should be fixed in the same manner as the arm64 issue above.
+
+>     1    drivers/net/ethernet/mellanox/mlx5/core/en/tc/sample.c:635:34: error: variable 'esw' is uninitialized when used here [-Werror,-Wuninitialized]
+
+Should be fixed in the next -next version:
+
+https://lore.kernel.org/r/20211029205632.390403-2-saeed@kernel.org/
+
+>     1    clang: error: unsupported argument '-mimplicit-it=always' to option 'Wa,'
+
+Fixed in LLVM 13: https://github.com/ClangBuiltLinux/linux/issues/1270
+
+ARCH=arm does not build well with the integrated assembler until LLVM 13
+so KernelCI should pass LLVM_IAS=0 to make when building arm kernels
+prior to that version.
+
+>     1    arch/arm/mm/proc-v7.S:169:164: error: ALT_UP() content must assemble to exactly 4 bytes
+>     1    arch/arm/mm/proc-v7.S:169:147: error: expected absolute expression
+>     1    arch/arm/mm/proc-v7.S:169:111: error: expected absolute expression
+
+LLVM 12: https://github.com/ClangBuiltLinux/linux/issues/742
+
+Same fix as directly above.
+
+>     1    arch/arm/mm/cache-v7.S:97:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:69:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:68:4: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:56:4: error: instruction requires: armv6t2
+>     1    arch/arm/mm/cache-v7.S:45:2: error: instruction requires: armv6t2
+>     1    arch/arm/mm/cache-v7.S:431:2: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:42:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:423:8: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:409:2: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:401:8: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:387:2: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:372:8: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:352:2: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:344:8: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:321:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:312:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:311:2: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:294:2: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:286:8: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:179:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:178:2: error: invalid instruction
+>     1    arch/arm/mm/cache-v7.S:172:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:152:2: error: instruction requires: armv6t2
+>     1    arch/arm/mm/cache-v7.S:149:2: error: instruction requires: armv6t2
+>     1    arch/arm/mm/cache-v7.S:142:2: error: instruction requires: data-barriers
+>     1    arch/arm/mm/cache-v7.S:107:2: error: instruction requires: armv6t2
+>     1    arch/arm/mm/cache-v7.S:106:2: error: instruction requires: armv6t2
+>     1    arch/arm/mach-mvebu/coherency_ll.S:155:2: error: instruction requires: data-barriers
+>     1    arch/arm/mach-mvebu/coherency_ll.S:128:2: error: instruction requires: data-barriers
+>     1    arch/arm/mach-imx/suspend-imx6.S:315:2: error: instruction requires: data-barriers
+>     1    :125:2: error: instruction requires: data-barriers
+
+LLVM 13: https://github.com/ClangBuiltLinux/linux/issues/1195
+
+Same fix as directly above.
+
+Cheers,
+Nathan
