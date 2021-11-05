@@ -1,33 +1,33 @@
-Subject: Re: please drop deprecated android kernel branches
-References: <CAHRSSExhrCJW0v6L+iZ9u2tBa9BQh0CgCe1aGW2i3hur4DjLjQ@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <68cac88e-9b2a-6dc7-5a3e-a8b09e71fd9f@collabora.com>
-Date: Thu, 4 Nov 2021 08:32:06 +0000
 MIME-Version: 1.0
-In-Reply-To: <CAHRSSExhrCJW0v6L+iZ9u2tBa9BQh0CgCe1aGW2i3hur4DjLjQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 5 Nov 2021 14:08:28 -0700
+Message-ID: <CAHRSSEzxRxBYZgdUjneOP++NPbt6WO2dzeimupefPTdybTWOPg@mail.gmail.com>
+Subject: please add android13-5.15 branch
+Content-Type: multipart/alternative; boundary="0000000000002a2f9105d0110c14"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, tkjos@google.com
+To: kernelci@groups.io
 
-Hi Todd,
+--0000000000002a2f9105d0110c14
+Content-Type: text/plain; charset="UTF-8"
 
-On 01/11/2021 17:50, Todd Kjos via groups.io wrote:
-> The following branches are now out of support. Please drop them from kernelci build/test (some might already have been dropped):
-> 
-> android-3.18
-> android-3.18-o-mr1
-> android-4.4-o
-> android-4.4-o-mr1
-> android-4.9-o
-> android-4.9-o-mr1
+We recently added the android13-5.15 branch. Please add it to kernelci
+testing.
 
-They were all still in the config, I've made this PR accordingly:
+repo: https://android.googlesource.com/kernel/common
+branch: android13-5.15
 
-  https://github.com/kernelci/kernelci-core/pull/859
+Thanks,
 
-It should get deployed in production on Monday.
+-Todd
 
-Best wishes,
-Guillaume
+--0000000000002a2f9105d0110c14
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>We recently added the android13-5.15 branch. Please a=
+dd it to kernelci testing.<br><br>repo:=C2=A0<a href=3D"https://android.goo=
+glesource.com/kernel/common" rel=3D"noreferrer" target=3D"_blank">https://a=
+ndroid.googlesource.com/kernel/common</a><br>branch: android13-5.15<br><br>=
+Thanks,<br><br>-Todd<br></div></div>
+
+--0000000000002a2f9105d0110c14--
