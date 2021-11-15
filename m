@@ -1,133 +1,26 @@
-Return-Path: <jbrouer@redhat.com>
-From: Jesper Dangaard Brouer <jbrouer@redhat.com>
-Message-ID: <8c688448-e8a9-5a6b-7b17-ccd294a416d3@redhat.com>
-Date: Mon, 15 Nov 2021 15:39:35 +0100
-MIME-Version: 1.0
+Date: Mon, 15 Nov 2021 09:59:50 -0800
+From: Christoph Hellwig <hch@infradead.org>
 Subject: Re: [PATCH net-next v6] page_pool: disable dma mapping support for 32-bit arch with 64-bit DMA
+Message-ID: <YZKgFqwJOIEObMg7@infradead.org>
 References: <20211013091920.1106-1-linyunsheng@huawei.com>
  <b9c0e7ef-a7a2-66ad-3a19-94cc545bd557@collabora.com>
  <1090744a-3de6-1dc2-5efe-b7caae45223a@huawei.com>
  <644e10ca-87b8-b553-db96-984c0b2c6da1@collabora.com>
  <93173400-1d37-09ed-57ef-931550b5a582@huawei.com>
  <YZJKNLEm6YTkygHM@apalos.home>
- <CAC_iWjKFLr932sMt9G2T+MFYUAQZNWPqp6YsnmSd3rMia7OpoA@mail.gmail.com>
- <d0223831-44ff-3e1a-1be9-27d751dc39f2@huawei.com>
-In-Reply-To: <d0223831-44ff-3e1a-1be9-27d751dc39f2@huawei.com>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+In-Reply-To: <YZJKNLEm6YTkygHM@apalos.home>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Yunsheng Lin <linyunsheng@huawei.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: brouer@redhat.com, Guillaume Tucker <guillaume.tucker@collabora.com>, davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org, hawk@kernel.org, akpm@linux-foundation.org, peterz@infradead.org, will@kernel.org, jhubbard@nvidia.com, yuzhao@google.com, mcroce@microsoft.com, fenghua.yu@intel.com, feng.tang@intel.com, jgg@ziepe.ca, aarcange@redhat.com, guro@fb.com, "kernelci@groups.io" <kernelci@groups.io>
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Yunsheng Lin <linyunsheng@huawei.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org, hawk@kernel.org, akpm@linux-foundation.org, peterz@infradead.org, will@kernel.org, jhubbard@nvidia.com, yuzhao@google.com, mcroce@microsoft.com, fenghua.yu@intel.com, feng.tang@intel.com, jgg@ziepe.ca, aarcange@redhat.com, guro@fb.com, "kernelci@groups.io" <kernelci@groups.io>
 
+This is just popping out of nowhere on lkml, but yes ARM LPAE
+uses a 64-bit dma_addr_t, as a 64-bit phys_addr_t implies that.
+Same for x86-32 PAE and similar cases on MIPS and probably a few
+other architectures.
 
-On 15/11/2021 13.21, Yunsheng Lin wrote:
-> On 2021/11/15 20:10, Ilias Apalodimas wrote:
->> On Mon, 15 Nov 2021 at 13:53, Ilias Apalodimas
->> <ilias.apalodimas@linaro.org> wrote:
->>>
->>> On Mon, Nov 15, 2021 at 11:34:59AM +0800, Yunsheng Lin wrote:
->>>> On 2021/11/12 17:21, Guillaume Tucker wrote:
->>>>> On 09/11/2021 12:02, Yunsheng Lin wrote:
->>>>>> On 2021/11/9 17:58, Guillaume Tucker wrote:
->>>>>>> Hi Yunsheng,
->>>>>>>
->>>>>>> Please see the bisection report below about a boot failure on
->>>>>>> rk3288-rock2-square which is pointing to this patch.  The issue
->>>>>>> appears to only happen with CONFIG_ARM_LPAE=y.
->>>>>>>
->>>>>>> Reports aren't automatically sent to the public while we're
->>>>>>> trialing new bisection features on kernelci.org but this one
->>>>>>> looks valid.
->>>>>>>
->>>>>>> Some more details can be found here:
->>>>>>>
->>>>>>>    https://linux.kernelci.org/test/case/id/6189968c3ec0a3c06e3358fe/
->>>>>>>
->>>>>>> Here's the same revision on the same platform booting fine with a
->>>>>>> plain multi_v7_defconfig build:
->>>>>>>
->>>>>>>    https://linux.kernelci.org/test/plan/id/61899d322c0e9fee7e3358ec/
->>>>>>>
->>>>>>> Please let us know if you need any help debugging this issue or
->>>>>>> if you have a fix to try.
->>>>>>
->>>>>> The patch below is removing the dma mapping support in page pool
->>>>>> for 32 bit systems with 64 bit dma address, so it seems there
->>>>>> is indeed a a drvier using the the page pool with PP_FLAG_DMA_MAP
->>>>>> flags set in a 32 bit systems with 64 bit dma address.
->>>>>>
->>>>>> It seems we might need to revert the below patch or implement the
->>>>>> DMA-mapping tracking support in the driver as mentioned in the below
->>>>>> commit log.
->>>>>>
->>>>>> which ethernet driver do you use in your system?
->>>>>
->>>>> Thanks for taking a look and sorry for the slow reply.  Here's a
->>>>> booting test job with LPAE disabled:
->>>>>
->>>>>      https://linux.kernelci.org/test/plan/id/618dbb81c60c4d94503358f1/
->>>>>      https://storage.kernelci.org/mainline/master/v5.15-12452-g5833291ab6de/arm/multi_v7_defconfig/gcc-10/lab-collabora/baseline-nfs-rk3288-rock2-square.html#L812
->>>>>
->>>>> [    8.314523] rk_gmac-dwmac ff290000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
->>>>>
->>>>> So the driver is drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
->>>>
->>>> Thanks for the report, this patch seems to cause problem for 32-bit
->>>> system with LPAE enabled.
->>>>
->>>> As LPAE seems like a common feature for 32 bits system, this patch
->>>> might need to be reverted.
->>>>
->>>> @Jesper, @Ilias, what do you think?
->>>
->>>
->>> So enabling LPAE also enables CONFIG_ARCH_DMA_ADDR_T_64BIT on that board?
->>> Doing a quick grep only selects that for XEN.  I am ok reverting that,  but
->>> I think we need to understand how the dma address ended up being 64bit.
->>
->> So looking a bit closer, indeed enabling LPAE always enables this.  So
->> we need to revert the patch.
->> Yunsheng will you send that?
-> 
-> Sure.
-
-Why don't we change that driver[1] to not use page_pool_get_dma_addr() ?
-
-  [1] drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-
-I took a closer look and it seems the driver have struct 
-stmmac_rx_buffer in which is stored the dma_addr it gets from 
-page_pool_get_dma_addr().
-
-See func: stmmac_init_rx_buffers
-
-  static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
-				struct dma_desc *p,
-				int i, gfp_t flags, u32 queue)
-  {
-
-	if (!buf->page) {
-		buf->page = page_pool_dev_alloc_pages(rx_q->page_pool);
-		if (!buf->page)
-			return -ENOMEM;
-		buf->page_offset = stmmac_rx_offset(priv);
-	}
-	[...]
-
-	buf->addr = page_pool_get_dma_addr(buf->page) + buf->page_offset;
-
-	stmmac_set_desc_addr(priv, p, buf->addr);
-	[...]
-  }
-
-I question if this driver really to use page_pool for storing the 
-dma_addr as it just extract it and store it outside page_pool?
-
-@Ilias it looks like you added part of the page_pool support in this 
-driver, so I hope you can give a qualified guess on:
-How much work will it be to let driver do the DMA-map itself?
-(and not depend on the DMA-map feature provided by page_pool)
-
---Jesper
-
+But what is the actual problem with a 32-bit virtual and 64-bit
+pysical/dma address?  That is a pretty common setup and absolutely
+needs to be deal with in drivers and inrastructure.
