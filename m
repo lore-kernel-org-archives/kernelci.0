@@ -1,444 +1,532 @@
-From: Arnd Bergmann <arnd@kernel.org>
-Subject: [RFC 1/3] headers: add more types to linux/types.h
-Date: Tue,  7 Dec 2021 16:09:25 +0100
-Message-Id: <20211207150927.3042197-2-arnd@kernel.org>
-In-Reply-To: <20211207150927.3042197-1-arnd@kernel.org>
-References: <20211207150927.3042197-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+References: <20211115111816.3911213-1-ardb@kernel.org> <20211115111816.3911213-8-ardb@kernel.org>
+ <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com>
+In-Reply-To: <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 16 Nov 2021 20:28:02 +0100
+Message-ID: <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: linux-kernel@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck <groeck@chromium.org>, Kees Cook <keescook@chromium.org>, Linus Torvalds <torvalds@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Stephen Rothwell <sfr@canb.auug.org.au>, kernel test robot <lkp@intel.com>, Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Tejun Heo <tj@kernel.org>, kernelci@groups.io, linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+To: Guillaume Tucker <guillaume.tucker@collabora.com>, Tony Lindgren <tony@atomide.com>, linux-omap <linux-omap@vger.kernel.org>
+Cc: Linux ARM <linux-arm-kernel@lists.infradead.org>, Russell King <linux@armlinux.org.uk>, Nicolas Pitre <nico@fluxnic.net>, Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-From: Arnd Bergmann <arnd@arndb.de>
+(+ Tony and linux-omap@)
 
-There are a couple types for atomics, uid, timespec, and isolate_mode_t
-that are used in other central header files like linux/fs.h to define
-larger data structures.
+On Tue, 16 Nov 2021 at 10:23, Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
+>
+> Hi Ard,
+>
+> Please see the bisection report below about a boot failure on
+> omap4-panda which is pointing to this patch.
+>
+> Reports aren't automatically sent to the public while we're
+> trialing new bisection features on kernelci.org but this one
+> looks valid.
+>
+> Some more details can be found here:
+>
+>   https://linux.kernelci.org/test/case/id/6191b1b97c175a5ade335948/
+>
+> It seems like the kernel just froze after about 3 seconds without
+> any obvious errors in the log.
+>
+> Please let us know if you need any help debugging this issue or
+> if you have a fix to try.
+>
 
-The headers that traditionally define these in turn include other headers
-recursively, which adds considerable bloat to the preprocessed source
-files and requires rebuilding large parts of the kernel for any change
-to indirectly included headers.
+Thanks for the report.
 
-Moving these into linux/types.h means we can build on top of the structur=
-e
-with a much smaller set of indirect includes.
+I wonder if this might be related to low level platform code running
+off a different stack (maybe in SRAM?) when an interrupt is taken? Or
+using a different set of page tables that are out of sync in terms of
+VMALLOC space mappings?
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arc/include/asm/atomic64-arcv2.h |  4 --
- arch/arm/include/asm/atomic.h         |  4 --
- arch/x86/include/asm/atomic64_32.h    |  4 --
- include/asm-generic/atomic64.h        |  4 --
- include/linux/atomic/atomic-long.h    |  4 +-
- include/linux/ktime.h                 |  3 -
- include/linux/list_bl.h               |  7 ---
- include/linux/list_lru.h              | 15 -----
- include/linux/llist.h                 |  8 ---
- include/linux/mmzone.h                |  3 -
- include/linux/plist.h                 | 10 ---
- include/linux/time64.h                | 13 ----
- include/linux/types.h                 | 90 ++++++++++++++++++++++++++-
- include/linux/uidgid.h                |  9 ---
- include/linux/uuid.h                  |  6 --
- 15 files changed, 89 insertions(+), 95 deletions(-)
+Could anyone who speaks OMAP please take a look at the linked boot
+log, and hopefully make sense of it?
 
-diff --git a/arch/arc/include/asm/atomic64-arcv2.h b/arch/arc/include/asm=
-/atomic64-arcv2.h
-index c5a8010fdc97..25f7ac390e57 100644
---- a/arch/arc/include/asm/atomic64-arcv2.h
-+++ b/arch/arc/include/asm/atomic64-arcv2.h
-@@ -8,10 +8,6 @@
- #ifndef _ASM_ARC_ATOMIC64_ARCV2_H
- #define _ASM_ARC_ATOMIC64_ARCV2_H
-=20
--typedef struct {
--	s64 __aligned(8) counter;
--} atomic64_t;
--
- #define ATOMIC64_INIT(a) { (a) }
-=20
- static inline s64 arch_atomic64_read(const atomic64_t *v)
-diff --git a/arch/arm/include/asm/atomic.h b/arch/arm/include/asm/atomic.=
-h
-index db8512d9a918..df41a46a46e7 100644
---- a/arch/arm/include/asm/atomic.h
-+++ b/arch/arm/include/asm/atomic.h
-@@ -243,10 +243,6 @@ ATOMIC_OPS(xor, ^=3D, eor)
- #define arch_atomic_xchg(v, new) (arch_xchg(&((v)->counter), new))
-=20
- #ifndef CONFIG_GENERIC_ATOMIC64
--typedef struct {
--	s64 counter;
--} atomic64_t;
--
- #define ATOMIC64_INIT(i) { (i) }
-=20
- #ifdef CONFIG_ARM_LPAE
-diff --git a/arch/x86/include/asm/atomic64_32.h b/arch/x86/include/asm/at=
-omic64_32.h
-index 5efd01b548d1..c74f58a719da 100644
---- a/arch/x86/include/asm/atomic64_32.h
-+++ b/arch/x86/include/asm/atomic64_32.h
-@@ -8,10 +8,6 @@
-=20
- /* An 64bit atomic type */
-=20
--typedef struct {
--	s64 __aligned(8) counter;
--} atomic64_t;
--
- #define ATOMIC64_INIT(val)	{ (val) }
-=20
- #define __ATOMIC64_DECL(sym) void atomic64_##sym(atomic64_t *, ...)
-diff --git a/include/asm-generic/atomic64.h b/include/asm-generic/atomic6=
-4.h
-index 100d24b02e52..a824626346a3 100644
---- a/include/asm-generic/atomic64.h
-+++ b/include/asm-generic/atomic64.h
-@@ -9,10 +9,6 @@
- #define _ASM_GENERIC_ATOMIC64_H
- #include <linux/types.h>
-=20
--typedef struct {
--	s64 counter;
--} atomic64_t;
--
- #define ATOMIC64_INIT(i)	{ (i) }
-=20
- extern s64 generic_atomic64_read(const atomic64_t *v);
-diff --git a/include/linux/atomic/atomic-long.h b/include/linux/atomic/at=
-omic-long.h
-index 800b8c35992d..82a6971600c3 100644
---- a/include/linux/atomic/atomic-long.h
-+++ b/include/linux/atomic/atomic-long.h
-@@ -7,15 +7,13 @@
- #define _LINUX_ATOMIC_LONG_H
-=20
- #include <linux/compiler.h>
--#include <asm/types.h>
-+#include <linux/types.h>
-=20
- #ifdef CONFIG_64BIT
--typedef atomic64_t atomic_long_t;
- #define ATOMIC_LONG_INIT(i)		ATOMIC64_INIT(i)
- #define atomic_long_cond_read_acquire	atomic64_cond_read_acquire
- #define atomic_long_cond_read_relaxed	atomic64_cond_read_relaxed
- #else
--typedef atomic_t atomic_long_t;
- #define ATOMIC_LONG_INIT(i)		ATOMIC_INIT(i)
- #define atomic_long_cond_read_acquire	atomic_cond_read_acquire
- #define atomic_long_cond_read_relaxed	atomic_cond_read_relaxed
-diff --git a/include/linux/ktime.h b/include/linux/ktime.h
-index 73f20deb497d..4bd945df3446 100644
---- a/include/linux/ktime.h
-+++ b/include/linux/ktime.h
-@@ -25,9 +25,6 @@
- #include <linux/jiffies.h>
- #include <asm/bug.h>
-=20
--/* Nanosecond scalar representation for kernel time values */
--typedef s64	ktime_t;
--
- /**
-  * ktime_set - Set a ktime_t variable from a seconds/nanoseconds value
-  * @secs:	seconds to set
-diff --git a/include/linux/list_bl.h b/include/linux/list_bl.h
-index ae1b541446c9..d3d6038d748b 100644
---- a/include/linux/list_bl.h
-+++ b/include/linux/list_bl.h
-@@ -31,13 +31,6 @@
- #endif
-=20
-=20
--struct hlist_bl_head {
--	struct hlist_bl_node *first;
--};
--
--struct hlist_bl_node {
--	struct hlist_bl_node *next, **pprev;
--};
- #define INIT_HLIST_BL_HEAD(ptr) \
- 	((ptr)->first =3D NULL)
-=20
-diff --git a/include/linux/list_lru.h b/include/linux/list_lru.h
-index 1b5fceb565df..a2d175f0c3d5 100644
---- a/include/linux/list_lru.h
-+++ b/include/linux/list_lru.h
-@@ -25,12 +25,6 @@ enum lru_status {
- 				   internally, but has to return locked. */
- };
-=20
--struct list_lru_one {
--	struct list_head	list;
--	/* may become negative during memcg reparenting */
--	long			nr_items;
--};
--
- struct list_lru_memcg {
- 	struct rcu_head		rcu;
- 	/* array of per cgroup lists, indexed by memcg_cache_id */
-@@ -49,15 +43,6 @@ struct list_lru_node {
- 	long nr_items;
- } ____cacheline_aligned_in_smp;
-=20
--struct list_lru {
--	struct list_lru_node	*node;
--#ifdef CONFIG_MEMCG_KMEM
--	struct list_head	list;
--	int			shrinker_id;
--	bool			memcg_aware;
--#endif
--};
--
- void list_lru_destroy(struct list_lru *lru);
- int __list_lru_init(struct list_lru *lru, bool memcg_aware,
- 		    struct lock_class_key *key, struct shrinker *shrinker);
-diff --git a/include/linux/llist.h b/include/linux/llist.h
-index 85bda2d02d65..99cc3c30f79c 100644
---- a/include/linux/llist.h
-+++ b/include/linux/llist.h
-@@ -53,14 +53,6 @@
- #include <linux/stddef.h>
- #include <linux/types.h>
-=20
--struct llist_head {
--	struct llist_node *first;
--};
--
--struct llist_node {
--	struct llist_node *next;
--};
--
- #define LLIST_HEAD_INIT(name)	{ NULL }
- #define LLIST_HEAD(name)	struct llist_head name =3D LLIST_HEAD_INIT(name=
-)
-=20
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 58e744b78c2c..852fb61a0817 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -331,9 +331,6 @@ struct lruvec {
- /* Isolate unevictable pages */
- #define ISOLATE_UNEVICTABLE	((__force isolate_mode_t)0x8)
-=20
--/* LRU Isolation modes. */
--typedef unsigned __bitwise isolate_mode_t;
--
- enum zone_watermarks {
- 	WMARK_MIN,
- 	WMARK_LOW,
-diff --git a/include/linux/plist.h b/include/linux/plist.h
-index 0f352c1d3c80..7e236c166191 100644
---- a/include/linux/plist.h
-+++ b/include/linux/plist.h
-@@ -79,16 +79,6 @@
-=20
- #include <asm/bug.h>
-=20
--struct plist_head {
--	struct list_head node_list;
--};
--
--struct plist_node {
--	int			prio;
--	struct list_head	prio_list;
--	struct list_head	node_list;
--};
--
- /**
-  * PLIST_HEAD_INIT - static struct plist_head initializer
-  * @head:	struct plist_head variable name
-diff --git a/include/linux/time64.h b/include/linux/time64.h
-index 81b9686a2079..7e323c97ca6c 100644
---- a/include/linux/time64.h
-+++ b/include/linux/time64.h
-@@ -5,21 +5,8 @@
- #include <linux/math64.h>
- #include <vdso/time64.h>
-=20
--typedef __s64 time64_t;
--typedef __u64 timeu64_t;
--
- #include <uapi/linux/time.h>
-=20
--struct timespec64 {
--	time64_t	tv_sec;			/* seconds */
--	long		tv_nsec;		/* nanoseconds */
--};
--
--struct itimerspec64 {
--	struct timespec64 it_interval;
--	struct timespec64 it_value;
--};
--
- /* Located here for timespec[64]_valid_strict */
- #define TIME64_MAX			((s64)~((u64)1 << 63))
- #define TIME64_MIN			(-TIME64_MAX - 1)
-diff --git a/include/linux/types.h b/include/linux/types.h
-index ac825ad90e44..390492c2a8a2 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -46,6 +46,14 @@ typedef __kernel_old_gid_t	old_gid_t;
- typedef __kernel_loff_t		loff_t;
- #endif
-=20
-+typedef struct {
-+	uid_t val;
-+} kuid_t;
-+
-+typedef struct {
-+	gid_t val;
-+} kgid_t;
-+
- /*
-  * The following typedefs are also protected by individual ifdefs for
-  * historical reasons:
-@@ -169,10 +177,14 @@ typedef struct {
-=20
- #define ATOMIC_INIT(i) { (i) }
-=20
--#ifdef CONFIG_64BIT
- typedef struct {
--	s64 counter;
-+	s64 __aligned(8) counter;
- } atomic64_t;
-+
-+#ifdef CONFIG_64BIT
-+typedef atomic64_t atomic_long_t;
-+#else
-+typedef atomic_t atomic_long_t;
- #endif
-=20
- struct list_head {
-@@ -187,6 +199,47 @@ struct hlist_node {
- 	struct hlist_node *next, **pprev;
- };
-=20
-+struct hlist_bl_head {
-+	struct hlist_bl_node *first;
-+};
-+
-+struct hlist_bl_node {
-+	struct hlist_bl_node *next, **pprev;
-+};
-+
-+struct llist_head {
-+	struct llist_node *first;
-+};
-+
-+struct llist_node {
-+	struct llist_node *next;
-+};
-+
-+struct list_lru_one {
-+	struct list_head	list;
-+	/* may become negative during memcg reparenting */
-+	long			nr_items;
-+};
-+
-+struct list_lru {
-+	struct list_lru_node	*node;
-+#ifdef CONFIG_MEMCG_KMEM
-+	struct list_head	list;
-+	int			shrinker_id;
-+	bool			memcg_aware;
-+#endif
-+};
-+
-+struct plist_head {
-+	struct list_head node_list;
-+};
-+
-+struct plist_node {
-+	int			prio;
-+	struct list_head	prio_list;
-+	struct list_head	node_list;
-+};
-+
- struct ustat {
- 	__kernel_daddr_t	f_tfree;
- #ifdef CONFIG_ARCH_32BIT_USTAT_F_TINODE
-@@ -231,5 +284,38 @@ typedef void (*swap_func_t)(void *a, void *b, int si=
-ze);
- typedef int (*cmp_r_func_t)(const void *a, const void *b, const void *pr=
-iv);
- typedef int (*cmp_func_t)(const void *a, const void *b);
-=20
-+#define UUID_SIZE 16
-+typedef struct {
-+	__u8 b[UUID_SIZE];
-+} uuid_t;
-+
-+/* LRU Isolation modes. */
-+typedef unsigned __bitwise isolate_mode_t;
-+
-+enum pid_type
-+{
-+	PIDTYPE_PID,
-+	PIDTYPE_TGID,
-+	PIDTYPE_PGID,
-+	PIDTYPE_SID,
-+	PIDTYPE_MAX,
-+};
-+
-+typedef __s64 time64_t;
-+typedef __u64 timeu64_t;
-+
-+struct timespec64 {
-+	time64_t	tv_sec;			/* seconds */
-+	long		tv_nsec;		/* nanoseconds */
-+};
-+
-+struct itimerspec64 {
-+	struct timespec64 it_interval;
-+	struct timespec64 it_value;
-+};
-+
-+/* Nanosecond scalar representation for kernel time values */
-+typedef s64	ktime_t;
-+
- #endif /*  __ASSEMBLY__ */
- #endif /* _LINUX_TYPES_H */
-diff --git a/include/linux/uidgid.h b/include/linux/uidgid.h
-index b0542cd11aeb..1f6e849173be 100644
---- a/include/linux/uidgid.h
-+++ b/include/linux/uidgid.h
-@@ -18,15 +18,6 @@
- struct user_namespace;
- extern struct user_namespace init_user_ns;
-=20
--typedef struct {
--	uid_t val;
--} kuid_t;
--
--
--typedef struct {
--	gid_t val;
--} kgid_t;
--
- #define KUIDT_INIT(value) (kuid_t){ value }
- #define KGIDT_INIT(value) (kgid_t){ value }
-=20
-diff --git a/include/linux/uuid.h b/include/linux/uuid.h
-index 8cdc0d3567cd..4c078613facd 100644
---- a/include/linux/uuid.h
-+++ b/include/linux/uuid.h
-@@ -11,12 +11,6 @@
- #include <uapi/linux/uuid.h>
- #include <linux/string.h>
-=20
--#define UUID_SIZE 16
--
--typedef struct {
--	__u8 b[UUID_SIZE];
--} uuid_t;
--
- #define UUID_INIT(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7)			\
- ((uuid_t)								\
- {{ ((a) >> 24) & 0xff, ((a) >> 16) & 0xff, ((a) >> 8) & 0xff, (a) & 0xff=
-, \
---=20
-2.29.2
+For background, this series enables vmap'ed stacks support for ARMv7,
+which means that the entry code checks whether the stack pointer may
+be pointing into the guard region before the vmalloc'ed stack, and
+kills the task if it looks like the kernel stack overflowed.
 
+Here's another instance:
+https://linux.kernelci.org/build/id/6193fa5c6c4e1d02bd3358ff/
+
+Everything builds and boots happily, but odd things happen on OMAP
+based devices: Panda just gives up right after discovering the USB
+controller, and Beagle-XM just starts showing all kinds of weird
+crashes at roughly the same point in the boot.
+
+>
+> GitHub: https://github.com/kernelci/kernelci-project/issues/75
+>
+> -------------------------------------------------------------------------------
+>
+> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+> * This automated bisection report was sent to you on the basis  *
+> * that you may be involved with the breaking commit it has      *
+> * found.  No manual investigation has been done to verify it,   *
+> * and the root cause of the problem may be somewhere else.      *
+> *                                                               *
+> * If you do send a fix, please include this trailer:            *
+> *   Reported-by: "kernelci.org bot" <bot@kernelci.org>          *
+> *                                                               *
+> * Hope this helps!                                              *
+> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+>
+> ardb/for-kernelci bisection: baseline.login on panda
+>
+> Summary:
+>   Start:      d1eccc4f44f11 ARM: implement support for vmap'ed stacks
+>   Plain log:  https://storage.kernelci.org/ardb/for-kernelci/v5.16-rc1-16-gd1eccc4f44f1/arm/multi_v7_defconfig+crypto/gcc-10/lab-collabora/baseline-panda.txt
+>   HTML log:   https://storage.kernelci.org/ardb/for-kernelci/v5.16-rc1-16-gd1eccc4f44f1/arm/multi_v7_defconfig+crypto/gcc-10/lab-collabora/baseline-panda.html
+>   Result:     d1eccc4f44f11 ARM: implement support for vmap'ed stacks
+>
+> Checks:
+>   revert:     PASS
+>   verify:     PASS
+>
+> Parameters:
+>   Tree:       ardb
+>   URL:        https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
+>   Branch:     for-kernelci
+>   Target:     panda
+>   CPU arch:   arm
+>   Lab:        lab-collabora
+>   Compiler:   gcc-10
+>   Config:     multi_v7_defconfig+crypto
+>   Test case:  baseline.login
+>
+> Breaking commit found:
+>
+> -------------------------------------------------------------------------------
+> commit d1eccc4f44f11a8f3f5d376f08e3779d2196f93a
+> Author: Ard Biesheuvel <ardb@kernel.org>
+> Date:   Thu Sep 23 09:15:53 2021 +0200
+>
+>     ARM: implement support for vmap'ed stacks
+>
+> On 15/11/2021 11:18, Ard Biesheuvel wrote:
+> > Wire up the generic support for managing task stack allocations via vmalloc,
+> > and implement the entry code that detects whether we faulted because of a
+> > stack overrun (or future stack overrun caused by pushing the pt_regs array)
+> >
+> > While this adds a fair amount of tricky entry asm code, it should be
+> > noted that it only adds a TST + branch to the svc_entry path. The code
+> > implementing the non-trivial handling of the overflow stack is emitted
+> > out-of-line into the .text section.
+> >
+> > Since on ARM, we rely on do_translation_fault() to keep PMD level page
+> > table entries that cover the vmalloc region up to date, we need to
+> > ensure that we don't hit such a stale PMD entry when accessing the
+> > stack. So we do a dummy read from the new stack while still running from
+> > the old one on the context switch path, and bump the vmalloc_seq counter
+> > when PMD level entries in the vmalloc range are modified, so that the MM
+> > switch fetches the latest version of the entries.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > Tested-by: Keith Packard <keithpac@amazon.com>
+> > ---
+> >  arch/arm/Kconfig                   |  1 +
+> >  arch/arm/include/asm/page.h        |  4 +
+> >  arch/arm/include/asm/thread_info.h |  8 ++
+> >  arch/arm/kernel/entry-armv.S       | 79 ++++++++++++++++++--
+> >  arch/arm/kernel/entry-header.S     | 57 ++++++++++++++
+> >  arch/arm/kernel/irq.c              |  9 ++-
+> >  arch/arm/kernel/traps.c            | 65 +++++++++++++++-
+> >  arch/arm/kernel/unwind.c           |  3 +-
+> >  arch/arm/kernel/vmlinux.lds.S      |  4 +-
+> >  9 files changed, 219 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> > index b1eba1b4168c..a072600527ca 100644
+> > --- a/arch/arm/Kconfig
+> > +++ b/arch/arm/Kconfig
+> > @@ -127,6 +127,7 @@ config ARM
+> >       select RTC_LIB
+> >       select SYS_SUPPORTS_APM_EMULATION
+> >       select THREAD_INFO_IN_TASK if CURRENT_POINTER_IN_TPIDRURO
+> > +     select HAVE_ARCH_VMAP_STACK if THREAD_INFO_IN_TASK
+> >       select TRACE_IRQFLAGS_SUPPORT if !CPU_V7M
+> >       # Above selects are sorted alphabetically; please add new ones
+> >       # according to that.  Thanks.
+> > diff --git a/arch/arm/include/asm/page.h b/arch/arm/include/asm/page.h
+> > index 11b058a72a5b..7b871ed99ccf 100644
+> > --- a/arch/arm/include/asm/page.h
+> > +++ b/arch/arm/include/asm/page.h
+> > @@ -149,6 +149,10 @@ extern void copy_page(void *to, const void *from);
+> >  #include <asm/pgtable-2level-types.h>
+> >  #endif
+> >
+> > +#ifdef CONFIG_VMAP_STACK
+> > +#define ARCH_PAGE_TABLE_SYNC_MASK    PGTBL_PMD_MODIFIED
+> > +#endif
+> > +
+> >  #endif /* CONFIG_MMU */
+> >
+> >  typedef struct page *pgtable_t;
+> > diff --git a/arch/arm/include/asm/thread_info.h b/arch/arm/include/asm/thread_info.h
+> > index 164e15f26485..004b89d86224 100644
+> > --- a/arch/arm/include/asm/thread_info.h
+> > +++ b/arch/arm/include/asm/thread_info.h
+> > @@ -25,6 +25,14 @@
+> >  #define THREAD_SIZE          (PAGE_SIZE << THREAD_SIZE_ORDER)
+> >  #define THREAD_START_SP              (THREAD_SIZE - 8)
+> >
+> > +#ifdef CONFIG_VMAP_STACK
+> > +#define THREAD_ALIGN         (2 * THREAD_SIZE)
+> > +#else
+> > +#define THREAD_ALIGN         THREAD_SIZE
+> > +#endif
+> > +
+> > +#define OVERFLOW_STACK_SIZE  SZ_4K
+> > +
+> >  #ifndef __ASSEMBLY__
+> >
+> >  struct task_struct;
+> > diff --git a/arch/arm/kernel/entry-armv.S b/arch/arm/kernel/entry-armv.S
+> > index b18f3aa98f42..ad8d8304539e 100644
+> > --- a/arch/arm/kernel/entry-armv.S
+> > +++ b/arch/arm/kernel/entry-armv.S
+> > @@ -57,6 +57,14 @@ UNWIND(    .setfp  fpreg, sp               )
+> >       @
+> >       subs    r2, sp, r0              @ SP above bottom of IRQ stack?
+> >       rsbscs  r2, r2, #THREAD_SIZE    @ ... and below the top?
+> > +#ifdef CONFIG_VMAP_STACK
+> > +     bcs     .L\@
+> > +     mov_l   r2, overflow_stack      @ Take base address
+> > +     add     r2, r2, r3              @ Top of this CPU's overflow stack
+> > +     subs    r2, r0, r2              @ Compare with incoming SP
+> > +     rsbscs  r2, r2, #OVERFLOW_STACK_SIZE
+> > +.L\@:
+> > +#endif
+> >       movcs   sp, r0                  @ If so, revert to incoming SP
+> >
+> >  #ifndef CONFIG_UNWINDER_ARM
+> > @@ -188,13 +196,18 @@ ENDPROC(__und_invalid)
+> >  #define SPFIX(code...)
+> >  #endif
+> >
+> > -     .macro  svc_entry, stack_hole=0, trace=1, uaccess=1
+> > +     .macro  svc_entry, stack_hole=0, trace=1, uaccess=1, overflow_check=1
+> >   UNWIND(.fnstart             )
+> > - UNWIND(.save {r0 - pc}              )
+> >       sub     sp, sp, #(SVC_REGS_SIZE + \stack_hole)
+> > + THUMB(      add     sp, r0          )       @ get SP in a GPR without
+> > + THUMB(      sub     r0, sp, r0      )       @ using a temp register
+> > +
+> > +     .if     \overflow_check
+> > + UNWIND(.save        {r0 - pc}       )
+> > +     do_overflow_check (SVC_REGS_SIZE + \stack_hole)
+> > +     .endif
+> > +
+> >  #ifdef CONFIG_THUMB2_KERNEL
+> > -     add     sp, r0                  @ get SP in a GPR without
+> > -     sub     r0, sp, r0              @ using a temp register
+> >       tst     r0, #4                  @ test stack pointer alignment
+> >       sub     r0, sp, r0              @ restore original R0
+> >       sub     sp, r0                  @ restore original SP
+> > @@ -827,12 +840,20 @@ ENTRY(__switch_to)
+> >       str     r7, [r8]
+> >  #endif
+> >       mov     r0, r5
+> > -#if !defined(CONFIG_THUMB2_KERNEL)
+> > +#if !defined(CONFIG_THUMB2_KERNEL) && !defined(CONFIG_VMAP_STACK)
+> >       set_current r7
+> >       ldmia   r4, {r4 - sl, fp, sp, pc}       @ Load all regs saved previously
+> >  #else
+> >       mov     r1, r7
+> >       ldmia   r4, {r4 - sl, fp, ip, lr}       @ Load all regs saved previously
+> > +#ifdef CONFIG_VMAP_STACK
+> > +     @
+> > +     @ Do a dummy read from the new stack while running from the old one so
+> > +     @ that we can rely on do_translation_fault() to fix up any stale PMD
+> > +     @ entries covering the vmalloc region.
+> > +     @
+> > +     ldr     r2, [ip]
+> > +#endif
+> >
+> >       @ When CONFIG_THREAD_INFO_IN_TASK=n, the update of SP itself is what
+> >       @ effectuates the task switch, as that is what causes the observable
+> > @@ -849,6 +870,54 @@ ENTRY(__switch_to)
+> >   UNWIND(.fnend               )
+> >  ENDPROC(__switch_to)
+> >
+> > +#ifdef CONFIG_VMAP_STACK
+> > +     .text
+> > +__bad_stack:
+> > +     @
+> > +     @ We detected an overflow in svc_entry, which switched to the
+> > +     @ overflow stack. Stash the exception regs, and head to our overflow
+> > +     @ handler. Entered with the orginal value of SP in IP, and the original
+> > +     @ value of IP in TPIDRURW
+> > +     @
+> > +
+> > +#if defined(CONFIG_UNWINDER_FRAME_POINTER) && defined(CONFIG_CC_IS_GCC)
+> > +     mov     ip, ip                          @ mov expected by unwinder
+> > +     push    {fp, ip, lr, pc}                @ GCC flavor frame record
+> > +#else
+> > +     str     ip, [sp, #-8]!                  @ store original SP
+> > +     push    {fpreg, lr}                     @ Clang flavor frame record
+> > +#endif
+> > +UNWIND( ldr  ip, [r0, #4]    )               @ load exception LR
+> > +UNWIND( str  ip, [sp, #12]   )               @ store in the frame record
+> > +     mrc     p15, 0, ip, c13, c0, 2          @ reload IP
+> > +
+> > +     @ Store the original GPRs to the new stack.
+> > +     svc_entry uaccess=0, overflow_check=0
+> > +
+> > +UNWIND( .save   {sp, pc}     )
+> > +UNWIND( .save   {fpreg, lr}  )
+> > +UNWIND( .setfp  fpreg, sp    )
+> > +
+> > +     ldr     fpreg, [sp, #S_SP]              @ Add our frame record
+> > +                                             @ to the linked list
+> > +#if defined(CONFIG_UNWINDER_FRAME_POINTER) && defined(CONFIG_CC_IS_GCC)
+> > +     ldr     r1, [fp, #4]                    @ reload SP at entry
+> > +     add     fp, fp, #12
+> > +#else
+> > +     ldr     r1, [fpreg, #8]
+> > +#endif
+> > +     str     r1, [sp, #S_SP]                 @ store in pt_regs
+> > +
+> > +     @ Stash the regs for handle_bad_stack
+> > +     mov     r0, sp
+> > +
+> > +     @ Time to die
+> > +     bl      handle_bad_stack
+> > +     nop
+> > +UNWIND( .fnend                       )
+> > +ENDPROC(__bad_stack)
+> > +#endif
+> > +
+> >       __INIT
+> >
+> >  /*
+> > diff --git a/arch/arm/kernel/entry-header.S b/arch/arm/kernel/entry-header.S
+> > index ae24dd54e9ef..823dd1aa6e3e 100644
+> > --- a/arch/arm/kernel/entry-header.S
+> > +++ b/arch/arm/kernel/entry-header.S
+> > @@ -423,3 +423,60 @@ scno     .req    r7              @ syscall number
+> >  tbl  .req    r8              @ syscall table pointer
+> >  why  .req    r8              @ Linux syscall (!= 0)
+> >  tsk  .req    r9              @ current thread_info
+> > +
+> > +     .macro  do_overflow_check, frame_size:req
+> > +#ifdef CONFIG_VMAP_STACK
+> > +     @
+> > +     @ Test whether the SP has overflowed. Task and IRQ stacks are aligned
+> > +     @ so that SP & BIT(THREAD_SIZE_ORDER + PAGE_SHIFT) should always be
+> > +     @ zero.
+> > +     @
+> > +ARM( tst     sp, #1 << (THREAD_SIZE_ORDER + PAGE_SHIFT)      )
+> > +THUMB(       tst     r0, #1 << (THREAD_SIZE_ORDER + PAGE_SHIFT)      )
+> > +THUMB(       it      ne                                              )
+> > +     bne     .Lstack_overflow_check\@
+> > +
+> > +     .pushsection    .text
+> > +.Lstack_overflow_check\@:
+> > +     @
+> > +     @ Either we've just detected an overflow, or we've taken an exception
+> > +     @ while on the overflow stack. We cannot use the stack until we have
+> > +     @ decided which is the case. However, as we won't return to userspace,
+> > +     @ we can clobber some USR/SYS mode registers to free up GPRs.
+> > +     @
+> > +
+> > +     mcr     p15, 0, ip, c13, c0, 2          @ Stash IP in TPIDRURW
+> > +     mrs     ip, cpsr
+> > +     eor     ip, ip, #(SVC_MODE ^ SYSTEM_MODE)
+> > +     msr     cpsr_c, ip                      @ Switch to SYS mode
+> > +     eor     ip, ip, #(SVC_MODE ^ SYSTEM_MODE)
+> > +     mov     sp, ip                          @ Stash mode in SP_usr
+> > +
+> > +     @ Load the overflow stack into IP using LR_usr as a scratch register
+> > +     mov_l   lr, overflow_stack + OVERFLOW_STACK_SIZE
+> > +     mrc     p15, 0, ip, c13, c0, 4          @ Get CPU offset
+> > +     add     ip, ip, lr                      @ IP := this CPU's overflow stack
+> > +     mov     lr, sp                          @ Unstash mode into LR_usr
+> > +     msr     cpsr_c, lr                      @ Switch back to SVC mode
+> > +
+> > +     @
+> > +     @ Check whether we are already on the overflow stack. This may happen,
+> > +     @ e.g., when performing accesses that may fault when dumping the stack.
+> > +     @ The overflow stack is not in the vmalloc space so we only need to
+> > +     @ check whether the incoming SP is below the top of the overflow stack.
+> > +     @
+> > +ARM( subs    ip, sp, ip              )       @ Delta with top of overflow stack
+> > +THUMB(       subs    ip, r0, ip              )
+> > +     mrclo   p15, 0, ip, c13, c0, 2          @ Restore IP
+> > +     blo     .Lout\@                         @ Carry on
+> > +
+> > +THUMB(       sub     r0, sp, r0              )       @ Restore original R0
+> > +THUMB(       sub     sp, r0                  )       @ Restore original SP
+> > +     sub     sp, sp, ip                      @ Switch to overflow stack
+> > +     add     ip, sp, ip                      @ Keep incoming SP value in IP
+> > +     add     ip, ip, #\frame_size            @ Undo svc_entry's SP change
+> > +     b       __bad_stack
+> > +     .popsection
+> > +.Lout\@:
+> > +#endif
+> > +     .endm
+> > diff --git a/arch/arm/kernel/irq.c b/arch/arm/kernel/irq.c
+> > index e05219bca218..5deb40f39999 100644
+> > --- a/arch/arm/kernel/irq.c
+> > +++ b/arch/arm/kernel/irq.c
+> > @@ -56,7 +56,14 @@ static void __init init_irq_stacks(void)
+> >       int cpu;
+> >
+> >       for_each_possible_cpu(cpu) {
+> > -             stack = (u8 *)__get_free_pages(GFP_KERNEL, THREAD_SIZE_ORDER);
+> > +             if (!IS_ENABLED(CONFIG_VMAP_STACK))
+> > +                     stack = (u8 *)__get_free_pages(GFP_KERNEL,
+> > +                                                    THREAD_SIZE_ORDER);
+> > +             else
+> > +                     stack = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN,
+> > +                                            THREADINFO_GFP, NUMA_NO_NODE,
+> > +                                            __builtin_return_address(0));
+> > +
+> >               if (WARN_ON(!stack))
+> >                       break;
+> >               per_cpu(irq_stack_ptr, cpu) = &stack[THREAD_SIZE];
+> > diff --git a/arch/arm/kernel/traps.c b/arch/arm/kernel/traps.c
+> > index b42c446cec9a..eb8c73be7c81 100644
+> > --- a/arch/arm/kernel/traps.c
+> > +++ b/arch/arm/kernel/traps.c
+> > @@ -121,7 +121,8 @@ void dump_backtrace_stm(u32 *stack, u32 instruction, const char *loglvl)
+> >  static int verify_stack(unsigned long sp)
+> >  {
+> >       if (sp < PAGE_OFFSET ||
+> > -         (sp > (unsigned long)high_memory && high_memory != NULL))
+> > +         (!IS_ENABLED(CONFIG_VMAP_STACK) &&
+> > +          sp > (unsigned long)high_memory && high_memory != NULL))
+> >               return -EFAULT;
+> >
+> >       return 0;
+> > @@ -291,7 +292,8 @@ static int __die(const char *str, int err, struct pt_regs *regs)
+> >
+> >       if (!user_mode(regs) || in_interrupt()) {
+> >               dump_mem(KERN_EMERG, "Stack: ", regs->ARM_sp,
+> > -                      ALIGN(regs->ARM_sp, THREAD_SIZE));
+> > +                      ALIGN(regs->ARM_sp - THREAD_SIZE, THREAD_ALIGN)
+> > +                      + THREAD_SIZE);
+> >               dump_backtrace(regs, tsk, KERN_EMERG);
+> >               dump_instr(KERN_EMERG, regs);
+> >       }
+> > @@ -838,3 +840,62 @@ void __init early_trap_init(void *vectors_base)
+> >        */
+> >  #endif
+> >  }
+> > +
+> > +#ifdef CONFIG_VMAP_STACK
+> > +
+> > +DECLARE_PER_CPU(u8 *, irq_stack_ptr);
+> > +
+> > +asmlinkage DEFINE_PER_CPU_ALIGNED(u8[OVERFLOW_STACK_SIZE], overflow_stack);
+> > +
+> > +asmlinkage void handle_bad_stack(struct pt_regs *regs)
+> > +{
+> > +     unsigned long tsk_stk = (unsigned long)current->stack;
+> > +     unsigned long irq_stk = (unsigned long)this_cpu_read(irq_stack_ptr);
+> > +     unsigned long ovf_stk = (unsigned long)this_cpu_ptr(overflow_stack);
+> > +
+> > +     console_verbose();
+> > +     pr_emerg("Insufficient stack space to handle exception!");
+> > +
+> > +     pr_emerg("Task stack:     [0x%08lx..0x%08lx]\n",
+> > +              tsk_stk, tsk_stk + THREAD_SIZE);
+> > +     pr_emerg("IRQ stack:      [0x%08lx..0x%08lx]\n",
+> > +              irq_stk, irq_stk + THREAD_SIZE);
+> > +     pr_emerg("Overflow stack: [0x%08lx..0x%08lx]\n",
+> > +              ovf_stk, ovf_stk + OVERFLOW_STACK_SIZE);
+> > +
+> > +     die("kernel stack overflow", regs, 0);
+> > +}
+> > +
+> > +/*
+> > + * Normally, we rely on the logic in do_translation_fault() to update stale PMD
+> > + * entries covering the vmalloc space in a task's page tables when it first
+> > + * accesses the region in question. Unfortunately, this is not sufficient when
+> > + * the task stack resides in the vmalloc region, as do_translation_fault() is a
+> > + * C function that needs a stack to run.
+> > + *
+> > + * So we need to ensure that these PMD entries are up to date *before* the MM
+> > + * switch. As we already have some logic in the MM switch path that takes care
+> > + * of this, let's trigger it by bumping the counter every time the core vmalloc
+> > + * code modifies a PMD entry in the vmalloc region.
+> > + */
+> > +void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
+> > +{
+> > +     if (start > VMALLOC_END || end < VMALLOC_START)
+> > +             return;
+> > +
+> > +     /*
+> > +      * This hooks into the core vmalloc code to receive notifications of
+> > +      * any PMD level changes that have been made to the kernel page tables.
+> > +      * This means it should only be triggered once for every MiB worth of
+> > +      * vmalloc space, given that we don't support huge vmalloc/vmap on ARM,
+> > +      * and that kernel PMD level table entries are rarely (if ever)
+> > +      * updated.
+> > +      *
+> > +      * This means that the counter is going to max out at ~250 for the
+> > +      * typical case. If it overflows, something entirely unexpected has
+> > +      * occurred so let's throw a warning if that happens.
+> > +      */
+> > +     WARN_ON(++init_mm.context.vmalloc_seq == UINT_MAX);
+> > +}
+> > +
+> > +#endif
+> > diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
+> > index e8d729975f12..c5ea328c428d 100644
+> > --- a/arch/arm/kernel/unwind.c
+> > +++ b/arch/arm/kernel/unwind.c
+> > @@ -389,7 +389,8 @@ int unwind_frame(struct stackframe *frame)
+> >
+> >       /* store the highest address on the stack to avoid crossing it*/
+> >       ctrl.sp_low = frame->sp;
+> > -     ctrl.sp_high = ALIGN(ctrl.sp_low, THREAD_SIZE);
+> > +     ctrl.sp_high = ALIGN(ctrl.sp_low - THREAD_SIZE, THREAD_ALIGN)
+> > +                    + THREAD_SIZE;
+> >
+> >       pr_debug("%s(pc = %08lx lr = %08lx sp = %08lx)\n", __func__,
+> >                frame->pc, frame->lr, frame->sp);
+> > diff --git a/arch/arm/kernel/vmlinux.lds.S b/arch/arm/kernel/vmlinux.lds.S
+> > index f02d617e3359..aa12b65a7fd6 100644
+> > --- a/arch/arm/kernel/vmlinux.lds.S
+> > +++ b/arch/arm/kernel/vmlinux.lds.S
+> > @@ -138,12 +138,12 @@ SECTIONS
+> >  #ifdef CONFIG_STRICT_KERNEL_RWX
+> >       . = ALIGN(1<<SECTION_SHIFT);
+> >  #else
+> > -     . = ALIGN(THREAD_SIZE);
+> > +     . = ALIGN(THREAD_ALIGN);
+> >  #endif
+> >       __init_end = .;
+> >
+> >       _sdata = .;
+> > -     RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
+> > +     RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
+> >       _edata = .;
+> >
+> >       BSS_SECTION(0, 0, 0)
+> >
+>
+> Git bisection log:
+>
+> -------------------------------------------------------------------------------
+> git bisect start
+> # good: [fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf] Linux 5.16-rc1
+> git bisect good fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
+> # bad: [d1eccc4f44f11a8f3f5d376f08e3779d2196f93a] ARM: implement support for vmap'ed stacks
+> git bisect bad d1eccc4f44f11a8f3f5d376f08e3779d2196f93a
+> # good: [6bdd12e7427858bd0f1a68f553617fb1d97dbabb] ARM: call_with_stack: add unwind support
+> git bisect good 6bdd12e7427858bd0f1a68f553617fb1d97dbabb
+> # good: [fcc7029189cce80c2eac396ce4cd4544634d46e3] ARM: memset: clean up unwind annotations
+> git bisect good fcc7029189cce80c2eac396ce4cd4544634d46e3
+> # good: [e206f1841c51d2b3d8339efac3ac806f32d64821] ARM: switch_to: clean up Thumb2 code path
+> git bisect good e206f1841c51d2b3d8339efac3ac806f32d64821
+> # good: [a7c9e1b40e858eba7ff99a548153fd5c92b68e24] ARM: entry: rework stack realignment code in svc_entry
+> git bisect good a7c9e1b40e858eba7ff99a548153fd5c92b68e24
+> # first bad commit: [d1eccc4f44f11a8f3f5d376f08e3779d2196f93a] ARM: implement support for vmap'ed stacks
+> -------------------------------------------------------------------------------
