@@ -1,148 +1,68 @@
-Return-Path: <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v4 2/2] Documentation: dev-tools: fix KTAP specification build warnings
-References: <20220210023519.3221051-1-frowand.list@gmail.com>
- <20220210023519.3221051-3-frowand.list@gmail.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <d09b0054-b96f-3d3f-5b33-853994723c3a@linuxfoundation.org>
-Date: Thu, 10 Feb 2022 10:25:36 -0700
 MIME-Version: 1.0
-In-Reply-To: <20220210023519.3221051-3-frowand.list@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
+ <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk> <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
+ <YZS2eC0lmR+bonvc@atomide.com> <CAMj1kXFbpAgHk4Fe03_NfP6kL0zJhTWOYWBdQvfzfabu6XY1Sg@mail.gmail.com>
+ <YZS+/Axb7u7FsvbK@atomide.com> <CAK8P3a02uZdu1Q8a9vw5+9u1s=MWm7Z-bGm51YtZveqoQJ0BZg@mail.gmail.com>
+ <CAK8P3a0mV7=mPSLe=9mOMfK3RvuPJ9z8=9CS75=7pG=A2ngZQg@mail.gmail.com>
+ <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
+ <CAMj1kXHRBCmNXVPjhe7KOGnf7j2-uOm94XjkSSQ844H6_QROFw@mail.gmail.com> <YZTjtY463f2HQwL6@atomide.com>
+In-Reply-To: <YZTjtY463f2HQwL6@atomide.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 17 Nov 2021 12:13:36 +0100
+Message-ID: <CAMj1kXGfmwjqJCbnW0n6jDteA7DS+8Nt33pc_gBg5gs3H3uX5A@mail.gmail.com>
+Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: frowand.list@gmail.com, Jonathan Corbet <corbet@lwn.net>, David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>
-Cc: rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+To: Tony Lindgren <tony@atomide.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, "Russell King (Oracle)" <linux@armlinux.org.uk>, Guillaume Tucker <guillaume.tucker@collabora.com>, linux-omap <linux-omap@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Nicolas Pitre <nico@fluxnic.net>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-On 2/9/22 7:35 PM, frowand.list@gmail.com wrote:
-> From: Frank Rowand <frank.rowand@sony.com>
-> 
-> Convert "Major differences between TAP and KTAP" from a bullet list
-> to a table.  The bullet list was being formatted as a single
-> paragraph.
-> 
-> Add missing required argument in code-block directives.
-> 
-> ---
-> 
-> Table conversion suggested by Shuah.
-> 
-> Patch 2/2 not previously reviewed, so Reviewed-by tags not provided.
-> 
-> Changes since version 3
->    - Add this commit (patch 2/2) to the series
-> 
-> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
-> ---
->   Documentation/dev-tools/ktap.rst | 33 +++++++++++++++++---------------
->   1 file changed, 18 insertions(+), 15 deletions(-)
-> 
-> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-> index dfb3f10a8b2d..5ee735c6687f 100644
-> --- a/Documentation/dev-tools/ktap.rst
-> +++ b/Documentation/dev-tools/ktap.rst
-> @@ -68,7 +68,7 @@ Test case result lines
->   Test case result lines indicate the final status of a test.
->   They are required and must have the format:
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	<result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
->   
-> @@ -117,32 +117,32 @@ separator.
->   
->   Example result lines include:
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	ok 1 test_case_name
->   
->   The test "test_case_name" passed.
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	not ok 1 test_case_name
->   
->   The test "test_case_name" failed.
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	ok 1 test # SKIP necessary dependency unavailable
->   
->   The test "test" was SKIPPED with the diagnostic message "necessary dependency
->   unavailable".
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	not ok 1 test # TIMEOUT 30 seconds
->   
->   The test "test" timed out, with diagnostic data "30 seconds".
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	ok 5 check return code # rcode=0
->   
-> @@ -202,7 +202,7 @@ allowed to be either indented or not indented.
->   
->   An example of a test with two nested subtests:
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	KTAP version 1
->   	1..1
-> @@ -215,7 +215,7 @@ An example of a test with two nested subtests:
->   
->   An example format with multiple levels of nested testing:
->   
-> -.. code-block::
-> +.. code-block:: none
->   
->   	KTAP version 1
->   	1..2
-> @@ -234,12 +234,15 @@ An example format with multiple levels of nested testing:
->   Major differences between TAP and KTAP
->   --------------------------------------
->   
-> -Note the major differences between the TAP and KTAP specification:
-> -- yaml and json are not recommended in KTAP diagnostic messages
-> -- TODO directive not recognized in KTAP
-> -- KTAP allows for an arbitrary number of tests to be nested
-> -- TAP includes "Unknown lines" in the category of "Anything else"
-> -- TAP says "Unknown lines" are "incorrect"; KTAP allows "Unknown lines"
-> +==================================================   =========  ===============
-> +Feature                                              TAP        KTAP
-> +==================================================   =========  ===============
-> +yaml and json in diagnosic message                   ok         not recommended
-> +TODO directive                                       ok         not recognized
-> +allows an arbitrary number of tests to be nested     no         yes
-> +"Unknown lines" are in category of "Anything else"   yes        no
-> +"Unknown lines" are                                  incorrect  allowed
-> +==================================================   =========  ===============
->   
->   The TAP14 specification does permit nested tests, but instead of using another
->   nested version line, uses a line of the form
-> @@ -247,7 +250,7 @@ nested version line, uses a line of the form
->   
->   Example KTAP output
->   --------------------
-> -.. code-block::
-> +.. code-block:: none
->   
->   	KTAP version 1
->   	1..1
-> 
+On Wed, 17 Nov 2021 at 12:12, Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Ard Biesheuvel <ardb@kernel.org> [211117 10:49]:
+> > On Wed, 17 Nov 2021 at 10:08, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Wed, 17 Nov 2021 at 10:07, Arnd Bergmann <arnd@arndb.de> wrote:
+> > > >
+> > > > On Wed, Nov 17, 2021 at 10:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > >
+> > > > > On Wed, Nov 17, 2021 at 9:36 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > > > > * Ard Biesheuvel <ardb@kernel.org> [211117 08:29]:
+> > > > > > >
+> > > > > > > Thanks Tony, that is very helpful. I have a Beaglebone white somewhere
+> > > > > > > so I'll try and reproduce it locally as well.
+> > > > > >
+> > > > > > I think with Beaglebone you may hit this only with suspend/resume if at
+> > > > > > all. On am335x cpuidle is not shutting down the CPU. And only some models
+> > > > > > will suspend to deeper idle states as it depends on the PMIC.
+> > > > > >
+> > > > > > If you have some test patch to try, just let me know.
+> > > > >
+> > > > > I looked at how the sleep code is called and found that cpu_suspend()/
+> > > > > __cpu_suspend() has interesting manipulation of the stack pointer to
+> > > > > call the platform specific function with a simple 1:1 page table,
+> > > > > I would expect the problem somewhere in there, haven't pinpointed
+> > > > > the exact line yet, but if any of that code tries to local the physical
+> > > > > address of the stack using virt_to_phys or its asm equivalent, this
+> > > > > fails for a vmap stack.
+> > > >
+> > > > and just after sending this I see
+> > > >
+> > > > void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
+> > > > {
+> > > >         *save_ptr = virt_to_phys(ptr);
+> > > >
+> > > > 'ptr' is a pointer to the stack here. It might not be the only place that
+> > > > needs fixing, but this clearly has to do a page table walk like
+> > > > vmalloc_to_page() does to get to the correct physical address.
+> > > >
+> > >
+> > > I had just arrived at the same conclusion. I'll fix this up and drop
+> > > it in kernelci.
+> >
+> > Updated branch here:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=arm-vmap-stacks-v4
+>
+> Great that branch boots for me!
+>
 
-Table looks good. Thanks for adding it. The two patches could be
-collapsed into one perhaps? Either way:
-
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+Thanks for testing!
