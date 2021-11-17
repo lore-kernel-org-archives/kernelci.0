@@ -1,56 +1,82 @@
-Return-Path: <pbonzini@redhat.com>
-Message-ID: <e9f1166d-78a0-1806-42bb-03f2e1671128@redhat.com>
-Date: Fri, 11 Feb 2022 18:37:24 +0100
+Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
+References: <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
+ <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk>
+ <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
+ <YZS2eC0lmR+bonvc@atomide.com>
+ <CAMj1kXFbpAgHk4Fe03_NfP6kL0zJhTWOYWBdQvfzfabu6XY1Sg@mail.gmail.com>
+ <YZS+/Axb7u7FsvbK@atomide.com>
+ <CAK8P3a02uZdu1Q8a9vw5+9u1s=MWm7Z-bGm51YtZveqoQJ0BZg@mail.gmail.com>
+ <CAK8P3a0mV7=mPSLe=9mOMfK3RvuPJ9z8=9CS75=7pG=A2ngZQg@mail.gmail.com>
+ <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
+ <CAMj1kXHRBCmNXVPjhe7KOGnf7j2-uOm94XjkSSQ844H6_QROFw@mail.gmail.com>
+ <YZTjtY463f2HQwL6@atomide.com>
+ <CAMj1kXGfmwjqJCbnW0n6jDteA7DS+8Nt33pc_gBg5gs3H3uX5A@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <d1648519-8371-51f5-8557-2dcfbd76ca7f@collabora.com>
+Date: Wed, 17 Nov 2021 14:03:59 +0000
 MIME-Version: 1.0
-Subject: Re: [PATCH V2] selftests: kvm: Remove absent target file
-References: <20220210172352.1317554-1-usama.anjum@collabora.com>
- <f9893f6a-b68b-e759-54f5-eef73e8a9eef@linuxfoundation.org>
- <eb4e24c6-41d0-4f3a-2af0-3008db408da6@redhat.com>
- <9198c43b-e5e2-fa58-5862-598dc7019ad6@linuxfoundation.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <9198c43b-e5e2-fa58-5862-598dc7019ad6@linuxfoundation.org>
+In-Reply-To: <CAMj1kXGfmwjqJCbnW0n6jDteA7DS+8Nt33pc_gBg5gs3H3uX5A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Shuah Khan <skhan@linuxfoundation.org>, Muhammad Usama Anjum <usama.anjum@collabora.com>, Shuah Khan <shuah@kernel.org>, Peter Gonda <pgonda@google.com>
-Cc: kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Ard Biesheuvel <ardb@kernel.org>, Tony Lindgren <tony@atomide.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, "Russell King (Oracle)" <linux@armlinux.org.uk>, linux-omap <linux-omap@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Nicolas Pitre <nico@fluxnic.net>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-On 2/11/22 18:34, Shuah Khan wrote:
-> On 2/10/22 11:56 AM, Paolo Bonzini wrote:
->> On 2/10/22 19:02, Shuah Khan wrote:
->>>
->>> I am fine with the change itself. For this patch:
->>>
->>> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
->>>
->>> However, are we missing a vmx_pi_mmio_test and that test needs to be 
->>> added.
->>>
->>> Just in case the test didn't make it into the 6a58150859fd and the 
->>> intent
->>> was to add it - hence the Makefile addition? This can be addressed in
->>> another patch. Just want to make sure we aren't missing a test.
+On 17/11/2021 11:13, Ard Biesheuvel wrote:
+> On Wed, 17 Nov 2021 at 12:12, Tony Lindgren <tony@atomide.com> wrote:
 >>
->> This was probably a rebase resolution issue.  The vmx_pi_mmio_test 
->> fails in the mainline tree, and is lingering in my tree together with 
->> the fix because somebody promised a better fix for it.  I included the 
->> TEST_GEN_PROGS_x86_64 line by mistake when rebasing Peter Gonda's test 
->> below vmx_pi_mmio_test.
+>> * Ard Biesheuvel <ardb@kernel.org> [211117 10:49]:
+>>> On Wed, 17 Nov 2021 at 10:08, Ard Biesheuvel <ardb@kernel.org> wrote:
+>>>>
+>>>> On Wed, 17 Nov 2021 at 10:07, Arnd Bergmann <arnd@arndb.de> wrote:
+>>>>>
+>>>>> On Wed, Nov 17, 2021 at 10:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
+>>>>>>
+>>>>>> On Wed, Nov 17, 2021 at 9:36 AM Tony Lindgren <tony@atomide.com> wrote:
+>>>>>>> * Ard Biesheuvel <ardb@kernel.org> [211117 08:29]:
+>>>>>>>>
+>>>>>>>> Thanks Tony, that is very helpful. I have a Beaglebone white somewhere
+>>>>>>>> so I'll try and reproduce it locally as well.
+>>>>>>>
+>>>>>>> I think with Beaglebone you may hit this only with suspend/resume if at
+>>>>>>> all. On am335x cpuidle is not shutting down the CPU. And only some models
+>>>>>>> will suspend to deeper idle states as it depends on the PMIC.
+>>>>>>>
+>>>>>>> If you have some test patch to try, just let me know.
+>>>>>>
+>>>>>> I looked at how the sleep code is called and found that cpu_suspend()/
+>>>>>> __cpu_suspend() has interesting manipulation of the stack pointer to
+>>>>>> call the platform specific function with a simple 1:1 page table,
+>>>>>> I would expect the problem somewhere in there, haven't pinpointed
+>>>>>> the exact line yet, but if any of that code tries to local the physical
+>>>>>> address of the stack using virt_to_phys or its asm equivalent, this
+>>>>>> fails for a vmap stack.
+>>>>>
+>>>>> and just after sending this I see
+>>>>>
+>>>>> void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
+>>>>> {
+>>>>>         *save_ptr = virt_to_phys(ptr);
+>>>>>
+>>>>> 'ptr' is a pointer to the stack here. It might not be the only place that
+>>>>> needs fixing, but this clearly has to do a page table walk like
+>>>>> vmalloc_to_page() does to get to the correct physical address.
+>>>>>
+>>>>
+>>>> I had just arrived at the same conclusion. I'll fix this up and drop
+>>>> it in kernelci.
+>>>
+>>> Updated branch here:
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=arm-vmap-stacks-v4
 >>
->> Thanks for the fix,
->>
->> Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+>> Great that branch boots for me!
 >>
 > 
-> Paolo,
-> 
-> Thank you for explaining the discrepancy. Would you like take
-> this through your tree? This patch depends on
-> 
-> commit: de1956f48543e90f94b1194395f33140898b39b2
+> Thanks for testing!
 
-Yes, of course.  Queued now.
+Tested-by: "kernelci.org bot" <bot@kernelci.org>
 
-Paolo
+https://staging.kernelci.org/test/plan/id/6194fd2f85155923f71760ce/
 
+Guillaume
