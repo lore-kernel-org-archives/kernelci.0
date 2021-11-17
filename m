@@ -1,81 +1,59 @@
-Message-ID: <0747bf65-6a0b-8edf-debd-f699dfd938f9@collabora.com>
-Date: Tue, 8 Feb 2022 12:39:48 +0000
 MIME-Version: 1.0
-Subject: Re: Jenkins example configuration
-References: <AM5PR0801MB1777F53F11B189594ACC524E9C299@AM5PR0801MB1777.eurprd08.prod.outlook.com>
- <7h5ypqlbh9.fsf@baylibre.com>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-In-Reply-To: <7h5ypqlbh9.fsf@baylibre.com>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20211115111816.3911213-1-ardb@kernel.org> <20211115111816.3911213-8-ardb@kernel.org>
+ <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com> <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
+ <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk> <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
+ <YZS2eC0lmR+bonvc@atomide.com> <CAMj1kXFbpAgHk4Fe03_NfP6kL0zJhTWOYWBdQvfzfabu6XY1Sg@mail.gmail.com>
+ <YZS+/Axb7u7FsvbK@atomide.com> <CAK8P3a02uZdu1Q8a9vw5+9u1s=MWm7Z-bGm51YtZveqoQJ0BZg@mail.gmail.com>
+ <CAK8P3a0mV7=mPSLe=9mOMfK3RvuPJ9z8=9CS75=7pG=A2ngZQg@mail.gmail.com> <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 17 Nov 2021 11:48:16 +0100
+Message-ID: <CAMj1kXHRBCmNXVPjhe7KOGnf7j2-uOm94XjkSSQ844H6_QROFw@mail.gmail.com>
+Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, khilman@baylibre.com, Matthew.Hart@arm.com
-Cc: "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Tony Lindgren <tony@atomide.com>, "Russell King (Oracle)" <linux@armlinux.org.uk>, Guillaume Tucker <guillaume.tucker@collabora.com>, linux-omap <linux-omap@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Nicolas Pitre <nico@fluxnic.net>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-On 07/02/2022 19:31, Kevin Hilman wrote:
-> Hi Matt,
-> 
-> Matthew Hart <Matthew.Hart@arm.com> writes:
-> 
->> I'm deploying jenkins using the kernelci-jenkins repo and using AWS
->> EKS as the kubernetes backend. I can't find any recent examples that
->> include the k8s configuration (nodes.yaml i assume)
-> 
-> We have nodes.yaml in the `kernelci-jenkins-data` repo[1], which is
-> git-crypt protect due to auth tokens etc. associated with the GCE and
-> Azure k8s clusters.
-> 
->> so had a few questions:
-> 
->>   *   Any complaints if I upstream a patch for adding the AWS cli to the k8s Docker image?
-> 
-> Nope.
+On Wed, 17 Nov 2021 at 10:08, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Wed, 17 Nov 2021 at 10:07, Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > On Wed, Nov 17, 2021 at 10:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> > >
+> > > On Wed, Nov 17, 2021 at 9:36 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > > * Ard Biesheuvel <ardb@kernel.org> [211117 08:29]:
+> > > > >
+> > > > > Thanks Tony, that is very helpful. I have a Beaglebone white somewhere
+> > > > > so I'll try and reproduce it locally as well.
+> > > >
+> > > > I think with Beaglebone you may hit this only with suspend/resume if at
+> > > > all. On am335x cpuidle is not shutting down the CPU. And only some models
+> > > > will suspend to deeper idle states as it depends on the PMIC.
+> > > >
+> > > > If you have some test patch to try, just let me know.
+> > >
+> > > I looked at how the sleep code is called and found that cpu_suspend()/
+> > > __cpu_suspend() has interesting manipulation of the stack pointer to
+> > > call the platform specific function with a simple 1:1 page table,
+> > > I would expect the problem somewhere in there, haven't pinpointed
+> > > the exact line yet, but if any of that code tries to local the physical
+> > > address of the stack using virt_to_phys or its asm equivalent, this
+> > > fails for a vmap stack.
+> >
+> > and just after sending this I see
+> >
+> > void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
+> > {
+> >         *save_ptr = virt_to_phys(ptr);
+> >
+> > 'ptr' is a pointer to the stack here. It might not be the only place that
+> > needs fixing, but this clearly has to do a page table walk like
+> > vmalloc_to_page() does to get to the correct physical address.
+> >
+>
+> I had just arrived at the same conclusion. I'll fix this up and drop
+> it in kernelci.
 
-The only thing is that it won't be used upstream, at least not at
-the moment.  So it might break without anyone noticing.
-
->>   *   How is the K8S_CONTEXT environment variable is set in jenkins, to be used in jobs/build.jpl?
-> 
-> The k8s interaction is all done via kubectl, and the host where this
-> happens has many clusters configured.  So all kubectl commands are
-> called with  `kubectl --context ${K8S_CONTEXT}`
-> 
->>   *   Is there a record of all the node labels needed to run a full build (monitor, build-trigger, k8s etc
-> 
-> Hmm, not sure if this is documented.  Guillaume?
-
-No, but you could run "grep node jobs/*" in kernelci-jenkins to
-get an idea.
-
->>   *   Could I get a secrets-redacted example nodes.yaml for casc?
-> 
-> I can't remember if you already have a GPG key for
-> kernelci-jenkins-data, but if not, either we can set one up, or I can
-> share one with you privately.
-
-The real issue is that there is no documentation for the Jenkins
-setup.  It would be easy enough to have some sample config files
-etc.  One reason why things aren't documented is because efforts
-are being spent on moving away from Jenkins and in principle the
-main pipeline should stop using it by the end of 2022.
-
-Only people who require access to the encrypted repository should
-be given access, which is now something the TSC would have to
-approve.  If Matt has some time to help with maintaining Jenkins
-for kernelci.org then great, he could join the TSC and get some
-responsibility assigned for this like other members.  But the
-lack of documentation should not be used as an excuse for cutting
-corners, especially when it involves security issues.
-
-I've added a sample nodes.yaml file which should provide all the
-bits needed to recreate a full pipeline:
-
-  https://github.com/kernelci/kernelci-jenkins-data/blob/main/samples/nodes.yaml
-
-Let us know if you need any further help.
-
-Best wishes,
-Guillaume
-
-> [1] https://github.com/kernelci/kernelci-jenkins-data
+Updated branch here:
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=arm-vmap-stacks-v4
