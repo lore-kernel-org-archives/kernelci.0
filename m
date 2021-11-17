@@ -1,92 +1,132 @@
+Subject: Re: [PATCH net] page_pool: Revert "page_pool: disable dma mapping support..."
+References: <20211117075652.58299-1-linyunsheng@huawei.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+Message-ID: <b5638a79-ee37-fd52-2d9c-ded2675529da@collabora.com>
+Date: Wed, 17 Nov 2021 10:28:04 +0000
 MIME-Version: 1.0
-References: <20220204203248.2981902-1-frowand.list@gmail.com>
-In-Reply-To: <20220204203248.2981902-1-frowand.list@gmail.com>
-From: David Gow <davidgow@google.com>
-Date: Sat, 5 Feb 2022 07:13:04 +0800
-Message-ID: <CABVgOS=JUxV6PRUZvTQhisSP+p34+K9Z6yT7HkXu6qeqtak1tw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Documentation: dev-tools: clarify KTAP specification wording
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20211117075652.58299-1-linyunsheng@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Rae Moar <rmoar@google.com>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net, kuba@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org, hawk@kernel.org, ilias.apalodimas@linaro.org, akpm@linux-foundation.org, peterz@infradead.org, vbabka@suse.cz, willy@infradead.org, will@kernel.org, feng.tang@intel.com, jgg@ziepe.ca, ebiederm@xmission.com, aarcange@redhat.com, "kernelci@groups.io" <kernelci@groups.io>
 
-On Sat, Feb 5, 2022 at 4:32 AM <frowand.list@gmail.com> wrote:
->
-> From: Frank Rowand <frank.rowand@sony.com>
->
-> Clarify some confusing phrasing.
+On 17/11/2021 07:56, Yunsheng Lin wrote:
+> This reverts commit d00e60ee54b12de945b8493cf18c1ada9e422514.
+> 
+> As reported by Guillaume in [1]:
+> Enabling LPAE always enables CONFIG_ARCH_DMA_ADDR_T_64BIT
+> in 32-bit systems, which breaks the bootup proceess when a
+> ethernet driver is using page pool with PP_FLAG_DMA_MAP flag.
+> As we were hoping we had no active consumers for such system
+> when we removed the dma mapping support, and LPAE seems like
+> a common feature for 32 bits system, so revert it.
+> 
+> 1. https://www.spinics.net/lists/netdev/msg779890.html
+> 
+> Fixes: d00e60ee54b1 ("page_pool: disable dma mapping support for 32-bit arch with 64-bit DMA")
+> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
 
-Thanks for this! A few comments below:
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
 
->
-> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+Tested-by: "kernelci.org bot" <bot@kernelci.org>
+
+Here's some test results with the revert patch applied on top of
+mainline, to confirm the platform boots again:
+
+  https://staging.kernelci.org/test/plan/id/6194d88fbe0f345a9b1760aa/
+
+Thanks,
+Guillaume
+
 > ---
->
-> One item that may result in bikeshedding is that I added the spec
-> version to the title line.
+>  include/linux/mm_types.h | 13 ++++++++++++-
+>  include/net/page_pool.h  | 12 +++++++++++-
+>  net/core/page_pool.c     | 10 ++++------
+>  3 files changed, 27 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index bb8c6f5f19bc..c3a6e6209600 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -105,7 +105,18 @@ struct page {
+>  			struct page_pool *pp;
+>  			unsigned long _pp_mapping_pad;
+>  			unsigned long dma_addr;
+> -			atomic_long_t pp_frag_count;
+> +			union {
+> +				/**
+> +				 * dma_addr_upper: might require a 64-bit
+> +				 * value on 32-bit architectures.
+> +				 */
+> +				unsigned long dma_addr_upper;
+> +				/**
+> +				 * For frag page support, not supported in
+> +				 * 32-bit architectures with 64-bit DMA.
+> +				 */
+> +				atomic_long_t pp_frag_count;
+> +			};
+>  		};
+>  		struct {	/* slab, slob and slub */
+>  			union {
+> diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+> index 3855f069627f..a4082406a003 100644
+> --- a/include/net/page_pool.h
+> +++ b/include/net/page_pool.h
+> @@ -216,14 +216,24 @@ static inline void page_pool_recycle_direct(struct page_pool *pool,
+>  	page_pool_put_full_page(pool, page, true);
+>  }
+>  
+> +#define PAGE_POOL_DMA_USE_PP_FRAG_COUNT	\
+> +		(sizeof(dma_addr_t) > sizeof(unsigned long))
+> +
+>  static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
+>  {
+> -	return page->dma_addr;
+> +	dma_addr_t ret = page->dma_addr;
+> +
+> +	if (PAGE_POOL_DMA_USE_PP_FRAG_COUNT)
+> +		ret |= (dma_addr_t)page->dma_addr_upper << 16 << 16;
+> +
+> +	return ret;
+>  }
+>  
+>  static inline void page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
+>  {
+>  	page->dma_addr = addr;
+> +	if (PAGE_POOL_DMA_USE_PP_FRAG_COUNT)
+> +		page->dma_addr_upper = upper_32_bits(addr);
+>  }
+>  
+>  static inline void page_pool_set_frag_count(struct page *page, long nr)
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 9b60e4301a44..1a6978427d6c 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -49,12 +49,6 @@ static int page_pool_init(struct page_pool *pool,
+>  	 * which is the XDP_TX use-case.
+>  	 */
+>  	if (pool->p.flags & PP_FLAG_DMA_MAP) {
+> -		/* DMA-mapping is not supported on 32-bit systems with
+> -		 * 64-bit DMA mapping.
+> -		 */
+> -		if (sizeof(dma_addr_t) > sizeof(unsigned long))
+> -			return -EOPNOTSUPP;
+> -
+>  		if ((pool->p.dma_dir != DMA_FROM_DEVICE) &&
+>  		    (pool->p.dma_dir != DMA_BIDIRECTIONAL))
+>  			return -EINVAL;
+> @@ -75,6 +69,10 @@ static int page_pool_init(struct page_pool *pool,
+>  		 */
+>  	}
+>  
+> +	if (PAGE_POOL_DMA_USE_PP_FRAG_COUNT &&
+> +	    pool->p.flags & PP_FLAG_PAGE_FRAG)
+> +		return -EINVAL;
+> +
+>  	if (ptr_ring_init(&pool->ring, ring_qsize, GFP_KERNEL) < 0)
+>  		return -ENOMEM;
+>  
+> 
 
-This is fine by me.
-
->
->  Documentation/dev-tools/ktap.rst | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-> index 878530cb9c27..3b7a26816930 100644
-> --- a/Documentation/dev-tools/ktap.rst
-> +++ b/Documentation/dev-tools/ktap.rst
-> @@ -1,8 +1,8 @@
->  .. SPDX-License-Identifier: GPL-2.0
->
-> -========================================
-> -The Kernel Test Anything Protocol (KTAP)
-> -========================================
-> +===================================================
-> +The Kernel Test Anything Protocol (KTAP), version 1
-> +===================================================
->
->  TAP, or the Test Anything Protocol is a format for specifying test results used
->  by a number of projects. It's website and specification are found at this `link
-> @@ -186,7 +186,7 @@ starting with another KTAP version line and test plan, and end with the overall
->  result. If one of the subtests fail, for example, the parent test should also
->  fail.
->
-> -Additionally, all result lines in a subtest should be indented. One level of
-> +Additionally, all lines in a subtest should be indented. One level of
-
-The original reason for this is to accommodate "unknown" lines which
-were not generated by the test itself (e.g, a KASAN report or BUG or
-something). These are awkward, as sometimes they're a useful thing to
-have as part of the test result, and sometimes they're unrelated spam.
-(Additionally, I think kselftest will indent these, as it indents the
-full results in a separate pass afterwards, but KUnit won't, as the
-level of nesting is done during printing.)
-
-Personally, I'd rather leave this as is, or perhaps call out "unknown"
-lines explicitly, e.g:
-Additionally, all lines in a subtest (except for 'unknown' lines)
-should be indented...
-
-Thoughts?
-
->  indentation is two spaces: "  ". The indentation should begin at the version
->  line and should end before the parent test's result line.
->
-> @@ -225,8 +225,8 @@ Major differences between TAP and KTAP
->  --------------------------------------
->
->  Note the major differences between the TAP and KTAP specification:
-> -- yaml and json are not recommended in diagnostic messages
-> -- TODO directive not recognized
-> +- yaml and json are not recommended in KTAP diagnostic messages
-> +- TODO directive not recognized in KTAP
->  - KTAP allows for an arbitrary number of tests to be nested
->
-
-Looks good here, cheers.
-
-
->  The TAP14 specification does permit nested tests, but instead of using another
-> --
-> Frank Rowand <frank.rowand@sony.com>
->
