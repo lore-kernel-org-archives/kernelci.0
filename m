@@ -1,68 +1,123 @@
-From: Gabriel Krisman Bertazi <krisman@collabora.com>
-Subject: Re: [PATCH V3] selftests: vm: Add test for Soft-Dirty PTE bit
-References: <20220224212335.3045905-1-usama.anjum@collabora.com>
-	<3b7c068b-ac7e-62fc-f0cd-a8dbf8642876@redhat.com>
-	<6133317f-4da0-3aae-f352-b75f0f94dbd4@linuxfoundation.org>
-	<87o82mkhif.fsf@collabora.com>
-	<ee9b8c8b-0d27-bd01-e10d-9062c32f2486@linuxfoundation.org>
-Date: Fri, 04 Mar 2022 11:14:08 -0500
-In-Reply-To: <ee9b8c8b-0d27-bd01-e10d-9062c32f2486@linuxfoundation.org> (Shuah
-	Khan's message of "Thu, 3 Mar 2022 14:46:08 -0700")
-Message-ID: <87r17hg0fj.fsf@collabora.com>
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH RFC 1/6] Documentation: Raise the minimum supported version of LLVM to 11.0.0
+Date: Mon, 29 Nov 2021 09:57:58 -0700
+Message-Id: <20211129165803.470795-2-nathan@kernel.org>
+In-Reply-To: <20211129165803.470795-1-nathan@kernel.org>
+References: <20211129165803.470795-1-nathan@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: David Hildenbrand <david@redhat.com>, Muhammad Usama Anjum <usama.anjum@collabora.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, kernel@collabora.com, kernelci@groups.io, Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+To: Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Tom Stellard <tstellar@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, Naresh Kamboju <naresh.kamboju@linaro.org>, Jakub Kicinski <kuba@kernel.org>, cki-project@redhat.com, kernelci@groups.io, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
 
-Shuah Khan <skhan@linuxfoundation.org> writes:
+LLVM versions prior to 11.0.0 have a harder time with dead code
+elimination, which can cause issues with commonly used expressions such
+as BUILD_BUG_ON and the bitmask functions/macros in bitfield.h (see the
+first two issues links below).
 
-> On 3/3/22 11:39 AM, Gabriel Krisman Bertazi wrote:
->> Shuah Khan <skhan@linuxfoundation.org> writes:
->> 
->>> On 2/28/22 2:37 AM, David Hildenbrand wrote:
->>>> On 24.02.22 22:23, Muhammad Usama Anjum wrote:
->>>>> This introduces three tests:
->>>>> 1) Sanity check soft dirty basic semantics: allocate area, clean, dirty,
->>>>> check if the SD bit flipped.
->>>>> 2) Check VMA reuse: validate the VM_SOFTDIRTY usage
->>>>> 3) Check soft-dirty on huge pages
->>>>>
->>>>> This was motivated by Will Deacon's fix commit 912efa17e512 ("mm: proc:
->>>>> Invalidate TLB after clearing soft-dirty page state"). I was tracking the
->>>>> same issue that he fixed, and this test would have caught it.
->>>>>
->>>> A note that madv_populate.c already contains some SOFTDIRTY tests
->>>> regarding MADV_POPULATE. Eventually we want to factor out
->>>> softdirty/pagemap handling+checks for easier reuse.
->>>>
->>>
->>> Is this patch unnecessary then?
->> It is not unnecessary since the madv test doesn't cover the bug tested
->> here, afaik.  But, as mentioned when I originally submitted this patch,
->> it should be merged into selftests/vm/madv_populate.c or, at least,
->> reuse that existing infrastructure.
->> https://lore.kernel.org/lkml/87lf553z5g.fsf@collabora.com/
->> 
->
-> Oops this one came in a few months ago and appears to have slipped
-> through and didn't get the right attention. Sorry about that.
->
-> Please resend the patch and cc all the everybody on this thread.
->
-> I would like to have your patch reviewed and looked at first. This
-> patch needs rework sine it has several comments to be addressed.
+Whenever there is an issue within LLVM that has been resolved in a later
+release, the only course of action is to gate the problematic
+configuration or source code on the toolchain verson or raise the
+minimum supported version of LLVM for building the kernel, as LLVM has a
+limited support lifetime compared to GCC. GCC major releases will
+typically see a few point releases across a two year period on average
+whereas LLVM major releases are only supported until the next major
+release and will only see one or two point releases within that
+timeframe. For example, GCC 8.1 was released in May 2018 and GCC 8.5 was
+released in May 2021, whereas LLVM 12.0.0 was released in April 2021 and
+its only point release, 12.0.1, was released in July 2021, giving a
+minimal window for fixes to be backported.
 
-Hi Shuah,
+To resolve these build errors around improper dead code elimination,
+raise the minimum supported version of LLVM for building the kernel to
+11.0.0. Doing so is a more proper solution than mucking around with core
+kernel macros that have always worked with GCC or disabling drivers for
+using these macros in a proper manner. This type of issue may continue
+to crop up and require patching, which creates more debt for bumping the
+minimum supported version in the future.
 
-The patch being discussed in that thread is the same that Usama is
-proposing here, minus a few modifications. Usama has taken over the work
-to upstream it.
+This should have a minimal impact to distributions. Using a script to
+pull several different Docker images and check the output of
+'clang --version':
 
-We just spoke, and he will follow up with a new version that addresses
-the coding issues and reuses the infrastructure from madv_populate.c
+archlinux:latest: clang version 13.0.0
 
-Sorry for the noise.
+debian:oldoldstable-slim: clang version 3.8.1-24 (tags/RELEASE_381/final)
+debian:oldstable-slim: clang version 7.0.1-8+deb10u2 (tags/RELEASE_701/fi=
+nal)
+debian:stable-slim: Debian clang version 11.0.1-2
+debian:testing-slim: Debian clang version 11.1.0-4
+debian:unstable-slim: Debian clang version 11.1.0-4
 
--- 
-Gabriel Krisman Bertazi
+fedora:34: clang version 12.0.1 (Fedora 12.0.1-1.fc34)
+fedora:latest: clang version 13.0.0 (Fedora 13.0.0-3.fc35)
+fedora:rawhide: clang version 13.0.0 (Fedora 13.0.0-5.fc36)
+
+opensuse/leap:15.2: clang version 9.0.1
+opensuse/leap:latest: clang version 11.0.1
+opensuse/tumbleweed:latest: clang version 13.0.0
+
+ubuntu:bionic: clang version 6.0.0-1ubuntu2 (tags/RELEASE_600/final)
+ubuntu:latest: clang version 10.0.0-4ubuntu1
+ubuntu:hirsute: Ubuntu clang version 12.0.0-3ubuntu1~21.04.2
+ubuntu:rolling: Ubuntu clang version 13.0.0-2
+ubuntu:devel: Ubuntu clang version 13.0.0-9
+
+In every case, the distribution's version of clang is either older than
+the current minimum supported version of LLVM 10.0.1 or equal to or
+greater than the proposed 11.0.0 so nothing should change.
+
+Another benefit of this change is LLVM=3D1 works better with arm64 and
+x86_64 since commit f12b034afeb3 ("scripts/Makefile.clang: default to
+LLVM_IAS=3D1") enabled the integrated assembler by default, which only
+works well with clang 11+ (clang-10 required it to be disabled to
+successfully build a kernel).
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1293
+Link: https://github.com/ClangBuiltLinux/linux/issues/1506
+Link: https://github.com/ClangBuiltLinux/linux/issues/1511
+Link: https://github.com/llvm/llvm-project/commit/fa496ce3c6774097080c8a9=
+cb808da56f383b938
+Link: https://groups.google.com/g/clang-built-linux/c/mPQb9_ZWW0s/m/W7o6S=
+-QTBAAJ
+Link: https://github.com/ClangBuiltLinux/misc-scripts
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Documentation/process/changes.rst | 2 +-
+ scripts/min-tool-version.sh       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/process/changes.rst b/Documentation/process/ch=
+anges.rst
+index b398b8576417..17182b537141 100644
+--- a/Documentation/process/changes.rst
++++ b/Documentation/process/changes.rst
+@@ -30,7 +30,7 @@ you probably needn't concern yourself with pcmciautils.
+         Program        Minimal version       Command to check the versio=
+n
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+ GNU C                  5.1              gcc --version
+-Clang/LLVM (optional)  10.0.1           clang --version
++Clang/LLVM (optional)  11.0.0           clang --version
+ GNU make               3.81             make --version
+ binutils               2.23             ld -v
+ flex                   2.5.35           flex --version
+diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
+index 4edc708baa63..7c20252a90c6 100755
+--- a/scripts/min-tool-version.sh
++++ b/scripts/min-tool-version.sh
+@@ -28,7 +28,7 @@ llvm)
+ 	if [ "$SRCARCH" =3D s390 ]; then
+ 		echo 13.0.0
+ 	else
+-		echo 10.0.1
++		echo 11.0.0
+ 	fi
+ 	;;
+ *)
+--=20
+2.34.1
+
