@@ -1,48 +1,38 @@
-Date: Fri, 9 Apr 2021 19:04:41 +0100
-From: "Mark Brown" <broonie@kernel.org>
-Subject: Re: Please add/remove android kernels
-Message-ID: <20210409180441.GF4436@sirena.org.uk>
-References: <CAHRSSEzfP_NbK+b5M3_AAR7H7ujhdTdJ9W2JCiSMvNDZzGVykw@mail.gmail.com>
- <CAHRSSEzpdAVDcn5C4yYEWn6c_rgaFSwp+JvT4MP9kv80MZV=3A@mail.gmail.com>
- <CAHRSSEwrm5SVkuus8y5ycqp_tAQF4UOSo+hFLhVKKNu6s2b_KA@mail.gmail.com>
- <CAHRSSEzc_UJx6BEKBLhJAY+KgW3Ya6QnMFPdyK0epgea_jwkAw@mail.gmail.com>
- <CAHRSSEwZKaVu=7HaP3Pad5RiKaCpFTiAAXZZm1HbdZaVoJ0oRA@mail.gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH RFC 4/6] Revert "ARM: 9070/1: Make UNWINDER_ARM depend on ld.bfd or ld.lld 11.0.0+"
+Date: Mon, 29 Nov 2021 09:58:01 -0700
+Message-Id: <20211129165803.470795-5-nathan@kernel.org>
+In-Reply-To: <20211129165803.470795-1-nathan@kernel.org>
+References: <20211129165803.470795-1-nathan@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAHRSSEwZKaVu=7HaP3Pad5RiKaCpFTiAAXZZm1HbdZaVoJ0oRA@mail.gmail.com>
-Content-Type: multipart/mixed; boundary="Groupsio=ApAFve6WYkapbAb0RQH6"
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, tkjos@google.com
-Cc: Kevin Hilman <khilman@baylibre.com>
+To: Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Tom Stellard <tstellar@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, Naresh Kamboju <naresh.kamboju@linaro.org>, Jakub Kicinski <kuba@kernel.org>, cki-project@redhat.com, kernelci@groups.io, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
 
---Groupsio=ApAFve6WYkapbAb0RQH6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This reverts commit 7411cfc3c91a08a884463bbc7623087ecc2efdd8.
 
-On Fri, Apr 09, 2021 at 09:22:33AM -0700, Todd Kjos via groups.io wrote:
-> Is email still the right way for me to request this sort of thing? Or
-> should I be self-serving by submitting the proposed changes myself?
+The minimum supported version of LLVM has been raised to 11.0.0, meaning
+this check is always true, so it can be dropped.
 
-Email is still fine, but if you want to submit pull requests that'd also
-be fine - it'd cut out the middleman a bit and reduce the potential for
-transcription errors I guess.  In any case:
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ arch/arm/Kconfig.debug | 2 --
+ 1 file changed, 2 deletions(-)
 
-   https://github.com/kernelci/kernelci-core/pull/641
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index 98436702e0c7..cd2d74b625c1 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -66,8 +66,6 @@ config UNWINDER_FRAME_POINTER
+ config UNWINDER_ARM
+ 	bool "ARM EABI stack unwinder"
+ 	depends on AEABI && !FUNCTION_GRAPH_TRACER
+-	# https://github.com/ClangBuiltLinux/linux/issues/732
+-	depends on !LD_IS_LLD || LLD_VERSION >=3D 110000
+ 	select ARM_UNWIND
+ 	help
+ 	  This option enables stack unwinding support in the kernel
+--=20
+2.34.1
 
-hopefully does everything (some of the removals had already happened).
-
---Groupsio=ApAFve6WYkapbAb0RQH6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmBwlzkACgkQJNaLcl1U
-h9CSLgf9FQrouM8LMPQvMQ5lcMMEvZWDlSNrfs3vj8zBfv0RcAFT+2Ao/5uXVZpO
-ttHtVyHSGq0GCL8VOtKdKYX+X184A2rhYYGXmpZ+Dxc7E0MYyc8agmNYSlELbVV0
-GTNtI49jWK47vQSqS0YAgM22hQ3vOIGp/OzaXc6p5GYoVTzULcaedS6Q3d0ych5y
-wiQAoAgwDQQkj4qUznSHSAJvui/uKBR0FSSkdPGt6g/KTTsnSERzMFC3xYO9+HsQ
-zFa8ttND+OP6gWwzWqn6PGsRijbp73jzy8ZZWHYbNuztwQ6pp5MV2PZaV6BBFw+D
-MJPIodDmlpt0zc3tolOXZj4Bis2BNw==
-=r7tW
------END PGP SIGNATURE-----
-
---Groupsio=ApAFve6WYkapbAb0RQH6--
