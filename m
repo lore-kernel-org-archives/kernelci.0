@@ -1,84 +1,54 @@
-From: "Galloway, Greg" <greg.galloway@intel.com>
-Subject: Greetings!
-Date: Thu, 2 Dec 2021 22:39:34 +0000
-Message-ID: <BYAPR11MB2760DB15BA7501ED5A4568C7F0699@BYAPR11MB2760.namprd11.prod.outlook.com>
+Return-Path: <Nikolai.Kondrashov@redhat.com>
+Message-ID: <b547cc78-aa58-fd43-a34e-cd088364a2c2@redhat.com>
+Date: Fri, 3 Dec 2021 09:13:37 +0200
 MIME-Version: 1.0
-Return-Path: greg.galloway@intel.com
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Subject: Re: Greetings!
+References: <BYAPR11MB2760DB15BA7501ED5A4568C7F0699@BYAPR11MB2760.namprd11.prod.outlook.com>
+In-Reply-To: <BYAPR11MB2760DB15BA7501ED5A4568C7F0699@BYAPR11MB2760.namprd11.prod.outlook.com>
 Content-Language: en-US
-Content-Type: multipart/alternative;
-	boundary="_000_BYAPR11MB2760DB15BA7501ED5A4568C7F0699BYAPR11MB2760namp_"
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>
+To: kernelci@groups.io, greg.galloway@intel.com
 
---_000_BYAPR11MB2760DB15BA7501ED5A4568C7F0699BYAPR11MB2760namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Hello Greg,
 
-Hello, I'd like to know a bit more about your system.  How much effort does=
- it take to add datapoints from our CI?  What does the process generally en=
-tail?
+On 12/3/21 00:39, Galloway, Greg wrote:
+> Hello, I’d like to know a bit more about your system.  How much effort does it take to add datapoints from our CI?  What does the process generally entail?
+> 
+> We’re specifically looking into adding some of our Sound Open Firmware repos to your dashboard.
 
-We're specifically looking into adding some of our Sound Open Firmware repo=
-s to your dashboard.
+Basically, you need to format some JSON and pipe it to a command-line tool.
 
+Submitting an empty dataset (report) looks something like this:
 
---_000_BYAPR11MB2760DB15BA7501ED5A4568C7F0699BYAPR11MB2760namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+     $ echo '{"version":{"major":4,"minor":0}}' |
+             kcidb-submit -p kernelci-production -t playground_kcidb_new
 
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:dt=3D"uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:m=3D"http://sc=
-hemas.microsoft.com/office/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-=
-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-family:"Calibri",sans-serif;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:=
-break-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hello, I&#8217;d like to know a bit more about your =
-system.&nbsp; How much effort does it take to add datapoints from our CI?&n=
-bsp; What does the process generally entail?<br>
-<br>
-We&#8217;re specifically looking into adding some of our Sound Open Firmwar=
-e repos to your dashboard.<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</body>
-</html>
+Or, if you'd prefer using Python, it would look like this:
 
---_000_BYAPR11MB2760DB15BA7501ED5A4568C7F0699BYAPR11MB2760namp_--
+     import kcidb
+
+     client = kcidb.Client(project_id="kernelci-production",
+                           topic_name="playground_kcidb_new")
+     client.submit(report)
+
+Our requirements towards the actual data you submit are very minimal right 
+now, pretty much just the structural fields linking your checkouts, builds, 
+and tests together.
+
+We also provide you with a "playground" setup where you can experiment with 
+submissions freely and see how they end up in our dashboard, without worrying 
+of breaking anything. If you'd be interested in that, I can give you your 
+credentials right away, so you could start.
+
+See details in our Submitter Guide:
+
+     https://kernelci.org/docs/kcidb/submitter_guide/
+
+and don't hesitate to ask any questions here, or on libera.chat's #kernelci 
+channel!
+
+Nick
+
