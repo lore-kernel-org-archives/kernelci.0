@@ -1,430 +1,125 @@
-Date: Thu,  2 Dec 2021 22:48:40 -0800
-Message-Id: <20211203064840.2871751-1-davidgow@google.com>
-Mime-Version: 1.0
-Subject: [RFC PATCH] Documentation: dev-tools: Add KTAP specification
-From: David Gow <davidgow@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Return-Path: <elver@google.com>
+Date: Fri, 3 Dec 2021 14:38:17 +0100
+From: Marco Elver <elver@google.com>
+Subject: Re: [PATCH RFC 0/6] Bump minimum supported version of LLVM to 11.0.0
+Message-ID: <YaodyZzu0MTCJcvO@elver.google.com>
+References: <20211129165803.470795-1-nathan@kernel.org>
+ <202112011140.DA93B3E@keescook>
+ <CAK7LNASW2F3SxgR6ydMaW7-ZumsxDv2QQTDqVxqJA1JWN3r4FA@mail.gmail.com>
+MIME-Version: 1.0
+In-Reply-To: <CAK7LNASW2F3SxgR6ydMaW7-ZumsxDv2QQTDqVxqJA1JWN3r4FA@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Brendan Higgins <brendanhiggins@google.com>, Tim.Bird@sony.com, shuah@kernel.org, Jonathan Corbet <corbet@lwn.net>, Kees Cook <keescook@chromium.org>
-Cc: Rae Moar <rmoar@google.com>, rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, David Gow <davidgow@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Tom Stellard <tstellar@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, Naresh Kamboju <naresh.kamboju@linaro.org>, Jakub Kicinski <kuba@kernel.org>, cki-project@redhat.com, kernelci@groups.io, llvm@lists.linux.dev, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, glider@google.com
 
-From: Rae Moar <rmoar@google.com>
+On Thu, Dec 02, 2021 at 05:26PM +0900, Masahiro Yamada wrote:
+> On Thu, Dec 2, 2021 at 4:41 AM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > On Mon, Nov 29, 2021 at 09:57:57AM -0700, Nathan Chancellor wrote:
+> > > This patch series raises the minimum supported version of LLVM to
+> > > 11.0.0.
+[...]
+> Only positive feedback so far.
+> 
+> All applied to linux-kbuild.
 
-Document the kernel-specific variant of the Test Anything Protocol
-(TAP)[1] used by the kernel and kernel test frameworks. This version
-is called KTAP, and this version of the specification should describe
-how results produced by kselftest and KUnit (with some trivial changes
-to bring the two into alignment).
+Some of the "dynamic" checks for compiler support unfortunately aren't
+as easily grepable -- as far as I can tell, we can also include the
+below, which would save us 2 cc-option invocations for all clang builds.
 
-It does not make any significant additions or changes other than those
-already in use in the kernel: additional features can be added as they
-become necessary and used.
+And just in case:
 
-See prior discussion in the following RFC:
-https://lore.kernel.org/linux-kselftest/CA+GJov6tdjvY9x12JsJT14qn6c7NViJxqa=
-Jk+r-K1YJzPggFDQ@mail.gmail.com/.
+Acked-by: Marco Elver <elver@google.com>
 
-[1]: https://testanything.org/tap-version-13-specification.html
+for the rest as well.
 
-Signed-off-by: Rae Moar <rmoar@google.com>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
+Thanks,
+-- Marco
+
+------ >8 ------
+
+From: Marco Elver <elver@google.com>
+Date: Fri, 3 Dec 2021 14:18:44 +0100
+Subject: [PATCH] Revert "ubsan, kcsan: Don't combine sanitizer with kcov on
+ clang"
+
+This reverts commit ea91a1d45d19469001a4955583187b0d75915759.
+
+The minimum Clang version is now 11.0, which fixed the UBSAN/KCSAN vs.
+KCOV incompatibilities.
+
+Link: https://bugs.llvm.org/show_bug.cgi?id=45831
+Signed-off-by: Marco Elver <elver@google.com>
 ---
+ lib/Kconfig.kcsan | 11 -----------
+ lib/Kconfig.ubsan | 12 ------------
+ 2 files changed, 23 deletions(-)
 
-Hi all,
-
-This is a version of the KTAP RFC from [1], with a greater focus on
-being compatible with what's currently used, rather than prescribing a
-new format. The format here should be a superset of what KUnit and
-kselftest output, with a couple of notable exceptions:
-- KUnit currently uses the TAP14-style "Subtest" header instead of
-  nested TAP version headers. This will be fixed in KUnit once this goes
-  in.
-- The (unused) XPASS option is not mentioned (it'll devolve into a
-  harmless comment)
-
-Cheers,
--- David
-
-[1]https://lore.kernel.org/linux-kselftest/CA+GJov6tdjvY9x12JsJT14qn6c7NViJ=
-xqaJk+r-K1YJzPggFDQ@mail.gmail.com/
-
----
- Documentation/dev-tools/index.rst |   1 +
- Documentation/dev-tools/ktap.rst  | 287 ++++++++++++++++++++++++++++++
- 2 files changed, 288 insertions(+)
- create mode 100644 Documentation/dev-tools/ktap.rst
-
-diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/in=
-dex.rst
-index 010a2af1e7d9..4621eac290f4 100644
---- a/Documentation/dev-tools/index.rst
-+++ b/Documentation/dev-tools/index.rst
-@@ -32,6 +32,7 @@ Documentation/dev-tools/testing-overview.rst
-    kgdb
-    kselftest
-    kunit/index
-+   ktap
-=20
-=20
- .. only::  subproject and html
-diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/kta=
-p.rst
-new file mode 100644
-index 000000000000..7c17956b998a
---- /dev/null
-+++ b/Documentation/dev-tools/ktap.rst
-@@ -0,0 +1,287 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+The Kernel Test Anything Protocol (KTAP)
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+TAP, or the Test Anything Protocol is a format for specifying test results=
- used
-+by a number of projects. It's website and specification are found at this =
-`link
-+<https://testanything.org/>`_. The Linux Kernel largely uses TAP output fo=
-r test
-+results. However, Kernel testing frameworks have special needs for test re=
-sults
-+which don't align with the original TAP specification. Thus, a "Kernel TAP=
-"
-+(KTAP) format is specified to extend and alter TAP to support these use-ca=
-ses.
-+This specification describes the generally accepted format of KTAP as it i=
-s
-+currently used in the kernel
-+
-+KTAP test results describe a series of tests (which may be nested: i.e., t=
-est
-+can have subtests), each of which can contain both diagnostic data -- e.g.=
-, log
-+lines -- and a final result. The test structure and results are
-+machine-readable, whereas the diagnostic data is unstructured and is there=
- to
-+aid human debugging.
-+
-+KTAP output is built from four different types of lines:
-+- Version lines
-+- Plan lines
-+- Test case result lines
-+- Diagnostic lines
-+
-+Note that, in particular, nested test results work differently in KTAP fro=
-m
-+the proposed TAP14 specification:
-+https://github.com/TestAnything/Specification/blob/tap-14-specification/sp=
-ecification.md
-+
-+Version lines
-+-------------
-+
-+All KTAP-formatted results begin with a "version line" which specifies whi=
-ch
-+version of the (K)TAP standard the result is compliant with.
-+
-+For example:
-+- "KTAP version 1"
-+- "TAP version 13"
-+- "TAP version 14"
-+
-+Note that, in KTAP, subtests also begin with a version line, which denotes=
- the
-+start of the nested test results. This differs from TAP14, which uses a
-+separate "Subtest" line.
-+
-+While, going forward, "KTAP version 1" should be used by compliant tests, =
-it
-+is expected that most parsers and other tooling will accept the other vers=
-ions
-+listed here for compatibility with existing tests and frameworks.
-+
-+Plan lines
-+----------
-+
-+A test plan provides the number of tests (or subtests) in the KTAP ouput.
-+
-+Plan lines must follow the format of "1..N" where N is the number of tests=
- or subtests.
-+Plan lines follow version lines to indicate the number of nested tests.
-+
-+While there are cases where the number of tests is not known in advance --=
- in
-+which case the test plan may be omitted -- it is strongly recommended one =
-is
-+present where possible.
-+
-+Test case result lines
-+----------------------
-+
-+Test case result lines indicate the final status of a test.
-+They are required and must have the format:
-+
-+.. code-block::
-+
-+	<result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
-+
-+The result can be either "ok", which indicates the test case passed,
-+or "not ok", which indicates that the test case failed.
-+
-+<number> represents the number of the test being performed. The first test=
- must
-+have the number 1 and the number then must increase by 1 for each addition=
-al
-+subtest within the same test at the same nesting level.
-+
-+The description is a description of the test, generally the name of
-+the test, and can be any string of words (can't include #). The
-+description is optional, but recommended.
-+
-+The directive and any diagnostic data is optional. If either are present, =
-they
-+must follow a hash sign, "#".
-+
-+A directive is a keyword that indicates a different outcome for a test oth=
-er
-+than passed and failed. The directive is optional, and consists of a singl=
-e
-+keyword preceding the diagnostic data. In the event that a parser encounte=
-rs
-+a directive it doesn't support, it should fall back to the "ok" / "not ok"
-+result.
-+
-+Currently accepted directives are:
-+
-+- "SKIP", which indicates a test was skipped (note the result of the test =
-case
-+  result line can be either "ok" or "not ok" if the SKIP directive is used=
-)
-+- "TODO", which indicates that a test is not expected to pass at the momen=
-t,
-+  e.g. because the feature it is testing is known to be broken. While this
-+  directive is inherited from TAP, its use in the kernel is discouraged.
-+- "XFAIL", which indicates that a test is expected to fail. This is simila=
-r
-+  to "TODO", above, and is used by some kselftest tests.
-+- "XPASS", which indicated that a test is expected to pass. There is some =
-code
-+  which tracks this result, but it does not appear to currently be used.
-+- =E2=80=9CTIMEOUT=E2=80=9D, which indicates a test has timed out (note th=
-e result of the test
-+  case result line should be =E2=80=9Cnot ok=E2=80=9D if the TIMEOUT direc=
-tive is used)
-+- =E2=80=9CERROR=E2=80=9D, which indicates a test has failed with a specif=
-ic error that is
-+  included in the diagnostic data (note the result of the test case result=
- like
-+  should be =E2=80=9Cnot ok=E2=80=9D if the ERROR directive is used)
-+
-+The diagnostic data is a plain-text field which contains any additional de=
-tails
-+about why this result was produced. This is typically an error code for ER=
-ROR
-+or failed tests, or a description of missing dependencies for a SKIP resul=
-t.
-+
-+The diagnostic data field is optional, and results which have neither a
-+directive nor any diagnostic data do not need to include the "#" field
-+separator.
-+
-+Example result lines include:
-+
-+.. code-block::
-+
-+	ok 1 test_case_name
-+
-+The test "test_case_name" passed.
-+
-+.. code-block::
-+
-+	not ok 1 test_case_name
-+
-+The test "test_case_name" failed.
-+
-+.. code-block::
-+
-+	ok 1 test # SKIP necessary dependency unavailable
-+
-+The test "test" was SKIPPED with the diagnostic message "necessary depende=
-ncy
-+unavailable".
-+
-+.. code-block::
-+
-+	not ok 1 test # TIMEOUT 30 seconds
-+
-+The test "test" timed out, with diagnostic data "30 seconds".
-+
-+.. code-block::
-+
-+	ok 5 check return code # rcode=3D0
-+
-+The test "check return code" passed, with additional diagnostic data is
-+=E2=80=9Crcode=3D0=E2=80=9D
-+
-+
-+Diagnostic lines
-+----------------
-+
-+If tests wish to output any further information, they should do so using
-+"diagnostic lines". Diagnostic lines are optional, freeform text, and are
-+often used to describe what is being tested and any intermediate results i=
-n
-+more detail than the final result and diagnostic data line provides.
-+
-+Diagnostic lines are formatted as "# <diagnostic_description>", where the
-+description can be any string.  Diagnostic lines can be anywhere in the te=
-st
-+output. As a rule, diagnostic lines regarding a test are directly before t=
-he
-+test result line for that test.
-+
-+Note that most tools will treat unknown lines (see below) as diagnostic li=
-nes,
-+even if they do not start with a "#": this is to capture any other useful
-+kernel output which may help debug the test. It is nevertheless recommende=
-d
-+that tests always prefix any diagnostic output they have with a "#" charac=
-ter.
-+
-+Unknown lines
-+-------------
-+
-+There may be lines within KTAP output that do not follow the format of one=
- of
-+the four formats for lines described above. This is allowed, however, they=
- will
-+not influence the status of the tests.
-+
-+Nested tests
-+------------
-+
-+In KTAP, tests can be nested. This is done by having a test include within=
- its
-+output an entire set of KTAP-formatted results. This can be used to catego=
-rize
-+and group related tests, or to split out different results from the same t=
-est.
-+
-+The "parent" test's result should consist of all of its subtests' results,
-+starting with another KTAP version line and test plan, and end with the ov=
-erall
-+result. If one of the subtests fail, for example, the parent test should a=
-lso
-+fail.
-+
-+Additionally, all result lines in a subtest should be indented. One level =
-of
-+indentation is two spaces: "  ". The indentation should begin at the versi=
-on
-+line and should end before the parent test's result line.
-+
-+An example of a test with two nested subtests:
-+
-+.. code-block::
-+
-+	KTAP version 1
-+	1..1
-+	  KTAP version 1
-+	  1..2
-+	  ok 1 test_1
-+	  not ok 2 test_2
-+	# example failed
-+	not ok 1 example
-+
-+An example format with multiple levels of nested testing:
-+
-+.. code-block::
-+
-+	KTAP version 1
-+	1..2
-+	  KTAP version 1
-+	  1..2
-+	    KTAP version 1
-+	    1..2
-+	    not ok 1 test_1
-+	    ok 2 test_2
-+	  not ok 1 test_3
-+	  ok 2 test_4 # SKIP
-+	not ok 1 example_test_1
-+	ok 2 example_test_2
-+
-+
-+Major differences between TAP and KTAP
-+--------------------------------------
-+
-+Note the major differences between the TAP and KTAP specification:
-+- yaml and json are not recommended in diagnostic messages
-+- TODO directive not recognized
-+- KTAP allows for an arbitrary number of tests to be nested
-+
-+The TAP14 specification does permit nested tests, but instead of using ano=
-ther
-+nested version line, uses a line of the form
-+"Subtest: <name>" where <name> is the name of the parent test.
-+
-+Example KTAP output
-+--------------------
-+.. code-block::
-+
-+	KTAP version 1
-+	1..1
-+	  KTAP version 1
-+	  1..3
-+	    KTAP version 1
-+	    1..1
-+	    # test_1: initializing test_1
-+	    ok 1 test_1
-+	  ok 1 example_test_1
-+	    KTAP version 1
-+	    1..2
-+	    ok 1 test_1 # SKIP test_1 skipped
-+	    ok 2 test_2
-+	  ok 2 example_test_2
-+	    KTAP version 1
-+	    1..3
-+	    ok 1 test_1
-+	    # test_2: FAIL
-+	    not ok 2 test_2
-+	    ok 3 test_3 # SKIP test_3 skipped
-+	  not ok 3 example_test_3
-+	not ok 1 main_test
-+
-+This output defines the following hierarchy:
-+
-+A single test called "main_test", which fails, and has three subtests:
-+- "example_test_1", which passes, and has one subtest:
-+
-+   - "test_1", which passes, and outputs the dianostic message "test_1: in=
-itializing test_1"
-+
-+- "example_test_2", which passes, and has two subtests:
-+
-+   - "test_1", which is skipped, with the explanation "test_1 skipped"
-+   - "test_2", which passes
-+
-+- "example_test_3", which fails, and has three subtests
-+
-+   - "test_1", which passes
-+   - "test_2", which outputs the diagnostic line "test_2: FAIL", and fails=
-.
-+   - "test_3", which is skipped with the explanation "test_3 skipped"
-+
-+Note that the individual subtests with the same names do not conflict, as =
-they
-+are found in different parent tests. This output also exhibits some sensib=
-le
-+rules for "bubbling up" test results: a test fails if any of its subtests =
-fail.
-+Skipped tests do not affect the result of the parent test (though it often
-+makes sense for a test to be marked skipped if _all_ of its subtests have =
-been
-+skipped).
---=20
-2.34.1.400.ga245620fadb-goog
+diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
+index e0a93ffdef30..b81454b2a0d0 100644
+--- a/lib/Kconfig.kcsan
++++ b/lib/Kconfig.kcsan
+@@ -10,21 +10,10 @@ config HAVE_KCSAN_COMPILER
+ 	  For the list of compilers that support KCSAN, please see
+ 	  <file:Documentation/dev-tools/kcsan.rst>.
+ 
+-config KCSAN_KCOV_BROKEN
+-	def_bool KCOV && CC_HAS_SANCOV_TRACE_PC
+-	depends on CC_IS_CLANG
+-	depends on !$(cc-option,-Werror=unused-command-line-argument -fsanitize=thread -fsanitize-coverage=trace-pc)
+-	help
+-	  Some versions of clang support either KCSAN and KCOV but not the
+-	  combination of the two.
+-	  See https://bugs.llvm.org/show_bug.cgi?id=45831 for the status
+-	  in newer releases.
+-
+ menuconfig KCSAN
+ 	bool "KCSAN: dynamic data race detector"
+ 	depends on HAVE_ARCH_KCSAN && HAVE_KCSAN_COMPILER
+ 	depends on DEBUG_KERNEL && !KASAN
+-	depends on !KCSAN_KCOV_BROKEN
+ 	select STACKTRACE
+ 	help
+ 	  The Kernel Concurrency Sanitizer (KCSAN) is a dynamic
+diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
+index e5372a13511d..31f38e7fe948 100644
+--- a/lib/Kconfig.ubsan
++++ b/lib/Kconfig.ubsan
+@@ -27,16 +27,6 @@ config UBSAN_TRAP
+ 	  the system. For some system builders this is an acceptable
+ 	  trade-off.
+ 
+-config UBSAN_KCOV_BROKEN
+-	def_bool KCOV && CC_HAS_SANCOV_TRACE_PC
+-	depends on CC_IS_CLANG
+-	depends on !$(cc-option,-Werror=unused-command-line-argument -fsanitize=bounds -fsanitize-coverage=trace-pc)
+-	help
+-	  Some versions of clang support either UBSAN or KCOV but not the
+-	  combination of the two.
+-	  See https://bugs.llvm.org/show_bug.cgi?id=45831 for the status
+-	  in newer releases.
+-
+ config CC_HAS_UBSAN_BOUNDS
+ 	def_bool $(cc-option,-fsanitize=bounds)
+ 
+@@ -46,7 +36,6 @@ config CC_HAS_UBSAN_ARRAY_BOUNDS
+ config UBSAN_BOUNDS
+ 	bool "Perform array index bounds checking"
+ 	default UBSAN
+-	depends on !UBSAN_KCOV_BROKEN
+ 	depends on CC_HAS_UBSAN_ARRAY_BOUNDS || CC_HAS_UBSAN_BOUNDS
+ 	help
+ 	  This option enables detection of directly indexed out of bounds
+@@ -72,7 +61,6 @@ config UBSAN_ARRAY_BOUNDS
+ config UBSAN_LOCAL_BOUNDS
+ 	bool "Perform array local bounds checking"
+ 	depends on UBSAN_TRAP
+-	depends on !UBSAN_KCOV_BROKEN
+ 	depends on $(cc-option,-fsanitize=local-bounds)
+ 	help
+ 	  This option enables -fsanitize=local-bounds which traps when an
+-- 
+2.34.0.384.gca35af8252-goog
 
