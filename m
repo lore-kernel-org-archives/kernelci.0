@@ -1,532 +1,1651 @@
+From: Arnd Bergmann <arnd@kernel.org>
+Subject: [RFC 2/3] headers: introduce linux/struct_types.h
+Date: Tue,  7 Dec 2021 16:09:26 +0100
+Message-Id: <20211207150927.3042197-3-arnd@kernel.org>
+In-Reply-To: <20211207150927.3042197-1-arnd@kernel.org>
+References: <20211207150927.3042197-1-arnd@kernel.org>
 MIME-Version: 1.0
-References: <20211115111816.3911213-1-ardb@kernel.org> <20211115111816.3911213-8-ardb@kernel.org>
- <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com>
-In-Reply-To: <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 16 Nov 2021 20:28:02 +0100
-Message-ID: <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
-Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, Tony Lindgren <tony@atomide.com>, linux-omap <linux-omap@vger.kernel.org>
-Cc: Linux ARM <linux-arm-kernel@lists.infradead.org>, Russell King <linux@armlinux.org.uk>, Nicolas Pitre <nico@fluxnic.net>, Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck <groeck@chromium.org>, Kees Cook <keescook@chromium.org>, Linus Torvalds <torvalds@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Stephen Rothwell <sfr@canb.auug.org.au>, kernel test robot <lkp@intel.com>, Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Tejun Heo <tj@kernel.org>, kernelci@groups.io, linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
 
-(+ Tony and linux-omap@)
+From: Arnd Bergmann <arnd@arndb.de>
 
-On Tue, 16 Nov 2021 at 10:23, Guillaume Tucker
-<guillaume.tucker@collabora.com> wrote:
->
-> Hi Ard,
->
-> Please see the bisection report below about a boot failure on
-> omap4-panda which is pointing to this patch.
->
-> Reports aren't automatically sent to the public while we're
-> trialing new bisection features on kernelci.org but this one
-> looks valid.
->
-> Some more details can be found here:
->
->   https://linux.kernelci.org/test/case/id/6191b1b97c175a5ade335948/
->
-> It seems like the kernel just froze after about 3 seconds without
-> any obvious errors in the log.
->
-> Please let us know if you need any help debugging this issue or
-> if you have a fix to try.
->
+Deeply nested recursive header includes cause a large compile-time
+overhead for parsing an excessive amount of macros and inline functions,
+and they cause rebuilding large parts of the kernel when a minor header
+gets modified.
 
-Thanks for the report.
+Most of the indirect header inclusions are done in order to import
+type definitions for embedding structures within larger structures,
+but most files that reference the larger structures do not care about
+the interfaces that operate on the embedded structures.
 
-I wonder if this might be related to low level platform code running
-off a different stack (maybe in SRAM?) when an interrupt is taken? Or
-using a different set of page tables that are out of sync in terms of
-VMALLOC space mappings?
+Working towards a cleaner header structure, start by moving the most
+commonly embedded structures into a single header file that itself
+has only a minimum set of indirect includes. At this moment, this
+include structures for
 
-Could anyone who speaks OMAP please take a look at the linked boot
-log, and hopefully make sense of it?
+ - locking
+ - timers
+ - work queues
+ - waitqueues
+ - rcu
+ - xarray
+ - kobject
+ - bio_vec
 
-For background, this series enables vmap'ed stacks support for ARMv7,
-which means that the entry code checks whether the stack pointer may
-be pointing into the guard region before the vmalloc'ed stack, and
-kills the task if it looks like the kernel stack overflowed.
+With these, we can build most of the high-level structures (mm,
+task, device, skbuff, ...) while needing very few other headers,
+and in particular avoiding the inclusion of large headers like
+linux/mm.h, linux/sched.h or linux/spinlock.h that are fairly
+expensive to parse.
 
-Here's another instance:
-https://linux.kernelci.org/build/id/6193fa5c6c4e1d02bd3358ff/
+Once there is consensus on the basic approach, we can start with
+patches that replace excessive indirect includes from other headers
+and just use this one instead where possible. There are some
+tradeoffs to consider regarding how far we take this one, as
+it is a departure from how we've always done it, but it's also
+the most promising approach in my mind.
 
-Everything builds and boots happily, but odd things happen on OMAP
-based devices: Panda just gives up right after discovering the USB
-controller, and Beagle-XM just starts showing all kinds of weird
-crashes at roughly the same point in the boot.
+I have stopped short of including 'struct device' along with the
+rest, since that seemed a little too big, but it is also a
+structure that gets embedded in many places. On the other hand,
+separatig the xarray, kobject and bio_vec structures from their
+headers did seem to be clear wins. Alternatively, those could be
+moved into newly added individual headers.
 
->
-> GitHub: https://github.com/kernelci/kernelci-project/issues/75
->
-> -------------------------------------------------------------------------------
->
-> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-> * This automated bisection report was sent to you on the basis  *
-> * that you may be involved with the breaking commit it has      *
-> * found.  No manual investigation has been done to verify it,   *
-> * and the root cause of the problem may be somewhere else.      *
-> *                                                               *
-> * If you do send a fix, please include this trailer:            *
-> *   Reported-by: "kernelci.org bot" <bot@kernelci.org>          *
-> *                                                               *
-> * Hope this helps!                                              *
-> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
->
-> ardb/for-kernelci bisection: baseline.login on panda
->
-> Summary:
->   Start:      d1eccc4f44f11 ARM: implement support for vmap'ed stacks
->   Plain log:  https://storage.kernelci.org/ardb/for-kernelci/v5.16-rc1-16-gd1eccc4f44f1/arm/multi_v7_defconfig+crypto/gcc-10/lab-collabora/baseline-panda.txt
->   HTML log:   https://storage.kernelci.org/ardb/for-kernelci/v5.16-rc1-16-gd1eccc4f44f1/arm/multi_v7_defconfig+crypto/gcc-10/lab-collabora/baseline-panda.html
->   Result:     d1eccc4f44f11 ARM: implement support for vmap'ed stacks
->
-> Checks:
->   revert:     PASS
->   verify:     PASS
->
-> Parameters:
->   Tree:       ardb
->   URL:        https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
->   Branch:     for-kernelci
->   Target:     panda
->   CPU arch:   arm
->   Lab:        lab-collabora
->   Compiler:   gcc-10
->   Config:     multi_v7_defconfig+crypto
->   Test case:  baseline.login
->
-> Breaking commit found:
->
-> -------------------------------------------------------------------------------
-> commit d1eccc4f44f11a8f3f5d376f08e3779d2196f93a
-> Author: Ard Biesheuvel <ardb@kernel.org>
-> Date:   Thu Sep 23 09:15:53 2021 +0200
->
->     ARM: implement support for vmap'ed stacks
->
-> On 15/11/2021 11:18, Ard Biesheuvel wrote:
-> > Wire up the generic support for managing task stack allocations via vmalloc,
-> > and implement the entry code that detects whether we faulted because of a
-> > stack overrun (or future stack overrun caused by pushing the pt_regs array)
-> >
-> > While this adds a fair amount of tricky entry asm code, it should be
-> > noted that it only adds a TST + branch to the svc_entry path. The code
-> > implementing the non-trivial handling of the overflow stack is emitted
-> > out-of-line into the .text section.
-> >
-> > Since on ARM, we rely on do_translation_fault() to keep PMD level page
-> > table entries that cover the vmalloc region up to date, we need to
-> > ensure that we don't hit such a stale PMD entry when accessing the
-> > stack. So we do a dummy read from the new stack while still running from
-> > the old one on the context switch path, and bump the vmalloc_seq counter
-> > when PMD level entries in the vmalloc range are modified, so that the MM
-> > switch fetches the latest version of the entries.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > Tested-by: Keith Packard <keithpac@amazon.com>
-> > ---
-> >  arch/arm/Kconfig                   |  1 +
-> >  arch/arm/include/asm/page.h        |  4 +
-> >  arch/arm/include/asm/thread_info.h |  8 ++
-> >  arch/arm/kernel/entry-armv.S       | 79 ++++++++++++++++++--
-> >  arch/arm/kernel/entry-header.S     | 57 ++++++++++++++
-> >  arch/arm/kernel/irq.c              |  9 ++-
-> >  arch/arm/kernel/traps.c            | 65 +++++++++++++++-
-> >  arch/arm/kernel/unwind.c           |  3 +-
-> >  arch/arm/kernel/vmlinux.lds.S      |  4 +-
-> >  9 files changed, 219 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> > index b1eba1b4168c..a072600527ca 100644
-> > --- a/arch/arm/Kconfig
-> > +++ b/arch/arm/Kconfig
-> > @@ -127,6 +127,7 @@ config ARM
-> >       select RTC_LIB
-> >       select SYS_SUPPORTS_APM_EMULATION
-> >       select THREAD_INFO_IN_TASK if CURRENT_POINTER_IN_TPIDRURO
-> > +     select HAVE_ARCH_VMAP_STACK if THREAD_INFO_IN_TASK
-> >       select TRACE_IRQFLAGS_SUPPORT if !CPU_V7M
-> >       # Above selects are sorted alphabetically; please add new ones
-> >       # according to that.  Thanks.
-> > diff --git a/arch/arm/include/asm/page.h b/arch/arm/include/asm/page.h
-> > index 11b058a72a5b..7b871ed99ccf 100644
-> > --- a/arch/arm/include/asm/page.h
-> > +++ b/arch/arm/include/asm/page.h
-> > @@ -149,6 +149,10 @@ extern void copy_page(void *to, const void *from);
-> >  #include <asm/pgtable-2level-types.h>
-> >  #endif
-> >
-> > +#ifdef CONFIG_VMAP_STACK
-> > +#define ARCH_PAGE_TABLE_SYNC_MASK    PGTBL_PMD_MODIFIED
-> > +#endif
-> > +
-> >  #endif /* CONFIG_MMU */
-> >
-> >  typedef struct page *pgtable_t;
-> > diff --git a/arch/arm/include/asm/thread_info.h b/arch/arm/include/asm/thread_info.h
-> > index 164e15f26485..004b89d86224 100644
-> > --- a/arch/arm/include/asm/thread_info.h
-> > +++ b/arch/arm/include/asm/thread_info.h
-> > @@ -25,6 +25,14 @@
-> >  #define THREAD_SIZE          (PAGE_SIZE << THREAD_SIZE_ORDER)
-> >  #define THREAD_START_SP              (THREAD_SIZE - 8)
-> >
-> > +#ifdef CONFIG_VMAP_STACK
-> > +#define THREAD_ALIGN         (2 * THREAD_SIZE)
-> > +#else
-> > +#define THREAD_ALIGN         THREAD_SIZE
-> > +#endif
-> > +
-> > +#define OVERFLOW_STACK_SIZE  SZ_4K
-> > +
-> >  #ifndef __ASSEMBLY__
-> >
-> >  struct task_struct;
-> > diff --git a/arch/arm/kernel/entry-armv.S b/arch/arm/kernel/entry-armv.S
-> > index b18f3aa98f42..ad8d8304539e 100644
-> > --- a/arch/arm/kernel/entry-armv.S
-> > +++ b/arch/arm/kernel/entry-armv.S
-> > @@ -57,6 +57,14 @@ UNWIND(    .setfp  fpreg, sp               )
-> >       @
-> >       subs    r2, sp, r0              @ SP above bottom of IRQ stack?
-> >       rsbscs  r2, r2, #THREAD_SIZE    @ ... and below the top?
-> > +#ifdef CONFIG_VMAP_STACK
-> > +     bcs     .L\@
-> > +     mov_l   r2, overflow_stack      @ Take base address
-> > +     add     r2, r2, r3              @ Top of this CPU's overflow stack
-> > +     subs    r2, r0, r2              @ Compare with incoming SP
-> > +     rsbscs  r2, r2, #OVERFLOW_STACK_SIZE
-> > +.L\@:
-> > +#endif
-> >       movcs   sp, r0                  @ If so, revert to incoming SP
-> >
-> >  #ifndef CONFIG_UNWINDER_ARM
-> > @@ -188,13 +196,18 @@ ENDPROC(__und_invalid)
-> >  #define SPFIX(code...)
-> >  #endif
-> >
-> > -     .macro  svc_entry, stack_hole=0, trace=1, uaccess=1
-> > +     .macro  svc_entry, stack_hole=0, trace=1, uaccess=1, overflow_check=1
-> >   UNWIND(.fnstart             )
-> > - UNWIND(.save {r0 - pc}              )
-> >       sub     sp, sp, #(SVC_REGS_SIZE + \stack_hole)
-> > + THUMB(      add     sp, r0          )       @ get SP in a GPR without
-> > + THUMB(      sub     r0, sp, r0      )       @ using a temp register
-> > +
-> > +     .if     \overflow_check
-> > + UNWIND(.save        {r0 - pc}       )
-> > +     do_overflow_check (SVC_REGS_SIZE + \stack_hole)
-> > +     .endif
-> > +
-> >  #ifdef CONFIG_THUMB2_KERNEL
-> > -     add     sp, r0                  @ get SP in a GPR without
-> > -     sub     r0, sp, r0              @ using a temp register
-> >       tst     r0, #4                  @ test stack pointer alignment
-> >       sub     r0, sp, r0              @ restore original R0
-> >       sub     sp, r0                  @ restore original SP
-> > @@ -827,12 +840,20 @@ ENTRY(__switch_to)
-> >       str     r7, [r8]
-> >  #endif
-> >       mov     r0, r5
-> > -#if !defined(CONFIG_THUMB2_KERNEL)
-> > +#if !defined(CONFIG_THUMB2_KERNEL) && !defined(CONFIG_VMAP_STACK)
-> >       set_current r7
-> >       ldmia   r4, {r4 - sl, fp, sp, pc}       @ Load all regs saved previously
-> >  #else
-> >       mov     r1, r7
-> >       ldmia   r4, {r4 - sl, fp, ip, lr}       @ Load all regs saved previously
-> > +#ifdef CONFIG_VMAP_STACK
-> > +     @
-> > +     @ Do a dummy read from the new stack while running from the old one so
-> > +     @ that we can rely on do_translation_fault() to fix up any stale PMD
-> > +     @ entries covering the vmalloc region.
-> > +     @
-> > +     ldr     r2, [ip]
-> > +#endif
-> >
-> >       @ When CONFIG_THREAD_INFO_IN_TASK=n, the update of SP itself is what
-> >       @ effectuates the task switch, as that is what causes the observable
-> > @@ -849,6 +870,54 @@ ENTRY(__switch_to)
-> >   UNWIND(.fnend               )
-> >  ENDPROC(__switch_to)
-> >
-> > +#ifdef CONFIG_VMAP_STACK
-> > +     .text
-> > +__bad_stack:
-> > +     @
-> > +     @ We detected an overflow in svc_entry, which switched to the
-> > +     @ overflow stack. Stash the exception regs, and head to our overflow
-> > +     @ handler. Entered with the orginal value of SP in IP, and the original
-> > +     @ value of IP in TPIDRURW
-> > +     @
-> > +
-> > +#if defined(CONFIG_UNWINDER_FRAME_POINTER) && defined(CONFIG_CC_IS_GCC)
-> > +     mov     ip, ip                          @ mov expected by unwinder
-> > +     push    {fp, ip, lr, pc}                @ GCC flavor frame record
-> > +#else
-> > +     str     ip, [sp, #-8]!                  @ store original SP
-> > +     push    {fpreg, lr}                     @ Clang flavor frame record
-> > +#endif
-> > +UNWIND( ldr  ip, [r0, #4]    )               @ load exception LR
-> > +UNWIND( str  ip, [sp, #12]   )               @ store in the frame record
-> > +     mrc     p15, 0, ip, c13, c0, 2          @ reload IP
-> > +
-> > +     @ Store the original GPRs to the new stack.
-> > +     svc_entry uaccess=0, overflow_check=0
-> > +
-> > +UNWIND( .save   {sp, pc}     )
-> > +UNWIND( .save   {fpreg, lr}  )
-> > +UNWIND( .setfp  fpreg, sp    )
-> > +
-> > +     ldr     fpreg, [sp, #S_SP]              @ Add our frame record
-> > +                                             @ to the linked list
-> > +#if defined(CONFIG_UNWINDER_FRAME_POINTER) && defined(CONFIG_CC_IS_GCC)
-> > +     ldr     r1, [fp, #4]                    @ reload SP at entry
-> > +     add     fp, fp, #12
-> > +#else
-> > +     ldr     r1, [fpreg, #8]
-> > +#endif
-> > +     str     r1, [sp, #S_SP]                 @ store in pt_regs
-> > +
-> > +     @ Stash the regs for handle_bad_stack
-> > +     mov     r0, sp
-> > +
-> > +     @ Time to die
-> > +     bl      handle_bad_stack
-> > +     nop
-> > +UNWIND( .fnend                       )
-> > +ENDPROC(__bad_stack)
-> > +#endif
-> > +
-> >       __INIT
-> >
-> >  /*
-> > diff --git a/arch/arm/kernel/entry-header.S b/arch/arm/kernel/entry-header.S
-> > index ae24dd54e9ef..823dd1aa6e3e 100644
-> > --- a/arch/arm/kernel/entry-header.S
-> > +++ b/arch/arm/kernel/entry-header.S
-> > @@ -423,3 +423,60 @@ scno     .req    r7              @ syscall number
-> >  tbl  .req    r8              @ syscall table pointer
-> >  why  .req    r8              @ Linux syscall (!= 0)
-> >  tsk  .req    r9              @ current thread_info
-> > +
-> > +     .macro  do_overflow_check, frame_size:req
-> > +#ifdef CONFIG_VMAP_STACK
-> > +     @
-> > +     @ Test whether the SP has overflowed. Task and IRQ stacks are aligned
-> > +     @ so that SP & BIT(THREAD_SIZE_ORDER + PAGE_SHIFT) should always be
-> > +     @ zero.
-> > +     @
-> > +ARM( tst     sp, #1 << (THREAD_SIZE_ORDER + PAGE_SHIFT)      )
-> > +THUMB(       tst     r0, #1 << (THREAD_SIZE_ORDER + PAGE_SHIFT)      )
-> > +THUMB(       it      ne                                              )
-> > +     bne     .Lstack_overflow_check\@
-> > +
-> > +     .pushsection    .text
-> > +.Lstack_overflow_check\@:
-> > +     @
-> > +     @ Either we've just detected an overflow, or we've taken an exception
-> > +     @ while on the overflow stack. We cannot use the stack until we have
-> > +     @ decided which is the case. However, as we won't return to userspace,
-> > +     @ we can clobber some USR/SYS mode registers to free up GPRs.
-> > +     @
-> > +
-> > +     mcr     p15, 0, ip, c13, c0, 2          @ Stash IP in TPIDRURW
-> > +     mrs     ip, cpsr
-> > +     eor     ip, ip, #(SVC_MODE ^ SYSTEM_MODE)
-> > +     msr     cpsr_c, ip                      @ Switch to SYS mode
-> > +     eor     ip, ip, #(SVC_MODE ^ SYSTEM_MODE)
-> > +     mov     sp, ip                          @ Stash mode in SP_usr
-> > +
-> > +     @ Load the overflow stack into IP using LR_usr as a scratch register
-> > +     mov_l   lr, overflow_stack + OVERFLOW_STACK_SIZE
-> > +     mrc     p15, 0, ip, c13, c0, 4          @ Get CPU offset
-> > +     add     ip, ip, lr                      @ IP := this CPU's overflow stack
-> > +     mov     lr, sp                          @ Unstash mode into LR_usr
-> > +     msr     cpsr_c, lr                      @ Switch back to SVC mode
-> > +
-> > +     @
-> > +     @ Check whether we are already on the overflow stack. This may happen,
-> > +     @ e.g., when performing accesses that may fault when dumping the stack.
-> > +     @ The overflow stack is not in the vmalloc space so we only need to
-> > +     @ check whether the incoming SP is below the top of the overflow stack.
-> > +     @
-> > +ARM( subs    ip, sp, ip              )       @ Delta with top of overflow stack
-> > +THUMB(       subs    ip, r0, ip              )
-> > +     mrclo   p15, 0, ip, c13, c0, 2          @ Restore IP
-> > +     blo     .Lout\@                         @ Carry on
-> > +
-> > +THUMB(       sub     r0, sp, r0              )       @ Restore original R0
-> > +THUMB(       sub     sp, r0                  )       @ Restore original SP
-> > +     sub     sp, sp, ip                      @ Switch to overflow stack
-> > +     add     ip, sp, ip                      @ Keep incoming SP value in IP
-> > +     add     ip, ip, #\frame_size            @ Undo svc_entry's SP change
-> > +     b       __bad_stack
-> > +     .popsection
-> > +.Lout\@:
-> > +#endif
-> > +     .endm
-> > diff --git a/arch/arm/kernel/irq.c b/arch/arm/kernel/irq.c
-> > index e05219bca218..5deb40f39999 100644
-> > --- a/arch/arm/kernel/irq.c
-> > +++ b/arch/arm/kernel/irq.c
-> > @@ -56,7 +56,14 @@ static void __init init_irq_stacks(void)
-> >       int cpu;
-> >
-> >       for_each_possible_cpu(cpu) {
-> > -             stack = (u8 *)__get_free_pages(GFP_KERNEL, THREAD_SIZE_ORDER);
-> > +             if (!IS_ENABLED(CONFIG_VMAP_STACK))
-> > +                     stack = (u8 *)__get_free_pages(GFP_KERNEL,
-> > +                                                    THREAD_SIZE_ORDER);
-> > +             else
-> > +                     stack = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN,
-> > +                                            THREADINFO_GFP, NUMA_NO_NODE,
-> > +                                            __builtin_return_address(0));
-> > +
-> >               if (WARN_ON(!stack))
-> >                       break;
-> >               per_cpu(irq_stack_ptr, cpu) = &stack[THREAD_SIZE];
-> > diff --git a/arch/arm/kernel/traps.c b/arch/arm/kernel/traps.c
-> > index b42c446cec9a..eb8c73be7c81 100644
-> > --- a/arch/arm/kernel/traps.c
-> > +++ b/arch/arm/kernel/traps.c
-> > @@ -121,7 +121,8 @@ void dump_backtrace_stm(u32 *stack, u32 instruction, const char *loglvl)
-> >  static int verify_stack(unsigned long sp)
-> >  {
-> >       if (sp < PAGE_OFFSET ||
-> > -         (sp > (unsigned long)high_memory && high_memory != NULL))
-> > +         (!IS_ENABLED(CONFIG_VMAP_STACK) &&
-> > +          sp > (unsigned long)high_memory && high_memory != NULL))
-> >               return -EFAULT;
-> >
-> >       return 0;
-> > @@ -291,7 +292,8 @@ static int __die(const char *str, int err, struct pt_regs *regs)
-> >
-> >       if (!user_mode(regs) || in_interrupt()) {
-> >               dump_mem(KERN_EMERG, "Stack: ", regs->ARM_sp,
-> > -                      ALIGN(regs->ARM_sp, THREAD_SIZE));
-> > +                      ALIGN(regs->ARM_sp - THREAD_SIZE, THREAD_ALIGN)
-> > +                      + THREAD_SIZE);
-> >               dump_backtrace(regs, tsk, KERN_EMERG);
-> >               dump_instr(KERN_EMERG, regs);
-> >       }
-> > @@ -838,3 +840,62 @@ void __init early_trap_init(void *vectors_base)
-> >        */
-> >  #endif
-> >  }
-> > +
-> > +#ifdef CONFIG_VMAP_STACK
-> > +
-> > +DECLARE_PER_CPU(u8 *, irq_stack_ptr);
-> > +
-> > +asmlinkage DEFINE_PER_CPU_ALIGNED(u8[OVERFLOW_STACK_SIZE], overflow_stack);
-> > +
-> > +asmlinkage void handle_bad_stack(struct pt_regs *regs)
-> > +{
-> > +     unsigned long tsk_stk = (unsigned long)current->stack;
-> > +     unsigned long irq_stk = (unsigned long)this_cpu_read(irq_stack_ptr);
-> > +     unsigned long ovf_stk = (unsigned long)this_cpu_ptr(overflow_stack);
-> > +
-> > +     console_verbose();
-> > +     pr_emerg("Insufficient stack space to handle exception!");
-> > +
-> > +     pr_emerg("Task stack:     [0x%08lx..0x%08lx]\n",
-> > +              tsk_stk, tsk_stk + THREAD_SIZE);
-> > +     pr_emerg("IRQ stack:      [0x%08lx..0x%08lx]\n",
-> > +              irq_stk, irq_stk + THREAD_SIZE);
-> > +     pr_emerg("Overflow stack: [0x%08lx..0x%08lx]\n",
-> > +              ovf_stk, ovf_stk + OVERFLOW_STACK_SIZE);
-> > +
-> > +     die("kernel stack overflow", regs, 0);
-> > +}
-> > +
-> > +/*
-> > + * Normally, we rely on the logic in do_translation_fault() to update stale PMD
-> > + * entries covering the vmalloc space in a task's page tables when it first
-> > + * accesses the region in question. Unfortunately, this is not sufficient when
-> > + * the task stack resides in the vmalloc region, as do_translation_fault() is a
-> > + * C function that needs a stack to run.
-> > + *
-> > + * So we need to ensure that these PMD entries are up to date *before* the MM
-> > + * switch. As we already have some logic in the MM switch path that takes care
-> > + * of this, let's trigger it by bumping the counter every time the core vmalloc
-> > + * code modifies a PMD entry in the vmalloc region.
-> > + */
-> > +void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
-> > +{
-> > +     if (start > VMALLOC_END || end < VMALLOC_START)
-> > +             return;
-> > +
-> > +     /*
-> > +      * This hooks into the core vmalloc code to receive notifications of
-> > +      * any PMD level changes that have been made to the kernel page tables.
-> > +      * This means it should only be triggered once for every MiB worth of
-> > +      * vmalloc space, given that we don't support huge vmalloc/vmap on ARM,
-> > +      * and that kernel PMD level table entries are rarely (if ever)
-> > +      * updated.
-> > +      *
-> > +      * This means that the counter is going to max out at ~250 for the
-> > +      * typical case. If it overflows, something entirely unexpected has
-> > +      * occurred so let's throw a warning if that happens.
-> > +      */
-> > +     WARN_ON(++init_mm.context.vmalloc_seq == UINT_MAX);
-> > +}
-> > +
-> > +#endif
-> > diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
-> > index e8d729975f12..c5ea328c428d 100644
-> > --- a/arch/arm/kernel/unwind.c
-> > +++ b/arch/arm/kernel/unwind.c
-> > @@ -389,7 +389,8 @@ int unwind_frame(struct stackframe *frame)
-> >
-> >       /* store the highest address on the stack to avoid crossing it*/
-> >       ctrl.sp_low = frame->sp;
-> > -     ctrl.sp_high = ALIGN(ctrl.sp_low, THREAD_SIZE);
-> > +     ctrl.sp_high = ALIGN(ctrl.sp_low - THREAD_SIZE, THREAD_ALIGN)
-> > +                    + THREAD_SIZE;
-> >
-> >       pr_debug("%s(pc = %08lx lr = %08lx sp = %08lx)\n", __func__,
-> >                frame->pc, frame->lr, frame->sp);
-> > diff --git a/arch/arm/kernel/vmlinux.lds.S b/arch/arm/kernel/vmlinux.lds.S
-> > index f02d617e3359..aa12b65a7fd6 100644
-> > --- a/arch/arm/kernel/vmlinux.lds.S
-> > +++ b/arch/arm/kernel/vmlinux.lds.S
-> > @@ -138,12 +138,12 @@ SECTIONS
-> >  #ifdef CONFIG_STRICT_KERNEL_RWX
-> >       . = ALIGN(1<<SECTION_SHIFT);
-> >  #else
-> > -     . = ALIGN(THREAD_SIZE);
-> > +     . = ALIGN(THREAD_ALIGN);
-> >  #endif
-> >       __init_end = .;
-> >
-> >       _sdata = .;
-> > -     RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_SIZE)
-> > +     RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
-> >       _edata = .;
-> >
-> >       BSS_SECTION(0, 0, 0)
-> >
->
-> Git bisection log:
->
-> -------------------------------------------------------------------------------
-> git bisect start
-> # good: [fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf] Linux 5.16-rc1
-> git bisect good fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
-> # bad: [d1eccc4f44f11a8f3f5d376f08e3779d2196f93a] ARM: implement support for vmap'ed stacks
-> git bisect bad d1eccc4f44f11a8f3f5d376f08e3779d2196f93a
-> # good: [6bdd12e7427858bd0f1a68f553617fb1d97dbabb] ARM: call_with_stack: add unwind support
-> git bisect good 6bdd12e7427858bd0f1a68f553617fb1d97dbabb
-> # good: [fcc7029189cce80c2eac396ce4cd4544634d46e3] ARM: memset: clean up unwind annotations
-> git bisect good fcc7029189cce80c2eac396ce4cd4544634d46e3
-> # good: [e206f1841c51d2b3d8339efac3ac806f32d64821] ARM: switch_to: clean up Thumb2 code path
-> git bisect good e206f1841c51d2b3d8339efac3ac806f32d64821
-> # good: [a7c9e1b40e858eba7ff99a548153fd5c92b68e24] ARM: entry: rework stack realignment code in svc_entry
-> git bisect good a7c9e1b40e858eba7ff99a548153fd5c92b68e24
-> # first bad commit: [d1eccc4f44f11a8f3f5d376f08e3779d2196f93a] ARM: implement support for vmap'ed stacks
-> -------------------------------------------------------------------------------
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/alpha/include/asm/spinlock_types.h       |   2 +-
+ arch/arm/include/asm/spinlock_types.h         |   2 +-
+ arch/arm64/include/asm/spinlock_types.h       |   2 +-
+ arch/csky/include/asm/spinlock_types.h        |   2 +-
+ arch/hexagon/include/asm/spinlock_types.h     |   2 +-
+ arch/ia64/include/asm/spinlock_types.h        |   2 +-
+ .../include/asm/simple_spinlock_types.h       |   2 +-
+ arch/powerpc/include/asm/spinlock_types.h     |   2 +-
+ arch/riscv/include/asm/spinlock_types.h       |   2 +-
+ arch/s390/include/asm/spinlock_types.h        |   2 +-
+ arch/sh/include/asm/spinlock_types.h          |   2 +-
+ arch/xtensa/include/asm/spinlock_types.h      |   2 +-
+ include/linux/bitops.h                        |   6 -
+ include/linux/bits.h                          |   6 +
+ include/linux/bvec.h                          |  18 -
+ include/linux/completion.h                    |  17 -
+ include/linux/cpumask.h                       |   3 -
+ include/linux/hrtimer.h                       |  32 --
+ include/linux/kobject.h                       |  18 -
+ include/linux/kref.h                          |   4 -
+ include/linux/mutex.h                         |  51 --
+ include/linux/osq_lock.h                      |   8 -
+ include/linux/percpu-rwsem.h                  |  11 -
+ include/linux/pid.h                           |   9 -
+ include/linux/rcu_sync.h                      |   9 -
+ include/linux/rcuwait.h                       |  12 -
+ include/linux/refcount.h                      |  12 -
+ include/linux/rtmutex.h                       |   8 +-
+ include/linux/rwbase_rt.h                     |   5 -
+ include/linux/rwlock_types.h                  |  19 -
+ include/linux/rwsem.h                         |  40 --
+ include/linux/seqlock.h                       |  31 --
+ include/linux/spinlock_types.h                |  21 -
+ include/linux/spinlock_types_raw.h            |  21 +-
+ include/linux/spinlock_types_up.h             |   2 +-
+ include/linux/struct_types.h                  | 483 ++++++++++++++++++
+ include/linux/swait.h                         |  12 -
+ include/linux/timer.h                         |  16 +-
+ include/linux/timerqueue.h                    |  12 +-
+ include/linux/wait.h                          |  29 --
+ include/linux/workqueue.h                     |  27 -
+ include/linux/xarray.h                        |  23 -
+ 42 files changed, 506 insertions(+), 483 deletions(-)
+ create mode 100644 include/linux/struct_types.h
+
+diff --git a/arch/alpha/include/asm/spinlock_types.h b/arch/alpha/include=
+/asm/spinlock_types.h
+index 1d5716bc060b..7cd2515169cf 100644
+--- a/arch/alpha/include/asm/spinlock_types.h
++++ b/arch/alpha/include/asm/spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef _ALPHA_SPINLOCK_TYPES_H
+ #define _ALPHA_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/arm/include/asm/spinlock_types.h b/arch/arm/include/asm=
+/spinlock_types.h
+index 5976958647fe..104ebab73185 100644
+--- a/arch/arm/include/asm/spinlock_types.h
++++ b/arch/arm/include/asm/spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef __ASM_SPINLOCK_TYPES_H
+ #define __ASM_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/arm64/include/asm/spinlock_types.h b/arch/arm64/include=
+/asm/spinlock_types.h
+index 18782f0c4721..f2bba81671e0 100644
+--- a/arch/arm64/include/asm/spinlock_types.h
++++ b/arch/arm64/include/asm/spinlock_types.h
+@@ -5,7 +5,7 @@
+ #ifndef __ASM_SPINLOCK_TYPES_H
+ #define __ASM_SPINLOCK_TYPES_H
+=20
+-#if !defined(__LINUX_SPINLOCK_TYPES_H) && !defined(__ASM_SPINLOCK_H)
++#if !defined(__LINUX_STRUCT_TYPES_H) && !defined(__ASM_SPINLOCK_H)
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/csky/include/asm/spinlock_types.h b/arch/csky/include/a=
+sm/spinlock_types.h
+index 8ff0f6ff3a00..bb1fb62426aa 100644
+--- a/arch/csky/include/asm/spinlock_types.h
++++ b/arch/csky/include/asm/spinlock_types.h
+@@ -3,7 +3,7 @@
+ #ifndef __ASM_CSKY_SPINLOCK_TYPES_H
+ #define __ASM_CSKY_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/hexagon/include/asm/spinlock_types.h b/arch/hexagon/inc=
+lude/asm/spinlock_types.h
+index 19d233497ba5..086f15d76833 100644
+--- a/arch/hexagon/include/asm/spinlock_types.h
++++ b/arch/hexagon/include/asm/spinlock_types.h
+@@ -8,7 +8,7 @@
+ #ifndef _ASM_SPINLOCK_TYPES_H
+ #define _ASM_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/ia64/include/asm/spinlock_types.h b/arch/ia64/include/a=
+sm/spinlock_types.h
+index 6e345fefcdca..3bbddc8b04d3 100644
+--- a/arch/ia64/include/asm/spinlock_types.h
++++ b/arch/ia64/include/asm/spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef _ASM_IA64_SPINLOCK_TYPES_H
+ #define _ASM_IA64_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/powerpc/include/asm/simple_spinlock_types.h b/arch/powe=
+rpc/include/asm/simple_spinlock_types.h
+index 0f3cdd8faa95..4afc9cb919c5 100644
+--- a/arch/powerpc/include/asm/simple_spinlock_types.h
++++ b/arch/powerpc/include/asm/simple_spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef _ASM_POWERPC_SIMPLE_SPINLOCK_TYPES_H
+ #define _ASM_POWERPC_SIMPLE_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/powerpc/include/asm/spinlock_types.h b/arch/powerpc/inc=
+lude/asm/spinlock_types.h
+index c5d742f18021..2264b4047799 100644
+--- a/arch/powerpc/include/asm/spinlock_types.h
++++ b/arch/powerpc/include/asm/spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef _ASM_POWERPC_SPINLOCK_TYPES_H
+ #define _ASM_POWERPC_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/riscv/include/asm/spinlock_types.h b/arch/riscv/include=
+/asm/spinlock_types.h
+index f398e7638dd6..e3c2fec0fa41 100644
+--- a/arch/riscv/include/asm/spinlock_types.h
++++ b/arch/riscv/include/asm/spinlock_types.h
+@@ -6,7 +6,7 @@
+ #ifndef _ASM_RISCV_SPINLOCK_TYPES_H
+ #define _ASM_RISCV_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/s390/include/asm/spinlock_types.h b/arch/s390/include/a=
+sm/spinlock_types.h
+index a2bbfd7df85f..1f48a5f0e591 100644
+--- a/arch/s390/include/asm/spinlock_types.h
++++ b/arch/s390/include/asm/spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef __ASM_SPINLOCK_TYPES_H
+ #define __ASM_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/sh/include/asm/spinlock_types.h b/arch/sh/include/asm/s=
+pinlock_types.h
+index e82369f286a2..8ec6d822057b 100644
+--- a/arch/sh/include/asm/spinlock_types.h
++++ b/arch/sh/include/asm/spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef __ASM_SH_SPINLOCK_TYPES_H
+ #define __ASM_SH_SPINLOCK_TYPES_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/arch/xtensa/include/asm/spinlock_types.h b/arch/xtensa/inclu=
+de/asm/spinlock_types.h
+index 64c9389254f1..33e43b619392 100644
+--- a/arch/xtensa/include/asm/spinlock_types.h
++++ b/arch/xtensa/include/asm/spinlock_types.h
+@@ -2,7 +2,7 @@
+ #ifndef __ASM_SPINLOCK_TYPES_H
+ #define __ASM_SPINLOCK_TYPES_H
+=20
+-#if !defined(__LINUX_SPINLOCK_TYPES_H) && !defined(__ASM_SPINLOCK_H)
++#if !defined(__LINUX_STRUCT_TYPES_H) && !defined(__ASM_SPINLOCK_H)
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index 7aaed501f768..d7dbc762c45f 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -15,12 +15,6 @@
+ #  define aligned_byte_mask(n) (~0xffUL << (BITS_PER_LONG - 8 - 8*(n)))
+ #endif
+=20
+-#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
+-#define BITS_TO_LONGS(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
+-#define BITS_TO_U64(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
+-#define BITS_TO_U32(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
+-#define BITS_TO_BYTES(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
+-
+ extern unsigned int __sw_hweight8(unsigned int w);
+ extern unsigned int __sw_hweight16(unsigned int w);
+ extern unsigned int __sw_hweight32(unsigned int w);
+diff --git a/include/linux/bits.h b/include/linux/bits.h
+index 87d112650dfb..bae942e9427e 100644
+--- a/include/linux/bits.h
++++ b/include/linux/bits.h
+@@ -13,6 +13,12 @@
+ #define BIT_ULL_WORD(nr)	((nr) / BITS_PER_LONG_LONG)
+ #define BITS_PER_BYTE		8
+=20
++#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
++#define BITS_TO_LONGS(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
++#define BITS_TO_U64(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
++#define BITS_TO_U32(nr)		__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
++#define BITS_TO_BYTES(nr)	__KERNEL_DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
++
+ /*
+  * Create a contiguous bitmask starting at bit position @l and ending at
+  * position @h. For example
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index 35c25dff651a..74863e68e115 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -17,24 +17,6 @@
+=20
+ struct page;
+=20
+-/**
+- * struct bio_vec - a contiguous range of physical memory addresses
+- * @bv_page:   First page associated with the address range.
+- * @bv_len:    Number of bytes in the address range.
+- * @bv_offset: Start of the address range relative to the start of @bv_p=
+age.
+- *
+- * The following holds for a bvec if n * PAGE_SIZE < bv_offset + bv_len:
+- *
+- *   nth_page(@bv_page, n) =3D=3D @bv_page + n
+- *
+- * This holds because page_is_mergeable() checks the above property.
+- */
+-struct bio_vec {
+-	struct page	*bv_page;
+-	unsigned int	bv_len;
+-	unsigned int	bv_offset;
+-};
+-
+ struct bvec_iter {
+ 	sector_t		bi_sector;	/* device address in 512 byte
+ 						   sectors */
+diff --git a/include/linux/completion.h b/include/linux/completion.h
+index 51d9ab079629..29917878e650 100644
+--- a/include/linux/completion.h
++++ b/include/linux/completion.h
+@@ -11,23 +11,6 @@
+=20
+ #include <linux/swait.h>
+=20
+-/*
+- * struct completion - structure used to maintain state for a "completio=
+n"
+- *
+- * This is the opaque structure used to maintain the state for a "comple=
+tion".
+- * Completions currently use a FIFO to queue threads that have to wait f=
+or
+- * the "completion" event.
+- *
+- * See also:  complete(), wait_for_completion() (and friends _timeout,
+- * _interruptible, _interruptible_timeout, and _killable), init_completi=
+on(),
+- * reinit_completion(), and macros DECLARE_COMPLETION(),
+- * DECLARE_COMPLETION_ONSTACK().
+- */
+-struct completion {
+-	unsigned int done;
+-	struct swait_queue_head wait;
+-};
+-
+ #define init_completion_map(x, m) init_completion(x)
+ static inline void complete_acquire(struct completion *x) {}
+ static inline void complete_release(struct completion *x) {}
+diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+index 64dae70d31f5..d0333b7b958e 100644
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -13,9 +13,6 @@
+ #include <linux/atomic.h>
+ #include <linux/bug.h>
+=20
+-/* Don't assign or return these: may not be this big! */
+-typedef struct cpumask { DECLARE_BITMAP(bits, NR_CPUS); } cpumask_t;
+-
+ /**
+  * cpumask_bits - get the bits in a cpumask
+  * @maskp: the struct cpumask *
+diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
+index 0ee140176f10..a60d7eda9709 100644
+--- a/include/linux/hrtimer.h
++++ b/include/linux/hrtimer.h
+@@ -94,38 +94,6 @@ enum hrtimer_restart {
+ #define HRTIMER_STATE_INACTIVE	0x00
+ #define HRTIMER_STATE_ENQUEUED	0x01
+=20
+-/**
+- * struct hrtimer - the basic hrtimer structure
+- * @node:	timerqueue node, which also manages node.expires,
+- *		the absolute expiry time in the hrtimers internal
+- *		representation. The time is related to the clock on
+- *		which the timer is based. Is setup by adding
+- *		slack to the _softexpires value. For non range timers
+- *		identical to _softexpires.
+- * @_softexpires: the absolute earliest expiry time of the hrtimer.
+- *		The time which was given as expiry time when the timer
+- *		was armed.
+- * @function:	timer expiry callback function
+- * @base:	pointer to the timer base (per cpu and per clock)
+- * @state:	state information (See bit values above)
+- * @is_rel:	Set if the timer was armed relative
+- * @is_soft:	Set if hrtimer will be expired in soft interrupt context.
+- * @is_hard:	Set if hrtimer will be expired in hard interrupt context
+- *		even on RT.
+- *
+- * The hrtimer structure must be initialized by hrtimer_init()
+- */
+-struct hrtimer {
+-	struct timerqueue_node		node;
+-	ktime_t				_softexpires;
+-	enum hrtimer_restart		(*function)(struct hrtimer *);
+-	struct hrtimer_clock_base	*base;
+-	u8				state;
+-	u8				is_rel;
+-	u8				is_soft;
+-	u8				is_hard;
+-};
+-
+ /**
+  * struct hrtimer_sleeper - simple sleeper structure
+  * @timer:	embedded timer structure
+diff --git a/include/linux/kobject.h b/include/linux/kobject.h
+index c740062b4b1a..9d33cf8a468f 100644
+--- a/include/linux/kobject.h
++++ b/include/linux/kobject.h
+@@ -61,24 +61,6 @@ enum kobject_action {
+ 	KOBJ_UNBIND,
+ };
+=20
+-struct kobject {
+-	const char		*name;
+-	struct list_head	entry;
+-	struct kobject		*parent;
+-	struct kset		*kset;
+-	struct kobj_type	*ktype;
+-	struct kernfs_node	*sd; /* sysfs directory entry */
+-	struct kref		kref;
+-#ifdef CONFIG_DEBUG_KOBJECT_RELEASE
+-	struct delayed_work	release;
+-#endif
+-	unsigned int state_initialized:1;
+-	unsigned int state_in_sysfs:1;
+-	unsigned int state_add_uevent_sent:1;
+-	unsigned int state_remove_uevent_sent:1;
+-	unsigned int uevent_suppress:1;
+-};
+-
+ extern __printf(2, 3)
+ int kobject_set_name(struct kobject *kobj, const char *name, ...);
+ extern __printf(2, 0)
+diff --git a/include/linux/kref.h b/include/linux/kref.h
+index d32e21a2538c..d926b2ec2d14 100644
+--- a/include/linux/kref.h
++++ b/include/linux/kref.h
+@@ -16,10 +16,6 @@
+ #include <linux/spinlock.h>
+ #include <linux/refcount.h>
+=20
+-struct kref {
+-	refcount_t refcount;
+-};
+-
+ #define KREF_INIT(n)	{ .refcount =3D REFCOUNT_INIT(n), }
+=20
+ /**
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 8f226d460f51..e8e0a352128b 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -31,50 +31,6 @@
+ #endif
+=20
+ #ifndef CONFIG_PREEMPT_RT
+-
+-/*
+- * Simple, straightforward mutexes with strict semantics:
+- *
+- * - only one task can hold the mutex at a time
+- * - only the owner can unlock the mutex
+- * - multiple unlocks are not permitted
+- * - recursive locking is not permitted
+- * - a mutex object must be initialized via the API
+- * - a mutex object must not be initialized via memset or copying
+- * - task may not exit with mutex held
+- * - memory areas where held locks reside must not be freed
+- * - held mutexes must not be reinitialized
+- * - mutexes may not be used in hardware or software interrupt
+- *   contexts such as tasklets and timers
+- *
+- * These semantics are fully enforced when DEBUG_MUTEXES is
+- * enabled. Furthermore, besides enforcing the above rules, the mutex
+- * debugging code also implements a number of additional features
+- * that make lock debugging easier and faster:
+- *
+- * - uses symbolic names of mutexes, whenever they are printed in debug =
+output
+- * - point-of-acquire tracking, symbolic lookup of function names
+- * - list of all locks held in the system, printout of them
+- * - owner tracking
+- * - detects self-recursing locks and prints out all relevant info
+- * - detects multi-task circular deadlocks and prints out all affected
+- *   locks and tasks (and only those tasks)
+- */
+-struct mutex {
+-	atomic_long_t		owner;
+-	raw_spinlock_t		wait_lock;
+-#ifdef CONFIG_MUTEX_SPIN_ON_OWNER
+-	struct optimistic_spin_queue osq; /* Spinner MCS lock */
+-#endif
+-	struct list_head	wait_list;
+-#ifdef CONFIG_DEBUG_MUTEXES
+-	void			*magic;
+-#endif
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map	dep_map;
+-#endif
+-};
+-
+ #ifdef CONFIG_DEBUG_MUTEXES
+=20
+ #define __DEBUG_MUTEX_INITIALIZER(lockname)				\
+@@ -132,13 +88,6 @@ extern bool mutex_is_locked(struct mutex *lock);
+  */
+ #include <linux/rtmutex.h>
+=20
+-struct mutex {
+-	struct rt_mutex_base	rtmutex;
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map	dep_map;
+-#endif
+-};
+-
+ #define __MUTEX_INITIALIZER(mutexname)					\
+ {									\
+ 	.rtmutex =3D __RT_MUTEX_BASE_INITIALIZER(mutexname.rtmutex)	\
+diff --git a/include/linux/osq_lock.h b/include/linux/osq_lock.h
+index 5581dbd3bd34..782136e5fcf6 100644
+--- a/include/linux/osq_lock.h
++++ b/include/linux/osq_lock.h
+@@ -12,14 +12,6 @@ struct optimistic_spin_node {
+ 	int cpu; /* encoded CPU # + 1 value */
+ };
+=20
+-struct optimistic_spin_queue {
+-	/*
+-	 * Stores an encoded value of the CPU # of the tail node in the queue.
+-	 * If the queue is empty, then it's set to OSQ_UNLOCKED_VAL.
+-	 */
+-	atomic_t tail;
+-};
+-
+ #define OSQ_UNLOCKED_VAL (0)
+=20
+ /* Init macro and function. */
+diff --git a/include/linux/percpu-rwsem.h b/include/linux/percpu-rwsem.h
+index 5fda40f97fe9..b9f611997124 100644
+--- a/include/linux/percpu-rwsem.h
++++ b/include/linux/percpu-rwsem.h
+@@ -9,17 +9,6 @@
+ #include <linux/rcu_sync.h>
+ #include <linux/lockdep.h>
+=20
+-struct percpu_rw_semaphore {
+-	struct rcu_sync		rss;
+-	unsigned int __percpu	*read_count;
+-	struct rcuwait		writer;
+-	wait_queue_head_t	waiters;
+-	atomic_t		block;
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map	dep_map;
+-#endif
+-};
+-
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ #define __PERCPU_RWSEM_DEP_MAP_INIT(lockname)	.dep_map =3D { .name =3D #=
+lockname },
+ #else
+diff --git a/include/linux/pid.h b/include/linux/pid.h
+index 343abf22092e..5ca6e1efaeeb 100644
+--- a/include/linux/pid.h
++++ b/include/linux/pid.h
+@@ -6,15 +6,6 @@
+ #include <linux/wait.h>
+ #include <linux/refcount.h>
+=20
+-enum pid_type
+-{
+-	PIDTYPE_PID,
+-	PIDTYPE_TGID,
+-	PIDTYPE_PGID,
+-	PIDTYPE_SID,
+-	PIDTYPE_MAX,
+-};
+-
+ /*
+  * What is struct pid?
+  *
+diff --git a/include/linux/rcu_sync.h b/include/linux/rcu_sync.h
+index 0027d4c8087c..c4f8a765481e 100644
+--- a/include/linux/rcu_sync.h
++++ b/include/linux/rcu_sync.h
+@@ -13,15 +13,6 @@
+ #include <linux/wait.h>
+ #include <linux/rcupdate.h>
+=20
+-/* Structure to mediate between updaters and fastpath-using readers.  */
+-struct rcu_sync {
+-	int			gp_state;
+-	int			gp_count;
+-	wait_queue_head_t	gp_wait;
+-
+-	struct rcu_head		cb_head;
+-};
+-
+ /**
+  * rcu_sync_is_idle() - Are readers permitted to use their fastpaths?
+  * @rsp: Pointer to rcu_sync structure to use for synchronization
+diff --git a/include/linux/rcuwait.h b/include/linux/rcuwait.h
+index 61c56cca95c4..4e8fdf939dd8 100644
+--- a/include/linux/rcuwait.h
++++ b/include/linux/rcuwait.h
+@@ -5,18 +5,6 @@
+ #include <linux/rcupdate.h>
+ #include <linux/sched/signal.h>
+=20
+-/*
+- * rcuwait provides a way of blocking and waking up a single
+- * task in an rcu-safe manner.
+- *
+- * The only time @task is non-nil is when a user is blocked (or
+- * checking if it needs to) on a condition, and reset as soon as we
+- * know that the condition has succeeded and are awoken.
+- */
+-struct rcuwait {
+-	struct task_struct __rcu *task;
+-};
+-
+ #define __RCUWAIT_INITIALIZER(name)		\
+ 	{ .task =3D NULL, }
+=20
+diff --git a/include/linux/refcount.h b/include/linux/refcount.h
+index b8a6e387f8f9..63c7b8c9e4e8 100644
+--- a/include/linux/refcount.h
++++ b/include/linux/refcount.h
+@@ -100,18 +100,6 @@
+=20
+ struct mutex;
+=20
+-/**
+- * typedef refcount_t - variant of atomic_t specialized for reference co=
+unts
+- * @refs: atomic_t counter field
+- *
+- * The counter saturates at REFCOUNT_SATURATED and will not move once
+- * there. This avoids wrapping the counter and causing 'spurious'
+- * use-after-free bugs.
+- */
+-typedef struct refcount_struct {
+-	atomic_t refs;
+-} refcount_t;
+-
+ #define REFCOUNT_INIT(n)	{ .refs =3D ATOMIC_INIT(n), }
+ #define REFCOUNT_MAX		INT_MAX
+ #define REFCOUNT_SATURATED	(INT_MIN / 2)
+diff --git a/include/linux/rtmutex.h b/include/linux/rtmutex.h
+index 9deedfeec2b1..0b071bd6805d 100644
+--- a/include/linux/rtmutex.h
++++ b/include/linux/rtmutex.h
+@@ -15,17 +15,11 @@
+=20
+ #include <linux/compiler.h>
+ #include <linux/linkage.h>
+-#include <linux/rbtree_types.h>
++#include <linux/struct_types.h>
+ #include <linux/spinlock_types_raw.h>
+=20
+ extern int max_lock_depth; /* for sysctl */
+=20
+-struct rt_mutex_base {
+-	raw_spinlock_t		wait_lock;
+-	struct rb_root_cached   waiters;
+-	struct task_struct	*owner;
+-};
+-
+ #define __RT_MUTEX_BASE_INITIALIZER(rtbasename)				\
+ {									\
+ 	.wait_lock =3D __RAW_SPIN_LOCK_UNLOCKED(rtbasename.wait_lock),	\
+diff --git a/include/linux/rwbase_rt.h b/include/linux/rwbase_rt.h
+index 1d264dd08625..7a0bec89974e 100644
+--- a/include/linux/rwbase_rt.h
++++ b/include/linux/rwbase_rt.h
+@@ -8,11 +8,6 @@
+ #define READER_BIAS		(1U << 31)
+ #define WRITER_BIAS		(1U << 30)
+=20
+-struct rwbase_rt {
+-	atomic_t		readers;
+-	struct rt_mutex_base	rtmutex;
+-};
+-
+ #define __RWBASE_INITIALIZER(name)				\
+ {								\
+ 	.readers =3D ATOMIC_INIT(READER_BIAS),			\
+diff --git a/include/linux/rwlock_types.h b/include/linux/rwlock_types.h
+index 1948442e7750..8675a7b10688 100644
+--- a/include/linux/rwlock_types.h
++++ b/include/linux/rwlock_types.h
+@@ -22,17 +22,6 @@
+  * portions Copyright 2005, Red Hat, Inc., Ingo Molnar
+  * Released under the General Public License (GPL).
+  */
+-typedef struct {
+-	arch_rwlock_t raw_lock;
+-#ifdef CONFIG_DEBUG_SPINLOCK
+-	unsigned int magic, owner_cpu;
+-	void *owner;
+-#endif
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map dep_map;
+-#endif
+-} rwlock_t;
+-
+ #define RWLOCK_MAGIC		0xdeaf1eed
+=20
+ #ifdef CONFIG_DEBUG_SPINLOCK
+@@ -54,14 +43,6 @@ typedef struct {
+=20
+ #include <linux/rwbase_rt.h>
+=20
+-typedef struct {
+-	struct rwbase_rt	rwbase;
+-	atomic_t		readers;
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map	dep_map;
+-#endif
+-} rwlock_t;
+-
+ #define __RWLOCK_RT_INITIALIZER(name)					\
+ {									\
+ 	.rwbase =3D __RWBASE_INITIALIZER(name),				\
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index f9348769e558..462cda939c4e 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -32,39 +32,6 @@
+ #include <linux/osq_lock.h>
+ #endif
+=20
+-/*
+- * For an uncontended rwsem, count and owner are the only fields a task
+- * needs to touch when acquiring the rwsem. So they are put next to each
+- * other to increase the chance that they will share the same cacheline.
+- *
+- * In a contended rwsem, the owner is likely the most frequently accesse=
+d
+- * field in the structure as the optimistic waiter that holds the osq lo=
+ck
+- * will spin on owner. For an embedded rwsem, other hot fields in the
+- * containing structure should be moved further away from the rwsem to
+- * reduce the chance that they will share the same cacheline causing
+- * cacheline bouncing problem.
+- */
+-struct rw_semaphore {
+-	atomic_long_t count;
+-	/*
+-	 * Write owner or one of the read owners as well flags regarding
+-	 * the current state of the rwsem. Can be used as a speculative
+-	 * check to see if the write owner is running on the cpu.
+-	 */
+-	atomic_long_t owner;
+-#ifdef CONFIG_RWSEM_SPIN_ON_OWNER
+-	struct optimistic_spin_queue osq; /* spinner MCS lock */
+-#endif
+-	raw_spinlock_t wait_lock;
+-	struct list_head wait_list;
+-#ifdef CONFIG_DEBUG_RWSEMS
+-	void *magic;
+-#endif
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map	dep_map;
+-#endif
+-};
+-
+ /* In all implementations count !=3D 0 means locked */
+ static inline int rwsem_is_locked(struct rw_semaphore *sem)
+ {
+@@ -125,13 +92,6 @@ static inline int rwsem_is_contended(struct rw_semaph=
+ore *sem)
+=20
+ #include <linux/rwbase_rt.h>
+=20
+-struct rw_semaphore {
+-	struct rwbase_rt	rwbase;
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map	dep_map;
+-#endif
+-};
+-
+ #define __RWSEM_INITIALIZER(name)				\
+ 	{							\
+ 		.rwbase =3D __RWBASE_INITIALIZER(name),		\
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 37ded6b8fee6..622cba2a45ff 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -38,37 +38,6 @@
+  */
+ #define KCSAN_SEQLOCK_REGION_MAX 1000
+=20
+-/*
+- * Sequence counters (seqcount_t)
+- *
+- * This is the raw counting mechanism, without any writer protection.
+- *
+- * Write side critical sections must be serialized and non-preemptible.
+- *
+- * If readers can be invoked from hardirq or softirq contexts,
+- * interrupts or bottom halves must also be respectively disabled before
+- * entering the write section.
+- *
+- * This mechanism can't be used if the protected data contains pointers,
+- * as the writer can invalidate a pointer that a reader is following.
+- *
+- * If the write serialization mechanism is one of the common kernel
+- * locking primitives, use a sequence counter with associated lock
+- * (seqcount_LOCKNAME_t) instead.
+- *
+- * If it's desired to automatically handle the sequence counter writer
+- * serialization and non-preemptibility requirements, use a sequential
+- * lock (seqlock_t) instead.
+- *
+- * See Documentation/locking/seqlock.rst
+- */
+-typedef struct seqcount {
+-	unsigned sequence;
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map dep_map;
+-#endif
+-} seqcount_t;
+-
+ static inline void __seqcount_init(seqcount_t *s, const char *name,
+ 					  struct lock_class_key *key)
+ {
+diff --git a/include/linux/spinlock_types.h b/include/linux/spinlock_type=
+s.h
+index 2dfa35ffec76..c1f481d334ae 100644
+--- a/include/linux/spinlock_types.h
++++ b/include/linux/spinlock_types.h
+@@ -14,20 +14,6 @@
+ #ifndef CONFIG_PREEMPT_RT
+=20
+ /* Non PREEMPT_RT kernels map spinlock to raw_spinlock */
+-typedef struct spinlock {
+-	union {
+-		struct raw_spinlock rlock;
+-
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-# define LOCK_PADSIZE (offsetof(struct raw_spinlock, dep_map))
+-		struct {
+-			u8 __padding[LOCK_PADSIZE];
+-			struct lockdep_map dep_map;
+-		};
+-#endif
+-	};
+-} spinlock_t;
+-
+ #define ___SPIN_LOCK_INITIALIZER(lockname)	\
+ 	{					\
+ 	.raw_lock =3D __ARCH_SPIN_LOCK_UNLOCKED,	\
+@@ -47,13 +33,6 @@ typedef struct spinlock {
+ /* PREEMPT_RT kernels map spinlock to rt_mutex */
+ #include <linux/rtmutex.h>
+=20
+-typedef struct spinlock {
+-	struct rt_mutex_base	lock;
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map	dep_map;
+-#endif
+-} spinlock_t;
+-
+ #define __SPIN_LOCK_UNLOCKED(name)				\
+ 	{							\
+ 		.lock =3D __RT_MUTEX_BASE_INITIALIZER(name.lock),	\
+diff --git a/include/linux/spinlock_types_raw.h b/include/linux/spinlock_=
+types_raw.h
+index 91cb36b65a17..f6a1737f2ab8 100644
+--- a/include/linux/spinlock_types_raw.h
++++ b/include/linux/spinlock_types_raw.h
+@@ -1,26 +1,7 @@
+ #ifndef __LINUX_SPINLOCK_TYPES_RAW_H
+ #define __LINUX_SPINLOCK_TYPES_RAW_H
+=20
+-#include <linux/types.h>
+-
+-#if defined(CONFIG_SMP)
+-# include <asm/spinlock_types.h>
+-#else
+-# include <linux/spinlock_types_up.h>
+-#endif
+-
+-#include <linux/lockdep_types.h>
+-
+-typedef struct raw_spinlock {
+-	arch_spinlock_t raw_lock;
+-#ifdef CONFIG_DEBUG_SPINLOCK
+-	unsigned int magic, owner_cpu;
+-	void *owner;
+-#endif
+-#ifdef CONFIG_DEBUG_LOCK_ALLOC
+-	struct lockdep_map dep_map;
+-#endif
+-} raw_spinlock_t;
++#include <linux/struct_types.h>
+=20
+ #define SPINLOCK_MAGIC		0xdead4ead
+=20
+diff --git a/include/linux/spinlock_types_up.h b/include/linux/spinlock_t=
+ypes_up.h
+index c09b6407ae1b..5b0cf1d86105 100644
+--- a/include/linux/spinlock_types_up.h
++++ b/include/linux/spinlock_types_up.h
+@@ -1,7 +1,7 @@
+ #ifndef __LINUX_SPINLOCK_TYPES_UP_H
+ #define __LINUX_SPINLOCK_TYPES_UP_H
+=20
+-#ifndef __LINUX_SPINLOCK_TYPES_H
++#ifndef __LINUX_STRUCT_TYPES_H
+ # error "please don't include this file directly"
+ #endif
+=20
+diff --git a/include/linux/struct_types.h b/include/linux/struct_types.h
+new file mode 100644
+index 000000000000..5a06849fd347
+--- /dev/null
++++ b/include/linux/struct_types.h
+@@ -0,0 +1,483 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_STRUCT_TYPES_H
++#define __LINUX_STRUCT_TYPES_H
++/*
++ * This header includes data structures that build on top of
++ * the plain types from linux/types.h and that are commonly
++ * embedded within other structures in the kernel.
++ *
++ * By keeping these in one place that has a minimum set of
++ * indirect includes, we can avoid deeply nested include
++ * hierarchies that slow down the build and cause frequent
++ * recompiles after header changes.
++ *
++ * Be careful about including further headers here.
++ */
++
++#include <linux/types.h>
++#include <linux/bits.h>
++#include <linux/threads.h>
++#include <linux/lockdep_types.h>
++#include <linux/rbtree_types.h>
++
++#if defined(CONFIG_SMP)
++# include <asm/spinlock_types.h>
++#else
++# include <linux/spinlock_types_up.h>
++#endif
++
++/**
++ * typedef refcount_t - variant of atomic_t specialized for reference co=
+unts
++ * @refs: atomic_t counter field
++ *
++ * The counter saturates at REFCOUNT_SATURATED and will not move once
++ * there. This avoids wrapping the counter and causing 'spurious'
++ * use-after-free bugs.
++ */
++typedef struct refcount_struct {
++	atomic_t refs;
++} refcount_t;
++
++struct kref {
++	refcount_t refcount;
++};
++
++typedef struct raw_spinlock {
++	arch_spinlock_t raw_lock;
++#ifdef CONFIG_DEBUG_SPINLOCK
++	unsigned int magic, owner_cpu;
++	void *owner;
++#endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map dep_map;
++#endif
++} raw_spinlock_t;
++
++struct task_struct;
++struct rt_mutex_base {
++	raw_spinlock_t		wait_lock;
++	struct rb_root_cached   waiters;
++	struct task_struct	*owner;
++};
++
++#ifndef CONFIG_PREEMPT_RT
++/* Non PREEMPT_RT kernels map spinlock to raw_spinlock */
++typedef struct spinlock {
++	union {
++		struct raw_spinlock rlock;
++
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++# define LOCK_PADSIZE (offsetof(struct raw_spinlock, dep_map))
++		struct {
++			u8 __padding[LOCK_PADSIZE];
++			struct lockdep_map dep_map;
++		};
++#endif
++	};
++} spinlock_t;
++#else
++/* PREEMPT_RT kernels map spinlock to rt_mutex */
++typedef struct spinlock {
++	struct rt_mutex_base	lock;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++#endif
++} spinlock_t;
++#endif
++
++#ifndef CONFIG_PREEMPT_RT
++typedef struct {
++	arch_rwlock_t raw_lock;
++#ifdef CONFIG_DEBUG_SPINLOCK
++	unsigned int magic, owner_cpu;
++	void *owner;
++#endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map dep_map;
++#endif
++} rwlock_t;
++#else
++struct rwbase_rt {
++	atomic_t		readers;
++	struct rt_mutex_base	rtmutex;
++};
++
++typedef struct {
++	struct rwbase_rt	rwbase;
++	atomic_t		readers;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++#endif
++} rwlock_t;
++#endif
++
++struct optimistic_spin_queue {
++	/*
++	 * Stores an encoded value of the CPU # of the tail node in the queue.
++	 * If the queue is empty, then it's set to OSQ_UNLOCKED_VAL.
++	 */
++	atomic_t tail;
++};
++
++#ifndef CONFIG_PREEMPT_RT
++/*
++ * Simple, straightforward mutexes with strict semantics:
++ *
++ * - only one task can hold the mutex at a time
++ * - only the owner can unlock the mutex
++ * - multiple unlocks are not permitted
++ * - recursive locking is not permitted
++ * - a mutex object must be initialized via the API
++ * - a mutex object must not be initialized via memset or copying
++ * - task may not exit with mutex held
++ * - memory areas where held locks reside must not be freed
++ * - held mutexes must not be reinitialized
++ * - mutexes may not be used in hardware or software interrupt
++ *   contexts such as tasklets and timers
++ *
++ * These semantics are fully enforced when DEBUG_MUTEXES is
++ * enabled. Furthermore, besides enforcing the above rules, the mutex
++ * debugging code also implements a number of additional features
++ * that make lock debugging easier and faster:
++ *
++ * - uses symbolic names of mutexes, whenever they are printed in debug =
+output
++ * - point-of-acquire tracking, symbolic lookup of function names
++ * - list of all locks held in the system, printout of them
++ * - owner tracking
++ * - detects self-recursing locks and prints out all relevant info
++ * - detects multi-task circular deadlocks and prints out all affected
++ *   locks and tasks (and only those tasks)
++ */
++struct mutex {
++	atomic_long_t		owner;
++	raw_spinlock_t		wait_lock;
++#ifdef CONFIG_MUTEX_SPIN_ON_OWNER
++	struct optimistic_spin_queue osq; /* Spinner MCS lock */
++#endif
++	struct list_head	wait_list;
++#ifdef CONFIG_DEBUG_MUTEXES
++	void			*magic;
++#endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++#endif
++};
++#else
++struct mutex {
++	struct rt_mutex_base	rtmutex;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++#endif
++};
++
++#endif
++
++/*
++ * Sequence counters (seqcount_t)
++ *
++ * This is the raw counting mechanism, without any writer protection.
++ *
++ * Write side critical sections must be serialized and non-preemptible.
++ *
++ * If readers can be invoked from hardirq or softirq contexts,
++ * interrupts or bottom halves must also be respectively disabled before
++ * entering the write section.
++ *
++ * This mechanism can't be used if the protected data contains pointers,
++ * as the writer can invalidate a pointer that a reader is following.
++ *
++ * If the write serialization mechanism is one of the common kernel
++ * locking primitives, use a sequence counter with associated lock
++ * (seqcount_LOCKNAME_t) instead.
++ *
++ * If it's desired to automatically handle the sequence counter writer
++ * serialization and non-preemptibility requirements, use a sequential
++ * lock (seqlock_t) instead.
++ *
++ * See Documentation/locking/seqlock.rst
++ */
++typedef struct seqcount {
++	unsigned sequence;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map dep_map;
++#endif
++} seqcount_t;
++
++typedef struct wait_queue_entry wait_queue_entry_t;
++
++typedef int (*wait_queue_func_t)(struct wait_queue_entry *wq_entry, unsi=
+gned mode, int flags, void *key);
++int default_wake_function(struct wait_queue_entry *wq_entry, unsigned mo=
+de, int flags, void *key);
++
++/* wait_queue_entry::flags */
++#define WQ_FLAG_EXCLUSIVE	0x01
++#define WQ_FLAG_WOKEN		0x02
++#define WQ_FLAG_BOOKMARK	0x04
++#define WQ_FLAG_CUSTOM		0x08
++#define WQ_FLAG_DONE		0x10
++#define WQ_FLAG_PRIORITY	0x20
++
++/*
++ * A single wait-queue entry structure:
++ */
++struct wait_queue_entry {
++	unsigned int		flags;
++	void			*private;
++	wait_queue_func_t	func;
++	struct list_head	entry;
++};
++
++struct wait_queue_head {
++	spinlock_t		lock;
++	struct list_head	head;
++};
++typedef struct wait_queue_head wait_queue_head_t;
++
++struct swait_queue_head {
++	raw_spinlock_t		lock;
++	struct list_head	task_list;
++};
++
++struct swait_queue {
++	struct task_struct	*task;
++	struct list_head	task_list;
++};
++
++struct timer_list {
++	/*
++	 * All fields that change during normal runtime grouped to the
++	 * same cacheline
++	 */
++	struct hlist_node	entry;
++	unsigned long		expires;
++	void			(*function)(struct timer_list *);
++	u32			flags;
++
++#ifdef CONFIG_LOCKDEP
++	struct lockdep_map	lockdep_map;
++#endif
++};
++
++struct timerqueue_node {
++	struct rb_node node;
++	ktime_t expires;
++};
++
++struct timerqueue_head {
++	struct rb_root_cached rb_root;
++};
++
++/**
++ * struct hrtimer - the basic hrtimer structure
++ * @node:	timerqueue node, which also manages node.expires,
++ *		the absolute expiry time in the hrtimers internal
++ *		representation. The time is related to the clock on
++ *		which the timer is based. Is setup by adding
++ *		slack to the _softexpires value. For non range timers
++ *		identical to _softexpires.
++ * @_softexpires: the absolute earliest expiry time of the hrtimer.
++ *		The time which was given as expiry time when the timer
++ *		was armed.
++ * @function:	timer expiry callback function
++ * @base:	pointer to the timer base (per cpu and per clock)
++ * @state:	state information (See bit values above)
++ * @is_rel:	Set if the timer was armed relative
++ * @is_soft:	Set if hrtimer will be expired in soft interrupt context.
++ * @is_hard:	Set if hrtimer will be expired in hard interrupt context
++ *		even on RT.
++ *
++ * The hrtimer structure must be initialized by hrtimer_init()
++ */
++struct hrtimer {
++	struct timerqueue_node		node;
++	ktime_t				_softexpires;
++	enum hrtimer_restart		(*function)(struct hrtimer *);
++	struct hrtimer_clock_base	*base;
++	u8				state;
++	u8				is_rel;
++	u8				is_soft;
++	u8				is_hard;
++};
++
++
++/*
++ * struct completion - structure used to maintain state for a "completio=
+n"
++ *
++ * This is the opaque structure used to maintain the state for a "comple=
+tion".
++ * Completions currently use a FIFO to queue threads that have to wait f=
+or
++ * the "completion" event.
++ *
++ * See also:  complete(), wait_for_completion() (and friends _timeout,
++ * _interruptible, _interruptible_timeout, and _killable), init_completi=
+on(),
++ * reinit_completion(), and macros DECLARE_COMPLETION(),
++ * DECLARE_COMPLETION_ONSTACK().
++ */
++struct completion {
++	unsigned int done;
++	struct swait_queue_head wait;
++};
++
++struct work_struct;
++typedef void (*work_func_t)(struct work_struct *work);
++struct work_struct {
++	atomic_long_t data;
++	struct list_head entry;
++	work_func_t func;
++#ifdef CONFIG_LOCKDEP
++	struct lockdep_map lockdep_map;
++#endif
++};
++
++struct delayed_work {
++	struct work_struct work;
++	struct timer_list timer;
++
++	/* target workqueue and CPU ->timer uses to queue ->work */
++	struct workqueue_struct *wq;
++	int cpu;
++};
++
++struct rcu_work {
++	struct work_struct work;
++	struct rcu_head rcu;
++
++	/* target workqueue ->rcu uses to queue ->work */
++	struct workqueue_struct *wq;
++};
++
++/* Structure to mediate between updaters and fastpath-using readers.  */
++struct rcu_sync {
++	int			gp_state;
++	int			gp_count;
++	wait_queue_head_t	gp_wait;
++	struct rcu_head		cb_head;
++};
++
++/*
++ * rcuwait provides a way of blocking and waking up a single
++ * task in an rcu-safe manner.
++ *
++ * The only time @task is non-nil is when a user is blocked (or
++ * checking if it needs to) on a condition, and reset as soon as we
++ * know that the condition has succeeded and are awoken.
++ */
++struct rcuwait {
++	struct task_struct __rcu *task;
++};
++
++#ifndef CONFIG_PREEMPT_RT
++/*
++ * For an uncontended rwsem, count and owner are the only fields a task
++ * needs to touch when acquiring the rwsem. So they are put next to each
++ * other to increase the chance that they will share the same cacheline.
++ *
++ * In a contended rwsem, the owner is likely the most frequently accesse=
+d
++ * field in the structure as the optimistic waiter that holds the osq lo=
+ck
++ * will spin on owner. For an embedded rwsem, other hot fields in the
++ * containing structure should be moved further away from the rwsem to
++ * reduce the chance that they will share the same cacheline causing
++ * cacheline bouncing problem.
++ */
++struct rw_semaphore {
++	atomic_long_t count;
++	/*
++	 * Write owner or one of the read owners as well flags regarding
++	 * the current state of the rwsem. Can be used as a speculative
++	 * check to see if the write owner is running on the cpu.
++	 */
++	atomic_long_t owner;
++#ifdef CONFIG_RWSEM_SPIN_ON_OWNER
++	struct optimistic_spin_queue osq; /* spinner MCS lock */
++#endif
++	raw_spinlock_t wait_lock;
++	struct list_head wait_list;
++#ifdef CONFIG_DEBUG_RWSEMS
++	void *magic;
++#endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++#endif
++};
++#else
++struct rw_semaphore {
++	struct rwbase_rt	rwbase;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++#endif
++};
++#endif
++
++struct percpu_rw_semaphore {
++	struct rcu_sync		rss;
++	unsigned int __percpu	*read_count;
++	struct rcuwait		writer;
++	wait_queue_head_t	waiters;
++	atomic_t		block;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++#endif
++};
++
++/**
++ * struct xarray - The anchor of the XArray.
++ * @xa_lock: Lock that protects the contents of the XArray.
++ *
++ * To use the xarray, define it statically or embed it in your data stru=
+cture.
++ * It is a very small data structure, so it does not usually make sense =
+to
++ * allocate it separately and keep a pointer to it in your data structur=
+e.
++ *
++ * You may use the xa_lock to protect your own data structures as well.
++ */
++/*
++ * If all of the entries in the array are NULL, @xa_head is a NULL point=
+er.
++ * If the only non-NULL entry in the array is at index 0, @xa_head is th=
+at
++ * entry.  If any other entry in the array is non-NULL, @xa_head points
++ * to an @xa_node.
++ */
++struct xarray {
++	spinlock_t	xa_lock;
++/* private: The rest of the data structure is not to be used directly. *=
+/
++	gfp_t		xa_flags;
++	void __rcu *	xa_head;
++};
++
++/**
++ * struct bio_vec - a contiguous range of physical memory addresses
++ * @bv_page:   First page associated with the address range.
++ * @bv_len:    Number of bytes in the address range.
++ * @bv_offset: Start of the address range relative to the start of @bv_p=
+age.
++ *
++ * The following holds for a bvec if n * PAGE_SIZE < bv_offset + bv_len:
++ *
++ *   nth_page(@bv_page, n) =3D=3D @bv_page + n
++ *
++ * This holds because page_is_mergeable() checks the above property.
++ */
++struct bio_vec {
++	struct page	*bv_page;
++	unsigned int	bv_len;
++	unsigned int	bv_offset;
++};
++typedef struct bio_vec skb_frag_t;
++
++/* Don't assign or return these: may not be this big! */
++typedef struct cpumask { DECLARE_BITMAP(bits, NR_CPUS); } cpumask_t;
++
++struct kobject {
++	const char		*name;
++	struct list_head	entry;
++	struct kobject		*parent;
++	struct kset		*kset;
++	struct kobj_type	*ktype;
++	struct kernfs_node	*sd; /* sysfs directory entry */
++	struct kref		kref;
++#ifdef CONFIG_DEBUG_KOBJECT_RELEASE
++	struct delayed_work	release;
++#endif
++	unsigned int state_initialized:1;
++	unsigned int state_in_sysfs:1;
++	unsigned int state_add_uevent_sent:1;
++	unsigned int state_remove_uevent_sent:1;
++	unsigned int uevent_suppress:1;
++};
++
++#endif /* __LINUX_STRUCT_TYPES_H */
+diff --git a/include/linux/swait.h b/include/linux/swait.h
+index 6a8c22b8c2a5..d7798752922d 100644
+--- a/include/linux/swait.h
++++ b/include/linux/swait.h
+@@ -38,18 +38,6 @@
+  * wait queues in most cases.
+  */
+=20
+-struct task_struct;
+-
+-struct swait_queue_head {
+-	raw_spinlock_t		lock;
+-	struct list_head	task_list;
+-};
+-
+-struct swait_queue {
+-	struct task_struct	*task;
+-	struct list_head	task_list;
+-};
+-
+ #define __SWAITQUEUE_INITIALIZER(name) {				\
+ 	.task		=3D current,					\
+ 	.task_list	=3D LIST_HEAD_INIT((name).task_list),		\
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index fda13c9d1256..a562663d4947 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -7,21 +7,7 @@
+ #include <linux/stddef.h>
+ #include <linux/debugobjects.h>
+ #include <linux/stringify.h>
+-
+-struct timer_list {
+-	/*
+-	 * All fields that change during normal runtime grouped to the
+-	 * same cacheline
+-	 */
+-	struct hlist_node	entry;
+-	unsigned long		expires;
+-	void			(*function)(struct timer_list *);
+-	u32			flags;
+-
+-#ifdef CONFIG_LOCKDEP
+-	struct lockdep_map	lockdep_map;
+-#endif
+-};
++#include <linux/struct_types.h>
+=20
+ #ifdef CONFIG_LOCKDEP
+ /*
+diff --git a/include/linux/timerqueue.h b/include/linux/timerqueue.h
+index 93884086f392..d2a4e03ec3ec 100644
+--- a/include/linux/timerqueue.h
++++ b/include/linux/timerqueue.h
+@@ -4,17 +4,7 @@
+=20
+ #include <linux/rbtree.h>
+ #include <linux/ktime.h>
+-
+-
+-struct timerqueue_node {
+-	struct rb_node node;
+-	ktime_t expires;
+-};
+-
+-struct timerqueue_head {
+-	struct rb_root_cached rb_root;
+-};
+-
++#include <linux/struct_types.h>
+=20
+ extern bool timerqueue_add(struct timerqueue_head *head,
+ 			   struct timerqueue_node *node);
+diff --git a/include/linux/wait.h b/include/linux/wait.h
+index 2d0df57c9902..020bc1cf89a5 100644
+--- a/include/linux/wait.h
++++ b/include/linux/wait.h
+@@ -11,35 +11,6 @@
+ #include <asm/current.h>
+ #include <uapi/linux/wait.h>
+=20
+-typedef struct wait_queue_entry wait_queue_entry_t;
+-
+-typedef int (*wait_queue_func_t)(struct wait_queue_entry *wq_entry, unsi=
+gned mode, int flags, void *key);
+-int default_wake_function(struct wait_queue_entry *wq_entry, unsigned mo=
+de, int flags, void *key);
+-
+-/* wait_queue_entry::flags */
+-#define WQ_FLAG_EXCLUSIVE	0x01
+-#define WQ_FLAG_WOKEN		0x02
+-#define WQ_FLAG_BOOKMARK	0x04
+-#define WQ_FLAG_CUSTOM		0x08
+-#define WQ_FLAG_DONE		0x10
+-#define WQ_FLAG_PRIORITY	0x20
+-
+-/*
+- * A single wait-queue entry structure:
+- */
+-struct wait_queue_entry {
+-	unsigned int		flags;
+-	void			*private;
+-	wait_queue_func_t	func;
+-	struct list_head	entry;
+-};
+-
+-struct wait_queue_head {
+-	spinlock_t		lock;
+-	struct list_head	head;
+-};
+-typedef struct wait_queue_head wait_queue_head_t;
+-
+ struct task_struct;
+=20
+ /*
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index 7fee9b6cfede..4e4eba8de156 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -18,7 +18,6 @@
+ struct workqueue_struct;
+=20
+ struct work_struct;
+-typedef void (*work_func_t)(struct work_struct *work);
+ void delayed_work_timer_fn(struct timer_list *t);
+=20
+ /*
+@@ -94,36 +93,10 @@ enum {
+ 	WORKER_DESC_LEN		=3D 24,
+ };
+=20
+-struct work_struct {
+-	atomic_long_t data;
+-	struct list_head entry;
+-	work_func_t func;
+-#ifdef CONFIG_LOCKDEP
+-	struct lockdep_map lockdep_map;
+-#endif
+-};
+-
+ #define WORK_DATA_INIT()	ATOMIC_LONG_INIT((unsigned long)WORK_STRUCT_NO_=
+POOL)
+ #define WORK_DATA_STATIC_INIT()	\
+ 	ATOMIC_LONG_INIT((unsigned long)(WORK_STRUCT_NO_POOL | WORK_STRUCT_STAT=
+IC))
+=20
+-struct delayed_work {
+-	struct work_struct work;
+-	struct timer_list timer;
+-
+-	/* target workqueue and CPU ->timer uses to queue ->work */
+-	struct workqueue_struct *wq;
+-	int cpu;
+-};
+-
+-struct rcu_work {
+-	struct work_struct work;
+-	struct rcu_head rcu;
+-
+-	/* target workqueue ->rcu uses to queue ->work */
+-	struct workqueue_struct *wq;
+-};
+-
+ /**
+  * struct workqueue_attrs - A struct for workqueue attributes.
+  *
+diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+index a91e3d90df8a..4f1e55074ef0 100644
+--- a/include/linux/xarray.h
++++ b/include/linux/xarray.h
+@@ -275,29 +275,6 @@ enum xa_lock_type {
+ #define XA_FLAGS_ALLOC	(XA_FLAGS_TRACK_FREE | XA_FLAGS_MARK(XA_FREE_MARK=
+))
+ #define XA_FLAGS_ALLOC1	(XA_FLAGS_TRACK_FREE | XA_FLAGS_ZERO_BUSY)
+=20
+-/**
+- * struct xarray - The anchor of the XArray.
+- * @xa_lock: Lock that protects the contents of the XArray.
+- *
+- * To use the xarray, define it statically or embed it in your data stru=
+cture.
+- * It is a very small data structure, so it does not usually make sense =
+to
+- * allocate it separately and keep a pointer to it in your data structur=
+e.
+- *
+- * You may use the xa_lock to protect your own data structures as well.
+- */
+-/*
+- * If all of the entries in the array are NULL, @xa_head is a NULL point=
+er.
+- * If the only non-NULL entry in the array is at index 0, @xa_head is th=
+at
+- * entry.  If any other entry in the array is non-NULL, @xa_head points
+- * to an @xa_node.
+- */
+-struct xarray {
+-	spinlock_t	xa_lock;
+-/* private: The rest of the data structure is not to be used directly. *=
+/
+-	gfp_t		xa_flags;
+-	void __rcu *	xa_head;
+-};
+-
+ #define XARRAY_INIT(name, flags) {				\
+ 	.xa_lock =3D __SPIN_LOCK_UNLOCKED(name.xa_lock),		\
+ 	.xa_flags =3D flags,					\
+--=20
+2.29.2
+
