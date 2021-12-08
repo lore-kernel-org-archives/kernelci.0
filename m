@@ -1,54 +1,54 @@
 MIME-Version: 1.0
-References: <20211207150927.3042197-1-arnd@kernel.org> <20211207150927.3042197-4-arnd@kernel.org>
- <20211208100514.7egjy5hraziu4pme@wittgenstein>
-In-Reply-To: <20211208100514.7egjy5hraziu4pme@wittgenstein>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Wed, 8 Dec 2021 11:10:26 +0100
-Message-ID: <CAK8P3a1zD=FY39vqWAjZH2yYYtvQMzFOCRayXuDae4H6sCWs1w@mail.gmail.com>
-Subject: Re: [RFC 3/3] headers: repurpose linux/fs_types.h
+References: <20211207190251.18426-1-davidgow@google.com> <202112071358.E8E6812D@keescook>
+In-Reply-To: <202112071358.E8E6812D@keescook>
+From: David Gow <davidgow@google.com>
+Date: Thu, 9 Dec 2021 00:17:44 +0800
+Message-ID: <CABVgOSm68xfwCrnobKJkt_Qhh95JCP6kTXrUXoDwe_pBxWWt-w@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] Documentation: dev-tools: Add KTAP specification
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Christian Brauner <christian.brauner@ubuntu.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck <groeck@chromium.org>, Kees Cook <keescook@chromium.org>, Linus Torvalds <torvalds@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Stephen Rothwell <sfr@canb.auug.org.au>, kernel test robot <lkp@intel.com>, Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Tejun Heo <tj@kernel.org>, kernelci@groups.io, Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, llvm@lists.linux.dev
+To: Kees Cook <keescook@chromium.org>
+Cc: Brendan Higgins <brendanhiggins@google.com>, Tim.Bird@sony.com, shuah@kernel.org, Jonathan Corbet <corbet@lwn.net>, rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Wed, Dec 8, 2021 at 11:05 AM Christian Brauner
-<christian.brauner@ubuntu.com> wrote:
+On Wed, Dec 8, 2021 at 6:02 AM Kees Cook <keescook@chromium.org> wrote:
 >
-> On Tue, Dec 07, 2021 at 04:09:27PM +0100, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
+> On Tue, Dec 07, 2021 at 11:02:51AM -0800, David Gow wrote:
+> > From: Rae Moar <rmoar@google.com>
 > >
-> > linux/fs_types.h traditionally describes the types of file systems we
-> > deal with, but the file name could also be interpreted to refer to
-> > data types used for interacting with file systems, similar to
-> > linux/spinlock_types.h or linux/mm_types.h.
+> > It does not make any significant additions or changes other than those
+> > already in use in the kernel: additional features can be added as they
+> > become necessary and used.
 > >
-> > Splitting out the data type definitions from the generic header helps
-> > avoid excessive indirect include hierarchies, so steal this file
-> > name and repurpose it to contain the definitions for file, inode,
-> > address_space, super_block, file_lock, quota and filename, along with
-> > their respective callback operations, moving them out of linux/fs.h.
+> > [1]: https://testanything.org/tap-version-13-specification.html
 > >
-> > The preprocessed linux/fs_types.h is now about 50KB, compared to
-> > over 1MB for the traditional linux/fs.h, and can be included from
-> > most other headers that currently rely on type definitions from
-> > linux/fs.h.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
+> > Signed-off-by: Rae Moar <rmoar@google.com>
+> > Co-developed-by: David Gow <davidgow@google.com>
+> > Signed-off-by: David Gow <davidgow@google.com>
 >
-> I tried to apply the series to take a closer look but it fails to apply
-> cleanup down to v5.15 and any release after that. What's the base I
-> should use for this?
+> I like it! Thank you so much for suffering through my earlier reviews.
+> :)
+>
+> The only concern I have is wonder what'll be needed to kselftest to
+> deal with indentation changes. As long as this can be implemented
+> without a subtest knowing it is a subtest, we're good.
 
-It is based on yesterday's linux-next plus additional patches I used
-for testing. Sorry about the extra troubles, but this was the most
-convenient way for me, as it lets me find build regressions in random
-configs more easily when I have a base tree that builds randconfig
-warning-free.
+I'd think a minor tweak to the prefix.pl script should handle it for most tests:
+https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git/tree/tools/testing/selftests/kselftest/prefix.pl
 
-The patches are at the top of my randconfig tree [1] at the moment,
-so you can try out that tree, or rebase the patches from there.
+Certainly the indent should be the only difference between a top-level
+test result and a subtest now.
 
-        Arnd
+And, if the results do use test plans (i.e., state how many tests are
+expected beforehand) it's possible to parse the results even without
+indentation. It it looks like it would be a problem, we could
+explicitly state that indentation is optional if a test plan is
+present (or provide some other mechanism for detecting the end of the
+subtests: just checking the test number has some corner cases which'd
+fail, but doing something akin to the "Subtest:" header TAP14 used
+makes this pretty robust). Things like that would overcomplicate it a
+bit, though, and might end up verging back on "tests need to know
+they're subtests" territory, depending on the exact implementation, so
+I think things are probably better as-is.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=randconfig-5.17-next
+Cheers,
+-- David
