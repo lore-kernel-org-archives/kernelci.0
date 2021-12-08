@@ -1,85 +1,58 @@
-Date: Tue, 16 Nov 2021 20:06:38 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
-Message-ID: <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk>
-References: <20211115111816.3911213-1-ardb@kernel.org>
- <20211115111816.3911213-8-ardb@kernel.org>
- <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com>
- <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20211207150927.3042197-1-arnd@kernel.org> <20211207150927.3042197-3-arnd@kernel.org>
+ <CAHk-=wgwQg=5gZZ6ewusLHEAw-DQm7wWm7aoQt6TYO_xb0cBog@mail.gmail.com>
+In-Reply-To: <CAHk-=wgwQg=5gZZ6ewusLHEAw-DQm7wWm7aoQt6TYO_xb0cBog@mail.gmail.com>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Wed, 8 Dec 2021 09:55:47 +0100
+Message-ID: <CAK8P3a3Uy0k+SnWYqz7FMsQsu14VzivMJcjGDRBLv17adFYywA@mail.gmail.com>
+Subject: Re: [RFC 2/3] headers: introduce linux/struct_types.h
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, Tony Lindgren <tony@atomide.com>, linux-omap <linux-omap@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Nicolas Pitre <nico@fluxnic.net>, Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck <groeck@chromium.org>, Kees Cook <keescook@chromium.org>, Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Stephen Rothwell <sfr@canb.auug.org.au>, kernel test robot <lkp@intel.com>, Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Tejun Heo <tj@kernel.org>, kernelci@groups.io, linux-fsdevel <linux-fsdevel@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, llvm@lists.linux.dev
 
-On Tue, Nov 16, 2021 at 08:28:02PM +0100, Ard Biesheuvel wrote:
-> (+ Tony and linux-omap@)
-> 
-> On Tue, 16 Nov 2021 at 10:23, Guillaume Tucker
-> <guillaume.tucker@collabora.com> wrote:
+On Tue, Dec 7, 2021 at 7:17 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Tue, Dec 7, 2021 at 7:10 AM Arnd Bergmann <arnd@kernel.org> wrote:
 > >
-> > Hi Ard,
+> > From: Arnd Bergmann <arnd@arndb.de>
 > >
-> > Please see the bisection report below about a boot failure on
-> > omap4-panda which is pointing to this patch.
-> >
-> > Reports aren't automatically sent to the public while we're
-> > trialing new bisection features on kernelci.org but this one
-> > looks valid.
-> >
-> > Some more details can be found here:
-> >
-> >   https://linux.kernelci.org/test/case/id/6191b1b97c175a5ade335948/
-> >
-> > It seems like the kernel just froze after about 3 seconds without
-> > any obvious errors in the log.
-> >
-> > Please let us know if you need any help debugging this issue or
-> > if you have a fix to try.
-> >
-> 
-> Thanks for the report.
-> 
-> I wonder if this might be related to low level platform code running
-> off a different stack (maybe in SRAM?) when an interrupt is taken? Or
-> using a different set of page tables that are out of sync in terms of
-> VMALLOC space mappings?
-> 
-> Could anyone who speaks OMAP please take a look at the linked boot
-> log, and hopefully make sense of it?
-> 
-> For background, this series enables vmap'ed stacks support for ARMv7,
-> which means that the entry code checks whether the stack pointer may
-> be pointing into the guard region before the vmalloc'ed stack, and
-> kills the task if it looks like the kernel stack overflowed.
-> 
-> Here's another instance:
-> https://linux.kernelci.org/build/id/6193fa5c6c4e1d02bd3358ff/
-> 
-> Everything builds and boots happily, but odd things happen on OMAP
-> based devices: Panda just gives up right after discovering the USB
-> controller, and Beagle-XM just starts showing all kinds of weird
-> crashes at roughly the same point in the boot.
+> > Working towards a cleaner header structure, start by moving the most
+> > commonly embedded structures into a single header file that itself
+> > has only a minimum set of indirect includes. At this moment, this
+> > include structures for
+>
+> Ugh. I liked your 1/3 patch, but I absolutely detest this one.
+>
+> It makes no sense to me, and just makes that header file a completely
+> random collection of some random structure types.
+>
+> And I absolutely hate how it splits out the definition of the struct
+> from basic core infrastructure (initializers etc random inline
+> functions) for said structures.
+>
+> So no. NAK on this one. I think it's a disaster.
 
-I haven't looked at the logs yet... but there may be a more
-fundamental reason that it may be stalling.
+Ok, thank you for taking a look!
 
-vmalloc space is lazily mapped to process page tables that the
-allocation did not happen inside - specifically the L1 entries.
+Here is what I'd try next based on the feedback:
 
-When a new thread is created, you're vmalloc()ing a kernel stack.
-This is done in the parent task for the child task. If the child
-task doesn't contain the L1 entry for its vmalloc'd stack, then
-the first stack access by the child will fault.
+- reduce patch 1 somewhat to only include the types that have a strong reason
+  to get moved to linux/types.h, describing them individually but leaving them
+  it as a single combined patch
 
-The fault processing will be done in the child's context, so we
-immediately try to save the state to the child's kernel stack,
-which is not yet mapped. The result is another fault, which
-triggers yet another fault, etc.
+- keep patch 3, but leave 'struct super_block' in linux/fs.h for the moment
+  because  of 'struct list_lru'.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+- drop patch 2, but instead find a new home for each structure (along with
+  its initializers) if needed for defining the types in the new linux/fs_types.h
+  without too many indirect includes. I'll skip the structs that would be needed
+  later for mm.h/sched.h/device.h/.... for the moment.
+
+For the added headers, do you have a preference for whether to try grouping
+them logically or not? I could either split them out individually into many new
+headers (xarray_types.h, idr_types.h, percpu_rwsem_types.h, rwsem_types.h,
+...), or combine some of them when they define related types.
+
+        Arnd
