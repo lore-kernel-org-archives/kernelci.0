@@ -1,73 +1,106 @@
-Message-ID: <921f80f5-a95d-ee12-2266-16503edea614@collabora.com>
-Date: Wed, 26 Jan 2022 11:28:14 +0000
+Return-Path: <Nikolai.Kondrashov@redhat.com>
+Message-ID: <81a88dac-d19d-2388-03a7-d85dc1f8ea85@redhat.com>
+Date: Thu, 27 Jan 2022 16:41:04 +0200
 MIME-Version: 1.0
-Subject: Re: ardb/for-kernelci bisection: baseline.dmesg.alert on da850-lcdk
-References: <61e3f952.1c69fb81.3e21a.0062@mx.google.com>
- <517aaa07-a0e9-aad4-0cf6-158460dbd9fc@collabora.com>
- <CAMj1kXFWtn2PT81nvNs0e6YghwM2Kuc+jX+qnAqEha64Qn29mQ@mail.gmail.com>
- <CAL_JsqJJEaer6Z5Vhu3G20GHgqq9mEn+Tjok_qU_2ax0iA5ETg@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-In-Reply-To: <CAL_JsqJJEaer6Z5Vhu3G20GHgqq9mEn+Tjok_qU_2ax0iA5ETg@mail.gmail.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Subject: #KCIDB engagement report
+Reply-To: kernelci@groups.io, Nikolai.Kondrashov@redhat.com
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, robh+dt@kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, "kernelci-results@groups.io" <kernelci-results@groups.io>
+To: kernelci@groups.io, automated-testing@lists.yoctoproject.org
 
-On 25/01/2022 22:27, Rob Herring wrote:
-> On Tue, Jan 25, 2022 at 4:21 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->>
->> (adding Arnd and Rob)
->>
->> On Tue, 25 Jan 2022 at 22:32, Guillaume Tucker
->> <guillaume.tucker@collabora.com> wrote:
->>>
->>> Hello Ard,
->>>
->>> Please see the bisection report below.  I had a look around the
->>> results and git history, this is about an "alert" message which
->>> is present in mainline and linux-next but one day it disappeared
->>> on your for-kernelci branch and then it was introduced again.
->>> See the regression history here:
->>>
->>>   https://linux.kernelci.org/test/case/id/61ef9d00e75a9ac935abbd26/
->>>
->>> The revision when it last passed was last Friday, and your branch
->>> has been force-pushed since then so I don't have access to the
->>> git history for it any more.  The bisection found a revert commit
->>> that apparently re-introduced the issue, but it's all a bit
->>> confusing as this commit is not there any more but the alert
->>> message still is.
->>>
->>> The error can be found here in the log:
->>>
->>>   https://storage.kernelci.org/ardb/for-kernelci/arm-irq-and-vmap-stacks-for-rmk-11-g12fa502217d5/arm/davinci_all_defconfig/gcc-10/lab-baylibre/baseline-da850-lcdk.html#L552
->>>
->>>   BUG: Bad page state in process kworker/u2:0  pfn:c3000
->>>
->>> So I'm not sure what happened, but it has highlighted this kernel
->>> bug so I guess it might be worth taking a look in case there was
->>> a commit somewhere in your tree that resolved it at some point
->>> last week.  What do you think?
->>>
->>
->> This may be related to a known problem regarding infinite recursion on
->> some DT nodes related to USB devices: Arnd or Rob would know more
->> about this.
-> 
-> That should be fixed in rc1. Commit 9b22c17a3cc5 ("of: Check
-> 'of_node_reused' flag on of_match_device()").
+Hi everyone,
 
-Well the particular issue with the BUG message on da850-lcdk is
-still there in v5.17-rc1:
+Below is the monthly* report on KCIDB** engagement. It lists various CI
+systems and their status of engagement with KCIDB, as well as developer
+engagement.
 
-  https://linux.kernelci.org/test/case/id/61ed2891c2717f210aabbd69/
+We have no news on CI system engagement, but we're working with our KernelCI
+colleague Mark Brown on figuring out suitable notifications for him.
 
-So it doesn't look like there's a trivial solution to this in
-Ard's tree.  I believe this issue has been around for a while, so
-we'll add it to the list of kernel bugs detected by KernelCI and
-it might be something someone will want to fix one day.
+We've implemented sending notifications one hour after the last update for a
+revision arrives, thus approximating the traditional behavior of "send report
+when testing is done". Here's an example:
 
-Thanks,
-Guillaume
+     https://groups.io/g/kernelci-results-staging/message/11899
+
+However, this is still hardly useful, as there are so many failures. Thus we
+again arrive at the inescapable need for masking known failures somehow.
+
+To that end, I went over how various kernel CI systems do it, to try to find
+a solution which would accommodate everyone, and wrapped that into a FOSDEM
+talk:
+
+ 
+https://fosdem.org/2022/schedule/event/masking_known_issues_across_six_kernel_ci_systems/
+
+I have a few ideas I'll be presenting there, as well as a few problems, of
+course, and would appreciate your feedback. I'd be glad to hear any
+corrections to my summaries of how CI systems operate, too, as I had to
+prepare those in a rush.
+
+CI Engagement Status
+
+     KernelCI native
+         Sending (a lot of) production build and test results.
+         https://kcidb.kernelci.org/?var-origin=kernelci
+
+     Red Hat CKI
+         Sending production results.
+         https://kcidb.kernelci.org/?var-origin=redhat
+
+     Google Syzbot
+         Sending a subset of production results (failures only).
+         https://kcidb.kernelci.org/?var-origin=syzbot
+
+     ARM
+         Sending production results.
+         Full commit hashes are currently not available, are spoofed, and don't
+         match the ones reported by others. There's ongoing switch to using a
+         KernelCI instance setup, which should fix this.
+         https://kcidb.kernelci.org/?var-origin=arm
+
+     Sony Fuego
+         Internal design in progress.
+
+     Gentoo GKernelCI
+         Sending production results.
+         Only builds (a few architectures), no configs, no logs, and no tests
+         for now, but working on growing contributions.
+         https://kcidb.kernelci.org/?var-origin=gkernelci
+
+     Intel 0day
+         Initial conversation concluded, general interest expressed,
+         no contact since.
+
+     Linaro
+         Sending (a lot of) Tuxsuite build results to "production" KCIDB.
+         https://kcidb.kernelci.org/?var-origin=tuxsuite
+
+     TuxML
+         Initial contact in response to a report.
+         There's a plan to approach us and start work in the coming months.
+
+     Yocto Project
+         Initial contact in response to a report.
+         Would like to start sending build and test results, particularly for
+         older kernels. Would like to separate upstream commits from project
+         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
+
+     Huawei Compass CI
+         Sent a message to Fengguang Wu, who was presenting it at LVC 2021.
+         No response so far.
+
+Please respond with corrections or suggestions of other CI systems to contact.
+
+Thank you!
+Nick
+
+*More-or-less :)
+
+**KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
+   Foundation's KernelCI project:
+   https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
+
