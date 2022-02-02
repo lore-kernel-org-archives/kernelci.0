@@ -1,51 +1,48 @@
 MIME-Version: 1.0
-From: Todd Kjos <tkjos@google.com>
-Date: Tue, 1 Feb 2022 16:50:57 -0800
-Message-ID: <CAHRSSEwYiK2+hsCoKrBtUwHRHKLk2xzVq2-3aQG94g7QZWQDvA@mail.gmail.com>
-Subject: errors due to clang-14
-Content-Type: multipart/alternative; boundary="000000000000ed21c605d6fe693f"
+References: <CAHRSSEwYiK2+hsCoKrBtUwHRHKLk2xzVq2-3aQG94g7QZWQDvA@mail.gmail.com>
+In-Reply-To: <CAHRSSEwYiK2+hsCoKrBtUwHRHKLk2xzVq2-3aQG94g7QZWQDvA@mail.gmail.com>
+From: "Nick Desaulniers" <ndesaulniers@google.com>
+Date: Tue, 1 Feb 2022 19:47:01 -0800
+Message-ID: <CAKwvOd=_DqRf0Ex3Huo7n4sBvZqxMwtw7yCzR_oKYDO-Wzh0DQ@mail.gmail.com>
+Subject: Re: errors due to clang-14
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io
+To: kernelci@groups.io, tkjos@google.com
 Cc: Steve Muckle <smuckle@google.com>
 
---000000000000ed21c605d6fe693f
-Content-Type: text/plain; charset="UTF-8"
+On Tue, Feb 1, 2022 at 5:15 PM Todd Kjos via groups.io
+<tkjos=3Dgoogle.com@groups.io> wrote:
+>
+> We're seeing quite a few errors that appear to be related to clang-14 bui=
+ld tools building android kernels (esp arm32 builds). Example: android13-5.=
+15 kernel.
+>
+> I talked to our clang-built-kernel folks and they don't have any bandwidt=
+h to help with this right now, so would it be possible to switch those buil=
+ds to whatever is used for builds of stable (currently gcc-10)? We do our p=
+roduct builds with clang, but the larger benefit for us in kernelci is to b=
+e able to compare our android kernel builds with the stable kernel builds t=
+o quickly find issues introduced via android-specific code or backports.
 
-We're seeing quite a few errors that appear to be related to clang-14 build
-tools building android kernels (esp arm32 builds). Example: android13-5.15
-kerne
-<https://linux.kernelci.org/build/android/branch/android13-5.15/kernel/ASB-2022-01-05_13-5.15-1323-g2b3eb6227c38/>
-l.
+I'd rather builds of at91_dt_defconfig be turned off for the Android
+tree. Android doesn't support ARMv4, and there's warning spew from
+https://github.com/ClangBuiltLinux/linux/issues/964.  Regarding
+bandwidth, that issue is no higher priority than any of the other open
+issues in that issue tracker.
 
-I talked to our clang-built-kernel folks and they don't have any bandwidth
-to help with this right now, so would it be possible to switch those builds
-to whatever is used for builds of stable (currently gcc-10)? We do our
-product builds with clang, but the larger benefit for us in kernelci is to
-be able to compare our android kernel builds with the stable kernel builds
-to quickly find issues introduced via android-specific code or backports.
+That doesn't mean we should move CI of Android trees off clang in general.
 
-So the request is: please use the same build tools for android kernels as
-are used for the corresponding stable kernels.
+>
+> So the request is: please use the same build tools for android kernels as=
+ are used for the corresponding stable kernels.
+>
+> -Todd
+>
+>=20
 
--Todd
 
---000000000000ed21c605d6fe693f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">We&#39;re seeing quite a few errors that appear to be rela=
-ted to clang-14 build tools building android kernels (esp arm32 builds). Ex=
-ample: <a href=3D"https://linux.kernelci.org/build/android/branch/android13=
--5.15/kernel/ASB-2022-01-05_13-5.15-1323-g2b3eb6227c38/">android13-5.15 ker=
-ne</a>l.<div><br></div><div>I talked to our clang-built-kernel folks and th=
-ey don&#39;t have any bandwidth to help with this right now, so would it be=
- possible to switch those builds to whatever is used for builds of stable (=
-currently gcc-10)? We do our product=C2=A0builds with clang, but the larger=
- benefit for us in kernelci is to be able to compare our android kernel bui=
-lds with the stable kernel builds to quickly find issues introduced=C2=A0vi=
-a android-specific code or backports.</div><div><br></div><div>So the reque=
-st is: please use the same build tools for android kernels as are used for =
-the=C2=A0corresponding stable kernels.</div><div><br></div><div>-Todd</div>=
-<div><br></div></div>
-
---000000000000ed21c605d6fe693f--
+--=20
+Thanks,
+~Nick Desaulniers
