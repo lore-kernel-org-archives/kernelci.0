@@ -1,89 +1,63 @@
-From: Matthew Hart <Matthew.Hart@arm.com>
-Subject: Jenkins example configuration
-Date: Fri, 4 Feb 2022 20:31:10 +0000
-Message-ID: 
- <AM5PR0801MB1777F53F11B189594ACC524E9C299@AM5PR0801MB1777.eurprd08.prod.outlook.com>
+Return-Path: <frowand.list@gmail.com>
+From: frowand.list@gmail.com
+Subject: [PATCH 1/1] Documentation: dev-tools: clarify KTAP specification wording
+Date: Fri,  4 Feb 2022 14:32:48 -0600
+Message-Id: <20220204203248.2981902-1-frowand.list@gmail.com>
 MIME-Version: 1.0
-Return-Path: Matthew.Hart@arm.com
-Content-Language: en-GB
-Content-Type: multipart/alternative;
-	boundary="_000_AM5PR0801MB1777F53F11B189594ACC524E9C299AM5PR0801MB1777_"
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>
+To: Jonathan Corbet <corbet@lwn.net>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>
+Cc: rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 
---_000_AM5PR0801MB1777F53F11B189594ACC524E9C299AM5PR0801MB1777_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+From: Frank Rowand <frank.rowand@sony.com>
 
-Hi all,
+Clarify some confusing phrasing.
 
-I'm deploying jenkins using the kernelci-jenkins repo and using AWS EKS as =
-the kubernetes backend. I can't find any recent examples that include the k=
-8s configuration (nodes.yaml i assume) so had a few questions:
+Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+---
 
-  *   Any complaints if I upstream a patch for adding the AWS cli to the k8=
-s Docker image?
-  *   How is the K8S_CONTEXT environment variable is set in jenkins, to be =
-used in jobs/build.jpl?
-  *   Is there a record of all the node labels needed to run a full build (=
-monitor, build-trigger, k8s etc
-  *   Could I get a secrets-redacted example nodes.yaml for casc?
+One item that may result in bikeshedding is that I added the spec
+version to the title line.
 
-Cheers,
-Matt
+ Documentation/dev-tools/ktap.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-IMPORTANT NOTICE: The contents of this email and any attachments are confid=
-ential and may also be privileged. If you are not the intended recipient, p=
-lease notify the sender immediately and do not disclose the contents to any=
- other person, use it for any purpose, or store or copy the information in =
-any medium. Thank you.
+diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+index 878530cb9c27..3b7a26816930 100644
+--- a/Documentation/dev-tools/ktap.rst
++++ b/Documentation/dev-tools/ktap.rst
+@@ -1,8 +1,8 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-========================================
+-The Kernel Test Anything Protocol (KTAP)
+-========================================
++===================================================
++The Kernel Test Anything Protocol (KTAP), version 1
++===================================================
+ 
+ TAP, or the Test Anything Protocol is a format for specifying test results used
+ by a number of projects. It's website and specification are found at this `link
+@@ -186,7 +186,7 @@ starting with another KTAP version line and test plan, and end with the overall
+ result. If one of the subtests fail, for example, the parent test should also
+ fail.
+ 
+-Additionally, all result lines in a subtest should be indented. One level of
++Additionally, all lines in a subtest should be indented. One level of
+ indentation is two spaces: "  ". The indentation should begin at the version
+ line and should end before the parent test's result line.
+ 
+@@ -225,8 +225,8 @@ Major differences between TAP and KTAP
+ --------------------------------------
+ 
+ Note the major differences between the TAP and KTAP specification:
+-- yaml and json are not recommended in diagnostic messages
+-- TODO directive not recognized
++- yaml and json are not recommended in KTAP diagnostic messages
++- TODO directive not recognized in KTAP
+ - KTAP allows for an arbitrary number of tests to be nested
+ 
+ The TAP14 specification does permit nested tests, but instead of using another
+-- 
+Frank Rowand <frank.rowand@sony.com>
 
---_000_AM5PR0801MB1777F53F11B189594ACC524E9C299AM5PR0801MB1777_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-Hi all,<br>
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-<br>
-I'm deploying jenkins using the kernelci-jenkins repo and using AWS EKS as =
-the kubernetes backend. I can't find any recent examples that include the k=
-8s configuration (nodes.yaml i assume) so had a few questions:</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-<ul>
-<li><span>Any complaints if I upstream a patch for adding the AWS cli to th=
-e k8s Docker image?</span></li><li><span>How is the K8S_CONTEXT environment=
- variable is set in jenkins, to be used in jobs/build.jpl?</span></li><li><=
-span>Is there a record of all the node labels needed to run a full build (m=
-onitor, build-trigger, k8s etc</span></li><li><span>Could I get a secrets-r=
-edacted example nodes.yaml for casc?<br>
-</span></li></ul>
-<div>Cheers,<br>
-Matt<br>
-</div>
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-IMPORTANT NOTICE: The contents of this email and any attachments are confid=
-ential and may also be privileged. If you are not the intended recipient, p=
-lease notify the sender immediately and do not disclose the contents to any=
- other person, use it for any purpose,
- or store or copy the information in any medium. Thank you.
-</body>
-</html>
-
---_000_AM5PR0801MB1777F53F11B189594ACC524E9C299AM5PR0801MB1777_--
