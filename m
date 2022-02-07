@@ -1,42 +1,194 @@
-From: "Bird, Tim" <Tim.Bird@sony.com>
-Subject: Re: [PATCH v2 1/1] Documentation: dev-tools: clarify KTAP specification wording
-Date: Mon, 7 Feb 2022 17:06:07 +0000
-Message-ID: 
- <BYAPR13MB2503C78EE66DBC27ECF3FE8AFD2C9@BYAPR13MB2503.namprd13.prod.outlook.com>
-References: <20220207162813.3091899-1-frowand.list@gmail.com>
- <e795ad1a-ddb1-f0af-4a74-7c2c6a0a949a@gmail.com>
- <0de1426c-5b5d-9160-cd5c-00185fa516f5@gmail.com>
-In-Reply-To: <0de1426c-5b5d-9160-cd5c-00185fa516f5@gmail.com>
+Return-Path: <frowand.list@gmail.com>
+Subject: Re: [PATCH 1/1] Documentation: dev-tools: clarify KTAP specification wording
+From: Frank Rowand <frowand.list@gmail.com>
+References: <20220204203248.2981902-1-frowand.list@gmail.com>
+ <CABVgOS=JUxV6PRUZvTQhisSP+p34+K9Z6yT7HkXu6qeqtak1tw@mail.gmail.com>
+ <f4317040-df10-02cb-90bb-59f993de1e41@gmail.com>
+ <CABVgOSm5A8TEa65H-D+LAF2Dm-J+T49FpAzgKP3Zxd7PQbfsLw@mail.gmail.com>
+ <adad3348-3f9e-9969-d434-24164c9932e0@gmail.com>
+Message-ID: <e9860b30-ca5b-be8b-e6e1-773cf63c6ced@gmail.com>
+Date: Mon, 7 Feb 2022 11:23:49 -0600
 MIME-Version: 1.0
+In-Reply-To: <adad3348-3f9e-9969-d434-24164c9932e0@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Frank Rowand <frowand.list@gmail.com>, Jonathan Corbet <corbet@lwn.net>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Brendan Higgins <brendanhiggins@google.com>
-Cc: "rmr167@gmail.com" <rmr167@gmail.com>, "guillaume.tucker@collabora.com" <guillaume.tucker@collabora.com>, "dlatypov@google.com" <dlatypov@google.com>, "kernelci@groups.io" <kernelci@groups.io>, "kunit-dev@googlegroups.com" <kunit-dev@googlegroups.com>, "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: David Gow <davidgow@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Rae Moar <rmoar@google.com>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRnJhbmsgUm93YW5kIDxm
-cm93YW5kLmxpc3RAZ21haWwuY29tPg0KPiANCj4gT24gMi83LzIyIDEwOjM4IEFNLCBGcmFuayBS
-b3dhbmQgd3JvdGU6DQo+ID4gT24gMi83LzIyIDEwOjI4IEFNLCBmcm93YW5kLmxpc3RAZ21haWwu
-Y29tIHdyb3RlOg0KPiA+PiBGcm9tOiBGcmFuayBSb3dhbmQgPGZyYW5rLnJvd2FuZEBzb255LmNv
-bT4NCj4gPj4NCj4gPj4gQWRkIHRoZSBzcGVjIHZlcnNpb24gdG8gdGhlIHRpdGxlIGxpbmUuDQo+
-ID4+DQo+ID4+IEV4cGxhaW4gbGlrZWx5IHNvdXJjZSBvZiAiVW5rbm93biBsaW5lcyIuDQo+ID4+
-DQo+ID4+ICJVbmtub3duIGxpbmVzIiBpbiBuZXN0ZWQgdGVzdHMgYXJlIG9wdGlvbmFsbHkgaW5k
-ZW50ZWQuDQo+ID4+DQo+ID4+IEFkZCAiVW5rbm93biBsaW5lcyIgaXRlbXMgdG8gZGlmZmVyZW5j
-ZXMgYmV0d2VlbiBUQVAgJiBLVEFQIGxpc3QNCj4gPj4NCj4gPj4gU2lnbmVkLW9mZi1ieTogRnJh
-bmsgUm93YW5kIDxmcmFuay5yb3dhbmRAc29ueS5jb20+DQo+ID4+IC0tLQ0KPiA+DQo+ID4gUGxl
-YXNlIGRvIG5vdCBhcHBseSB0aGlzIHZlcnNpb24gKHYyKS4gIEkgd2FzIHdvcmtpbmcgb2ZmIHRo
-ZSBLVEFQIHNwZWNpZmljYXRpb24NCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5eXl4gVEFQDQoNCldoYXQ/Pz8NCg0KPiA+
-IGZyb20gYSBkaWZmZXJlbnQgZ2l0aHViIHJlcG8gdGhhbiBJIHNob3VsZCBoYXZlIGJlZW4gcmVm
-ZXJlbmNpbmcuDQo+IA0KPiBPSyB0byBwcm9jZWVkIHdpdGggdGhpcyB2ZXJzaW9uIG9mIHRoZSBw
-YXRjaC4gIEkgd2FzIHJlZmVyZW5jaW5nIHRoZSBwcm9wb3NlZA0KPiBUQVAgdmVyc2lvbiAxNCwg
-d2hpY2ggaXMgaW4gYSBkaWZmZXJlbnQgZ2l0aHViIHJlcG8gdGhhbiB0aGUgVEFQIHZlcnNpb24g
-MTMNCj4gc3BlY2lmaWNhdGlvbi4gIEV2ZXJ5dGhpbmcgaW4gdGhpcyBwYXRjaCBpcyBjb25zaXN0
-ZW50IHdpdGggVEFQIHZlcnNpb24gMTMsDQo+IGFzIHdlbGwgYXMgdGhlIHByb3Bvc2VkIFRBUCB2
-ZXJzaW9uIDE0Lg0KDQpJJ20gY29uZnVzZWQgYnkgdGhpcyBtZXNzYWdlLg0KV2lsbCB0aGVyZSBi
-ZSBhIHYzIG9mIHRoZSBwYXRjaCwgb3IgYXJlIHlvdSBzYXlpbmcgdG8ganVzdCBhcHBseSB0aGUg
-b3JpZ2luYWwgdjIgb2YNCnRoaXMgcGF0Y2g/DQoNCkZvciB0aGUgb3JpZ2luYWwgKHYyKSBvZiB0
-aGUgcGF0Y2gsIHdoaWNoIEkgYmVsaWV2ZSBpcyANCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2Fs
-bC8yMDIyMDIwNzE2MjgxMy4zMDkxODk5LTEtZnJvd2FuZC5saXN0QGdtYWlsLmNvbS8NCg0KeW91
-IGNhbiBhZGQgYSAiUmV2aWV3ZWQtYnkiIGZyb20gbWUuDQogLS0gVGltDQoNCg==
+On 2/7/22 11:20 AM, Frank Rowand wrote:
+> On 2/4/22 6:50 PM, David Gow wrote:
+>> On Sat, Feb 5, 2022 at 8:18 AM Frank Rowand <frowand.list@gmail.com> wrote:
+>>>
+>>> On 2/4/22 5:13 PM, David Gow wrote:
+>>>> On Sat, Feb 5, 2022 at 4:32 AM <frowand.list@gmail.com> wrote:
+>>>>>
+>>>>> From: Frank Rowand <frank.rowand@sony.com>
+>>>>>
+>>>>> Clarify some confusing phrasing.
+>>>>
+>>>> Thanks for this! A few comments below:
+>>>>
+>>>>>
+>>>>> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+>>>>> ---
+>>>>>
+>>>>> One item that may result in bikeshedding is that I added the spec
+>>>>> version to the title line.
+>>>>
+>>>> This is fine by me.
+>>>>
+>>>>>
+>>>>>  Documentation/dev-tools/ktap.rst | 12 ++++++------
+>>>>>  1 file changed, 6 insertions(+), 6 deletions(-)
+>>>>>
+>>>>> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+>>>>> index 878530cb9c27..3b7a26816930 100644
+>>>>> --- a/Documentation/dev-tools/ktap.rst
+>>>>> +++ b/Documentation/dev-tools/ktap.rst
+>>>>> @@ -1,8 +1,8 @@
+>>>>>  .. SPDX-License-Identifier: GPL-2.0
+>>>>>
+>>>>> -========================================
+>>>>> -The Kernel Test Anything Protocol (KTAP)
+>>>>> -========================================
+>>>>> +===================================================
+>>>>> +The Kernel Test Anything Protocol (KTAP), version 1
+>>>>> +===================================================
+>>>>>
+>>>>>  TAP, or the Test Anything Protocol is a format for specifying test results used
+>>>>>  by a number of projects. It's website and specification are found at this `link
+>>>>> @@ -186,7 +186,7 @@ starting with another KTAP version line and test plan, and end with the overall
+>>>>>  result. If one of the subtests fail, for example, the parent test should also
+>>>>>  fail.
+>>>>>
+>>>>> -Additionally, all result lines in a subtest should be indented. One level of
+>>>>> +Additionally, all lines in a subtest should be indented. One level of
+>>>>
+>>>> The original reason for this is to accommodate "unknown" lines which
+>>>> were not generated by the test itself (e.g, a KASAN report or BUG or
+>>>> something). These are awkward, as sometimes they're a useful thing to
+>>>> have as part of the test result, and sometimes they're unrelated spam.
+>>>> (Additionally, I think kselftest will indent these, as it indents the
+>>>> full results in a separate pass afterwards, but KUnit won't, as the
+>>>> level of nesting is done during printing.)
+>>>>
+>>>> Personally, I'd rather leave this as is, or perhaps call out "unknown"
+>>>> lines explicitly, e.g:
+>>>> Additionally, all lines in a subtest (except for 'unknown' lines)
+>>>> should be indented...
+>>>
+>>> Only listing result lines as being indented is not consistent with
+>>> the "Example KTAP output" section.  The example shows:
+>>>
+>>>    Version line           - indented
+>>>    Plan line              - indented
+>>>    Test case result lines - indented
+>>>    Diagnostic lines       - indented
+>>>    Unknown lines          - not shown in the example
+>>>
+>>> So there seem to be at least 4 types of lines that are indented for a
+>>> nested test.
+>>
+>> Agreed.
+>>
+>>>
+>>> The TAP standard (I'll use version 14 for my examples) does not allow
+>>> unknown lines (TAP 14 calls them "Anything else").  It says "is
+>>> incorrect", and "When the `pragma +strict` is enabled, incorrect test
+>>> lines SHOULD result in the test set being a failure, ...".  TAP 14
+>>> calls for the opposite behavior if `pragma -strict` is set.
+>>
+>> Are you reading the same version 14 spec as me?
+>>
+>> https://github.com/TestAnything/Specification/blob/tap-14-specification/specification.md
+> 
+> Thanks for the link.
+> 
+> I wasn't even aware of that repo.  A hint for anyone else that wants to look at the
+> spec in that repo, it is in a branch (tap-14-specfication).  I was using
+> https://github.com/isaacs/testanything.github.io.git which has slightly more
+> recent activity (Sept 6, 2015 vs Jan 19, 2015).
+
+branch 'tap14' for the isaacs repo.
+
+-Frank
+
+> 
+> -Frank
+> 
+>>
+>> I can find these lines in the version 13 spec, but not TAP14, which
+>> doesn't mention "Anything else" lines at all...
+>>
+>> Not that it matters... I'll just follow along with version 13.
+>>
+>>>
+>>> TAP 14 goes on to say "`Test::Harness` silently ignores incorrect lines,
+>>> but will become more stringent in the futures.
+>>>
+>>> It seems to me that KTAP "Unknown lines" are fundamentally different
+>>> than TAP 14 "Anything else" lines.  Tests that generate KTAP output
+>>> may print their results to the system console (or log), in which
+>>> case kernel messages (or for the system log the messages may even
+>>> come from non-kernel sources) either directly triggered by a test or
+>>> from a task that is totally unrelated to the test may exist in the KTAP
+>>> data stream.  So I would agree that "Unknown lines" are not indented.
+>>> Even if the "Unknown line" is directly triggered by the test.
+>>
+>> I do think that KTAP "unknown lines" and TAP "anything else" lines
+>> cover similar ground, the big difference being that in KTAP they're
+>> explicitly permitted, rather than "incorrect".  I guess how similar
+>> they are is as much a matter of perspective as anything...
+>>
+>> I'd agree that "unknown lines" don't _need_ to be indented, but I
+>> wouldn't call it an error to indent them if that's something a test
+>> harness does.
+>>
+>>>
+>>> But I think the KTAP specification should say that "Diagnostic lines"
+>>> are emitted by the test (or the test harness), and thus must be
+>>> indented when related to a nested test.
+>>>
+>>> And as you suggest, "Unknown lines" should be explicitly called out
+>>> as not being part of "lines in a subtest", thus do not need to be
+>>> indented.
+>>>
+>>> Does that sound good?
+>>>
+>>
+>> Agreed on both counts. Sounds great, thanks!
+>>
+>> Cheers,
+>> -- David
+>>
+>>>>
+>>>> Thoughts?
+>>>>
+>>>>>  indentation is two spaces: "  ". The indentation should begin at the version
+>>>>>  line and should end before the parent test's result line.
+>>>>>
+>>>>> @@ -225,8 +225,8 @@ Major differences between TAP and KTAP
+>>>>>  --------------------------------------
+>>>>>
+>>>>>  Note the major differences between the TAP and KTAP specification:
+>>>>> -- yaml and json are not recommended in diagnostic messages
+>>>>> -- TODO directive not recognized
+>>>>> +- yaml and json are not recommended in KTAP diagnostic messages
+>>>>> +- TODO directive not recognized in KTAP
+>>>>>  - KTAP allows for an arbitrary number of tests to be nested
+>>>>>
+>>>>
+>>>> Looks good here, cheers.
+>>>>
+>>>>
+>>>>>  The TAP14 specification does permit nested tests, but instead of using another
+>>>>> --
+>>>>> Frank Rowand <frank.rowand@sony.com>
+>>>>>
+>>>
+> 
+> .
+> 
+
