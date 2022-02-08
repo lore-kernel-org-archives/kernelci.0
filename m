@@ -1,59 +1,100 @@
+Return-Path: <frowand.list@gmail.com>
+From: frowand.list@gmail.com
+Subject: [PATCH v3 1/1] Documentation: dev-tools: clarify KTAP specification wording
+Date: Tue,  8 Feb 2022 10:46:23 -0600
+Message-Id: <20220208164623.3151777-1-frowand.list@gmail.com>
 MIME-Version: 1.0
-References: <20211115111816.3911213-1-ardb@kernel.org> <20211115111816.3911213-8-ardb@kernel.org>
- <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com> <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
- <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk> <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
- <YZS2eC0lmR+bonvc@atomide.com> <CAMj1kXFbpAgHk4Fe03_NfP6kL0zJhTWOYWBdQvfzfabu6XY1Sg@mail.gmail.com>
- <YZS+/Axb7u7FsvbK@atomide.com> <CAK8P3a02uZdu1Q8a9vw5+9u1s=MWm7Z-bGm51YtZveqoQJ0BZg@mail.gmail.com>
- <CAK8P3a0mV7=mPSLe=9mOMfK3RvuPJ9z8=9CS75=7pG=A2ngZQg@mail.gmail.com> <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 17 Nov 2021 11:48:16 +0100
-Message-ID: <CAMj1kXHRBCmNXVPjhe7KOGnf7j2-uOm94XjkSSQ844H6_QROFw@mail.gmail.com>
-Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Tony Lindgren <tony@atomide.com>, "Russell King (Oracle)" <linux@armlinux.org.uk>, Guillaume Tucker <guillaume.tucker@collabora.com>, linux-omap <linux-omap@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Nicolas Pitre <nico@fluxnic.net>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: Jonathan Corbet <corbet@lwn.net>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>
+Cc: rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Wed, 17 Nov 2021 at 10:08, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Wed, 17 Nov 2021 at 10:07, Arnd Bergmann <arnd@arndb.de> wrote:
-> >
-> > On Wed, Nov 17, 2021 at 10:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> > >
-> > > On Wed, Nov 17, 2021 at 9:36 AM Tony Lindgren <tony@atomide.com> wrote:
-> > > > * Ard Biesheuvel <ardb@kernel.org> [211117 08:29]:
-> > > > >
-> > > > > Thanks Tony, that is very helpful. I have a Beaglebone white somewhere
-> > > > > so I'll try and reproduce it locally as well.
-> > > >
-> > > > I think with Beaglebone you may hit this only with suspend/resume if at
-> > > > all. On am335x cpuidle is not shutting down the CPU. And only some models
-> > > > will suspend to deeper idle states as it depends on the PMIC.
-> > > >
-> > > > If you have some test patch to try, just let me know.
-> > >
-> > > I looked at how the sleep code is called and found that cpu_suspend()/
-> > > __cpu_suspend() has interesting manipulation of the stack pointer to
-> > > call the platform specific function with a simple 1:1 page table,
-> > > I would expect the problem somewhere in there, haven't pinpointed
-> > > the exact line yet, but if any of that code tries to local the physical
-> > > address of the stack using virt_to_phys or its asm equivalent, this
-> > > fails for a vmap stack.
-> >
-> > and just after sending this I see
-> >
-> > void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
-> > {
-> >         *save_ptr = virt_to_phys(ptr);
-> >
-> > 'ptr' is a pointer to the stack here. It might not be the only place that
-> > needs fixing, but this clearly has to do a page table walk like
-> > vmalloc_to_page() does to get to the correct physical address.
-> >
->
-> I had just arrived at the same conclusion. I'll fix this up and drop
-> it in kernelci.
+From: Frank Rowand <frank.rowand@sony.com>
 
-Updated branch here:
-https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=arm-vmap-stacks-v4
+Add the spec version to the title line.
+
+Explain likely source of "Unknown lines".
+
+"Unknown lines" in nested tests are optionally indented.
+
+Add "Unknown lines" items to differences between TAP & KTAP list
+
+Reviewed-by: Tim Bird <Tim.Bird@sony.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+---
+
+Changes since version 2
+  - Add missing quote after word: incorrect
+  - Add Reviewed-by tags
+
+Changes since version 1
+  - Explain likely source of "Unknown lines"
+  - "Unknown line" in nested tests are optionally indented
+  - Add "Unknown lines" items to differences between TAP & KTAP list
+
+ Documentation/dev-tools/ktap.rst | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+index 878530cb9c27..dfb3f10a8b2d 100644
+--- a/Documentation/dev-tools/ktap.rst
++++ b/Documentation/dev-tools/ktap.rst
+@@ -1,8 +1,8 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-========================================
+-The Kernel Test Anything Protocol (KTAP)
+-========================================
++===================================================
++The Kernel Test Anything Protocol (KTAP), version 1
++===================================================
+ 
+ TAP, or the Test Anything Protocol is a format for specifying test results used
+ by a number of projects. It's website and specification are found at this `link
+@@ -174,6 +174,13 @@ There may be lines within KTAP output that do not follow the format of one of
+ the four formats for lines described above. This is allowed, however, they will
+ not influence the status of the tests.
+ 
++This is an important difference from TAP.  Kernel tests may print messages
++to the system console or a log file.  Both of these destinations may contain
++messages either from unrelated kernel or userspace activity, or kernel
++messages from non-test code that is invoked by the test.  The kernel code
++invoked by the test likely is not aware that a test is in progress and
++thus can not print the message as a diagnostic message.
++
+ Nested tests
+ ------------
+ 
+@@ -186,10 +193,13 @@ starting with another KTAP version line and test plan, and end with the overall
+ result. If one of the subtests fail, for example, the parent test should also
+ fail.
+ 
+-Additionally, all result lines in a subtest should be indented. One level of
++Additionally, all lines in a subtest should be indented. One level of
+ indentation is two spaces: "  ". The indentation should begin at the version
+ line and should end before the parent test's result line.
+ 
++"Unknown lines" are not considered to be lines in a subtest and thus are
++allowed to be either indented or not indented.
++
+ An example of a test with two nested subtests:
+ 
+ .. code-block::
+@@ -225,9 +235,11 @@ Major differences between TAP and KTAP
+ --------------------------------------
+ 
+ Note the major differences between the TAP and KTAP specification:
+-- yaml and json are not recommended in diagnostic messages
+-- TODO directive not recognized
++- yaml and json are not recommended in KTAP diagnostic messages
++- TODO directive not recognized in KTAP
+ - KTAP allows for an arbitrary number of tests to be nested
++- TAP includes "Unknown lines" in the category of "Anything else"
++- TAP says "Unknown lines" are "incorrect"; KTAP allows "Unknown lines"
+ 
+ The TAP14 specification does permit nested tests, but instead of using another
+ nested version line, uses a line of the form
+-- 
+Frank Rowand <frank.rowand@sony.com>
+
