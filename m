@@ -1,48 +1,41 @@
 From: "Usama" <usama.anjum@collabora.com>
-Subject: [PATCH] selftests/exec: Add non-regular to TEST_GEN_PROGS
-Date: Thu, 10 Feb 2022 22:13:23 +0500
-Message-Id: <20220210171323.1304501-1-usama.anjum@collabora.com>
+Subject: [PATCH] selftest: KVM: Remove absent target file
+Date: Thu, 10 Feb 2022 22:19:29 +0500
+Message-Id: <20220210171929.1312078-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Eric Biederman <ebiederm@xmission.com>, Kees Cook <keescook@chromium.org>, Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Peter Gonda <pgonda@google.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
-non-regular file needs to be compiled and then copied to the output
-directory. Remove it from TEST_PROGS and add it to TEST_GEN_PROGS. This
-removes error thrown by rsync when non-regular object isn't found:
+There is no vmx_pi_mmio_test file. Remove it to get rid of error while
+creation of selftest archive:
 
-rsync: [sender] link_stat "/linux/tools/testing/selftests/exec/non-regula=
-r" failed: No such file or directory (2)
+rsync: [sender] link_stat "/kselftest/kvm/x86_64/vmx_pi_mmio_test" failed=
+: No such file or directory (2)
 rsync error: some files/attrs were not transferred (see previous errors) =
 (code 23) at main.c(1333) [sender=3D3.2.3]
 
-Fixes: 0f71241a8e32 ("selftests/exec: add file type errno tests")
+Fixes: 6a58150859fd ("selftest: KVM: Add intra host migration tests")
 Reported-by: "kernelci.org bot" <bot@kernelci.org>
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
- tools/testing/selftests/exec/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selfte=
-sts/exec/Makefile
-index 551affb437fe1..a89ba6de79870 100644
---- a/tools/testing/selftests/exec/Makefile
-+++ b/tools/testing/selftests/exec/Makefile
-@@ -3,8 +3,8 @@ CFLAGS =3D -Wall
- CFLAGS +=3D -Wno-nonnull
- CFLAGS +=3D -D_GNU_SOURCE
-=20
--TEST_PROGS :=3D binfmt_script non-regular
--TEST_GEN_PROGS :=3D execveat load_address_4096 load_address_2097152 load=
-_address_16777216
-+TEST_PROGS :=3D binfmt_script
-+TEST_GEN_PROGS :=3D execveat load_address_4096 load_address_2097152 load=
-_address_16777216 non-regular
- TEST_GEN_FILES :=3D execveat.symlink execveat.denatured script subdir
- # Makefile is a run-time dependency, since it's accessed by the execveat=
- test
- TEST_FILES :=3D Makefile
+diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftes=
+ts/kvm/Makefile
+index d61286208e242..b970397f725c7 100644
+--- a/tools/testing/selftests/kvm/Makefile
++++ b/tools/testing/selftests/kvm/Makefile
+@@ -82,7 +82,6 @@ TEST_GEN_PROGS_x86_64 +=3D x86_64/tsc_msrs_test
+ TEST_GEN_PROGS_x86_64 +=3D x86_64/vmx_pmu_msrs_test
+ TEST_GEN_PROGS_x86_64 +=3D x86_64/xen_shinfo_test
+ TEST_GEN_PROGS_x86_64 +=3D x86_64/xen_vmcall_test
+-TEST_GEN_PROGS_x86_64 +=3D x86_64/vmx_pi_mmio_test
+ TEST_GEN_PROGS_x86_64 +=3D x86_64/sev_migrate_tests
+ TEST_GEN_PROGS_x86_64 +=3D x86_64/amx_test
+ TEST_GEN_PROGS_x86_64 +=3D access_tracking_perf_test
 --=20
 2.30.2
 
