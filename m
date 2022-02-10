@@ -1,68 +1,57 @@
+Return-Path: <skhan@linuxfoundation.org>
+Subject: Re: [PATCH] selftests/exec: Add non-regular to TEST_GEN_PROGS
+References: <20220210171323.1304501-1-usama.anjum@collabora.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <e8397c75-32df-b1d2-c3c3-21c5c0943ef6@linuxfoundation.org>
+Date: Thu, 10 Feb 2022 10:34:20 -0700
 MIME-Version: 1.0
-References: <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
- <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk> <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
- <YZS2eC0lmR+bonvc@atomide.com> <CAMj1kXFbpAgHk4Fe03_NfP6kL0zJhTWOYWBdQvfzfabu6XY1Sg@mail.gmail.com>
- <YZS+/Axb7u7FsvbK@atomide.com> <CAK8P3a02uZdu1Q8a9vw5+9u1s=MWm7Z-bGm51YtZveqoQJ0BZg@mail.gmail.com>
- <CAK8P3a0mV7=mPSLe=9mOMfK3RvuPJ9z8=9CS75=7pG=A2ngZQg@mail.gmail.com>
- <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
- <CAMj1kXHRBCmNXVPjhe7KOGnf7j2-uOm94XjkSSQ844H6_QROFw@mail.gmail.com> <YZTjtY463f2HQwL6@atomide.com>
-In-Reply-To: <YZTjtY463f2HQwL6@atomide.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 17 Nov 2021 12:13:36 +0100
-Message-ID: <CAMj1kXGfmwjqJCbnW0n6jDteA7DS+8Nt33pc_gBg5gs3H3uX5A@mail.gmail.com>
-Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20220210171323.1304501-1-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Tony Lindgren <tony@atomide.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Russell King (Oracle)" <linux@armlinux.org.uk>, Guillaume Tucker <guillaume.tucker@collabora.com>, linux-omap <linux-omap@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Nicolas Pitre <nico@fluxnic.net>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <keescook@chromium.org>, Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 
-On Wed, 17 Nov 2021 at 12:12, Tony Lindgren <tony@atomide.com> wrote:
->
-> * Ard Biesheuvel <ardb@kernel.org> [211117 10:49]:
-> > On Wed, 17 Nov 2021 at 10:08, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Wed, 17 Nov 2021 at 10:07, Arnd Bergmann <arnd@arndb.de> wrote:
-> > > >
-> > > > On Wed, Nov 17, 2021 at 10:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > > >
-> > > > > On Wed, Nov 17, 2021 at 9:36 AM Tony Lindgren <tony@atomide.com> wrote:
-> > > > > > * Ard Biesheuvel <ardb@kernel.org> [211117 08:29]:
-> > > > > > >
-> > > > > > > Thanks Tony, that is very helpful. I have a Beaglebone white somewhere
-> > > > > > > so I'll try and reproduce it locally as well.
-> > > > > >
-> > > > > > I think with Beaglebone you may hit this only with suspend/resume if at
-> > > > > > all. On am335x cpuidle is not shutting down the CPU. And only some models
-> > > > > > will suspend to deeper idle states as it depends on the PMIC.
-> > > > > >
-> > > > > > If you have some test patch to try, just let me know.
-> > > > >
-> > > > > I looked at how the sleep code is called and found that cpu_suspend()/
-> > > > > __cpu_suspend() has interesting manipulation of the stack pointer to
-> > > > > call the platform specific function with a simple 1:1 page table,
-> > > > > I would expect the problem somewhere in there, haven't pinpointed
-> > > > > the exact line yet, but if any of that code tries to local the physical
-> > > > > address of the stack using virt_to_phys or its asm equivalent, this
-> > > > > fails for a vmap stack.
-> > > >
-> > > > and just after sending this I see
-> > > >
-> > > > void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
-> > > > {
-> > > >         *save_ptr = virt_to_phys(ptr);
-> > > >
-> > > > 'ptr' is a pointer to the stack here. It might not be the only place that
-> > > > needs fixing, but this clearly has to do a page table walk like
-> > > > vmalloc_to_page() does to get to the correct physical address.
-> > > >
-> > >
-> > > I had just arrived at the same conclusion. I'll fix this up and drop
-> > > it in kernelci.
-> >
-> > Updated branch here:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=arm-vmap-stacks-v4
->
-> Great that branch boots for me!
->
+On 2/10/22 10:13 AM, Muhammad Usama Anjum wrote:
+> non-regular file needs to be compiled and then copied to the output
+> directory. Remove it from TEST_PROGS and add it to TEST_GEN_PROGS. This
+> removes error thrown by rsync when non-regular object isn't found:
+> 
+> rsync: [sender] link_stat "/linux/tools/testing/selftests/exec/non-regular" failed: No such file or directory (2)
+> rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1333) [sender=3.2.3]
+> 
+> Fixes: 0f71241a8e32 ("selftests/exec: add file type errno tests")
+> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+>   tools/testing/selftests/exec/Makefile | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
+> index 551affb437fe1..a89ba6de79870 100644
+> --- a/tools/testing/selftests/exec/Makefile
+> +++ b/tools/testing/selftests/exec/Makefile
+> @@ -3,8 +3,8 @@ CFLAGS = -Wall
+>   CFLAGS += -Wno-nonnull
+>   CFLAGS += -D_GNU_SOURCE
+>   
+> -TEST_PROGS := binfmt_script non-regular
+> -TEST_GEN_PROGS := execveat load_address_4096 load_address_2097152 load_address_16777216
+> +TEST_PROGS := binfmt_script
+> +TEST_GEN_PROGS := execveat load_address_4096 load_address_2097152 load_address_16777216 non-regular
+>   TEST_GEN_FILES := execveat.symlink execveat.denatured script subdir
+>   # Makefile is a run-time dependency, since it's accessed by the execveat test
+>   TEST_FILES := Makefile
+> 
 
-Thanks for testing!
+This change looks good to me. regular is a binary and TEST_GEN_PROGS is
+where it belongs.
+
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+
+Also binfmt_script could be renamed to clearly identify that it is python
+script. This can be done in a separate patch.
+
+thanks,
+-- Shuah
