@@ -1,37 +1,30 @@
 Return-Path: <keescook@chromium.org>
-Date: Thu, 10 Feb 2022 09:43:19 -0800
+Date: Thu, 10 Feb 2022 09:45:11 -0800
 From: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH v4 2/2] Documentation: dev-tools: fix KTAP specification build warnings
-Message-ID: <202202100943.3E8C5B4B@keescook>
-References: <20220210023519.3221051-1-frowand.list@gmail.com>
- <20220210023519.3221051-3-frowand.list@gmail.com>
+Subject: Re: [PATCH] selftests/exec: Add non-regular to TEST_GEN_PROGS
+Message-ID: <202202100945.1A6C624A@keescook>
+References: <20220210171323.1304501-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <20220210023519.3221051-3-frowand.list@gmail.com>
+In-Reply-To: <20220210171323.1304501-1-usama.anjum@collabora.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: frowand.list@gmail.com
-Cc: Jonathan Corbet <corbet@lwn.net>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Rae Moar <rmoar@google.com>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>, rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Eric Biederman <ebiederm@xmission.com>, Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Wed, Feb 09, 2022 at 08:35:19PM -0600, frowand.list@gmail.com wrote:
-> From: Frank Rowand <frank.rowand@sony.com>
+On Thu, Feb 10, 2022 at 10:13:23PM +0500, Muhammad Usama Anjum wrote:
+> non-regular file needs to be compiled and then copied to the output
+> directory. Remove it from TEST_PROGS and add it to TEST_GEN_PROGS. This
+> removes error thrown by rsync when non-regular object isn't found:
 > 
-> Convert "Major differences between TAP and KTAP" from a bullet list
-> to a table.  The bullet list was being formatted as a single
-> paragraph.
+> rsync: [sender] link_stat "/linux/tools/testing/selftests/exec/non-regular" failed: No such file or directory (2)
+> rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1333) [sender=3.2.3]
 > 
-> Add missing required argument in code-block directives.
-> 
-> ---
-> 
-> Table conversion suggested by Shuah.
-> 
-> Patch 2/2 not previously reviewed, so Reviewed-by tags not provided.
-> 
-> Changes since version 3
->   - Add this commit (patch 2/2) to the series
-> 
-> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+> Fixes: 0f71241a8e32 ("selftests/exec: add file type errno tests")
+> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+
+Eek, thanks for fixing this!
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
 
