@@ -1,132 +1,40 @@
-Return-Path: <jbrouer@redhat.com>
-From: Jesper Dangaard Brouer <jbrouer@redhat.com>
-Message-ID: <712f3c04-ffc4-0ae1-00e2-1acb1af81154@redhat.com>
-Date: Wed, 17 Nov 2021 12:52:18 +0100
+Return-Path: <pbonzini@redhat.com>
+Message-ID: <eb4e24c6-41d0-4f3a-2af0-3008db408da6@redhat.com>
+Date: Thu, 10 Feb 2022 19:56:55 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v6] page_pool: disable dma mapping support for 32-bit arch with 64-bit DMA
-References: <20211013091920.1106-1-linyunsheng@huawei.com>
- <b9c0e7ef-a7a2-66ad-3a19-94cc545bd557@collabora.com>
- <1090744a-3de6-1dc2-5efe-b7caae45223a@huawei.com>
- <644e10ca-87b8-b553-db96-984c0b2c6da1@collabora.com>
- <93173400-1d37-09ed-57ef-931550b5a582@huawei.com>
- <YZJKNLEm6YTkygHM@apalos.home>
- <CAC_iWjKFLr932sMt9G2T+MFYUAQZNWPqp6YsnmSd3rMia7OpoA@mail.gmail.com>
- <d0223831-44ff-3e1a-1be9-27d751dc39f2@huawei.com>
- <8c688448-e8a9-5a6b-7b17-ccd294a416d3@redhat.com>
- <YZKtD4+13gQBXEX6@apalos.home>
-In-Reply-To: <YZKtD4+13gQBXEX6@apalos.home>
+Subject: Re: [PATCH V2] selftests: kvm: Remove absent target file
+References: <20220210172352.1317554-1-usama.anjum@collabora.com>
+ <f9893f6a-b68b-e759-54f5-eef73e8a9eef@linuxfoundation.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <f9893f6a-b68b-e759-54f5-eef73e8a9eef@linuxfoundation.org>
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jesper Dangaard Brouer <jbrouer@redhat.com>
-Cc: brouer@redhat.com, Yunsheng Lin <linyunsheng@huawei.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org, akpm@linux-foundation.org, peterz@infradead.org, will@kernel.org, jhubbard@nvidia.com, yuzhao@google.com, mcroce@microsoft.com, fenghua.yu@intel.com, feng.tang@intel.com, jgg@ziepe.ca, aarcange@redhat.com, guro@fb.com, "kernelci@groups.io" <kernelci@groups.io>
+To: Shuah Khan <skhan@linuxfoundation.org>, Muhammad Usama Anjum <usama.anjum@collabora.com>, Shuah Khan <shuah@kernel.org>, Peter Gonda <pgonda@google.com>
+Cc: kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
-
-
-On 15/11/2021 19.55, Ilias Apalodimas wrote:
+On 2/10/22 19:02, Shuah Khan wrote:
 > 
-> [...]
+> I am fine with the change itself. For this patch:
 > 
->>>>>>>>> Some more details can be found here:
->>>>>>>>>
->>>>>>>>>     https://linux.kernelci.org/test/case/id/6189968c3ec0a3c06e3358fe/
->>>>>>>>>
->>>>>>>>> Here's the same revision on the same platform booting fine with a
->>>>>>>>> plain multi_v7_defconfig build:
->>>>>>>>>
->>>>>>>>>     https://linux.kernelci.org/test/plan/id/61899d322c0e9fee7e3358ec/
->>>>>>>>>
->>>>>>>>> Please let us know if you need any help debugging this issue or
->>>>>>>>> if you have a fix to try.
->>>>>>>>
->>>>>>>> The patch below is removing the dma mapping support in page pool
->>>>>>>> for 32 bit systems with 64 bit dma address, so it seems there
->>>>>>>> is indeed a a drvier using the the page pool with PP_FLAG_DMA_MAP
->>>>>>>> flags set in a 32 bit systems with 64 bit dma address.
->>>>>>>>
->>>>>>>> It seems we might need to revert the below patch or implement the
->>>>>>>> DMA-mapping tracking support in the driver as mentioned in the below
->>>>>>>> commit log.
->>>>>>>>
->>>>>>>> which ethernet driver do you use in your system?
->>>>>>>
->>>>>>> Thanks for taking a look and sorry for the slow reply.  Here's a
->>>>>>> booting test job with LPAE disabled:
->>>>>>>
->>>>>>>       https://linux.kernelci.org/test/plan/id/618dbb81c60c4d94503358f1/
->>>>>>>       https://storage.kernelci.org/mainline/master/v5.15-12452-g5833291ab6de/arm/multi_v7_defconfig/gcc-10/lab-collabora/baseline-nfs-rk3288-rock2-square.html#L812
->>>>>>>
->>>>>>> [    8.314523] rk_gmac-dwmac ff290000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
->>>>>>>
->>>>>>> So the driver is drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
->>>>>>
->>>>>> Thanks for the report, this patch seems to cause problem for 32-bit
->>>>>> system with LPAE enabled.
->>>>>>
->>>>>> As LPAE seems like a common feature for 32 bits system, this patch
->>>>>> might need to be reverted.
->>>>>>
->>>>>> @Jesper, @Ilias, what do you think?
->>>>>
->>>>>
->>>>> So enabling LPAE also enables CONFIG_ARCH_DMA_ADDR_T_64BIT on that board?
->>>>> Doing a quick grep only selects that for XEN.  I am ok reverting that,  but
->>>>> I think we need to understand how the dma address ended up being 64bit.
->>>>
->>>> So looking a bit closer, indeed enabling LPAE always enables this.  So
->>>> we need to revert the patch.
->>>> Yunsheng will you send that?
->>>
->>> Sure.
->>
->> Why don't we change that driver[1] to not use page_pool_get_dma_addr() ?
->>
->>   [1] drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
->>
->> I took a closer look and it seems the driver have struct stmmac_rx_buffer in
->> which is stored the dma_addr it gets from page_pool_get_dma_addr().
->>
->> See func: stmmac_init_rx_buffers
->>
->>   static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
->> 				struct dma_desc *p,
->> 				int i, gfp_t flags, u32 queue)
->>   {
->>
->> 	if (!buf->page) {
->> 		buf->page = page_pool_dev_alloc_pages(rx_q->page_pool);
->> 		if (!buf->page)
->> 			return -ENOMEM;
->> 		buf->page_offset = stmmac_rx_offset(priv);
->> 	}
->> 	[...]
->>
->> 	buf->addr = page_pool_get_dma_addr(buf->page) + buf->page_offset;
->>
->> 	stmmac_set_desc_addr(priv, p, buf->addr);
->> 	[...]
->>   }
->>
->> I question if this driver really to use page_pool for storing the dma_addr
->> as it just extract it and store it outside page_pool?
->>
->> @Ilias it looks like you added part of the page_pool support in this driver,
->> so I hope you can give a qualified guess on:
->> How much work will it be to let driver do the DMA-map itself?
->> (and not depend on the DMA-map feature provided by page_pool)
+> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
 > 
-> It shouldn't be that hard.   However when we removed that we were hoping we
-> had no active consumers.  So we'll have to fix this and check for other
-> 32-bit boards with LPAE and page_pool handling the DMA mappings.
-> But the point now is that this is far from a 'hardware configuration' of
-> 32-bit CPU + 64-bit DMA.  Every armv7 and x86 board can get that.  So I was
-> thinking it's better to revert this and live with the 'weird' handling in the
-> code.
+> However, are we missing a vmx_pi_mmio_test and that test needs to be added.
+> 
+> Just in case the test didn't make it into the 6a58150859fd and the intent
+> was to add it - hence the Makefile addition? This can be addressed in
+> another patch. Just want to make sure we aren't missing a test.
 
-Okay, I acked the revert.  After discussing this over IRC with Ilias (my 
-page_pool co-maintainer). Guess we will have to live with maintaining 
-this code for 32-bit CPU + 64-bit DMA.
+This was probably a rebase resolution issue.  The vmx_pi_mmio_test fails 
+in the mainline tree, and is lingering in my tree together with the fix 
+because somebody promised a better fix for it.  I included the 
+TEST_GEN_PROGS_x86_64 line by mistake when rebasing Peter Gonda's test 
+below vmx_pi_mmio_test.
 
---Jesper
+Thanks for the fix,
+
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Paolo
 
