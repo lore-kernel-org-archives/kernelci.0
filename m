@@ -1,7 +1,7 @@
 From: "Usama" <usama.anjum@collabora.com>
-Subject: [PATCH] selftest: KVM: Remove absent target file
-Date: Thu, 10 Feb 2022 22:19:29 +0500
-Message-Id: <20220210171929.1312078-1-usama.anjum@collabora.com>
+Subject: [PATCH V2] selftests: kvm: Remove absent target file
+Date: Thu, 10 Feb 2022 22:23:51 +0500
+Message-Id: <20220210172352.1317554-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
@@ -19,6 +19,9 @@ rsync error: some files/attrs were not transferred (see previous errors) =
 Fixes: 6a58150859fd ("selftest: KVM: Add intra host migration tests")
 Reported-by: "kernelci.org bot" <bot@kernelci.org>
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+Changes in V2:
+Edited the subject line
 ---
  tools/testing/selftests/kvm/Makefile | 1 -
  1 file changed, 1 deletion(-)
