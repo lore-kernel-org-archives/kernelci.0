@@ -1,8 +1,8 @@
 Return-Path: <frowand.list@gmail.com>
 From: frowand.list@gmail.com
-Subject: [PATCH v4 1/2] Documentation: dev-tools: clarify KTAP specification wording
-Date: Wed,  9 Feb 2022 20:35:18 -0600
-Message-Id: <20220210023519.3221051-2-frowand.list@gmail.com>
+Subject: [PATCH v4 2/2] Documentation: dev-tools: fix KTAP specification build warnings
+Date: Wed,  9 Feb 2022 20:35:19 -0600
+Message-Id: <20220210023519.3221051-3-frowand.list@gmail.com>
 In-Reply-To: <20220210023519.3221051-1-frowand.list@gmail.com>
 References: <20220210023519.3221051-1-frowand.list@gmail.com>
 MIME-Version: 1.0
@@ -13,94 +13,126 @@ Cc: rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kerne
 
 From: Frank Rowand <frank.rowand@sony.com>
 
-Add the spec version to the title line.
+Convert "Major differences between TAP and KTAP" from a bullet list
+to a table.  The bullet list was being formatted as a single
+paragraph.
 
-Explain likely source of "Unknown lines".
-
-"Unknown lines" in nested tests are optionally indented.
-
-Add "Unknown lines" items to differences between TAP & KTAP list
-
-Reviewed-by: Tim Bird <Tim.Bird@sony.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+Add missing required argument in code-block directives.
 
 ---
+
+Table conversion suggested by Shuah.
+
+Patch 2/2 not previously reviewed, so Reviewed-by tags not provided.
+
 Changes since version 3
-  - Add reviewed by Shuah
+  - Add this commit (patch 2/2) to the series
 
-Changes since version 2
-  - Add missing quote after word: incorrect
-  - Add Reviewed-by tags
-
-Changes since version 1
-  - Explain likely source of "Unknown lines"
-  - "Unknown line" in nested tests are optionally indented
-  - Add "Unknown lines" items to differences between TAP & KTAP list
-
- Documentation/dev-tools/ktap.rst | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+---
+ Documentation/dev-tools/ktap.rst | 33 +++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
 diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-index 878530cb9c27..dfb3f10a8b2d 100644
+index dfb3f10a8b2d..5ee735c6687f 100644
 --- a/Documentation/dev-tools/ktap.rst
 +++ b/Documentation/dev-tools/ktap.rst
-@@ -1,8 +1,8 @@
- .. SPDX-License-Identifier: GPL-2.0
+@@ -68,7 +68,7 @@ Test case result lines
+ Test case result lines indicate the final status of a test.
+ They are required and must have the format:
  
--========================================
--The Kernel Test Anything Protocol (KTAP)
--========================================
-+===================================================
-+The Kernel Test Anything Protocol (KTAP), version 1
-+===================================================
+-.. code-block::
++.. code-block:: none
  
- TAP, or the Test Anything Protocol is a format for specifying test results used
- by a number of projects. It's website and specification are found at this `link
-@@ -174,6 +174,13 @@ There may be lines within KTAP output that do not follow the format of one of
- the four formats for lines described above. This is allowed, however, they will
- not influence the status of the tests.
+ 	<result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
  
-+This is an important difference from TAP.  Kernel tests may print messages
-+to the system console or a log file.  Both of these destinations may contain
-+messages either from unrelated kernel or userspace activity, or kernel
-+messages from non-test code that is invoked by the test.  The kernel code
-+invoked by the test likely is not aware that a test is in progress and
-+thus can not print the message as a diagnostic message.
-+
- Nested tests
- ------------
+@@ -117,32 +117,32 @@ separator.
  
-@@ -186,10 +193,13 @@ starting with another KTAP version line and test plan, and end with the overall
- result. If one of the subtests fail, for example, the parent test should also
- fail.
+ Example result lines include:
  
--Additionally, all result lines in a subtest should be indented. One level of
-+Additionally, all lines in a subtest should be indented. One level of
- indentation is two spaces: "  ". The indentation should begin at the version
- line and should end before the parent test's result line.
+-.. code-block::
++.. code-block:: none
  
-+"Unknown lines" are not considered to be lines in a subtest and thus are
-+allowed to be either indented or not indented.
-+
+ 	ok 1 test_case_name
+ 
+ The test "test_case_name" passed.
+ 
+-.. code-block::
++.. code-block:: none
+ 
+ 	not ok 1 test_case_name
+ 
+ The test "test_case_name" failed.
+ 
+-.. code-block::
++.. code-block:: none
+ 
+ 	ok 1 test # SKIP necessary dependency unavailable
+ 
+ The test "test" was SKIPPED with the diagnostic message "necessary dependency
+ unavailable".
+ 
+-.. code-block::
++.. code-block:: none
+ 
+ 	not ok 1 test # TIMEOUT 30 seconds
+ 
+ The test "test" timed out, with diagnostic data "30 seconds".
+ 
+-.. code-block::
++.. code-block:: none
+ 
+ 	ok 5 check return code # rcode=0
+ 
+@@ -202,7 +202,7 @@ allowed to be either indented or not indented.
+ 
  An example of a test with two nested subtests:
  
- .. code-block::
-@@ -225,9 +235,11 @@ Major differences between TAP and KTAP
+-.. code-block::
++.. code-block:: none
+ 
+ 	KTAP version 1
+ 	1..1
+@@ -215,7 +215,7 @@ An example of a test with two nested subtests:
+ 
+ An example format with multiple levels of nested testing:
+ 
+-.. code-block::
++.. code-block:: none
+ 
+ 	KTAP version 1
+ 	1..2
+@@ -234,12 +234,15 @@ An example format with multiple levels of nested testing:
+ Major differences between TAP and KTAP
  --------------------------------------
  
- Note the major differences between the TAP and KTAP specification:
--- yaml and json are not recommended in diagnostic messages
--- TODO directive not recognized
-+- yaml and json are not recommended in KTAP diagnostic messages
-+- TODO directive not recognized in KTAP
- - KTAP allows for an arbitrary number of tests to be nested
-+- TAP includes "Unknown lines" in the category of "Anything else"
-+- TAP says "Unknown lines" are "incorrect"; KTAP allows "Unknown lines"
+-Note the major differences between the TAP and KTAP specification:
+-- yaml and json are not recommended in KTAP diagnostic messages
+-- TODO directive not recognized in KTAP
+-- KTAP allows for an arbitrary number of tests to be nested
+-- TAP includes "Unknown lines" in the category of "Anything else"
+-- TAP says "Unknown lines" are "incorrect"; KTAP allows "Unknown lines"
++==================================================   =========  ===============
++Feature                                              TAP        KTAP
++==================================================   =========  ===============
++yaml and json in diagnosic message                   ok         not recommended
++TODO directive                                       ok         not recognized
++allows an arbitrary number of tests to be nested     no         yes
++"Unknown lines" are in category of "Anything else"   yes        no
++"Unknown lines" are                                  incorrect  allowed
++==================================================   =========  ===============
  
  The TAP14 specification does permit nested tests, but instead of using another
  nested version line, uses a line of the form
+@@ -247,7 +250,7 @@ nested version line, uses a line of the form
+ 
+ Example KTAP output
+ --------------------
+-.. code-block::
++.. code-block:: none
+ 
+ 	KTAP version 1
+ 	1..1
 -- 
 Frank Rowand <frank.rowand@sony.com>
 
