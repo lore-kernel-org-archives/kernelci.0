@@ -1,60 +1,43 @@
-Return-Path: <skhan@linuxfoundation.org>
-Subject: Re: [PATCH V2] selftests: kvm: Remove absent target file
-References: <20220210172352.1317554-1-usama.anjum@collabora.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <f9893f6a-b68b-e759-54f5-eef73e8a9eef@linuxfoundation.org>
-Date: Thu, 10 Feb 2022 11:02:00 -0700
+From: "Usama" <usama.anjum@collabora.com>
+Subject: [PATCH 0/2] selftests: sgx: Fix build of test_sgx
+Date: Fri, 11 Feb 2022 00:06:39 +0500
+Message-Id: <20220210190642.1477814-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <20220210172352.1317554-1-usama.anjum@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>, Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Peter Gonda <pgonda@google.com>
-Cc: kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+To: Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan <shuah@kernel.org>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>, Jethro Beekman <jethro@fortanix.com>, "open list:INTEL SGX" <linux-sgx@vger.kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, kernel@collabora.com, kernelci@groups.io
 
-On 2/10/22 10:23 AM, Muhammad Usama Anjum wrote:
-> There is no vmx_pi_mmio_test file. Remove it to get rid of error while
-> creation of selftest archive:
-> 
-> rsync: [sender] link_stat "/kselftest/kvm/x86_64/vmx_pi_mmio_test" failed: No such file or directory (2)
-> rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1333) [sender=3.2.3]
-> 
-> Fixes: 6a58150859fd ("selftest: KVM: Add intra host migration tests")
-> Reported-by: "kernelci.org bot" <bot@kernelci.org>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
-> Changes in V2:
-> Edited the subject line
-> ---
->   tools/testing/selftests/kvm/Makefile | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
-> index d61286208e242..b970397f725c7 100644
-> --- a/tools/testing/selftests/kvm/Makefile
-> +++ b/tools/testing/selftests/kvm/Makefile
-> @@ -82,7 +82,6 @@ TEST_GEN_PROGS_x86_64 += x86_64/tsc_msrs_test
->   TEST_GEN_PROGS_x86_64 += x86_64/vmx_pmu_msrs_test
->   TEST_GEN_PROGS_x86_64 += x86_64/xen_shinfo_test
->   TEST_GEN_PROGS_x86_64 += x86_64/xen_vmcall_test
-> -TEST_GEN_PROGS_x86_64 += x86_64/vmx_pi_mmio_test
->   TEST_GEN_PROGS_x86_64 += x86_64/sev_migrate_tests
->   TEST_GEN_PROGS_x86_64 += x86_64/amx_test
->   TEST_GEN_PROGS_x86_64 += access_tracking_perf_test
-> 
+CC can have multiple sub-strings like "ccache gcc". Build system of sgx
+selftest is unable to support this use case and test_sgx isn't built.
+Then rsync gives an erorr:
 
-I am fine with the change itself. For this patch:
+rsync: [sender] link_stat "//linux/build/kselftest/sgx/test_sgx" failed: =
+No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) =
+(code 23) at main.c(1333) [sender=3D3.2.3]
 
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+This can be fixed if CC is considered to have one string while passing to
+check_cc.sh script and inside this script, CC is expanded before executio=
+n.
 
-However, are we missing a vmx_pi_mmio_test and that test needs to be added.
+Following build tests have been performed to confirm that these patches
+don't break anything else. The verification has also been done through
+KernelCI scripts locally as KernelCI has caught this bug:
+1) cd tools/testing/selftests && make
+2) make -C tools/testing/selftests
+3) make -C tools/testing/selftests O=3Dbuild
+4) make -C tools/testing/selftests O=3Dbuild CC=3D"ccache gcc"
+5) ./kci_build make_kselftest
 
-Just in case the test didn't make it into the 6a58150859fd and the intent
-was to add it - hence the Makefile addition? This can be addressed in
-another patch. Just want to make sure we aren't missing a test.
+Muhammad Usama Anjum (2):
+  selftests: x86: allow expansion of $(CC)
+  selftests: sgx: Treat CC as one argument
 
-Peter Gonda can confirm perhaps?
+ tools/testing/selftests/sgx/Makefile    | 2 +-
+ tools/testing/selftests/x86/check_cc.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-thanks,
--- Shuah
+--=20
+2.30.2
+
