@@ -1,67 +1,46 @@
 Return-Path: <skhan@linuxfoundation.org>
-Subject: Re: [PATCH 1/2] selftests: x86: allow expansion of $(CC)
-References: <20220210190642.1477814-1-usama.anjum@collabora.com>
- <20220210190642.1477814-2-usama.anjum@collabora.com>
- <a34f2fc8-f4aa-fef4-d1dd-f3fdb5114f72@linuxfoundation.org>
- <99625ceecead4e9eb73de2fc8acb2ae9@AcuMS.aculab.com>
+Subject: Re: [PATCH V2] selftests: kvm: Remove absent target file
+References: <20220210172352.1317554-1-usama.anjum@collabora.com>
+ <f9893f6a-b68b-e759-54f5-eef73e8a9eef@linuxfoundation.org>
+ <eb4e24c6-41d0-4f3a-2af0-3008db408da6@redhat.com>
 From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <7a501981-e4ce-fb08-7c1e-6aca26245cef@linuxfoundation.org>
-Date: Fri, 11 Feb 2022 10:13:15 -0700
+Message-ID: <9198c43b-e5e2-fa58-5862-598dc7019ad6@linuxfoundation.org>
+Date: Fri, 11 Feb 2022 10:34:58 -0700
 MIME-Version: 1.0
-In-Reply-To: <99625ceecead4e9eb73de2fc8acb2ae9@AcuMS.aculab.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <eb4e24c6-41d0-4f3a-2af0-3008db408da6@redhat.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: David Laight <David.Laight@ACULAB.COM>, Muhammad Usama Anjum <usama.anjum@collabora.com>, Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan <shuah@kernel.org>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>, Jethro Beekman <jethro@fortanix.com>, "open list:INTEL SGX" <linux-sgx@vger.kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: "kernel@collabora.com" <kernel@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>, "kernelci.org bot" <bot@kernelci.org>, Shuah Khan <skhan@linuxfoundation.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, Muhammad Usama Anjum <usama.anjum@collabora.com>, Shuah Khan <shuah@kernel.org>, Peter Gonda <pgonda@google.com>
+Cc: kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 
-On 2/11/22 9:47 AM, David Laight wrote:
-> From: Shuah Khan
->> Sent: 10 February 2022 20:52
+On 2/10/22 11:56 AM, Paolo Bonzini wrote:
+> On 2/10/22 19:02, Shuah Khan wrote:
 >>
->> On 2/10/22 12:06 PM, Muhammad Usama Anjum wrote:
->>> CC can have multiple sub-strings like "ccache gcc". Erorr pops up if
->>> it is treated as single string and double quote are used around it.
->>> This can be fixed by removing the quotes and not treating CC a single
->>> string.
->>>
->>> Fixes: e9886ace222e ("selftests, x86: Rework x86 target architecture detection")
->>> Reported-by: "kernelci.org bot" <bot@kernelci.org>
->>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->>> ---
->>>    tools/testing/selftests/x86/check_cc.sh | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/tools/testing/selftests/x86/check_cc.sh b/tools/testing/selftests/x86/check_cc.sh
->>> index 3e2089c8cf549..aff2c15018b53 100755
->>> --- a/tools/testing/selftests/x86/check_cc.sh
->>> +++ b/tools/testing/selftests/x86/check_cc.sh
->>> @@ -7,7 +7,7 @@ CC="$1"
->>>    TESTPROG="$2"
->>>    shift 2
->>>
->>> -if "$CC" -o /dev/null "$TESTPROG" -O0 "$@" 2>/dev/null; then
->>> +if $CC -o /dev/null "$TESTPROG" -O0 "$@" 2>/dev/null; then
->>>        echo 1
->>>    else
->>>        echo 0
->>>
+>> I am fine with the change itself. For this patch:
 >>
->> The intent is testing if $CC is set. Does this change work when
->> $CC is not set?
+>> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+>>
+>> However, are we missing a vmx_pi_mmio_test and that test needs to be added.
+>>
+>> Just in case the test didn't make it into the 6a58150859fd and the intent
+>> was to add it - hence the Makefile addition? This can be addressed in
+>> another patch. Just want to make sure we aren't missing a test.
 > 
-> More by luck than judgement. Before and after.
-> If $CC might be empty you probably want:
+> This was probably a rebase resolution issue.  The vmx_pi_mmio_test fails in the mainline tree, and is lingering in my tree together with the fix because somebody promised a better fix for it.  I included the TEST_GEN_PROGS_x86_64 line by mistake when rebasing Peter Gonda's test below vmx_pi_mmio_test.
 > 
-> [ -n "$CC" ] && { echo 0; return; }
+> Thanks for the fix,
 > 
-> The subject is also wrong. Should be "allow field splitting' of ${CC}.
-> (no brace or curly braces, not round ones.)
+> Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 > 
 
-Good points. It would be good enhancement to add the check - since the
-current logic doesn't handle the null CC
+Paolo,
+
+Thank you for explaining the discrepancy. Would you like take
+this through your tree? This patch depends on
+
+commit: de1956f48543e90f94b1194395f33140898b39b2
 
 thanks,
 -- Shuah
