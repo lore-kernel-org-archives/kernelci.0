@@ -1,82 +1,71 @@
-Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
-References: <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
- <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk>
- <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
- <YZS2eC0lmR+bonvc@atomide.com>
- <CAMj1kXFbpAgHk4Fe03_NfP6kL0zJhTWOYWBdQvfzfabu6XY1Sg@mail.gmail.com>
- <YZS+/Axb7u7FsvbK@atomide.com>
- <CAK8P3a02uZdu1Q8a9vw5+9u1s=MWm7Z-bGm51YtZveqoQJ0BZg@mail.gmail.com>
- <CAK8P3a0mV7=mPSLe=9mOMfK3RvuPJ9z8=9CS75=7pG=A2ngZQg@mail.gmail.com>
- <CAMj1kXE_aVGN_T4MXkbECjh0ERFD7nZ6goL5mcg_ki46nqKcGQ@mail.gmail.com>
- <CAMj1kXHRBCmNXVPjhe7KOGnf7j2-uOm94XjkSSQ844H6_QROFw@mail.gmail.com>
- <YZTjtY463f2HQwL6@atomide.com>
- <CAMj1kXGfmwjqJCbnW0n6jDteA7DS+8Nt33pc_gBg5gs3H3uX5A@mail.gmail.com>
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-Message-ID: <d1648519-8371-51f5-8557-2dcfbd76ca7f@collabora.com>
-Date: Wed, 17 Nov 2021 14:03:59 +0000
+Message-ID: <5af77f27-447c-794c-c96f-212dda3e4ab9@collabora.com>
+Date: Mon, 14 Feb 2022 13:18:43 +0500
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXGfmwjqJCbnW0n6jDteA7DS+8Nt33pc_gBg5gs3H3uX5A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+Subject: Re: [PATCH 1/2] selftests: x86: allow expansion of $(CC)
+References: <20220210190642.1477814-1-usama.anjum@collabora.com>
+ <20220210190642.1477814-2-usama.anjum@collabora.com>
+ <a34f2fc8-f4aa-fef4-d1dd-f3fdb5114f72@linuxfoundation.org>
+ <99625ceecead4e9eb73de2fc8acb2ae9@AcuMS.aculab.com>
+ <7a501981-e4ce-fb08-7c1e-6aca26245cef@linuxfoundation.org>
+From: "Usama" <usama.anjum@collabora.com>
+In-Reply-To: <7a501981-e4ce-fb08-7c1e-6aca26245cef@linuxfoundation.org>
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Ard Biesheuvel <ardb@kernel.org>, Tony Lindgren <tony@atomide.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Russell King (Oracle)" <linux@armlinux.org.uk>, linux-omap <linux-omap@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Nicolas Pitre <nico@fluxnic.net>, Kees Cook <keescook@chromium.org>, Keith Packard <keithpac@amazon.com>, Linus Walleij <linus.walleij@linaro.org>, Nick Desaulniers <ndesaulniers@google.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: Shuah Khan <skhan@linuxfoundation.org>, David Laight <David.Laight@ACULAB.COM>, Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan <shuah@kernel.org>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>, Jethro Beekman <jethro@fortanix.com>, "open list:INTEL SGX" <linux-sgx@vger.kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: usama.anjum@collabora.com, "kernel@collabora.com" <kernel@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>, "kernelci.org bot" <bot@kernelci.org>
 
-On 17/11/2021 11:13, Ard Biesheuvel wrote:
-> On Wed, 17 Nov 2021 at 12:12, Tony Lindgren <tony@atomide.com> wrote:
->>
->> * Ard Biesheuvel <ardb@kernel.org> [211117 10:49]:
->>> On Wed, 17 Nov 2021 at 10:08, Ard Biesheuvel <ardb@kernel.org> wrote:
->>>>
->>>> On Wed, 17 Nov 2021 at 10:07, Arnd Bergmann <arnd@arndb.de> wrote:
->>>>>
->>>>> On Wed, Nov 17, 2021 at 10:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
->>>>>>
->>>>>> On Wed, Nov 17, 2021 at 9:36 AM Tony Lindgren <tony@atomide.com> wrote:
->>>>>>> * Ard Biesheuvel <ardb@kernel.org> [211117 08:29]:
->>>>>>>>
->>>>>>>> Thanks Tony, that is very helpful. I have a Beaglebone white somewhere
->>>>>>>> so I'll try and reproduce it locally as well.
->>>>>>>
->>>>>>> I think with Beaglebone you may hit this only with suspend/resume if at
->>>>>>> all. On am335x cpuidle is not shutting down the CPU. And only some models
->>>>>>> will suspend to deeper idle states as it depends on the PMIC.
->>>>>>>
->>>>>>> If you have some test patch to try, just let me know.
->>>>>>
->>>>>> I looked at how the sleep code is called and found that cpu_suspend()/
->>>>>> __cpu_suspend() has interesting manipulation of the stack pointer to
->>>>>> call the platform specific function with a simple 1:1 page table,
->>>>>> I would expect the problem somewhere in there, haven't pinpointed
->>>>>> the exact line yet, but if any of that code tries to local the physical
->>>>>> address of the stack using virt_to_phys or its asm equivalent, this
->>>>>> fails for a vmap stack.
->>>>>
->>>>> and just after sending this I see
->>>>>
->>>>> void __cpu_suspend_save(u32 *ptr, u32 ptrsz, u32 sp, u32 *save_ptr)
->>>>> {
->>>>>         *save_ptr = virt_to_phys(ptr);
->>>>>
->>>>> 'ptr' is a pointer to the stack here. It might not be the only place that
->>>>> needs fixing, but this clearly has to do a page table walk like
->>>>> vmalloc_to_page() does to get to the correct physical address.
->>>>>
->>>>
->>>> I had just arrived at the same conclusion. I'll fix this up and drop
->>>> it in kernelci.
+On 2/11/22 10:13 PM, Shuah Khan wrote:
+> On 2/11/22 9:47 AM, David Laight wrote:
+>> From: Shuah Khan
+>>> Sent: 10 February 2022 20:52
 >>>
->>> Updated branch here:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=arm-vmap-stacks-v4
+>>> On 2/10/22 12:06 PM, Muhammad Usama Anjum wrote:
+>>>> CC can have multiple sub-strings like "ccache gcc". Erorr pops up if
+>>>> it is treated as single string and double quote are used around it.
+>>>> This can be fixed by removing the quotes and not treating CC a single
+>>>> string.
+>>>>
+>>>> Fixes: e9886ace222e ("selftests, x86: Rework x86 target architecture
+>>>> detection")
+>>>> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>>>> ---
+>>>> =C2=A0=C2=A0 tools/testing/selftests/x86/check_cc.sh | 2 +-
+>>>> =C2=A0=C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/tools/testing/selftests/x86/check_cc.sh
+>>>> b/tools/testing/selftests/x86/check_cc.sh
+>>>> index 3e2089c8cf549..aff2c15018b53 100755
+>>>> --- a/tools/testing/selftests/x86/check_cc.sh
+>>>> +++ b/tools/testing/selftests/x86/check_cc.sh
+>>>> @@ -7,7 +7,7 @@ CC=3D"$1"
+>>>> =C2=A0=C2=A0 TESTPROG=3D"$2"
+>>>> =C2=A0=C2=A0 shift 2
+>>>>
+>>>> -if "$CC" -o /dev/null "$TESTPROG" -O0 "$@" 2>/dev/null; then
+>>>> +if $CC -o /dev/null "$TESTPROG" -O0 "$@" 2>/dev/null; then
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 echo 1
+>>>> =C2=A0=C2=A0 else
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 echo 0
+>>>>
+>>>
+>>> The intent is testing if $CC is set. Does this change work when
+>>> $CC is not set?
 >>
->> Great that branch boots for me!
+>> More by luck than judgement. Before and after.
+>> If $CC might be empty you probably want:
 >>
-> 
-> Thanks for testing!
-
-Tested-by: "kernelci.org bot" <bot@kernelci.org>
-
-https://staging.kernelci.org/test/plan/id/6194fd2f85155923f71760ce/
-
-Guillaume
+>> [ -n "$CC" ] && { echo 0; return; }
+>>
+>> The subject is also wrong. Should be "allow field splitting' of ${CC}.
+>> (no brace or curly braces, not round ones.)
+>>
+>=20
+> Good points. It would be good enhancement to add the check - since the
+> current logic doesn't handle the null CC
+>=20
+I'll send a V2.
+> thanks,
+> -- Shuah
