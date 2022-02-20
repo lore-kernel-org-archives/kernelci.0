@@ -1,35 +1,48 @@
-From: Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH RFC 6/6] init/Kconfig: Drop linker version check for LD_ORPHAN_WARN
-Date: Mon, 29 Nov 2021 09:58:03 -0700
-Message-Id: <20211129165803.470795-7-nathan@kernel.org>
-In-Reply-To: <20211129165803.470795-1-nathan@kernel.org>
-References: <20211129165803.470795-1-nathan@kernel.org>
+Date: Sun, 20 Feb 2022 21:06:33 +0100
+From: Jarkko Sakkinen <jarkko@kernel.org>
+Subject: Re: [PATCH 2/2] selftests: sgx: Treat CC as one argument
+Message-ID: <YhKfSUXC/U1twT9h@iki.fi>
+References: <20220210190642.1477814-1-usama.anjum@collabora.com>
+ <20220210190642.1477814-3-usama.anjum@collabora.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20220210190642.1477814-3-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Tom Stellard <tstellar@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, Naresh Kamboju <naresh.kamboju@linaro.org>, Jakub Kicinski <kuba@kernel.org>, cki-project@redhat.com, kernelci@groups.io, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan <shuah@kernel.org>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>, Jethro Beekman <jethro@fortanix.com>, "open list:INTEL SGX" <linux-sgx@vger.kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>
 
-The minimum supported version of LLVM has been raised to 11.0.0, meaning
-this check is always true, so it can be dropped.
+On Fri, Feb 11, 2022 at 12:06:41AM +0500, Muhammad Usama Anjum wrote:
+> CC can have multiple sub-strings like "ccache gcc". For check_cc.sh,
+> CC needs to be treated like one argument. Put double quotes around it to
+> make CC one string and hence one argument.
+> 
+> Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
+> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+>  tools/testing/selftests/sgx/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
+> index 2956584e1e37f..75af864e07b65 100644
+> --- a/tools/testing/selftests/sgx/Makefile
+> +++ b/tools/testing/selftests/sgx/Makefile
+> @@ -4,7 +4,7 @@ include ../lib.mk
+>  
+>  .PHONY: all clean
+>  
+> -CAN_BUILD_X86_64 := $(shell ../x86/check_cc.sh $(CC) \
+> +CAN_BUILD_X86_64 := $(shell ../x86/check_cc.sh "$(CC)" \
+>  			    ../x86/trivial_64bit_program.c)
+>  
+>  ifndef OBJCOPY
+> -- 
+> 2.30.2
+> 
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- init/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 4b7bac10c72d..e40f967dee3f 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1414,7 +1414,6 @@ config LD_DEAD_CODE_DATA_ELIMINATION
- config LD_ORPHAN_WARN
- 	def_bool y
- 	depends on ARCH_WANT_LD_ORPHAN_WARN
--	depends on !LD_IS_LLD || LLD_VERSION >=3D 110000
- 	depends on $(ld-option,--orphan-handling=3Dwarn)
-=20
- config SYSCTL
---=20
-2.34.1
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
+BR, Jarkko
