@@ -1,48 +1,52 @@
-Date: Sun, 20 Feb 2022 21:06:33 +0100
-From: Jarkko Sakkinen <jarkko@kernel.org>
-Subject: Re: [PATCH 2/2] selftests: sgx: Treat CC as one argument
-Message-ID: <YhKfSUXC/U1twT9h@iki.fi>
-References: <20220210190642.1477814-1-usama.anjum@collabora.com>
- <20220210190642.1477814-3-usama.anjum@collabora.com>
+From: "Usama" <usama.anjum@collabora.com>
+Subject: [PATCH] Makefile: Fix separate output directory build of kselftests
+Date: Thu, 24 Feb 2022 00:10:15 +0500
+Message-Id: <20220223191016.1658728-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <20220210190642.1477814-3-usama.anjum@collabora.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Shuah Khan <shuah@kernel.org>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@suse.de>, Jethro Beekman <jethro@fortanix.com>, "open list:INTEL SGX" <linux-sgx@vger.kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, kernel@collabora.com, kernelci@groups.io, "kernelci.org bot" <bot@kernelci.org>
+To: Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, kernel@collabora.com, kernelci@groups.io, shuah@kernel.org, linux-kselftest@vger.kernel.org, keescook@chromium.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Fri, Feb 11, 2022 at 12:06:41AM +0500, Muhammad Usama Anjum wrote:
-> CC can have multiple sub-strings like "ccache gcc". For check_cc.sh,
-> CC needs to be treated like one argument. Put double quotes around it to
-> make CC one string and hence one argument.
-> 
-> Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
-> Reported-by: "kernelci.org bot" <bot@kernelci.org>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
->  tools/testing/selftests/sgx/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
-> index 2956584e1e37f..75af864e07b65 100644
-> --- a/tools/testing/selftests/sgx/Makefile
-> +++ b/tools/testing/selftests/sgx/Makefile
-> @@ -4,7 +4,7 @@ include ../lib.mk
->  
->  .PHONY: all clean
->  
-> -CAN_BUILD_X86_64 := $(shell ../x86/check_cc.sh $(CC) \
-> +CAN_BUILD_X86_64 := $(shell ../x86/check_cc.sh "$(CC)" \
->  			    ../x86/trivial_64bit_program.c)
->  
->  ifndef OBJCOPY
-> -- 
-> 2.30.2
-> 
+Build of kselftests fail if kernel's top most Makefile is used for
+running or building kselftests with separate output directory. The
+absolute path is needed to reference other files during this kind of
+build. Set KBUILD_ABS_SRCTREE to use absolute path during the build. It
+fixes the following different types of errors:
 
+make kselftest-all O=3D/linux_mainline/build
+Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
 
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+make kselftest-all O=3Dbuild
+Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
 
-BR, Jarkko
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+I've tested this patch on top of next-20220217. The latest next-20220222
+have missing patches.
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 86f633c2809ea..62b3eb8a102ab 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1411,10 +1411,10 @@ tools/%: FORCE
+=20
+ PHONY +=3D kselftest
+ kselftest:
+-	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests run_tests
++	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=3D=
+1 run_tests
+=20
+ kselftest-%: FORCE
+-	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests $*
++	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=3D=
+1 $*
+=20
+ PHONY +=3D kselftest-merge
+ kselftest-merge:
+--=20
+2.30.2
+
