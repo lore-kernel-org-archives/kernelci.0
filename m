@@ -1,64 +1,37 @@
-Message-ID: <0c22d702-b451-e9b3-8d3f-7c28ca71c1da@collabora.com>
-Date: Mon, 28 Feb 2022 12:06:22 +0500
+Return-Path: <david@redhat.com>
+Message-ID: <3b7c068b-ac7e-62fc-f0cd-a8dbf8642876@redhat.com>
+Date: Mon, 28 Feb 2022 10:37:46 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/2] selftests/lkdtm: add config and turn off CFI_FORWARD_PROTO
-References: <20220217205620.2512094-1-usama.anjum@collabora.com>
-From: "Usama" <usama.anjum@collabora.com>
-In-Reply-To: <20220217205620.2512094-1-usama.anjum@collabora.com>
+Subject: Re: [PATCH V3] selftests: vm: Add test for Soft-Dirty PTE bit
+References: <20220224212335.3045905-1-usama.anjum@collabora.com>
+From: David Hildenbrand <david@redhat.com>
+In-Reply-To: <20220224212335.3045905-1-usama.anjum@collabora.com>
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Kees Cook <keescook@chromium.org>, Shuah Khan <shuah@kernel.org>
-Cc: usama.anjum@collabora.com, kernel@collabora.com, kernelci@groups.io, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: kernel@collabora.com, kernelci@groups.io, Will Deacon <will@kernel.org>, Gabriel Krisman Bertazi <krisman@collabora.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 
-Hi,
+On 24.02.22 22:23, Muhammad Usama Anjum wrote:
+> This introduces three tests:
+> 1) Sanity check soft dirty basic semantics: allocate area, clean, dirty,
+> check if the SD bit flipped.
+> 2) Check VMA reuse: validate the VM_SOFTDIRTY usage
+> 3) Check soft-dirty on huge pages
+> 
+> This was motivated by Will Deacon's fix commit 912efa17e512 ("mm: proc:
+> Invalidate TLB after clearing soft-dirty page state"). I was tracking the
+> same issue that he fixed, and this test would have caught it.
+> 
 
-Any thoughts?
+A note that madv_populate.c already contains some SOFTDIRTY tests
+regarding MADV_POPULATE. Eventually we want to factor out
+softdirty/pagemap handling+checks for easier reuse.
 
-On 2/18/22 1:56 AM, Muhammad Usama Anjum wrote:
-> Add config options which are needed for LKDTM sub-tests.
-> STACKLEAK_ERASING test needs GCC_PLUGIN_STACKLEAK config.
-> READ_AFTER_FREE and READ_BUDDY_AFTER_FREE tests need
-> INIT_ON_FREE_DEFAULT_ON config.
-> 
-> CFI_FORWARD_PROTO always fails as there is no active CFI system of some
-> kind. Turn it off for now by default until proper support.
-> 
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Fixes: 46d1a0f03d66 ("selftests/lkdtm: Add tests for LKDTM targets")
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
->  tools/testing/selftests/lkdtm/config    | 2 ++
->  tools/testing/selftests/lkdtm/tests.txt | 2 +-
->  2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/lkdtm/config b/tools/testing/selftests/lkdtm/config
-> index 46f39ee762086..adc9fa60057c5 100644
-> --- a/tools/testing/selftests/lkdtm/config
-> +++ b/tools/testing/selftests/lkdtm/config
-> @@ -2,8 +2,10 @@ CONFIG_LKDTM=y
->  CONFIG_DEBUG_LIST=y
->  CONFIG_SLAB_FREELIST_HARDENED=y
->  CONFIG_FORTIFY_SOURCE=y
-> +CONFIG_GCC_PLUGIN_STACKLEAK=y
->  CONFIG_HARDENED_USERCOPY=y
->  CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT=y
-> +CONFIG_INIT_ON_FREE_DEFAULT_ON=y
->  CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y
->  CONFIG_UBSAN=y
->  CONFIG_UBSAN_BOUNDS=y
-> diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-> index 6b36b7f5dcf96..aa947b0ce1eeb 100644
-> --- a/tools/testing/selftests/lkdtm/tests.txt
-> +++ b/tools/testing/selftests/lkdtm/tests.txt
-> @@ -72,7 +72,7 @@ USERCOPY_STACK_FRAME_FROM
->  USERCOPY_STACK_BEYOND
->  USERCOPY_KERNEL
->  STACKLEAK_ERASING OK: the rest of the thread stack is properly erased
-> -CFI_FORWARD_PROTO
-> +#CFI_FORWARD_PROTO
->  FORTIFIED_STRSCPY
->  FORTIFIED_OBJECT
->  FORTIFIED_SUBOBJECT
+
+-- 
+Thanks,
+
+David / dhildenb
+
