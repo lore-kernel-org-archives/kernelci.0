@@ -1,123 +1,65 @@
-Return-Path: <ilias.apalodimas@linaro.org>
-Date: Mon, 15 Nov 2021 20:55:11 +0200
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: Re: [PATCH net-next v6] page_pool: disable dma mapping support for 32-bit arch with 64-bit DMA
-Message-ID: <YZKtD4+13gQBXEX6@apalos.home>
-References: <20211013091920.1106-1-linyunsheng@huawei.com>
- <b9c0e7ef-a7a2-66ad-3a19-94cc545bd557@collabora.com>
- <1090744a-3de6-1dc2-5efe-b7caae45223a@huawei.com>
- <644e10ca-87b8-b553-db96-984c0b2c6da1@collabora.com>
- <93173400-1d37-09ed-57ef-931550b5a582@huawei.com>
- <YZJKNLEm6YTkygHM@apalos.home>
- <CAC_iWjKFLr932sMt9G2T+MFYUAQZNWPqp6YsnmSd3rMia7OpoA@mail.gmail.com>
- <d0223831-44ff-3e1a-1be9-27d751dc39f2@huawei.com>
- <8c688448-e8a9-5a6b-7b17-ccd294a416d3@redhat.com>
+Return-Path: <skhan@linuxfoundation.org>
+Subject: Re: [PATCH] Makefile: Fix separate output directory build of kselftests
+References: <20220223191016.1658728-1-usama.anjum@collabora.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <6e954470-f593-e27a-d15c-ecd5c28f4dca@linuxfoundation.org>
+Date: Thu, 3 Mar 2022 14:32:24 -0700
 MIME-Version: 1.0
-In-Reply-To: <8c688448-e8a9-5a6b-7b17-ccd294a416d3@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20220223191016.1658728-1-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Jesper Dangaard Brouer <jbrouer@redhat.com>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>, brouer@redhat.com, Guillaume Tucker <guillaume.tucker@collabora.com>, davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linuxarm@openeuler.org, hawk@kernel.org, akpm@linux-foundation.org, peterz@infradead.org, will@kernel.org, jhubbard@nvidia.com, yuzhao@google.com, mcroce@microsoft.com, fenghua.yu@intel.com, feng.tang@intel.com, jgg@ziepe.ca, aarcange@redhat.com, guro@fb.com, "kernelci@groups.io" <kernelci@groups.io>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>
+Cc: kernel@collabora.com, kernelci@groups.io, shuah@kernel.org, linux-kselftest@vger.kernel.org, keescook@chromium.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 
+On 2/23/22 12:10 PM, Muhammad Usama Anjum wrote:
+> Build of kselftests fail if kernel's top most Makefile is used for
+> running or building kselftests with separate output directory. The
+> absolute path is needed to reference other files during this kind of
+> build. Set KBUILD_ABS_SRCTREE to use absolute path during the build. It
+> fixes the following different types of errors:
+> 
+> make kselftest-all O=/linux_mainline/build
+> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
+> 
+> make kselftest-all O=build
+> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
+> 
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+> I've tested this patch on top of next-20220217. The latest next-20220222
+> have missing patches.
 
-[...] 
+Can you give more details on the use-cases you tested? Did you test all
+the ways kselftest are built?
 
-> > > > > > > > Some more details can be found here:
-> > > > > > > > 
-> > > > > > > >    https://linux.kernelci.org/test/case/id/6189968c3ec0a3c06e3358fe/
-> > > > > > > > 
-> > > > > > > > Here's the same revision on the same platform booting fine with a
-> > > > > > > > plain multi_v7_defconfig build:
-> > > > > > > > 
-> > > > > > > >    https://linux.kernelci.org/test/plan/id/61899d322c0e9fee7e3358ec/
-> > > > > > > > 
-> > > > > > > > Please let us know if you need any help debugging this issue or
-> > > > > > > > if you have a fix to try.
-> > > > > > > 
-> > > > > > > The patch below is removing the dma mapping support in page pool
-> > > > > > > for 32 bit systems with 64 bit dma address, so it seems there
-> > > > > > > is indeed a a drvier using the the page pool with PP_FLAG_DMA_MAP
-> > > > > > > flags set in a 32 bit systems with 64 bit dma address.
-> > > > > > > 
-> > > > > > > It seems we might need to revert the below patch or implement the
-> > > > > > > DMA-mapping tracking support in the driver as mentioned in the below
-> > > > > > > commit log.
-> > > > > > > 
-> > > > > > > which ethernet driver do you use in your system?
-> > > > > > 
-> > > > > > Thanks for taking a look and sorry for the slow reply.  Here's a
-> > > > > > booting test job with LPAE disabled:
-> > > > > > 
-> > > > > >      https://linux.kernelci.org/test/plan/id/618dbb81c60c4d94503358f1/
-> > > > > >      https://storage.kernelci.org/mainline/master/v5.15-12452-g5833291ab6de/arm/multi_v7_defconfig/gcc-10/lab-collabora/baseline-nfs-rk3288-rock2-square.html#L812
-> > > > > > 
-> > > > > > [    8.314523] rk_gmac-dwmac ff290000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
-> > > > > > 
-> > > > > > So the driver is drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> > > > > 
-> > > > > Thanks for the report, this patch seems to cause problem for 32-bit
-> > > > > system with LPAE enabled.
-> > > > > 
-> > > > > As LPAE seems like a common feature for 32 bits system, this patch
-> > > > > might need to be reverted.
-> > > > > 
-> > > > > @Jesper, @Ilias, what do you think?
-> > > > 
-> > > > 
-> > > > So enabling LPAE also enables CONFIG_ARCH_DMA_ADDR_T_64BIT on that board?
-> > > > Doing a quick grep only selects that for XEN.  I am ok reverting that,  but
-> > > > I think we need to understand how the dma address ended up being 64bit.
-> > > 
-> > > So looking a bit closer, indeed enabling LPAE always enables this.  So
-> > > we need to revert the patch.
-> > > Yunsheng will you send that?
-> > 
-> > Sure.
+> ---
+>   Makefile | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Why don't we change that driver[1] to not use page_pool_get_dma_addr() ?
+> diff --git a/Makefile b/Makefile
+> index 86f633c2809ea..62b3eb8a102ab 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1411,10 +1411,10 @@ tools/%: FORCE
+>   
+>   PHONY += kselftest
+>   kselftest:
+> -	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests run_tests
+> +	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=1 run_tests
+>   
+>   kselftest-%: FORCE
+> -	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests $*
+> +	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=1 $*
+>   
+>   PHONY += kselftest-merge
+>   kselftest-merge:
 > 
->  [1] drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> 
-> I took a closer look and it seems the driver have struct stmmac_rx_buffer in
-> which is stored the dma_addr it gets from page_pool_get_dma_addr().
-> 
-> See func: stmmac_init_rx_buffers
-> 
->  static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
-> 				struct dma_desc *p,
-> 				int i, gfp_t flags, u32 queue)
->  {
-> 
-> 	if (!buf->page) {
-> 		buf->page = page_pool_dev_alloc_pages(rx_q->page_pool);
-> 		if (!buf->page)
-> 			return -ENOMEM;
-> 		buf->page_offset = stmmac_rx_offset(priv);
-> 	}
-> 	[...]
-> 
-> 	buf->addr = page_pool_get_dma_addr(buf->page) + buf->page_offset;
-> 
-> 	stmmac_set_desc_addr(priv, p, buf->addr);
-> 	[...]
->  }
-> 
-> I question if this driver really to use page_pool for storing the dma_addr
-> as it just extract it and store it outside page_pool?
-> 
-> @Ilias it looks like you added part of the page_pool support in this driver,
-> so I hope you can give a qualified guess on:
-> How much work will it be to let driver do the DMA-map itself?
-> (and not depend on the DMA-map feature provided by page_pool)
 
-It shouldn't be that hard.   However when we removed that we were hoping we
-had no active consumers.  So we'll have to fix this and check for other
-32-bit boards with LPAE and page_pool handling the DMA mappings.
-But the point now is that this is far from a 'hardware configuration' of
-32-bit CPU + 64-bit DMA.  Every armv7 and x86 board can get that.  So I was
-thinking it's better to revert this and live with the 'weird' handling in the
-code.
+Change looks good to me as long as all the supported use-cases work correctly.
 
-Cheers
-/Ilias
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+
+thanks,
+-- Shuah
