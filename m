@@ -1,60 +1,45 @@
-Message-ID: <2ca0d1c4-ab75-6e16-26f8-e48b0389144c@collabora.com>
-Date: Thu, 3 Mar 2022 23:06:35 +0500
+Return-Path: <skhan@linuxfoundation.org>
+Subject: Re: [PATCH V3] selftests: vm: Add test for Soft-Dirty PTE bit
+References: <20220224212335.3045905-1-usama.anjum@collabora.com>
+ <edf398a7-b1a1-c7c9-5128-f37cfc3a5c95@linuxfoundation.org>
+ <52f17759-c7b9-c13b-2c58-f9f2656d26f6@collabora.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <537c7ca4-6dde-cbb8-2c44-271acf96666d@linuxfoundation.org>
+Date: Thu, 3 Mar 2022 11:18:28 -0700
 MIME-Version: 1.0
-Subject: Re: [PATCH] Makefile: Fix separate output directory build of kselftests
-References: <20220223191016.1658728-1-usama.anjum@collabora.com>
-From: "Usama" <usama.anjum@collabora.com>
-In-Reply-To: <20220223191016.1658728-1-usama.anjum@collabora.com>
+In-Reply-To: <52f17759-c7b9-c13b-2c58-f9f2656d26f6@collabora.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
-To: Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>, keescook@chromium.org, shuah@kernel.org
-Cc: usama.anjum@collabora.com, kernel@collabora.com, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: kernel@collabora.com, kernelci@groups.io, Will Deacon <will@kernel.org>, Gabriel Krisman Bertazi <krisman@collabora.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 
-Hi,
+On 2/27/22 11:55 PM, Muhammad Usama Anjum wrote:
+> Hi,
+> 
+> Andrew had already accepted the patch. I'll send an iteration.
+> 
+> On 2/26/22 5:35 AM, Shuah Khan wrote:
+>>> +#define PAGEMAP_PATH        "/proc/self/pagemap"
+>>
+>> Why is this names PATH - it is the file name right?
+> I'll update the names of the macros.
+> 
+>>> +
+>>> +int clear_refs;
+>>> +int pagemap;
+>>> +
+>>
+>> Get rid of these globals and pass these in - please find name
+>> that clearly indicates them as fds
+>>
+> I'll update their names to indicate fds. This is a standalone test
+> application. Shouldn't the usage of global variables be fine?
+> 
 
-Any thoughts about this patch?
+It makes it harder to maintain. Unless there is reason, avoid globals.
+I am not seeing a need for globals in this case, other than convenience.
 
-On 2/24/22 12:10 AM, Muhammad Usama Anjum wrote:
-> Build of kselftests fail if kernel's top most Makefile is used for
-> running or building kselftests with separate output directory. The
-> absolute path is needed to reference other files during this kind of
-> build. Set KBUILD_ABS_SRCTREE to use absolute path during the build. It
-> fixes the following different types of errors:
-> 
-> make kselftest-all O=/linux_mainline/build
-> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
-> 
-> make kselftest-all O=build
-> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
-> I've tested this patch on top of next-20220217. The latest next-20220222
-> have missing patches.
-> ---
->  Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 86f633c2809ea..62b3eb8a102ab 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1411,10 +1411,10 @@ tools/%: FORCE
->  
->  PHONY += kselftest
->  kselftest:
-> -	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests run_tests
-> +	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=1 run_tests
->  
->  kselftest-%: FORCE
-> -	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests $*
-> +	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=1 $*
->  
->  PHONY += kselftest-merge
->  kselftest-merge:
-
--- 
---
-Muhammad Usama Anjum
+thanks,
+-- Shuah
