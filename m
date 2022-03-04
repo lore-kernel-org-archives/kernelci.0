@@ -1,78 +1,68 @@
-Return-Path: <skhan@linuxfoundation.org>
-Subject: Re: [PATCH V2] selftests: Fix build when $(O) points to a relative path
-References: <20220216223817.1386745-1-usama.anjum@collabora.com>
- <46489cd9-fb7a-5a4b-7f36-1c9f6566bd93@collabora.com>
- <63870982-62ba-97f2-5ee2-d4457a7a5cdb@linuxfoundation.org>
- <9a643612-ea85-7b28-a792-770927836d43@linuxfoundation.org>
- <ddb52ffe-5016-cc5a-3af4-a0a8e7b3e119@collabora.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <a6096266-5063-d353-924d-cb0379d25380@linuxfoundation.org>
-Date: Thu, 3 Mar 2022 15:19:55 -0700
+From: Gabriel Krisman Bertazi <krisman@collabora.com>
+Subject: Re: [PATCH V3] selftests: vm: Add test for Soft-Dirty PTE bit
+References: <20220224212335.3045905-1-usama.anjum@collabora.com>
+	<3b7c068b-ac7e-62fc-f0cd-a8dbf8642876@redhat.com>
+	<6133317f-4da0-3aae-f352-b75f0f94dbd4@linuxfoundation.org>
+	<87o82mkhif.fsf@collabora.com>
+	<ee9b8c8b-0d27-bd01-e10d-9062c32f2486@linuxfoundation.org>
+Date: Fri, 04 Mar 2022 11:14:08 -0500
+In-Reply-To: <ee9b8c8b-0d27-bd01-e10d-9062c32f2486@linuxfoundation.org> (Shuah
+	Khan's message of "Thu, 3 Mar 2022 14:46:08 -0700")
+Message-ID: <87r17hg0fj.fsf@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <ddb52ffe-5016-cc5a-3af4-a0a8e7b3e119@collabora.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 List-ID: <kernelci.groups.io>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>, Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>, John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>
-Cc: kernel@collabora.com, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: David Hildenbrand <david@redhat.com>, Muhammad Usama Anjum <usama.anjum@collabora.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, kernel@collabora.com, kernelci@groups.io, Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 
-On 2/26/22 12:32 AM, Muhammad Usama Anjum wrote:
-> On 2/26/22 2:13 AM, Shuah Khan wrote:
->> On 2/25/22 11:01 AM, Shuah Khan wrote:
->>> On 2/25/22 10:22 AM, Muhammad Usama Anjum wrote:
->>>> Any thoughts about it?
+Shuah Khan <skhan@linuxfoundation.org> writes:
+
+> On 3/3/22 11:39 AM, Gabriel Krisman Bertazi wrote:
+>> Shuah Khan <skhan@linuxfoundation.org> writes:
+>> 
+>>> On 2/28/22 2:37 AM, David Hildenbrand wrote:
+>>>> On 24.02.22 22:23, Muhammad Usama Anjum wrote:
+>>>>> This introduces three tests:
+>>>>> 1) Sanity check soft dirty basic semantics: allocate area, clean, dirty,
+>>>>> check if the SD bit flipped.
+>>>>> 2) Check VMA reuse: validate the VM_SOFTDIRTY usage
+>>>>> 3) Check soft-dirty on huge pages
+>>>>>
+>>>>> This was motivated by Will Deacon's fix commit 912efa17e512 ("mm: proc:
+>>>>> Invalidate TLB after clearing soft-dirty page state"). I was tracking the
+>>>>> same issue that he fixed, and this test would have caught it.
+>>>>>
+>>>> A note that madv_populate.c already contains some SOFTDIRTY tests
+>>>> regarding MADV_POPULATE. Eventually we want to factor out
+>>>> softdirty/pagemap handling+checks for easier reuse.
 >>>>
 >>>
->>> No to post please.
->>>
->>>> On 2/17/22 3:38 AM, Muhammad Usama Anjum wrote:
->>>>> Build of bpf and tc-testing selftests fails when the relative path of
->>>>> the build directory is specified.
->>>>>
->>>>> make -C tools/testing/selftests O=build0
->>>>> make[1]: Entering directory
->>>>> '/linux_mainline/tools/testing/selftests/bpf'
->>>>> ../../../scripts/Makefile.include:4: *** O=build0 does not exist.
->>>>> Stop.
->>>>> make[1]: Entering directory
->>>>> '/linux_mainline/tools/testing/selftests/tc-testing'
->>>>> ../../../scripts/Makefile.include:4: *** O=build0 does not exist.
->>>>> Stop.
->>>>>
->>>>> Makefiles of bpf and tc-testing include scripts/Makefile.include file.
->>>>> This file has sanity checking inside it which checks the output path.
->>>>> The output path is not relative to the bpf or tc-testing. The sanity
->>>>> check fails. Expand the output path to get rid of this error. The
->>>>> fix is
->>>>> the same as mentioned in commit 150a27328b68 ("bpf, preload: Fix build
->>>>> when $(O) points to a relative path").
->>>>>
->>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->>>>> ---
->>>>> Changes in V2:
->>>>> Add more explaination to the commit message.
->>>>> Support make install as well.
->>>
->>
->> Does the same happen when you use make kselftest-all?
-> No, this problem doesn't appear when using make kselftest-all.
-> 
-> As separate output directory build was broken in kernel's top most
-> Makefile i.e., make kselftest-all O=dir. (I've sent separate patch to
-> fix this:
-> https://lore.kernel.org/lkml/20220223191016.1658728-1-usama.anjum@collabora.com/)
-> So people must have been using kselftest's internal Makefile directly to
-> keep object files in separate directory i.e., make -C
-> tools/testing/selftests O=dir and in this way the build of these tests
-> (bpf, tc-testing) fail. This patch is fixing those build errors.
-> 
->>
->> I am unable to reproduce what you are seeing?
-> make -C tools/testing/selftests O=dir should reproduce this problem.
-> 
+>>> Is this patch unnecessary then?
+>> It is not unnecessary since the madv test doesn't cover the bug tested
+>> here, afaik.  But, as mentioned when I originally submitted this patch,
+>> it should be merged into selftests/vm/madv_populate.c or, at least,
+>> reuse that existing infrastructure.
+>> https://lore.kernel.org/lkml/87lf553z5g.fsf@collabora.com/
+>> 
+>
+> Oops this one came in a few months ago and appears to have slipped
+> through and didn't get the right attention. Sorry about that.
+>
+> Please resend the patch and cc all the everybody on this thread.
+>
+> I would like to have your patch reviewed and looked at first. This
+> patch needs rework sine it has several comments to be addressed.
 
-Applied to linux-kselftest next for Linux 5.18-rc1.
+Hi Shuah,
 
-thanks,
--- Shuah
+The patch being discussed in that thread is the same that Usama is
+proposing here, minus a few modifications. Usama has taken over the work
+to upstream it.
+
+We just spoke, and he will follow up with a new version that addresses
+the coding issues and reuses the infrastructure from madv_populate.c
+
+Sorry for the noise.
+
+-- 
+Gabriel Krisman Bertazi
