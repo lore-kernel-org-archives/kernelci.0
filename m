@@ -1,123 +1,62 @@
-From: Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH RFC 1/6] Documentation: Raise the minimum supported version of LLVM to 11.0.0
-Date: Mon, 29 Nov 2021 09:57:58 -0700
-Message-Id: <20211129165803.470795-2-nathan@kernel.org>
-In-Reply-To: <20211129165803.470795-1-nathan@kernel.org>
-References: <20211129165803.470795-1-nathan@kernel.org>
+Message-ID: <2ac8cecb-5e14-a8b2-7629-a9ab9d474585@collabora.com>
+Date: Tue, 8 Mar 2022 13:11:07 +0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] Makefile: Fix separate output directory build of kselftests
+References: <20220223191016.1658728-1-usama.anjum@collabora.com>
+ <6e954470-f593-e27a-d15c-ecd5c28f4dca@linuxfoundation.org>
+From: "Usama" <usama.anjum@collabora.com>
+In-Reply-To: <6e954470-f593-e27a-d15c-ecd5c28f4dca@linuxfoundation.org>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Tom Stellard <tstellar@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, Naresh Kamboju <naresh.kamboju@linaro.org>, Jakub Kicinski <kuba@kernel.org>, cki-project@redhat.com, kernelci@groups.io, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+To: Shuah Khan <skhan@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>
+Cc: usama.anjum@collabora.com, kernel@collabora.com, kernelci@groups.io, shuah@kernel.org, linux-kselftest@vger.kernel.org, keescook@chromium.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
 
-LLVM versions prior to 11.0.0 have a harder time with dead code
-elimination, which can cause issues with commonly used expressions such
-as BUILD_BUG_ON and the bitmask functions/macros in bitfield.h (see the
-first two issues links below).
+On 3/4/22 2:32 AM, Shuah Khan wrote:
+> On 2/23/22 12:10 PM, Muhammad Usama Anjum wrote:
+>> Build of kselftests fail if kernel's top most Makefile is used for
+>> running or building kselftests with separate output directory. The
+>> absolute path is needed to reference other files during this kind of
+>> build. Set KBUILD_ABS_SRCTREE to use absolute path during the build. It
+>> fixes the following different types of errors:
+>>
+>> make kselftest-all O=/linux_mainline/build
+>> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
+>>
+>> make kselftest-all O=build
+>> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
+>>
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>> ---
+>> I've tested this patch on top of next-20220217. The latest next-20220222
+>> have missing patches.
+> 
+> Can you give more details on the use-cases you tested? Did you test all
+> the ways kselftest are built?
+> 
+Yeah, I've tried to test all the ways. Here are the different ways I've
+used to test it:
+1) Same directory build of kselftest (this is already working)
+make kselftest
+make kselftest-all
+make kselftest-install
+make kselftest-clean
+make kselftest-gen_tar
 
-Whenever there is an issue within LLVM that has been resolved in a later
-release, the only course of action is to gate the problematic
-configuration or source code on the toolchain verson or raise the
-minimum supported version of LLVM for building the kernel, as LLVM has a
-limited support lifetime compared to GCC. GCC major releases will
-typically see a few point releases across a two year period on average
-whereas LLVM major releases are only supported until the next major
-release and will only see one or two point releases within that
-timeframe. For example, GCC 8.1 was released in May 2018 and GCC 8.5 was
-released in May 2021, whereas LLVM 12.0.0 was released in April 2021 and
-its only point release, 12.0.1, was released in July 2021, giving a
-minimal window for fixes to be backported.
+2) These were failing when separate output directory is specified either
+as relative or absolute path. After adding this patch, these are also
+working. kselfetst.rst mentions separate output directory build in this way.
+make kselftest O=build
+make kselftest-all O=build
+make kselftest-install O=build
+make kselftest-clean O=build
+make kselftest-gen_tar O=build
 
-To resolve these build errors around improper dead code elimination,
-raise the minimum supported version of LLVM for building the kernel to
-11.0.0. Doing so is a more proper solution than mucking around with core
-kernel macros that have always worked with GCC or disabling drivers for
-using these macros in a proper manner. This type of issue may continue
-to crop up and require patching, which creates more debt for bumping the
-minimum supported version in the future.
+make kselftest O=/build
+make kselftest-all O=/build
+make kselftest-install O=/build
+make kselftest-clean O=/build
+make kselftest-gen_tar O=/build
 
-This should have a minimal impact to distributions. Using a script to
-pull several different Docker images and check the output of
-'clang --version':
-
-archlinux:latest: clang version 13.0.0
-
-debian:oldoldstable-slim: clang version 3.8.1-24 (tags/RELEASE_381/final)
-debian:oldstable-slim: clang version 7.0.1-8+deb10u2 (tags/RELEASE_701/fi=
-nal)
-debian:stable-slim: Debian clang version 11.0.1-2
-debian:testing-slim: Debian clang version 11.1.0-4
-debian:unstable-slim: Debian clang version 11.1.0-4
-
-fedora:34: clang version 12.0.1 (Fedora 12.0.1-1.fc34)
-fedora:latest: clang version 13.0.0 (Fedora 13.0.0-3.fc35)
-fedora:rawhide: clang version 13.0.0 (Fedora 13.0.0-5.fc36)
-
-opensuse/leap:15.2: clang version 9.0.1
-opensuse/leap:latest: clang version 11.0.1
-opensuse/tumbleweed:latest: clang version 13.0.0
-
-ubuntu:bionic: clang version 6.0.0-1ubuntu2 (tags/RELEASE_600/final)
-ubuntu:latest: clang version 10.0.0-4ubuntu1
-ubuntu:hirsute: Ubuntu clang version 12.0.0-3ubuntu1~21.04.2
-ubuntu:rolling: Ubuntu clang version 13.0.0-2
-ubuntu:devel: Ubuntu clang version 13.0.0-9
-
-In every case, the distribution's version of clang is either older than
-the current minimum supported version of LLVM 10.0.1 or equal to or
-greater than the proposed 11.0.0 so nothing should change.
-
-Another benefit of this change is LLVM=3D1 works better with arm64 and
-x86_64 since commit f12b034afeb3 ("scripts/Makefile.clang: default to
-LLVM_IAS=3D1") enabled the integrated assembler by default, which only
-works well with clang 11+ (clang-10 required it to be disabled to
-successfully build a kernel).
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1293
-Link: https://github.com/ClangBuiltLinux/linux/issues/1506
-Link: https://github.com/ClangBuiltLinux/linux/issues/1511
-Link: https://github.com/llvm/llvm-project/commit/fa496ce3c6774097080c8a9=
-cb808da56f383b938
-Link: https://groups.google.com/g/clang-built-linux/c/mPQb9_ZWW0s/m/W7o6S=
--QTBAAJ
-Link: https://github.com/ClangBuiltLinux/misc-scripts
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- Documentation/process/changes.rst | 2 +-
- scripts/min-tool-version.sh       | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/process/changes.rst b/Documentation/process/ch=
-anges.rst
-index b398b8576417..17182b537141 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -30,7 +30,7 @@ you probably needn't concern yourself with pcmciautils.
-         Program        Minimal version       Command to check the versio=
-n
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
- GNU C                  5.1              gcc --version
--Clang/LLVM (optional)  10.0.1           clang --version
-+Clang/LLVM (optional)  11.0.0           clang --version
- GNU make               3.81             make --version
- binutils               2.23             ld -v
- flex                   2.5.35           flex --version
-diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
-index 4edc708baa63..7c20252a90c6 100755
---- a/scripts/min-tool-version.sh
-+++ b/scripts/min-tool-version.sh
-@@ -28,7 +28,7 @@ llvm)
- 	if [ "$SRCARCH" =3D s390 ]; then
- 		echo 13.0.0
- 	else
--		echo 10.0.1
-+		echo 11.0.0
- 	fi
- 	;;
- *)
---=20
-2.34.1
-
+Tested on top of next-20220307 after applying this patch.
