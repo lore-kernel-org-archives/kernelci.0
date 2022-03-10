@@ -1,43 +1,26 @@
-Message-ID: <62c11336-cac1-8501-19fe-980ebfa050e9@collabora.com>
-Date: Thu, 10 Mar 2022 22:21:57 +0500
+Message-ID: <76529762-1a36-142d-0aa9-beb5fa2bb27b@collabora.com>
+Date: Thu, 10 Mar 2022 22:22:51 +0500
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/2] selftests/lkdtm: add config and turn off CFI_FORWARD_PROTO
+Subject: Re: [PATCH 2/2] selftests/lkdtm: add config
 References: <20220217205620.2512094-1-usama.anjum@collabora.com>
- <202203091122.A51B31230A@keescook>
+ <20220217205620.2512094-2-usama.anjum@collabora.com>
+ <202203091123.33E89F5@keescook>
 From: "Usama" <usama.anjum@collabora.com>
-In-Reply-To: <202203091122.A51B31230A@keescook>
+In-Reply-To: <202203091123.33E89F5@keescook>
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
 To: Kees Cook <keescook@chromium.org>
-Cc: usama.anjum@collabora.com, Shuah Khan <shuah@kernel.org>, kernel@collabora.com, kernelci@groups.io, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: usama.anjum@collabora.com, Shuah Khan <shuah@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernel@collabora.com, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On 3/10/22 12:22 AM, Kees Cook wrote:
-> On Fri, Feb 18, 2022 at 01:56:19AM +0500, Muhammad Usama Anjum wrote:
->> Add config options which are needed for LKDTM sub-tests.
->> STACKLEAK_ERASING test needs GCC_PLUGIN_STACKLEAK config.
->> READ_AFTER_FREE and READ_BUDDY_AFTER_FREE tests need
->> INIT_ON_FREE_DEFAULT_ON config.
->>
->> CFI_FORWARD_PROTO always fails as there is no active CFI system of some
->> kind. Turn it off for now by default until proper support.
+On 3/10/22 12:23 AM, Kees Cook wrote:
+> On Fri, Feb 18, 2022 at 01:56:20AM +0500, Muhammad Usama Anjum wrote:
+>> Add config option which is needed for SLAB_LINEAR_OVERFLOW test. It
+>> needs KASAN enabled.
 > 
-> Building under LTO Clang on arm64, this is available. What's the right
-> way to add a CONFIG that isn't always available?
-> 
-> -Kees
-Yeah, as you had mentioned
-(https://github.com/kernelci/kernelci-project/issues/84#issuecomment-1042015431):
-
-CFI_FORWARD_PROTO is going to fail unless there is an active CFI system
-in place of some kind. Right now this depends on arm64+Clang. In the
-future, this will be arch-agnostic+Clang, but for the moment, it should
-be safe to exclude this test.
-
-In this patch, I'm turning off CFI_FORWARD_PROTO by default here. We can
-re-enable it when it becomes arch agnostic. CFI_FORWARD_PROTO cannot be
-turned off by using a config. Please let me know your thoughts otherwise.
+> I'd prefer this use the SLAB_DEBUG options -- KASAN is very heavy.
+I'll test it out and update in the next patch version.
 
 -- 
 Muhammad Usama Anjum
