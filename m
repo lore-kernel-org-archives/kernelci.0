@@ -1,89 +1,38 @@
+Message-ID: <aaeaefb7-3655-2863-46ae-162bf5ab761c@collabora.com>
+Date: Tue, 15 Mar 2022 16:55:05 +0500
 MIME-Version: 1.0
-References: <d0d460d7be0107a69e3c52477761a6fe694c1840.1646991629.git.guillaume.tucker@collabora.com>
-In-Reply-To: <d0d460d7be0107a69e3c52477761a6fe694c1840.1646991629.git.guillaume.tucker@collabora.com>
-From: "Guenter Roeck" <groeck@google.com>
-Date: Mon, 14 Mar 2022 09:18:08 -0700
-Message-ID: <CABXOdTcdgSSVTXDN0DjB+-2K+H76_YJeFrue_MFJmBkZQZu7JQ@mail.gmail.com>
-Subject: Re: [PATCH v2] selftests, x86: fix how check_cc.sh is being invoked
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 2/2] selftests/lkdtm: add config
+References: <20220217205620.2512094-1-usama.anjum@collabora.com>
+ <20220217205620.2512094-2-usama.anjum@collabora.com>
+ <202203091123.33E89F5@keescook>
+ <76529762-1a36-142d-0aa9-beb5fa2bb27b@collabora.com>
+From: "Usama" <usama.anjum@collabora.com>
+In-Reply-To: <76529762-1a36-142d-0aa9-beb5fa2bb27b@collabora.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov <bp@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>, Collabora Kernel ML <kernel@collabora.com>, Linux MM <linux-mm@kvack.org>, linux-kselftest@vger.kernel.org, linux-kernel <linux-kernel@vger.kernel.org>
+To: Kees Cook <keescook@chromium.org>
+Cc: usama.anjum@collabora.com, Shuah Khan <shuah@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernel@collabora.com, kernelci@groups.io, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Fri, Mar 11, 2022 at 2:05 AM Guillaume Tucker
-<guillaume.tucker@collabora.com> wrote:
->
-> The $(CC) variable used in Makefiles could contain several arguments
-> such as "ccache gcc".  These need to be passed as a single string to
-> check_cc.sh, otherwise only the first argument will be used as the
-> compiler command.  Without quotes, the $(CC) variable is passed as
-> distinct arguments which causes the script to fail to build trivial
-> programs.
->
-> Fix this by adding quotes around $(CC) when calling check_cc.sh to
-> pass the whole string as a single argument to the script even if it
-> has several words such as "ccache gcc".
->
-> Fixes: e9886ace222e ("selftests, x86: Rework x86 target architecture detection")
-> Tested-by: "kernelci.org bot" <bot@kernelci.org>
-> Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
+On 3/10/22 10:22 PM, Muhammad Usama Anjum wrote:
+> On 3/10/22 12:23 AM, Kees Cook wrote:
+>> On Fri, Feb 18, 2022 at 01:56:20AM +0500, Muhammad Usama Anjum wrote:
+>>> Add config option which is needed for SLAB_LINEAR_OVERFLOW test. It
+>>> needs KASAN enabled.
+>>
+>> I'd prefer this use the SLAB_DEBUG options -- KASAN is very heavy.
+> I'll test it out and update in the next patch version.
+> I've tested by removing KASAN and adding the following config:
+CONFIG_SLAB=y
+CONFIG_DEBUG_SLAB=y
 
-Reviewed-by: Guenter Roeck <groeck@google.com>
+The result of SLAB_LINEAR_OVERFLOW test doesn't remain deterministic in
+this config. The task never crashes and hence stack trace never appears.
+When executed several times we get "Slab corruption" logs and after some
+more tries whole kernel crashes. I've not used DEBUG_SLAB before and not
+sure if this is the expected behavior. If we aren't sure, we can keep
+KASAN turned on instead.
 
-> ---
->
-> Notes:
->     v2: rebase and drop changes in check_cc.sh
->
->  tools/testing/selftests/vm/Makefile  | 6 +++---
->  tools/testing/selftests/x86/Makefile | 6 +++---
->  2 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
-> index fbccdda93629..213f6a57d7f6 100644
-> --- a/tools/testing/selftests/vm/Makefile
-> +++ b/tools/testing/selftests/vm/Makefile
-> @@ -54,9 +54,9 @@ TEST_GEN_FILES += split_huge_page_test
->  TEST_GEN_FILES += ksm_tests
->
->  ifeq ($(MACHINE),x86_64)
-> -CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh $(CC) ../x86/trivial_32bit_program.c -m32)
-> -CAN_BUILD_X86_64 := $(shell ./../x86/check_cc.sh $(CC) ../x86/trivial_64bit_program.c)
-> -CAN_BUILD_WITH_NOPIE := $(shell ./../x86/check_cc.sh $(CC) ../x86/trivial_program.c -no-pie)
-> +CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_32bit_program.c -m32)
-> +CAN_BUILD_X86_64 := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_64bit_program.c)
-> +CAN_BUILD_WITH_NOPIE := $(shell ./../x86/check_cc.sh "$(CC)" ../x86/trivial_program.c -no-pie)
->
->  override TARGETS := protection_keys
->  BINARIES_32 := $(TARGETS:%=%_32)
-> diff --git a/tools/testing/selftests/x86/Makefile b/tools/testing/selftests/x86/Makefile
-> index 8a1f62ab3c8e..53df7d3893d3 100644
-> --- a/tools/testing/selftests/x86/Makefile
-> +++ b/tools/testing/selftests/x86/Makefile
-> @@ -6,9 +6,9 @@ include ../lib.mk
->  .PHONY: all all_32 all_64 warn_32bit_failure clean
->
->  UNAME_M := $(shell uname -m)
-> -CAN_BUILD_I386 := $(shell ./check_cc.sh $(CC) trivial_32bit_program.c -m32)
-> -CAN_BUILD_X86_64 := $(shell ./check_cc.sh $(CC) trivial_64bit_program.c)
-> -CAN_BUILD_WITH_NOPIE := $(shell ./check_cc.sh $(CC) trivial_program.c -no-pie)
-> +CAN_BUILD_I386 := $(shell ./check_cc.sh "$(CC)" trivial_32bit_program.c -m32)
-> +CAN_BUILD_X86_64 := $(shell ./check_cc.sh "$(CC)" trivial_64bit_program.c)
-> +CAN_BUILD_WITH_NOPIE := $(shell ./check_cc.sh "$(CC)" trivial_program.c -no-pie)
->
->  TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
->                         check_initial_reg_state sigreturn iopl ioperm \
-> --
-> 2.30.2
->
->
->
-> ------------
-> Groups.io Links: You receive all messages sent to this group.
-> View/Reply Online (#1448): https://groups.io/g/kernelci/message/1448
-> Mute This Topic: https://groups.io/mt/89707412/955378
-> Group Owner: kernelci+owner@groups.io
-> Unsubscribe: https://groups.io/g/kernelci/unsub [groeck@google.com]
-> ------------
->
->
+-- 
+Muhammad Usama Anjum
