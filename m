@@ -1,98 +1,57 @@
-Return-Path: <frowand.list@gmail.com>
-From: frowand.list@gmail.com
-Subject: [RFC PATCH 2/2] Documentation: dev-tools: use literal block instead of code-block
-Date: Wed, 16 Mar 2022 15:26:22 -0500
-Message-Id: <20220316202622.324866-3-frowand.list@gmail.com>
-In-Reply-To: <20220316202622.324866-1-frowand.list@gmail.com>
-References: <20220316202622.324866-1-frowand.list@gmail.com>
+Message-ID: <63c5d7ad-b0b2-9b37-16c3-354ac10858b6@collabora.com>
+Date: Thu, 17 Mar 2022 15:48:59 +0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] Makefile: Fix separate output directory build of kselftests
+References: <20220223191016.1658728-1-usama.anjum@collabora.com>
+From: "Usama" <usama.anjum@collabora.com>
+In-Reply-To: <20220223191016.1658728-1-usama.anjum@collabora.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Jonathan Corbet <corbet@lwn.net>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>
-Cc: rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>
+Cc: usama.anjum@collabora.com, kernel@collabora.com, kernelci@groups.io, shuah@kernel.org, linux-kselftest@vger.kernel.org, keescook@chromium.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
 
-From: Frank Rowand <frank.rowand@sony.com>
+Reminder. Shuah is okay with this patch. Any thoughts?
 
-KTAP Specification: Change code-block directives to straightforward
-literal blocks since the blocks do not contain code.
+On 2/24/22 12:10 AM, Muhammad Usama Anjum wrote:
+> Build of kselftests fail if kernel's top most Makefile is used for
+> running or building kselftests with separate output directory. The
+> absolute path is needed to reference other files during this kind of
+> build. Set KBUILD_ABS_SRCTREE to use absolute path during the build. It
+> fixes the following different types of errors:
+> 
+> make kselftest-all O=/linux_mainline/build
+> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
+> 
+> make kselftest-all O=build
+> Makefile:1080: ../scripts/Makefile.extrawarn: No such file or directory
+> 
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+> I've tested this patch on top of next-20220217. The latest next-20220222
+> have missing patches.
+> ---
+>  Makefile | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index 86f633c2809ea..62b3eb8a102ab 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1411,10 +1411,10 @@ tools/%: FORCE
+>  
+>  PHONY += kselftest
+>  kselftest:
+> -	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests run_tests
+> +	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=1 run_tests
+>  
+>  kselftest-%: FORCE
+> -	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests $*
+> +	$(Q)$(MAKE) -C $(srctree)/tools/testing/selftests KBUILD_ABS_SRCTREE=1 $*
+>  
+>  PHONY += kselftest-merge
+>  kselftest-merge:
 
-Suggested-by: Jonathan Corbet <corbet@lwn.net>
-Signed-off-by: Frank Rowand <frank.rowand@sony.com>
----
- Documentation/dev-tools/ktap.rst | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
-
-diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-index 37b5dc61bfb8..b9a57ceddd4f 100644
---- a/Documentation/dev-tools/ktap.rst
-+++ b/Documentation/dev-tools/ktap.rst
-@@ -115,34 +115,32 @@ The diagnostic data field is optional, and results which have neither a
- directive nor any diagnostic data do not need to include the "#" field
- separator.
- 
--Example result lines include:
--
--.. code-block:: none
-+Example result lines include::
- 
- 	ok 1 test_case_name
- 
- The test "test_case_name" passed.
- 
--.. code-block:: none
-+::
- 
- 	not ok 1 test_case_name
- 
- The test "test_case_name" failed.
- 
--.. code-block:: none
-+::
- 
- 	ok 1 test # SKIP necessary dependency unavailable
- 
- The test "test" was SKIPPED with the diagnostic message "necessary dependency
- unavailable".
- 
--.. code-block:: none
-+::
- 
- 	not ok 1 test # TIMEOUT 30 seconds
- 
- The test "test" timed out, with diagnostic data "30 seconds".
- 
--.. code-block:: none
-+::
- 
- 	ok 5 check return code # rcode=0
- 
-@@ -202,7 +200,7 @@ allowed to be either indented or not indented.
- 
- An example of a test with two nested subtests:
- 
--.. code-block:: none
-+::
- 
- 	KTAP version 1
- 	1..1
-@@ -215,7 +213,7 @@ An example of a test with two nested subtests:
- 
- An example format with multiple levels of nested testing:
- 
--.. code-block:: none
-+::
- 
- 	KTAP version 1
- 	1..2
-@@ -250,7 +248,7 @@ nested version line, uses a line of the form
- 
- Example KTAP output
- --------------------
--.. code-block:: none
-+::
- 
- 	KTAP version 1
- 	1..1
 -- 
-Frank Rowand <frank.rowand@sony.com>
-
+Muhammad Usama Anjum
