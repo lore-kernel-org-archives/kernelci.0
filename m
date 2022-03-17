@@ -1,76 +1,123 @@
 MIME-Version: 1.0
-References: <20220316202622.324866-1-frowand.list@gmail.com> <20220316202622.324866-2-frowand.list@gmail.com>
-In-Reply-To: <20220316202622.324866-2-frowand.list@gmail.com>
+References: <20220316202622.324866-1-frowand.list@gmail.com> <20220316202622.324866-3-frowand.list@gmail.com>
+In-Reply-To: <20220316202622.324866-3-frowand.list@gmail.com>
 From: David Gow <davidgow@google.com>
-Date: Thu, 17 Mar 2022 16:43:01 +0800
-Message-ID: <CABVgOSm_rQcBhbC5C7Z7_+zEheCjkjHCmzKHyx7b5bYLESvA0A@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] Documentation: dev-tools: KTAP spec change version to 2-rc
+Date: Thu, 17 Mar 2022 16:43:11 +0800
+Message-ID: <CABVgOSngfB41BVoEvQ1JX+2oFvS7Mik58VfPm9pydmiC_GSD6Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: use literal block instead of code-block
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000003f932f05da660577"
+	boundary="000000000000d9e55905da660533"
 List-ID: <kernelci.groups.io>
 To: Frank Rowand <frowand.list@gmail.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 
---0000000000003f932f05da660577
+--000000000000d9e55905da660533
 Content-Type: text/plain; charset="UTF-8"
 
 On Thu, Mar 17, 2022 at 4:26 AM <frowand.list@gmail.com> wrote:
 >
 > From: Frank Rowand <frank.rowand@sony.com>
 >
-> Prepare KTAP Specification for the process of creating Version 2.
-> The version will remain 2-rc until the final commit to complete
-> Version 2.
+> KTAP Specification: Change code-block directives to straightforward
+> literal blocks since the blocks do not contain code.
 >
+> Suggested-by: Jonathan Corbet <corbet@lwn.net>
 > Signed-off-by: Frank Rowand <frank.rowand@sony.com>
 > ---
 
-This seems okay to me, though I'd generally rather this stay in a
-branch rather than hitting torvalds/master while there aren't any
-substantive changes to the actual spec. (Basically, let's not rush
-naming this "2-rc" for 5.18 if there aren't any other changes: a 2-rc
-which is practically the same as 1 is probably going to be more
-confusing than helpful if it sticks around for a whole kernel release.
+This looks good to me.
 
-(Also, when would we want to update the various mentions of "KTAP
-version 1" in the document to "KTAP version 2" or "KTAP version 2-rc"?
-Now, when 2 is released, at the first breaking change to that example,
-etc?)
+I'd personally rather push this through independently of the KTAP 2.0
+spec updates, as it's really just a minor formatting change to the
+spec, and it has no impact on the actual KTAP format.
+
+So, if we can accept this independently, that'd be swell.
+
+Reviewed-by: David Gow <davidgow@google.com>
 
 Cheers,
 -- David
 
->  Documentation/dev-tools/ktap.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+
+>  Documentation/dev-tools/ktap.rst | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
 >
 > diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-> index 5ee735c6687f..37b5dc61bfb8 100644
+> index 37b5dc61bfb8..b9a57ceddd4f 100644
 > --- a/Documentation/dev-tools/ktap.rst
 > +++ b/Documentation/dev-tools/ktap.rst
-> @@ -1,7 +1,7 @@
->  .. SPDX-License-Identifier: GPL-2.0
+> @@ -115,34 +115,32 @@ The diagnostic data field is optional, and results which have neither a
+>  directive nor any diagnostic data do not need to include the "#" field
+>  separator.
 >
->  ===================================================
-> -The Kernel Test Anything Protocol (KTAP), version 1
-> +The Kernel Test Anything Protocol (KTAP), version 2-rc
->  ===================================================
-
-Nit: Sphinx complains that we now need more '=' signs:
-
-Documentation/dev-tools/ktap.rst:3: WARNING: Title overline too short.
-===================================================
-
-
-The Kernel Test Anything Protocol (KTAP), version 2-rc
-===================================================
-
+> -Example result lines include:
+> -
+> -.. code-block:: none
+> +Example result lines include::
 >
->  TAP, or the Test Anything Protocol is a format for specifying test results used
+>         ok 1 test_case_name
+>
+>  The test "test_case_name" passed.
+>
+> -.. code-block:: none
+> +::
+>
+>         not ok 1 test_case_name
+>
+>  The test "test_case_name" failed.
+>
+> -.. code-block:: none
+> +::
+>
+>         ok 1 test # SKIP necessary dependency unavailable
+>
+>  The test "test" was SKIPPED with the diagnostic message "necessary dependency
+>  unavailable".
+>
+> -.. code-block:: none
+> +::
+>
+>         not ok 1 test # TIMEOUT 30 seconds
+>
+>  The test "test" timed out, with diagnostic data "30 seconds".
+>
+> -.. code-block:: none
+> +::
+>
+>         ok 5 check return code # rcode=0
+>
+> @@ -202,7 +200,7 @@ allowed to be either indented or not indented.
+>
+>  An example of a test with two nested subtests:
+>
+> -.. code-block:: none
+> +::
+>
+>         KTAP version 1
+>         1..1
+> @@ -215,7 +213,7 @@ An example of a test with two nested subtests:
+>
+>  An example format with multiple levels of nested testing:
+>
+> -.. code-block:: none
+> +::
+>
+>         KTAP version 1
+>         1..2
+> @@ -250,7 +248,7 @@ nested version line, uses a line of the form
+>
+>  Example KTAP output
+>  --------------------
+> -.. code-block:: none
+> +::
+>
+>         KTAP version 1
+>         1..1
 > --
 > Frank Rowand <frank.rowand@sony.com>
 >
 
---0000000000003f932f05da660577
+--000000000000d9e55905da660533
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -137,15 +184,15 @@ jZstNF/BUnI3864fATiXSbnNqBwlJS3YkoaCTpbI9qNTrf5VIvnbryT69xJ6f25yfmxrXNJJe5OG
 ncB34Cwnb7xQyk+uRLZ465yUBkbjk9pC/yamL0O7SOGYUclrQl2c5zzGuVBD84YcQGDOK6gSPj6w
 QuBfOooZPOyZZZ8AMih7J980MYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
 R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABQeVybOOpR4bOOXZYL5T3MA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDw
-tItYCAgJ/bRlpimWHGUYIqXUdsRV/avp5ObTVs5ztTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMjAzMTcwODQzMTNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+MDIwAhABQeVybOOpR4bOOXZYL5T3MA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD/
+veQhoB/7AHajBmLtRzTMPDV3mVNkoti1RQbI/Q2JuzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMjAzMTcwODQzMjNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
 BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAGd+sl70+zVJe6yTwawdw
-uSUWxCAISxCs/yiw/KD8Pf4Psdb4iqx7skYPflWvBaiz6pPCIK8D/V+fvnT4Ry5lEY3Y1P36j5L+
-7LZEafUwv1mKLkjfa6GSFx9+lVZa+BnhCmckddXWv7Jg8HKXumsTULyJ2vulvCfm9y81dd9oTiJZ
-M8UyZkGD4UOAqloGFiqdmFV85M9IlwbDq3zIejhpPgTHwvpyXaOWZvU7GupHfZVUgQhZLtQqwJvY
-vwVUqr4mzNyEmrpCdsCTxUokoV+b6EK2hVqfwhE0snAheXbKb8yA1MPMdNmrdv4bYvIhNeL6ZfNt
-f2JmEjaj8Zhsm5c8wQ==
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYYVU/uOUwk2ECXLz2vo8
+sPQsJpV3JDiHHFsYbNfpBx+eZ4FkOO34HKNWQfOY0f7bF9zM86+82TeNTQF1aPaySptG2ZZkSeB6
+5v+uRQNV673O9abHKHNl3z+lZqQuRdpJLzr0QjlXQtm4F+3erqPtvOvS5b38ckmcfxDOD31/v2/H
+5tfTzF7xrUmXsBQo5bgjNFQnDvqxvJwwKCPOD86lNTEfq9AhiQs5SYicl9KYQv2RQaCHDJ4+jXY7
+NKm3czYyz3K4w11fx7ZAXvhdL4TkGmkRUqhLS7w0i0BhiPH+9rxomV8s8cUEzvwfP13NiR9nQvya
+wpY8z3aTsy+HPJ8I0A==
 
---0000000000003f932f05da660577--
+--000000000000d9e55905da660533--
