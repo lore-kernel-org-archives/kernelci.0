@@ -1,93 +1,76 @@
 MIME-Version: 1.0
-References: <20220316202622.324866-1-frowand.list@gmail.com>
-In-Reply-To: <20220316202622.324866-1-frowand.list@gmail.com>
+References: <20220316202622.324866-1-frowand.list@gmail.com> <20220316202622.324866-2-frowand.list@gmail.com>
+In-Reply-To: <20220316202622.324866-2-frowand.list@gmail.com>
 From: David Gow <davidgow@google.com>
-Date: Thu, 17 Mar 2022 16:42:50 +0800
-Message-ID: <CABVgOSmkvxhHSJx0W6BEYz=Ai9vB=nCz625dSKLLUfU0rMLkFA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] Documentation: dev-tools: begin KTAP spec v2 process
+Date: Thu, 17 Mar 2022 16:43:01 +0800
+Message-ID: <CABVgOSm_rQcBhbC5C7Z7_+zEheCjkjHCmzKHyx7b5bYLESvA0A@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] Documentation: dev-tools: KTAP spec change version to 2-rc
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000cb81f705da6604bb"
+	boundary="0000000000003f932f05da660577"
 List-ID: <kernelci.groups.io>
 To: Frank Rowand <frowand.list@gmail.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 
---000000000000cb81f705da6604bb
+--0000000000003f932f05da660577
 Content-Type: text/plain; charset="UTF-8"
 
 On Thu, Mar 17, 2022 at 4:26 AM <frowand.list@gmail.com> wrote:
 >
 > From: Frank Rowand <frank.rowand@sony.com>
 >
-> An August 2021 RFC patch [1] to create the KTAP Specification resulted in
-> some discussion of possible items to add to the specification.
-> The conversation ended without completing the document.
+> Prepare KTAP Specification for the process of creating Version 2.
+> The version will remain 2-rc until the final commit to complete
+> Version 2.
 >
-> Progress resumed with a December 2021 RFC patch [2] to add a KTAP
-> Specification file (Version 1) to the Linux kernel.  Many of the
-> suggestions from the August 2021 discussion were not included in
-> Version 1.  This patch series is intended to revisit some of the
-> suggestions from the August 2021 discussion.
+> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+> ---
 
-Thanks for kicking this off again. There were definitely a lot of good
-ideas in those threads which we haven't got to yet.
+This seems okay to me, though I'd generally rather this stay in a
+branch rather than hitting torvalds/master while there aren't any
+substantive changes to the actual spec. (Basically, let's not rush
+naming this "2-rc" for 5.18 if there aren't any other changes: a 2-rc
+which is practically the same as 1 is probably going to be more
+confusing than helpful if it sticks around for a whole kernel release.
 
-I think there is an interesting line to walk between keeping KTAP
-sufficiently "TAP-like" (particularly w/r/t being able to reuse
-existing TAP parsers), and actually adding features, but I don't
-recall seeing many such issues in the previous threads.
-
->
-> Patch 1 changes the Specification version to "2-rc" to indicate
-> that following patches are not yet accepted into a final version 2.
-
-I'm okay with this, though I'd want us to be a little careful with the
-timing so we don't end up with, for example, 5.18 having a KTAP spec
-called 2-rc which is functionally indistinguishable from v1.
-
->
-> Patch 2 is an example of a simple change to the Specification.  The
-> change does not change the content of the Specification, but updates
-> a formatting directive as suggested by the Documentation maintainer.
-
-Thanks -- personally, I'd rather this change _does_ go in straight
-away, even before the 2-rc renaming.
-
-> I intend to take some specific suggestions from the August 2021
-> discussion to create stand-alone RFC patches to the Specification
-> instead of adding them as additional patches in this series.  The
-> intent is to focus discussion on a single area of the Specification
-> in each patch email thread.
-
-Seems like a sensible way to structure the discussion. It could get a
-little bit messy if there end up being merge conflicts, but the whole
-thing could be collapsed into a single patchset later if that ended up
-making more sense. (Though that might remove the need for the "rc"
-version, depending on exactly when and how it happened.)
-
-I'd also be curious to see patches to tests and/or test parsers to
-show off any particularly compatibility-breaking and/or interesting
-changes, though I don't think that _has_ to be a prerequisite for
-discussion or the spec.
-
->
-> [1] https://lore.kernel.org/r/CA+GJov6tdjvY9x12JsJT14qn6c7NViJxqaJk+r-K1YJzPggFDQ@mail.gmail.com
-> [2] https://lore.kernel.org/r/20211207190251.18426-1-davidgow@google.com
->
-> Frank Rowand (2):
->   Documentation: dev-tools: KTAP spec change version to 2-rc
->   Documentation: dev-tools: use literal block instead of code-block
->
->  Documentation/dev-tools/ktap.rst | 20 +++++++++-----------
->  1 file changed, 9 insertions(+), 11 deletions(-)
->
-> --
-> Frank Rowand <frank.rowand@sony.com>
->
+(Also, when would we want to update the various mentions of "KTAP
+version 1" in the document to "KTAP version 2" or "KTAP version 2-rc"?
+Now, when 2 is released, at the first breaking change to that example,
+etc?)
 
 Cheers,
 -- David
 
---000000000000cb81f705da6604bb
+>  Documentation/dev-tools/ktap.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+> index 5ee735c6687f..37b5dc61bfb8 100644
+> --- a/Documentation/dev-tools/ktap.rst
+> +++ b/Documentation/dev-tools/ktap.rst
+> @@ -1,7 +1,7 @@
+>  .. SPDX-License-Identifier: GPL-2.0
+>
+>  ===================================================
+> -The Kernel Test Anything Protocol (KTAP), version 1
+> +The Kernel Test Anything Protocol (KTAP), version 2-rc
+>  ===================================================
+
+Nit: Sphinx complains that we now need more '=' signs:
+
+Documentation/dev-tools/ktap.rst:3: WARNING: Title overline too short.
+===================================================
+
+
+The Kernel Test Anything Protocol (KTAP), version 2-rc
+===================================================
+
+>
+>  TAP, or the Test Anything Protocol is a format for specifying test results used
+> --
+> Frank Rowand <frank.rowand@sony.com>
+>
+
+--0000000000003f932f05da660577
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -154,15 +137,15 @@ jZstNF/BUnI3864fATiXSbnNqBwlJS3YkoaCTpbI9qNTrf5VIvnbryT69xJ6f25yfmxrXNJJe5OG
 ncB34Cwnb7xQyk+uRLZ465yUBkbjk9pC/yamL0O7SOGYUclrQl2c5zzGuVBD84YcQGDOK6gSPj6w
 QuBfOooZPOyZZZ8AMih7J980MYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
 R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABQeVybOOpR4bOOXZYL5T3MA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBn
-daIT+gpBNflXR4eLXrgbGfvj3MmwMqJl0RWGuPkw1DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMjAzMTcwODQzMDVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+MDIwAhABQeVybOOpR4bOOXZYL5T3MA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDw
+tItYCAgJ/bRlpimWHGUYIqXUdsRV/avp5ObTVs5ztTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMjAzMTcwODQzMTNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
 BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAo8L6wf0I/ZY1xewwSQTI
-EhaTLXZy/q023l2Lse8T/Zpk9V0p80n8P9lnY9fj8Pzs4YRM7NWQywvXhI8JctLfQIPpKN6cP4WZ
-ke44wDVqyD2WZJCFeumnrS3TRLKXYKZ9NjQ7BWRvxsogcsgKmPRrEbDb6OiWz1fbNCjWhrl6rzyy
-usM5r4ZheVxA55ua/MleCH8DnzVwNIardaYtA3hDap4D8fA4PeGFWAxlos++gyKaLLF9UijfNmyw
-zKPd01WixgDbhL4f5Z60VRry/0ntcMF68A0HEUvSx2XrtNvl+SDdltYB6+SRjVdUMQ6Yib6KHAjp
-R0Xsncfu+A1WRlXOIg==
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAGd+sl70+zVJe6yTwawdw
+uSUWxCAISxCs/yiw/KD8Pf4Psdb4iqx7skYPflWvBaiz6pPCIK8D/V+fvnT4Ry5lEY3Y1P36j5L+
+7LZEafUwv1mKLkjfa6GSFx9+lVZa+BnhCmckddXWv7Jg8HKXumsTULyJ2vulvCfm9y81dd9oTiJZ
+M8UyZkGD4UOAqloGFiqdmFV85M9IlwbDq3zIejhpPgTHwvpyXaOWZvU7GupHfZVUgQhZLtQqwJvY
+vwVUqr4mzNyEmrpCdsCTxUokoV+b6EK2hVqfwhE0snAheXbKb8yA1MPMdNmrdv4bYvIhNeL6ZfNt
+f2JmEjaj8Zhsm5c8wQ==
 
---000000000000cb81f705da6604bb--
+--0000000000003f932f05da660577--
