@@ -1,198 +1,231 @@
 MIME-Version: 1.0
-References: <20220316202622.324866-1-frowand.list@gmail.com> <20220316202622.324866-3-frowand.list@gmail.com>
-In-Reply-To: <20220316202622.324866-3-frowand.list@gmail.com>
-From: David Gow <davidgow@google.com>
-Date: Thu, 17 Mar 2022 16:43:11 +0800
-Message-ID: <CABVgOSngfB41BVoEvQ1JX+2oFvS7Mik58VfPm9pydmiC_GSD6Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: use literal block instead of code-block
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000d9e55905da660533"
+References: <CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
+ <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
+ <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com> <CAHRSSEwnBrT0wnc+-dA2FXvu1udstwArFRYtHu+f-79fZgd2JQ@mail.gmail.com>
+ <CAHRSSEwtCOjxp4-GVRD+31bASw3k+isZbguABmUX_V82tu8T=Q@mail.gmail.com>
+ <285b11ad-40dc-eb88-427e-f32c4a422c85@collabora.com> <CAHRSSEy6nOgPG8LVcMh9e-rxkWpAZNOeC5B=L2KKuE66Qynv3Q@mail.gmail.com>
+ <b12def92-d4cc-ec89-9e6d-d3e710970ccd@collabora.com> <CAHRSSEyvTz9BhenBec79ieXdURYKOMaqk78uKjeZciHNSeSKag@mail.gmail.com>
+ <CAHRSSEzAsiLrrJ_XjmykMjn96JcN+-F3iugSfFaG124UhS3W8w@mail.gmail.com>
+ <CAHRSSExEexitM-NNR4DWMcQObDOBpGk8AcC4-PMZCjHwctJ8og@mail.gmail.com>
+ <CAHRSSExaOps1V6gvqmyi=Zy0hh+R3Xpcge0tzGfoCBfNAbFOnQ@mail.gmail.com> <803b89a9-9141-636f-8fd3-f519b0440075@collabora.com>
+In-Reply-To: <803b89a9-9141-636f-8fd3-f519b0440075@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 18 Mar 2022 08:47:22 -0700
+Message-ID: <CAHRSSEwB_L-i0UZH01s424vPog7ArU=uSutsqmexMSO92JtTNA@mail.gmail.com>
+Subject: Re: can't access kernelci results
+Content-Type: multipart/alternative; boundary="000000000000bfaf5405da801043"
 List-ID: <kernelci.groups.io>
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: =?UTF-8?B?TWljaGHFgiBHYcWCa2E=?= <michal.galka@collabora.com>, kernelci@groups.io, Guenter Roeck <groeck@google.com>, Kevin Hilman <khilman@baylibre.com>
 
---000000000000d9e55905da660533
+--000000000000bfaf5405da801043
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 17, 2022 at 4:26 AM <frowand.list@gmail.com> wrote:
->
-> From: Frank Rowand <frank.rowand@sony.com>
->
-> KTAP Specification: Change code-block directives to straightforward
-> literal blocks since the blocks do not contain code.
->
-> Suggested-by: Jonathan Corbet <corbet@lwn.net>
-> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
-> ---
+Is the MongoDB server down again? I don't get results at
+https://linux.kernelci.org/job/android/.
 
-This looks good to me.
+On Wed, Dec 1, 2021 at 1:49 AM Guillaume Tucker <
+guillaume.tucker@collabora.com> wrote:
 
-I'd personally rather push this through independently of the KTAP 2.0
-spec updates, as it's really just a minor formatting change to the
-spec, and it has no impact on the actual KTAP format.
-
-So, if we can accept this independently, that'd be swell.
-
-Reviewed-by: David Gow <davidgow@google.com>
-
-Cheers,
--- David
-
-
->  Documentation/dev-tools/ktap.rst | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
+> Hi Todd,
 >
-> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-> index 37b5dc61bfb8..b9a57ceddd4f 100644
-> --- a/Documentation/dev-tools/ktap.rst
-> +++ b/Documentation/dev-tools/ktap.rst
-> @@ -115,34 +115,32 @@ The diagnostic data field is optional, and results which have neither a
->  directive nor any diagnostic data do not need to include the "#" field
->  separator.
+> On 30/11/2021 16:54, Todd Kjos wrote:
+> > ...and now it's working again. Sorry about the noise if the issue was
+> > on my side.
 >
-> -Example result lines include:
-> -
-> -.. code-block:: none
-> +Example result lines include::
+> The MongoDB server did crash but it was restarted a few minutes
+> later.  There's some kind of watchdog to do that automatically,
+> maybe you were out of luck and checked the website during that
+> window.  Thanks for reporting the issue in any case.
 >
->         ok 1 test_case_name
+> Best wishes,
+> Guillaume
 >
->  The test "test_case_name" passed.
+> > On Tue, Nov 30, 2021 at 8:35 AM Todd Kjos <tkjos@google.com> wrote:
+> >>
+> >> I can't load the data from https://linux.kernelci.org/job/android/
+> >> ("Error loading build data."). Is mongod "borked" again?
+> >>
+> >> On Thu, Sep 2, 2021 at 12:28 PM Todd Kjos <tkjos@google.com> wrote:
+> >>>
+> >>> It's working again. Thanks.
+> >>>
+> >>> On Thu, Sep 2, 2021 at 8:58 AM Todd Kjos <tkjos@google.com> wrote:
+> >>>>
+> >>>> I'm getting errors again when attempting to access
+> >>>> https://linux.kernelci.org/job/android/. mongod issues again?
+> >>>>
+> >>>> "Error while loading data from the server (error code: 500). Please
+> >>>> contact the website administrator"
+> >>>>
+> >>>> On Tue, Jun 22, 2021 at 8:17 AM Guillaume Tucker
+> >>>> <guillaume.tucker@collabora.com> wrote:
+> >>>>>
+> >>>>> On 22/06/2021 16:07, Todd Kjos wrote:
+> >>>>>> Hmm, it's still not working for me -- did it break again?
+> >>>>>
+> >>>>> Yes there was an OOM issue:
+> >>>>>
+> >>>>> [4316410.416514] Killed process 20620 (mongod) total-vm:20171340kB,
+> anon-rss:18654740kB, file-rss:0kB, shmem-rss:0kB
+> >>>>> [4316412.060511] oom_reaper: reaped process 20620 (mongod), now
+> anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
+> >>>>>
+> >>>>> We're looking into moving the Mongo DB instance to the cloud in
+> >>>>> Azure.  Hopefully that will save us fixing this kind of
+> >>>>> maintenance issues.  Meanwhile, we should take a look and see if
+> >>>>> there's some config option to limit the amount of RAM used by
+> >>>>> Mongo DB to work around the problem.
+> >>>>>
+> >>>>> Best wishes,
+> >>>>> Guillaume
+> >>>>>
+> >>>>>
+> >>>>>> On Tue, Jun 22, 2021 at 2:43 AM Micha=C5=82 Ga=C5=82ka <
+> michal.galka@collabora.com <mailto:michal.galka@collabora.com>> wrote:
+> >>>>>>
+> >>>>>>     On 21.06.2021 21:59, Todd Kjos via groups.io <http://groups.io=
 >
-> -.. code-block:: none
-> +::
+> wrote:
+> >>>>>>     > I'm having this issue again (can't access kernelci results
+> >>>>>>     > at https://linux.kernelci.org/job/android/ <
+> https://linux.kernelci.org/job/android/>
+> >>>>>>     > <https://linux.kernelci.org/job/android/ <
+> https://linux.kernelci.org/job/android/>>). Is the mongod service borked
+> >>>>>>     > again?
+> >>>>>>     >
+> >>>>>>
+> >>>>>>     Yes, there was an issue with mongod service again. It's workin=
+g
+> now,
+> >>>>>>     celery processed pending tasks and everything seems responsive=
+.
+> >>>>>>
+> >>>>>>     Thanks,
+> >>>>>>     Micha=C5=82
+> >>>>>>
+> >>>>>
 >
->         not ok 1 test_case_name
->
->  The test "test_case_name" failed.
->
-> -.. code-block:: none
-> +::
->
->         ok 1 test # SKIP necessary dependency unavailable
->
->  The test "test" was SKIPPED with the diagnostic message "necessary dependency
->  unavailable".
->
-> -.. code-block:: none
-> +::
->
->         not ok 1 test # TIMEOUT 30 seconds
->
->  The test "test" timed out, with diagnostic data "30 seconds".
->
-> -.. code-block:: none
-> +::
->
->         ok 5 check return code # rcode=0
->
-> @@ -202,7 +200,7 @@ allowed to be either indented or not indented.
->
->  An example of a test with two nested subtests:
->
-> -.. code-block:: none
-> +::
->
->         KTAP version 1
->         1..1
-> @@ -215,7 +213,7 @@ An example of a test with two nested subtests:
->
->  An example format with multiple levels of nested testing:
->
-> -.. code-block:: none
-> +::
->
->         KTAP version 1
->         1..2
-> @@ -250,7 +248,7 @@ nested version line, uses a line of the form
->
->  Example KTAP output
->  --------------------
-> -.. code-block:: none
-> +::
->
->         KTAP version 1
->         1..1
-> --
-> Frank Rowand <frank.rowand@sony.com>
 >
 
---000000000000d9e55905da660533
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+--000000000000bfaf5405da801043
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
-dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
-6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
-c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
-I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
-AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
-BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
-CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
-AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
-MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
-My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
-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
-G7p3AiuB2sgfq6cOpbO5MEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
-dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
-AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
-c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
-LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
-LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
-Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQBsL34EJkCtu9Nu
-2+R6l1Qzno5Gl+N2Cm6/YLujukDGYa1JW27txXiilR9dGP7yl60HYyG2Exd5i6fiLDlaNEw0SqzE
-dw9ZSIak3Qvm2UybR8zcnB0deCUiwahqh7ZncEPlhnPpB08ETEUtwBEqCEnndNEkIN67yz4kniCZ
-jZstNF/BUnI3864fATiXSbnNqBwlJS3YkoaCTpbI9qNTrf5VIvnbryT69xJ6f25yfmxrXNJJe5OG
-ncB34Cwnb7xQyk+uRLZ465yUBkbjk9pC/yamL0O7SOGYUclrQl2c5zzGuVBD84YcQGDOK6gSPj6w
-QuBfOooZPOyZZZ8AMih7J980MYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
-R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABQeVybOOpR4bOOXZYL5T3MA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD/
-veQhoB/7AHajBmLtRzTMPDV3mVNkoti1RQbI/Q2JuzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMjAzMTcwODQzMjNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
-BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYYVU/uOUwk2ECXLz2vo8
-sPQsJpV3JDiHHFsYbNfpBx+eZ4FkOO34HKNWQfOY0f7bF9zM86+82TeNTQF1aPaySptG2ZZkSeB6
-5v+uRQNV673O9abHKHNl3z+lZqQuRdpJLzr0QjlXQtm4F+3erqPtvOvS5b38ckmcfxDOD31/v2/H
-5tfTzF7xrUmXsBQo5bgjNFQnDvqxvJwwKCPOD86lNTEfq9AhiQs5SYicl9KYQv2RQaCHDJ4+jXY7
-NKm3czYyz3K4w11fx7ZAXvhdL4TkGmkRUqhLS7w0i0BhiPH+9rxomV8s8cUEzvwfP13NiR9nQvya
-wpY8z3aTsy+HPJ8I0A==
+<div dir=3D"ltr">Is the MongoDB server down again? I don&#39;t get results =
+at=C2=A0<a href=3D"https://linux.kernelci.org/job/android/">https://linux.k=
+ernelci.org/job/android/</a>.</div><br><div class=3D"gmail_quote"><div dir=
+=3D"ltr" class=3D"gmail_attr">On Wed, Dec 1, 2021 at 1:49 AM Guillaume Tuck=
+er &lt;<a href=3D"mailto:guillaume.tucker@collabora.com">guillaume.tucker@c=
+ollabora.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex">Hi Todd,<br>
+<br>
+On 30/11/2021 16:54, Todd Kjos wrote:<br>
+&gt; ...and now it&#39;s working again. Sorry about the noise if the issue =
+was<br>
+&gt; on my side.<br>
+<br>
+The MongoDB server did crash but it was restarted a few minutes<br>
+later.=C2=A0 There&#39;s some kind of watchdog to do that automatically,<br=
+>
+maybe you were out of luck and checked the website during that<br>
+window.=C2=A0 Thanks for reporting the issue in any case.<br>
+<br>
+Best wishes,<br>
+Guillaume<br>
+<br>
+&gt; On Tue, Nov 30, 2021 at 8:35 AM Todd Kjos &lt;<a href=3D"mailto:tkjos@=
+google.com" target=3D"_blank">tkjos@google.com</a>&gt; wrote:<br>
+&gt;&gt;<br>
+&gt;&gt; I can&#39;t load the data from <a href=3D"https://linux.kernelci.o=
+rg/job/android/" rel=3D"noreferrer" target=3D"_blank">https://linux.kernelc=
+i.org/job/android/</a><br>
+&gt;&gt; (&quot;Error loading build data.&quot;). Is mongod &quot;borked&qu=
+ot; again?<br>
+&gt;&gt;<br>
+&gt;&gt; On Thu, Sep 2, 2021 at 12:28 PM Todd Kjos &lt;<a href=3D"mailto:tk=
+jos@google.com" target=3D"_blank">tkjos@google.com</a>&gt; wrote:<br>
+&gt;&gt;&gt;<br>
+&gt;&gt;&gt; It&#39;s working again. Thanks.<br>
+&gt;&gt;&gt;<br>
+&gt;&gt;&gt; On Thu, Sep 2, 2021 at 8:58 AM Todd Kjos &lt;<a href=3D"mailto=
+:tkjos@google.com" target=3D"_blank">tkjos@google.com</a>&gt; wrote:<br>
+&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt; I&#39;m getting errors again when attempting to access<br>
+&gt;&gt;&gt;&gt; <a href=3D"https://linux.kernelci.org/job/android/" rel=3D=
+"noreferrer" target=3D"_blank">https://linux.kernelci.org/job/android/</a>.=
+ mongod issues again?<br>
+&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt; &quot;Error while loading data from the server (error code=
+: 500). Please<br>
+&gt;&gt;&gt;&gt; contact the website administrator&quot;<br>
+&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt; On Tue, Jun 22, 2021 at 8:17 AM Guillaume Tucker<br>
+&gt;&gt;&gt;&gt; &lt;<a href=3D"mailto:guillaume.tucker@collabora.com" targ=
+et=3D"_blank">guillaume.tucker@collabora.com</a>&gt; wrote:<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt; On 22/06/2021 16:07, Todd Kjos wrote:<br>
+&gt;&gt;&gt;&gt;&gt;&gt; Hmm, it&#39;s still not working for me -- did it b=
+reak again?<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt; Yes there was an OOM issue:<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt; [4316410.416514] Killed process 20620 (mongod) total-v=
+m:20171340kB, anon-rss:18654740kB, file-rss:0kB, shmem-rss:0kB<br>
+&gt;&gt;&gt;&gt;&gt; [4316412.060511] oom_reaper: reaped process 20620 (mon=
+god), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt; We&#39;re looking into moving the Mongo DB instance to=
+ the cloud in<br>
+&gt;&gt;&gt;&gt;&gt; Azure.=C2=A0 Hopefully that will save us fixing this k=
+ind of<br>
+&gt;&gt;&gt;&gt;&gt; maintenance issues.=C2=A0 Meanwhile, we should take a =
+look and see if<br>
+&gt;&gt;&gt;&gt;&gt; there&#39;s some config option to limit the amount of =
+RAM used by<br>
+&gt;&gt;&gt;&gt;&gt; Mongo DB to work around the problem.<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt; Best wishes,<br>
+&gt;&gt;&gt;&gt;&gt; Guillaume<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt;&gt; On Tue, Jun 22, 2021 at 2:43 AM Micha=C5=82 Ga=C5=
+=82ka &lt;<a href=3D"mailto:michal.galka@collabora.com" target=3D"_blank">m=
+ichal.galka@collabora.com</a> &lt;mailto:<a href=3D"mailto:michal.galka@col=
+labora.com" target=3D"_blank">michal.galka@collabora.com</a>&gt;&gt; wrote:=
+<br>
+&gt;&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0On 21.06.2021 21:59, Todd Kjos =
+via <a href=3D"http://groups.io" rel=3D"noreferrer" target=3D"_blank">group=
+s.io</a> &lt;<a href=3D"http://groups.io" rel=3D"noreferrer" target=3D"_bla=
+nk">http://groups.io</a>&gt; wrote:<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0&gt; I&#39;m having this issue =
+again (can&#39;t access kernelci results<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0&gt; at <a href=3D"https://linu=
+x.kernelci.org/job/android/" rel=3D"noreferrer" target=3D"_blank">https://l=
+inux.kernelci.org/job/android/</a> &lt;<a href=3D"https://linux.kernelci.or=
+g/job/android/" rel=3D"noreferrer" target=3D"_blank">https://linux.kernelci=
+.org/job/android/</a>&gt;<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0&gt; &lt;<a href=3D"https://lin=
+ux.kernelci.org/job/android/" rel=3D"noreferrer" target=3D"_blank">https://=
+linux.kernelci.org/job/android/</a> &lt;<a href=3D"https://linux.kernelci.o=
+rg/job/android/" rel=3D"noreferrer" target=3D"_blank">https://linux.kernelc=
+i.org/job/android/</a>&gt;&gt;). Is the mongod service borked<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0&gt; again?<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0Yes, there was an issue with mo=
+ngod service again. It&#39;s working now,<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0celery processed pending tasks =
+and everything seems responsive.<br>
+&gt;&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0Thanks,<br>
+&gt;&gt;&gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0Micha=C5=82<br>
+&gt;&gt;&gt;&gt;&gt;&gt;<br>
+&gt;&gt;&gt;&gt;&gt;<br>
+<br>
+</blockquote></div>
 
---000000000000d9e55905da660533--
+--000000000000bfaf5405da801043--
