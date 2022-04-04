@@ -1,94 +1,132 @@
+From: Srinivas Dubasi <srinivas.dubasi@nxp.com>
+Subject: Re: Lavaserver - IP power switch is down.
+Date: Mon, 4 Apr 2022 07:22:40 +0000
+Message-ID: 
+ <AS1PR04MB9407E5D69AF6B1EEB06869DEFEE59@AS1PR04MB9407.eurprd04.prod.outlook.com>
+References: 
+ <DU0SPRMB0031951CC17646378434F5C2FEE59@DU0SPRMB0031.eurprd04.prod.outlook.com>
+In-Reply-To: 
+ <DU0SPRMB0031951CC17646378434F5C2FEE59@DU0SPRMB0031.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org> <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
- <20191011180248.GA24089@rei.lan> <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
- <20191014085414.GB31760@rei.lan> <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
- <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com> <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
- <e8b11b09-37ac-6ae2-0908-b803b4160f7c@oracle.com> <CACT4Y+bShy-3vO3ifNKVcGGNf3X9XA7zL-Ja9-T+gZv5=QNe4w@mail.gmail.com>
- <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com> <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
- <fe365a78-0768-ea1f-25b8-6bd05a57c751@kernel.org> <cd301033-f152-4eeb-bce3-2d95f39a05fbn@googlegroups.com>
- <CAGyP=7cb=5Hse-xJsyzdVKpOru_Uptjm529owLfVMqjv3VSMtw@mail.gmail.com>
- <CACT4Y+aSy4LOmXfWxA2KrkLwwn-qWxVKxGsz_LxuF32CxaLYeQ@mail.gmail.com>
- <1cecad9d-36cf-4703-3f2e-6b2454761f0f@oracle.com> <CACT4Y+b8MS65P1xou+-QuDCXOWb2dvsK0p7xzY3-TrSxV94onw@mail.gmail.com>
-In-Reply-To: <CACT4Y+b8MS65P1xou+-QuDCXOWb2dvsK0p7xzY3-TrSxV94onw@mail.gmail.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Mon, 16 May 2022 09:41:44 +0200
-Message-ID: <CACT4Y+av8=XtWwhYJ2cRJUUq+kp5dXNBsb2mdXDF4o320owGJw@mail.gmail.com>
-Subject: Re: [Automated-testing] syzkaller reproducers
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_AS1PR04MB9407E5D69AF6B1EEB06869DEFEE59AS1PR04MB9407eurp_"
 List-ID: <kernelci.groups.io>
-To: George Kennedy <george.kennedy@oracle.com>
-Cc: kernelci@groups.io, oswalpalash@gmail.com, syzkaller <syzkaller@googlegroups.com>, Shuah Khan <skhan@linuxfoundation.org>, automated-testing@yoctoproject.org, Vegard Nossum <vegard.nossum@oracle.com>
+To: "kernelci@groups.io" <kernelci@groups.io>
+Cc: Shekar Shekar <shekar.shekar@nxp.com>
 
-On Fri, 13 May 2022 at 14:16, Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> On Fri, 13 May 2022 at 13:35, George Kennedy <george.kennedy@oracle.com> wrote:
-> > >> + Shuah, George and mailing lists
-> > >>
-> > >> Google groups did not CC all of the members in the thread for my
-> > >> reply. It would be valuable to get everyone's feedback on this thread.
-> > >>
-> > >> On Sat, May 7, 2022 at 11:34 PM Palash <oswalpalash@gmail.com> wrote:
-> > >>> Hello all,
-> > >>>
-> > >>> Reviving this old thread. Do we think there's value in automatically publishing a C reproducer(if it exists) whenever syzkaller determines a reported bug is patched and fixed?
-> > >>> This allows us to track these reproducers more diligently and we only have reproducers for the bugs that have been patched.
-> > >>> If this is valuable, then we could think about answering these questions -
-> > >>> 1. Is there a particular way we want to format the reproducers? (Example : SKIP/OK/FAIL/TIMEOUT (if output is possible))
-> > >>> 2. Where do we want to submit the reproducers to be added to the testing project and what is the process we want to use?
-> > >>> 3. Is it valuable to record the crash report information for the original fuzzer crash when the c reproducer is filed to add context to it; in case developers want to troubleshoot? This could save valuable debugging time.
-> > >>>
-> > >>> Happy to contribute on this change to the upstream fuzzing system.
-> > >
-> > > More automation is definitely welcome.
-> > > I am not sure how widely used is the current base of reproducers. But
-> > > George keeps asking for updates and I keep failing at doing it in a
-> > > timely manner.
-> > We run the ~6000 reproducers as a regression test. Test takes ~4 hours.
-> >
-> > Having the reproducer before there is a patch is valuable to us as we
-> > know whether or not our distro branches have the same failure.
-> >
-> > As a way to reduce test time, some sort of repro classification would be
-> > helpful (i.e. open/closed/invalid).
-> >
-> > For crash troubleshooting info we try to match the crash string with
-> > syzbot's crash string.
-> >
-> > Thank you,
-> > George
-> > >
-> > > It would be easiest for the syzbot app to upload reproducers to a GCS
-> > > bucket. But I am not sure what's a good format for this. Everything I
-> > > can think of is somewhat clumsy. It could upload weekly archives, but
-> > > then there is an issue of discoverability of new archives (since GCS
-> > > is HTTP rather than FTP).
-> > >
-> > > Not sure if it's feasible to give it an auth token for a github repo
-> > > to push individual files as we do now.
-> > >
-> > > Re format. Bonus points if the system will be able to regenerate and
-> > > update meta-information. The chances that we will come up with the
-> > > ultimately right format from day 1 are low. But that may complicate
-> > > the implementation.
->
-> The most feasible for syzbot automation seems to be to push to a
-> public GCS bucket and then users will need to do "gsutil rsync" to
-> download updates.
->
-> Or another option is to expose a new json API to get reproducers list
-> and then to fetch individual reproducers. Though this will need some
-> custom tooling on the user side to fetch updates.
->
-> Re exporting status open/closed/invalid and e.g. fixing patch, that
-> would also be more natural to expose via the API since this
-> information changes dynamically.
->
-> It's also possible to use both. Namely, reproducers are uploaded to
-> the GCS bucket and each repro file contains just some bug ID. Then the
-> bug ID can be used to fetch any additional dynamically changing info
-> via json API.
+--_000_AS1PR04MB9407E5D69AF6B1EEB06869DEFEE59AS1PR04MB9407eurp_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+FYI, Issue resolved, thanks!.
+
+Regards,
+Srinivas
 
 
-I've pushed a new drop of 898 reproducers:
-https://github.com/dvyukov/syzkaller-repros/commit/026c8891a19e672bba71481be250080e1a302ed8
+From: Srinivas Dubasi
+Sent: Monday, April 4, 2022 11:06 AM
+To: kernelci@groups.io
+Cc: Shekar Shekar <shekar.shekar@nxp.com>
+Subject: Lavaserver - IP power switch is down.
+
+Hi,
+
+One of the IP power switch developed issue, all the boards connected to thi=
+s power switch are not getting power.
+We are looking into it and keep you posted.
+
+Regards,
+Srinivas
+
+
+--_000_AS1PR04MB9407E5D69AF6B1EEB06869DEFEE59AS1PR04MB9407eurp_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:DengXian;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:"\@DengXian";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+span.EmailStyle19
+	{mso-style-type:personal-reply;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:=
+break-word">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hi,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">FYI, Issue resolved, thanks!.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Regards,<o:p></o:p></p>
+<p class=3D"MsoNormal">Srinivas<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b>From:</b> Srinivas Dubasi <br>
+<b>Sent:</b> Monday, April 4, 2022 11:06 AM<br>
+<b>To:</b> kernelci@groups.io<br>
+<b>Cc:</b> Shekar Shekar &lt;shekar.shekar@nxp.com&gt;<br>
+<b>Subject:</b> Lavaserver - IP power switch is down.<o:p></o:p></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Hi,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">One of the IP power switch developed issue, all the =
+boards connected to this power switch are not getting power.<o:p></o:p></p>
+<p class=3D"MsoNormal">We are looking into it and keep you posted.<o:p></o:=
+p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Regards,<o:p></o:p></p>
+<p class=3D"MsoNormal">Srinivas<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+</body>
+</html>
+
+--_000_AS1PR04MB9407E5D69AF6B1EEB06869DEFEE59AS1PR04MB9407eurp_--
