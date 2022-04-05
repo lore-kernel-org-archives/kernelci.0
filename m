@@ -1,260 +1,107 @@
-Message-ID: <e8ffc2b3cf8ccdcf8ca6d455a9495559d56cbcb9.camel@collabora.com>
-Subject: Re: kernelci failures due to "pahole" missing
-From: "Denys Fedoryshchenko" <denys.f@collabora.com>
-Date: Wed, 29 Jun 2022 14:27:21 +0300
-In-Reply-To: <CAHRSSExQrtbZDPLowaFxOgbnGR2Eh3twY9GOrQ_QUEkFTpde5w@mail.gmail.com>
-References: 
-	  <CAHRSSEwMoYQz2ua+PmFRcWSXJREUtrsKCFdivDJ+XdJP9Di_MQ@mail.gmail.com>
-	 <f91a21bd782f3988cb6988ff96558dda036ca16f.camel@collabora.com>
-	 <CAHRSSEynGz318YD-TmzZUyXE9ZquLGgoBJJnYzrFsUN8dp8NFA@mail.gmail.com>
-	 <16EBDBAB78C06CE6.10903@groups.io>
-	 <adcac2f5fdfdaec902e49f08b16924c09cb7d6cf.camel@collabora.com>
-	 <850e223c3512417ce8d9497d3395e6b6f0d27b55.camel@collabora.com>
-	 <CAHRSSEwGmJopp2fjJXt_rNgH+Um3jMoCACxyrdZo=V9HkYVKVw@mail.gmail.com>
-	 <7c8acd8bb5277c8d10c00ea6d356267fb6938524.camel@collabora.com>
-	 <CAHRSSExQrtbZDPLowaFxOgbnGR2Eh3twY9GOrQ_QUEkFTpde5w@mail.gmail.com>
+Return-Path: <hdegoede@redhat.com>
+Message-ID: <36e9f346-cbea-a821-a00e-5399247a54bb@redhat.com>
+Date: Tue, 5 Apr 2022 10:13:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: next/master bisection: baseline.login on asus-C523NA-A20057-coral
+References: <623c13ec.1c69fb81.8cbdb.5a7a@mx.google.com>
+ <Yjyv03JsetIsTJxN@sirena.org.uk>
+ <4e9fca2f-0af1-3684-6c97-4c35befd5019@redhat.com>
+ <Yjzua8Wye/3DHBKx@sirena.org.uk>
+ <f8e96f8a-c19c-6acd-2f54-688924f491e8@redhat.com>
+ <28699579-8384-ff3b-5662-fb56d8ced766@collabora.com>
+ <28ee7ff8-5b21-9154-74e9-efd59da4a498@collabora.com>
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <28ee7ff8-5b21-9154-74e9-efd59da4a498@collabora.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, tkjos@google.com
+To: Guillaume Tucker <guillaume.tucker@collabora.com>, Mark Brown <broonie@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki" <rjw@rjwysocki.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-pci@vger.kernel.org, "kernelci@groups.io" <kernelci@groups.io>, "kernelci-results@groups.io" <kernelci-results@groups.io>
 
-We faced multiple issues.
-1) Most builders instance not suitable for this job, as it require
-large amount of RAM. Found workaround, tested in staging.
-2) The problem with the build time, it significantly exceeds the time
-of usual builds. Theoretically, the problem can be solved by increasing
-the limits.
-3) Some tools was missing, thats solved.
-4) Some of the created objects during build exceed the size that the
-library that we use to upload objects to storage can handle. This will
-require significant changes in some parts of project to solve and major
-blocker for me.
+Hi All,
 
-I'm still not sure what to do next with that, and I'll discuss this at
-the next weekly meeting (this Thursday).
+On 4/4/22 21:44, Guillaume Tucker wrote:
+> +kernelci
+> 
+> On 29/03/2022 19:44, Guillaume Tucker wrote:
+>> On 28/03/2022 13:54, Hans de Goede wrote:
+>>> Hi,
+>>>
+>>> On 3/24/22 23:19, Mark Brown wrote:
+>>>> On Thu, Mar 24, 2022 at 09:34:30PM +0100, Hans de Goede wrote:
+>>>>
+>>>>> Mark, if one of use writes a test patch, can you get that Asus machine to boot a
+>>>>> kernel build from next + the test patch ?
+>>>>
+>>>> I can't directly unfortunately as the board is in Collabora's lab but
+>>>> Guillaume (who's already CCed) ought to be able to, and I can generally
+>>>> prod and try to get that done.
+>>>
+>>> Ok, Guillaume, can you try a kernel with commit 5949965ec9340cfc0e65f7d8a576b660b26e2535
+>>> ("x86/PCI: Preserve host bridge windows completely covered by E820") + the 
+>>> attached patch added on top a try on the asus-C523NA-A20057-coral machine please
+>>> and see if that makes it boot again ?
+>>
+>> Sorry I've been busy with a conference.  Sure, will put that
+>> through KernelCI tomorrow and let you know the outcome.
+> 
+> Well the issue seems to have been fixed on mainline, unless it's
+> intermittent.  In any case, next-20220404 is booting fine:
+> 
+>   https://linux.kernelci.org/test/plan/id/624aed811a5acd09adae071e/
+> 
+> Last time it was seen to fail was next-20220330:
+> 
+>   https://linux.kernelci.org/test/plan/id/62442f68e30d6f89a4ae06b7/
+> 
+> 
+> Ironically, the KernelCI staging linux-next job with the patches
+> mentioned in your previous email applied is now failing:
+> 
+>   https://staging.kernelci.org/test/plan/id/624b2d3b923f532dc305f4c7/
+> 
+> The kernel branch being used is:
+> 
+>   https://github.com/kernelci/linux/commits/staging-next
+> 
+> 
+> I haven't checked the logs or investigated any further, this is
+> just a quick summary based on the boot test results.
+> 
+> Please let us know if we should drop these patches or try
+> anything else.  I'll be on holiday for the rest of the week but
+> others can pick things up if needed.
 
-On Tue, 2022-06-28 at 12:16 -0700, Todd Kjos via groups.io wrote:
-> Any update on this?
->=20
->=20
-> On Tue, May 10, 2022 at 12:50 PM Denys Fedoryshchenko
-> <denys.f@collabora.com> wrote:
-> >=20
-> > On Tue, 2022-05-10 at 10:53 -0700, Todd Kjos via groups.io wrote:
-> > > On Tue, May 10, 2022 at 12:20 AM Denys Fedoryshchenko <
-> > > denys.f@collabora.com>
-> > > wrote:
-> > >=20
-> > > > Update
-> > > >=20
-> > > > We identified all packages required for kernel build:
-> > > > dwarves, lz4, python3/python.
-> > > >=20
-> > > > We got ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1 built on our
-> > > > staging
-> > > > pipeline, but with error:
-> > > > =C2=A0LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux
-> > > > =C2=A0 BTFIDS=C2=A0 vmlinux
-> > > > FAILED unresolved symbol xdp_buff
-> > > >=20
-> > >=20
-> > > Which config and arch was this?
-> > gki_defconfig
-> > arm64
-> > But it is a bit old snapshot i'm using as reference.
-> > Tomorrow i will try latest 5.10 if anything changed.
-> >=20
-> > Container Log:
-> > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1
-> > =C2=A0 KSYMS=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1.S
-> > =C2=A0 AS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1.S
-> > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms2
-> > =C2=A0 KSYMS=C2=A0=C2=A0 .tmp_vmlinux.kallsyms2.S
-> > =C2=A0 AS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms2.S
-> > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux
-> > =C2=A0 BTFIDS=C2=A0 vmlinux
-> > FAILED unresolved symbol xdp_buff
-> > make[1]: *** [/tmp/kci/linux/Makefile:1267: vmlinux] Error 255
-> > make[1]: Leaving directory '/tmp/kci/linux/build'
-> > make: *** [Makefile:185: __sub-make] Error 2
-> > make: Leaving directory '/tmp/kci/linux'
-> >=20
-> > "branch": "staging-android",
-> > "commit": "4dce9d7a65b14d5949b20ced210413d04d914053",
-> > "describe": "ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1",
-> > "describe_verbose": "v5.10-19504-g4dce9d7a65b1",
-> > "tree": "kernelci",
-> > "url": "https://github.com/kernelci/linux.git"
-> >=20
-> > >=20
-> > >=20
-> > > >=20
-> > > > I will create PR now to allocate larger builders (to address
-> > > > LTO
-> > > > memory
-> > > > overconsumption) and we will do test build on android pipeline.
-> > > >=20
-> > >=20
-> > > Thanks for helping with this!
-> > >=20
-> > >=20
-> > > >=20
-> > > > On Thu, 2022-05-05 at 08:23 +0300, Denys Fedoryshchenko wrote:
-> > > > > Short update.
-> > > > > Some of builders crashed due OOM, but not because of logs,
-> > > > > but because LTO during linking phase consume more than 21Gb
-> > > > > of
-> > > > > RAM,
-> > > > > and k8s builders allocated for project have only 4Gb
-> > > > > allocated.
-> > > > > It is not easy to solve, as it is either require to change
-> > > > > LTO to
-> > > > > "Thin
-> > > > > LTO" (or disable it totally) to reduce memory consumption,
-> > > > > which
-> > > > > is
-> > > > > not
-> > > > > great, or increase builders size (and that means additional
-> > > > > costs
-> > > > > and
-> > > > > approvals related to that).
-> > > > > We are discussing on IRC possible solutions to this problem.
-> > > > >=20
-> > > > > On Wed, 2022-05-04 at 12:06 +0300, Denys Fedoryshchenko
-> > > > > wrote:
-> > > > > > At the moment I have identified a problem with more
-> > > > > > packages
-> > > > > > that
-> > > > > > are
-> > > > > > missing, now it is python, and i'm adding it as well, but
-> > > > > > need
-> > > > > > to
-> > > > > > test
-> > > > > > everything manually, and then on staging.
-> > > > > >=20
-> > > > > > Here is example of build that needs python:
-> > > > > > https://linux.kernelci.org/build/id/6271d9f8c49e05f410dc7b53/
-> > > > > >=20
-> > > > https://storage.kernelci.org/android/android13-5.10/ASB-2022-04-05_=
-13-5.10-206-g4dce9d7a65b1/arm64/gki_defconfig/clang-14/logs/kernel.log
-> > > > > >=20
-> > > > > > Also, another problem some of the builders crashed,
-> > > > > > probably
-> > > > > > due to
-> > > > > > OOM
-> > > > > > or insufficient resources.
-> > > > > > https://linux.kernelci.org/build/id/6271db3a3c249a41a7dc7b48/
-> > > > > >=20
-> > > > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_=
-13-5.15-1526-g22e9215f1bea/arm64/gki_defconfig/clang-14/logs/kernel.log
-> > > > > >=20
-> > > > > > On manual tests, builds with pahole create about 819Mbyte
-> > > > > > of
-> > > > > > warnings,
-> > > > > > such as:
-> > > > > > "namespace__recode_dwarf_types: couldn't find 0x13423 type
-> > > > > > for
-> > > > > > 0x3d6a5
-> > > > > > (member)!"
-> > > > > > I am currently investigating whether these issues are
-> > > > > > related.
-> > > > > > Therefore, it takes a bit more time than i expected, than
-> > > > > > just
-> > > > > > adding
-> > > > > > a
-> > > > > > pahole/dwarves package.
-> > > > > >=20
-> > > > > > I will update as soon as more information available.
-> > > > > >=20
-> > > > > > On Tue, 2022-05-03 at 07:45 -0700, Todd Kjos wrote:
-> > > > > > > Denys, Thanks for the update. Do you have a prediction
-> > > > > > > for
-> > > > > > > when
-> > > > > > > it
-> > > > > > > will land?
-> > > > > > >=20
-> > > > > > > On Mon, May 2, 2022 at 9:58 PM Denys Fedoryshchenko
-> > > > > > > <denys.f@collabora.com> wrote:
-> > > > > > > > Hi,
-> > > > > > > >=20
-> > > > > > > > We are testing in staging fix for that:
-> > > > > > > > https://github.com/kernelci/kernelci-core/pull/1158
-> > > > > > > >=20
-> > > > > > > > Also i noticed in some cases lz4 package required for
-> > > > > > > > this
-> > > > > > > > test,
-> > > > > > > > so added it too.
-> > > > > > > >=20
-> > > > > > > > Best regards,
-> > > > > > > > Denys
-> > > > > > > >=20
-> > > > > > > > On Fri, 2022-04-29 at 15:22 -0700, Todd Kjos via
-> > > > > > > > groups.io
-> > > > > > > > wrote:
-> > > > > > > > > We have a bunch of Android kernel test failures due
-> > > > > > > > > to
-> > > > > > > > > missing
-> > > > > > > > > "pahole" in
-> > > > > > > > > the build environment (example android13-5.15
-> > > > > > > > > gki_defconfig
-> > > > > > > > >=20
-> > > > > > > > <
-> > > > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_=
-13-5.15-1515-g7a68c2c45139/arm64/gki_defconfig/gcc-10/logs/kernel.log
-> > > > > > > > > >=20
-> > > > > > > > > ):
-> > > > > > > > >=20
-> > > > > > > > >=20
-> > > > > > > > > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux.o
-> > > > > > > > > =C2=A0 MODPOST vmlinux.symvers
-> > > > > > > > > =C2=A0 MODINFO modules.builtin.modinfo
-> > > > > > > > > =C2=A0 GEN=C2=A0=C2=A0=C2=A0=C2=A0 modules.builtin
-> > > > > > > > > BTF: .tmp_vmlinux.btf: pahole (pahole) is not
-> > > > > > > > > available
-> > > > > > > > > Failed to generate BTF for vmlinux
-> > > > > > > > > Try to disable CONFIG_DEBUG_INFO_BTF
-> > > > > > > > > make[1]: *** [/tmp/kci/linux/Makefile:1247: vmlinux]
-> > > > > > > > > Error 1
-> > > > > > > > > make[1]: Leaving directory '/tmp/kci/linux/build'
-> > > > > > > > > make: *** [Makefile:237: __sub-make] Error 2
-> > > > > > > > > make: Leaving directory '/tmp/kci/linux'
-> > > > > > > > >=20
-> > > > > > > > > Would it be possible to get pahole added to the build
-> > > > > > > > environments
-> > > > > > > > > used to
-> > > > > > > > > build android kernels?
-> > > > > > > > >=20
-> > > > > > > > > -Todd
-> > > > > > > > >=20
-> > > > > > > > >=20
-> > > > > > > > >=20
-> > > > > > > > >=20
-> > > > > > > > >=20
-> > > > > > > >=20
-> > > > > > > >=20
-> > > > > >=20
-> > > > > >=20
-> > > > > >=20
-> > > > > >=20
-> > > > > >=20
-> > > > > >=20
-> > > > > >=20
-> > > > >=20
-> > > >=20
-> > > >=20
-> > > >=20
-> > >=20
-> > >=20
-> > >=20
-> > >=20
-> > >=20
-> >=20
-> >=20
->=20
->=20
->=20
->=20
->=20
+The reason why next and mainline are building now is because
+the patch the bisect pointed out never made it into mainline
+and Bjorn has dropped it from -next.
 
+I fully expect that -next with 
+
+https://lore.kernel.org/linux-acpi/20220304035110.988712-4-helgaas@kernel.org/
+
+or mainline with the entire series from that link applied will
+still not boot.
+
+But we do need that last patch to fix various issues on
+other boards.
+
+See my previous reply in this thread:
+https://lore.kernel.org/linux-pci/76c5de03-a3a4-8444-d7f6-496fa119d830@redhat.com/
+
+for some further analysis of what I think is happening here.
+
+As mentioned there I believe this can be fixed by merging
+back-to-back resources into a single resource before calling
+remove_e820_regions() but I could not find a good example / helper
+code to do the merging of the resources.
+
+If someone can give me some pointers wrt this I can try to
+come up with something and then provide a set of patches
+for testing on the asus-C523NA-A20057-coral .
+
+Regards,
+
+Hans
 
