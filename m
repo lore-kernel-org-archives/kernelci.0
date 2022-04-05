@@ -1,22 +1,82 @@
-From: "Li, Philip" <philip.li@intel.com>
-Subject: consult the KCIDB engagement from 0-Day CI
-Date: Tue, 5 Jul 2022 05:37:34 +0000
-Message-ID: <6346ccbf0d054903afe46d4d69084319@intel.com>
+Date: Tue, 5 Apr 2022 12:57:48 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: next/master bisection: baseline.login on asus-C523NA-A20057-coral
+Message-ID: <20220405175748.GA72007@bhelgaas>
 MIME-Version: 1.0
-Return-Path: philip.li@intel.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <28ee7ff8-5b21-9154-74e9-efd59da4a498@collabora.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: lkp <lkp@intel.com>, "Xiong, Wei1X" <wei1x.xiong@intel.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Hans de Goede <hdegoede@redhat.com>, Mark Brown <broonie@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki" <rjw@rjwysocki.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-pci@vger.kernel.org, "kernelci@groups.io" <kernelci@groups.io>, "kernelci-results@groups.io" <kernelci-results@groups.io>
 
-Hi Nick, it has been for a while we haven't followed up with your last cont=
-act, let me apologize for this.
+On Mon, Apr 04, 2022 at 08:44:41PM +0100, Guillaume Tucker wrote:
+> On 29/03/2022 19:44, Guillaume Tucker wrote:
+> > On 28/03/2022 13:54, Hans de Goede wrote:
+> >> On 3/24/22 23:19, Mark Brown wrote:
+> >>> On Thu, Mar 24, 2022 at 09:34:30PM +0100, Hans de Goede wrote:
+> >> Ok, Guillaume, can you try a kernel with commit 5949965ec9340cfc0e65f7d8a576b660b26e2535
+> >> ("x86/PCI: Preserve host bridge windows completely covered by E820") + the 
+> >> attached patch added on top a try on the asus-C523NA-A20057-coral machine please
+> >> and see if that makes it boot again ?
+> > 
+> > Sorry I've been busy with a conference.  Sure, will put that
+> > through KernelCI tomorrow and let you know the outcome.
+> 
+> Well the issue seems to have been fixed on mainline, unless it's
+> intermittent.  In any case, next-20220404 is booting fine:
+> 
+>   https://linux.kernelci.org/test/plan/id/624aed811a5acd09adae071e/
+> 
+> Last time it was seen to fail was next-20220330:
+> 
+>   https://linux.kernelci.org/test/plan/id/62442f68e30d6f89a4ae06b7/
 
-I want to follow up to engage with kcidb to contribute the results from 0-D=
-ay CI including kernel build and functional
-test results as we have bandwidth now. Is this ok? If yes, can you kindly s=
-hare us the process we need follow, such
-as account apply, test run, etc?
+This is because I dropped 5949965ec934 ("x86/PCI: Preserve host bridge
+windows completely covered by E820") from the PCI tree starting with
+next-20220401 because it causes the regression.  So I expect
+next-20220404 to boot fine (next-20220401 should boot fine as well; I
+don't know whether that was tested).
 
-Thanks
+The gory details:
+
+  20220330 should fail; it includes:
+    5949965ec934 ("x86/PCI: Preserve host bridge windows completely covered by E820")
+    d13f73e9108a ("x86/PCI: Log host bridge window clipping for E820 regions")
+    9c253994c5ba ("x86/PCI: Eliminate remove_e820_regions() common subexpressions")
+    ffb217a13a2e ("Linux 5.17-rc7")
+
+  20220331 should fail; it includes:
+    18146f25ac66 ("PCI: hv: Remove unused hv_set_msi_entry_from_desc()")
+    5949965ec934 ("x86/PCI: Preserve host bridge windows completely covered by E820")
+    d13f73e9108a ("x86/PCI: Log host bridge window clipping for E820 regions")
+    9c253994c5ba ("x86/PCI: Eliminate remove_e820_regions() common subexpressions")
+    ffb217a13a2e ("Linux 5.17-rc7")
+
+  20220401 should boot; it includes:
+    1c6cec4ab487 ("x86/PCI: Log host bridge window clipping for E820 regions")
+    b2922e67d233 ("x86/PCI: Eliminate remove_e820_regions() common subexpressions")
+    22ef7ee3eeb2 ("PCI: hv: Remove unused hv_set_msi_entry_from_desc()")
+    148a65047695 ("Merge tag 'pci-v5.18-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci")
+
+  20220404 should boot; it includes:
+    22ef7ee3eeb2 ("PCI: hv: Remove unused hv_set_msi_entry_from_desc()")
+    148a65047695 ("Merge tag 'pci-v5.18-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci")
+
+> Ironically, the KernelCI staging linux-next job with the patches
+> mentioned in your previous email applied is now failing:
+> 
+>   https://staging.kernelci.org/test/plan/id/624b2d3b923f532dc305f4c7/
+
+This says we tested commit 1aceacc82d3f, which I guess is the
+staging-next-20220404.1 tag at https://github.com/kernelci/linux.git.
+It took me a while to find the commit history, but
+https://github.com/kernelci/linux/commits/1aceacc82d3f says this
+includes:
+
+  0a0c05a90278 x86/PCI: Limit "e820 entry fully covers window" check to non ISA MMIO
+  b5fd57109d22 x86/PCI: Preserve host bridge windows completely covered by E820
+
+So the proposed fix (0a0c05a90278) apparently didn't work.
+
+Bjorn
