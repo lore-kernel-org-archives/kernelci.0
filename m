@@ -1,90 +1,84 @@
-Return-Path: <antonio.terceiro@linaro.org>
-Date: Fri, 26 Aug 2022 15:40:38 -0300
-From: Antonio Terceiro <antonio.terceiro@linaro.org>
-Subject: Re: Moving lava-docker out of the KernelCI GitHub organisation
-Message-ID: <YwkTphNM4mRI3aF4@linaro.org>
-References: <bc992951-6d3b-4ccc-c3b6-ae8dbe32ec1c@collabora.com>
+Message-ID: <b00ea362-1d9d-601c-8481-b562c26e53b5@collabora.com>
+Date: Thu, 14 Apr 2022 16:10:06 +0500
 MIME-Version: 1.0
-In-Reply-To: <bc992951-6d3b-4ccc-c3b6-ae8dbe32ec1c@collabora.com>
-Content-Type: multipart/mixed; boundary="Groupsio=XHx2aLFpJqTh3ySRrgkz"
+Subject: Re: [PATCH] Makefile: Fix separate output directory build of kselftests
+References: <20220223191016.1658728-1-usama.anjum@collabora.com>
+ <63c5d7ad-b0b2-9b37-16c3-354ac10858b6@collabora.com>
+ <CAK7LNATkTPEBPWBSv6Rum0siHiHcJ0Q7VvPVoUQFH=S0M1fqow@mail.gmail.com>
+ <d10a70cf-24a5-997a-09df-0bb2f4146b86@collabora.com>
+From: "Usama" <usama.anjum@collabora.com>
+In-Reply-To: <d10a70cf-24a5-997a-09df-0bb2f4146b86@collabora.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: Remi Duraffort <remi.duraffort@linaro.org>, Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>, Corentin Labbe <clabbe@baylibre.com>, Kevin Hilman <khilman@baylibre.com>, "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>, "kernelci@groups.io" <kernelci@groups.io>
+To: Masahiro Yamada <masahiroy@kernel.org>, Shuah Khan <shuah@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
+Cc: usama.anjum@collabora.com, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>, kernel@collabora.com, kernelci@groups.io, Kees Cook <keescook@chromium.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
---Groupsio=XHx2aLFpJqTh3ySRrgkz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Thu, Aug 25, 2022 at 04:05:47PM +0200, Guillaume Tucker wrote:
-> Hello,
->=20
-> The idea of adding BayLibre's lava-healthchecks-binary[1]
-> repository to the KernelCI GitHub organisation was brought up
-> during a KernelCI weekly meeting last month.  This appears to be
-> related to the lava-docker[2] project which is currently in the
-> KernelCI organisation, to bring the two repositories together.
->=20
-> It seems to me that lava-docker and anything related to providing
-> LAVA support is not something that KernelCI should be responsible
-> for as a project.  In fact, the lava-docker repository has been
-> managed entirely autonomously since the beginning by different
-> maintainers than the core KernelCI repositories, and I believe it
-> was originally added to the KernelCI org by Kevin as it was an
-> easy thing to do that made sense at the time.
->=20
-> Rather than having one more LAVA-related project under this org,
-> how about either creating a dedicated GitHub organisation for
-> lava-docker and related repositories, or adding lava-docker and
-> the healthchecks to the LAVA GitLab instance on
-> https://git.lavasoftware.org/?
->=20
-> Having a dedicated org on GitHub would give the actual
-> maintainers of the project full control over it, to add and move
-> repositories, manage members, permissions etc. as they wish.
->=20
-> However, if the LAVA maintainers think that lava-docker could
-> become the main solution for running LAVA in Docker, then maybe
-> it should be merged with some existing project on
-> git.lavasoftware.org or added as a new project there.  That would
-> give it more visibility and potentially remove duplicated
-> efforts.
+At this time:
+make kselftest-all (works)
+make kselftest-all O=/tmp (works)
+make kselftest-all O=build (doesn't work, investigation was shared)
+make kselftest-all O=build/build2 (works)
 
-FWIW, there is also
-https://git.lavasoftware.org/lava/pkg/docker-compose which seems
-similar, but not the same, as kernelci's lava-docker (e.g. there is no
-autogeneration of config files AFAICT). That's used by a few people, but
-mostly for development purposes I think.
+I'd shared my final thoughts in the last email. I don't see any other
+solution. If anybody has any other thoughts on how to cleanly fix `make
+kselftest-all O=build`, do share.
 
-> I'm not sure I'm aware of all the implications for each of these
-> options so I thought I would bring it up for discussion here.
-> What do you think?
+Thanks,
+Usama
 
-I don't really have an opinion on what to do with lava-docker. In
-principle, consolidation and collaboration is good, but we would need to
-agree on the details. Also, moving it around must be done in a way that
-the current maintainers still have the necessary access to keep
-maintaining it (because the move won't make new maintainers magically
-appear).
+On 4/4/22 4:09 PM, Muhammad Usama Anjum wrote:
+> From [Makefile](https://elixir.bootlin.com/linux/latest/source/Makefile):
+> ```
+> ifeq ($(abs_srctree),$(abs_objtree))
+>         # building in the source tree
+>         srctree := .
+> 	building_out_of_srctree :=
+> else
+>         ifeq ($(abs_srctree)/,$(dir $(abs_objtree)))
+>                 # building in a subdirectory of the source tree
+>                 srctree := ..
+>         else
+>                 srctree := $(abs_srctree)
+>         endif
+> 	building_out_of_srctree := 1
+> endif
+> ```
+> `ifeq ($(abs_srctree)/,$(dir $(abs_objtree)))` condition is setting
+> `srctree` to `..`. This is wrong. This condition isn't considering that
+> `header_install` doesn't depend on `abs_srctree and abs_objtree`. This
+> condition needs to be tweaked or removed for the `install_headers` to
+> work fine and fix this issue. I've added `KBUILD_ABS_SRCTREE=1` to the
+> kselftest target which sets the `srctree` to `abs_srctree` and thus
+> forcefully affecting only kselftest targets. This seems like the clean
+> fix. Alternatively we should remove this condition `ifeq
+> ($(abs_srctree)/,$(dir $(abs_objtree)))` but it'll affect other targets
+> as well.
+> 
+> Complete details of investigation can be found here:
+> https://github.com/kernelci/kernelci-project/issues/92#issuecomment-1087406222
+> 
+> On 3/17/22 11:08 PM, Masahiro Yamada wrote:
+>> On Thu, Mar 17, 2022 at 7:49 PM Muhammad Usama Anjum
+>> <usama.anjum@collabora.com> wrote:
+>>>
+>>> Reminder. Shuah is okay with this patch. Any thoughts?
+>>
+>> I do not think this is the right fix,
+>> but something you just happen to find working.
+>>
+>>
+>> The Make is working in a wrong directory, that is why
+>> the relative path does not work
+>> (and you use the absolute path to work around it)
+>>
+> `ifeq ($(abs_srctree)/,$(dir $(abs_objtree))) \ srctree := ..` has
+> broken the `make headers_install` when called through
+> selftests/Makefile. We can remove it or use the absolute path each time.
+> 
 
---Groupsio=XHx2aLFpJqTh3ySRrgkz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEst7mYDbECCn80PEM/A2xu81GC94FAmMJE6QACgkQ/A2xu81G
-C964cg/9HuSatJOO5AcTuVwTV6S27UpNz/X3I08pdrQaYVwTCGJwUyYnoHB6846/
-gQWtl5Xg251Bir4vkCTSQpgVLMEadCG78LAnf19rtP1bB/5wQiBlhcZCGwsRZvHc
-k8bkYY65B3Kdq6YtbXQUOOxXIiLDU5R96sgVvFdw3Zj7fYCzQhix6QR5dQ5fv8fK
-BmSBkWCyTZqJd3OSFnC5TDjS5qYTuzbQr2jXDf0Uyt766XiWXG7qnlrBHWCFJXRm
-hhJUc47s8akkljXJ30rylgKUIMdcg37Z2BSK0cjlci3oWzlLBaeGf3QiSH+ivqQL
-DNHXRMhV0LyCmHUz7OUve6yC1mbSue8CUwU7Fm7IwwStpLMTXPr7v8JSnJrO0OtG
-phCE/iuhcv46ZPpXEEWfagvRXhZ3Mjai1Z1pRpqg0J1TuYq13gP5l3uIkymeDkEd
-ZUKQwG9t26G94r6BGNTUSSWOb/azfa8y1FauGhXtiB6ozSGC0yJQg3Aq0lZc4aLd
-poTj2+bqEqt/it7hGpJ8W++0f3H8usIzO/Sd4Ns+2nufvFcoo20guO7YUF3V4Y7H
-SC2zX60FhxqaOzgpkiozDA8DGTrDXGlxxMJb77AGOS3kgBqAUJ0PDHLH0dOFQ4HF
-2WVrCpk9m5gYxOrG42xr1S/xuLWwDG/fePz0cgA5DTHTRFoAj8g=
-=yjbZ
------END PGP SIGNATURE-----
-
---Groupsio=XHx2aLFpJqTh3ySRrgkz--
+-- 
+Muhammad Usama Anjum
