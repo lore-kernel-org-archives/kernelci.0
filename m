@@ -1,100 +1,101 @@
-Message-ID: <185f4c80-9bef-4fc5-732e-b194ad0f2ee8@suse.cz>
-Date: Fri, 16 Sep 2022 18:28:57 +0200
+Return-Path: <Nikolai.Kondrashov@redhat.com>
+Message-ID: <68c0745f-6cc8-447e-143c-409216d69cae@redhat.com>
+Date: Fri, 22 Apr 2022 17:06:19 +0300
 MIME-Version: 1.0
-Subject: Re: kernelci/staging-next staging-next-20220916.0: 3 runs 1 failures
-References: <632464ba.630a0220.d15ef.6eca@mx.google.com>
- <08412769-30f9-c901-8a14-efd5835be68a@collabora.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <08412769-30f9-c901-8a14-efd5835be68a@collabora.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+Subject: #KCIDB engagement report
+Reply-To: kernelci@groups.io, Nikolai.Kondrashov@redhat.com
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: kernelci-results-staging@groups.io, "kernelci@groups.io" <kernelci@groups.io>, Brendan Higgins <brendanhiggins@google.com>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>
+To: kernelci@groups.io, automated-testing@lists.yoctoproject.org
 
-On 9/16/22 14:57, Guillaume Tucker wrote:
-> Hello,
-> 
-> On 16/09/2022 13:57, staging.kernelci.org bot wrote:
->> kernelci/staging-next staging-next-20220916.0: 3 runs 1 failures
->>
->> Summary
->> =======
->>
->> Tree:     kernelci
->> Branch:   staging-next
->> Describe: staging-next-20220916.0
->> URL:      https://github.com/kernelci/linux.git
->> SHA1:     d2957623a1103bf8971b0754bc04193dce0dbde2
->>
->> Name            | Result   | Total    | Failures
->> ----------------+----------+----------+---------
->> kunit           | fail     |      244 |        4
->> kver            | pass     |        0 |        0
->> fstests         | None     |      247 |        5
->>
->>
->> Failing tests
->> =============
->>
->> kunit
->> -----
->>
->> * slub_test.test_next_pointer
->> * slub_test.test_first_word
->> * slub_test.test_clobber_50th_byte
->> * slub_test.test_clobber_redzone_free
-> 
-> We're just starting to run KUnit in Kubernetes with the new
-> KernelCI API & pipeline and these failures showed up on
-> next-20220916.  Here's the details from the log:
-> 
-> [12:52:08] ================== slub_test (5 subtests) ==================
-> [12:52:08] [PASSED] test_clobber_zone
-> [12:52:08] # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:50
-> [12:52:08] Expected 3 == slab_errors, but
-> [12:52:08] slab_errors == 0
-> [12:52:08] # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:62
-> [12:52:08] Expected 2 == slab_errors, but
-> [12:52:08] slab_errors == 0
-> [12:52:08] not ok 2 - test_next_pointer
-> [12:52:08] [FAILED] test_next_pointer
-> [12:52:08] # test_first_word: EXPECTATION FAILED at lib/slub_kunit.c:85
-> [12:52:08] Expected 2 == slab_errors, but
-> [12:52:08] slab_errors == 0
-> [12:52:08] not ok 3 - test_first_word
-> [12:52:08] [FAILED] test_first_word
-> [12:52:08] # test_clobber_50th_byte: EXPECTATION FAILED at lib/slub_kunit.c:100
-> [12:52:08] Expected 2 == slab_errors, but
-> [12:52:08] slab_errors == 0
-> [12:52:08] not ok 4 - test_clobber_50th_byte
-> [12:52:08] [FAILED] test_clobber_50th_byte
-> [12:52:08] # test_clobber_redzone_free: EXPECTATION FAILED at lib/slub_kunit.c:117
-> [12:52:08] Expected 2 == slab_errors, but
-> [12:52:08] slab_errors == 0
-> [12:52:08] not ok 5 - test_clobber_redzone_free
-> [12:52:08] [FAILED] test_clobber_redzone_free
-> [12:52:08] # Subtest: slub_test
-> [12:52:08] 1..5
-> [12:52:08] # slub_test: pass:1 fail:4 skip:0 total:5
-> [12:52:08] # Totals: pass:1 fail:4 skip:0 total:5
-> [12:52:08] not ok 23 - slub_test
-> [12:52:08] ==================== [FAILED] slub_test ====================
-> 
-> 
-> I've reproduced them by hand with the same Docker environment so
-> it seems valid but it would be great if you could please confirm.
-> Are they known failures, and do you know when they were
-> introduced?  They're not failing in mainline afaict.
+Hi everyone,
 
-Hi, what's the .config here please?
-Thanks.
+Below is the monthly* report on KCIDB** engagement. It lists various CI
+systems and their status of engagement with KCIDB, as well as developer
+engagement.
 
-> We'll be adding support for tracking regressions soon so we'll be
-> able to know when failures start to appear automatically.  For
-> now, it's useful to double check we're producing valid results.
-> 
-> Thanks,
-> Guillaume
+Lines with updates are marked with "!".
+
+The main news is Microsoft has started work on sending reports from their
+in-house Penguinator system to KCIDB.
+
+Daniel Stone has requested the ability to browse the test tree in KCIDB
+dashboards, which I considered for a while as well. He'd like to be able
+to browse graphics suite results across various builds and revisions.
+
+However, I'll have to do that only after I'm done with the current task:
+improving our use of BigQuery, so we don't have to pay so much for our
+queries.
+
+After both of these I'll return to working on known issue handling/masking.
+
+CI Engagement Status
+
+     KernelCI native
+         Sending (a lot of) production build and test results.
+         https://kcidb.kernelci.org/?var-origin=kernelci
+
+     Red Hat CKI
+         Sending production results.
+         https://kcidb.kernelci.org/?var-origin=redhat
+
+     Google Syzbot
+         Sending a subset of production results (failures only).
+         https://kcidb.kernelci.org/?var-origin=syzbot
+
+     ARM
+         Sending production results.
+         Full commit hashes are currently not available, are spoofed, and don't
+         match the ones reported by others. There's ongoing switch to using a
+         KernelCI instance setup, which should fix this.
+         https://kcidb.kernelci.org/?var-origin=arm
+
+     Sony Fuego
+         Internal design in progress.
+
+     Gentoo GKernelCI
+         Sending production results.
+         Only builds (a few architectures), no configs, no logs, and no tests
+         for now, but working on growing contributions.
+         https://kcidb.kernelci.org/?var-origin=gkernelci
+
+     Intel 0day
+         Initial conversation concluded, general interest expressed,
+         no contact since.
+
+     Linaro
+         Sending (a lot of) Tuxsuite build results to "production" KCIDB.
+         https://kcidb.kernelci.org/?var-origin=tuxsuite
+
+     TuxML
+         Initial contact in response to a report.
+         There's a plan to approach us and start work in the coming months.
+
+     Yocto Project
+         Initial contact in response to a report.
+         Would like to start sending build and test results, particularly for
+         older kernels. Would like to separate upstream commits from project
+         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
+
+     Huawei Compass CI
+         Sent a message to Fengguang Wu, who was presenting it at LVC 2021.
+         No response so far.
+
+!   Microsoft
+!       I provided Liz Zhang with instructions and credentials for submitting
+!       Penguinator data to KCIDB.
+
+Please respond with corrections or suggestions of other CI systems to contact.
+
+Thank you!
+Nick
+
+*More-or-less :)
+
+**KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
+   Foundation's KernelCI project:
+   https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
 
