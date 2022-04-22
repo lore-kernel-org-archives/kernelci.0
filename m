@@ -1,40 +1,88 @@
+Return-Path: <frowand.list@gmail.com>
+Message-ID: <ee73ec15-db6c-e0bb-ddb1-012499d08b11@gmail.com>
+Date: Fri, 22 Apr 2022 18:25:49 -0500
 MIME-Version: 1.0
-References: <CANiq72k7zix1TiK0_Zr9nu9sG7SAQRt4GRE5y=_4Um6=djZmJw@mail.gmail.com>
- <e702e47e-1fee-2613-1909-194a72d21736@collabora.com> <CANiq72nh3RrQxnHv-evMQG0PHxv8yzMQufmqqqQ43Nqa-28wgA@mail.gmail.com>
- <b40bf5ba-c18c-61b3-a00c-556487d7b5d2@collabora.com>
-In-Reply-To: <b40bf5ba-c18c-61b3-a00c-556487d7b5d2@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 8 Nov 2022 11:28:38 +0100
-Message-ID: <CANiq72=sTnkVT-e_D4NfUMp=pux=EdLPsFUO=6UeZPiW5KnCkw@mail.gmail.com>
-Subject: Re: Build-testing Rust support
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RFC PATCH 1/2] Documentation: dev-tools: KTAP spec change version to 2-rc
+References: <20220316202622.324866-1-frowand.list@gmail.com>
+ <20220316202622.324866-2-frowand.list@gmail.com>
+ <CABVgOSm_rQcBhbC5C7Z7_+zEheCjkjHCmzKHyx7b5bYLESvA0A@mail.gmail.com>
+From: Frank Rowand <frowand.list@gmail.com>
+In-Reply-To: <CABVgOSm_rQcBhbC5C7Z7_+zEheCjkjHCmzKHyx7b5bYLESvA0A@mail.gmail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: Collabora Kernel ML <kernel@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>
+To: David Gow <davidgow@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 
-On Mon, Nov 7, 2022 at 8:20 PM Guillaume Tucker
-<guillaume.tucker@collabora.com> wrote:
->
-> FYI there's now an open PR on GitHub:
->
->   https://github.com/kernelci/kernelci-core/pull/1468
+On 3/17/22 03:43, David Gow wrote:
+> On Thu, Mar 17, 2022 at 4:26 AM <frowand.list@gmail.com> wrote:
+>>
+>> From: Frank Rowand <frank.rowand@sony.com>
+>>
+>> Prepare KTAP Specification for the process of creating Version 2.
+>> The version will remain 2-rc until the final commit to complete
+>> Version 2.
+>>
+>> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+>> ---
+> 
+> This seems okay to me, though I'd generally rather this stay in a
+> branch rather than hitting torvalds/master while there aren't any
+> substantive changes to the actual spec. (Basically, let's not rush
+> naming this "2-rc" for 5.18 if there aren't any other changes: a 2-rc
+> which is practically the same as 1 is probably going to be more
+> confusing than helpful if it sticks around for a whole kernel release.
 
-Thanks for this!
+Sounds good.  In my reply (a few minutes ago) to your other email, I offer
+to host a branch.  The branch approach sounds good to me.
 
-> Would you or other maintainers involved with Rust in the kernel
-> be available to help and keep this working in the long term?  I
-> suspect the build commands and toolchains will occasionally need
+> 
+> (Also, when would we want to update the various mentions of "KTAP
+> version 1" in the document to "KTAP version 2" or "KTAP version 2-rc"?
+> Now, when 2 is released, at the first breaking change to that example,
+> etc?)
 
-Happy to help. The build commands should stay roughly the same,
-although as you say it may require small changes at some point (e.g. I
-saw you are also testing the `rust` branch, which may go away at some
-point).
+There are only a few references to version 1.  I can create a patch to change
+them to version 2 (other than the version of the document itself).
 
-> to be updated.  Also someone needs to look into the results to
-> make the whole thing worthwhile.
+If we are working on a branch, it should not make a big difference when the
+internal uses of "version 1" are changed to "version 2".  If I do it right
+away then it won't get overlooked.
 
-Are the reports sent by email similar to the kernel test robot? Or is
-it a "pull" approach where we look into the dashboard?
+-Frank
 
-Cheers,
-Miguel
+> 
+> Cheers,
+> -- David
+> 
+>>  Documentation/dev-tools/ktap.rst | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+>> index 5ee735c6687f..37b5dc61bfb8 100644
+>> --- a/Documentation/dev-tools/ktap.rst
+>> +++ b/Documentation/dev-tools/ktap.rst
+>> @@ -1,7 +1,7 @@
+>>  .. SPDX-License-Identifier: GPL-2.0
+>>
+>>  ===================================================
+>> -The Kernel Test Anything Protocol (KTAP), version 1
+>> +The Kernel Test Anything Protocol (KTAP), version 2-rc
+>>  ===================================================
+> 
+> Nit: Sphinx complains that we now need more '=' signs:
+> 
+> Documentation/dev-tools/ktap.rst:3: WARNING: Title overline too short.
+> ===================================================
+> 
+> 
+> The Kernel Test Anything Protocol (KTAP), version 2-rc
+> ===================================================
+> 
+>>
+>>  TAP, or the Test Anything Protocol is a format for specifying test results used
+>> --
+>> Frank Rowand <frank.rowand@sony.com>
+>>
+
