@@ -1,6 +1,6 @@
 Return-Path: <frowand.list@gmail.com>
-Message-ID: <5ca35c47-6145-4ec1-6c05-3c46f436cb4d@gmail.com>
-Date: Thu, 12 May 2022 01:01:22 -0500
+Message-ID: <1c89133e-7bd2-862a-bd57-7fefdffb77ae@gmail.com>
+Date: Thu, 12 May 2022 01:02:11 -0500
 MIME-Version: 1.0
 Subject: Re: [RFC] KTAP spec v2: prefix to KTAP data
 References: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
@@ -64,42 +64,73 @@ On 5/12/22 00:59, Frank Rowand wrote:
 > -Frank
 
 ================================================================================
-Alternative 1
+Alternative 2
    - Add an optional <prefix string> to test output.
+   - Add "Configuration info lines", which are used to provide information
+     about the KTAP format to programs that interpret the KTAP data.  The
+     only type of "Configuration info lines" proposed provides the value
+     of <prefix string> for programs that process the KTAP output.
+   - Further types of "Configuration info lines" could be added.
+
+Alternative 2b
+   - Add an optional <prefix string> to test output.
+   - Add a <prefix string> definition line of the form:
+        ok 0 <prefix string>
+     This line is essentially a phony "Test case result lines" for test 0.
+
 ================================================================================
-## <prefix string>
+## Configuration info lines
 
-If the optional [<prefix string>] is present for any line of the KTAP formatted
-output, then it must be present for all lines of the KTAP formatted output
-(except for "Diagnostic lines", are allowed to not be prefixed with
-<prefix string>, as described below).
+Occur in zero or more test case result lines, where <number> is 0 (zero),
+following the "Plan line", before any other "Test case result" line.
 
-The "Version lines" format is changed from:
+   If there is no "Plan line" at the beginning of the test, then the
+   "Configuration info lines" follow the "Version line", before any
+   other "Test case result" line.
 
-   KTAP version 1
+format:
 
-to:
+   ok 0 <description> # [<directive>] [<diagnostic data>]]
 
-   [<prefix string>] KTAP version 1
+<result> must be "ok".
 
-The "Plan lines" format is changed from:
+The type of each "Configuration info line" is defined by the value
+of <description>.
 
-   "1..N"
+Each value of <description> used for a "Configuration info line" must be
+listed in the specification.
 
-to:
+Whether # <directive> is optional or required is defined for each type of
+"Configuration info line".
 
-   [<prefix string>] "1..N"
+#### Should '[<diagnostic data>]' be included in the format?
 
-The "Test case result lines" format is changed from:
 
-   <result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# [output] prefix
 
-to:
-
-   [<prefix string>] <result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
-
+ok 0 output_prefix #<prefix string>
 
    <prefix content is a constant string>
+   Note: there is no space between "#" and "<prefix string>".  If there is one
+   or more spaces after the "#", then there are part of the <prefix string>
+
+   ## <diagnostic data> must not exist unless there is a way to determine the
+   ## end of <prefix string>.
+   ##
+   ## Adding a way to determine the end of <prefix string> adds much complexity
+   ## to the consumers of ktap output.  For example, if the format was:
+   ##
+   ##   ok 0 output_prefix #<prefix string>[#<diagnostic data>]
+   ##
+   ## then it is not possible for <prefix string> to contain '#', unless
+   ## a method to escape '#' is provided.  E.G.:
+   ##
+   ##   ok 0 output_prefix #XXX test result \#\#\##<diagnostic data>
+   ##
+   ## would result in <prefix string> value of 'XXX test result ###'
+   ##
+   ## My recomendation: do not allow <diagnostic data> in output_prefix format.
 
    All subsequent test lines are prefixed with the <prefix string>.
 
@@ -113,33 +144,25 @@ to:
    for some "Unknown lines" to not be prefixed with the <prefix string>, even
    if one or more other "Unknown lines" are prefixed with the <prefix string>.
 
+   #### Does prefixing begin immediately (even for a subsequent "Configuration
+   #### info line" or does it begin with the test 1 "Test case result line"
+   #### line?
+   ####
+   ####    This question might be simplified if the output_prefix line is
+   ####    required to be the last "Configuration info line".  (Or maybe even if
+   ####    required to be the first "Configuration info line".
+
 
 ================================================================================
 #### discussion notes:
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-PRO: minimally invasive to specification.
+PRO:
+   Test output processing programs can detect the value of <prefix string>
+   more deterministically than Alternative 1.
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 CON:
-
-KTAP does not include any mechanism to describe the value of <prefix string>
-to test harnesses and test output processing programs.  The test output
-processing programs must infer the value of <prefix string> by detecting
-the <prefix string> in the "Version lines".
-
-The detection of a "Version lines" might be a match of the regex:
-
-   "^.*KTAP version 2$"
-
-This risks falsely detecting a "Version lines", but the risk is small???
-
-The impact of falsely detecting a "Version lines" may be large if the
-beginning of test detection is a state machine that moves into a "detect
-either Plan lines or Test case result lines" after falsely detecting a
-"Version lines".  The impact may be small if the state maching instead
-moves into a "detect Version lines, Plan lines, or Test case result lines".
-
+   More complex than Alternative 1.  (But alternative 2b is less complex than
+   Alternative 2.)
 
 ================================================================================
 
