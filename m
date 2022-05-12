@@ -1,63 +1,62 @@
 MIME-Version: 1.0
-References: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
-In-Reply-To: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
-From: Daniel Latypov <dlatypov@google.com>
-Date: Thu, 12 May 2022 08:12:22 -0700
-Message-ID: <CAGS_qxreTLFp1VvMd07AZhE9wbgxR5bXgeJSyW-iWWoA5qs79g@mail.gmail.com>
-Subject: Re: [RFC] KTAP spec v2: prefix to KTAP data
+References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
+ <CACT4Y+ZaN900gwx=PHS10hrKofZib7HA7JFxE_DkwChyttYW+A@mail.gmail.com>
+ <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org> <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
+ <20191011180248.GA24089@rei.lan> <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
+ <20191014085414.GB31760@rei.lan> <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
+ <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com> <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
+ <e8b11b09-37ac-6ae2-0908-b803b4160f7c@oracle.com> <CACT4Y+bShy-3vO3ifNKVcGGNf3X9XA7zL-Ja9-T+gZv5=QNe4w@mail.gmail.com>
+ <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com> <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
+ <fe365a78-0768-ea1f-25b8-6bd05a57c751@kernel.org> <cd301033-f152-4eeb-bce3-2d95f39a05fbn@googlegroups.com>
+In-Reply-To: <cd301033-f152-4eeb-bce3-2d95f39a05fbn@googlegroups.com>
+From: Palash Oswal <oswalpalash@gmail.com>
+Date: Thu, 12 May 2022 14:05:09 -0400
+Message-ID: <CAGyP=7cb=5Hse-xJsyzdVKpOru_Uptjm529owLfVMqjv3VSMtw@mail.gmail.com>
+Subject: Re: [Automated-testing] syzkaller reproducers
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>, Jonathan Corbet <corbet@lwn.net>, rmr167@gmail.com, guillaume.tucker@collabora.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: syzkaller <syzkaller@googlegroups.com>, Shuah Khan <skhan@linuxfoundation.org>, kernelci@groups.io, automated-testing@yoctoproject.org, george.kennedy@oracle.com
 
-On Wed, May 11, 2022 at 10:59 PM Frank Rowand <frowand.list@gmail.com> wrote:
++ Shuah, George and mailing lists
+
+Google groups did not CC all of the members in the thread for my
+reply. It would be valuable to get everyone's feedback on this thread.
+
+On Sat, May 7, 2022 at 11:34 PM Palash <oswalpalash@gmail.com> wrote:
 >
-> In the middle of the "RFC - kernel test result specification (KTAP)" thread,
-> started in August 2021, Tim Bird made a suggestion to allow a prefix to the
-> KTAP data format:
+> Hello all,
 >
-> > Just as a side note, in some Fuego tests, it was very useful to include an identifier
-> > in thethe prefix nested tests.  The output looked like this:
-> >
-> > TAP version 13
-> > 1..2
-> > [batch_id 4] TAP version 13
-> > [batch_id 4] 1..2
-> > [batch_id 4] ok 1 - cyclictest with 1000 cycles
-> > [batch_id 4] # problem setting CLOCK_REALTIME
-> > [batch_id 4] not ok 2 - cyclictest with CLOCK_REALTIME
-> > not ok 1 - check realtime
-> > [batch_id 4] TAP version 13
-> > [batch_id 4] 1..1
-> > [batch_id 4] ok 1 - IOZone read/write 4k blocks
-> > ok 2 - check I/O performance
-> >
-> > Can I propose that the prefix not be fixed by the spec, but that the spec indicates that
-> > whatever the prefix is on the TAP version line, that prefix must be used with the output for
-> > all lines from the test (with the exception of unknown lines)?
-
-Just chiming in since I didn't see it mentioned after a quick skim of
-the original thread:
-
-This is already basically the behavior of kunit.py's TAP parser since
-commit afc63da64f1e5e41875c98707020e85050f8a0c5
-Author: Heidi Fahim <heidifahim@google.com>
-Date:   Mon Mar 16 13:21:24 2020 -0700
-
-    kunit: kunit_parser: make parser more robust
-
-    Previously, kunit_parser did not properly handle kunit TAP output that
-    - had any prefixes (generated from different configs e.g.
-    CONFIG_PRINTK_TIME)
-...
-
-The notable difference is that only the prefix _length_ is fixed, not
-the contents of the string itself.
-
-So ignoring a dynamic prefix is a practical necessity if we want to
-parse TAP from kernelspace/printk across a range of configs.
-But I don't know if this dynamic version is worth including in the spec.
-The static prefix makes more sense to me to formalize, and if we go
-down that route, at least kunit.py will already be compliant :)
-
-Daniel
+> Reviving this old thread. Do we think there's value in automatically publishing a C reproducer(if it exists) whenever syzkaller determines a reported bug is patched and fixed?
+> This allows us to track these reproducers more diligently and we only have reproducers for the bugs that have been patched.
+> If this is valuable, then we could think about answering these questions -
+> 1. Is there a particular way we want to format the reproducers? (Example : SKIP/OK/FAIL/TIMEOUT (if output is possible))
+> 2. Where do we want to submit the reproducers to be added to the testing project and what is the process we want to use?
+> 3. Is it valuable to record the crash report information for the original fuzzer crash when the c reproducer is filed to add context to it; in case developers want to troubleshoot? This could save valuable debugging time.
+>
+> Happy to contribute on this change to the upstream fuzzing system.
+>
+> Thanks,
+> Palash
+> On Friday, March 13, 2020 at 11:59:31 AM UTC-4 shuah wrote:
+>>
+>> On 3/3/20 1:45 AM, Dmitry Vyukov wrote:
+>> > Shauh,
+>> >
+>> > We've added more reproducers to:
+>> > https://github.com/dvyukov/syzkaller-repros/tree/master/linux
+>> >
+>> > It makes sense to pull in them to the kernel-arts repo. Not sure
+>> > what's the most convenient way for you since it's not exactly a
+>> > traditional "patch"? Perhaps you just copy linux/*.c files and commit?
+>> >
+>>
+>> Thanks Dmitry. I will pull these in. I will pull these in.
+>>
+>> thanks,
+>> -- Shuah
+>
+> --
+> You received this message because you are subscribed to a topic in the Google Groups "syzkaller" group.
+> To unsubscribe from this topic, visit https://groups.google.com/d/topic/syzkaller/RQFLqAvdsEc/unsubscribe.
+> To unsubscribe from this group and all its topics, send an email to syzkaller+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller/cd301033-f152-4eeb-bce3-2d95f39a05fbn%40googlegroups.com.
