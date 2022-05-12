@@ -1,210 +1,61 @@
-Message-ID: <7c8acd8bb5277c8d10c00ea6d356267fb6938524.camel@collabora.com>
-Subject: Re: kernelci failures due to "pahole" missing
-From: "Denys Fedoryshchenko" <denys.f@collabora.com>
-Date: Tue, 10 May 2022 22:50:14 +0300
-In-Reply-To: <CAHRSSEwGmJopp2fjJXt_rNgH+Um3jMoCACxyrdZo=V9HkYVKVw@mail.gmail.com>
-References: 
-	<CAHRSSEwMoYQz2ua+PmFRcWSXJREUtrsKCFdivDJ+XdJP9Di_MQ@mail.gmail.com>
-	 <f91a21bd782f3988cb6988ff96558dda036ca16f.camel@collabora.com>
-	 <CAHRSSEynGz318YD-TmzZUyXE9ZquLGgoBJJnYzrFsUN8dp8NFA@mail.gmail.com>
-	 <16EBDBAB78C06CE6.10903@groups.io>
-	 <adcac2f5fdfdaec902e49f08b16924c09cb7d6cf.camel@collabora.com>
-	 <850e223c3512417ce8d9497d3395e6b6f0d27b55.camel@collabora.com>
-	 <CAHRSSEwGmJopp2fjJXt_rNgH+Um3jMoCACxyrdZo=V9HkYVKVw@mail.gmail.com>
+Return-Path: <frowand.list@gmail.com>
+Message-ID: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
+Date: Thu, 12 May 2022 00:59:17 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Frank Rowand <frowand.list@gmail.com>
+Subject: [RFC] KTAP spec v2: prefix to KTAP data
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, tkjos@google.com
+To: Frank Rowand <frowand.list@gmail.com>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, rmr167@gmail.com, guillaume.tucker@collabora.com, dlatypov@google.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Tue, 2022-05-10 at 10:53 -0700, Todd Kjos via groups.io wrote:
-> On Tue, May 10, 2022 at 12:20 AM Denys Fedoryshchenko <
-> denys.f@collabora.com>
-> wrote:
->=20
-> > Update
-> >=20
-> > We identified all packages required for kernel build:
-> > dwarves, lz4, python3/python.
-> >=20
-> > We got ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1 built on our
-> > staging
-> > pipeline, but with error:
-> > =C2=A0LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux
-> > =C2=A0 BTFIDS=C2=A0 vmlinux
-> > FAILED unresolved symbol xdp_buff
-> >=20
->=20
-> Which config and arch was this?
-gki_defconfig
-arm64
-But it is a bit old snapshot i'm using as reference.
-Tomorrow i will try latest 5.10 if anything changed.
+In the middle of the "RFC - kernel test result specification (KTAP)" thread,
+started in August 2021, Tim Bird made a suggestion to allow a prefix to the
+KTAP data format:
 
-Container Log:
-  LD      .tmp_vmlinux.kallsyms1
-  KSYMS   .tmp_vmlinux.kallsyms1.S
-  AS      .tmp_vmlinux.kallsyms1.S
-  LD      .tmp_vmlinux.kallsyms2
-  KSYMS   .tmp_vmlinux.kallsyms2.S
-  AS      .tmp_vmlinux.kallsyms2.S
-  LD      vmlinux
-  BTFIDS  vmlinux
-FAILED unresolved symbol xdp_buff
-make[1]: *** [/tmp/kci/linux/Makefile:1267: vmlinux] Error 255
-make[1]: Leaving directory '/tmp/kci/linux/build'
-make: *** [Makefile:185: __sub-make] Error 2
-make: Leaving directory '/tmp/kci/linux'
+> Just as a side note, in some Fuego tests, it was very useful to include an identifier
+> in thethe prefix nested tests.  The output looked like this:
+>
+> TAP version 13
+> 1..2
+> [batch_id 4] TAP version 13
+> [batch_id 4] 1..2
+> [batch_id 4] ok 1 - cyclictest with 1000 cycles
+> [batch_id 4] # problem setting CLOCK_REALTIME
+> [batch_id 4] not ok 2 - cyclictest with CLOCK_REALTIME
+> not ok 1 - check realtime
+> [batch_id 4] TAP version 13
+> [batch_id 4] 1..1
+> [batch_id 4] ok 1 - IOZone read/write 4k blocks
+> ok 2 - check I/O performance
+>
+> Can I propose that the prefix not be fixed by the spec, but that the spec indicates that
+> whatever the prefix is on the TAP version line, that prefix must be used with the output for
+> all lines from the test (with the exception of unknown lines)?
 
-"branch": "staging-android",
-"commit": "4dce9d7a65b14d5949b20ced210413d04d914053",
-"describe": "ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1",
-"describe_verbose": "v5.10-19504-g4dce9d7a65b1",
-"tree": "kernelci",
-"url": "https://github.com/kernelci/linux.git"
+The thread was discussing many other items, but this is the one that I want
+to focus on in this new RFC thread.
 
->=20
->=20
-> >=20
-> > I will create PR now to allocate larger builders (to address LTO
-> > memory
-> > overconsumption) and we will do test build on android pipeline.
-> >=20
->=20
-> Thanks for helping with this!
->=20
->=20
-> >=20
-> > On Thu, 2022-05-05 at 08:23 +0300, Denys Fedoryshchenko wrote:
-> > > Short update.
-> > > Some of builders crashed due OOM, but not because of logs,
-> > > but because LTO during linking phase consume more than 21Gb of
-> > > RAM,
-> > > and k8s builders allocated for project have only 4Gb allocated.
-> > > It is not easy to solve, as it is either require to change LTO to
-> > > "Thin
-> > > LTO" (or disable it totally) to reduce memory consumption, which
-> > > is
-> > > not
-> > > great, or increase builders size (and that means additional costs
-> > > and
-> > > approvals related to that).
-> > > We are discussing on IRC possible solutions to this problem.
-> > >=20
-> > > On Wed, 2022-05-04 at 12:06 +0300, Denys Fedoryshchenko wrote:
-> > > > At the moment I have identified a problem with more packages
-> > > > that
-> > > > are
-> > > > missing, now it is python, and i'm adding it as well, but need
-> > > > to
-> > > > test
-> > > > everything manually, and then on staging.
-> > > >=20
-> > > > Here is example of build that needs python:
-> > > > https://linux.kernelci.org/build/id/6271d9f8c49e05f410dc7b53/
-> > > >=20
-> > https://storage.kernelci.org/android/android13-5.10/ASB-2022-04-05_13-5=
-.10-206-g4dce9d7a65b1/arm64/gki_defconfig/clang-14/logs/kernel.log
-> > > >=20
-> > > > Also, another problem some of the builders crashed, probably
-> > > > due to
-> > > > OOM
-> > > > or insufficient resources.
-> > > > https://linux.kernelci.org/build/id/6271db3a3c249a41a7dc7b48/
-> > > >=20
-> > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5=
-.15-1526-g22e9215f1bea/arm64/gki_defconfig/clang-14/logs/kernel.log
-> > > >=20
-> > > > On manual tests, builds with pahole create about 819Mbyte of
-> > > > warnings,
-> > > > such as:
-> > > > "namespace__recode_dwarf_types: couldn't find 0x13423 type for
-> > > > 0x3d6a5
-> > > > (member)!"
-> > > > I am currently investigating whether these issues are related.
-> > > > Therefore, it takes a bit more time than i expected, than just
-> > > > adding
-> > > > a
-> > > > pahole/dwarves package.
-> > > >=20
-> > > > I will update as soon as more information available.
-> > > >=20
-> > > > On Tue, 2022-05-03 at 07:45 -0700, Todd Kjos wrote:
-> > > > > Denys, Thanks for the update. Do you have a prediction for
-> > > > > when
-> > > > > it
-> > > > > will land?
-> > > > >=20
-> > > > > On Mon, May 2, 2022 at 9:58 PM Denys Fedoryshchenko
-> > > > > <denys.f@collabora.com> wrote:
-> > > > > > Hi,
-> > > > > >=20
-> > > > > > We are testing in staging fix for that:
-> > > > > > https://github.com/kernelci/kernelci-core/pull/1158
-> > > > > >=20
-> > > > > > Also i noticed in some cases lz4 package required for this
-> > > > > > test,
-> > > > > > so added it too.
-> > > > > >=20
-> > > > > > Best regards,
-> > > > > > Denys
-> > > > > >=20
-> > > > > > On Fri, 2022-04-29 at 15:22 -0700, Todd Kjos via groups.io
-> > > > > > wrote:
-> > > > > > > We have a bunch of Android kernel test failures due to
-> > > > > > > missing
-> > > > > > > "pahole" in
-> > > > > > > the build environment (example android13-5.15
-> > > > > > > gki_defconfig
-> > > > > > >=20
-> > > > > > <
-> > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5=
-.15-1515-g7a68c2c45139/arm64/gki_defconfig/gcc-10/logs/kernel.log
-> > > > > > > >=20
-> > > > > > > ):
-> > > > > > >=20
-> > > > > > >=20
-> > > > > > > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux.o
-> > > > > > > =C2=A0 MODPOST vmlinux.symvers
-> > > > > > > =C2=A0 MODINFO modules.builtin.modinfo
-> > > > > > > =C2=A0 GEN=C2=A0=C2=A0=C2=A0=C2=A0 modules.builtin
-> > > > > > > BTF: .tmp_vmlinux.btf: pahole (pahole) is not available
-> > > > > > > Failed to generate BTF for vmlinux
-> > > > > > > Try to disable CONFIG_DEBUG_INFO_BTF
-> > > > > > > make[1]: *** [/tmp/kci/linux/Makefile:1247: vmlinux]
-> > > > > > > Error 1
-> > > > > > > make[1]: Leaving directory '/tmp/kci/linux/build'
-> > > > > > > make: *** [Makefile:237: __sub-make] Error 2
-> > > > > > > make: Leaving directory '/tmp/kci/linux'
-> > > > > > >=20
-> > > > > > > Would it be possible to get pahole added to the build
-> > > > > > environments
-> > > > > > > used to
-> > > > > > > build android kernels?
-> > > > > > >=20
-> > > > > > > -Todd
-> > > > > > >=20
-> > > > > > >=20
-> > > > > > >=20
-> > > > > > >=20
-> > > > > > >=20
-> > > > > >=20
-> > > > > >=20
-> > > >=20
-> > > >=20
-> > > >=20
-> > > >=20
-> > > >=20
-> > > >=20
-> > > >=20
-> > >=20
-> >=20
-> >=20
-> >=20
->=20
->=20
->=20
->=20
->=20
+Tim's original email was:
 
+   https://lore.kernel.org/r/BYAPR13MB2503A4B79074D8ED5579345DFDCB9@BYAPR13MB2503.namprd13.prod.outlook.com
 
+There was one reply to this that commented on Tim's suggestion (and also many
+other items in the thread) at:
+
+   https://lore.kernel.org/r/202108301226.800F3D6D4@keescook
+
+> Oh, interesting. This would also allow parallel (unique) test execution
+> to be parsable. That sounds workable. (Again, this needs LAVA patching
+> again...)
+
+I found Tim's original suggestion to be useful, so I have come up with
+two possible ways to modify the KTAP specification to implement what Tim
+was thinking about.  I would not be surprised if someone else has a better
+suggestion than mine, but I will reply to this email with my two alternatives
+to start a discussion.  My alternatives are not in the form of patches, but
+if discussion leads to a good result then I will create a patch for review.
+
+-Frank
