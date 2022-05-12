@@ -1,66 +1,51 @@
-Message-ID: <d10a70cf-24a5-997a-09df-0bb2f4146b86@collabora.com>
-Date: Mon, 4 Apr 2022 16:09:57 +0500
 MIME-Version: 1.0
-Subject: Re: [PATCH] Makefile: Fix separate output directory build of kselftests
-References: <20220223191016.1658728-1-usama.anjum@collabora.com>
- <63c5d7ad-b0b2-9b37-16c3-354ac10858b6@collabora.com>
- <CAK7LNATkTPEBPWBSv6Rum0siHiHcJ0Q7VvPVoUQFH=S0M1fqow@mail.gmail.com>
-From: "Usama" <usama.anjum@collabora.com>
-In-Reply-To: <CAK7LNATkTPEBPWBSv6Rum0siHiHcJ0Q7VvPVoUQFH=S0M1fqow@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com> <5ca35c47-6145-4ec1-6c05-3c46f436cb4d@gmail.com>
+In-Reply-To: <5ca35c47-6145-4ec1-6c05-3c46f436cb4d@gmail.com>
+From: Daniel Latypov <dlatypov@google.com>
+Date: Thu, 12 May 2022 08:25:04 -0700
+Message-ID: <CAGS_qxpE9qGsS1LqaobVGFKFgV6TwvwNLR4e9PG5zsfPACSf_Q@mail.gmail.com>
+Subject: Re: [RFC] KTAP spec v2: prefix to KTAP data
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Masahiro Yamada <masahiroy@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: usama.anjum@collabora.com, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>, kernel@collabora.com, kernelci@groups.io, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, Kees Cook <keescook@chromium.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Frank Rowand <frowand.list@gmail.com>
+Cc: David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Tim.Bird@sony.com, Brendan Higgins <brendanhiggins@google.com>, Jonathan Corbet <corbet@lwn.net>, rmr167@gmail.com, guillaume.tucker@collabora.com, kernelci@groups.io, kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 
->From [Makefile](https://elixir.bootlin.com/linux/latest/source/Makefile):
-```
-ifeq ($(abs_srctree),$(abs_objtree))
-        # building in the source tree
-        srctree := .
-	building_out_of_srctree :=
-else
-        ifeq ($(abs_srctree)/,$(dir $(abs_objtree)))
-                # building in a subdirectory of the source tree
-                srctree := ..
-        else
-                srctree := $(abs_srctree)
-        endif
-	building_out_of_srctree := 1
-endif
-```
-`ifeq ($(abs_srctree)/,$(dir $(abs_objtree)))` condition is setting
-`srctree` to `..`. This is wrong. This condition isn't considering that
-`header_install` doesn't depend on `abs_srctree and abs_objtree`. This
-condition needs to be tweaked or removed for the `install_headers` to
-work fine and fix this issue. I've added `KBUILD_ABS_SRCTREE=1` to the
-kselftest target which sets the `srctree` to `abs_srctree` and thus
-forcefully affecting only kselftest targets. This seems like the clean
-fix. Alternatively we should remove this condition `ifeq
-($(abs_srctree)/,$(dir $(abs_objtree)))` but it'll affect other targets
-as well.
+On Wed, May 11, 2022 at 11:01 PM Frank Rowand <frowand.list@gmail.com> wrote:
+> ================================================================================
+> #### discussion notes:
+>
+> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+> PRO: minimally invasive to specification.
+>
+> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+> CON:
+>
+> KTAP does not include any mechanism to describe the value of <prefix string>
+> to test harnesses and test output processing programs.  The test output
+> processing programs must infer the value of <prefix string> by detecting
+> the <prefix string> in the "Version lines".
+>
+> The detection of a "Version lines" might be a match of the regex:
+>
+>    "^.*KTAP version 2$"
+>
+> This risks falsely detecting a "Version lines", but the risk is small???
 
-Complete details of investigation can be found here:
-https://github.com/kernelci/kernelci-project/issues/92#issuecomment-1087406222
+Agree this is a risk and also think it's probably small, but it's hard to say.
+I think the $ anchoring the regex is probably safe enough.
 
-On 3/17/22 11:08 PM, Masahiro Yamada wrote:
-> On Thu, Mar 17, 2022 at 7:49 PM Muhammad Usama Anjum
-> <usama.anjum@collabora.com> wrote:
->>
->> Reminder. Shuah is okay with this patch. Any thoughts?
-> 
-> I do not think this is the right fix,
-> but something you just happen to find working.
-> 
-> 
-> The Make is working in a wrong directory, that is why
-> the relative path does not work
-> (and you use the absolute path to work around it)
-> 
-`ifeq ($(abs_srctree)/,$(dir $(abs_objtree))) \ srctree := ..` has
-broken the `make headers_install` when called through
-selftests/Makefile. We can remove it or use the absolute path each time.
+As noted earlier, this tracks with what kunit.py already does.
+That was necessitated by dynamic prefixes such as timestamps, etc.
+So I think this is probably a fine risk to take.
 
--- 
-Muhammad Usama Anjum
+I imagine we could add constraints of prefix string, e.g. must have []
+around it, etc. if we want to try and minimize this risk.
+But I don't know if it's necessarily worth it, given what we know right now.
+
+Along those lines, I think I like this approach (Alternative 1) more
+than Alternative 2/2b.
+I'm not sure we need a structured way to specify metadata in KTAP yet?
+The prefix seems like a reasonable candidate, but do others have ideas
+of other bits of metadata we'd want to be able to declare?
+
+Daniel
