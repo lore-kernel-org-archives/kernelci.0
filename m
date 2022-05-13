@@ -1,113 +1,137 @@
-Message-ID: <1cecad9d-36cf-4703-3f2e-6b2454761f0f@oracle.com>
-Date: Fri, 13 May 2022 07:35:49 -0400
-Subject: Re: [Automated-testing] syzkaller reproducers
-References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
- <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org>
- <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
- <20191011180248.GA24089@rei.lan>
- <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
- <20191014085414.GB31760@rei.lan>
- <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
- <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com>
- <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
- <e8b11b09-37ac-6ae2-0908-b803b4160f7c@oracle.com>
- <CACT4Y+bShy-3vO3ifNKVcGGNf3X9XA7zL-Ja9-T+gZv5=QNe4w@mail.gmail.com>
- <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com>
- <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
- <fe365a78-0768-ea1f-25b8-6bd05a57c751@kernel.org>
- <cd301033-f152-4eeb-bce3-2d95f39a05fbn@googlegroups.com>
- <CAGyP=7cb=5Hse-xJsyzdVKpOru_Uptjm529owLfVMqjv3VSMtw@mail.gmail.com>
- <CACT4Y+aSy4LOmXfWxA2KrkLwwn-qWxVKxGsz_LxuF32CxaLYeQ@mail.gmail.com>
-From: George Kennedy <george.kennedy@oracle.com>
-In-Reply-To: <CACT4Y+aSy4LOmXfWxA2KrkLwwn-qWxVKxGsz_LxuF32CxaLYeQ@mail.gmail.com>
+From: "Bird, Tim" <Tim.Bird@sony.com>
+Subject: Re: [RFC] KTAP spec v2: prefix to KTAP data
+Date: Fri, 13 May 2022 22:19:32 +0000
+Message-ID: 
+ <BYAPR13MB2503FA8B94998018D64804C6FDCA9@BYAPR13MB2503.namprd13.prod.outlook.com>
+References: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
+ <1c89133e-7bd2-862a-bd57-7fefdffb77ae@gmail.com>
+In-Reply-To: <1c89133e-7bd2-862a-bd57-7fefdffb77ae@gmail.com>
 MIME-Version: 1.0
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>, kernelci@groups.io, oswalpalash@gmail.com
-Cc: syzkaller <syzkaller@googlegroups.com>, Shuah Khan <skhan@linuxfoundation.org>, automated-testing@yoctoproject.org, Vegard Nossum <vegard.nossum@oracle.com>
+To: Frank Rowand <frowand.list@gmail.com>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Brendan Higgins <brendanhiggins@google.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, "rmr167@gmail.com" <rmr167@gmail.com>, "guillaume.tucker@collabora.com" <guillaume.tucker@collabora.com>, "dlatypov@google.com" <dlatypov@google.com>, "kernelci@groups.io" <kernelci@groups.io>, "kunit-dev@googlegroups.com" <kunit-dev@googlegroups.com>, "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 
-
-
-On 5/13/2022 5:29 AM, Dmitry Vyukov wrote:
-> On Fri, 13 May 2022 at 02:54, Palash Oswal <oswalpalash@gmail.com> wrote:
->> + Shuah, George and mailing lists
->>
->> Google groups did not CC all of the members in the thread for my
->> reply. It would be valuable to get everyone's feedback on this thread.
->>
->> On Sat, May 7, 2022 at 11:34 PM Palash <oswalpalash@gmail.com> wrote:
->>> Hello all,
->>>
->>> Reviving this old thread. Do we think there's value in automatically publishing a C reproducer(if it exists) whenever syzkaller determines a reported bug is patched and fixed?
->>> This allows us to track these reproducers more diligently and we only have reproducers for the bugs that have been patched.
->>> If this is valuable, then we could think about answering these questions -
->>> 1. Is there a particular way we want to format the reproducers? (Example : SKIP/OK/FAIL/TIMEOUT (if output is possible))
->>> 2. Where do we want to submit the reproducers to be added to the testing project and what is the process we want to use?
->>> 3. Is it valuable to record the crash report information for the original fuzzer crash when the c reproducer is filed to add context to it; in case developers want to troubleshoot? This could save valuable debugging time.
->>>
->>> Happy to contribute on this change to the upstream fuzzing system.
->
-> More automation is definitely welcome.
-> I am not sure how widely used is the current base of reproducers. But
-> George keeps asking for updates and I keep failing at doing it in a
-> timely manner.
-We run the ~6000 reproducers as a regression test. Test takes ~4 hours.
-
-Having the reproducer before there is a patch is valuable to us as we 
-know whether or not our distro branches have the same failure.
-
-As a way to reduce test time, some sort of repro classification would be 
-helpful (i.e. open/closed/invalid).
-
-For crash troubleshooting info we try to match the crash string with 
-syzbot's crash string.
-
-Thank you,
-George
->
-> It would be easiest for the syzbot app to upload reproducers to a GCS
-> bucket. But I am not sure what's a good format for this. Everything I
-> can think of is somewhat clumsy. It could upload weekly archives, but
-> then there is an issue of discoverability of new archives (since GCS
-> is HTTP rather than FTP).
->
-> Not sure if it's feasible to give it an auth token for a github repo
-> to push individual files as we do now.
->
-> Re format. Bonus points if the system will be able to regenerate and
-> update meta-information. The chances that we will come up with the
-> ultimately right format from day 1 are low. But that may complicate
-> the implementation.
->
->
->
->
->>> Thanks,
->>> Palash
->>> On Friday, March 13, 2020 at 11:59:31 AM UTC-4 shuah wrote:
->>>> On 3/3/20 1:45 AM, Dmitry Vyukov wrote:
->>>>> Shauh,
->>>>>
->>>>> We've added more reproducers to:
->>>>> https://github.com/dvyukov/syzkaller-repros/tree/master/linux
->>>>>
->>>>> It makes sense to pull in them to the kernel-arts repo. Not sure
->>>>> what's the most convenient way for you since it's not exactly a
->>>>> traditional "patch"? Perhaps you just copy linux/*.c files and commit?
->>>>>
->>>> Thanks Dmitry. I will pull these in. I will pull these in.
->>>>
->>>> thanks,
->>>> -- Shuah
->>> --
->>> You received this message because you are subscribed to a topic in the Google Groups "syzkaller" group.
->>> To unsubscribe from this topic, visit https://groups.google.com/d/topic/syzkaller/RQFLqAvdsEc/unsubscribe.
->>> To unsubscribe from this group and all its topics, send an email to syzkaller+unsubscribe@googlegroups.com.
->>> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller/cd301033-f152-4eeb-bce3-2d95f39a05fbn%40googlegroups.com.
->>
->> 
->>
->>
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRnJhbmsgUm93YW5kIDxm
+cm93YW5kLmxpc3RAZ21haWwuY29tPg0KPiANCj4gT24gNS8xMi8yMiAwMDo1OSwgRnJhbmsgUm93
+YW5kIHdyb3RlOg0KPiA+IEluIHRoZSBtaWRkbGUgb2YgdGhlICJSRkMgLSBrZXJuZWwgdGVzdCBy
+ZXN1bHQgc3BlY2lmaWNhdGlvbiAoS1RBUCkiIHRocmVhZCwNCj4gPiBzdGFydGVkIGluIEF1Z3Vz
+dCAyMDIxLCBUaW0gQmlyZCBtYWRlIGEgc3VnZ2VzdGlvbiB0byBhbGxvdyBhIHByZWZpeCB0byB0
+aGUNCj4gPiBLVEFQIGRhdGEgZm9ybWF0Og0KPiA+DQo+ID4+IEp1c3QgYXMgYSBzaWRlIG5vdGUs
+IGluIHNvbWUgRnVlZ28gdGVzdHMsIGl0IHdhcyB2ZXJ5IHVzZWZ1bCB0byBpbmNsdWRlIGFuIGlk
+ZW50aWZpZXINCj4gPj4gaW4gdGhldGhlIHByZWZpeCBuZXN0ZWQgdGVzdHMuICBUaGUgb3V0cHV0
+IGxvb2tlZCBsaWtlIHRoaXM6DQo+ID4+DQo+ID4+IFRBUCB2ZXJzaW9uIDEzDQo+ID4+IDEuLjIN
+Cj4gPj4gW2JhdGNoX2lkIDRdIFRBUCB2ZXJzaW9uIDEzDQo+ID4+IFtiYXRjaF9pZCA0XSAxLi4y
+DQo+ID4+IFtiYXRjaF9pZCA0XSBvayAxIC0gY3ljbGljdGVzdCB3aXRoIDEwMDAgY3ljbGVzDQo+
+ID4+IFtiYXRjaF9pZCA0XSAjIHByb2JsZW0gc2V0dGluZyBDTE9DS19SRUFMVElNRQ0KPiA+PiBb
+YmF0Y2hfaWQgNF0gbm90IG9rIDIgLSBjeWNsaWN0ZXN0IHdpdGggQ0xPQ0tfUkVBTFRJTUUNCj4g
+Pj4gbm90IG9rIDEgLSBjaGVjayByZWFsdGltZQ0KPiA+PiBbYmF0Y2hfaWQgNF0gVEFQIHZlcnNp
+b24gMTMNCj4gPj4gW2JhdGNoX2lkIDRdIDEuLjENCj4gPj4gW2JhdGNoX2lkIDRdIG9rIDEgLSBJ
+T1pvbmUgcmVhZC93cml0ZSA0ayBibG9ja3MNCj4gPj4gb2sgMiAtIGNoZWNrIEkvTyBwZXJmb3Jt
+YW5jZQ0KPiA+Pg0KPiA+PiBDYW4gSSBwcm9wb3NlIHRoYXQgdGhlIHByZWZpeCBub3QgYmUgZml4
+ZWQgYnkgdGhlIHNwZWMsIGJ1dCB0aGF0IHRoZSBzcGVjIGluZGljYXRlcyB0aGF0DQo+ID4+IHdo
+YXRldmVyIHRoZSBwcmVmaXggaXMgb24gdGhlIFRBUCB2ZXJzaW9uIGxpbmUsIHRoYXQgcHJlZml4
+IG11c3QgYmUgdXNlZCB3aXRoIHRoZSBvdXRwdXQgZm9yDQo+ID4+IGFsbCBsaW5lcyBmcm9tIHRo
+ZSB0ZXN0ICh3aXRoIHRoZSBleGNlcHRpb24gb2YgdW5rbm93biBsaW5lcyk/DQo+ID4NCj4gPiBU
+aGUgdGhyZWFkIHdhcyBkaXNjdXNzaW5nIG1hbnkgb3RoZXIgaXRlbXMsIGJ1dCB0aGlzIGlzIHRo
+ZSBvbmUgdGhhdCBJIHdhbnQNCj4gPiB0byBmb2N1cyBvbiBpbiB0aGlzIG5ldyBSRkMgdGhyZWFk
+Lg0KPiA+DQo+ID4gVGltJ3Mgb3JpZ2luYWwgZW1haWwgd2FzOg0KPiA+DQo+ID4gICAgaHR0cHM6
+Ly9sb3JlLmtlcm5lbC5vcmcvci9CWUFQUjEzTUIyNTAzQTRCNzkwNzREOEVENTU3OTM0NURGRENC
+OUBCWUFQUjEzTUIyNTAzLm5hbXByZDEzLnByb2Qub3V0bG9vay5jb20NCj4gPg0KPiA+IFRoZXJl
+IHdhcyBvbmUgcmVwbHkgdG8gdGhpcyB0aGF0IGNvbW1lbnRlZCBvbiBUaW0ncyBzdWdnZXN0aW9u
+IChhbmQgYWxzbyBtYW55DQo+ID4gb3RoZXIgaXRlbXMgaW4gdGhlIHRocmVhZCkgYXQ6DQo+ID4N
+Cj4gPiAgICBodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMjEwODMwMTIyNi44MDBGM0Q2RDRA
+a2Vlc2Nvb2sNCj4gPg0KPiA+PiBPaCwgaW50ZXJlc3RpbmcuIFRoaXMgd291bGQgYWxzbyBhbGxv
+dyBwYXJhbGxlbCAodW5pcXVlKSB0ZXN0IGV4ZWN1dGlvbg0KPiA+PiB0byBiZSBwYXJzYWJsZS4g
+VGhhdCBzb3VuZHMgd29ya2FibGUuIChBZ2FpbiwgdGhpcyBuZWVkcyBMQVZBIHBhdGNoaW5nDQo+
+ID4+IGFnYWluLi4uKQ0KPiA+DQo+ID4gSSBmb3VuZCBUaW0ncyBvcmlnaW5hbCBzdWdnZXN0aW9u
+IHRvIGJlIHVzZWZ1bCwgc28gSSBoYXZlIGNvbWUgdXAgd2l0aA0KPiA+IHR3byBwb3NzaWJsZSB3
+YXlzIHRvIG1vZGlmeSB0aGUgS1RBUCBzcGVjaWZpY2F0aW9uIHRvIGltcGxlbWVudCB3aGF0IFRp
+bQ0KPiA+IHdhcyB0aGlua2luZyBhYm91dC4gIEkgd291bGQgbm90IGJlIHN1cnByaXNlZCBpZiBz
+b21lb25lIGVsc2UgaGFzIGEgYmV0dGVyDQo+ID4gc3VnZ2VzdGlvbiB0aGFuIG1pbmUsIGJ1dCBJ
+IHdpbGwgcmVwbHkgdG8gdGhpcyBlbWFpbCB3aXRoIG15IHR3byBhbHRlcm5hdGl2ZXMNCj4gPiB0
+byBzdGFydCBhIGRpc2N1c3Npb24uICBNeSBhbHRlcm5hdGl2ZXMgYXJlIG5vdCBpbiB0aGUgZm9y
+bSBvZiBwYXRjaGVzLCBidXQNCj4gPiBpZiBkaXNjdXNzaW9uIGxlYWRzIHRvIGEgZ29vZCByZXN1
+bHQgdGhlbiBJIHdpbGwgY3JlYXRlIGEgcGF0Y2ggZm9yIHJldmlldy4NCj4gPg0KPiA+IC1GcmFu
+aw0KPiANCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gQWx0ZXJuYXRpdmUgMg0KPiAgICAt
+IEFkZCBhbiBvcHRpb25hbCA8cHJlZml4IHN0cmluZz4gdG8gdGVzdCBvdXRwdXQuDQo+ICAgIC0g
+QWRkICJDb25maWd1cmF0aW9uIGluZm8gbGluZXMiLCB3aGljaCBhcmUgdXNlZCB0byBwcm92aWRl
+IGluZm9ybWF0aW9uDQo+ICAgICAgYWJvdXQgdGhlIEtUQVAgZm9ybWF0IHRvIHByb2dyYW1zIHRo
+YXQgaW50ZXJwcmV0IHRoZSBLVEFQIGRhdGEuICBUaGUNCj4gICAgICBvbmx5IHR5cGUgb2YgIkNv
+bmZpZ3VyYXRpb24gaW5mbyBsaW5lcyIgcHJvcG9zZWQgcHJvdmlkZXMgdGhlIHZhbHVlDQo+ICAg
+ICAgb2YgPHByZWZpeCBzdHJpbmc+IGZvciBwcm9ncmFtcyB0aGF0IHByb2Nlc3MgdGhlIEtUQVAg
+b3V0cHV0Lg0KPiAgICAtIEZ1cnRoZXIgdHlwZXMgb2YgIkNvbmZpZ3VyYXRpb24gaW5mbyBsaW5l
+cyIgY291bGQgYmUgYWRkZWQuDQo+IA0KPiBBbHRlcm5hdGl2ZSAyYg0KPiAgICAtIEFkZCBhbiBv
+cHRpb25hbCA8cHJlZml4IHN0cmluZz4gdG8gdGVzdCBvdXRwdXQuDQo+ICAgIC0gQWRkIGEgPHBy
+ZWZpeCBzdHJpbmc+IGRlZmluaXRpb24gbGluZSBvZiB0aGUgZm9ybToNCj4gICAgICAgICBvayAw
+IDxwcmVmaXggc3RyaW5nPg0KPiAgICAgIFRoaXMgbGluZSBpcyBlc3NlbnRpYWxseSBhIHBob255
+ICJUZXN0IGNhc2UgcmVzdWx0IGxpbmVzIiBmb3IgdGVzdCAwLg0KPiANCj4gPT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT0NCg0KRm9yIHdoYXQgaXQncyB3b3J0aCwgSSBtdWNoIHByZWZlciBBbHRlcm5h
+dGl2ZSAxLCB1c2luZyB0aGUgcHJlZml4IG9uIHRoZSBLVEFQIGxpbmUgYXMNCnRoZSBwcmVmaXgg
+Zm9yIHRoZSBsaW5lcyBhc3NvY2lhdGVkIHdpdGggdGhhdCB0ZXN0J3Mgb3V0cHV0LiAgSSB0aGlu
+ayBpdCdzIG11Y2ggc2ltcGxlci4NCg0KVGhhbmtzIGZvciBmb2xsb3dpbmcgdXAgb24gdGhpcy4N
+CiAtLSBUaW0NCg0KDQoNCg0KPiAjIyBDb25maWd1cmF0aW9uIGluZm8gbGluZXMNCj4gDQo+IE9j
+Y3VyIGluIHplcm8gb3IgbW9yZSB0ZXN0IGNhc2UgcmVzdWx0IGxpbmVzLCB3aGVyZSA8bnVtYmVy
+PiBpcyAwICh6ZXJvKSwNCj4gZm9sbG93aW5nIHRoZSAiUGxhbiBsaW5lIiwgYmVmb3JlIGFueSBv
+dGhlciAiVGVzdCBjYXNlIHJlc3VsdCIgbGluZS4NCj4gDQo+ICAgIElmIHRoZXJlIGlzIG5vICJQ
+bGFuIGxpbmUiIGF0IHRoZSBiZWdpbm5pbmcgb2YgdGhlIHRlc3QsIHRoZW4gdGhlDQo+ICAgICJD
+b25maWd1cmF0aW9uIGluZm8gbGluZXMiIGZvbGxvdyB0aGUgIlZlcnNpb24gbGluZSIsIGJlZm9y
+ZSBhbnkNCj4gICAgb3RoZXIgIlRlc3QgY2FzZSByZXN1bHQiIGxpbmUuDQo+IA0KPiBmb3JtYXQ6
+DQo+IA0KPiAgICBvayAwIDxkZXNjcmlwdGlvbj4gIyBbPGRpcmVjdGl2ZT5dIFs8ZGlhZ25vc3Rp
+YyBkYXRhPl1dDQo+IA0KPiA8cmVzdWx0PiBtdXN0IGJlICJvayIuDQo+IA0KPiBUaGUgdHlwZSBv
+ZiBlYWNoICJDb25maWd1cmF0aW9uIGluZm8gbGluZSIgaXMgZGVmaW5lZCBieSB0aGUgdmFsdWUN
+Cj4gb2YgPGRlc2NyaXB0aW9uPi4NCj4gDQo+IEVhY2ggdmFsdWUgb2YgPGRlc2NyaXB0aW9uPiB1
+c2VkIGZvciBhICJDb25maWd1cmF0aW9uIGluZm8gbGluZSIgbXVzdCBiZQ0KPiBsaXN0ZWQgaW4g
+dGhlIHNwZWNpZmljYXRpb24uDQo+IA0KPiBXaGV0aGVyICMgPGRpcmVjdGl2ZT4gaXMgb3B0aW9u
+YWwgb3IgcmVxdWlyZWQgaXMgZGVmaW5lZCBmb3IgZWFjaCB0eXBlIG9mDQo+ICJDb25maWd1cmF0
+aW9uIGluZm8gbGluZSIuDQo+IA0KPiAjIyMjIFNob3VsZCAnWzxkaWFnbm9zdGljIGRhdGE+XScg
+YmUgaW5jbHVkZWQgaW4gdGhlIGZvcm1hdD8NCj4gDQo+IA0KPiAtIC0gLSAtIC0gLSAtIC0gLSAt
+IC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0g
+LSAtDQo+ICMgW291dHB1dF0gcHJlZml4DQo+IA0KPiBvayAwIG91dHB1dF9wcmVmaXggIzxwcmVm
+aXggc3RyaW5nPg0KPiANCj4gICAgPHByZWZpeCBjb250ZW50IGlzIGEgY29uc3RhbnQgc3RyaW5n
+Pg0KPiAgICBOb3RlOiB0aGVyZSBpcyBubyBzcGFjZSBiZXR3ZWVuICIjIiBhbmQgIjxwcmVmaXgg
+c3RyaW5nPiIuICBJZiB0aGVyZSBpcyBvbmUNCj4gICAgb3IgbW9yZSBzcGFjZXMgYWZ0ZXIgdGhl
+ICIjIiwgdGhlbiB0aGVyZSBhcmUgcGFydCBvZiB0aGUgPHByZWZpeCBzdHJpbmc+DQo+IA0KPiAg
+ICAjIyA8ZGlhZ25vc3RpYyBkYXRhPiBtdXN0IG5vdCBleGlzdCB1bmxlc3MgdGhlcmUgaXMgYSB3
+YXkgdG8gZGV0ZXJtaW5lIHRoZQ0KPiAgICAjIyBlbmQgb2YgPHByZWZpeCBzdHJpbmc+Lg0KPiAg
+ICAjIw0KPiAgICAjIyBBZGRpbmcgYSB3YXkgdG8gZGV0ZXJtaW5lIHRoZSBlbmQgb2YgPHByZWZp
+eCBzdHJpbmc+IGFkZHMgbXVjaCBjb21wbGV4aXR5DQo+ICAgICMjIHRvIHRoZSBjb25zdW1lcnMg
+b2Yga3RhcCBvdXRwdXQuICBGb3IgZXhhbXBsZSwgaWYgdGhlIGZvcm1hdCB3YXM6DQo+ICAgICMj
+DQo+ICAgICMjICAgb2sgMCBvdXRwdXRfcHJlZml4ICM8cHJlZml4IHN0cmluZz5bIzxkaWFnbm9z
+dGljIGRhdGE+XQ0KPiAgICAjIw0KPiAgICAjIyB0aGVuIGl0IGlzIG5vdCBwb3NzaWJsZSBmb3Ig
+PHByZWZpeCBzdHJpbmc+IHRvIGNvbnRhaW4gJyMnLCB1bmxlc3MNCj4gICAgIyMgYSBtZXRob2Qg
+dG8gZXNjYXBlICcjJyBpcyBwcm92aWRlZC4gIEUuRy46DQo+ICAgICMjDQo+ICAgICMjICAgb2sg
+MCBvdXRwdXRfcHJlZml4ICNYWFggdGVzdCByZXN1bHQgXCNcI1wjIzxkaWFnbm9zdGljIGRhdGE+
+DQo+ICAgICMjDQo+ICAgICMjIHdvdWxkIHJlc3VsdCBpbiA8cHJlZml4IHN0cmluZz4gdmFsdWUg
+b2YgJ1hYWCB0ZXN0IHJlc3VsdCAjIyMnDQo+ICAgICMjDQo+ICAgICMjIE15IHJlY29tZW5kYXRp
+b246IGRvIG5vdCBhbGxvdyA8ZGlhZ25vc3RpYyBkYXRhPiBpbiBvdXRwdXRfcHJlZml4IGZvcm1h
+dC4NCj4gDQo+ICAgIEFsbCBzdWJzZXF1ZW50IHRlc3QgbGluZXMgYXJlIHByZWZpeGVkIHdpdGgg
+dGhlIDxwcmVmaXggc3RyaW5nPi4NCj4gDQo+ICAgIEluZGVudGF0aW9uIGZvciAiTmVzdGVkIHRl
+c3RzIiBmb2xsb3dzIDxwcmVmaXggc3RyaW5nPi4gIFRoZSBpbmRlbnRhdGlvbg0KPiAgICBkb2Vz
+IE5PVCBwcmVjZWRlIDxwcmVmaXggc3RyaW5nPi4NCj4gDQo+ICAgICJEaWFnbm9zdGljIGxpbmVz
+IiBhcmUgcHJlZml4ZWQgd2l0aCB0aGUgPHByZWZpeCBzdHJpbmc+Lg0KPiANCj4gICAgIlVua25v
+d24gbGluZXMiIG1heSBvcHRpb25hbGx5IGJlIHByZWZpeGVkIHdpdGggdGhlIDxwcmVmaXggc3Ry
+aW5nPiwgYnV0DQo+ICAgIGFyZSBub3QgcmVxdWlyZWQgdG8gYmUgcHJlZml4ZWQgd2l0aCB0aGUg
+PHByZWZpeCBzdHJpbmc+LiAgSXQgaXMgYWxsb3dlZA0KPiAgICBmb3Igc29tZSAiVW5rbm93biBs
+aW5lcyIgdG8gbm90IGJlIHByZWZpeGVkIHdpdGggdGhlIDxwcmVmaXggc3RyaW5nPiwgZXZlbg0K
+PiAgICBpZiBvbmUgb3IgbW9yZSBvdGhlciAiVW5rbm93biBsaW5lcyIgYXJlIHByZWZpeGVkIHdp
+dGggdGhlIDxwcmVmaXggc3RyaW5nPi4NCj4gDQo+ICAgICMjIyMgRG9lcyBwcmVmaXhpbmcgYmVn
+aW4gaW1tZWRpYXRlbHkgKGV2ZW4gZm9yIGEgc3Vic2VxdWVudCAiQ29uZmlndXJhdGlvbg0KPiAg
+ICAjIyMjIGluZm8gbGluZSIgb3IgZG9lcyBpdCBiZWdpbiB3aXRoIHRoZSB0ZXN0IDEgIlRlc3Qg
+Y2FzZSByZXN1bHQgbGluZSINCj4gICAgIyMjIyBsaW5lPw0KPiAgICAjIyMjDQo+ICAgICMjIyMg
+ICAgVGhpcyBxdWVzdGlvbiBtaWdodCBiZSBzaW1wbGlmaWVkIGlmIHRoZSBvdXRwdXRfcHJlZml4
+IGxpbmUgaXMNCj4gICAgIyMjIyAgICByZXF1aXJlZCB0byBiZSB0aGUgbGFzdCAiQ29uZmlndXJh
+dGlvbiBpbmZvIGxpbmUiLiAgKE9yIG1heWJlIGV2ZW4gaWYNCj4gICAgIyMjIyAgICByZXF1aXJl
+ZCB0byBiZSB0aGUgZmlyc3QgIkNvbmZpZ3VyYXRpb24gaW5mbyBsaW5lIi4NCj4gDQo+IA0KPiA9
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PQ0KPiAjIyMjIGRpc2N1c3Npb24gbm90ZXM6DQo+IA0KPiBQ
+Uk86DQo+ICAgIFRlc3Qgb3V0cHV0IHByb2Nlc3NpbmcgcHJvZ3JhbXMgY2FuIGRldGVjdCB0aGUg
+dmFsdWUgb2YgPHByZWZpeCBzdHJpbmc+DQo+ICAgIG1vcmUgZGV0ZXJtaW5pc3RpY2FsbHkgdGhh
+biBBbHRlcm5hdGl2ZSAxLg0KPiANCj4gQ09OOg0KPiAgICBNb3JlIGNvbXBsZXggdGhhbiBBbHRl
+cm5hdGl2ZSAxLiAgKEJ1dCBhbHRlcm5hdGl2ZSAyYiBpcyBsZXNzIGNvbXBsZXggdGhhbg0KPiAg
+ICBBbHRlcm5hdGl2ZSAyLikNCj4gDQo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQoNCg==
