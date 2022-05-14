@@ -1,137 +1,117 @@
-From: "Bird, Tim" <Tim.Bird@sony.com>
-Subject: Re: [RFC] KTAP spec v2: prefix to KTAP data
-Date: Fri, 13 May 2022 22:19:32 +0000
-Message-ID: 
- <BYAPR13MB2503FA8B94998018D64804C6FDCA9@BYAPR13MB2503.namprd13.prod.outlook.com>
-References: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
- <1c89133e-7bd2-862a-bd57-7fefdffb77ae@gmail.com>
-In-Reply-To: <1c89133e-7bd2-862a-bd57-7fefdffb77ae@gmail.com>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+References: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
+ <5ca35c47-6145-4ec1-6c05-3c46f436cb4d@gmail.com> <CAGS_qxpE9qGsS1LqaobVGFKFgV6TwvwNLR4e9PG5zsfPACSf_Q@mail.gmail.com>
+ <5b2783a2-76bf-ce6f-89b1-d0fe05b80b82@gmail.com>
+In-Reply-To: <5b2783a2-76bf-ce6f-89b1-d0fe05b80b82@gmail.com>
+From: David Gow <davidgow@google.com>
+Date: Sat, 14 May 2022 16:26:13 +0800
+Message-ID: <CABVgOS=XcaheGrJ+n2DPUuE=MrJwDn5UWYcdQmfhZfHx2MDazg@mail.gmail.com>
+Subject: Re: [RFC] KTAP spec v2: prefix to KTAP data
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Frank Rowand <frowand.list@gmail.com>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, Brendan Higgins <brendanhiggins@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, "rmr167@gmail.com" <rmr167@gmail.com>, "guillaume.tucker@collabora.com" <guillaume.tucker@collabora.com>, "dlatypov@google.com" <dlatypov@google.com>, "kernelci@groups.io" <kernelci@groups.io>, "kunit-dev@googlegroups.com" <kunit-dev@googlegroups.com>, "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Frank Rowand <frowand.list@gmail.com>
+Cc: Daniel Latypov <dlatypov@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Jonathan Corbet <corbet@lwn.net>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRnJhbmsgUm93YW5kIDxm
-cm93YW5kLmxpc3RAZ21haWwuY29tPg0KPiANCj4gT24gNS8xMi8yMiAwMDo1OSwgRnJhbmsgUm93
-YW5kIHdyb3RlOg0KPiA+IEluIHRoZSBtaWRkbGUgb2YgdGhlICJSRkMgLSBrZXJuZWwgdGVzdCBy
-ZXN1bHQgc3BlY2lmaWNhdGlvbiAoS1RBUCkiIHRocmVhZCwNCj4gPiBzdGFydGVkIGluIEF1Z3Vz
-dCAyMDIxLCBUaW0gQmlyZCBtYWRlIGEgc3VnZ2VzdGlvbiB0byBhbGxvdyBhIHByZWZpeCB0byB0
-aGUNCj4gPiBLVEFQIGRhdGEgZm9ybWF0Og0KPiA+DQo+ID4+IEp1c3QgYXMgYSBzaWRlIG5vdGUs
-IGluIHNvbWUgRnVlZ28gdGVzdHMsIGl0IHdhcyB2ZXJ5IHVzZWZ1bCB0byBpbmNsdWRlIGFuIGlk
-ZW50aWZpZXINCj4gPj4gaW4gdGhldGhlIHByZWZpeCBuZXN0ZWQgdGVzdHMuICBUaGUgb3V0cHV0
-IGxvb2tlZCBsaWtlIHRoaXM6DQo+ID4+DQo+ID4+IFRBUCB2ZXJzaW9uIDEzDQo+ID4+IDEuLjIN
-Cj4gPj4gW2JhdGNoX2lkIDRdIFRBUCB2ZXJzaW9uIDEzDQo+ID4+IFtiYXRjaF9pZCA0XSAxLi4y
-DQo+ID4+IFtiYXRjaF9pZCA0XSBvayAxIC0gY3ljbGljdGVzdCB3aXRoIDEwMDAgY3ljbGVzDQo+
-ID4+IFtiYXRjaF9pZCA0XSAjIHByb2JsZW0gc2V0dGluZyBDTE9DS19SRUFMVElNRQ0KPiA+PiBb
-YmF0Y2hfaWQgNF0gbm90IG9rIDIgLSBjeWNsaWN0ZXN0IHdpdGggQ0xPQ0tfUkVBTFRJTUUNCj4g
-Pj4gbm90IG9rIDEgLSBjaGVjayByZWFsdGltZQ0KPiA+PiBbYmF0Y2hfaWQgNF0gVEFQIHZlcnNp
-b24gMTMNCj4gPj4gW2JhdGNoX2lkIDRdIDEuLjENCj4gPj4gW2JhdGNoX2lkIDRdIG9rIDEgLSBJ
-T1pvbmUgcmVhZC93cml0ZSA0ayBibG9ja3MNCj4gPj4gb2sgMiAtIGNoZWNrIEkvTyBwZXJmb3Jt
-YW5jZQ0KPiA+Pg0KPiA+PiBDYW4gSSBwcm9wb3NlIHRoYXQgdGhlIHByZWZpeCBub3QgYmUgZml4
-ZWQgYnkgdGhlIHNwZWMsIGJ1dCB0aGF0IHRoZSBzcGVjIGluZGljYXRlcyB0aGF0DQo+ID4+IHdo
-YXRldmVyIHRoZSBwcmVmaXggaXMgb24gdGhlIFRBUCB2ZXJzaW9uIGxpbmUsIHRoYXQgcHJlZml4
-IG11c3QgYmUgdXNlZCB3aXRoIHRoZSBvdXRwdXQgZm9yDQo+ID4+IGFsbCBsaW5lcyBmcm9tIHRo
-ZSB0ZXN0ICh3aXRoIHRoZSBleGNlcHRpb24gb2YgdW5rbm93biBsaW5lcyk/DQo+ID4NCj4gPiBU
-aGUgdGhyZWFkIHdhcyBkaXNjdXNzaW5nIG1hbnkgb3RoZXIgaXRlbXMsIGJ1dCB0aGlzIGlzIHRo
-ZSBvbmUgdGhhdCBJIHdhbnQNCj4gPiB0byBmb2N1cyBvbiBpbiB0aGlzIG5ldyBSRkMgdGhyZWFk
-Lg0KPiA+DQo+ID4gVGltJ3Mgb3JpZ2luYWwgZW1haWwgd2FzOg0KPiA+DQo+ID4gICAgaHR0cHM6
-Ly9sb3JlLmtlcm5lbC5vcmcvci9CWUFQUjEzTUIyNTAzQTRCNzkwNzREOEVENTU3OTM0NURGRENC
-OUBCWUFQUjEzTUIyNTAzLm5hbXByZDEzLnByb2Qub3V0bG9vay5jb20NCj4gPg0KPiA+IFRoZXJl
-IHdhcyBvbmUgcmVwbHkgdG8gdGhpcyB0aGF0IGNvbW1lbnRlZCBvbiBUaW0ncyBzdWdnZXN0aW9u
-IChhbmQgYWxzbyBtYW55DQo+ID4gb3RoZXIgaXRlbXMgaW4gdGhlIHRocmVhZCkgYXQ6DQo+ID4N
-Cj4gPiAgICBodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMjEwODMwMTIyNi44MDBGM0Q2RDRA
-a2Vlc2Nvb2sNCj4gPg0KPiA+PiBPaCwgaW50ZXJlc3RpbmcuIFRoaXMgd291bGQgYWxzbyBhbGxv
-dyBwYXJhbGxlbCAodW5pcXVlKSB0ZXN0IGV4ZWN1dGlvbg0KPiA+PiB0byBiZSBwYXJzYWJsZS4g
-VGhhdCBzb3VuZHMgd29ya2FibGUuIChBZ2FpbiwgdGhpcyBuZWVkcyBMQVZBIHBhdGNoaW5nDQo+
-ID4+IGFnYWluLi4uKQ0KPiA+DQo+ID4gSSBmb3VuZCBUaW0ncyBvcmlnaW5hbCBzdWdnZXN0aW9u
-IHRvIGJlIHVzZWZ1bCwgc28gSSBoYXZlIGNvbWUgdXAgd2l0aA0KPiA+IHR3byBwb3NzaWJsZSB3
-YXlzIHRvIG1vZGlmeSB0aGUgS1RBUCBzcGVjaWZpY2F0aW9uIHRvIGltcGxlbWVudCB3aGF0IFRp
-bQ0KPiA+IHdhcyB0aGlua2luZyBhYm91dC4gIEkgd291bGQgbm90IGJlIHN1cnByaXNlZCBpZiBz
-b21lb25lIGVsc2UgaGFzIGEgYmV0dGVyDQo+ID4gc3VnZ2VzdGlvbiB0aGFuIG1pbmUsIGJ1dCBJ
-IHdpbGwgcmVwbHkgdG8gdGhpcyBlbWFpbCB3aXRoIG15IHR3byBhbHRlcm5hdGl2ZXMNCj4gPiB0
-byBzdGFydCBhIGRpc2N1c3Npb24uICBNeSBhbHRlcm5hdGl2ZXMgYXJlIG5vdCBpbiB0aGUgZm9y
-bSBvZiBwYXRjaGVzLCBidXQNCj4gPiBpZiBkaXNjdXNzaW9uIGxlYWRzIHRvIGEgZ29vZCByZXN1
-bHQgdGhlbiBJIHdpbGwgY3JlYXRlIGEgcGF0Y2ggZm9yIHJldmlldy4NCj4gPg0KPiA+IC1GcmFu
-aw0KPiANCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gQWx0ZXJuYXRpdmUgMg0KPiAgICAt
-IEFkZCBhbiBvcHRpb25hbCA8cHJlZml4IHN0cmluZz4gdG8gdGVzdCBvdXRwdXQuDQo+ICAgIC0g
-QWRkICJDb25maWd1cmF0aW9uIGluZm8gbGluZXMiLCB3aGljaCBhcmUgdXNlZCB0byBwcm92aWRl
-IGluZm9ybWF0aW9uDQo+ICAgICAgYWJvdXQgdGhlIEtUQVAgZm9ybWF0IHRvIHByb2dyYW1zIHRo
-YXQgaW50ZXJwcmV0IHRoZSBLVEFQIGRhdGEuICBUaGUNCj4gICAgICBvbmx5IHR5cGUgb2YgIkNv
-bmZpZ3VyYXRpb24gaW5mbyBsaW5lcyIgcHJvcG9zZWQgcHJvdmlkZXMgdGhlIHZhbHVlDQo+ICAg
-ICAgb2YgPHByZWZpeCBzdHJpbmc+IGZvciBwcm9ncmFtcyB0aGF0IHByb2Nlc3MgdGhlIEtUQVAg
-b3V0cHV0Lg0KPiAgICAtIEZ1cnRoZXIgdHlwZXMgb2YgIkNvbmZpZ3VyYXRpb24gaW5mbyBsaW5l
-cyIgY291bGQgYmUgYWRkZWQuDQo+IA0KPiBBbHRlcm5hdGl2ZSAyYg0KPiAgICAtIEFkZCBhbiBv
-cHRpb25hbCA8cHJlZml4IHN0cmluZz4gdG8gdGVzdCBvdXRwdXQuDQo+ICAgIC0gQWRkIGEgPHBy
-ZWZpeCBzdHJpbmc+IGRlZmluaXRpb24gbGluZSBvZiB0aGUgZm9ybToNCj4gICAgICAgICBvayAw
-IDxwcmVmaXggc3RyaW5nPg0KPiAgICAgIFRoaXMgbGluZSBpcyBlc3NlbnRpYWxseSBhIHBob255
-ICJUZXN0IGNhc2UgcmVzdWx0IGxpbmVzIiBmb3IgdGVzdCAwLg0KPiANCj4gPT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT0NCg0KRm9yIHdoYXQgaXQncyB3b3J0aCwgSSBtdWNoIHByZWZlciBBbHRlcm5h
-dGl2ZSAxLCB1c2luZyB0aGUgcHJlZml4IG9uIHRoZSBLVEFQIGxpbmUgYXMNCnRoZSBwcmVmaXgg
-Zm9yIHRoZSBsaW5lcyBhc3NvY2lhdGVkIHdpdGggdGhhdCB0ZXN0J3Mgb3V0cHV0LiAgSSB0aGlu
-ayBpdCdzIG11Y2ggc2ltcGxlci4NCg0KVGhhbmtzIGZvciBmb2xsb3dpbmcgdXAgb24gdGhpcy4N
-CiAtLSBUaW0NCg0KDQoNCg0KPiAjIyBDb25maWd1cmF0aW9uIGluZm8gbGluZXMNCj4gDQo+IE9j
-Y3VyIGluIHplcm8gb3IgbW9yZSB0ZXN0IGNhc2UgcmVzdWx0IGxpbmVzLCB3aGVyZSA8bnVtYmVy
-PiBpcyAwICh6ZXJvKSwNCj4gZm9sbG93aW5nIHRoZSAiUGxhbiBsaW5lIiwgYmVmb3JlIGFueSBv
-dGhlciAiVGVzdCBjYXNlIHJlc3VsdCIgbGluZS4NCj4gDQo+ICAgIElmIHRoZXJlIGlzIG5vICJQ
-bGFuIGxpbmUiIGF0IHRoZSBiZWdpbm5pbmcgb2YgdGhlIHRlc3QsIHRoZW4gdGhlDQo+ICAgICJD
-b25maWd1cmF0aW9uIGluZm8gbGluZXMiIGZvbGxvdyB0aGUgIlZlcnNpb24gbGluZSIsIGJlZm9y
-ZSBhbnkNCj4gICAgb3RoZXIgIlRlc3QgY2FzZSByZXN1bHQiIGxpbmUuDQo+IA0KPiBmb3JtYXQ6
-DQo+IA0KPiAgICBvayAwIDxkZXNjcmlwdGlvbj4gIyBbPGRpcmVjdGl2ZT5dIFs8ZGlhZ25vc3Rp
-YyBkYXRhPl1dDQo+IA0KPiA8cmVzdWx0PiBtdXN0IGJlICJvayIuDQo+IA0KPiBUaGUgdHlwZSBv
-ZiBlYWNoICJDb25maWd1cmF0aW9uIGluZm8gbGluZSIgaXMgZGVmaW5lZCBieSB0aGUgdmFsdWUN
-Cj4gb2YgPGRlc2NyaXB0aW9uPi4NCj4gDQo+IEVhY2ggdmFsdWUgb2YgPGRlc2NyaXB0aW9uPiB1
-c2VkIGZvciBhICJDb25maWd1cmF0aW9uIGluZm8gbGluZSIgbXVzdCBiZQ0KPiBsaXN0ZWQgaW4g
-dGhlIHNwZWNpZmljYXRpb24uDQo+IA0KPiBXaGV0aGVyICMgPGRpcmVjdGl2ZT4gaXMgb3B0aW9u
-YWwgb3IgcmVxdWlyZWQgaXMgZGVmaW5lZCBmb3IgZWFjaCB0eXBlIG9mDQo+ICJDb25maWd1cmF0
-aW9uIGluZm8gbGluZSIuDQo+IA0KPiAjIyMjIFNob3VsZCAnWzxkaWFnbm9zdGljIGRhdGE+XScg
-YmUgaW5jbHVkZWQgaW4gdGhlIGZvcm1hdD8NCj4gDQo+IA0KPiAtIC0gLSAtIC0gLSAtIC0gLSAt
-IC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0gLSAtIC0g
-LSAtDQo+ICMgW291dHB1dF0gcHJlZml4DQo+IA0KPiBvayAwIG91dHB1dF9wcmVmaXggIzxwcmVm
-aXggc3RyaW5nPg0KPiANCj4gICAgPHByZWZpeCBjb250ZW50IGlzIGEgY29uc3RhbnQgc3RyaW5n
-Pg0KPiAgICBOb3RlOiB0aGVyZSBpcyBubyBzcGFjZSBiZXR3ZWVuICIjIiBhbmQgIjxwcmVmaXgg
-c3RyaW5nPiIuICBJZiB0aGVyZSBpcyBvbmUNCj4gICAgb3IgbW9yZSBzcGFjZXMgYWZ0ZXIgdGhl
-ICIjIiwgdGhlbiB0aGVyZSBhcmUgcGFydCBvZiB0aGUgPHByZWZpeCBzdHJpbmc+DQo+IA0KPiAg
-ICAjIyA8ZGlhZ25vc3RpYyBkYXRhPiBtdXN0IG5vdCBleGlzdCB1bmxlc3MgdGhlcmUgaXMgYSB3
-YXkgdG8gZGV0ZXJtaW5lIHRoZQ0KPiAgICAjIyBlbmQgb2YgPHByZWZpeCBzdHJpbmc+Lg0KPiAg
-ICAjIw0KPiAgICAjIyBBZGRpbmcgYSB3YXkgdG8gZGV0ZXJtaW5lIHRoZSBlbmQgb2YgPHByZWZp
-eCBzdHJpbmc+IGFkZHMgbXVjaCBjb21wbGV4aXR5DQo+ICAgICMjIHRvIHRoZSBjb25zdW1lcnMg
-b2Yga3RhcCBvdXRwdXQuICBGb3IgZXhhbXBsZSwgaWYgdGhlIGZvcm1hdCB3YXM6DQo+ICAgICMj
-DQo+ICAgICMjICAgb2sgMCBvdXRwdXRfcHJlZml4ICM8cHJlZml4IHN0cmluZz5bIzxkaWFnbm9z
-dGljIGRhdGE+XQ0KPiAgICAjIw0KPiAgICAjIyB0aGVuIGl0IGlzIG5vdCBwb3NzaWJsZSBmb3Ig
-PHByZWZpeCBzdHJpbmc+IHRvIGNvbnRhaW4gJyMnLCB1bmxlc3MNCj4gICAgIyMgYSBtZXRob2Qg
-dG8gZXNjYXBlICcjJyBpcyBwcm92aWRlZC4gIEUuRy46DQo+ICAgICMjDQo+ICAgICMjICAgb2sg
-MCBvdXRwdXRfcHJlZml4ICNYWFggdGVzdCByZXN1bHQgXCNcI1wjIzxkaWFnbm9zdGljIGRhdGE+
-DQo+ICAgICMjDQo+ICAgICMjIHdvdWxkIHJlc3VsdCBpbiA8cHJlZml4IHN0cmluZz4gdmFsdWUg
-b2YgJ1hYWCB0ZXN0IHJlc3VsdCAjIyMnDQo+ICAgICMjDQo+ICAgICMjIE15IHJlY29tZW5kYXRp
-b246IGRvIG5vdCBhbGxvdyA8ZGlhZ25vc3RpYyBkYXRhPiBpbiBvdXRwdXRfcHJlZml4IGZvcm1h
-dC4NCj4gDQo+ICAgIEFsbCBzdWJzZXF1ZW50IHRlc3QgbGluZXMgYXJlIHByZWZpeGVkIHdpdGgg
-dGhlIDxwcmVmaXggc3RyaW5nPi4NCj4gDQo+ICAgIEluZGVudGF0aW9uIGZvciAiTmVzdGVkIHRl
-c3RzIiBmb2xsb3dzIDxwcmVmaXggc3RyaW5nPi4gIFRoZSBpbmRlbnRhdGlvbg0KPiAgICBkb2Vz
-IE5PVCBwcmVjZWRlIDxwcmVmaXggc3RyaW5nPi4NCj4gDQo+ICAgICJEaWFnbm9zdGljIGxpbmVz
-IiBhcmUgcHJlZml4ZWQgd2l0aCB0aGUgPHByZWZpeCBzdHJpbmc+Lg0KPiANCj4gICAgIlVua25v
-d24gbGluZXMiIG1heSBvcHRpb25hbGx5IGJlIHByZWZpeGVkIHdpdGggdGhlIDxwcmVmaXggc3Ry
-aW5nPiwgYnV0DQo+ICAgIGFyZSBub3QgcmVxdWlyZWQgdG8gYmUgcHJlZml4ZWQgd2l0aCB0aGUg
-PHByZWZpeCBzdHJpbmc+LiAgSXQgaXMgYWxsb3dlZA0KPiAgICBmb3Igc29tZSAiVW5rbm93biBs
-aW5lcyIgdG8gbm90IGJlIHByZWZpeGVkIHdpdGggdGhlIDxwcmVmaXggc3RyaW5nPiwgZXZlbg0K
-PiAgICBpZiBvbmUgb3IgbW9yZSBvdGhlciAiVW5rbm93biBsaW5lcyIgYXJlIHByZWZpeGVkIHdp
-dGggdGhlIDxwcmVmaXggc3RyaW5nPi4NCj4gDQo+ICAgICMjIyMgRG9lcyBwcmVmaXhpbmcgYmVn
-aW4gaW1tZWRpYXRlbHkgKGV2ZW4gZm9yIGEgc3Vic2VxdWVudCAiQ29uZmlndXJhdGlvbg0KPiAg
-ICAjIyMjIGluZm8gbGluZSIgb3IgZG9lcyBpdCBiZWdpbiB3aXRoIHRoZSB0ZXN0IDEgIlRlc3Qg
-Y2FzZSByZXN1bHQgbGluZSINCj4gICAgIyMjIyBsaW5lPw0KPiAgICAjIyMjDQo+ICAgICMjIyMg
-ICAgVGhpcyBxdWVzdGlvbiBtaWdodCBiZSBzaW1wbGlmaWVkIGlmIHRoZSBvdXRwdXRfcHJlZml4
-IGxpbmUgaXMNCj4gICAgIyMjIyAgICByZXF1aXJlZCB0byBiZSB0aGUgbGFzdCAiQ29uZmlndXJh
-dGlvbiBpbmZvIGxpbmUiLiAgKE9yIG1heWJlIGV2ZW4gaWYNCj4gICAgIyMjIyAgICByZXF1aXJl
-ZCB0byBiZSB0aGUgZmlyc3QgIkNvbmZpZ3VyYXRpb24gaW5mbyBsaW5lIi4NCj4gDQo+IA0KPiA9
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PQ0KPiAjIyMjIGRpc2N1c3Npb24gbm90ZXM6DQo+IA0KPiBQ
-Uk86DQo+ICAgIFRlc3Qgb3V0cHV0IHByb2Nlc3NpbmcgcHJvZ3JhbXMgY2FuIGRldGVjdCB0aGUg
-dmFsdWUgb2YgPHByZWZpeCBzdHJpbmc+DQo+ICAgIG1vcmUgZGV0ZXJtaW5pc3RpY2FsbHkgdGhh
-biBBbHRlcm5hdGl2ZSAxLg0KPiANCj4gQ09OOg0KPiAgICBNb3JlIGNvbXBsZXggdGhhbiBBbHRl
-cm5hdGl2ZSAxLiAgKEJ1dCBhbHRlcm5hdGl2ZSAyYiBpcyBsZXNzIGNvbXBsZXggdGhhbg0KPiAg
-ICBBbHRlcm5hdGl2ZSAyLikNCj4gDQo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQoNCg==
+On Fri, May 13, 2022 at 1:26 AM Frank Rowand <frowand.list@gmail.com> wrote:
+>
+> On 5/12/22 10:25, Daniel Latypov wrote:
+> > On Wed, May 11, 2022 at 11:01 PM Frank Rowand <frowand.list@gmail.com> wrote:
+> >> ================================================================================
+> >> #### discussion notes:
+> >>
+> >> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+> >> PRO: minimally invasive to specification.
+> >>
+> >> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+> >> CON:
+> >>
+> >> KTAP does not include any mechanism to describe the value of <prefix string>
+> >> to test harnesses and test output processing programs.  The test output
+> >> processing programs must infer the value of <prefix string> by detecting
+> >> the <prefix string> in the "Version lines".
+> >>
+> >> The detection of a "Version lines" might be a match of the regex:
+> >>
+> >>    "^.*KTAP version 2$"
+> >>
+> >> This risks falsely detecting a "Version lines", but the risk is small???
+> >
+> > Agree this is a risk and also think it's probably small, but it's hard to say.
+> > I think the $ anchoring the regex is probably safe enough.
+> >
+> > As noted earlier, this tracks with what kunit.py already does.
+> > That was necessitated by dynamic prefixes such as timestamps, etc.f
+>
+> That is a good observation.  I nearly always have the prefix timestamp
+> on my console output, and thus remove the timestamp with a regex when
+> processing the data.
+>
+
+Yeah: the use of a prefix length for timestamps (and similar 'dynamic
+prefixes') works really well as a way to automatically find KTAP
+output in the kernel log.
+It's definitely less useful as a way of disambiguating several
+(potentially interleaved) KTAP streams, though.
+
+Personally, my conception of KTAP is that the prefix is not a part of
+the format, but a way (possibly one we should recommend in the spec)
+to isolate KTAP output from (e.g.) the kernel log.
+So, in theory, the processing pipeline for log -> result is:
+[dmesg] ---<remove prefix>--> [KTAP] ---<parse>---> [results]
+
+I wouldn't object to having the prefix be a part of KTAP if it were
+particularly useful to anyone, though, and definitely agree we should
+note ways to do it.
+
+Either way, we do end up with two (slightly conflicting) uses of prefixes:
+a) To isolate tests from a log.
+b) To allow multiple concurrent tests.
+
+For a), Alternative 1 seems obviously correct to me, since whatever
+module is being used might not know what random prefixes are being
+added to its log lines.
+For b), either would work, but we do potentially get conflicts with a)
+if we're trying to do both. So maybe alternative 2 makes sense for
+that.
+
+>
+> > So I think this is probably a fine risk to take.
+> >
+> > I imagine we could add constraints of prefix string, e.g. must have []
+> > around it, etc. if we want to try and minimize this risk.
+> > But I don't know if it's necessarily worth it, given what we know right now.
+> >
+> > Along those lines, I think I like this approach (Alternative 1) more
+> > than Alternative 2/2b.
+
+I agree, though note that we might need both if we want two separate
+types of prefix as mentioned above.
+
+> > I'm not sure we need a structured way to specify metadata in KTAP yet?
+> > The prefix seems like a reasonable candidate, but do others have ideas
+> > of other bits of metadata we'd want to be able to declare?
+> >
+
+That's the important takeaway from Alternative 2: some generic way of
+having metadata could be quite handy. (Of them, Alternative 2b feels a
+little more like a hack than I'd prefer, albeit a clever one. I'd
+prefer a cleaner "configuration info line" personally, though if
+reusing the test results for test 0 makes parsing significantly easier
+for others, it may nevertheless be worth doing.)
+
+As for other pieces of metadata, there are all sorts of useful
+information about the test which could be useful to store alongside
+the results (what tool generated it, kernel version, etc), though
+those might be more useful when saving results elsewhere than embedded
+into the kernel output.
+
+Equally, if we extended these configuration/info lines to individual
+test/subtests, things like test size, originating module, etc could
+potentially be stored. Suite/test init functions could potentially add
+useful metadata, too (e.g., number of cores/threads for kcsan, etc).
+
+None of those are, I think, quite compelling enough individually to
+add a config system, though. If we already had one for the prefix, and
+other things which are necessary for parsing, maybe...
+
+-- David
