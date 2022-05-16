@@ -1,5 +1,4 @@
-Message-ID: <a308b5c3-b339-216a-b338-935b45508697@oracle.com>
-Date: Mon, 16 May 2022 08:42:00 -0400
+Return-Path: <skhan@linuxfoundation.org>
 Subject: Re: [Automated-testing] syzkaller reproducers
 References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
  <20191014085414.GB31760@rei.lan>
@@ -17,20 +16,21 @@ References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
  <1cecad9d-36cf-4703-3f2e-6b2454761f0f@oracle.com>
  <CACT4Y+b8MS65P1xou+-QuDCXOWb2dvsK0p7xzY3-TrSxV94onw@mail.gmail.com>
  <CACT4Y+av8=XtWwhYJ2cRJUUq+kp5dXNBsb2mdXDF4o320owGJw@mail.gmail.com>
-From: George Kennedy <george.kennedy@oracle.com>
-In-Reply-To: <CACT4Y+av8=XtWwhYJ2cRJUUq+kp5dXNBsb2mdXDF4o320owGJw@mail.gmail.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <304dfaf0-4b57-5cf4-be69-460f8ec08a2c@linuxfoundation.org>
+Date: Mon, 16 May 2022 10:51:47 -0600
 MIME-Version: 1.0
+In-Reply-To: <CACT4Y+av8=XtWwhYJ2cRJUUq+kp5dXNBsb2mdXDF4o320owGJw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: kernelci@groups.io, oswalpalash@gmail.com, syzkaller <syzkaller@googlegroups.com>, Shuah Khan <skhan@linuxfoundation.org>, automated-testing@yoctoproject.org, Vegard Nossum <vegard.nossum@oracle.com>
+To: Dmitry Vyukov <dvyukov@google.com>, George Kennedy <george.kennedy@oracle.com>
+Cc: kernelci@groups.io, oswalpalash@gmail.com, syzkaller <syzkaller@googlegroups.com>, automated-testing@yoctoproject.org, Vegard Nossum <vegard.nossum@oracle.com>, Shuah Khan <skhan@linuxfoundation.org>
 
-
-
-On 5/16/2022 3:41 AM, Dmitry Vyukov wrote:
+On 5/16/22 1:41 AM, Dmitry Vyukov wrote:
 > On Fri, 13 May 2022 at 14:16, Dmitry Vyukov <dvyukov@google.com> wrote:
+>>
 >> On Fri, 13 May 2022 at 13:35, George Kennedy <george.kennedy@oracle.com> wrote:
 >>>>> + Shuah, George and mailing lists
 >>>>>
@@ -48,6 +48,7 @@ On 5/16/2022 3:41 AM, Dmitry Vyukov wrote:
 >>>>>> 3. Is it valuable to record the crash report information for the original fuzzer crash when the c reproducer is filed to add context to it; in case developers want to troubleshoot? This could save valuable debugging time.
 >>>>>>
 >>>>>> Happy to contribute on this change to the upstream fuzzing system.
+>>>>
 >>>> More automation is definitely welcome.
 >>>> I am not sure how widely used is the current base of reproducers. But
 >>>> George keeps asking for updates and I keep failing at doing it in a
@@ -65,6 +66,7 @@ On 5/16/2022 3:41 AM, Dmitry Vyukov wrote:
 >>>
 >>> Thank you,
 >>> George
+>>>>
 >>>> It would be easiest for the syzbot app to upload reproducers to a GCS
 >>>> bucket. But I am not sure what's a good format for this. Everything I
 >>>> can think of is somewhat clumsy. It could upload weekly archives, but
@@ -78,6 +80,7 @@ On 5/16/2022 3:41 AM, Dmitry Vyukov wrote:
 >>>> update meta-information. The chances that we will come up with the
 >>>> ultimately right format from day 1 are low. But that may complicate
 >>>> the implementation.
+>>
 >> The most feasible for syzbot automation seems to be to push to a
 >> public GCS bucket and then users will need to do "gsutil rsync" to
 >> download updates.
@@ -94,10 +97,13 @@ On 5/16/2022 3:41 AM, Dmitry Vyukov wrote:
 >> the GCS bucket and each repro file contains just some bug ID. Then the
 >> bug ID can be used to fetch any additional dynamically changing info
 >> via json API.
->
+> 
+> 
 > I've pushed a new drop of 898 reproducers:
 > https://github.com/dvyukov/syzkaller-repros/commit/026c8891a19e672bba71481be250080e1a302ed8
+> 
 
-Thank you,
-George
+Thank you. I will update the linux-arts repo with this drop
 
+thanks,
+-- Shuah
