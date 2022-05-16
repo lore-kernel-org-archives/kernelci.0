@@ -1,117 +1,94 @@
 MIME-Version: 1.0
-References: <bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com>
- <5ca35c47-6145-4ec1-6c05-3c46f436cb4d@gmail.com> <CAGS_qxpE9qGsS1LqaobVGFKFgV6TwvwNLR4e9PG5zsfPACSf_Q@mail.gmail.com>
- <5b2783a2-76bf-ce6f-89b1-d0fe05b80b82@gmail.com>
-In-Reply-To: <5b2783a2-76bf-ce6f-89b1-d0fe05b80b82@gmail.com>
-From: David Gow <davidgow@google.com>
-Date: Sat, 14 May 2022 16:26:13 +0800
-Message-ID: <CABVgOS=XcaheGrJ+n2DPUuE=MrJwDn5UWYcdQmfhZfHx2MDazg@mail.gmail.com>
-Subject: Re: [RFC] KTAP spec v2: prefix to KTAP data
+References: <CACT4Y+YjOxmOzzPt_xaYE44QNZfq9haNfbnVBrTnPXe7zuSEfA@mail.gmail.com>
+ <876a2abe-41ab-5819-4ae8-ad26186d0d1c@kernel.org> <226099bc-9763-3a73-e26a-b292f601494c@kernel.org>
+ <20191011180248.GA24089@rei.lan> <b715f3d7-547f-9a43-dc41-2e46ec3bfd51@kernel.org>
+ <20191014085414.GB31760@rei.lan> <CACT4Y+aKbgT=i8C5aZvp8ZV52PamGm=GdnR6kQecczLQOQSGqA@mail.gmail.com>
+ <62903a33-8ffc-56b6-de1a-539f10b5de2a@oracle.com> <86bde120-e5fe-4bb1-9b93-769a444500f9@oracle.com>
+ <e8b11b09-37ac-6ae2-0908-b803b4160f7c@oracle.com> <CACT4Y+bShy-3vO3ifNKVcGGNf3X9XA7zL-Ja9-T+gZv5=QNe4w@mail.gmail.com>
+ <8a4dbbb1-f8ba-00ba-41d2-d82a35fc0f81@oracle.com> <CACT4Y+aZ=rBZXdnrU0D-21QqSK0G3vqHU+iD=k0PhGgo3TL6rA@mail.gmail.com>
+ <fe365a78-0768-ea1f-25b8-6bd05a57c751@kernel.org> <cd301033-f152-4eeb-bce3-2d95f39a05fbn@googlegroups.com>
+ <CAGyP=7cb=5Hse-xJsyzdVKpOru_Uptjm529owLfVMqjv3VSMtw@mail.gmail.com>
+ <CACT4Y+aSy4LOmXfWxA2KrkLwwn-qWxVKxGsz_LxuF32CxaLYeQ@mail.gmail.com>
+ <1cecad9d-36cf-4703-3f2e-6b2454761f0f@oracle.com> <CACT4Y+b8MS65P1xou+-QuDCXOWb2dvsK0p7xzY3-TrSxV94onw@mail.gmail.com>
+In-Reply-To: <CACT4Y+b8MS65P1xou+-QuDCXOWb2dvsK0p7xzY3-TrSxV94onw@mail.gmail.com>
+From: "Dmitry Vyukov" <dvyukov@google.com>
+Date: Mon, 16 May 2022 09:41:44 +0200
+Message-ID: <CACT4Y+av8=XtWwhYJ2cRJUUq+kp5dXNBsb2mdXDF4o320owGJw@mail.gmail.com>
+Subject: Re: [Automated-testing] syzkaller reproducers
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: Daniel Latypov <dlatypov@google.com>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Jonathan Corbet <corbet@lwn.net>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: George Kennedy <george.kennedy@oracle.com>
+Cc: kernelci@groups.io, oswalpalash@gmail.com, syzkaller <syzkaller@googlegroups.com>, Shuah Khan <skhan@linuxfoundation.org>, automated-testing@yoctoproject.org, Vegard Nossum <vegard.nossum@oracle.com>
 
-On Fri, May 13, 2022 at 1:26 AM Frank Rowand <frowand.list@gmail.com> wrote:
+On Fri, 13 May 2022 at 14:16, Dmitry Vyukov <dvyukov@google.com> wrote:
 >
-> On 5/12/22 10:25, Daniel Latypov wrote:
-> > On Wed, May 11, 2022 at 11:01 PM Frank Rowand <frowand.list@gmail.com> wrote:
-> >> ================================================================================
-> >> #### discussion notes:
-> >>
-> >> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-> >> PRO: minimally invasive to specification.
-> >>
-> >> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-> >> CON:
-> >>
-> >> KTAP does not include any mechanism to describe the value of <prefix string>
-> >> to test harnesses and test output processing programs.  The test output
-> >> processing programs must infer the value of <prefix string> by detecting
-> >> the <prefix string> in the "Version lines".
-> >>
-> >> The detection of a "Version lines" might be a match of the regex:
-> >>
-> >>    "^.*KTAP version 2$"
-> >>
-> >> This risks falsely detecting a "Version lines", but the risk is small???
+> On Fri, 13 May 2022 at 13:35, George Kennedy <george.kennedy@oracle.com> wrote:
+> > >> + Shuah, George and mailing lists
+> > >>
+> > >> Google groups did not CC all of the members in the thread for my
+> > >> reply. It would be valuable to get everyone's feedback on this thread.
+> > >>
+> > >> On Sat, May 7, 2022 at 11:34 PM Palash <oswalpalash@gmail.com> wrote:
+> > >>> Hello all,
+> > >>>
+> > >>> Reviving this old thread. Do we think there's value in automatically publishing a C reproducer(if it exists) whenever syzkaller determines a reported bug is patched and fixed?
+> > >>> This allows us to track these reproducers more diligently and we only have reproducers for the bugs that have been patched.
+> > >>> If this is valuable, then we could think about answering these questions -
+> > >>> 1. Is there a particular way we want to format the reproducers? (Example : SKIP/OK/FAIL/TIMEOUT (if output is possible))
+> > >>> 2. Where do we want to submit the reproducers to be added to the testing project and what is the process we want to use?
+> > >>> 3. Is it valuable to record the crash report information for the original fuzzer crash when the c reproducer is filed to add context to it; in case developers want to troubleshoot? This could save valuable debugging time.
+> > >>>
+> > >>> Happy to contribute on this change to the upstream fuzzing system.
+> > >
+> > > More automation is definitely welcome.
+> > > I am not sure how widely used is the current base of reproducers. But
+> > > George keeps asking for updates and I keep failing at doing it in a
+> > > timely manner.
+> > We run the ~6000 reproducers as a regression test. Test takes ~4 hours.
 > >
-> > Agree this is a risk and also think it's probably small, but it's hard to say.
-> > I think the $ anchoring the regex is probably safe enough.
+> > Having the reproducer before there is a patch is valuable to us as we
+> > know whether or not our distro branches have the same failure.
 > >
-> > As noted earlier, this tracks with what kunit.py already does.
-> > That was necessitated by dynamic prefixes such as timestamps, etc.f
+> > As a way to reduce test time, some sort of repro classification would be
+> > helpful (i.e. open/closed/invalid).
+> >
+> > For crash troubleshooting info we try to match the crash string with
+> > syzbot's crash string.
+> >
+> > Thank you,
+> > George
+> > >
+> > > It would be easiest for the syzbot app to upload reproducers to a GCS
+> > > bucket. But I am not sure what's a good format for this. Everything I
+> > > can think of is somewhat clumsy. It could upload weekly archives, but
+> > > then there is an issue of discoverability of new archives (since GCS
+> > > is HTTP rather than FTP).
+> > >
+> > > Not sure if it's feasible to give it an auth token for a github repo
+> > > to push individual files as we do now.
+> > >
+> > > Re format. Bonus points if the system will be able to regenerate and
+> > > update meta-information. The chances that we will come up with the
+> > > ultimately right format from day 1 are low. But that may complicate
+> > > the implementation.
 >
-> That is a good observation.  I nearly always have the prefix timestamp
-> on my console output, and thus remove the timestamp with a regex when
-> processing the data.
+> The most feasible for syzbot automation seems to be to push to a
+> public GCS bucket and then users will need to do "gsutil rsync" to
+> download updates.
 >
-
-Yeah: the use of a prefix length for timestamps (and similar 'dynamic
-prefixes') works really well as a way to automatically find KTAP
-output in the kernel log.
-It's definitely less useful as a way of disambiguating several
-(potentially interleaved) KTAP streams, though.
-
-Personally, my conception of KTAP is that the prefix is not a part of
-the format, but a way (possibly one we should recommend in the spec)
-to isolate KTAP output from (e.g.) the kernel log.
-So, in theory, the processing pipeline for log -> result is:
-[dmesg] ---<remove prefix>--> [KTAP] ---<parse>---> [results]
-
-I wouldn't object to having the prefix be a part of KTAP if it were
-particularly useful to anyone, though, and definitely agree we should
-note ways to do it.
-
-Either way, we do end up with two (slightly conflicting) uses of prefixes:
-a) To isolate tests from a log.
-b) To allow multiple concurrent tests.
-
-For a), Alternative 1 seems obviously correct to me, since whatever
-module is being used might not know what random prefixes are being
-added to its log lines.
-For b), either would work, but we do potentially get conflicts with a)
-if we're trying to do both. So maybe alternative 2 makes sense for
-that.
-
+> Or another option is to expose a new json API to get reproducers list
+> and then to fetch individual reproducers. Though this will need some
+> custom tooling on the user side to fetch updates.
 >
-> > So I think this is probably a fine risk to take.
-> >
-> > I imagine we could add constraints of prefix string, e.g. must have []
-> > around it, etc. if we want to try and minimize this risk.
-> > But I don't know if it's necessarily worth it, given what we know right now.
-> >
-> > Along those lines, I think I like this approach (Alternative 1) more
-> > than Alternative 2/2b.
+> Re exporting status open/closed/invalid and e.g. fixing patch, that
+> would also be more natural to expose via the API since this
+> information changes dynamically.
+>
+> It's also possible to use both. Namely, reproducers are uploaded to
+> the GCS bucket and each repro file contains just some bug ID. Then the
+> bug ID can be used to fetch any additional dynamically changing info
+> via json API.
 
-I agree, though note that we might need both if we want two separate
-types of prefix as mentioned above.
 
-> > I'm not sure we need a structured way to specify metadata in KTAP yet?
-> > The prefix seems like a reasonable candidate, but do others have ideas
-> > of other bits of metadata we'd want to be able to declare?
-> >
-
-That's the important takeaway from Alternative 2: some generic way of
-having metadata could be quite handy. (Of them, Alternative 2b feels a
-little more like a hack than I'd prefer, albeit a clever one. I'd
-prefer a cleaner "configuration info line" personally, though if
-reusing the test results for test 0 makes parsing significantly easier
-for others, it may nevertheless be worth doing.)
-
-As for other pieces of metadata, there are all sorts of useful
-information about the test which could be useful to store alongside
-the results (what tool generated it, kernel version, etc), though
-those might be more useful when saving results elsewhere than embedded
-into the kernel output.
-
-Equally, if we extended these configuration/info lines to individual
-test/subtests, things like test size, originating module, etc could
-potentially be stored. Suite/test init functions could potentially add
-useful metadata, too (e.g., number of cores/threads for kcsan, etc).
-
-None of those are, I think, quite compelling enough individually to
-add a config system, though. If we already had one for the prefix, and
-other things which are necessary for parsing, maybe...
-
--- David
+I've pushed a new drop of 898 reproducers:
+https://github.com/dvyukov/syzkaller-repros/commit/026c8891a19e672bba71481be250080e1a302ed8
