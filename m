@@ -1,75 +1,33 @@
-Message-ID: <d4c131b3-7a40-f6fb-9d7d-424c849659fb@collabora.com>
-Date: Tue, 7 Jun 2022 17:59:07 +0500
+Return-Path: <spbnick@gmail.com>
+Message-ID: <8cdcae43-f16f-b286-8bb3-276597d493d5@gmail.com>
+Date: Tue, 7 Jun 2022 16:43:01 +0300
 MIME-Version: 1.0
-Subject: Re: [Bug Report] - kselftest build fails if output directory is first level sub-directory
-References: <c25d7ea7-4f72-4a2b-d8c3-d317e64fcbbb@collabora.com>
- <CAK7LNATL4nMmKgrjS8meavnpn=HisD30QxuPUKDqtWWgbGcSZw@mail.gmail.com>
- <19f72a58-b80e-f6a8-842f-a924c4b94eeb@collabora.com>
-From: "Usama" <usama.anjum@collabora.com>
-In-Reply-To: <19f72a58-b80e-f6a8-842f-a924c4b94eeb@collabora.com>
+Subject: Re: #KCIDB v9 release
+References: <a707847a-73a3-af9a-96d1-070cd294dbe8@redhat.com>
+ <CACT4Y+ZKPRZmUhKpSzfH4qQX7EQrN_Nf4038K47PGRd1YM=D8Q@mail.gmail.com>
+From: "Nikolai Kondrashov" <spbnick@gmail.com>
+In-Reply-To: <CACT4Y+ZKPRZmUhKpSzfH4qQX7EQrN_Nf4038K47PGRd1YM=D8Q@mail.gmail.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Shuah Khan <shuah@kernel.org>
-Cc: usama.anjum@collabora.com, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>, KERNEL SELFTEST FRAMEWORK <linux-kselftest@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, "kernelci@groups.io" <kernelci@groups.io>, Collabora Kernel ML <kernel@collabora.com>, Masahiro Yamada <masahiroy@kernel.org>
+To: kernelci@groups.io, dvyukov@google.com, Nikolai.Kondrashov@redhat.com
+Cc: Guillaume Tucker <guillaume.tucker@collabora.com>, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>, syzkaller <syzkaller@googlegroups.com>
 
-Hi Shuah,
+Hi Dmitri,
 
-Should we merge this?
+On 6/7/22 09:11, Dmitry Vyukov via groups.io wrote:
+> If we upload "log_excerpt" with crashes, does the dashboard allow
+> users to search for substrings in the "log_excerpt"?
+> Namely, if we upload whole kernel oops as "log_excerpt" (that would be
+> the intended use, right?), will it be possible to find all crashes
+> that contain a given function name?
 
-Thanks,
-Usama
+At the moment the dashboard doesn't allow that, but it shouldn't be too hard 
+to add support for such filtering. I think I could do that in a couple hours work.
 
-On 5/23/22 2:40 PM, Muhammad Usama Anjum wrote:
-> On 5/22/22 10:15 PM, Masahiro Yamada wrote:
->> On Sat, May 21, 2022 at 3:44 PM Muhammad Usama Anjum
->> <usama.anjum@collabora.com> wrote:
->>>
->>> Hello,
->>>
->>> kselftest can be built using the kernel's top most Makefile without
->>> using kselftest's Makefile directly. But there is bug in the top most
->>> Makefile. The build fails if the specified output directory is first
->>> level sub-directory. Here is a example to reproduce this bug:
->>>
->>> make kselftest-all O=build
->>>
->>> "The Make is working in a wrong directory, that is why the relative path
->>> does not work." Masahiro Yamada. Feel free to fix it if someone pin the bug.
->>>
->>> It should be noted that the build works in some other combinations:
->>> make kselftest-all (works)
->>> make kselftest-all O=/tmp (works)
->>> make kselftest-all O=build/build2 (works)
->>>
->>> My unsuccessful attempt to fix this bug can be found here:
->>> https://lore.kernel.org/lkml/20220223191016.1658728-1-usama.anjum@collabora.com/
->>>
->>> Thanks,
->>> Muhammad Usama Anjum
->>
->>
->> This problem starts from the bad design of the kselftest framework.
->> I did some research before. I think I can fix the root cause but
->> currently I do not have enough time to do it.
->>
->>
->> KBUILD_ABS_SRCTREE is a user-interface to request
->> Kbuild to use the absolute path.
->> If it is forced in the top Makefile, users have no way to
->> negate it.
->> It is true that using the absolute path is a quick work-around
->> because you do not need to care about the current working directory.
->>
->> If you insist on it,  just go ahead.  It is just two line changes.
->> Once the issue is fixed in a better way, your patch can be reverted easily.
-> Thank you for replying. Lets merge it Shuah?
-> 
->>
->>
->>
-> 
+So, please go ahead and send those excerpts, and I'll find some time to add 
+that filtering.
 
--- 
-Muhammad Usama Anjum
+Thanks!
+Nick
