@@ -1,72 +1,75 @@
-Message-ID: <28ee7ff8-5b21-9154-74e9-efd59da4a498@collabora.com>
-Date: Mon, 4 Apr 2022 20:44:41 +0100
+Message-ID: <d4c131b3-7a40-f6fb-9d7d-424c849659fb@collabora.com>
+Date: Tue, 7 Jun 2022 17:59:07 +0500
 MIME-Version: 1.0
-Subject: Re: next/master bisection: baseline.login on asus-C523NA-A20057-coral
-From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-References: <623c13ec.1c69fb81.8cbdb.5a7a@mx.google.com>
- <Yjyv03JsetIsTJxN@sirena.org.uk>
- <4e9fca2f-0af1-3684-6c97-4c35befd5019@redhat.com>
- <Yjzua8Wye/3DHBKx@sirena.org.uk>
- <f8e96f8a-c19c-6acd-2f54-688924f491e8@redhat.com>
- <28699579-8384-ff3b-5662-fb56d8ced766@collabora.com>
-In-Reply-To: <28699579-8384-ff3b-5662-fb56d8ced766@collabora.com>
+Subject: Re: [Bug Report] - kselftest build fails if output directory is first level sub-directory
+References: <c25d7ea7-4f72-4a2b-d8c3-d317e64fcbbb@collabora.com>
+ <CAK7LNATL4nMmKgrjS8meavnpn=HisD30QxuPUKDqtWWgbGcSZw@mail.gmail.com>
+ <19f72a58-b80e-f6a8-842f-a924c4b94eeb@collabora.com>
+From: "Usama" <usama.anjum@collabora.com>
+In-Reply-To: <19f72a58-b80e-f6a8-842f-a924c4b94eeb@collabora.com>
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Hans de Goede <hdegoede@redhat.com>, Mark Brown <broonie@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki" <rjw@rjwysocki.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-pci@vger.kernel.org, "kernelci@groups.io" <kernelci@groups.io>, "kernelci-results@groups.io" <kernelci-results@groups.io>
+To: Shuah Khan <shuah@kernel.org>
+Cc: usama.anjum@collabora.com, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>, KERNEL SELFTEST FRAMEWORK <linux-kselftest@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, "kernelci@groups.io" <kernelci@groups.io>, Collabora Kernel ML <kernel@collabora.com>, Masahiro Yamada <masahiroy@kernel.org>
 
-+kernelci
+Hi Shuah,
 
-On 29/03/2022 19:44, Guillaume Tucker wrote:
-> On 28/03/2022 13:54, Hans de Goede wrote:
->> Hi,
->>
->> On 3/24/22 23:19, Mark Brown wrote:
->>> On Thu, Mar 24, 2022 at 09:34:30PM +0100, Hans de Goede wrote:
->>>
->>>> Mark, if one of use writes a test patch, can you get that Asus machine to boot a
->>>> kernel build from next + the test patch ?
->>>
->>> I can't directly unfortunately as the board is in Collabora's lab but
->>> Guillaume (who's already CCed) ought to be able to, and I can generally
->>> prod and try to get that done.
->>
->> Ok, Guillaume, can you try a kernel with commit 5949965ec9340cfc0e65f7d8a576b660b26e2535
->> ("x86/PCI: Preserve host bridge windows completely covered by E820") + the 
->> attached patch added on top a try on the asus-C523NA-A20057-coral machine please
->> and see if that makes it boot again ?
-> 
-> Sorry I've been busy with a conference.  Sure, will put that
-> through KernelCI tomorrow and let you know the outcome.
-
-Well the issue seems to have been fixed on mainline, unless it's
-intermittent.  In any case, next-20220404 is booting fine:
-
-  https://linux.kernelci.org/test/plan/id/624aed811a5acd09adae071e/
-
-Last time it was seen to fail was next-20220330:
-
-  https://linux.kernelci.org/test/plan/id/62442f68e30d6f89a4ae06b7/
-
-
-Ironically, the KernelCI staging linux-next job with the patches
-mentioned in your previous email applied is now failing:
-
-  https://staging.kernelci.org/test/plan/id/624b2d3b923f532dc305f4c7/
-
-The kernel branch being used is:
-
-  https://github.com/kernelci/linux/commits/staging-next
-
-
-I haven't checked the logs or investigated any further, this is
-just a quick summary based on the boot test results.
-
-Please let us know if we should drop these patches or try
-anything else.  I'll be on holiday for the rest of the week but
-others can pick things up if needed.
+Should we merge this?
 
 Thanks,
-Guillaume
+Usama
+
+On 5/23/22 2:40 PM, Muhammad Usama Anjum wrote:
+> On 5/22/22 10:15 PM, Masahiro Yamada wrote:
+>> On Sat, May 21, 2022 at 3:44 PM Muhammad Usama Anjum
+>> <usama.anjum@collabora.com> wrote:
+>>>
+>>> Hello,
+>>>
+>>> kselftest can be built using the kernel's top most Makefile without
+>>> using kselftest's Makefile directly. But there is bug in the top most
+>>> Makefile. The build fails if the specified output directory is first
+>>> level sub-directory. Here is a example to reproduce this bug:
+>>>
+>>> make kselftest-all O=build
+>>>
+>>> "The Make is working in a wrong directory, that is why the relative path
+>>> does not work." Masahiro Yamada. Feel free to fix it if someone pin the bug.
+>>>
+>>> It should be noted that the build works in some other combinations:
+>>> make kselftest-all (works)
+>>> make kselftest-all O=/tmp (works)
+>>> make kselftest-all O=build/build2 (works)
+>>>
+>>> My unsuccessful attempt to fix this bug can be found here:
+>>> https://lore.kernel.org/lkml/20220223191016.1658728-1-usama.anjum@collabora.com/
+>>>
+>>> Thanks,
+>>> Muhammad Usama Anjum
+>>
+>>
+>> This problem starts from the bad design of the kselftest framework.
+>> I did some research before. I think I can fix the root cause but
+>> currently I do not have enough time to do it.
+>>
+>>
+>> KBUILD_ABS_SRCTREE is a user-interface to request
+>> Kbuild to use the absolute path.
+>> If it is forced in the top Makefile, users have no way to
+>> negate it.
+>> It is true that using the absolute path is a quick work-around
+>> because you do not need to care about the current working directory.
+>>
+>> If you insist on it,  just go ahead.  It is just two line changes.
+>> Once the issue is fixed in a better way, your patch can be reverted easily.
+> Thank you for replying. Lets merge it Shuah?
+> 
+>>
+>>
+>>
+> 
+
+-- 
+Muhammad Usama Anjum
