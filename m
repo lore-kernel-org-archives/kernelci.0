@@ -1,43 +1,131 @@
-Return-Path: <spbnick@gmail.com>
-Message-ID: <3282f541-c511-d3eb-d4b2-a8ab29c9c3cf@gmail.com>
-Date: Tue, 7 Jun 2022 17:36:27 +0300
+Message-ID: <0afc045c-d5b2-aca1-4536-da52d7d1c462@collabora.com>
+Date: Tue, 7 Jun 2022 10:46:10 -0400
 MIME-Version: 1.0
-Subject: Re: #KCIDB v9 release
-References: <a707847a-73a3-af9a-96d1-070cd294dbe8@redhat.com>
- <CACT4Y+ZKPRZmUhKpSzfH4qQX7EQrN_Nf4038K47PGRd1YM=D8Q@mail.gmail.com>
- <8cdcae43-f16f-b286-8bb3-276597d493d5@gmail.com>
- <CACT4Y+Zf7iGdB-Ex4TziNz2c-4w+n7H-ikgoEjJ=RGEjLKnMUg@mail.gmail.com>
-From: "Nikolai Kondrashov" <spbnick@gmail.com>
-In-Reply-To: <CACT4Y+Zf7iGdB-Ex4TziNz2c-4w+n7H-ikgoEjJ=RGEjLKnMUg@mail.gmail.com>
-Content-Language: en-US
+Subject: Re: [kernelci-members] KernelCI working group: Web Dashboard
+From: "Gustavo Padovan" <gustavo.padovan@collabora.com>
+Reply-To: kernelci-members@groups.io
+References: <f3874e7d-ccfe-4a2d-d054-9b7bf9e8b44d@collabora.com>
+ <16F4479F76A8C807.11895@groups.io>
+In-Reply-To: <16F4479F76A8C807.11895@groups.io>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: kernelci@groups.io, Nikolai.Kondrashov@redhat.com, Guillaume Tucker <guillaume.tucker@collabora.com>, "automated-testing@yoctoproject.org" <automated-testing@yoctoproject.org>, syzkaller <syzkaller@googlegroups.com>
+To: kernelci-members@groups.io, "kernelci@groups.io" <kernelci@groups.io>
+Cc: automated-testing@lists.yoctoproject.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>, Simon Xiao <sixiao@microsoft.com>, Carlos Cardenas <Carlos.Cardenas@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Sharath George John <sgeorgejohn@microsoft.com>, "Alain Gefflaut (HE/HIM)" <agefflaut@microsoft.com>
 
-On 6/7/22 17:35, Dmitry Vyukov wrote:
-> On Tue, 7 Jun 2022 at 15:43, Nikolai Kondrashov <spbnick@gmail.com> wrote:
->>
->> Hi Dmitri,
->>
->> On 6/7/22 09:11, Dmitry Vyukov via groups.io wrote:
->>> If we upload "log_excerpt" with crashes, does the dashboard allow
->>> users to search for substrings in the "log_excerpt"?
->>> Namely, if we upload whole kernel oops as "log_excerpt" (that would be
->>> the intended use, right?), will it be possible to find all crashes
->>> that contain a given function name?
->>
->> At the moment the dashboard doesn't allow that, but it shouldn't be too hard
->> to add support for such filtering. I think I could do that in a couple hours work.
->>
->> So, please go ahead and send those excerpts, and I'll find some time to add
->> that filtering.
-> 
-> I was just considering possibilities. I am not ready to send excerpts
-> right now. It will require switching to v4 of the API as well, right?
-> We are now on 3.0.
+Hello,
 
-Yes, that would require switching to the v4 schema.
+Our next meeting has been scheduled for this Thursday at 3pm UTC. Invite=20
+was sent to the kernelci-members list, but here goes the instructions to=20
+join as well:
 
-Nick
+This event has a video call.
+Join: https://meet.google.com/yyz-jzjy-yfu
+(US) +1 254-227-6870 PIN: 188509910#
+View more phone numbers:=20
+https://tel.meet/yyz-jzjy-yfu?pin=3D5882595078642&hs=3D7
+
+Regards,
+
+Gustavo
+
+Le 31/05/2022 =C3=A0 15:34, Gustavo Padovan a =C3=A9crit=C2=A0:
+>
+> Hello everyone,
+>
+> **
+>
+> *From our first meeting back in October[1], we took the action of=20
+> organizing our user stories that you were spread as a comments in the=20
+> the github issue{2} and, converting them into User Stories document[3].*
+>
+> *
+>
+> In the next meeting, we want to study the current User Stories and=20
+> start discussions to progress on development. The proposed slots are=20
+> for next week. Please answer the doodle by the end of this week:
+>
+> https://doodle.com/meeting/participate/id/egJ12A9d
+>
+> Best regards,
+>
+> Gustavo
+>
+> [1]=20
+> https://docs.google.com/document/d/1yp-2L54tnrwkZ--59t2GeXuq1gt5dDnsFy08o=
+dizl1Y/edit#=20
+> <https://docs.google.com/document/d/1yp-2L54tnrwkZ--59t2GeXuq1gt5dDnsFy08=
+odizl1Y/edit#>
+>
+> [2] https://github.com/kernelci/kernelci-project/discussions/28=20
+> <https://github.com/kernelci/kernelci-project/discussions/28>
+>
+> {3}=20
+> https://docs.google.com/document/d/1_rfMpas4n_gw2GvUTRU63vIXk95VotJuittal=
+X7trP8/edit=20
+> <https://docs.google.com/document/d/1_rfMpas4n_gw2GvUTRU63vIXk95VotJuitta=
+lX7trP8/edit>*=20
+>
+> Le 27/07/2021 =C3=A0 11:54, Guillaume Tucker a =C3=A9crit=C2=A0:
+>> Last year's KernelCI Community Survey[1] showed the importance of
+>> having a good web dashboard.  About 70% of respondents would use
+>> one if it provided the information they needed efficiently.
+>> While other things are arguably even more important, such as
+>> testing patches from mailing lists, replying to stable reviews
+>> and sending email reports directly to contributors in a "natural"
+>> workflow, the web dashboard has been a sticking point for a
+>> while.
+>>
+>> There have been several attempts at solving this problem, using
+>> Elastic Stack and Grafana among other things, but there isn't a
+>> single framework able to directly provide an off-the-shelf
+>> solution to the community's needs.  In fact, the first issue is
+>> the lack of understanding of these needs: who wants to use the
+>> web dashboard, and how?  Then, how does one translate those needs
+>> into a user interface?  Doing this requires skills that engineers
+>> who regularly contribute to KernelCI typically don't have.  As
+>> such, a dedicated working group is being created in order to fill
+>> this gap.
+>>
+>> The aim is to coordinate efforts and try to follow best practices
+>> to make steady progress and avoid repeating the same mistakes.
+>> Most likely, we will need some help from proper web developers
+>> who aren't part of the usual KernelCI community.  This may be
+>> facilitated by the KernelCI LF project budget if approved by the
+>> governing board.
+>>
+>> In order to get started, we would need to have maybe 3 to 5
+>> people available to focus on this.  It doesn't necessarily mean a
+>> lot of hours spent but actions to be carried out on a daily or
+>> weekly basis.  So far we have Gustavo Padovan as our new KernelCI
+>> Project Manager and a few people have expressed interest but we
+>> still need formal confirmation.
+>>
+>>
+>> Here's a GitHub project dedicated to the new web dashboard:
+>>
+>>    https://github.com/orgs/kernelci/projects/4
+>>
+>> I've created a couple of issues to get started about user
+>> stories, and some initial milestones as a basic skeleton:
+>>
+>>    https://github.com/kernelci/kernelci-project/milestones
+>>
+>>
+>> This is ultimately a community-driven effort to address the needs
+>> of the kernel community.  Please share any thoughts you may have
+>> on this, whether you want to add some user stories, share some
+>> expertise, be officially in the working group or take part in
+>> this effort in any other way.
+>>
+>> Best wishes,
+>> Guillaume
+>>
+>> [1]https://foundation.kernelci.org/blog/2020/07/09/kernelci-community-su=
+rvey-report/
+>>
+>>
+>>
+>>
+>>
+>=20
