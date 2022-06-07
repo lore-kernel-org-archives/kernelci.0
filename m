@@ -1,131 +1,70 @@
-Message-ID: <0afc045c-d5b2-aca1-4536-da52d7d1c462@collabora.com>
-Date: Tue, 7 Jun 2022 10:46:10 -0400
+Return-Path: <skhan@linuxfoundation.org>
+Subject: Re: [Bug Report] - kselftest build fails if output directory is first level sub-directory
+References: <c25d7ea7-4f72-4a2b-d8c3-d317e64fcbbb@collabora.com>
+ <CAK7LNATL4nMmKgrjS8meavnpn=HisD30QxuPUKDqtWWgbGcSZw@mail.gmail.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <a9470bfc-bddc-6aa6-0043-d49eb57611fe@linuxfoundation.org>
+Date: Tue, 7 Jun 2022 15:39:20 -0600
 MIME-Version: 1.0
-Subject: Re: [kernelci-members] KernelCI working group: Web Dashboard
-From: "Gustavo Padovan" <gustavo.padovan@collabora.com>
-Reply-To: kernelci-members@groups.io
-References: <f3874e7d-ccfe-4a2d-d054-9b7bf9e8b44d@collabora.com>
- <16F4479F76A8C807.11895@groups.io>
-In-Reply-To: <16F4479F76A8C807.11895@groups.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAK7LNATL4nMmKgrjS8meavnpn=HisD30QxuPUKDqtWWgbGcSZw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci-members@groups.io, "kernelci@groups.io" <kernelci@groups.io>
-Cc: automated-testing@lists.yoctoproject.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>, Simon Xiao <sixiao@microsoft.com>, Carlos Cardenas <Carlos.Cardenas@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Sharath George John <sgeorgejohn@microsoft.com>, "Alain Gefflaut (HE/HIM)" <agefflaut@microsoft.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>, Shuah Khan <shuah@kernel.org>, KERNEL SELFTEST FRAMEWORK <linux-kselftest@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, "kernelci@groups.io" <kernelci@groups.io>, Shuah Khan <skhan@linuxfoundation.org>
 
-Hello,
+On 5/22/22 11:15 AM, Masahiro Yamada wrote:
+> On Sat, May 21, 2022 at 3:44 PM Muhammad Usama Anjum
+> <usama.anjum@collabora.com> wrote:
+>>
+>> Hello,
+>>
+>> kselftest can be built using the kernel's top most Makefile without
+>> using kselftest's Makefile directly. But there is bug in the top most
+>> Makefile. The build fails if the specified output directory is first
+>> level sub-directory. Here is a example to reproduce this bug:
+>>
+>> make kselftest-all O=build
+>>
+>> "The Make is working in a wrong directory, that is why the relative path
+>> does not work." Masahiro Yamada. Feel free to fix it if someone pin the bug.
+>>
+>> It should be noted that the build works in some other combinations:
+>> make kselftest-all (works)
+>> make kselftest-all O=/tmp (works)
+>> make kselftest-all O=build/build2 (works)
+>>
+>> My unsuccessful attempt to fix this bug can be found here:
+>> https://lore.kernel.org/lkml/20220223191016.1658728-1-usama.anjum@collabora.com/
+>>
+>> Thanks,
+>> Muhammad Usama Anjum
+> 
+> 
+> This problem starts from the bad design of the kselftest framework.
+> I did some research before. I think I can fix the root cause but
+> currently I do not have enough time to do it.
+> 
+> 
+> KBUILD_ABS_SRCTREE is a user-interface to request
+> Kbuild to use the absolute path.
+> If it is forced in the top Makefile, users have no way to
+> negate it.
+> It is true that using the absolute path is a quick work-around
+> because you do not need to care about the current working directory.
+> 
+> If you insist on it,  just go ahead.  It is just two line changes.
+> Once the issue is fixed in a better way, your patch can be reverted easily.
+> 
+> 
+> 
 
-Our next meeting has been scheduled for this Thursday at 3pm UTC. Invite=20
-was sent to the kernelci-members list, but here goes the instructions to=20
-join as well:
+Why don't we work on fixing it the wright way? I would rather go that
+route than using short rem fixes.
 
-This event has a video call.
-Join: https://meet.google.com/yyz-jzjy-yfu
-(US) +1 254-227-6870 PIN: 188509910#
-View more phone numbers:=20
-https://tel.meet/yyz-jzjy-yfu?pin=3D5882595078642&hs=3D7
+Usama, would you be interested in working on a proper fix as recommended
+by Masahiro?
 
-Regards,
-
-Gustavo
-
-Le 31/05/2022 =C3=A0 15:34, Gustavo Padovan a =C3=A9crit=C2=A0:
->
-> Hello everyone,
->
-> **
->
-> *From our first meeting back in October[1], we took the action of=20
-> organizing our user stories that you were spread as a comments in the=20
-> the github issue{2} and, converting them into User Stories document[3].*
->
-> *
->
-> In the next meeting, we want to study the current User Stories and=20
-> start discussions to progress on development. The proposed slots are=20
-> for next week. Please answer the doodle by the end of this week:
->
-> https://doodle.com/meeting/participate/id/egJ12A9d
->
-> Best regards,
->
-> Gustavo
->
-> [1]=20
-> https://docs.google.com/document/d/1yp-2L54tnrwkZ--59t2GeXuq1gt5dDnsFy08o=
-dizl1Y/edit#=20
-> <https://docs.google.com/document/d/1yp-2L54tnrwkZ--59t2GeXuq1gt5dDnsFy08=
-odizl1Y/edit#>
->
-> [2] https://github.com/kernelci/kernelci-project/discussions/28=20
-> <https://github.com/kernelci/kernelci-project/discussions/28>
->
-> {3}=20
-> https://docs.google.com/document/d/1_rfMpas4n_gw2GvUTRU63vIXk95VotJuittal=
-X7trP8/edit=20
-> <https://docs.google.com/document/d/1_rfMpas4n_gw2GvUTRU63vIXk95VotJuitta=
-lX7trP8/edit>*=20
->
-> Le 27/07/2021 =C3=A0 11:54, Guillaume Tucker a =C3=A9crit=C2=A0:
->> Last year's KernelCI Community Survey[1] showed the importance of
->> having a good web dashboard.  About 70% of respondents would use
->> one if it provided the information they needed efficiently.
->> While other things are arguably even more important, such as
->> testing patches from mailing lists, replying to stable reviews
->> and sending email reports directly to contributors in a "natural"
->> workflow, the web dashboard has been a sticking point for a
->> while.
->>
->> There have been several attempts at solving this problem, using
->> Elastic Stack and Grafana among other things, but there isn't a
->> single framework able to directly provide an off-the-shelf
->> solution to the community's needs.  In fact, the first issue is
->> the lack of understanding of these needs: who wants to use the
->> web dashboard, and how?  Then, how does one translate those needs
->> into a user interface?  Doing this requires skills that engineers
->> who regularly contribute to KernelCI typically don't have.  As
->> such, a dedicated working group is being created in order to fill
->> this gap.
->>
->> The aim is to coordinate efforts and try to follow best practices
->> to make steady progress and avoid repeating the same mistakes.
->> Most likely, we will need some help from proper web developers
->> who aren't part of the usual KernelCI community.  This may be
->> facilitated by the KernelCI LF project budget if approved by the
->> governing board.
->>
->> In order to get started, we would need to have maybe 3 to 5
->> people available to focus on this.  It doesn't necessarily mean a
->> lot of hours spent but actions to be carried out on a daily or
->> weekly basis.  So far we have Gustavo Padovan as our new KernelCI
->> Project Manager and a few people have expressed interest but we
->> still need formal confirmation.
->>
->>
->> Here's a GitHub project dedicated to the new web dashboard:
->>
->>    https://github.com/orgs/kernelci/projects/4
->>
->> I've created a couple of issues to get started about user
->> stories, and some initial milestones as a basic skeleton:
->>
->>    https://github.com/kernelci/kernelci-project/milestones
->>
->>
->> This is ultimately a community-driven effort to address the needs
->> of the kernel community.  Please share any thoughts you may have
->> on this, whether you want to add some user stories, share some
->> expertise, be officially in the working group or take part in
->> this effort in any other way.
->>
->> Best wishes,
->> Guillaume
->>
->> [1]https://foundation.kernelci.org/blog/2020/07/09/kernelci-community-su=
-rvey-report/
->>
->>
->>
->>
->>
->=20
+thanks,
+-- Shuah
