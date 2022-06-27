@@ -1,48 +1,48 @@
-Message-ID: <519c813b-0bf1-636b-df90-890e07d2ea4d@collabora.com>
-Date: Mon, 27 Jun 2022 12:06:36 +0500
+Return-Path: <Nikolai.Kondrashov@redhat.com>
+Message-ID: <c85dd48b-5cfc-96d3-6c04-2993425ccaf3@redhat.com>
+Date: Mon, 27 Jun 2022 11:16:18 +0300
 MIME-Version: 1.0
-Subject: Re: [Bug Report] - kselftest build fails if output directory is first level sub-directory
-References: <c25d7ea7-4f72-4a2b-d8c3-d317e64fcbbb@collabora.com>
- <CAK7LNATL4nMmKgrjS8meavnpn=HisD30QxuPUKDqtWWgbGcSZw@mail.gmail.com>
- <a9470bfc-bddc-6aa6-0043-d49eb57611fe@linuxfoundation.org>
-From: "Usama" <usama.anjum@collabora.com>
-In-Reply-To: <a9470bfc-bddc-6aa6-0043-d49eb57611fe@linuxfoundation.org>
+Subject: Re: New day and time for KernelCI weekly meetings
+References: <16FB46988E9325AF.13100@groups.io>
+ <09ea391f-0eb9-45a6-e16e-f5bdaac92e57@collabora.com>
+From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
+In-Reply-To: <09ea391f-0eb9-45a6-e16e-f5bdaac92e57@collabora.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Shuah Khan <skhan@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>
-Cc: usama.anjum@collabora.com, Michal Marek <michal.lkml@markovi.net>, Nick Desaulniers <ndesaulniers@google.com>, Shuah Khan <shuah@kernel.org>, KERNEL SELFTEST FRAMEWORK <linux-kselftest@vger.kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, "kernelci@groups.io" <kernelci@groups.io>
+To: kernelci@groups.io, guillaume.tucker@collabora.com
 
->> This problem starts from the bad design of the kselftest framework.
->> I did some research before. I think I can fix the root cause but
->> currently I do not have enough time to do it.
->>
->>
->> KBUILD_ABS_SRCTREE is a user-interface to request
->> Kbuild to use the absolute path.
->> If it is forced in the top Makefile, users have no way to
->> negate it.
->> It is true that using the absolute path is a quick work-around
->> because you do not need to care about the current working directory.
->>
->> If you insist on it,=C2=A0 just go ahead.=C2=A0 It is just two line chan=
-ges.
->> Once the issue is fixed in a better way, your patch can be reverted
->> easily.
->>
-> Why don't we work on fixing it the wright way? I would rather go that
-> route than using short rem fixes.
->=20
-> Usama, would you be interested in working on a proper fix as recommended
-> by Masahiro?
-I've made another attempt:
-https://lore.kernel.org/lkml/20220627070214.432390-1-usama.anjum@collabora.=
-com/
+Thank you, Guillaume!
 
->=20
-> thanks,
-> -- Shuah
+Nick
 
---=20
-Muhammad Usama Anjum
+On 6/27/22 09:45, Guillaume Tucker wrote:
+> On 23/06/2022 15:35, Guillaume Tucker wrote:
+>> The Tuesday 18:00 UTC KernelCI weekly meetings are proving to not
+>> be suitable any more due to the growing number of attendees in
+>> APAC time zones while we virtually don't have any regular
+>> attendees from the Americas any more.  As such, we've worked out
+>> that the 10:00-12:00 UTC time range was the most suitable one
+>> now.  Please pick a time and day of the week in the poll below
+>> for the new meeting:
+>>
+>>    https://framadate.org/KRJXu7ExO8kVRdl4
+>>
+>> We can still occasionally have a Tuesday meeting at 18:00 if
+>> needed.  If so, please request it on this mailing list or on IRC
+>> #kernelci on libera.chat.
+> 
+> Thanks for the replies.  I've now updated the weekly time to
+> Thursday 11:00 UTC as per the results of the poll, you should
+> have received a calendar notification.
+> 
+> Best wishes,
+> Guillaume
+> 
+> 
+> 
+> 
+> 
+> 
+
