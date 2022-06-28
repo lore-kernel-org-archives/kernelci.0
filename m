@@ -1,71 +1,211 @@
 MIME-Version: 1.0
-References: <1656314828-3544-1-git-send-email-yangtiezhu@loongson.cn>
-In-Reply-To: <1656314828-3544-1-git-send-email-yangtiezhu@loongson.cn>
-From: "Nick Desaulniers" <ndesaulniers@google.com>
-Date: Tue, 28 Jun 2022 11:19:12 -0700
-Message-ID: <CAKwvOdnmtGCUyxw4eXCyjp3nPAHZQ1v3Ui2ELXRNWpceCYsMyQ@mail.gmail.com>
-Subject: Re: [PATCH v2] modpost: Add line break in the section mismatch warning
+References: <CAHRSSEwMoYQz2ua+PmFRcWSXJREUtrsKCFdivDJ+XdJP9Di_MQ@mail.gmail.com>
+ <f91a21bd782f3988cb6988ff96558dda036ca16f.camel@collabora.com>
+ <CAHRSSEynGz318YD-TmzZUyXE9ZquLGgoBJJnYzrFsUN8dp8NFA@mail.gmail.com>
+ <16EBDBAB78C06CE6.10903@groups.io> <adcac2f5fdfdaec902e49f08b16924c09cb7d6cf.camel@collabora.com>
+ <850e223c3512417ce8d9497d3395e6b6f0d27b55.camel@collabora.com>
+ <CAHRSSEwGmJopp2fjJXt_rNgH+Um3jMoCACxyrdZo=V9HkYVKVw@mail.gmail.com> <7c8acd8bb5277c8d10c00ea6d356267fb6938524.camel@collabora.com>
+In-Reply-To: <7c8acd8bb5277c8d10c00ea6d356267fb6938524.camel@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Tue, 28 Jun 2022 12:16:01 -0700
+Message-ID: <CAHRSSExQrtbZDPLowaFxOgbnGR2Eh3twY9GOrQ_QUEkFTpde5w@mail.gmail.com>
+Subject: Re: kernelci failures due to "pahole" missing
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Michal Marek <michal.lkml@markovi.net>, Xuefeng Li <lixuefeng@loongson.cn>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, kernelci@groups.io
+To: Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: kernelci@groups.io
 
-On Mon, Jun 27, 2022 at 4:46 AM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
->
-> The section mismatch warning may be too long, add a line break
-> to make it more readable.
->
-> Without this patch:
->
->   LD      vmlinux.o
->   MODPOST vmlinux.symvers
-> WARNING: modpost: vmlinux.o(___ksymtab+prom_init_numa_memory+0x0): Section mismatch in reference from the variable __ksymtab_prom_init_numa_memory to the function .init.text:prom_init_numa_memory()
-> The symbol prom_init_numa_memory is exported and annotated __init
-> Fix this by removing the __init annotation of prom_init_numa_memory or drop the export.
->
-> With this patch:
->
->   LD      vmlinux.o
->   MODPOST vmlinux.symvers
-> WARNING: modpost: vmlinux.o(___ksymtab+prom_init_numa_memory+0x0): Section mismatch in reference
-> from the variable __ksymtab_prom_init_numa_memory to the function .init.text:prom_init_numa_memory()
-> The symbol prom_init_numa_memory is exported and annotated __init
-> Fix this by removing the __init annotation of prom_init_numa_memory or drop the export.
-
-This might aggravate the ability of scripts parsing build logs for
-"warning:" case insensitive to accurately report what the warning is.
-
->
-> This is based on Linux 5.19-rc4.
->
-> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-> ---
->
-> v2: update the commit message
->
->  scripts/mod/modpost.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index 620dc8c..4cc894f 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -1320,8 +1320,8 @@ static void report_sec_mismatch(const char *modname,
->         get_pretty_name(from_is_func, &from, &from_p);
->         get_pretty_name(to_is_func, &to, &to_p);
->
-> -       warn("%s(%s+0x%llx): Section mismatch in reference from the %s %s%s "
-> -            "to the %s %s:%s%s\n",
-> +       warn("%s(%s+0x%llx): Section mismatch in reference\n"
-> +            "from the %s %s%s to the %s %s:%s%s\n",
->              modname, fromsec, fromaddr, from, fromsym, from_p, to, tosec,
->              tosym, to_p);
->
-> --
-> 2.1.0
->
+Any update on this?
 
 
--- 
-Thanks,
-~Nick Desaulniers
+On Tue, May 10, 2022 at 12:50 PM Denys Fedoryshchenko
+<denys.f@collabora.com> wrote:
+>
+> On Tue, 2022-05-10 at 10:53 -0700, Todd Kjos via groups.io wrote:
+> > On Tue, May 10, 2022 at 12:20 AM Denys Fedoryshchenko <
+> > denys.f@collabora.com>
+> > wrote:
+> >
+> > > Update
+> > >
+> > > We identified all packages required for kernel build:
+> > > dwarves, lz4, python3/python.
+> > >
+> > > We got ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1 built on our
+> > > staging
+> > > pipeline, but with error:
+> > >  LD      vmlinux
+> > >   BTFIDS  vmlinux
+> > > FAILED unresolved symbol xdp_buff
+> > >
+> >
+> > Which config and arch was this?
+> gki_defconfig
+> arm64
+> But it is a bit old snapshot i'm using as reference.
+> Tomorrow i will try latest 5.10 if anything changed.
+>
+> Container Log:
+>   LD      .tmp_vmlinux.kallsyms1
+>   KSYMS   .tmp_vmlinux.kallsyms1.S
+>   AS      .tmp_vmlinux.kallsyms1.S
+>   LD      .tmp_vmlinux.kallsyms2
+>   KSYMS   .tmp_vmlinux.kallsyms2.S
+>   AS      .tmp_vmlinux.kallsyms2.S
+>   LD      vmlinux
+>   BTFIDS  vmlinux
+> FAILED unresolved symbol xdp_buff
+> make[1]: *** [/tmp/kci/linux/Makefile:1267: vmlinux] Error 255
+> make[1]: Leaving directory '/tmp/kci/linux/build'
+> make: *** [Makefile:185: __sub-make] Error 2
+> make: Leaving directory '/tmp/kci/linux'
+>
+> "branch": "staging-android",
+> "commit": "4dce9d7a65b14d5949b20ced210413d04d914053",
+> "describe": "ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1",
+> "describe_verbose": "v5.10-19504-g4dce9d7a65b1",
+> "tree": "kernelci",
+> "url": "https://github.com/kernelci/linux.git"
+>
+> >
+> >
+> > >
+> > > I will create PR now to allocate larger builders (to address LTO
+> > > memory
+> > > overconsumption) and we will do test build on android pipeline.
+> > >
+> >
+> > Thanks for helping with this!
+> >
+> >
+> > >
+> > > On Thu, 2022-05-05 at 08:23 +0300, Denys Fedoryshchenko wrote:
+> > > > Short update.
+> > > > Some of builders crashed due OOM, but not because of logs,
+> > > > but because LTO during linking phase consume more than 21Gb of
+> > > > RAM,
+> > > > and k8s builders allocated for project have only 4Gb allocated.
+> > > > It is not easy to solve, as it is either require to change LTO to
+> > > > "Thin
+> > > > LTO" (or disable it totally) to reduce memory consumption, which
+> > > > is
+> > > > not
+> > > > great, or increase builders size (and that means additional costs
+> > > > and
+> > > > approvals related to that).
+> > > > We are discussing on IRC possible solutions to this problem.
+> > > >
+> > > > On Wed, 2022-05-04 at 12:06 +0300, Denys Fedoryshchenko wrote:
+> > > > > At the moment I have identified a problem with more packages
+> > > > > that
+> > > > > are
+> > > > > missing, now it is python, and i'm adding it as well, but need
+> > > > > to
+> > > > > test
+> > > > > everything manually, and then on staging.
+> > > > >
+> > > > > Here is example of build that needs python:
+> > > > > https://linux.kernelci.org/build/id/6271d9f8c49e05f410dc7b53/
+> > > > >
+> > > https://storage.kernelci.org/android/android13-5.10/ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1/arm64/gki_defconfig/clang-14/logs/kernel.log
+> > > > >
+> > > > > Also, another problem some of the builders crashed, probably
+> > > > > due to
+> > > > > OOM
+> > > > > or insufficient resources.
+> > > > > https://linux.kernelci.org/build/id/6271db3a3c249a41a7dc7b48/
+> > > > >
+> > > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5.15-1526-g22e9215f1bea/arm64/gki_defconfig/clang-14/logs/kernel.log
+> > > > >
+> > > > > On manual tests, builds with pahole create about 819Mbyte of
+> > > > > warnings,
+> > > > > such as:
+> > > > > "namespace__recode_dwarf_types: couldn't find 0x13423 type for
+> > > > > 0x3d6a5
+> > > > > (member)!"
+> > > > > I am currently investigating whether these issues are related.
+> > > > > Therefore, it takes a bit more time than i expected, than just
+> > > > > adding
+> > > > > a
+> > > > > pahole/dwarves package.
+> > > > >
+> > > > > I will update as soon as more information available.
+> > > > >
+> > > > > On Tue, 2022-05-03 at 07:45 -0700, Todd Kjos wrote:
+> > > > > > Denys, Thanks for the update. Do you have a prediction for
+> > > > > > when
+> > > > > > it
+> > > > > > will land?
+> > > > > >
+> > > > > > On Mon, May 2, 2022 at 9:58 PM Denys Fedoryshchenko
+> > > > > > <denys.f@collabora.com> wrote:
+> > > > > > > Hi,
+> > > > > > >
+> > > > > > > We are testing in staging fix for that:
+> > > > > > > https://github.com/kernelci/kernelci-core/pull/1158
+> > > > > > >
+> > > > > > > Also i noticed in some cases lz4 package required for this
+> > > > > > > test,
+> > > > > > > so added it too.
+> > > > > > >
+> > > > > > > Best regards,
+> > > > > > > Denys
+> > > > > > >
+> > > > > > > On Fri, 2022-04-29 at 15:22 -0700, Todd Kjos via groups.io
+> > > > > > > wrote:
+> > > > > > > > We have a bunch of Android kernel test failures due to
+> > > > > > > > missing
+> > > > > > > > "pahole" in
+> > > > > > > > the build environment (example android13-5.15
+> > > > > > > > gki_defconfig
+> > > > > > > >
+> > > > > > > <
+> > > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5.15-1515-g7a68c2c45139/arm64/gki_defconfig/gcc-10/logs/kernel.log
+> > > > > > > > >
+> > > > > > > > ):
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >   LD      vmlinux.o
+> > > > > > > >   MODPOST vmlinux.symvers
+> > > > > > > >   MODINFO modules.builtin.modinfo
+> > > > > > > >   GEN     modules.builtin
+> > > > > > > > BTF: .tmp_vmlinux.btf: pahole (pahole) is not available
+> > > > > > > > Failed to generate BTF for vmlinux
+> > > > > > > > Try to disable CONFIG_DEBUG_INFO_BTF
+> > > > > > > > make[1]: *** [/tmp/kci/linux/Makefile:1247: vmlinux]
+> > > > > > > > Error 1
+> > > > > > > > make[1]: Leaving directory '/tmp/kci/linux/build'
+> > > > > > > > make: *** [Makefile:237: __sub-make] Error 2
+> > > > > > > > make: Leaving directory '/tmp/kci/linux'
+> > > > > > > >
+> > > > > > > > Would it be possible to get pahole added to the build
+> > > > > > > environments
+> > > > > > > > used to
+> > > > > > > > build android kernels?
+> > > > > > > >
+> > > > > > > > -Todd
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > >
+> > > > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > >
+> > >
+> > >
+> > >
+> >
+> >
+> > 
+> >
+> >
+>
+>
