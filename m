@@ -1,107 +1,62 @@
-Return-Path: <hdegoede@redhat.com>
-Message-ID: <36e9f346-cbea-a821-a00e-5399247a54bb@redhat.com>
-Date: Tue, 5 Apr 2022 10:13:40 +0200
+Message-ID: <47d87d3c-c127-5ff5-5818-69ff9009619a@collabora.com>
+Date: Wed, 29 Jun 2022 07:27:43 -0400
 MIME-Version: 1.0
-Subject: Re: next/master bisection: baseline.login on asus-C523NA-A20057-coral
-References: <623c13ec.1c69fb81.8cbdb.5a7a@mx.google.com>
- <Yjyv03JsetIsTJxN@sirena.org.uk>
- <4e9fca2f-0af1-3684-6c97-4c35befd5019@redhat.com>
- <Yjzua8Wye/3DHBKx@sirena.org.uk>
- <f8e96f8a-c19c-6acd-2f54-688924f491e8@redhat.com>
- <28699579-8384-ff3b-5662-fb56d8ced766@collabora.com>
- <28ee7ff8-5b21-9154-74e9-efd59da4a498@collabora.com>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <28ee7ff8-5b21-9154-74e9-efd59da4a498@collabora.com>
+From: "Gustavo Padovan" <gustavo.padovan@collabora.com>
+Subject: Request for Proposals: Sysadmin Maintenance 2022
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, Mark Brown <broonie@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki" <rjw@rjwysocki.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-pci@vger.kernel.org, "kernelci@groups.io" <kernelci@groups.io>, "kernelci-results@groups.io" <kernelci-results@groups.io>
+To: kernelci@groups.io, automated-testing@lists.yoctoproject.org
+Cc: kernelci-members@groups.io
 
-Hi All,
+Hello,
 
-On 4/4/22 21:44, Guillaume Tucker wrote:
-> +kernelci
-> 
-> On 29/03/2022 19:44, Guillaume Tucker wrote:
->> On 28/03/2022 13:54, Hans de Goede wrote:
->>> Hi,
->>>
->>> On 3/24/22 23:19, Mark Brown wrote:
->>>> On Thu, Mar 24, 2022 at 09:34:30PM +0100, Hans de Goede wrote:
->>>>
->>>>> Mark, if one of use writes a test patch, can you get that Asus machine to boot a
->>>>> kernel build from next + the test patch ?
->>>>
->>>> I can't directly unfortunately as the board is in Collabora's lab but
->>>> Guillaume (who's already CCed) ought to be able to, and I can generally
->>>> prod and try to get that done.
->>>
->>> Ok, Guillaume, can you try a kernel with commit 5949965ec9340cfc0e65f7d8a576b660b26e2535
->>> ("x86/PCI: Preserve host bridge windows completely covered by E820") + the 
->>> attached patch added on top a try on the asus-C523NA-A20057-coral machine please
->>> and see if that makes it boot again ?
->>
->> Sorry I've been busy with a conference.  Sure, will put that
->> through KernelCI tomorrow and let you know the outcome.
-> 
-> Well the issue seems to have been fixed on mainline, unless it's
-> intermittent.  In any case, next-20220404 is booting fine:
-> 
->   https://linux.kernelci.org/test/plan/id/624aed811a5acd09adae071e/
-> 
-> Last time it was seen to fail was next-20220330:
-> 
->   https://linux.kernelci.org/test/plan/id/62442f68e30d6f89a4ae06b7/
-> 
-> 
-> Ironically, the KernelCI staging linux-next job with the patches
-> mentioned in your previous email applied is now failing:
-> 
->   https://staging.kernelci.org/test/plan/id/624b2d3b923f532dc305f4c7/
-> 
-> The kernel branch being used is:
-> 
->   https://github.com/kernelci/linux/commits/staging-next
-> 
-> 
-> I haven't checked the logs or investigated any further, this is
-> just a quick summary based on the boot test results.
-> 
-> Please let us know if we should drop these patches or try
-> anything else.  I'll be on holiday for the rest of the week but
-> others can pick things up if needed.
+The KernelCI project is looking for suppliers to help with sysadmin=20
+maintenance.
 
-The reason why next and mainline are building now is because
-the patch the bisect pointed out never made it into mainline
-and Bjorn has dropped it from -next.
+# Summary
 
-I fully expect that -next with 
+The KernelCI project relies on a number of web services which need=20
+constant maintenance. These include databases, automation tools and web=20
+dashboards for several instances. Some are hosted on dedicated virtual=20
+machines (VMs), others in the cloud. This Request for Proposals seeks to=20
+extend the current team with dedicated sysadmins to ensure the=20
+maintenance of these services is being carried out to guarantee a good=20
+quality of service. Additionally, some improvements can be made to=20
+reduce the maintenance burden.
 
-https://lore.kernel.org/linux-acpi/20220304035110.988712-4-helgaas@kernel.org/
+# Budget
 
-or mainline with the entire series from that link applied will
-still not boot.
+We=E2=80=99re expecting quotations for this work package to range between 1=
+5,000=20
+and 30,000 USD depending on the contents of the proposal and for a=20
+period of six months. Longer sysadmin time available and extra=20
+improvements can justify a higher price. Payments would be made via the=20
+Linux Foundation using the project=E2=80=99s own budget.
 
-But we do need that last patch to fix various issues on
-other boards.
+# Sending proposals
 
-See my previous reply in this thread:
-https://lore.kernel.org/linux-pci/76c5de03-a3a4-8444-d7f6-496fa119d830@redhat.com/
+Please take a look at the full proposal document[1] for all the details.=20
+Proposals should be sent by email directly to the project members at=20
+kernelci-members@groups.io
 
-for some further analysis of what I think is happening here.
+The deadline for responding to this RFP is 8th August 2022, six weeks=20
+after it has been made public. Then the KernelCI Advisory Board of=20
+Members will vote on the 24th August 2022. Exact dates might be subject=20
+to change in case of a major practical issue or unavailability of voting=20
+members.
 
-As mentioned there I believe this can be fixed by merging
-back-to-back resources into a single resource before calling
-remove_e820_regions() but I could not find a good example / helper
-code to do the merging of the resources.
+For any doubts, please, reach out to the project members.
 
-If someone can give me some pointers wrt this I can try to
-come up with something and then provide a set of patches
-for testing on the asus-C523NA-A20057-coral .
+Best regards,
 
-Regards,
+Gustavo Padovan
 
-Hans
+Project Manager for the KernelCI LF Project.
+
+[1]=20
+https://kernelci.org/blog/posts/2022/rfp-sysadmin/RFP-Sysadmin-Maintenance-=
+2022-v3.pdf
+
 
