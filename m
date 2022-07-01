@@ -1,98 +1,49 @@
+Return-Path: <spbnick@gmail.com>
+Message-ID: <2d739264-6ece-1c8a-30a0-c1d96a8a8e62@gmail.com>
+Date: Fri, 1 Jul 2022 18:05:34 +0300
 MIME-Version: 1.0
-References: <54539125-b4fe-c219-cad9-e511e6271875@gmail.com>
-In-Reply-To: <54539125-b4fe-c219-cad9-e511e6271875@gmail.com>
-From: "Dmitry Vyukov" <dvyukov@google.com>
-Date: Fri, 1 Jul 2022 16:11:30 +0200
-Message-ID: <CACT4Y+YEiXrsLX6+=_Z4=xk_qAe1Pe1hTnDZkM7C5iFUvqMP8A@mail.gmail.com>
 Subject: Re: #KCIDB: Publishing known issues
-Content-Type: text/plain; charset="UTF-8"
+References: <54539125-b4fe-c219-cad9-e511e6271875@gmail.com>
+ <CACT4Y+YEiXrsLX6+=_Z4=xk_qAe1Pe1hTnDZkM7C5iFUvqMP8A@mail.gmail.com>
+From: "Nikolai Kondrashov" <spbnick@gmail.com>
+In-Reply-To: <CACT4Y+YEiXrsLX6+=_Z4=xk_qAe1Pe1hTnDZkM7C5iFUvqMP8A@mail.gmail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: Nikolai Kondrashov <spbnick@gmail.com>
-Cc: kernelci@groups.io, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=C3=B1aki_Malerba?= <imalerba@redhat.com>, Vishal Bhoj <vishal.bhoj@linaro.org>, Alice Ferrazzi <alicef@gentoo.org>, automated-testing@lists.yoctoproject.org, Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>, Johnson George <Johnson.George@microsoft.com>, Veronika Kabatova <vkabatov@redhat.com>, Guillaume Tucker <guillaume.tucker@collabora.com>
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: kernelci@groups.io, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>, Vishal Bhoj <vishal.bhoj@linaro.org>, Alice Ferrazzi <alicef@gentoo.org>, automated-testing@lists.yoctoproject.org, Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>, Johnson George <Johnson.George@microsoft.com>, Veronika Kabatova <vkabatov@redhat.com>, Guillaume Tucker <guillaume.tucker@collabora.com>
 
- wOn Fri, 1 Jul 2022 at 14:41, Nikolai Kondrashov <spbnick@gmail.com> wrote:
->
-> Hello everyone (potentially) involved with sending data to KCIDB,
->
-> I've finally started working on receiving and handling "known issues" in
-> KCIDB. There's plenty of problems to solve, and lots of work to do, but
-> there's one thing in the future protocol I'd like to discuss.
->
-> First of all a few base ideas to fill you in:
->
-> * KCIDB will accept issue objects describing things like test names, statuses,
-> architectures, compilers, execution environments, commit/revision ranges,
-> output regexes, and so on, matching particular incidents in build and test
-> results, and linking them to bug reports.
-> * KCIDB will triage submitted data in order to find issues, and either
-> suppress notifications of known issues, or trigger notifications for new
-> issues. Issues from *each* submitter will be used to triage data from *all*
-> submitters.
-> * KCIDB will allow submitters to modify their issues, e.g. to correct regular
-> expressions, add or remove bug reports, and modify matching conditions in general.
->
-> And it's the last point I'd like to talk about.
->
-> The KCIDB protocol doesn't allow modifying object fields, only adding their
-> values. That is, for example, you can submit a description of a test without a
-> status, when starting it, and then when it's finished, you can submit this
-> same test (using the same ID), but only containing the resulting status (and
-> perhaps links to logs).
->
-> If you submit different field values for the same object, it will be
-> impossible to say which one would be used. So don't do that :) It's OK to
-> submit the same object with the same field values multiple times, though. This
-> gives us space to implement a distributed database without having a single
-> synchronization point (BigQuery is one such database we're using). This also
-> allows submitters to e.g. just send the same revision (checkout) data with
-> every build result, making interfacing easier.
->
-> Unfortunately, this protocol leaves us without a direct way of *editing*
-> objects, such as the issues we want to introduce. I.e. you can't just send a
-> new version of an issue, with other field values, because the result would be
-> unpredictable.
->
-> So, in a way, instead of accepting "issues", KCIDB will be accepting "issue
-> *versions*" (as once suggested by Guillaume in a somewhat different context).
-> That is, each issue would have a "version" field containing an integer, which
-> would be a part of its unique ID, along with the regular submitter-supplied ID
-> (as done for checkouts/builds/tests right now). Something like this:
->
-> {
->      "version": {"major": 5, "minor": 0},
->      "issues": [
->          {
->              "origin": "syzbot",
->              "id": "syzbot:264b703d22effb171549375ad8aa17704033f1ae",
->              "version": 3,
->              "comment": "WARNING in cfg80211_ch_switch_notify",
->              ...
->          }
->      ]
-> }
->
-> Every time a submitter needs to change an issue in KCIDB they would need to
-> send it again, but with a bigger version number (it doesn't have to be
-> continuous). KCIDB would always use the highest-numbered version for triaging.
->
-> In practice, submitters storing their issues in a database, would need to have
-> a field incremented each time an update is done, and would need to put that
-> field into the issue's version when submitting to KCIDB.
->
-> Submitters storing issues in a git repository could instead send e.g. the
-> output of "git log --oneline | wc -l" for the commit containing the submitted
-> issue(s).
->
-> In a pinch, just an integer representing precise-enough timestamp  of the last
-> issue change would be enough. And if two successive edits ever get the same
-> timestamp, it would be enough to just "touch" and resubmit the issue to recover.
->
-> There's obviously lots and lots more to think about and discuss regarding
-> "known issues", but please tell me what you think about this particular
-> aspect. Everything else is welcome too, of course :)
+On 7/1/22 17:11, Dmitry Vyukov wrote:
+>   wOn Fri, 1 Jul 2022 at 14:41, Nikolai Kondrashov <spbnick@gmail.com> wrote:
+>> There's obviously lots and lots more to think about and discuss regarding
+>> "known issues", but please tell me what you think about this particular
+>> aspect. Everything else is welcome too, of course :)
+> 
+> Maybe I am missing something, but have you considered making the KCIDB
+> server assign these versions to take this burden from all clients?
+> Users will effectively "modify" entities, except that KCIDB won't
+> actually modify but rather insert new versions. The version can be
+> precise-enough timestamp as you mentioned.
 
-Maybe I am missing something, but have you considered making the KCIDB
-server assign these versions to take this burden from all clients?
-Users will effectively "modify" entities, except that KCIDB won't
-actually modify but rather insert new versions. The version can be
-precise-enough timestamp as you mentioned.
+Thank you for your prompt response, and for a good question, Dmitry!
+
+Yes, I considered that for a while, from various angles. Yes, that would be 
+simpler for submitters in many cases.
+
+However, it will make the KCIDB protocol more complex (both to understand and 
+to implement) by introducing different behavior for different types of objects.
+
+It will force KCIDB to implement comparing issue parameters/contents, instead 
+of just comparing version numbers, in order to avoid useless retriage when the 
+same issue is submitted multiple times without changes. E.g. when related 
+issues are simply submitted together with test results for every revision.
+
+It will also either force KCIDB to introduce global synchronization for 
+reliable version number generation, or to use mostly de-synchronized, but 
+unreliable timestamp-based versions for *all* submitters, regardless whether 
+they can actually do better or not. In this way, this tradeoff is similar to 
+having submitters generate their own object IDs.
+
+Hope that helps.
+Nick
