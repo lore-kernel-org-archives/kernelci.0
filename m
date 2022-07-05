@@ -1,63 +1,22 @@
-Return-Path: <spbnick@gmail.com>
-Message-ID: <f38639df-3f46-00d7-48a8-f8f3342dd923@gmail.com>
-Date: Sat, 2 Jul 2022 17:02:53 +0300
+From: "Li, Philip" <philip.li@intel.com>
+Subject: consult the KCIDB engagement from 0-Day CI
+Date: Tue, 5 Jul 2022 05:37:34 +0000
+Message-ID: <6346ccbf0d054903afe46d4d69084319@intel.com>
 MIME-Version: 1.0
-Subject: Re: #KCIDB: Publishing known issues
-References: <54539125-b4fe-c219-cad9-e511e6271875@gmail.com>
- <CACT4Y+YEiXrsLX6+=_Z4=xk_qAe1Pe1hTnDZkM7C5iFUvqMP8A@mail.gmail.com>
- <2d739264-6ece-1c8a-30a0-c1d96a8a8e62@gmail.com>
- <CACT4Y+ZkB=ptctWusAxpjBv_iFJX6OeBgN7DSp+2m6eLHBKufQ@mail.gmail.com>
-From: "Nikolai Kondrashov" <spbnick@gmail.com>
-In-Reply-To: <CACT4Y+ZkB=ptctWusAxpjBv_iFJX6OeBgN7DSp+2m6eLHBKufQ@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Return-Path: philip.li@intel.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Dmitry Vyukov <dvyukov@google.com>
-Cc: kernelci@groups.io, syzkaller <syzkaller@googlegroups.com>, =?UTF-8?Q?I=c3=b1aki_Malerba?= <imalerba@redhat.com>, Vishal Bhoj <vishal.bhoj@linaro.org>, Alice Ferrazzi <alicef@gentoo.org>, automated-testing@lists.yoctoproject.org, Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>, Johnson George <Johnson.George@microsoft.com>, Veronika Kabatova <vkabatov@redhat.com>, Guillaume Tucker <guillaume.tucker@collabora.com>
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: lkp <lkp@intel.com>, "Xiong, Wei1X" <wei1x.xiong@intel.com>, "kernelci@groups.io" <kernelci@groups.io>
 
-On 7/2/22 10:59, Dmitry Vyukov wrote:
-> On Fri, 1 Jul 2022 at 17:05, Nikolai Kondrashov <spbnick@gmail.com> wrote:
->>
->> On 7/1/22 17:11, Dmitry Vyukov wrote:
->>>    wOn Fri, 1 Jul 2022 at 14:41, Nikolai Kondrashov <spbnick@gmail.com> wrote:
->>>> There's obviously lots and lots more to think about and discuss regarding
->>>> "known issues", but please tell me what you think about this particular
->>>> aspect. Everything else is welcome too, of course :)
->>>
->>> Maybe I am missing something, but have you considered making the KCIDB
->>> server assign these versions to take this burden from all clients?
->>> Users will effectively "modify" entities, except that KCIDB won't
->>> actually modify but rather insert new versions. The version can be
->>> precise-enough timestamp as you mentioned.
->>
->> Thank you for your prompt response, and for a good question, Dmitry!
->>
->> Yes, I considered that for a while, from various angles. Yes, that would be
->> simpler for submitters in many cases.
->>
->> However, it will make the KCIDB protocol more complex (both to understand and
->> to implement) by introducing different behavior for different types of objects.
->>
->> It will force KCIDB to implement comparing issue parameters/contents, instead
->> of just comparing version numbers, in order to avoid useless retriage when the
->> same issue is submitted multiple times without changes. E.g. when related
->> issues are simply submitted together with test results for every revision.
->>
->> It will also either force KCIDB to introduce global synchronization for
->> reliable version number generation, or to use mostly de-synchronized, but
->> unreliable timestamp-based versions for *all* submitters, regardless whether
->> they can actually do better or not. In this way, this tradeoff is similar to
->> having submitters generate their own object IDs.
-> 
-> On the syzbot side we fully control database schema and code, so
-> adding bug versions should not be a problem at least for major bug
-> status changes.
+Hi Nick, it has been for a while we haven't followed up with your last cont=
+act, let me apologize for this.
 
-Glad to hear that. Thank you, Dmitry!
+I want to follow up to engage with kcidb to contribute the results from 0-D=
+ay CI including kernel build and functional
+test results as we have bandwidth now. Is this ok? If yes, can you kindly s=
+hare us the process we need follow, such
+as account apply, test run, etc?
 
-This will help us get to a working implementation faster.
-
-Would also love to hear what others maintaining known issues think about this.
-
-Nick
+Thanks
