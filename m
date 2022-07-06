@@ -1,93 +1,132 @@
-Return-Path: <spbnick@gmail.com>
-Message-ID: <8c723017-46e0-8e9d-6908-8becfd580ae3@gmail.com>
-Date: Wed, 6 Jul 2022 15:33:14 +0300
+Message-ID: <2aaa6787-619a-7672-05b7-e3ae07c87cce@collabora.com>
+Date: Wed, 6 Jul 2022 17:48:14 +0100
 MIME-Version: 1.0
-Subject: Re: consult the KCIDB engagement from 0-Day CI
-References: <6346ccbf0d054903afe46d4d69084319@intel.com>
- <911954df-947f-33fd-0d9d-aa0f3246e4b4@gmail.com> <YsTwYEHEX17FWHkR@rli9-dbox>
-From: "Nikolai Kondrashov" <spbnick@gmail.com>
-In-Reply-To: <YsTwYEHEX17FWHkR@rli9-dbox>
+Subject: Re: next/master build: 205 builds: 8 failed, 197 passed, 21 errors, 52 warnings (next-20220706)
+References: <62c5b563.1c69fb81.1240a.62b2@mx.google.com>
+ <CAKwvOdnusz+AjYzkW4pyHraJ1_exhwAz9bscMkRiqjiXRj+66g@mail.gmail.com>
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+In-Reply-To: <CAKwvOdnusz+AjYzkW4pyHraJ1_exhwAz9bscMkRiqjiXRj+66g@mail.gmail.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: Philip Li <philip.li@intel.com>
-Cc: kernelci@groups.io, Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>, lkp <lkp@intel.com>, "Xiong, Wei1X" <wei1x.xiong@intel.com>
+To: Nick Desaulniers <ndesaulniers@google.com>, llvm@lists.linux.dev
+Cc: "kernelci@groups.io" <kernelci@groups.io>
 
-Hi Philip
+On 06/07/2022 17:40, Nick Desaulniers wrote:
+> On Wed, Jul 6, 2022 at 9:16 AM kernelci.org bot <bot@kernelci.org> wrote:
+>> next/master build: 205 builds: 8 failed, 197 passed, 21 errors, 52 warni=
+ngs (next-20220706)
+>>
+>> Full Build Summary: https://kernelci.org/build/next/branch/master/kernel=
+/next-20220706/
+>>
+>> Tree: next
+>> Branch: master
+>> Git Describe: next-20220706
+>> Git Commit: 088b9c375534d905a4d337c78db3b3bfbb52c4a0
+>> Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
+.git
+>> Built: 7 unique architectures
+>>
+>> Build Failures Detected:
+>>
+>> arm64:
+>>     allmodconfig: (clang-15) FAIL
+>>     allmodconfig: (gcc-10) FAIL
+>>
+>> arm:
+>>     cros://chromeos-5.10/armel/chromiumos-arm.flavour.config: (clang-13)=
+ FAIL
+>>     cros://chromeos-5.10/armel/chromiumos-rockchip.flavour.config: (clan=
+g-13) FAIL
+>>     allmodconfig: (clang-15) FAIL
+>>     allmodconfig: (gcc-10) FAIL
+>>
+>> i386:
+>>     allmodconfig: (clang-15) FAIL
+>>
+>> mips:
+>>     decstation_64_defconfig: (gcc-10) FAIL
+>>
+>> Errors and Warnings Detected:
+>>
+>> arc:
+>>
+>> arm64:
+>>     allmodconfig (gcc-10): 4 errors
+>>     allmodconfig (clang-15): 1 error
+>>
+>> arm:
+>>     allmodconfig (clang-15): 1 error, 13 warnings
+>>     allmodconfig (gcc-10): 8 errors
+>>     aspeed_g5_defconfig (clang-15): 10 warnings
+>>     cros://chromeos-5.10/armel/chromiumos-arm.flavour.config (clang-13):=
+ 1 error, 5 warnings
+>>     cros://chromeos-5.10/armel/chromiumos-rockchip.flavour.config (clang=
+-13): 1 error, 5 warnings
+>>     multi_v5_defconfig (clang-15): 2 warnings
+>>     multi_v7_defconfig (clang-15): 12 warnings
+>>
+>> i386:
+>>     allmodconfig (clang-15): 1 error
+>>     allnoconfig (clang-15): 2 warnings
+>>
+>> mips:
+>>     32r2el_defconfig (gcc-10): 1 warning
+>>     32r2el_defconfig+kselftest (gcc-10): 1 warning
+>>     fuloong2e_defconfig (gcc-10): 1 error
+>>     lemote2f_defconfig (gcc-10): 1 error
+>>     loongson2k_defconfig (gcc-10): 1 error
+>>     loongson3_defconfig (gcc-10): 1 error
+>>     rb532_defconfig (gcc-10): 1 warning
+>>
+>> riscv:
+>>
+>> x86_64:
+>>
+>> Errors summary:
+>>
+>>     4    drivers/gpu/drm/amd/amdgpu/../display/dc/dc_dmub_srv.c:603:59: =
+error: =E2=80=98-mgeneral-regs-only=E2=80=99 is incompatible with the use o=
+f floating-point types
+>>     4    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used with =
+=E2=80=98-mhard-float=E2=80=99
+>>     2    lib/maple_tree.c:4272:20: error: stack frame size (1096) exceed=
+s limit (1024) in function 'mas_wr_modify' [-Werror,-Wframe-larger-than]
+>>     1    sound/soc/intel/avs/path.c:815:18: error: stack frame size (217=
+6) exceeds limit (2048) in 'avs_path_create' [-Werror,-Wframe-larger-than]
+>>     1    lib/maple_tree.c:4272:20: error: stack frame size (1144) exceed=
+s limit (1024) in 'mas_wr_modify' [-Werror,-Wframe-larger-than]
+>>     1    lib/maple_tree.c:4272:20: error: stack frame size (1072) exceed=
+s limit (1024) in 'mas_wr_modify' [-Werror,-Wframe-larger-than]
+>>     1    ERROR: modpost: "__aeabi_ui2d" [drivers/gpu/drm/amd/amdgpu/amdg=
+pu.ko] undefined!
+>>     1    ERROR: modpost: "__aeabi_i2d" [drivers/gpu/drm/amd/amdgpu/amdgp=
+u.ko] undefined!
+>>     1    ERROR: modpost: "__aeabi_dsub" [drivers/gpu/drm/amd/amdgpu/amdg=
+pu.ko] undefined!
+>>     1    ERROR: modpost: "__aeabi_dmul" [drivers/gpu/drm/amd/amdgpu/amdg=
+pu.ko] undefined!
+>>     1    ERROR: modpost: "__aeabi_ddiv" [drivers/gpu/drm/amd/amdgpu/amdg=
+pu.ko] undefined!
+>>     1    ERROR: modpost: "__aeabi_dadd" [drivers/gpu/drm/amd/amdgpu/amdg=
+pu.ko] undefined!
+>>     1    ERROR: modpost: "__aeabi_d2uiz" [drivers/gpu/drm/amd/amdgpu/amd=
+gpu.ko] undefined!
+>>     1    ERROR: modpost: "__aeabi_d2iz" [drivers/gpu/drm/amd/amdgpu/amdg=
+pu.ko] undefined!
+> ^ interesting, these look new to me, must be from the new CrOS configs.
 
- >> Once you pick your "origin" ("intel", "0day", something else?), I will send
- >> you submission credentials for our "playground" setup, in a private message.
- >
- > got it, i will pick "0dayci" as origin. Is this ok, or i need submit another
- > mail to kernelci@groups.io by the guide?
+Except these were not meant to be part of this report as the CrOS
+configs are built on a separate instance on
+https://chromeos.kernelci.org
 
-Sure, no problem! I created the account and will send the credentials to you 
-in a bit. Please go ahead and use "0dayci" as your "origin".
+This is something we need to investigate, it looks like some
+wires got crossed somehow.  We may however start sending email
+reports for the CrOS builds (only doing LTS 5.10 and 5.15 at the
+moment) and we're starting to run tests with Chromium OS
+user-space too.  Please let us know if you're interested in any
+of that.
 
-Nick
-
-On 7/6/22 05:16, Philip Li wrote:
-> On Tue, Jul 05, 2022 at 06:06:09PM +0300, Nikolai Kondrashov wrote:
->> Hi Philip,
->>
->> On 7/5/22 08:37, Li, Philip wrote:
->>> Hi Nick, it has been for a while we haven't followed up with your last
->> contact, let me apologize for this.
->>
->> No problem, glad you found the time to write :)
->>
->>> I want to follow up to engage with kcidb to contribute the results from
->> 0-Day CI including kernel build and functional
->>> test results as we have bandwidth now. Is this ok? If yes, can you kindly
->> share us the process we need follow, such
->>> as account apply, test run, etc?
->>
->> Of course! You're more than welcome to join.
->>
->> Here's our official Submitter Guide:
->>
->>      https://kernelci.org/docs/kcidb/submitter_guide/
->>
->> Once you pick your "origin" ("intel", "0day", something else?), I will send
->> you submission credentials for our "playground" setup, in a private message.
-> 
-> got it, i will pick "0dayci" as origin. Is this ok, or i need submit another
-> mail to kernelci@groups.io by the guide?
-> 
->>
->> You won't have to worry about breaking anything. You can send whatever you
->> want there to see how your data would look in our dashboard until you're
->> satisfied with what you're getting. Then we'll switch you to "production"
->> setup.
->>
->> Apart from the "playground" dashboard where your data will appear for now:
->>
->>      https://kcidb.kernelci.org/?var-dataset=playground_kcidb_01
->>
->> You can also see examples of data coming from others at our "production"
->> dashboard:
->>
->>      https://kcidb.kernelci.org/
-> 
-> thanks for all detail info, we will follow up to try/learn.
-> 
->>
->> Send any questions you have!
->> Nick
->>
->> On 7/5/22 08:37, Li, Philip wrote:
->>> Hi Nick, it has been for a while we haven't followed up with your last contact, let me apologize for this.
->>>
->>> I want to follow up to engage with kcidb to contribute the results from 0-Day CI including kernel build and functional
->>> test results as we have bandwidth now. Is this ok? If yes, can you kindly share us the process we need follow, such
->>> as account apply, test run, etc?
->>>
->>> Thanks
->>>
->>>
->>> 
->>>
->>>
->>
-
+Guillaume
