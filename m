@@ -8,23 +8,47 @@ References: <CAHRSSEwMoYQz2ua+PmFRcWSXJREUtrsKCFdivDJ+XdJP9Di_MQ@mail.gmail.com>
  <7c8acd8bb5277c8d10c00ea6d356267fb6938524.camel@collabora.com>
  <CAHRSSExQrtbZDPLowaFxOgbnGR2Eh3twY9GOrQ_QUEkFTpde5w@mail.gmail.com>
  <e8ffc2b3cf8ccdcf8ca6d455a9495559d56cbcb9.camel@collabora.com>
- <CAHRSSEy7cT-Y-4-Vx_hGi+ubYK8_tar6kaxcsaVMF29J34Evbg@mail.gmail.com> <02da7d7581da74c0d32092ae1e6da35947731351.camel@collabora.com>
-In-Reply-To: <02da7d7581da74c0d32092ae1e6da35947731351.camel@collabora.com>
+ <CAHRSSEy7cT-Y-4-Vx_hGi+ubYK8_tar6kaxcsaVMF29J34Evbg@mail.gmail.com>
+ <02da7d7581da74c0d32092ae1e6da35947731351.camel@collabora.com>
+ <CAHRSSEyFW6bNs2xjQybmy9gSOia8ZwcE_xpOz4613pnsJMwNwg@mail.gmail.com> <2272fa71024001c69c15babadf050fbf35a9a9b8.camel@collabora.com>
+In-Reply-To: <2272fa71024001c69c15babadf050fbf35a9a9b8.camel@collabora.com>
 From: Todd Kjos <tkjos@google.com>
-Date: Wed, 13 Jul 2022 10:32:49 -0700
-Message-ID: <CAHRSSEyFW6bNs2xjQybmy9gSOia8ZwcE_xpOz4613pnsJMwNwg@mail.gmail.com>
+Date: Wed, 13 Jul 2022 10:45:26 -0700
+Message-ID: <CAHRSSEy04bqbFNv9EtQPvLKfQ4es3FxJM=mCXM99s5-_Pv-D5Q@mail.gmail.com>
 Subject: Re: kernelci failures due to "pahole" missing
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
 To: Denys Fedoryshchenko <denys.f@collabora.com>
 Cc: kernelci@groups.io
 
-Denys, thanks for the update. I don't consider this urgent, but I would
-eventually like to see our "gki_defconfig" builds be green again.
+As long as it is easy to access/decompress the logs that's fine.
 
-On Tue, Jul 12, 2022 at 2:49 AM Denys Fedoryshchenko <denys.f@collabora.com>
+On Wed, Jul 13, 2022 at 10:40 AM Denys Fedoryshchenko <denys.f@collabora.com>
 wrote:
 
+> I apologize for the delay, as what was supposed to be a simple task with
+> the addition of a pahole tool turned into a fundamental problem.
+> I hope to be able to solve this problem soon.
+> One of the options I'm considering is compressing Image and kernel.log
+> through xz -9.
+> This whille make build a bit different from standard builds.
+> It is a bit hack, but might be a bit faster than implementing other
+> solutions.
+> Is it acceptable?
+>
+> Here i pushed in staging almost manually results:
+> https://storage.staging.kernelci.org/kernelci/staging-android/ASB-2022-06-05_13-5.15-46-g15a32b46ee0f4/arm64/gki_defconfig/clang-15/logs/
+> As you can see kernel.log is 813Mbyte and Image is 193Mbyte, which is a
+> bit too much.
+>
+> On Wed, 2022-07-13 at 10:32 -0700, Todd Kjos wrote:
+>
+> Denys, thanks for the update. I don't consider this urgent, but I would
+> eventually like to see our "gki_defconfig" builds be green again.
+>
+> On Tue, Jul 12, 2022 at 2:49 AM Denys Fedoryshchenko <
+> denys.f@collabora.com> wrote:
+>
 > Hi,
 >
 > Sorry for the delay, it took longer than this meeting as we faced major
@@ -327,6 +351,7 @@ wrote:
 > > 
 > >
 > >
+>
 >
 >
 >
