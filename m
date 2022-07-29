@@ -1,99 +1,45 @@
-Return-Path: <Nikolai.Kondrashov@redhat.com>
-Message-ID: <31ad1a88-dfaf-ea46-97cd-a277d6d108cb@redhat.com>
-Date: Sat, 23 Jul 2022 14:50:33 +0300
+Message-ID: <76b71f49-d02e-c580-6b29-dd5ea21429c6@collabora.com>
+Date: Fri, 29 Jul 2022 17:06:09 +0200
 MIME-Version: 1.0
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Subject: #KCIDB engagement report
-Reply-To: kernelci@groups.io, Nikolai.Kondrashov@redhat.com
+Subject: Re: KernelCI at lists.linux.dev
+From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
+References: <2c3efbf6-d102-af2f-9a1d-a8f39853047a@collabora.com>
+ <20220714145125.nmrdwwuswnip2suc@meerkat.local>
+ <2ffe18c0-59cd-698c-93b8-974762ef27d1@collabora.com>
+In-Reply-To: <2ffe18c0-59cd-698c-93b8-974762ef27d1@collabora.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, automated-testing@lists.yoctoproject.org
+To: "kernelci@groups.io" <kernelci@groups.io>
+Cc: helpdesk@kernel.org, Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 
-Hi everyone,
+On 15/07/2022 07:12, Guillaume Tucker wrote:
+> On 14/07/2022 16:51, Konstantin Ryabitsev wrote:
+>> On Thu, Jul 14, 2022 at 10:26:57AM +0200, Guillaume Tucker wrote:
+>>> Hello,
+>>>
+>>> The KernelCI community has been using kernelci@groups.io for a
+>>> few years, however it's less than ideal as messages have to be
+>>> moderated for all non-members.  Also we've been getting closer to
+>>> the kernel community over the years and it isn't a great fit for
+>>> that.  Would it be possible to create a kernelci@lists.linux.dev
+>>> mailing list so we would then transition away from groups.io?
+>>
+>> For sure, I don't see why not. We can even import groups.io archives once the
+>> migration is decided. If you do decide to move, just follow the procedure
+>> described on
+>> https://subspace.kernel.org/lists.linux.dev.html#requesting-list-hosting
+> 
+> Thank you, I've just done that now.
 
-Below is the monthly* report on KCIDB** engagement. It lists various CI
-systems and their status of engagement with KCIDB, as well as developer
-engagement.
+As we would like to move to the new list and stop using
+groups.io, it would seem useful to also import the list of
+subscribers from groups.io.  Please let me know if you don't want
+to be subscribed to the new list by the end of next week (Aug 5).
 
-Lines with updates are marked with "!".
+I'll also send some messages on IRC and Slack to be sure everyone
+knows about this.
 
-Intel's Philip Li has reached out, asking for submission credentials and
-instructions, and the 0day CI has been submitting their results to our
-"playground" setup for a few days now:
-
-https://kcidb.kernelci.org/?var-origin=0dayci&var-dataset=playground_kcidb_01
-
-It's already looking pretty good!
-
-I'm working on the design of known-issue handling, fleshing out smaller
-details now, and looking for the fastest path to providing value.
-
-CI Engagement Status
-
-     KernelCI native
-         Sending (a lot of) production build and test results.
-         https://kcidb.kernelci.org/?var-origin=kernelci
-
-     Red Hat CKI
-         Sending production results.
-         https://kcidb.kernelci.org/?var-origin=redhat
-
-     Google Syzbot
-         Sending a subset of production results (failures only).
-         https://kcidb.kernelci.org/?var-origin=syzbot
-
-     ARM
-         Sending production results.
-         Full commit hashes are currently not available, are spoofed, and don't
-         match the ones reported by others. There's ongoing switch to using a
-         KernelCI instance setup, which should fix this.
-         https://kcidb.kernelci.org/?var-origin=arm
-
-     Sony Fuego
-         Internal design in progress.
-
-     Gentoo GKernelCI
-         Sending production results.
-         Only builds (a few architectures), no configs, no logs, and no tests
-         for now, but working on growing contributions.
-         https://kcidb.kernelci.org/?var-origin=gkernelci
-
-     Intel 0day
-!       Sending test results to our playground setup.
-! 
-https://kcidb.kernelci.org/?var-origin=0dayci&var-dataset=playground_kcidb_01
-
-     Linaro
-         Sending (a lot of) Tuxsuite build results to "production" KCIDB.
-         https://kcidb.kernelci.org/?var-origin=tuxsuite
-
-     TuxML
-         Initial contact in response to a report.
-         There's a plan to approach us and start work in the coming months.
-
-     Yocto Project
-         Initial contact in response to a report.
-         Would like to start sending build and test results, particularly for
-         older kernels. Would like to separate upstream commits from project
-         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
-
-     Huawei Compass CI
-         Sent a message to Fengguang Wu, who was presenting it at LVC 2021.
-         No response so far.
-
-     Microsoft
-!       Johnson George is investigating KCIDB.
-
-Please respond with corrections or suggestions of other CI systems to contact.
-
-Thank you!
-Nick
-
-*More-or-less :)
-
-**KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
-   Foundation's KernelCI project:
-   https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
-
+Thanks,
+Guillaume
