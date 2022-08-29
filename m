@@ -1,8 +1,10 @@
 Return-Path: <frowand.list@gmail.com>
 From: frowand.list@gmail.com
-Subject: [PATCH v3 0/2] begin KTAP spec v2 process
-Date: Mon, 29 Aug 2022 18:31:48 -0500
-Message-Id: <20220829233150.3564612-1-frowand.list@gmail.com>
+Subject: [PATCH v3 1/2] ktap_v2: change version to 2-rc in KTAP specification
+Date: Mon, 29 Aug 2022 18:31:49 -0500
+Message-Id: <20220829233150.3564612-2-frowand.list@gmail.com>
+In-Reply-To: <20220829233150.3564612-1-frowand.list@gmail.com>
+References: <20220829233150.3564612-1-frowand.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-ID: <kernelci.groups.io>
@@ -11,33 +13,40 @@ Cc: Jonathan Corbet <corbet@lwn.net>, rmr167@gmail.com, guillaume.tucker@collabo
 
 From: Frank Rowand <frank.rowand@sony.com>
 
-The process to create version 2 of the KTAP Specification is documented
-in email discussions.  I am attempting to capture this information at
+Prepare KTAP Specification for the process of creating version 2.
 
-   https://elinux.org/Test_Results_Format_Notes#KTAP_version_2
+The version will remain "2-rc" until the final commit to complete
+Version 2.  Adding the "-rc" ensures that none of the development
+versions will be mistaken for the completed version 2.
 
-I am already not following the suggested process, which says:
-"...please try to follow this principal of one major topic per email
-thread."  I think that is ok in this case because the two patches
-are related and (hopefully) not controversial.
+After this commit, Sphinx complains that we now need more '=' signs:
 
-Changes since patch version 2:
-   - correct version 1 change text
-   - version 1 patch 2/2 had not yet been applied when I created version 2,
-     refresh version 2 patch 2/2 for new context
+  Documentation/dev-tools/ktap.rst:3: WARNING: Title overline too short.
+  ===================================================
+  The Kernel Test Anything Protocol (KTAP), version 2-rc
+  ===================================================
 
-Changes since patch version 1:
-   - drop patch 2/2.  Jonathan Corbet has already applied this patch
-     into version 1 of the Specification
-   - add new patch 2/2
+This warning will disappear in the final commit for the release of
+version 2, when the "-rc" is removed.
 
-Frank Rowand (2):
-  ktap_v2: change version to 2-rc in KTAP specification
-  ktap_v2: change "version 1" to "version 2" in examples
+Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+---
+ Documentation/dev-tools/ktap.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- Documentation/dev-tools/ktap.rst | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
-
+diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+index d0a9565b0f44..b9a57ceddd4f 100644
+--- a/Documentation/dev-tools/ktap.rst
++++ b/Documentation/dev-tools/ktap.rst
+@@ -1,7 +1,7 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+ ===================================================
+-The Kernel Test Anything Protocol (KTAP), version 1
++The Kernel Test Anything Protocol (KTAP), version 2-rc
+ ===================================================
+ 
+ TAP, or the Test Anything Protocol is a format for specifying test results used
 -- 
 Frank Rowand <frank.rowand@sony.com>
 
