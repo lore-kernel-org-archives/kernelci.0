@@ -1,8 +1,8 @@
 Return-Path: <frowand.list@gmail.com>
 From: frowand.list@gmail.com
-Subject: [PATCH v3 1/2] ktap_v2: change version to 2-rc in KTAP specification
-Date: Mon, 29 Aug 2022 18:31:49 -0500
-Message-Id: <20220829233150.3564612-2-frowand.list@gmail.com>
+Subject: [PATCH v3 2/2] ktap_v2: change "version 1" to "version 2" in examples
+Date: Mon, 29 Aug 2022 18:31:50 -0500
+Message-Id: <20220829233150.3564612-3-frowand.list@gmail.com>
 In-Reply-To: <20220829233150.3564612-1-frowand.list@gmail.com>
 References: <20220829233150.3564612-1-frowand.list@gmail.com>
 MIME-Version: 1.0
@@ -13,40 +13,95 @@ Cc: Jonathan Corbet <corbet@lwn.net>, rmr167@gmail.com, guillaume.tucker@collabo
 
 From: Frank Rowand <frank.rowand@sony.com>
 
-Prepare KTAP Specification for the process of creating version 2.
+Change the "version line" in example output from
+"KTAP version 1" to "KTAP version 2".
 
-The version will remain "2-rc" until the final commit to complete
-Version 2.  Adding the "-rc" ensures that none of the development
-versions will be mistaken for the completed version 2.
-
-After this commit, Sphinx complains that we now need more '=' signs:
-
-  Documentation/dev-tools/ktap.rst:3: WARNING: Title overline too short.
-  ===================================================
-  The Kernel Test Anything Protocol (KTAP), version 2-rc
-  ===================================================
-
-This warning will disappear in the final commit for the release of
-version 2, when the "-rc" is removed.
+Change version that should be used by compliant tests from 1 to 2.
 
 Signed-off-by: Frank Rowand <frank.rowand@sony.com>
 ---
- Documentation/dev-tools/ktap.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Changes since patch version 2:
+   - refresh version 2 patch 2/2 for new context
+
+ Documentation/dev-tools/ktap.rst | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-index d0a9565b0f44..b9a57ceddd4f 100644
+index b9a57ceddd4f..ff77f4aaa6ef 100644
 --- a/Documentation/dev-tools/ktap.rst
 +++ b/Documentation/dev-tools/ktap.rst
-@@ -1,7 +1,7 @@
- .. SPDX-License-Identifier: GPL-2.0
+@@ -39,6 +39,7 @@ version of the (K)TAP standard the result is compliant with.
  
- ===================================================
--The Kernel Test Anything Protocol (KTAP), version 1
-+The Kernel Test Anything Protocol (KTAP), version 2-rc
- ===================================================
+ For example:
+ - "KTAP version 1"
++- "KTAP version 2"
+ - "TAP version 13"
+ - "TAP version 14"
  
- TAP, or the Test Anything Protocol is a format for specifying test results used
+@@ -46,7 +47,7 @@ Note that, in KTAP, subtests also begin with a version line, which denotes the
+ start of the nested test results. This differs from TAP14, which uses a
+ separate "Subtest" line.
+ 
+-While, going forward, "KTAP version 1" should be used by compliant tests, it
++While, going forward, "KTAP version 2" should be used by compliant tests, it
+ is expected that most parsers and other tooling will accept the other versions
+ listed here for compatibility with existing tests and frameworks.
+ 
+@@ -202,9 +203,9 @@ An example of a test with two nested subtests:
+ 
+ ::
+ 
+-	KTAP version 1
++	KTAP version 2
+ 	1..1
+-	  KTAP version 1
++	  KTAP version 2
+ 	  1..2
+ 	  ok 1 test_1
+ 	  not ok 2 test_2
+@@ -215,11 +216,11 @@ An example format with multiple levels of nested testing:
+ 
+ ::
+ 
+-	KTAP version 1
++	KTAP version 2
+ 	1..2
+-	  KTAP version 1
++	  KTAP version 2
+ 	  1..2
+-	    KTAP version 1
++	    KTAP version 2
+ 	    1..2
+ 	    not ok 1 test_1
+ 	    ok 2 test_2
+@@ -250,21 +251,21 @@ Example KTAP output
+ --------------------
+ ::
+ 
+-	KTAP version 1
++	KTAP version 2
+ 	1..1
+-	  KTAP version 1
++	  KTAP version 2
+ 	  1..3
+-	    KTAP version 1
++	    KTAP version 2
+ 	    1..1
+ 	    # test_1: initializing test_1
+ 	    ok 1 test_1
+ 	  ok 1 example_test_1
+-	    KTAP version 1
++	    KTAP version 2
+ 	    1..2
+ 	    ok 1 test_1 # SKIP test_1 skipped
+ 	    ok 2 test_2
+ 	  ok 2 example_test_2
+-	    KTAP version 1
++	    KTAP version 2
+ 	    1..3
+ 	    ok 1 test_1
+ 	    # test_2: FAIL
 -- 
 Frank Rowand <frank.rowand@sony.com>
 
