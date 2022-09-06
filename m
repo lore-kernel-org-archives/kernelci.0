@@ -1,54 +1,437 @@
-Return-Path: <keescook@chromium.org>
-Date: Sat, 16 Apr 2022 14:06:43 -0700
-From: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 1/2] selftests/lkdtm: add config and turn off CFI_FORWARD_PROTO
-Message-ID: <202204161400.B2267D6@keescook>
-References: <20220217205620.2512094-1-usama.anjum@collabora.com>
- <202203091122.A51B31230A@keescook>
- <62c11336-cac1-8501-19fe-980ebfa050e9@collabora.com>
- <8049e2a9-a478-4c6a-afcd-3aa4434a0590@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <8049e2a9-a478-4c6a-afcd-3aa4434a0590@collabora.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <CAHRSSEwMoYQz2ua+PmFRcWSXJREUtrsKCFdivDJ+XdJP9Di_MQ@mail.gmail.com>
+ <f91a21bd782f3988cb6988ff96558dda036ca16f.camel@collabora.com>
+ <CAHRSSEynGz318YD-TmzZUyXE9ZquLGgoBJJnYzrFsUN8dp8NFA@mail.gmail.com>
+ <16EBDBAB78C06CE6.10903@groups.io> <adcac2f5fdfdaec902e49f08b16924c09cb7d6cf.camel@collabora.com>
+ <850e223c3512417ce8d9497d3395e6b6f0d27b55.camel@collabora.com>
+ <CAHRSSEwGmJopp2fjJXt_rNgH+Um3jMoCACxyrdZo=V9HkYVKVw@mail.gmail.com>
+ <7c8acd8bb5277c8d10c00ea6d356267fb6938524.camel@collabora.com>
+ <CAHRSSExQrtbZDPLowaFxOgbnGR2Eh3twY9GOrQ_QUEkFTpde5w@mail.gmail.com>
+ <e8ffc2b3cf8ccdcf8ca6d455a9495559d56cbcb9.camel@collabora.com>
+ <CAHRSSEy7cT-Y-4-Vx_hGi+ubYK8_tar6kaxcsaVMF29J34Evbg@mail.gmail.com>
+ <02da7d7581da74c0d32092ae1e6da35947731351.camel@collabora.com>
+ <CAHRSSEyFW6bNs2xjQybmy9gSOia8ZwcE_xpOz4613pnsJMwNwg@mail.gmail.com>
+ <2272fa71024001c69c15babadf050fbf35a9a9b8.camel@collabora.com>
+ <CAHRSSEy04bqbFNv9EtQPvLKfQ4es3FxJM=mCXM99s5-_Pv-D5Q@mail.gmail.com> <fc3ad071f2f7134988fb5e6424ef460ef53f72c6.camel@collabora.com>
+In-Reply-To: <fc3ad071f2f7134988fb5e6424ef460ef53f72c6.camel@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Tue, 6 Sep 2022 08:35:09 -0700
+Message-ID: <CAHRSSExUCsVfMgUSWgNmhbMfS0C9bJbu8BZbWBV1DcLOTCzFgA@mail.gmail.com>
+Subject: Re: kernelci failures due to "pahole" missing
+Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, kernel@collabora.com, kernelci@groups.io, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org
+To: Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: kernelci@groups.io
 
-On Thu, Apr 14, 2022 at 04:31:42PM +0500, Muhammad Usama Anjum wrote:
-> Any thoughts?
-> 
-> On 3/10/22 10:21 PM, Muhammad Usama Anjum wrote:
-> > On 3/10/22 12:22 AM, Kees Cook wrote:
-> >> On Fri, Feb 18, 2022 at 01:56:19AM +0500, Muhammad Usama Anjum wrote:
-> >>> Add config options which are needed for LKDTM sub-tests.
-> >>> STACKLEAK_ERASING test needs GCC_PLUGIN_STACKLEAK config.
-> >>> READ_AFTER_FREE and READ_BUDDY_AFTER_FREE tests need
-> >>> INIT_ON_FREE_DEFAULT_ON config.
-> >>>
-> >>> CFI_FORWARD_PROTO always fails as there is no active CFI system of some
-> >>> kind. Turn it off for now by default until proper support.
-> >>
-> >> Building under LTO Clang on arm64, this is available. What's the right
-> >> way to add a CONFIG that isn't always available?
-> >>
-> >> -Kees
-> > Yeah, as you had mentioned
-> > (https://github.com/kernelci/kernelci-project/issues/84#issuecomment-1042015431):
+That's great news! It's really nice to see our gki_defconfig builds
+succeeding now. Thanks.
+
+On Tue, Sep 6, 2022 at 5:53 AM Denys Fedoryshchenko <denys.f@collabora.com>
+wrote:
+
+> Hi,
+>
+> I think i have good news regarding this issue, which initially
+> was just adding pahole tool, but turned in a bit long story due many
+> complications.
+>
+> Several problems we had to solve:
+> 1)Several packages had to be added to build docker images, we had to
+> make sure it doesnt break anything else
+> 2)gki_defconfig during build require quite a lot of resources (at least
+> 18Gb of RAM), so we had to allocate this builds to biggest k8s nodes we
+> have, and on currently allocated budget i had to wait, until there is
+> available resources to do test builds, as this nodes often busy.
+> 3)Generated files size exceed internal limits that our current software
+> frameworks can handle and log file size + kernel size will quickly fill
+> the storage if left uncompressed, so we had to implement compression
+> before uploading files to storage
+>
+> So here is one of results on production, finally:
+>
+>
+> https://storage.kernelci.org/android/android13-5.15/android13-5.15-2022-08_r1-95-gca7f18ea252e/arm64/gki_defconfig/clang-14/
+>
+>
+> On Wed, 2022-07-13 at 10:45 -0700, Todd Kjos via groups.io wrote:
+> > As long as it is easy to access/decompress the logs that's fine.
+> >
+> > On Wed, Jul 13, 2022 at 10:40 AM Denys Fedoryshchenko
+> > <denys.f@collabora.com>
+> > wrote:
+> >
+> > > I apologize for the delay, as what was supposed to be a simple task
+> > > with
+> > > the addition of a pahole tool turned into a fundamental problem.
+> > > I hope to be able to solve this problem soon.
+> > > One of the options I'm considering is compressing Image and
+> > > kernel.log
+> > > through xz -9.
+> > > This whille make build a bit different from standard builds.
+> > > It is a bit hack, but might be a bit faster than implementing other
+> > > solutions.
+> > > Is it acceptable?
+> > >
+> > > Here i pushed in staging almost manually results:
+> > >
+> https://storage.staging.kernelci.org/kernelci/staging-android/ASB-2022-06-05_13-5.15-46-g15a32b46ee0f4/arm64/gki_defconfig/clang-15/logs/
+> > > As you can see kernel.log is 813Mbyte and Image is 193Mbyte, which
+> > > is a
+> > > bit too much.
+> > >
+> > > On Wed, 2022-07-13 at 10:32 -0700, Todd Kjos wrote:
+> > >
+> > > Denys, thanks for the update. I don't consider this urgent, but I
+> > > would
+> > > eventually like to see our "gki_defconfig" builds be green again.
+> > >
+> > > On Tue, Jul 12, 2022 at 2:49 AM Denys Fedoryshchenko <
+> > > denys.f@collabora.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > Sorry for the delay, it took longer than this meeting as we faced
+> > > major
+> > > issue - current system design cannot handle large objects upload
+> > > (larger than ~200Mbyte) and there is no easy workaround for that.
+> > >
+> > > Theoretically, the new system architecture (kernelci-api) solves
+> > > this
+> > > problem, but it will take several months to finalize it.
+> > > I'll try to develop a partial upload method (so it will upload file
+> > > by
+> > > chunks), but that too will take some time as i have only few hours
+> > > per
+> > > week aside from primary project and other developers are also
+> > > overloaded.
+> > > Also during discussion it was suggested alternative solution: to
+> > > run
+> > > dedicated jenkins job running directly on one of builders, instead
+> > > of
+> > > kubernetes, as this will allow us to use scp upload method similar
+> > > as
+> > > we do with rootfs builds.
+> > > But this will also require creation of a completely new job
+> > > configuration for the Jenkins.
+> > >
+> > > On Fri, 2022-07-08 at 10:02 -0700, Todd Kjos via groups.io wrote:
+> > > > Any update from your Thursday meeting?
+> > > >
+> > > > On Wed, Jun 29, 2022 at 4:27 AM Denys Fedoryshchenko
+> > > > <denys.f@collabora.com>
+> > > > wrote:
+> > > >
+> > > > > We faced multiple issues.
+> > > > > 1) Most builders instance not suitable for this job, as it
+> > > > > require
+> > > > > large amount of RAM. Found workaround, tested in staging.
+> > > > > 2) The problem with the build time, it significantly exceeds
+> > > > > the
+> > > > > time
+> > > > > of usual builds. Theoretically, the problem can be solved by
+> > > > > increasing
+> > > > > the limits.
+> > > > > 3) Some tools was missing, thats solved.
+> > > > > 4) Some of the created objects during build exceed the size
+> > > > > that
+> > > > > the
+> > > > > library that we use to upload objects to storage can handle.
+> > > > > This
+> > > > > will
+> > > > > require significant changes in some parts of project to solve
+> > > > > and
+> > > > > major
+> > > > > blocker for me.
+> > > > >
+> > > > > I'm still not sure what to do next with that, and I'll discuss
+> > > > > this
+> > > > > at
+> > > > > the next weekly meeting (this Thursday).
+> > > > >
+> > > > > On Tue, 2022-06-28 at 12:16 -0700, Todd Kjos via groups.io
+> > > > > wrote:
+> > > > > > Any update on this?
+> > > > > >
+> > > > > >
+> > > > > > On Tue, May 10, 2022 at 12:50 PM Denys Fedoryshchenko
+> > > > > > <denys.f@collabora.com> wrote:
+> > > > > > >
+> > > > > > > On Tue, 2022-05-10 at 10:53 -0700, Todd Kjos via groups.io
+> > > > > > > wrote:
+> > > > > > > > On Tue, May 10, 2022 at 12:20 AM Denys Fedoryshchenko <
+> > > > > > > > denys.f@collabora.com>
+> > > > > > > > wrote:
+> > > > > > > >
+> > > > > > > > > Update
+> > > > > > > > >
+> > > > > > > > > We identified all packages required for kernel build:
+> > > > > > > > > dwarves, lz4, python3/python.
+> > > > > > > > >
+> > > > > > > > > We got ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1 built
+> > > > > > > > > on
+> > > > > > > > > our
+> > > > > > > > > staging
+> > > > > > > > > pipeline, but with error:
+> > > > > > > > >  LD      vmlinux
+> > > > > > > > >   BTFIDS  vmlinux
+> > > > > > > > > FAILED unresolved symbol xdp_buff
+> > > > > > > > >
+> > > > > > > >
+> > > > > > > > Which config and arch was this?
+> > > > > > > gki_defconfig
+> > > > > > > arm64
+> > > > > > > But it is a bit old snapshot i'm using as reference.
+> > > > > > > Tomorrow i will try latest 5.10 if anything changed.
+> > > > > > >
+> > > > > > > Container Log:
+> > > > > > >   LD      .tmp_vmlinux.kallsyms1
+> > > > > > >   KSYMS   .tmp_vmlinux.kallsyms1.S
+> > > > > > >   AS      .tmp_vmlinux.kallsyms1.S
+> > > > > > >   LD      .tmp_vmlinux.kallsyms2
+> > > > > > >   KSYMS   .tmp_vmlinux.kallsyms2.S
+> > > > > > >   AS      .tmp_vmlinux.kallsyms2.S
+> > > > > > >   LD      vmlinux
+> > > > > > >   BTFIDS  vmlinux
+> > > > > > > FAILED unresolved symbol xdp_buff
+> > > > > > > make[1]: *** [/tmp/kci/linux/Makefile:1267: vmlinux] Error
+> > > > > > > 255
+> > > > > > > make[1]: Leaving directory '/tmp/kci/linux/build'
+> > > > > > > make: *** [Makefile:185: __sub-make] Error 2
+> > > > > > > make: Leaving directory '/tmp/kci/linux'
+> > > > > > >
+> > > > > > > "branch": "staging-android",
+> > > > > > > "commit": "4dce9d7a65b14d5949b20ced210413d04d914053",
+> > > > > > > "describe": "ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1",
+> > > > > > > "describe_verbose": "v5.10-19504-g4dce9d7a65b1",
+> > > > > > > "tree": "kernelci",
+> > > > > > > "url": "https://github.com/kernelci/linux.git"
+> > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > >
+> > > > > > > > > I will create PR now to allocate larger builders (to
+> > > > > > > > > address
+> > > > > > > > > LTO
+> > > > > > > > > memory
+> > > > > > > > > overconsumption) and we will do test build on android
+> > > > > > > > > pipeline.
+> > > > > > > > >
+> > > > > > > >
+> > > > > > > > Thanks for helping with this!
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > >
+> > > > > > > > > On Thu, 2022-05-05 at 08:23 +0300, Denys Fedoryshchenko
+> > > > > > > > > wrote:
+> > > > > > > > > > Short update.
+> > > > > > > > > > Some of builders crashed due OOM, but not because of
+> > > > > > > > > > logs,
+> > > > > > > > > > but because LTO during linking phase consume more
+> > > > > > > > > > than
+> > > > > > > > > > 21Gb
+> > > > > > > > > > of
+> > > > > > > > > > RAM,
+> > > > > > > > > > and k8s builders allocated for project have only 4Gb
+> > > > > > > > > > allocated.
+> > > > > > > > > > It is not easy to solve, as it is either require to
+> > > > > > > > > > change
+> > > > > > > > > > LTO to
+> > > > > > > > > > "Thin
+> > > > > > > > > > LTO" (or disable it totally) to reduce memory
+> > > > > > > > > > consumption,
+> > > > > > > > > > which
+> > > > > > > > > > is
+> > > > > > > > > > not
+> > > > > > > > > > great, or increase builders size (and that means
+> > > > > > > > > > additional
+> > > > > > > > > > costs
+> > > > > > > > > > and
+> > > > > > > > > > approvals related to that).
+> > > > > > > > > > We are discussing on IRC possible solutions to this
+> > > > > > > > > > problem.
+> > > > > > > > > >
+> > > > > > > > > > On Wed, 2022-05-04 at 12:06 +0300, Denys
+> > > > > > > > > > Fedoryshchenko
+> > > > > > > > > > wrote:
+> > > > > > > > > > > At the moment I have identified a problem with more
+> > > > > > > > > > > packages
+> > > > > > > > > > > that
+> > > > > > > > > > > are
+> > > > > > > > > > > missing, now it is python, and i'm adding it as
+> > > > > > > > > > > well,
+> > > > > > > > > > > but
+> > > > > > > > > > > need
+> > > > > > > > > > > to
+> > > > > > > > > > > test
+> > > > > > > > > > > everything manually, and then on staging.
+> > > > > > > > > > >
+> > > > > > > > > > > Here is example of build that needs python:
+> > > > > > > > > > >
+> > > https://linux.kernelci.org/build/id/6271d9f8c49e05f410dc7b53/
+> > > > > > > > > > >
+> > > > > > > > >
+> > > > >
+> > >
+> https://storage.kernelci.org/android/android13-5.10/ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1/arm64/gki_defconfig/clang-14/logs/kernel.log
+> > > > > > > > > > >
+> > > > > > > > > > > Also, another problem some of the builders crashed,
+> > > > > > > > > > > probably
+> > > > > > > > > > > due to
+> > > > > > > > > > > OOM
+> > > > > > > > > > > or insufficient resources.
+> > > > > > > > > > >
+> > > https://linux.kernelci.org/build/id/6271db3a3c249a41a7dc7b48/
+> > > > > > > > > > >
+> > > > > > > > >
+> > > > >
+> > >
+> https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5.15-1526-g22e9215f1bea/arm64/gki_defconfig/clang-14/logs/kernel.log
+> > > > > > > > > > >
+> > > > > > > > > > > On manual tests, builds with pahole create about
+> > > > > > > > > > > 819Mbyte
+> > > > > > > > > > > of
+> > > > > > > > > > > warnings,
+> > > > > > > > > > > such as:
+> > > > > > > > > > > "namespace__recode_dwarf_types: couldn't find
+> > > > > > > > > > > 0x13423
+> > > > > > > > > > > type
+> > > > > > > > > > > for
+> > > > > > > > > > > 0x3d6a5
+> > > > > > > > > > > (member)!"
+> > > > > > > > > > > I am currently investigating whether these issues
+> > > > > > > > > > > are
+> > > > > > > > > > > related.
+> > > > > > > > > > > Therefore, it takes a bit more time than i
+> > > > > > > > > > > expected,
+> > > > > > > > > > > than
+> > > > > > > > > > > just
+> > > > > > > > > > > adding
+> > > > > > > > > > > a
+> > > > > > > > > > > pahole/dwarves package.
+> > > > > > > > > > >
+> > > > > > > > > > > I will update as soon as more information
+> > > > > > > > > > > available.
+> > > > > > > > > > >
+> > > > > > > > > > > On Tue, 2022-05-03 at 07:45 -0700, Todd Kjos wrote:
+> > > > > > > > > > > > Denys, Thanks for the update. Do you have a
+> > > > > > > > > > > > prediction
+> > > > > > > > > > > > for
+> > > > > > > > > > > > when
+> > > > > > > > > > > > it
+> > > > > > > > > > > > will land?
+> > > > > > > > > > > >
+> > > > > > > > > > > > On Mon, May 2, 2022 at 9:58 PM Denys
+> > > > > > > > > > > > Fedoryshchenko
+> > > > > > > > > > > > <denys.f@collabora.com> wrote:
+> > > > > > > > > > > > > Hi,
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > We are testing in staging fix for that:
+> > > > > > > > > > > > >
+> https://github.com/kernelci/kernelci-core/pull/1158
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > Also i noticed in some cases lz4 package
+> > > > > > > > > > > > > required
+> > > > > > > > > > > > > for
+> > > > > > > > > > > > > this
+> > > > > > > > > > > > > test,
+> > > > > > > > > > > > > so added it too.
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > Best regards,
+> > > > > > > > > > > > > Denys
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > On Fri, 2022-04-29 at 15:22 -0700, Todd Kjos
+> > > > > > > > > > > > > via
+> > > > > > > > > > > > > groups.io
+> > > > > > > > > > > > > wrote:
+> > > > > > > > > > > > > > We have a bunch of Android kernel test
+> > > > > > > > > > > > > > failures
+> > > > > > > > > > > > > > due
+> > > > > > > > > > > > > > to
+> > > > > > > > > > > > > > missing
+> > > > > > > > > > > > > > "pahole" in
+> > > > > > > > > > > > > > the build environment (example android13-5.15
+> > > > > > > > > > > > > > gki_defconfig
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > <
+> > > > > > > > >
+> > > > >
+> > >
+> https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5.15-1515-g7a68c2c45139/arm64/gki_defconfig/gcc-10/logs/kernel.log
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > ):
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >   LD      vmlinux.o
+> > > > > > > > > > > > > >   MODPOST vmlinux.symvers
+> > > > > > > > > > > > > >   MODINFO modules.builtin.modinfo
+> > > > > > > > > > > > > >   GEN     modules.builtin
+> > > > > > > > > > > > > > BTF: .tmp_vmlinux.btf: pahole (pahole) is not
+> > > > > > > > > > > > > > available
+> > > > > > > > > > > > > > Failed to generate BTF for vmlinux
+> > > > > > > > > > > > > > Try to disable CONFIG_DEBUG_INFO_BTF
+> > > > > > > > > > > > > > make[1]: *** [/tmp/kci/linux/Makefile:1247:
+> > > > > > > > > > > > > > vmlinux]
+> > > > > > > > > > > > > > Error 1
+> > > > > > > > > > > > > > make[1]: Leaving directory
+> > > > > > > > > > > > > > '/tmp/kci/linux/build'
+> > > > > > > > > > > > > > make: *** [Makefile:237: __sub-make] Error 2
+> > > > > > > > > > > > > > make: Leaving directory '/tmp/kci/linux'
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > Would it be possible to get pahole added to
+> > > > > > > > > > > > > > the
+> > > > > > > > > > > > > > build
+> > > > > > > > > > > > > environments
+> > > > > > > > > > > > > > used to
+> > > > > > > > > > > > > > build android kernels?
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > -Todd
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > >
+> > > > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > >
+> > > > > > >
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > >
+> > > >
+> > > >
+> > > >
+> > > >
+> > >
+> > >
+> > >
+> > >
+> >
+> >
 > > 
-> > CFI_FORWARD_PROTO is going to fail unless there is an active CFI system
-> > in place of some kind. Right now this depends on arm64+Clang. In the
-> > future, this will be arch-agnostic+Clang, but for the moment, it should
-> > be safe to exclude this test.
-> > 
-> > In this patch, I'm turning off CFI_FORWARD_PROTO by default here. We can
-> > re-enable it when it becomes arch agnostic. CFI_FORWARD_PROTO cannot be
-> > turned off by using a config. Please let me know your thoughts otherwise.
-
-I don't like the idea of disabling the test because this means it won't
-have any output in CI systems to examine at all. I'd much rather have
-tests that are expecting to fail to report XFAIL from the kernel
-instead. (See things like lkdtm_UNSET_SMEP.)
-
--- 
-Kees Cook
+> >
+> >
+>
+>
+>
