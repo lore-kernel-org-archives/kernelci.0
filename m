@@ -1,204 +1,434 @@
-Return-Path: <Nikolai.Kondrashov@redhat.com>
-Message-ID: <76f90f32-7265-3215-26db-4987e56a5e73@redhat.com>
-Date: Mon, 5 Sep 2022 15:13:47 +0300
+Message-ID: <fc3ad071f2f7134988fb5e6424ef460ef53f72c6.camel@collabora.com>
+Subject: Re: kernelci failures due to "pahole" missing
+From: "Denys Fedoryshchenko" <denys.f@collabora.com>
+Date: Tue, 06 Sep 2022 15:53:25 +0300
+In-Reply-To: <CAHRSSEy04bqbFNv9EtQPvLKfQ4es3FxJM=mCXM99s5-_Pv-D5Q@mail.gmail.com>
+References: 
+	<CAHRSSEwMoYQz2ua+PmFRcWSXJREUtrsKCFdivDJ+XdJP9Di_MQ@mail.gmail.com>
+	 <f91a21bd782f3988cb6988ff96558dda036ca16f.camel@collabora.com>
+	 <CAHRSSEynGz318YD-TmzZUyXE9ZquLGgoBJJnYzrFsUN8dp8NFA@mail.gmail.com>
+	 <16EBDBAB78C06CE6.10903@groups.io>
+	 <adcac2f5fdfdaec902e49f08b16924c09cb7d6cf.camel@collabora.com>
+	 <850e223c3512417ce8d9497d3395e6b6f0d27b55.camel@collabora.com>
+	 <CAHRSSEwGmJopp2fjJXt_rNgH+Um3jMoCACxyrdZo=V9HkYVKVw@mail.gmail.com>
+	 <7c8acd8bb5277c8d10c00ea6d356267fb6938524.camel@collabora.com>
+	 <CAHRSSExQrtbZDPLowaFxOgbnGR2Eh3twY9GOrQ_QUEkFTpde5w@mail.gmail.com>
+	 <e8ffc2b3cf8ccdcf8ca6d455a9495559d56cbcb9.camel@collabora.com>
+	 <CAHRSSEy7cT-Y-4-Vx_hGi+ubYK8_tar6kaxcsaVMF29J34Evbg@mail.gmail.com>
+	 <02da7d7581da74c0d32092ae1e6da35947731351.camel@collabora.com>
+	 <CAHRSSEyFW6bNs2xjQybmy9gSOia8ZwcE_xpOz4613pnsJMwNwg@mail.gmail.com>
+	 <2272fa71024001c69c15babadf050fbf35a9a9b8.camel@collabora.com>
+	 <CAHRSSEy04bqbFNv9EtQPvLKfQ4es3FxJM=mCXM99s5-_Pv-D5Q@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [kernelci-members] KernelCI working group: Web Dashboard
-References: <f3874e7d-ccfe-4a2d-d054-9b7bf9e8b44d@collabora.com>
- <16F4479F76A8C807.11895@groups.io> <16F65ECD601264EC.15470@groups.io>
- <1706557437ACCB9C.25939@groups.io> <170FD91B51709B41.16609@groups.io>
- <1710D385D5C94519.1438@groups.io>
- <82a05396-2a72-278d-0a65-1b056a0111cc@collabora.com>
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <82a05396-2a72-278d-0a65-1b056a0111cc@collabora.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, gustavo.padovan@collabora.com, kernelci-members@groups.io
-Cc: automated-testing@lists.yoctoproject.org, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>, Simon Xiao <sixiao@microsoft.com>, Carlos Cardenas <Carlos.Cardenas@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Sharath George John <sgeorgejohn@microsoft.com>, "Alain Gefflaut (HE/HIM)" <agefflaut@microsoft.com>, Johnson George <Johnson.George@microsoft.com>
+To: kernelci@groups.io, tkjos@google.com
 
-Hello Gustavo,
+Hi,
 
-It probably won't work next week, as much of KernelCI (at least) will be at 
-the Linux Plumbers conference.
+I think i have good news regarding this issue, which initially
+was just adding pahole tool, but turned in a bit long story due many
+complications.
 
-Nick
+Several problems we had to solve:
+1)Several packages had to be added to build docker images, we had to
+make sure it doesnt break anything else
+2)gki_defconfig during build require quite a lot of resources (at least
+18Gb of RAM), so we had to allocate this builds to biggest k8s nodes we
+have, and on currently allocated budget i had to wait, until there is=20
+available resources to do test builds, as this nodes often busy.
+3)Generated files size exceed internal limits that our current software
+frameworks can handle and log file size + kernel size will quickly fill
+the storage if left uncompressed, so we had to implement compression
+before uploading files to storage
 
-On 9/5/22 14:04, Gustavo Padovan wrote:
-> Hello,
-> 
-> I have learned that Today is holiday in the US and Canada. So I am moving this 
-> invite to the same time next week. If it doesn't work for people, we can start 
-> a new pool. Please let me know.
-> 
-> Regards,
-> 
-> Gustavo
-> 
-> Le 01/09/2022 à 15:32, Gustavo Padovan a écrit :
->> Hello,
->>
->> The next meeting is next Monday September 5th at 12:00pm EDT. Invite sent to 
->> those who answered the poll and the the members and tsc mailing list. In any 
->> invite ics is attached.
->>
->> Best regards,
->>
->> Gustavo
->>
->> Le 29/08/2022 à 11:04, Gustavo Padovan a écrit :
->>> Hello,
->>>
->>> The previous tentative below didn't work due to vacation season. Here's a 
->>> new pool with dates from 1st to 8th of September. Please answer it until 
->>> this Wednesday August 31th.
->>>
->>> https://doodle.com/meeting/participate/id/dG5v423a
->>>
->>> See the email below for meetings notes and current User Stories document.
->>>
->>> Regards,
->>>
->>> Gustavo
->>>
->>> On 7/18/22 10:17, Gustavo Padovan wrote:
->>>> Hi everyone,
->>>>
->>>> In our last Web Dashboard meeting[1] where we reviewed the User Stories 
->>>> document[2]. Then, after that we worked offline to incorporate the 
->>>> feedback on doc, so it is time for our next meeting to further discuss. 
->>>> Please answer the poll with your time availability on the link below. I 
->>>> added dates from 21th to 28th of July.
->>>>
->>>> https://doodle.com/meeting/participate/id/eX6vyY5b
->>>>
->>>> Thank you,
->>>>
->>>> Gus
->>>> —
->>>> [1]https://docs.google.com/document/d/1yp-2L54tnrwkZ--59t2GeXuq1gt5dDnsFy08odizl1Y/edit#bookmark=id.6ok0ufne9shj
->>>> [2]https://docs.google.com/document/d/1_rfMpas4n_gw2GvUTRU63vIXk95VotJuittalX7trP8/edit#heading=h.wjoxi4s5pxzl
->>>>
->>>> On 6/7/22 10:46, Gustavo Padovan wrote:
->>>>>
->>>>> Hello,
->>>>>
->>>>> Our next meeting has been scheduled for this Thursday at 3pm UTC. Invite 
->>>>> was sent to the kernelci-members list, but here goes the instructions to 
->>>>> join as well:
->>>>>
->>>>> This event has a video call.
->>>>> Join: https://meet.google.com/yyz-jzjy-yfu
->>>>> (US) +1 254-227-6870 PIN: 188509910#
->>>>> View more phone numbers: 
->>>>> https://tel.meet/yyz-jzjy-yfu?pin=5882595078642&hs=7
->>>>>
->>>>> Regards,
->>>>>
->>>>> Gustavo
->>>>>
->>>>> Le 31/05/2022 à 15:34, Gustavo Padovan a écrit :
->>>>>>
->>>>>> Hello everyone,
->>>>>>
->>>>>> **
->>>>>>
->>>>>> *From our first meeting back in October[1], we took the action of 
->>>>>> organizing our user stories that you were spread as a comments in the 
->>>>>> the github issue{2} and, converting them into User Stories document[3].*
->>>>>>
->>>>>> *
->>>>>>
->>>>>> In the next meeting, we want to study the current User Stories and start 
->>>>>> discussions to progress on development. The proposed slots are for next 
->>>>>> week. Please answer the doodle by the end of this week:
->>>>>>
->>>>>> https://doodle.com/meeting/participate/id/egJ12A9d
->>>>>>
->>>>>> Best regards,
->>>>>>
->>>>>> Gustavo
->>>>>>
->>>>>> [1] 
->>>>>> https://docs.google.com/document/d/1yp-2L54tnrwkZ--59t2GeXuq1gt5dDnsFy08odizl1Y/edit#
->>>>>>
->>>>>> [2] https://github.com/kernelci/kernelci-project/discussions/28 
->>>>>> <https://github.com/kernelci/kernelci-project/discussions/28>
->>>>>>
->>>>>> {3} 
->>>>>> https://docs.google.com/document/d/1_rfMpas4n_gw2GvUTRU63vIXk95VotJuittalX7trP8/edit*
->>>>>> Le 27/07/2021 à 11:54, Guillaume Tucker a écrit :
->>>>>>> Last year's KernelCI Community Survey[1] showed the importance of
->>>>>>> having a good web dashboard.  About 70% of respondents would use
->>>>>>> one if it provided the information they needed efficiently.
->>>>>>> While other things are arguably even more important, such as
->>>>>>> testing patches from mailing lists, replying to stable reviews
->>>>>>> and sending email reports directly to contributors in a "natural"
->>>>>>> workflow, the web dashboard has been a sticking point for a
->>>>>>> while.
->>>>>>>
->>>>>>> There have been several attempts at solving this problem, using
->>>>>>> Elastic Stack and Grafana among other things, but there isn't a
->>>>>>> single framework able to directly provide an off-the-shelf
->>>>>>> solution to the community's needs.  In fact, the first issue is
->>>>>>> the lack of understanding of these needs: who wants to use the
->>>>>>> web dashboard, and how?  Then, how does one translate those needs
->>>>>>> into a user interface?  Doing this requires skills that engineers
->>>>>>> who regularly contribute to KernelCI typically don't have. As
->>>>>>> such, a dedicated working group is being created in order to fill
->>>>>>> this gap.
->>>>>>>
->>>>>>> The aim is to coordinate efforts and try to follow best practices
->>>>>>> to make steady progress and avoid repeating the same mistakes.
->>>>>>> Most likely, we will need some help from proper web developers
->>>>>>> who aren't part of the usual KernelCI community.  This may be
->>>>>>> facilitated by the KernelCI LF project budget if approved by the
->>>>>>> governing board.
->>>>>>>
->>>>>>> In order to get started, we would need to have maybe 3 to 5
->>>>>>> people available to focus on this.  It doesn't necessarily mean a
->>>>>>> lot of hours spent but actions to be carried out on a daily or
->>>>>>> weekly basis.  So far we have Gustavo Padovan as our new KernelCI
->>>>>>> Project Manager and a few people have expressed interest but we
->>>>>>> still need formal confirmation.
->>>>>>>
->>>>>>>
->>>>>>> Here's a GitHub project dedicated to the new web dashboard:
->>>>>>>
->>>>>>>    https://github.com/orgs/kernelci/projects/4
->>>>>>>
->>>>>>> I've created a couple of issues to get started about user
->>>>>>> stories, and some initial milestones as a basic skeleton:
->>>>>>>
->>>>>>> https://github.com/kernelci/kernelci-project/milestones
->>>>>>>
->>>>>>>
->>>>>>> This is ultimately a community-driven effort to address the needs
->>>>>>> of the kernel community.  Please share any thoughts you may have
->>>>>>> on this, whether you want to add some user stories, share some
->>>>>>> expertise, be officially in the working group or take part in
->>>>>>> this effort in any other way.
->>>>>>>
->>>>>>> Best wishes,
->>>>>>> Guillaume
->>>>>>>
->>>>>>> [1]https://foundation.kernelci.org/blog/2020/07/09/kernelci-community-survey-report/
->>>>>>>
->>>>>>>
->>>>>>>
->>>>>>>
->>>>>>>
->>>>>
->>>>
->>>
->>
->>
->>
->>
->>
-> 
-> 
-> 
-> 
-> 
+So here is one of results on production, finally:
+
+https://storage.kernelci.org/android/android13-5.15/android13-5.15-2022-08_=
+r1-95-gca7f18ea252e/arm64/gki_defconfig/clang-14/
+
+
+On Wed, 2022-07-13 at 10:45 -0700, Todd Kjos via groups.io wrote:
+> As long as it is easy to access/decompress the logs that's fine.
+>=20
+> On Wed, Jul 13, 2022 at 10:40 AM Denys Fedoryshchenko
+> <denys.f@collabora.com>
+> wrote:
+>=20
+> > I apologize for the delay, as what was supposed to be a simple task
+> > with
+> > the addition of a pahole tool turned into a fundamental problem.
+> > I hope to be able to solve this problem soon.
+> > One of the options I'm considering is compressing Image and
+> > kernel.log
+> > through xz -9.
+> > This whille make build a bit different from standard builds.
+> > It is a bit hack, but might be a bit faster than implementing other
+> > solutions.
+> > Is it acceptable?
+> >=20
+> > Here i pushed in staging almost manually results:
+> > https://storage.staging.kernelci.org/kernelci/staging-android/ASB-2022-=
+06-05_13-5.15-46-g15a32b46ee0f4/arm64/gki_defconfig/clang-15/logs/
+> > As you can see kernel.log is 813Mbyte and Image is 193Mbyte, which
+> > is a
+> > bit too much.
+> >=20
+> > On Wed, 2022-07-13 at 10:32 -0700, Todd Kjos wrote:
+> >=20
+> > Denys, thanks for the update. I don't consider this urgent, but I
+> > would
+> > eventually like to see our "gki_defconfig" builds be green again.
+> >=20
+> > On Tue, Jul 12, 2022 at 2:49 AM Denys Fedoryshchenko <
+> > denys.f@collabora.com> wrote:
+> >=20
+> > Hi,
+> >=20
+> > Sorry for the delay, it took longer than this meeting as we faced
+> > major
+> > issue - current system design cannot handle large objects upload
+> > (larger than ~200Mbyte) and there is no easy workaround for that.
+> >=20
+> > Theoretically, the new system architecture (kernelci-api) solves
+> > this
+> > problem, but it will take several months to finalize it.
+> > I'll try to develop a partial upload method (so it will upload file
+> > by
+> > chunks), but that too will take some time as i have only few hours
+> > per
+> > week aside from primary project and other developers are also
+> > overloaded.
+> > Also during discussion it was suggested alternative solution: to
+> > run
+> > dedicated jenkins job running directly on one of builders, instead
+> > of
+> > kubernetes, as this will allow us to use scp upload method similar
+> > as
+> > we do with rootfs builds.
+> > But this will also require creation of a completely new job
+> > configuration for the Jenkins.
+> >=20
+> > On Fri, 2022-07-08 at 10:02 -0700, Todd Kjos via groups.io wrote:
+> > > Any update from your Thursday meeting?
+> > >=20
+> > > On Wed, Jun 29, 2022 at 4:27 AM Denys Fedoryshchenko
+> > > <denys.f@collabora.com>
+> > > wrote:
+> > >=20
+> > > > We faced multiple issues.
+> > > > 1) Most builders instance not suitable for this job, as it
+> > > > require
+> > > > large amount of RAM. Found workaround, tested in staging.
+> > > > 2) The problem with the build time, it significantly exceeds
+> > > > the
+> > > > time
+> > > > of usual builds. Theoretically, the problem can be solved by
+> > > > increasing
+> > > > the limits.
+> > > > 3) Some tools was missing, thats solved.
+> > > > 4) Some of the created objects during build exceed the size
+> > > > that
+> > > > the
+> > > > library that we use to upload objects to storage can handle.
+> > > > This
+> > > > will
+> > > > require significant changes in some parts of project to solve
+> > > > and
+> > > > major
+> > > > blocker for me.
+> > > >=20
+> > > > I'm still not sure what to do next with that, and I'll discuss
+> > > > this
+> > > > at
+> > > > the next weekly meeting (this Thursday).
+> > > >=20
+> > > > On Tue, 2022-06-28 at 12:16 -0700, Todd Kjos via groups.io
+> > > > wrote:
+> > > > > Any update on this?
+> > > > >=20
+> > > > >=20
+> > > > > On Tue, May 10, 2022 at 12:50 PM Denys Fedoryshchenko
+> > > > > <denys.f@collabora.com> wrote:
+> > > > > >=20
+> > > > > > On Tue, 2022-05-10 at 10:53 -0700, Todd Kjos via groups.io
+> > > > > > wrote:
+> > > > > > > On Tue, May 10, 2022 at 12:20 AM Denys Fedoryshchenko <
+> > > > > > > denys.f@collabora.com>
+> > > > > > > wrote:
+> > > > > > >=20
+> > > > > > > > Update
+> > > > > > > >=20
+> > > > > > > > We identified all packages required for kernel build:
+> > > > > > > > dwarves, lz4, python3/python.
+> > > > > > > >=20
+> > > > > > > > We got ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1 built
+> > > > > > > > on
+> > > > > > > > our
+> > > > > > > > staging
+> > > > > > > > pipeline, but with error:
+> > > > > > > > =C2=A0LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux
+> > > > > > > > =C2=A0 BTFIDS=C2=A0 vmlinux
+> > > > > > > > FAILED unresolved symbol xdp_buff
+> > > > > > > >=20
+> > > > > > >=20
+> > > > > > > Which config and arch was this?
+> > > > > > gki_defconfig
+> > > > > > arm64
+> > > > > > But it is a bit old snapshot i'm using as reference.
+> > > > > > Tomorrow i will try latest 5.10 if anything changed.
+> > > > > >=20
+> > > > > > Container Log:
+> > > > > > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1
+> > > > > > =C2=A0 KSYMS=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1.S
+> > > > > > =C2=A0 AS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms1.=
+S
+> > > > > > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms2
+> > > > > > =C2=A0 KSYMS=C2=A0=C2=A0 .tmp_vmlinux.kallsyms2.S
+> > > > > > =C2=A0 AS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux.kallsyms2.=
+S
+> > > > > > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux
+> > > > > > =C2=A0 BTFIDS=C2=A0 vmlinux
+> > > > > > FAILED unresolved symbol xdp_buff
+> > > > > > make[1]: *** [/tmp/kci/linux/Makefile:1267: vmlinux] Error
+> > > > > > 255
+> > > > > > make[1]: Leaving directory '/tmp/kci/linux/build'
+> > > > > > make: *** [Makefile:185: __sub-make] Error 2
+> > > > > > make: Leaving directory '/tmp/kci/linux'
+> > > > > >=20
+> > > > > > "branch": "staging-android",
+> > > > > > "commit": "4dce9d7a65b14d5949b20ced210413d04d914053",
+> > > > > > "describe": "ASB-2022-04-05_13-5.10-206-g4dce9d7a65b1",
+> > > > > > "describe_verbose": "v5.10-19504-g4dce9d7a65b1",
+> > > > > > "tree": "kernelci",
+> > > > > > "url": "https://github.com/kernelci/linux.git"
+> > > > > >=20
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > > >=20
+> > > > > > > > I will create PR now to allocate larger builders (to
+> > > > > > > > address
+> > > > > > > > LTO
+> > > > > > > > memory
+> > > > > > > > overconsumption) and we will do test build on android
+> > > > > > > > pipeline.
+> > > > > > > >=20
+> > > > > > >=20
+> > > > > > > Thanks for helping with this!
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > > >=20
+> > > > > > > > On Thu, 2022-05-05 at 08:23 +0300, Denys Fedoryshchenko
+> > > > > > > > wrote:
+> > > > > > > > > Short update.
+> > > > > > > > > Some of builders crashed due OOM, but not because of
+> > > > > > > > > logs,
+> > > > > > > > > but because LTO during linking phase consume more
+> > > > > > > > > than
+> > > > > > > > > 21Gb
+> > > > > > > > > of
+> > > > > > > > > RAM,
+> > > > > > > > > and k8s builders allocated for project have only 4Gb
+> > > > > > > > > allocated.
+> > > > > > > > > It is not easy to solve, as it is either require to
+> > > > > > > > > change
+> > > > > > > > > LTO to
+> > > > > > > > > "Thin
+> > > > > > > > > LTO" (or disable it totally) to reduce memory
+> > > > > > > > > consumption,
+> > > > > > > > > which
+> > > > > > > > > is
+> > > > > > > > > not
+> > > > > > > > > great, or increase builders size (and that means
+> > > > > > > > > additional
+> > > > > > > > > costs
+> > > > > > > > > and
+> > > > > > > > > approvals related to that).
+> > > > > > > > > We are discussing on IRC possible solutions to this
+> > > > > > > > > problem.
+> > > > > > > > >=20
+> > > > > > > > > On Wed, 2022-05-04 at 12:06 +0300, Denys
+> > > > > > > > > Fedoryshchenko
+> > > > > > > > > wrote:
+> > > > > > > > > > At the moment I have identified a problem with more
+> > > > > > > > > > packages
+> > > > > > > > > > that
+> > > > > > > > > > are
+> > > > > > > > > > missing, now it is python, and i'm adding it as
+> > > > > > > > > > well,
+> > > > > > > > > > but
+> > > > > > > > > > need
+> > > > > > > > > > to
+> > > > > > > > > > test
+> > > > > > > > > > everything manually, and then on staging.
+> > > > > > > > > >=20
+> > > > > > > > > > Here is example of build that needs python:
+> > > > > > > > > >=20
+> > https://linux.kernelci.org/build/id/6271d9f8c49e05f410dc7b53/
+> > > > > > > > > >=20
+> > > > > > > >=20
+> > > >=20
+> > https://storage.kernelci.org/android/android13-5.10/ASB-2022-04-05_13-5=
+.10-206-g4dce9d7a65b1/arm64/gki_defconfig/clang-14/logs/kernel.log
+> > > > > > > > > >=20
+> > > > > > > > > > Also, another problem some of the builders crashed,
+> > > > > > > > > > probably
+> > > > > > > > > > due to
+> > > > > > > > > > OOM
+> > > > > > > > > > or insufficient resources.
+> > > > > > > > > >=20
+> > https://linux.kernelci.org/build/id/6271db3a3c249a41a7dc7b48/
+> > > > > > > > > >=20
+> > > > > > > >=20
+> > > >=20
+> > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5=
+.15-1526-g22e9215f1bea/arm64/gki_defconfig/clang-14/logs/kernel.log
+> > > > > > > > > >=20
+> > > > > > > > > > On manual tests, builds with pahole create about
+> > > > > > > > > > 819Mbyte
+> > > > > > > > > > of
+> > > > > > > > > > warnings,
+> > > > > > > > > > such as:
+> > > > > > > > > > "namespace__recode_dwarf_types: couldn't find
+> > > > > > > > > > 0x13423
+> > > > > > > > > > type
+> > > > > > > > > > for
+> > > > > > > > > > 0x3d6a5
+> > > > > > > > > > (member)!"
+> > > > > > > > > > I am currently investigating whether these issues
+> > > > > > > > > > are
+> > > > > > > > > > related.
+> > > > > > > > > > Therefore, it takes a bit more time than i
+> > > > > > > > > > expected,
+> > > > > > > > > > than
+> > > > > > > > > > just
+> > > > > > > > > > adding
+> > > > > > > > > > a
+> > > > > > > > > > pahole/dwarves package.
+> > > > > > > > > >=20
+> > > > > > > > > > I will update as soon as more information
+> > > > > > > > > > available.
+> > > > > > > > > >=20
+> > > > > > > > > > On Tue, 2022-05-03 at 07:45 -0700, Todd Kjos wrote:
+> > > > > > > > > > > Denys, Thanks for the update. Do you have a
+> > > > > > > > > > > prediction
+> > > > > > > > > > > for
+> > > > > > > > > > > when
+> > > > > > > > > > > it
+> > > > > > > > > > > will land?
+> > > > > > > > > > >=20
+> > > > > > > > > > > On Mon, May 2, 2022 at 9:58 PM Denys
+> > > > > > > > > > > Fedoryshchenko
+> > > > > > > > > > > <denys.f@collabora.com> wrote:
+> > > > > > > > > > > > Hi,
+> > > > > > > > > > > >=20
+> > > > > > > > > > > > We are testing in staging fix for that:
+> > > > > > > > > > > > https://github.com/kernelci/kernelci-core/pull/1158
+> > > > > > > > > > > >=20
+> > > > > > > > > > > > Also i noticed in some cases lz4 package
+> > > > > > > > > > > > required
+> > > > > > > > > > > > for
+> > > > > > > > > > > > this
+> > > > > > > > > > > > test,
+> > > > > > > > > > > > so added it too.
+> > > > > > > > > > > >=20
+> > > > > > > > > > > > Best regards,
+> > > > > > > > > > > > Denys
+> > > > > > > > > > > >=20
+> > > > > > > > > > > > On Fri, 2022-04-29 at 15:22 -0700, Todd Kjos
+> > > > > > > > > > > > via
+> > > > > > > > > > > > groups.io
+> > > > > > > > > > > > wrote:
+> > > > > > > > > > > > > We have a bunch of Android kernel test
+> > > > > > > > > > > > > failures
+> > > > > > > > > > > > > due
+> > > > > > > > > > > > > to
+> > > > > > > > > > > > > missing
+> > > > > > > > > > > > > "pahole" in
+> > > > > > > > > > > > > the build environment (example android13-5.15
+> > > > > > > > > > > > > gki_defconfig
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > <
+> > > > > > > >=20
+> > > >=20
+> > https://storage.kernelci.org/android/android13-5.15/ASB-2022-04-05_13-5=
+.15-1515-g7a68c2c45139/arm64/gki_defconfig/gcc-10/logs/kernel.log
+> > > > > > > > > > > > > >=20
+> > > > > > > > > > > > > ):
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux.o
+> > > > > > > > > > > > > =C2=A0 MODPOST vmlinux.symvers
+> > > > > > > > > > > > > =C2=A0 MODINFO modules.builtin.modinfo
+> > > > > > > > > > > > > =C2=A0 GEN=C2=A0=C2=A0=C2=A0=C2=A0 modules.builti=
+n
+> > > > > > > > > > > > > BTF: .tmp_vmlinux.btf: pahole (pahole) is not
+> > > > > > > > > > > > > available
+> > > > > > > > > > > > > Failed to generate BTF for vmlinux
+> > > > > > > > > > > > > Try to disable CONFIG_DEBUG_INFO_BTF
+> > > > > > > > > > > > > make[1]: *** [/tmp/kci/linux/Makefile:1247:
+> > > > > > > > > > > > > vmlinux]
+> > > > > > > > > > > > > Error 1
+> > > > > > > > > > > > > make[1]: Leaving directory
+> > > > > > > > > > > > > '/tmp/kci/linux/build'
+> > > > > > > > > > > > > make: *** [Makefile:237: __sub-make] Error 2
+> > > > > > > > > > > > > make: Leaving directory '/tmp/kci/linux'
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > > Would it be possible to get pahole added to
+> > > > > > > > > > > > > the
+> > > > > > > > > > > > > build
+> > > > > > > > > > > > environments
+> > > > > > > > > > > > > used to
+> > > > > > > > > > > > > build android kernels?
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > > -Todd
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > > >=20
+> > > > > > > > > > > >=20
+> > > > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > > >=20
+> > > > > > > > >=20
+> > > > > > > >=20
+> > > > > > > >=20
+> > > > > > > >=20
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > >=20
+> > > > > >=20
+> > > > > >=20
+> > > > >=20
+> > > > >=20
+> > > > >=20
+> > > > >=20
+> > > > >=20
+> > > >=20
+> > > >=20
+> > > >=20
+> > >=20
+> > >=20
+> > >=20
+> > >=20
+> > >=20
+> >=20
+> >=20
+> >=20
+> >=20
+>=20
+>=20
+>=20
+>=20
+>=20
+
 
