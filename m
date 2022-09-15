@@ -1,40 +1,56 @@
-Message-ID: <e76f6cc8-210f-e8f0-9dfa-0718488588ee@collabora.com>
-Date: Thu, 15 Sep 2022 11:41:56 +0200
+Message-ID: <9b4773cc-f68c-4e34-4688-92c968bfb66c@collabora.com>
+Date: Thu, 15 Sep 2022 18:23:05 +0200
 MIME-Version: 1.0
-Subject: Re: [kernelci-members] Joining any project for testing purposes
-References: <CALOBUQ1xJKDwsDx8hgc4-Bj-uD53vSDaJpYoTYfBOfHjVebM_A@mail.gmail.com>
+Subject: Re: UM-Linux compilation on Android Common Kernels
+References: <131709e8-f804-5623-448d-7c3607be00e0@quicinc.com>
+ <CAHRSSExm0P0kBF00R9Ft7-GVMcf0A9190mjeOWU4umKA3PL93A@mail.gmail.com>
+ <CAHRSSEy20Zc80XufjYN4XjXbba6BTMHd_9kFaNOnhiuj9yEDsQ@mail.gmail.com>
+ <YxCtqsY55Lwaj34H@sirena.org.uk>
+ <CAHRSSEw9KqQFKZND1fmMa67btkozg0yA_0NjF8C=UiLnvfwHGA@mail.gmail.com>
+ <YxXkuTdnt4IbPMDC@sirena.org.uk>
+ <CAHRSSEzgEyPDxZ64SUdJNZRU3YAxS+mJcfVgG4-cSjjuTsH0Xg@mail.gmail.com>
 From: "Guillaume Tucker" <guillaume.tucker@collabora.com>
-In-Reply-To: <CALOBUQ1xJKDwsDx8hgc4-Bj-uD53vSDaJpYoTYfBOfHjVebM_A@mail.gmail.com>
+In-Reply-To: <CAHRSSEzgEyPDxZ64SUdJNZRU3YAxS+mJcfVgG4-cSjjuTsH0Xg@mail.gmail.com>
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: "kernelci@groups.io" <kernelci@groups.io>
-Cc: kernelci-members <kernelci-members@groups.io>
+To: kernelci@groups.io, tkjos@google.com, Mark Brown <broonie@kernel.org>
+Cc: Elliot Berman <quic_eberman@quicinc.com>
 
-[moving to kernelci@groups.io]
+Hi Todd,
 
-On 18/08/2022 16:50, Mehmet Akif Yegin wrote:
-> Dear,
-> 
-> My name is Akif. I am so interested in Linux and testing tools. I've been learning for 1 years to use some testing tools such as Postman(for testing API), Selenium Library (for testing UI) and Database testing. I want to be a part of some project and help to build open source projects. Is it possible to join some project to help them as an automation tester (SDET).
+On 14/09/2022 22:36, Todd Kjos via groups.io wrote:
+> Is there an ETA for at least doing the builds?
 
-Please feel free to take a look at the KernelCI project
-documentation[1], the GitHub workboard[2] and reach out on IRC
-#kernelci libera.chat if you have any requests.
+I don't think anyone else is asking for user-mode builds, and
+adding this new architecture with a new sub-architecture
+parameter is not as trivial as adding a few lines of YAML config.
+So unless someone on this list is interested, or someone wants to
+run an internship topic around that, I think you'll have to go
+and find someone to do the work.
+
+KernelCI is starting to run KUnit which does involve UM-Linux
+builds but that's all done "under the hood" by the KUnit
+framework.  Still, I guess it would catch some build errors as a
+side-effect.  So an alternative is to wait for that to be fully
+in production (first half 2023) and we can consider enabling it
+on some Android kernel trees.
 
 Best wishes,
 Guillaume
 
-[1] https://kernelci.org/docs/
-[2] https://github.com/orgs/kernelci/projects/1
-
-
-> Thank you so much .
+> On Mon, Sep 5, 2022 at 4:59 AM Mark Brown <broonie@kernel.org> wrote:
+> 
+>> On Thu, Sep 01, 2022 at 08:44:25AM -0700, Todd Kjos wrote:
+>>> Could we start by building but not testing? That at least prevents build
+>>> breakage (which is the case that motivated this).
+>>
+>> Yes, that's definitely an easier first step.
+>>
 > 
 > 
-> Best regards,
-> Mehmet Akif Yegin
-> _._,_._,_
-
+> 
+> 
+> 
 
