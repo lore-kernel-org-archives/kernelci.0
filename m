@@ -1,101 +1,58 @@
-Return-Path: <Nikolai.Kondrashov@redhat.com>
-Message-ID: <68c0745f-6cc8-447e-143c-409216d69cae@redhat.com>
-Date: Fri, 22 Apr 2022 17:06:19 +0300
+Message-ID: <e0261ec2-f085-81ac-4130-de0c3d69d93b@suse.cz>
+Date: Mon, 19 Sep 2022 12:04:16 +0200
 MIME-Version: 1.0
-From: "Nikolai Kondrashov" <Nikolai.Kondrashov@redhat.com>
-Subject: #KCIDB engagement report
-Reply-To: kernelci@groups.io, Nikolai.Kondrashov@redhat.com
+Subject: Re: kernelci/staging-next staging-next-20220916.0: 3 runs 1 failures
+References: <632464ba.630a0220.d15ef.6eca@mx.google.com>
+ <08412769-30f9-c901-8a14-efd5835be68a@collabora.com>
+ <185f4c80-9bef-4fc5-732e-b194ad0f2ee8@suse.cz>
+ <7d9fe347-fcd4-ae69-8a17-2a71a8145202@suse.cz>
+ <a68d9276-b6b4-7578-3f13-91b2de3f71f7@collabora.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <a68d9276-b6b4-7578-3f13-91b2de3f71f7@collabora.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-ID: <kernelci.groups.io>
-To: kernelci@groups.io, automated-testing@lists.yoctoproject.org
+To: Guillaume Tucker <guillaume.tucker@collabora.com>, Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: kernelci-results-staging@groups.io, "kernelci@groups.io" <kernelci@groups.io>, Brendan Higgins <brendanhiggins@google.com>, David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>
 
-Hi everyone,
+On 9/17/22 09:01, Guillaume Tucker wrote:
+> On 17/09/2022 00:17, Vlastimil Babka wrote:
+>> On 9/16/22 18:28, Vlastimil Babka wrote:
+>>> On 9/16/22 14:57, Guillaume Tucker wrote:
+>>>> Hello,
+>>>
+>>> Hi, what's the .config here please?
+>>> Thanks.
+>> 
+>> Nevermind, reproduced it and will fix soon, thanks!
+> 
+> Great!  Since this was reported by a KernelCI email, could you
+> please add this to your fix?
+> 
+>   Reported-by: "kernelci.org bot" <bot@kernelci.org>
 
-Below is the monthly* report on KCIDB** engagement. It lists various CI
-systems and their status of engagement with KCIDB, as well as developer
-engagement.
+I'd love to, but it was still possible to amend the broken commit and
+Reported-by: for the whole of it would be misleading. We currently lack a
+standard way for giving the report credit in such situation :/
 
-Lines with updates are marked with "!".
+> 
+> It was using the plain default config, I've put it here anyway:
+> 
+>   https://storage.staging.kernelci.org/images/tmp/kunit-config
+> 
+> We'll soon be adding artifacts to test results, I guess we can
+> include the config file in that.
+> 
+>> Wonder why no other existing bot didn't report it sooner, it's been in next
+>> for a while - they don't run kunit tests?
+> 
+> I suppose we're the first public CI system to be running KUnit...
+> Glad that helped, sounds like a very good start.
 
-The main news is Microsoft has started work on sending reports from their
-in-house Penguinator system to KCIDB.
+Yep, thanks a lot!
 
-Daniel Stone has requested the ability to browse the test tree in KCIDB
-dashboards, which I considered for a while as well. He'd like to be able
-to browse graphics suite results across various builds and revisions.
-
-However, I'll have to do that only after I'm done with the current task:
-improving our use of BigQuery, so we don't have to pay so much for our
-queries.
-
-After both of these I'll return to working on known issue handling/masking.
-
-CI Engagement Status
-
-     KernelCI native
-         Sending (a lot of) production build and test results.
-         https://kcidb.kernelci.org/?var-origin=kernelci
-
-     Red Hat CKI
-         Sending production results.
-         https://kcidb.kernelci.org/?var-origin=redhat
-
-     Google Syzbot
-         Sending a subset of production results (failures only).
-         https://kcidb.kernelci.org/?var-origin=syzbot
-
-     ARM
-         Sending production results.
-         Full commit hashes are currently not available, are spoofed, and don't
-         match the ones reported by others. There's ongoing switch to using a
-         KernelCI instance setup, which should fix this.
-         https://kcidb.kernelci.org/?var-origin=arm
-
-     Sony Fuego
-         Internal design in progress.
-
-     Gentoo GKernelCI
-         Sending production results.
-         Only builds (a few architectures), no configs, no logs, and no tests
-         for now, but working on growing contributions.
-         https://kcidb.kernelci.org/?var-origin=gkernelci
-
-     Intel 0day
-         Initial conversation concluded, general interest expressed,
-         no contact since.
-
-     Linaro
-         Sending (a lot of) Tuxsuite build results to "production" KCIDB.
-         https://kcidb.kernelci.org/?var-origin=tuxsuite
-
-     TuxML
-         Initial contact in response to a report.
-         There's a plan to approach us and start work in the coming months.
-
-     Yocto Project
-         Initial contact in response to a report.
-         Would like to start sending build and test results, particularly for
-         older kernels. Would like to separate upstream commits from project
-         patches first: https://bugzilla.yoctoproject.org/show_bug.cgi?id=14196
-
-     Huawei Compass CI
-         Sent a message to Fengguang Wu, who was presenting it at LVC 2021.
-         No response so far.
-
-!   Microsoft
-!       I provided Liz Zhang with instructions and credentials for submitting
-!       Penguinator data to KCIDB.
-
-Please respond with corrections or suggestions of other CI systems to contact.
-
-Thank you!
-Nick
-
-*More-or-less :)
-
-**KCIDB is an effort to unify Linux Kernel CI reporting, maintained by Linux
-   Foundation's KernelCI project:
-   https://foundation.kernelci.org/blog/2020/08/21/introducing-common-reporting/
+> Thanks,
+> Guillaume
+> 
 
