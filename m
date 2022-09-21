@@ -1,144 +1,54 @@
 MIME-Version: 1.0
-References: <20220316202622.324866-1-frowand.list@gmail.com>
- <CABVgOSmkvxhHSJx0W6BEYz=Ai9vB=nCz625dSKLLUfU0rMLkFA@mail.gmail.com> <37465a0f-7deb-bedb-1a84-90324f554ad1@gmail.com>
-In-Reply-To: <37465a0f-7deb-bedb-1a84-90324f554ad1@gmail.com>
-From: David Gow <davidgow@google.com>
-Date: Sat, 23 Apr 2022 15:53:17 +0800
-Message-ID: <CABVgOSm5Bc13o5UEVEiRCpzrq1Jqt11DjQ7YWPyjfj_6fBwWVw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] Documentation: dev-tools: begin KTAP spec v2 process
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000081b93305dd4da36d"
-List-ID: <kernelci.groups.io>
-To: Frank Rowand <frowand.list@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-
---00000000000081b93305dd4da36d
+References: <632a0af0.170a0220.966bf.0c66@mx.google.com> <CAOMZO5BCGpKVr75qDncDW4-eVLWeDJoPZft5Lh4_ikVHGLb1wQ@mail.gmail.com>
+ <6354cef8-7740-cd13-1683-eca68f9ec332@collabora.com>
+In-Reply-To: <6354cef8-7740-cd13-1683-eca68f9ec332@collabora.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 21 Sep 2022 09:17:38 -0300
+Message-ID: <CAOMZO5BObC4MwcA=XdtRVmhtZdH4m++vLRoerDhbdw18KNnA+g@mail.gmail.com>
+Subject: Re: next/master baseline: 539 runs, 389 regressions (next-20220920)
 Content-Type: text/plain; charset="UTF-8"
+List-ID: <kernelci.groups.io>
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: linux-next@vger.kernel.org, kernel-build-reports@lists.linaro.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Collabora Kernel ML <kernel@collabora.com>, "kernelci@groups.io" <kernelci@groups.io>, "kernelci-results@groups.io" <kernelci-results@groups.io>, Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
 
-On Sat, Apr 23, 2022 at 7:16 AM Frank Rowand <frowand.list@gmail.com> wrote:
+Hi Guillaume,
+
+On Wed, Sep 21, 2022 at 6:18 AM Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
 >
-> On 3/17/22 03:42, David Gow wrote:
-> > On Thu, Mar 17, 2022 at 4:26 AM <frowand.list@gmail.com> wrote:
-> >>
-> >> From: Frank Rowand <frank.rowand@sony.com>
-> >>
-> >> An August 2021 RFC patch [1] to create the KTAP Specification resulted in
-> >> some discussion of possible items to add to the specification.
-> >> The conversation ended without completing the document.
-> >>
-> >> Progress resumed with a December 2021 RFC patch [2] to add a KTAP
-> >> Specification file (Version 1) to the Linux kernel.  Many of the
-> >> suggestions from the August 2021 discussion were not included in
-> >> Version 1.  This patch series is intended to revisit some of the
-> >> suggestions from the August 2021 discussion.
+> On 21/09/2022 04:48, Fabio Estevam wrote:
+> > Hi,
 > >
-> > Thanks for kicking this off again. There were definitely a lot of good
-> > ideas in those threads which we haven't got to yet.
-> >
-> > I think there is an interesting line to walk between keeping KTAP
-> > sufficiently "TAP-like" (particularly w/r/t being able to reuse
-> > existing TAP parsers), and actually adding features, but I don't
-> > recall seeing many such issues in the previous threads.
-> >
+> > On Tue, Sep 20, 2022 at 3:48 PM kernelci.org bot <bot@kernelci.org> wrote:
 > >>
-> >> Patch 1 changes the Specification version to "2-rc" to indicate
-> >> that following patches are not yet accepted into a final version 2.
+> >> next/master baseline: 539 runs, 389 regressions (next-20220920)
 > >
-> > I'm okay with this, though I'd want us to be a little careful with the
-> > timing so we don't end up with, for example, 5.18 having a KTAP spec
-> > called 2-rc which is functionally indistinguishable from v1.
+> > Does anyone know which commit caused such a massive regression?
+> >
+> > Looks like it is gpiod_get_index related.
 >
-> I finally have some time to return to this.
->
-> I could host a branch on my kernel.org "frowand" linux kernel.  When
-> agreement is reached on a patch on this mail list, I would add it
-> to the branch.  When the discussion determines that it is time to
-> release a version 2 of the specification I would add one more commit
-> that only updates the version.
->
-> Does that sound like a good way to proceed?
->
+> There's a bisection report, does it look like it?
 
-Yeah: that sounds good to me.
+Sorry, I missed the git-bisect results in the original email.
 
--- David
+Just noticed a fix for this problem on today's linux-next, so we are
+all good, thanks:
 
---00000000000081b93305dd4da36d
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+commit 8b10ca2f7551e024b60ab5e27d3e3630c029000a
+Author: Michael Walle <michael@walle.cc>
+Date:   Fri Sep 16 13:01:18 2022 +0200
 
-MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
-dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
-6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
-c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
-I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
-AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
-BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
-CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
-AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
-MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
-My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
-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
-G7p3AiuB2sgfq6cOpbO5MEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
-dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
-AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
-c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
-LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
-LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
-Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQBsL34EJkCtu9Nu
-2+R6l1Qzno5Gl+N2Cm6/YLujukDGYa1JW27txXiilR9dGP7yl60HYyG2Exd5i6fiLDlaNEw0SqzE
-dw9ZSIak3Qvm2UybR8zcnB0deCUiwahqh7ZncEPlhnPpB08ETEUtwBEqCEnndNEkIN67yz4kniCZ
-jZstNF/BUnI3864fATiXSbnNqBwlJS3YkoaCTpbI9qNTrf5VIvnbryT69xJ6f25yfmxrXNJJe5OG
-ncB34Cwnb7xQyk+uRLZ465yUBkbjk9pC/yamL0O7SOGYUclrQl2c5zzGuVBD84YcQGDOK6gSPj6w
-QuBfOooZPOyZZZ8AMih7J980MYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
-R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABQeVybOOpR4bOOXZYL5T3MA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBT
-2WKL+QzVxktHiy8D3jl4rbbz6uuaIFkyDlRzkKcRpzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMjA0MjMwNzUzMjhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
-BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAdyOTlbBGaPzy5lF5rhjj
-Vh0e3bs/ISEs6K8IHhJkZgySEwCz/AIFf4x2+DQyebilrPUMWPU2QfdU48kI5qhv16ONb5L3Jk98
-U+zIK/+ct0iBazQDdnVno5dK7u80fvgBpu/EuGzC6WO0pDIvmrGtbLPi2OEQtjAVPl3vBoYoBBaE
-2kiv9Bt4F13hp+C+wL8iMoCx7GhBUu4PxfBXtmWuIp8D3bi+V1LsvkjhBkhLxrZTCfuFiYfytRr9
-QUa6fiLfgRpBis+lastzm1Lu0w2Esuyeso8Jxwr6x4scPqIG00cPBweUrUuOjuUTbfbDohzHwSqD
-ipNsQpXa4dA4yVxe9g==
+    gpiolib: fix OOB access in quirk callbacks
 
---00000000000081b93305dd4da36d--
+    Commit a2b5e207cade ("gpiolib: rework quirk handling in of_find_gpio()")
+    introduced an array of quirk functions which get iterated over. But a
+    sentinal value is missing. Add it.
+
+    Fixes: a2b5e207cade ("gpiolib: rework quirk handling in of_find_gpio()")
+    Signed-off-by: Michael Walle <michael@walle.cc>
+    Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+    Tested-by: Conor Dooley <conor.dooley@microchip.com>
+    Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+    Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+    Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
