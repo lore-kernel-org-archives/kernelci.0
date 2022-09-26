@@ -1,134 +1,203 @@
-Return-Path: <frowand.list@gmail.com>
-Message-ID: <95dcdcd3-fb48-6e5c-3262-7aacaac71e78@gmail.com>
-Date: Fri, 22 Apr 2022 18:10:39 -0500
+Message-ID: <4fb452486cc177348cfbe50ae905705aa71f6ada.camel@collabora.com>
+Subject: Re: can't access kernelci results
+From: "Denys Fedoryshchenko" <denys.f@collabora.com>
+Date: Mon, 26 Sep 2022 19:06:42 +0300
+In-Reply-To: <17187305E642C450.18151@groups.io>
+References: 
+	<CAHRSSEzUpY+7Lhb40B_v9cSc1KQOcztZ=WiV+1-+ocdcsNUGFQ@mail.gmail.com>
+	 <CABXOdTeirbF1KRdFsmuRKHJ+p+7s9ZOZAW2S64MsPFajUjdqow@mail.gmail.com>
+	 <2a6d7691-b8a5-da92-865c-8cdf5efb673f@collabora.com>
+	 <CAHRSSEwnBrT0wnc+-dA2FXvu1udstwArFRYtHu+f-79fZgd2JQ@mail.gmail.com>
+	 <CAHRSSEwtCOjxp4-GVRD+31bASw3k+isZbguABmUX_V82tu8T=Q@mail.gmail.com>
+	 <285b11ad-40dc-eb88-427e-f32c4a422c85@collabora.com>
+	 <CAHRSSEy6nOgPG8LVcMh9e-rxkWpAZNOeC5B=L2KKuE66Qynv3Q@mail.gmail.com>
+	 <b12def92-d4cc-ec89-9e6d-d3e710970ccd@collabora.com>
+	 <CAHRSSEyvTz9BhenBec79ieXdURYKOMaqk78uKjeZciHNSeSKag@mail.gmail.com>
+	 <CAHRSSEzAsiLrrJ_XjmykMjn96JcN+-F3iugSfFaG124UhS3W8w@mail.gmail.com>
+	 <CAHRSSExEexitM-NNR4DWMcQObDOBpGk8AcC4-PMZCjHwctJ8og@mail.gmail.com>
+	 <CAHRSSExaOps1V6gvqmyi=Zy0hh+R3Xpcge0tzGfoCBfNAbFOnQ@mail.gmail.com>
+	 <803b89a9-9141-636f-8fd3-f519b0440075@collabora.com>
+	 <CAHRSSEwB_L-i0UZH01s424vPog7ArU=uSutsqmexMSO92JtTNA@mail.gmail.com>
+	 <2059d7b9-2ae1-af0e-5231-1e8c9803f027@collabora.com>
+	 <ab497ba9-dd75-d89b-1feb-1f79ccb2bd4b@collabora.com>
+	 <CAHRSSEx6tz-+SsooCZNCozCKns9rCkBKTzMco8AbOaS9h5aKqg@mail.gmail.com>
+	 <17187305E642C450.18151@groups.io>
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH 2/2] Documentation: dev-tools: use literal block instead of code-block
-References: <20220316202622.324866-1-frowand.list@gmail.com>
- <20220316202622.324866-3-frowand.list@gmail.com>
- <CABVgOSngfB41BVoEvQ1JX+2oFvS7Mik58VfPm9pydmiC_GSD6Q@mail.gmail.com>
-From: Frank Rowand <frowand.list@gmail.com>
-In-Reply-To: <CABVgOSngfB41BVoEvQ1JX+2oFvS7Mik58VfPm9pydmiC_GSD6Q@mail.gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-ID: <kernelci.groups.io>
-To: David Gow <davidgow@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <keescook@chromium.org>, "Bird, Tim" <Tim.Bird@sony.com>, Brendan Higgins <brendanhiggins@google.com>, Rae Moar <rmr167@gmail.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Daniel Latypov <dlatypov@google.com>, kernelci@groups.io, KUnit Development <kunit-dev@googlegroups.com>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: kernelci@groups.io, tkjos@google.com, Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: =?UTF-8?Q?Micha=C5=82_Ga=C5=82ka?= <michal.galka@collabora.com>, Guenter Roeck <groeck@google.com>, Kevin Hilman <khilman@baylibre.com>
 
-Hi Jon,
+Upd: dashboard should be fine now, but we are running update right now,
+so some glitches might happen.
 
-On 3/17/22 03:43, David Gow wrote:
-> On Thu, Mar 17, 2022 at 4:26 AM <frowand.list@gmail.com> wrote:
->>
->> From: Frank Rowand <frank.rowand@sony.com>
->>
->> KTAP Specification: Change code-block directives to straightforward
->> literal blocks since the blocks do not contain code.
->>
->> Suggested-by: Jonathan Corbet <corbet@lwn.net>
->> Signed-off-by: Frank Rowand <frank.rowand@sony.com>
->> ---
-> 
-> This looks good to me.
-> 
-> I'd personally rather push this through independently of the KTAP 2.0
-> spec updates, as it's really just a minor formatting change to the
-> spec, and it has no impact on the actual KTAP format.
-> 
-> So, if we can accept this independently, that'd be swell.
-> 
-> Reviewed-by: David Gow <davidgow@google.com>
+On Mon, 2022-09-26 at 18:35 +0300, Denys Fedoryshchenko wrote:
+> We are investingating right now and trying to solve the issue.
+>=20
+> On Mon, 2022-09-26 at 08:29 -0700, Todd Kjos via groups.io wrote:
+> > Having trouble accessing
+> > https://linux.kernelci.org/job/android/=C2=A0today -
+> > server issues?
+> >=20
+> > On Fri, Mar 18, 2022 at 10:26 AM Guillaume Tucker <
+> > guillaume.tucker@collabora.com> wrote:
+> >=20
+> > > On 18/03/2022 17:19, Guillaume Tucker wrote:
+> > >=20
+> > > On 18/03/2022 15:47, Todd Kjos wrote:
+> > >=20
+> > > Is the MongoDB server down again? I don't get results at
+> > > https://linux.kernelci.org/job/android/.
+> > >=20
+> > > It's not that, unfortunately there's some persisting issue which
+> > > seems to
+> > > have started yesterday. We're investigating now, please bear with
+> > > us. Thank
+> > > you for reporting the problem.
+> > >=20
+> > > Alright, there was a problem with background processing tasks on
+> > > the
+> > > server. That's resolved now, although a number of kernel builds
+> > > need to be
+> > > restarted which is why so many trees appear to be "in progress"
+> > > on
+> > > the web
+> > > dashboard. Things will start picking up again gradually, it might
+> > > take a
+> > > few hours to get back to normal. Sorry for the inconvenience.
+> > >=20
+> > > Best wishes,
+> > > Guillaume
+> > >=20
+> > >=20
+> > > On Wed, Dec 1, 2021 at 1:49 AM Guillaume Tucker <
+> > > guillaume.tucker@collabora.com> wrote:
+> > >=20
+> > > > Hi Todd,
+> > > >=20
+> > > > On 30/11/2021 16:54, Todd Kjos wrote:
+> > > > > ...and now it's working again. Sorry about the noise if the
+> > > > > issue was
+> > > > > on my side.
+> > > >=20
+> > > > The MongoDB server did crash but it was restarted a few minutes
+> > > > later.=C2=A0 There's some kind of watchdog to do that automatically=
+,
+> > > > maybe you were out of luck and checked the website during that
+> > > > window.=C2=A0 Thanks for reporting the issue in any case.
+> > > >=20
+> > > > Best wishes,
+> > > > Guillaume
+> > > >=20
+> > > > > On Tue, Nov 30, 2021 at 8:35 AM Todd Kjos <tkjos@google.com>
+> > > > > wrote:
+> > > > > >=20
+> > > > > > I can't load the data from
+> > > > > > https://linux.kernelci.org/job/android/
+> > > > > > ("Error loading build data."). Is mongod "borked" again?
+> > > > > >=20
+> > > > > > On Thu, Sep 2, 2021 at 12:28 PM Todd Kjos
+> > > > > > <tkjos@google.com>
+> > > > > > wrote:
+> > > > > > >=20
+> > > > > > > It's working again. Thanks.
+> > > > > > >=20
+> > > > > > > On Thu, Sep 2, 2021 at 8:58 AM Todd Kjos
+> > > > > > > <tkjos@google.com>
+> > > > > > > wrote:
+> > > > > > > >=20
+> > > > > > > > I'm getting errors again when attempting to access
+> > > > > > > > https://linux.kernelci.org/job/android/. mongod issues
+> > > > > > > > again?
+> > > > > > > >=20
+> > > > > > > > "Error while loading data from the server (error code:
+> > > > > > > > 500). Please
+> > > > > > > > contact the website administrator"
+> > > > > > > >=20
+> > > > > > > > On Tue, Jun 22, 2021 at 8:17 AM Guillaume Tucker
+> > > > > > > > <guillaume.tucker@collabora.com> wrote:
+> > > > > > > > >=20
+> > > > > > > > > On 22/06/2021 16:07, Todd Kjos wrote:
+> > > > > > > > > > Hmm, it's still not working for me -- did it break
+> > > > > > > > > > again?
+> > > > > > > > >=20
+> > > > > > > > > Yes there was an OOM issue:
+> > > > > > > > >=20
+> > > > > > > > > [4316410.416514] Killed process 20620 (mongod) total-
+> > > > > > > > > vm:20171340kB,
+> > > > anon-rss:18654740kB, file-rss:0kB, shmem-rss:0kB
+> > > > > > > > > [4316412.060511] oom_reaper: reaped process 20620
+> > > > > > > > > (mongod), now
+> > > > anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
+> > > > > > > > >=20
+> > > > > > > > > We're looking into moving the Mongo DB instance to
+> > > > > > > > > the
+> > > > > > > > > cloud in
+> > > > > > > > > Azure.=C2=A0 Hopefully that will save us fixing this kind
+> > > > > > > > > of
+> > > > > > > > > maintenance issues.=C2=A0 Meanwhile, we should take a loo=
+k
+> > > > > > > > > and see if
+> > > > > > > > > there's some config option to limit the amount of RAM
+> > > > > > > > > used by
+> > > > > > > > > Mongo DB to work around the problem.
+> > > > > > > > >=20
+> > > > > > > > > Best wishes,
+> > > > > > > > > Guillaume
+> > > > > > > > >=20
+> > > > > > > > >=20
+> > > > > > > > > > On Tue, Jun 22, 2021 at 2:43 AM Micha=C5=82 Ga=C5=82ka =
+<
+> > > > michal.galka@collabora.com=C2=A0<mailto:michal.galka@collabora.com>=
+>
+> > > > wrote:
+> > > > > > > > > >=20
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 On 21.06.2021 21:59, Todd Kjos via g=
+roups.io
+> > > > > > > > > > <http://groups.io>
+> > > > wrote:
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 > I'm having this issue again (can't=
+ access
+> > > > > > > > > > kernelci results
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 > at https://linux.kernelci.org/job/=
+android/=C2=A0<
+> > > > https://linux.kernelci.org/job/android/>
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 > <https://linux.kernelci.org/job/an=
+droid/=C2=A0<
+> > > > https://linux.kernelci.org/job/android/>>). Is the mongod
+> > > > service
+> > > > borked
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 > again?
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 >
+> > > > > > > > > >=20
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 Yes, there was an issue with mongod =
+service
+> > > > > > > > > > again. It's
+> > > > working now,
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 celery processed pending tasks and e=
+verything
+> > > > > > > > > > seems responsive.
+> > > > > > > > > >=20
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 Thanks,
+> > > > > > > > > > =C2=A0=C2=A0=C2=A0 Micha=C5=82
+> > > > > > > > > >=20
+> > > > > > > > >=20
+> > > >=20
+> > > >=20
+> > >=20
+> > >=20
+> >=20
+> >=20
+> >=20
+> >=20
+> >=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
 
-I got distracted with other tasks, just now returning to this.
-
-There has been no other comment in the last month, so I think it
-is fair to go ahead and ask you to pull this patch.
-
-Can you pull just this patch (patch 2/2) or would you prefer that
-I do a version 2 which does not contain patch 1/2?
-
--Frank
-
-> 
-> Cheers,
-> -- David
-> 
-> 
->>  Documentation/dev-tools/ktap.rst | 18 ++++++++----------
->>  1 file changed, 8 insertions(+), 10 deletions(-)
->>
->> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
->> index 37b5dc61bfb8..b9a57ceddd4f 100644
->> --- a/Documentation/dev-tools/ktap.rst
->> +++ b/Documentation/dev-tools/ktap.rst
->> @@ -115,34 +115,32 @@ The diagnostic data field is optional, and results which have neither a
->>  directive nor any diagnostic data do not need to include the "#" field
->>  separator.
->>
->> -Example result lines include:
->> -
->> -.. code-block:: none
->> +Example result lines include::
->>
->>         ok 1 test_case_name
->>
->>  The test "test_case_name" passed.
->>
->> -.. code-block:: none
->> +::
->>
->>         not ok 1 test_case_name
->>
->>  The test "test_case_name" failed.
->>
->> -.. code-block:: none
->> +::
->>
->>         ok 1 test # SKIP necessary dependency unavailable
->>
->>  The test "test" was SKIPPED with the diagnostic message "necessary dependency
->>  unavailable".
->>
->> -.. code-block:: none
->> +::
->>
->>         not ok 1 test # TIMEOUT 30 seconds
->>
->>  The test "test" timed out, with diagnostic data "30 seconds".
->>
->> -.. code-block:: none
->> +::
->>
->>         ok 5 check return code # rcode=0
->>
->> @@ -202,7 +200,7 @@ allowed to be either indented or not indented.
->>
->>  An example of a test with two nested subtests:
->>
->> -.. code-block:: none
->> +::
->>
->>         KTAP version 1
->>         1..1
->> @@ -215,7 +213,7 @@ An example of a test with two nested subtests:
->>
->>  An example format with multiple levels of nested testing:
->>
->> -.. code-block:: none
->> +::
->>
->>         KTAP version 1
->>         1..2
->> @@ -250,7 +248,7 @@ nested version line, uses a line of the form
->>
->>  Example KTAP output
->>  --------------------
->> -.. code-block:: none
->> +::
->>
->>         KTAP version 1
->>         1..1
->> --
->> Frank Rowand <frank.rowand@sony.com>
->>
 
