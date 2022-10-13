@@ -1,78 +1,72 @@
-Return-Path: <geert.uytterhoeven@gmail.com>
 MIME-Version: 1.0
-References: <6331e5ad.170a0220.e0823.68b9@mx.google.com>
-In-Reply-To: <6331e5ad.170a0220.e0823.68b9@mx.google.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 26 Sep 2022 20:35:47 +0200
-Message-ID: <CAMuHMdUR5EBXpdpWqoG1hDQqEiuVK4MOeH77g0inL33Dyj3kYg@mail.gmail.com>
-Subject: Re: renesas/next baseline: 627 runs, 40 regressions (renesas-next-2022-09-26-v6.0-rc1)
+References: <131709e8-f804-5623-448d-7c3607be00e0@quicinc.com>
+ <CAHRSSExm0P0kBF00R9Ft7-GVMcf0A9190mjeOWU4umKA3PL93A@mail.gmail.com>
+ <CAHRSSEy20Zc80XufjYN4XjXbba6BTMHd_9kFaNOnhiuj9yEDsQ@mail.gmail.com>
+ <YxCtqsY55Lwaj34H@sirena.org.uk> <CAHRSSEw9KqQFKZND1fmMa67btkozg0yA_0NjF8C=UiLnvfwHGA@mail.gmail.com>
+ <YxXkuTdnt4IbPMDC@sirena.org.uk> <CAHRSSEzgEyPDxZ64SUdJNZRU3YAxS+mJcfVgG4-cSjjuTsH0Xg@mail.gmail.com>
+ <9b4773cc-f68c-4e34-4688-92c968bfb66c@collabora.com> <CAHRSSEzZv00DUToqPMNhu+j-J_pR8ypm-aUi80uo7Z7iCebtPg@mail.gmail.com>
+In-Reply-To: <CAHRSSEzZv00DUToqPMNhu+j-J_pR8ypm-aUi80uo7Z7iCebtPg@mail.gmail.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Thu, 13 Oct 2022 08:55:18 -0700
+Message-ID: <CAHRSSEy1-Mt1Hm=atQSkPZZN7nFrDZbv02+S_A1PtNeoMWZEZQ@mail.gmail.com>
+Subject: Re: UM-Linux compilation on Android Common Kernels
 Content-Type: text/plain; charset="UTF-8"
 List-ID: <kernelci.groups.io>
-To: "kernelci.org bot" <bot@kernelci.org>
-Cc: linux-renesas-soc@vger.kernel.org, kernelci-results@groups.io, kernelci@groups.io
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: kernelci@groups.io, Mark Brown <broonie@kernel.org>, Elliot Berman <quic_eberman@quicinc.com>
 
-Dear KernelCI,
+On Thu, Sep 15, 2022 at 9:25 AM Todd Kjos <tkjos@google.com> wrote:
 
-On Mon, Sep 26, 2022 at 8:08 PM kernelci.org bot <bot@kernelci.org> wrote:
-> renesas/next baseline: 627 runs, 40 regressions (renesas-next-2022-09-26-v6.0-rc1)
 >
-> Regressions Summary
-> -------------------
 >
-> platform                     | arch  | lab           | compiler | defconfig                    | regressions
-> -----------------------------+-------+---------------+----------+------------------------------+------------
-> hifive-unleashed-a00         | riscv | lab-baylibre  | gcc-10   | defconfig                    | 1
-> jetson-tk1                   | arm   | lab-baylibre  | gcc-10   | multi_v7_defc...CONFIG_SMP=n | 1
-> jetson-tk1                   | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig+crypto    | 1
-> jetson-tk1                   | arm   | lab-baylibre  | gcc-10   | multi_v7_defc...G_ARM_LPAE=y | 1
-> jetson-tk1                   | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig           | 1
-> jetson-tk1                   | arm   | lab-baylibre  | gcc-10   | multi_v7_defc...MB2_KERNEL=y | 1
-> jetson-tk1                   | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig+ima       | 1
-> jetson-tk1                   | arm   | lab-baylibre  | gcc-10   | tegra_defconfig              | 1
-> kontron-kbox-a-230-ls        | arm64 | lab-kontron   | gcc-10   | defconfig+ima                | 1
-> kontron-kbox-a-230-ls        | arm64 | lab-kontron   | gcc-10   | defconfig+CON...OMIZE_BASE=y | 1
-> kontron-kbox-a-230-ls        | arm64 | lab-kontron   | gcc-10   | defconfig+debug              | 1
-> kontron-pitx-imx8m           | arm64 | lab-kontron   | gcc-10   | defconfig+CON...OMIZE_BASE=y | 2
-> kontron-pitx-imx8m           | arm64 | lab-kontron   | gcc-10   | defconfig+crypto             | 2
-> kontron-pitx-imx8m           | arm64 | lab-kontron   | gcc-10   | defconfig                    | 2
-> meson-gxbb-p200              | arm64 | lab-baylibre  | gcc-10   | defconfig+CON...OMIZE_BASE=y | 1
-> mt8173-elm-hana              | arm64 | lab-collabora | gcc-10   | defconfig+arm...ook+videodec | 1
-> mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig+arm64-chromebook   | 1
-> panda                        | arm   | lab-baylibre  | gcc-10   | multi_v7_defc...CONFIG_SMP=n | 1
-> panda                        | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig+crypto    | 1
-> panda                        | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig           | 1
-> panda                        | arm   | lab-baylibre  | gcc-10   | multi_v7_defc...MB2_KERNEL=y | 1
-> panda                        | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig+ima       | 1
-> panda                        | arm   | lab-baylibre  | gcc-10   | omap2plus_defconfig          | 1
-> qemu_arm-vexpress-a15        | arm   | lab-baylibre  | gcc-10   | vexpress_defconfig           | 1
-> qemu_arm-vexpress-a15        | arm   | lab-broonie   | gcc-10   | vexpress_defconfig           | 1
-> qemu_arm-vexpress-a15        | arm   | lab-collabora | gcc-10   | vexpress_defconfig           | 1
-> qemu_arm-vexpress-a9         | arm   | lab-baylibre  | gcc-10   | vexpress_defconfig           | 1
-> qemu_arm-vexpress-a9         | arm   | lab-broonie   | gcc-10   | vexpress_defconfig           | 1
-> qemu_arm-vexpress-a9         | arm   | lab-collabora | gcc-10   | vexpress_defconfig           | 1
-> qemu_arm-virt-gicv3-uefi     | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig+debug     | 1
-> qemu_arm-virt-gicv3-uefi     | arm   | lab-collabora | gcc-10   | multi_v7_defconfig+debug     | 1
-> rk3399-gru-kevin             | arm64 | lab-collabora | gcc-10   | defconfig+arm64-chromebook   | 4
-> sc7180-trogdo...zor-limozeen | arm64 | lab-collabora | gcc-10   | defconfig+arm...ook+videodec | 1
-> sc7180-trogdo...zor-limozeen | arm64 | lab-collabora | gcc-10   | defconfig+arm64-chromebook   | 1
+> On Thu, Sep 15, 2022 at 9:23 AM Guillaume Tucker <
+> guillaume.tucker@collabora.com> wrote:
+>
+>> Hi Todd,
+>>
+>> On 14/09/2022 22:36, Todd Kjos via groups.io wrote:
+>> > Is there an ETA for at least doing the builds?
+>>
+>> I don't think anyone else is asking for user-mode builds, and
+>> adding this new architecture with a new sub-architecture
+>> parameter is not as trivial as adding a few lines of YAML config.
+>> So unless someone on this list is interested, or someone wants to
+>> run an internship topic around that, I think you'll have to go
+>> and find someone to do the work.
+>>
+>> KernelCI is starting to run KUnit which does involve UM-Linux
+>> builds but that's all done "under the hood" by the KUnit
+>> framework.  Still, I guess it would catch some build errors as a
+>> side-effect.  So an alternative is to wait for that to be fully
+>> in production (first half 2023) and we can consider enabling it
+>> on some Android kernel trees.
+>>
+>
+> Thanks, that would be fine. This is not super urgent.
+>
 
-Thanks for your report!
+Monthly ping...any progress on this?
 
-I believe none of the regressions listed above are introduced in
-renesas-next-2022-09-26-v6.0-rc1, as renesas/next contains no
-commits that affect the above platforms, except for those that are
-already in v6.0-rc1.
 
-Please improve your reporting.
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+>
+>
+>>
+>> Best wishes,
+>> Guillaume
+>>
+>> > On Mon, Sep 5, 2022 at 4:59 AM Mark Brown <broonie@kernel.org> wrote:
+>> >
+>> >> On Thu, Sep 01, 2022 at 08:44:25AM -0700, Todd Kjos wrote:
+>> >>> Could we start by building but not testing? That at least prevents
+>> build
+>> >>> breakage (which is the case that motivated this).
+>> >>
+>> >> Yes, that's definitely an easier first step.
+>> >>
+>> >
+>> >
+>> > 
+>> >
+>> >
+>>
+>>
