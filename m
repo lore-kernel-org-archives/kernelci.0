@@ -1,194 +1,241 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4E8AD4B
-	for <kernelci@lists.linux.dev>; Tue, 29 Nov 2022 18:15:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1669745738;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lOReu+sNtdBWRfYpAK0v05RfJCbt2DZjpudnobqU750=;
-	b=AE+kjBfZGoQbmI0nh+iU4vy3WKRVQvAlv8iWIaZ11XAk9VKT+xi7/OJCBkzJep+XC6KgfO
-	yzBt75BnQIq1ANR7PPE3l1735CYb2oPHIViRgDLOZnz09pE5pmDeyEyHhnR2BOq5GaeGiK
-	J4dJN5jhNRG3T/j765dXtrNcvgplRRA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-201-NnMOdFhBMM-TxBtiTGIyXg-1; Tue, 29 Nov 2022 13:15:37 -0500
-X-MC-Unique: NnMOdFhBMM-TxBtiTGIyXg-1
-Received: by mail-wm1-f69.google.com with SMTP id c10-20020a7bc84a000000b003cf81c2d3efso5040566wml.7
-        for <kernelci@lists.linux.dev>; Tue, 29 Nov 2022 10:15:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lOReu+sNtdBWRfYpAK0v05RfJCbt2DZjpudnobqU750=;
-        b=UvLFt50TjVsFcIHQkJiwQGVrJgV0NV6Czgi918QBjzGXRHclttkPveNIbTK6uq1lql
-         iB993GsA2we6wEeIKUYDh7dMNZcyKoKjXZEaasvSS8MczcO8QeUVELDko2i0DvSoAoTu
-         P2MHUFWqPeZTan4dheHIJg2vZO+XYrMnMR1Rixh+6YvGZyyD9yf+bNMm99u0Rft7itXm
-         byXrWKeTIdN4tKcaDmFRslfwB0AY/vPH58EG8AV+6hj61f/fOx6Vx//St0LlBFchKxYN
-         w79V4VzubNoq4n70oiQKVKA3S213vDncfLTPmnhTIGKrglfc+WCWoedTU5lj10XOn3cq
-         sFTg==
-X-Gm-Message-State: ANoB5pkBuc8tdua9jneew7rAxz5ipHQGsWUo8il4ZBwBHa3lMuh5VJF0
-	v/8tkURl9H1lHDpP3wOBMpSSMsi3zKhUG4QOCKkM8flccNyv8GO/Wuo5rUi6qwFOle2NWVaxCOp
-	jMEg188IOP0kHa/bKrnBZVyPpgrrQ+7D/VLvz4BUiqBrXVFlNKyhSvneH3AgBMlVCbv8boWZP3Z
-	fZtqlueZJz
-X-Received: by 2002:a05:600c:3c8e:b0:3d0:69f4:d3d0 with SMTP id bg14-20020a05600c3c8e00b003d069f4d3d0mr2438623wmb.93.1669745735911;
-        Tue, 29 Nov 2022 10:15:35 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf54fHzdc95y8aH/XXeb5tlHwe3rOSWGpgvtkg9WV4JH5gKDv9lNu4Dxmtg4v9BTXwPZL1H07g==
-X-Received: by 2002:a05:600c:3c8e:b0:3d0:69f4:d3d0 with SMTP id bg14-20020a05600c3c8e00b003d069f4d3d0mr2438595wmb.93.1669745735522;
-        Tue, 29 Nov 2022 10:15:35 -0800 (PST)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id m9-20020a05600c3b0900b003cf47556f21sm3411395wms.2.2022.11.29.10.15.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Nov 2022 10:15:35 -0800 (PST)
-Message-ID: <a6e14738-b1b2-7a10-a8ee-787a2059b924@redhat.com>
-Date: Tue, 29 Nov 2022 20:15:33 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6767C
+	for <kernelci@lists.linux.dev>; Mon,  5 Dec 2022 08:23:08 +0000 (UTC)
+Received: from [IPV6:2001:861:4a40:8620:d901:c525:a85f:2da3] (unknown [IPv6:2001:861:4a40:8620:d901:c525:a85f:2da3])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 5703C6601DEB;
+	Mon,  5 Dec 2022 08:22:59 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1670228579;
+	bh=lDS5Xuzg5fsI4zw/h5ahGrZtLdnE/dXhDQQqEufsQII=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=SMjmOWUcBm5CtPLi0mPE3Qv9dloHXG15A52mo53COL1HEay17fFos9YkTBMsk/qzr
+	 tupPVzL/OkVgSW7FWZQZtWM4iuBtGqw7DSkbvoN6qg9d3PWvQRXGGxrApFcTfrXOUK
+	 /mTfE+Kll2WSvmUQTuQvVNNhg+iZsJ9ceA0724vkH4hr4HKkQSI4TeQ6PKs0S9YQuU
+	 Q1S65iXCBF2sI8fCTCv0b7aX2Rx5QpWwM/Nwoa2g7Kt98G0bOd5Wc1zTIZhg8KJ85w
+	 VQ1jkFifh1lO73+bjHQHtXRwNiGOJ/1u58cchq21NZr6iEt3X2J053TUByIrY+KJpY
+	 VHMkxkEkEz8zg==
+Message-ID: <6cac8790-c82b-de34-c4c3-3c0ef45ea05d@collabora.com>
+Date: Mon, 5 Dec 2022 09:23:28 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: KCIDB schema for known issues
-From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-To: kernelci@lists.linux.dev, Veronika Kabatova <vkabatov@redhat.com>,
- Andrzej Szczepaniak <aszczepa@redhat.com>, Dmitry Vyukov
- <dvyukov@google.com>, Cristian Marussi <cristian.marussi@arm.com>,
- Alice Ferrazzi <alicef@gentoo.org>, Philip Li <philip.li@intel.com>,
- Vishal Bhoj <vishal.bhoj@linaro.org>,
- automated-testing@lists.yoctoproject.org, Tim Bird <Tim.Bird@sony.com>
-References: <182b43fa-0261-11b7-2edb-f379a669bc28@redhat.com>
-In-Reply-To: <182b43fa-0261-11b7-2edb-f379a669bc28@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: KernelCI API Roadmap
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+To: automated-testing@lists.yoctoproject.org, kernelci@lists.linux.dev
+Cc: kernelci-members <kernelci-members@groups.io>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Michael Grzeschik <m.grzeschik@pengutronix.de>,
+ =?UTF-8?Q?Jan_L=c3=bcbbe?= <j.luebbe@pengutronix.de>,
+ santiago.esteban@microchip.com, ticotimo@gmail.com,
+ "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
+References: <b3e0fe1d-e352-5caa-71bd-7018c821f088@collabora.com>
+In-Reply-To: <b3e0fe1d-e352-5caa-71bd-7018c821f088@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/24/22 21:10, Nikolai Kondrashov wrote:
- > Since this is getting rather long (and it's getting rather late here in
- > Finland), I'll withhold any further examples. Most of the readers would
- > already be familiar with the KCIDB schema, the new schema is quite similar,
- > and I would provide more examples on request.
- >
- > However, I'm attaching two mocked-up examples: one for syzbot and one for CKI
- > - the two perhaps most-advanced CI systems out there, *issue-wise*.
+Hello,
 
-I'll elaborate on these two examples a bit to help explain how the schema is
-supposed to work.
+Please see below a follow-up from last year's email which
+featured an initial roadmap as the outcome of the preliminary
+design discussions.
 
-SYZBOT
+On 02/11/2021 12:36, Guillaume Tucker wrote:
+> For some background on this topic, please see the early discussion about the
+> KernelCI backend redesign:
+> 
+>   https://groups.io/g/kernelci/topic/81113478#1231
+> 
+> 
+> Here's a proposed roadmap for the new KernelCI API work:
+> 
+> 
+> * Initial PoC (November)
+> 
+> This is the current phase, to have some proof-of-concept system that will help
+> prove whether the architecture is viable.  The key aspects are:
+> 
+>   * minimalistic schema taking into account past experience (pending / complete
+>     state, common base class for builds and tests)
+> 
+>   * "application logic" entirely on the client-side
+> 
+>   * pub/sub mechanism to orchestrate a small number of services (e.g. one
+>     waiting for new revisions to run some tests and push results, another
+>     service waiting for results to send emails)
+> 
+> It should still all be run in a local environment at this stage, using
+> docker-compose.
 
-IIRC, syzbot collects kernel crashes resulting from its fuzzing, extracts
-identifying information from them automatically, and then collects similar
-crashes into "buckets", which are basically "bugs" and are tracked similarly.
-Those bugs can be closed automatically, if crashes stop reproducing for a
-while, and they can also be manipulated via an email interface:
+This gave some good first results, with the server-side
+deployment using FastAPI for the API, Redis for pub/sub, OAuth2
+for authentication, Mongo DB for the database and SSH / Nginx as
+a basic storage solution.
 
- 
-https://github.com/google/syzkaller/blob/master/docs/syzbot.md#communication-with-syzbot
+The client-side pipeline implementation is orchestrated by
+pub/sub events generated when nodes move to different states in
+the database.  The PoC got this working by running some basic
+tests (kernel version check) directly on the local host.
 
-The example submission lists three such bugs, referred to using the
-"report_url" fields, in each of the three "issues":
+> * Staging deployment (December-January)
+> 
+> Once the PoC has been completed, we might have to readjust the design based on
+> how it went.  We'll also have to prepare for a growing code base: decide where
+> the code for the client-side services will be kept, find maintainers, add unit
+> tests and documentation.
+> 
+> This is also when we should start looking into how it can get deployed as a
+> hosted service, potentially all in the cloud (MS Azure?) while still keeping
+> the local deployment with docker-compose entirely self-contained for
+> developers in particular.
 
-     "report_url": "https://syzkaller.appspot.com/bug?extid=3e3c2f8ca188e30b1427",
-     "report_url": "https://syzkaller.appspot.com/bug?extid=fade8a8e2bdc29b3a90b",
-     "report_url": "https://syzkaller.appspot.com/bug?extid=f275cebe321308c38cc1",
+The staging instance was set up as expected.  It's using the same
+docker-compose deployments for API and pipeline as what
+developers are typically using locally.  The code is organised as
+follows:
 
-There are five "incidents", two of which link the first issue (and bug) to two
-tests, and three others - to the second issue (and bug).
+* kernelci-api for the server-side implementation
+* kernelci-pipeline for the pipeline implementation
+* kernelci-core for the core client-side tools
 
-The workflow for Syzbot could be to send the issue description first time it
-sees a crash and creates a bug for it, and then send both a test object and an
-incident object pointing to this issue every time it reproduces the same
-crash. Syzbot could use its "external IDs" (the value of the "extid" URL
-parameter above) for identifying the issues. The build and checkout objects
-would need to be sent as well, as is currently done.
+The idea being that kernelci-pipeline will eventually have nearly
+no code but just some configuration which can be used by
+kernelci-core.  That way, all the pipeline steps could be run
+manually or in a different execution environment.
 
-Previously Syzbot was only sending one crash per bug to avoid flooding the
-developers with failures, now it can start sending *all* crashes, as long as
-it links them to the corresponding issues (bugs) correctly.
+> * Automated pipeline (February-March)
+> 
+> Having a hosted system means that test labs can start subscribing to events,
+> timers can be run to periodically monitor kernel branches and run builds etc.
+> This is when we will start to see all the features being added gradually to
+> eventually provide a full alternative to the current system.  The aim is to
+> rely solely on the pub/sub mechanism to orchestrate the various components
+> together.
+> 
+> Typically, some code from kernelci-backend would be moved to kernelci-core
+> (LAVA callback handler, KCIDB bridge, email report generator, regression
+> tracking) so it can be run on the client side of the KernelCI API.
+> 
+> Hopefully, this is also the time when the new Web Dashboard work should start
+> becoming visible to show the results.  If not, there should still be KCIDB's
+> Grafana solution in the meantime.
 
-Now, if a developer is subscribed to, say, all new issues for their kernel
-branch, they will only get one notification for each Syzbot "issue" arriving
-into the database, linked to a commit appearing in their branch (through the
-issue -> incident -> test -> build -> checkout -> git_commit_hash chain).
+Unfortunately there was no tangible progress on the web dashboard
+front during that period, and a good share of development efforts
+went into bringing up the chromeos.kernelci.org instance with
+full stack Chrome OS tests.  So progress on the new API and
+pipeline carried on but at a slower pace for a few months.
 
-They could also go to the KCIDB Grafana dashboards to see which bugs have been
-reproduced recently (or within a particular period) for their branch.
+Since then, KUnit running in Kubernetes was added to the pipeline
+which is now producing results with mainline.  A PoC was also
+done with fstests, running initially on a dedicated host with
+local KVM and now in GCE using the xfstests-bld tools created by
+the kernel maintainers (Ted et al).
 
-There's no notion of bugs being "open" or "closed" in KCIDB at this moment
-(contrary to Syzbot), only records of where they appeared (or didn't), in the
-form of "incidents". This is mostly because KCIDB doesn't do triaging by
-itself yet.
+The design of the API and how nodes can be used is being more
+detailed now, with a state diagram for node objects and
+client-side services to manage timeouts etc.  The concept of a
+node is to have the common fields used by any entry in the
+database, then derived types can be used for builds, tests etc.
+Nodes can also depend on each other, as a result of how the
+pipeline is being run.
 
-CKI
+> * Production deployment (April-June)
+> 
+> This is very far off in the future, and it probably will take much longer until
+> we have a stable deployment in production that can replace the current system.
+> This milestone is really about having another deployment based on what was done
+> for staging but in a production environment, which only runs tested code,
+> stores results in a persistent database and contains real data that can be
+> reported publicly.
 
-The CKI system detects new test failures in its runs, alerts maintainers, and
-allows linking them to existing "issues", or creating and linking new ones.
-Each issue can be assigned a report URL and a pattern matching builds or tests
-exhibiting the problem.
+We've now resumed this discussion and involved our new sysadmin
+Vince in the process too.  We're finalising the creation of a new
+Azure account for KernelCI which should give us more flexibility
+and control over the services we can deploy in the Cloud: we
+could use it for Mongo DB (Atlas), Redis, storage, API
+micro-service in Kubernetes all hosted directly by Azure rather
+than docker-compose on a dedicated VM.  The client-side pipeline
+can be distributed anywhere as long as each service can reach the
+API, so various services might be deployed differently and fulfil
+the distributed architecture that we need for KernelCI.
 
-Here's an issue with a pattern ("Regex") matching a kernel bug:
+More concrete plans around production (continuous) deployment
+should appear early 2023.  It would be good to have a phase up to
+June to finalise things and trial it out to start deprecating the
+current system during the 2nd half of 2023.
 
-     https://datawarehouse.cki-project.org/issue/1367
+> To keep track of all this, see the dedicated project board on GitHub:
+> 
+>   https://github.com/orgs/kernelci/projects/10/views/1
+> 
+> along with the list of milestones:
+> 
+>   https://github.com/kernelci/kernelci-api/milestones
+> 
+> 
+> The Outreachy internship will be taking place from December to February
+> included, which is during the "staging" and "pipeline" phases.  As such, the
+> corresponding backlogs will be defined with the internship's timeline in mind.
+> We already have some strong candidates who have made some great contributions
+> so this is looking very promising.  Thank you!
 
-Here's one matching a case of unstable test:
+Our Outreachy intern Jeny has since joined Collabora and is now
+one of the core developers of the new API & pipeline.
 
-     https://datawarehouse.cki-project.org/issue/984
+> Then the next KernelCI hackfest could be taking place early March, shortly
+> after the Outreachy internship.  This could be a very good time to have lots of
+> different tasks for new contributors to work on as the design should be very
+> modular.
+> 
+> In addition to the Web Dashboard, we're now considering additional "work
+> packages" to be sponsored by the KernelCI LF project budget.  For the KernelCI
+> API work, this could include maintainership but potentially also some extra
+> help with development if needed.
 
-And another one matching an infrastructure problem:
+Our new sysadmin Vince was hired as a work package set up by the
+LF project board.  We still have budget to fund other work
+packages, although adding extra developers for the new API &
+pipeline is not being actively discussed at the moment.
 
-     https://datawarehouse.cki-project.org/issue/972
+> Please feel free to ask any question or share any suggestions you might have.
+> We can still easily make changes to the plans and the overall design at this
+> stage, and it's important to come up with a solution that solves the issues
+> we've highlighted in the past: supporting arbitrary labs, not relying on
+> Jenkins, decoupling data post-processing from the API...
 
-These would correspond to "code", "tool", and "harness" culprits in KCIDB
-parlance, respectively.
+There hasn't been much discussion around the fundamental concepts
+of this design in the meantime as we haven't hit any blocker.
+Fairly recently, Alicef suggested to use buildbot and Kevin
+brought back the idea of Concourse CI.  It's still possible to
+change some elements of the design, but the longer we wait the
+harder it's going to be without doing another full rewrite which
+I don't think the project can afford at this stage.  There were
+very good reasons behind the choices that have been made, going
+all the way back to some early discussions around a modular
+pipeline in 2019, so let's make sure we look into the details and
+keep all the important aspects in mind.
 
-CKI could continue sending checkouts, builds, and tests in the same way, and
-could start sending "issue" objects whenever a new issue is created, or an old
-one is updated. It would need to maintain an update counter and send it as the
-"version" number, or at least send a precise-enough update timestamp instead.
+The roadmap in GitHub is being reviewed now to define the next
+milestones, basically to define the minimal set of features in
+order to be production-ready and to design a production
+deployment solution.
 
-To make use of those issues it would also need to start sending "incidents"
-whenever a build or test result is manually linked to an issue, or when
-triaging results are available.
+See also the work-in-progress documentation for the new API &
+pipeline for some more details:
 
-The CKI's example JSON (attached to my previous message) contains four
-mocked-up issues: one for a "tool" (a test, setting its status to "ERROR"),
-and three for "code" (the kernel code). Each links to a bug report in
-Bugzilla. There are four incidents linking the four issues to three test runs.
+  https://kernelci.org/docs/api/
 
-Use cases for Syzbot's issues and incidents described above would also apply
-to CKI data. However, CKI data could also be used to alert test maintainers of
-test bugs (by selecting "tool" culprit), as there are plenty of those in CKI's
-Data Warehouse, including for upstream tests. CKI would also be able to hide
-any of its own infrastructure-induced failures by using the "harness" culprit.
-
-PLANS
-
-As mentioned in the previous message our next step after we agree on this one
-would be implementing the triager, using matching data attached to issues.
-There will be a lot of work needed to start hosting artifacts for triaging,
-implementing matching various parameters and artifacts, and not least of all,
-reasoning correctly about revision history.
-
-I've submitted a talk to FOSDEM trying to raise attention of the Graph
-database community, to help our revision-tracking needs, and will see if we
-can get an intern during GSoC 2023 to help with anything. I would, of course,
-be happy to fill in anybody wishing to help on the details of the project.
-Some documentation improvements would probably come along too.
-
-In the end I hope we would be able to use issue triaging data from each CI
-system on data from all CI systems (provided necessary alignment in formats,
-and so on), to get higher signal-to-noise ratio in our notifications, and
-would finally have more kernel developer attention to make KCIDB a more
-exciting, and faster-moving effort.
-
-Nick
-
+Best wishes,
+Guillaume
