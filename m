@@ -1,89 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0882585
-	for <kernelci@lists.linux.dev>; Mon, 12 Dec 2022 12:54:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1670849673;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dORjaDqZdkVrEHnEH9OBMSXOY9Rl+QHhTxsjYUTnWL8=;
-	b=KdCpio88c49PhyJ2+YsAjPudOc1YHEr/qiJQFnHrHwovAg6+MNSTYnPEEpeAKP04jeGTyi
-	JWyN0bgIvyiXCD1lY+MfEiWCm2bi9SQimBt0YFNeUeYWNOmGxVR2+FsYjF5KoMp/Y1TpFJ
-	i9mR03bSvxTp3gCaQHzbo2cgOkVUbVI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-608-3CqQ-spPMqOu7vfri4_6DQ-1; Mon, 12 Dec 2022 07:54:33 -0500
-X-MC-Unique: 3CqQ-spPMqOu7vfri4_6DQ-1
-Received: by mail-wm1-f70.google.com with SMTP id f20-20020a7bc8d4000000b003d1cda5bd6fso1957674wml.9
-        for <kernelci@lists.linux.dev>; Mon, 12 Dec 2022 04:54:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dORjaDqZdkVrEHnEH9OBMSXOY9Rl+QHhTxsjYUTnWL8=;
-        b=pPmYFamy2A6JtoBpXcQOT7ibQfkOWWZXsL9dkAJjjUvIyZiecW/i4qsRkARXv25t/L
-         yXR8l9VXoNTYSJ965gPqXC+9PwVtbmGPmrpUUpDWAz1hwnccTMWDtSWKEtCafpe5PZIe
-         y5027HqA/LkrKSZMywUyTLzrtMKIpeo18UBPOcbCshGELVc/CT45KJ1ycZDyEtK4CxqT
-         S0UvDC6Ck4i0y38kMcdWisYep5/QDid1xr8Z91Yqtees4OJZvlaJYd4RhESKQKjLh2hW
-         IrzTLEFoQzOaK5aTK9rYqG9lCEziSONm2hAxttgNhfc4rAVJXfv9fcizqY3rmSiW2chn
-         atSw==
-X-Gm-Message-State: ANoB5pkheRqVFUub/44AG7hBWPJRhE5xyEVQHmW4qqgPtoXbrPi3mBoN
-	ajeBVXDSFktHGd7wd1p3i+ErJ6mktTdfSCgDNMIuuR1Ff2+xVUqtdP068SyHjlJhuQzu9tOZasV
-	nlNA65wJK5PqAjNokdbQ6lJi8MsTVIBZoYRojlE9XhZcCLnhx/IiQl5Dd6MOsoEr1K4SNKYOKmK
-	wgtZlBtPjT
-X-Received: by 2002:adf:cd8a:0:b0:242:32c3:1ac4 with SMTP id q10-20020adfcd8a000000b0024232c31ac4mr10774295wrj.23.1670849671089;
-        Mon, 12 Dec 2022 04:54:31 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf42nQDzdOs41341g/oCnNb9DF/2GbJEciTucs6HMJgFjirpOZixqohW8CmFKv52/O0ptQ/Xsw==
-X-Received: by 2002:adf:cd8a:0:b0:242:32c3:1ac4 with SMTP id q10-20020adfcd8a000000b0024232c31ac4mr10774275wrj.23.1670849670803;
-        Mon, 12 Dec 2022 04:54:30 -0800 (PST)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id x1-20020a5d60c1000000b00241c712916fsm10435765wrt.0.2022.12.12.04.54.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Dec 2022 04:54:30 -0800 (PST)
-Message-ID: <95765418-69ce-54de-93ed-25e29e6c08ea@redhat.com>
-Date: Mon, 12 Dec 2022 14:54:28 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0EE2F3C
+	for <kernelci@lists.linux.dev>; Wed, 14 Dec 2022 12:54:39 +0000 (UTC)
+Received: from [IPV6:2001:861:4a40:8620:913a:fe5a:ffe8:c1ce] (unknown [IPv6:2001:861:4a40:8620:913a:fe5a:ffe8:c1ce])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 9B5F66602C48;
+	Wed, 14 Dec 2022 12:54:31 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1671022472;
+	bh=Rjt8XWjmbJTJb8XzY+IorRSaJDy/ibEq/wfMFKJw0uw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WCudUlclkPzB5+8uKarjgHj8UFadXBxzUo+zKaqXynbuQ/DhsiaRXDqMNN2D6R3C5
+	 jxHzm14rcq/W2BOKK9650+54oq3b3H5EKBMYR93e9FRj7/cge0Q4XrjaiS6UYgsv8Y
+	 avrPh8CrkYPzsgGb3T2DErySjCqG5ZtrOej5oJu++p0x8ym2JNtSBQQbXUDl1T4rZ9
+	 wXMhdA/lAf+JLmW3uUnndpr1+Cfni6u6ZbXGm0+i05Y0kveYSwFIb6gnLQ+PD5ufVH
+	 Rtb2equ6dTzLJK6r7jImlf4rwPWy1ZYIjWBW5vzXO3rM5Ofmu4alQ0fvfO4SSCfsa/
+	 AxN7sgk7OGXzA==
+Message-ID: <ea3d5e98-8901-1f9c-b27d-3c65e7969c41@collabora.com>
+Date: Wed, 14 Dec 2022 13:55:03 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: KCIDB schema for known issues
-From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-To: kernelci@lists.linux.dev, Veronika Kabatova <vkabatov@redhat.com>,
- Andrzej Szczepaniak <aszczepa@redhat.com>, Dmitry Vyukov
- <dvyukov@google.com>, Cristian Marussi <cristian.marussi@arm.com>,
- Alice Ferrazzi <alicef@gentoo.org>, Philip Li <philip.li@intel.com>,
- Vishal Bhoj <vishal.bhoj@linaro.org>,
- automated-testing@lists.yoctoproject.org, Tim Bird <Tim.Bird@sony.com>
-References: <182b43fa-0261-11b7-2edb-f379a669bc28@redhat.com>
-In-Reply-To: <182b43fa-0261-11b7-2edb-f379a669bc28@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: renesas/master bisection:
+ igt-kms-rockchip.kms_vblank.pipe-A-wait-forked on rk3399-gru-kevin
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Geert Uytterhoeven <geert@linux-m68k.org>, Mark Brown <broonie@kernel.org>
+Cc: Brian Norris <briannorris@chromium.org>, Sean Paul
+ <seanpaul@chromium.org>, Douglas Anderson <dianders@chromium.org>,
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Robert Foss <robert.foss@linaro.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ kernelci@lists.linux.dev
+References: <6398848e.170a0220.f8e8e.d44f@mx.google.com>
+ <Y5itf0+yNIQa6fU4@sirena.org.uk>
+ <CAMuHMdW4RNFspMheq1JGUkCm+s1oM90Q_4vPH1XX9ZRAxrmPdA@mail.gmail.com>
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+In-Reply-To: <CAMuHMdW4RNFspMheq1JGUkCm+s1oM90Q_4vPH1XX9ZRAxrmPdA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 11/24/22 21:10, Nikolai Kondrashov wrote:
-> Hello everyone involved with, or interested in KCIDB,
+Hi Mark,
+
+Maybe you could retrieve the original thread and rely to it with
+the report?  That's the ideal way of following up on a patch I
+think.  You can get the mbox file this way:
+
+./kci_bisect get_mbox \
+  --commit ca871659ec1606d33b1e76de8d4cf924cf627e34 \
+  --kdir ~/src/linux
+
+
+On 14/12/2022 11:06, Geert Uytterhoeven wrote:
+> Hi Mark,
 > 
-> As you probably know, I've been working on a schema to represent "known"
-> issues and incidents in KCIDB for a while, and now (I think) I have something
-> we could start with.
+> Thanks for your report!
 > 
-> Feel free to respond here, or in the kcidb-io PR introducing
-> the schema changes:
+> On Tue, Dec 13, 2022 at 5:58 PM Mark Brown <broonie@kernel.org> wrote:
+>> On Tue, Dec 13, 2022 at 05:56:30AM -0800, KernelCI bot wrote:
+>> The KernelCI bisection bot found regressions in at least two KMS tests
+>> in the Renesas tree on rk3399-gru-kevin just after the Renesas tree
+>> merged up mainline:
+>>
+>>    igt-kms-rockchip.kms_vblank.pipe-A-wait-forked
+>>    igt-kms-rockchip.kms_vblank.pipe-A-query-busy
+>>
+>> which it bisected to ca871659ec16 ("drm/bridge: analogix_dp: Support
+>> PSR-exit to disable transition").  I'm not *100%* sure I trust the
+>> bisection but it sure is suspicous that two separate bisects for related
+>> issues landed on the same commit.
 > 
->      https://github.com/kernelci/kcidb-io/pull/59
+> ... which is an old commit, added in v5.19-rc2, and which did not
+> enter through the renesas tree at all?
 
-Merging this on Wednesday, Dec 14, unless there are objections.
+Do you mean this report shouldn't have been sent to you?
 
-Nick
+FYI The renesas tree got rebased and inherited a regression which
+got bisected.  The same thing probably happened to other trees.
+Yes it would be good to have 2nd order regressions based on a
+reference branch (e.g. mainline in this case) in KernelCI but
+that's for next year.  Regardless, it found a commit and the
+bisection looks legit.
 
+>> Below is the full report for the bisect for the first test, the bisect
+>> for the latter looks identical.  It's got links to full logs for the
+>> test run and a Reported-by for the bot - I do see some backtraces from
+>> userspace in the output, the first is:
+>>
+>> | IGT-Version: 1.26-gf8a4a0b (aarch64) (Linux: 6.1.0 aarch64)
+>> | <14>[   35.444448] [IGT] drm_read: starting subtest short-buffer-wakeup
+>> | Starting subtest: short-buffer-wakeup
+>> |
+>> | (| drm_read:350) CRITICAL: Test assertion failure function generate_event, file ../tests/drm_read.c:65:
+>> | (drm_read:350) CRITICAL: <14>[   36.155642] [IGT] drm_read: exiting, ret=98
+>> | Failed assertion: kmstest_get_vblank(fd, pipe, DRM_VBLANK_EVENT)
+>> |
+>> | (drm_read:350) CRITICAL: Last errno: 22, Invalid argument
+>> | Stack trace:
+>> |
+>> |   #0 ../lib/igt_core.c:1933 __igt_fail_assert()
+>> |   #1 [<unknown>+0xd5362770]
+>> |   #2 [<unknown>+0xd536193c]
+>> |   #3 [__libc_start_main+0xe8]
+>> |   #4 [<unknown>+0xd5361974]
+>> |   #5 [<unknown<6>[   36.162851] Console: switching to colour frame buffer device 300x100>+0xd5361974]
+>> | Subtest short-buffer-wakeup failed.
+>>
+>> Unfortunately we don't have current results from mainline or -next.
+
+Thanks,
+Guillaume
