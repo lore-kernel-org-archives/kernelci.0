@@ -1,149 +1,73 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AF6EC5
-	for <kernelci@lists.linux.dev>; Thu,  5 Jan 2023 10:00:02 +0000 (UTC)
-Received: from [IPV6:2001:861:4a40:8620:ca7e:ed27:bc15:7986] (unknown [IPv6:2001:861:4a40:8620:ca7e:ed27:bc15:7986])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 63BE76602D05
-	for <kernelci@lists.linux.dev>; Thu,  5 Jan 2023 09:59:55 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1672912795;
-	bh=SHVaoUWL7WvlLP44JdLG1ISAlhEn+UCq21ZqTCwQCmw=;
-	h=Date:To:From:Subject:From;
-	b=EpsAj2J3dyOm4ABt4MChlN+fboewIcFx5iMptxAEEwEyPqX1yC7hpoyLk/+YgfERh
-	 O0BdrkT5kHFKj0vOHnOopYlKjqWS+yTn9SH5Cp3jkziXYT8vzGRYQmYm/OhonwupdX
-	 xew1eOV5C8kKJ/yNLTzrRbV74BLlLVd1A3nTUv1gwC9Tnlu+dRicKTBjp9N6aArXer
-	 3uu6u9ag2P13wydcAR0wqwjQuRlj7MiaJIAXgdxSqWNeX2bjcGdulhTe8XPoc9BD0S
-	 F8tCydUjfrA7HGc73m1YcggbB4q39/jy4t3O+hBufcLWzqfm4mIX82Mus+wdkxedDS
-	 zVXRqaZvspxDQ==
-Message-ID: <4ae8d73f-ed10-c3b5-c6c3-e30ffdf95d7b@collabora.com>
-Date: Thu, 5 Jan 2023 11:00:32 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0160E179
+	for <kernelci@lists.linux.dev>; Thu, 19 Jan 2023 00:08:41 +0000 (UTC)
+Received: by mail-lj1-f170.google.com with SMTP id c3so488389ljh.1
+        for <kernelci@lists.linux.dev>; Wed, 18 Jan 2023 16:08:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u4SygOQLQWkscppQKt3jB9P99J7nX+9Lykf4ZuG0hH0=;
+        b=rHbJhrCk2jb6mLe6Yqs5Y+kT2/rjCoVxmNgaNl4wOY9OI5P81aPauZZYPeL6ZZ7W1w
+         q+wJbVcFyuhTMLk8cB8//GX8t9qdkSUEF/VDB8Ft+cTo+OPDl/sIvs2F623B8iEgjVDa
+         I8wTiUaHEsjk+t+T66SpOB//WN1Hkwe9qPrzkbNAwJBo6Ldc9MZFo577tmZ9QSbaZPeK
+         nevp/WTYbgCFUYrZ06FjHEd//qycBZnxKg8RMfe+axzLL0uIj6yLrbs6whv03Ykis7Fl
+         gj/chHQ39/4Qt4GUNmO+O53zI0PN2nEqgOvTUpc9HLVEkZOhzzU8lIwUgX8uVVQCABUi
+         y4QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u4SygOQLQWkscppQKt3jB9P99J7nX+9Lykf4ZuG0hH0=;
+        b=d6uzvCiVsCAr0Tc6m5SuldNzHUHNEkDwjTr3prUiUD6NQnFkas4Hd1yjp5ACbJ/CKk
+         9RQbZQmpAlS+HfATRnGxwwTtdJvGOylx4OM5hys/d0/ruE+sqZHBJf+DAnRGcymNJevG
+         uqP1YfR4hlkySZll0NcpsSCspI7W5rJebCpIvOW17lr468ypveGqBY2ohAelYqGv1Cgm
+         apLssnz1dtS+CjLD8/j0eY5QsV/OJBDPlw30CH6iBsvd1a3PB/gxvXtb/a4+XPkrqavA
+         nGs7h9aOjcI1UgDW8GL32ANeFPA6MNUGZa+dMXyqGpLMHlGHKiS+kqXzuzymp2GBCBLq
+         2b+w==
+X-Gm-Message-State: AFqh2kqQvVr15nG7EJ4uIYsdLpXyt/uLL4scVT7VUMuw5U+YaKVQ6POS
+	MLHJqVvu/lsIqN/tkUDdPz2+nB5pzhaUmb6UK5YGnQ==
+X-Google-Smtp-Source: AMrXdXvxmjQTr4Nsph9U+I9y09H1INAb5ilfDSD2FWeIEeUcchAWCzpHxhWbyZLm/ycq8dVEMRRYvURfFq7rfYhxVgI=
+X-Received: by 2002:a05:651c:10ba:b0:28b:8515:e148 with SMTP id
+ k26-20020a05651c10ba00b0028b8515e148mr549136ljn.62.1674086919742; Wed, 18 Jan
+ 2023 16:08:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: kernelci@lists.linux.dev
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-Subject: kci command and new API & Pipeline
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAHRSSEzfMO06w8cimnG9W_NnvnupxcF93tVVJOybUWjoQzNY3w@mail.gmail.com>
+ <CAHRSSEw=t+jhbmHjZVL+mZTJii66pJnHfyNSGXFRt99=y7=6WA@mail.gmail.com>
+In-Reply-To: <CAHRSSEw=t+jhbmHjZVL+mZTJii66pJnHfyNSGXFRt99=y7=6WA@mail.gmail.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Wed, 18 Jan 2023 16:08:27 -0800
+Message-ID: <CAHRSSExO0ZvPHj3z6SedhCpmZxYWpBR0nDgCPUNFkY4bqodgtg@mail.gmail.com>
+Subject: Re: Please add android14-6.1
+To: kernelci@groups.io, kernelci@lists.linux.dev, 
+	Kevin Hilman <khilman@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 
-As the new API & Pipeline implementation is getting closer to
-being fully functional, the next step is to start transitioning
-the kernelci-core Python package and command line tools.  Some
-work has already started around that, with some primitives to use
-the new API and more recently to provide an abstraction layer for
-storage.  We also need to make sure the current tools and various
-systems using it (Jenkins...) continue to be supported with a
-clear deprecation plan.  So here are a few thoughts about how I
-suggest we do that:
+Any progress on this?
+
+(sorry if you got this twice - 1st one was sent with rich text and
+rejected by lists.linux.dev)
 
 
-* kci command
-
-With the new API, builds and tests share a common base object
-model called a "node".  So kci_build, kci_test and kci_data
-become kind of confusing names.  Also the idea of having a single
-kci command has been floating around for a while, so now seems
-like a good time to start implementing that.  Basically, the
-kci_* commands will remain supported for as long as necessary to
-ensure a smooth transition while production is still using
-kernelci-backend and Jenkins.  Meanwhile, new commands using the
-new API will rely on the kci entry point.  Then we can have
-things like "kci node get <node id>", "kci user create", "kci
-storage upload <files>" etc.  The code behind these commands
-would be used by the new pipeline too.  We might even consider
-implementing the pipeline services as commands in kernelci-core,
-so kernelci-pipeline would ultimately have no Python code left at
-all (e.g. docker-compose would just call "kci monitor loop").
-
-I've made a first set of PRs to introduce the kci script as a
-single entry point command and just a "validate" sub-command to
-validate the YAML configuration:
-
-https://github.com/kernelci/kernelci-core/pull/1582
-https://github.com/kernelci/kernelci-core/pull/1585
-https://github.com/kernelci/kernelci-core/pull/1586
-
-I'm taking this opportunity to enable pylint in GitHub checks for
-all the code getting added now, and we should also get the
-documentation and unit tests updated at the same time.  We might
-also consider increasing the minimum Python version which is
-currently 3.6 to say, 3.9 or 3.10 as this could improve the code
-quality.  But these are more like implementation details than
-design decisions.
-
-
-* storage abstraction
-
-The old kernelci-backend implementation provides its own endpoint
-for uploading files, which have to be on the same server as the
-backend service.  The new API is entirely decoupled from storage
-as the data schema just requires publicly-available URLs for the
-files which may be uploaded and stored using any arbitrary
-mechanism (SSH and Nginx by default, but could be s3-compatible
-or anything).  So I've made a couple of PRs to add a
-kernelci.storage abstraction module, with support for both SSH
-and kernelci-backend with the corresponding Jenkins changes:
-
-https://github.com/kernelci/kernelci-core/pull/1573
-https://github.com/kernelci/kernelci-jenkins/pull/117
-
-I've also added a kernelci.legacy module to keep code that should
-eventually be removed.  This makes it easier to refactor the rest
-of the code that just needs to evolve.
-
-
-* API / database abstraction
-
-There is currently a kernelci.db module for abstracting the
-backend / API / database interactions.  This was initially done
-in order to provide some flexibility between the old backend and
-the new API and also potentially use things such as KCIDB
-directly.  However, the design has now evolved to push the
-abstraction line at the API level instead with modularity around
-its pub/sub mechanism.  The client-side code could now be
-simplified a lot by removing endless corner-cases as each API has
-a different set of features.  So I'm suggesting to move the code
-that talks to the new API to a separate module e.g. kernelci.api
-and plan to deprecate kernelci.db which would only be used with
-the old backend.
-
-
-Please feel free to share any thoughts you might have on this.
-Here are in particular a few things I think we need to clarify:
-
-* Do you require a Python version older than 3.10 for your
-  KernelCI use-case?
-
-* Can you deal with minor CLI changes in the current tools?  For
-  example, --storage is being replaced with --storage-config.
-
-* For how long would you need the old code to remain in the
-  repository with minimal bugfix support?  I believe the new API
-  and pipeline should start getting ready for production in the
-  April~June (Q2) timeframe, so we could plan deprecation to
-  start around that time and removal later this year
-  e.g. October~December (Q4).
-
-I know there are a few instances of KernelCI out there with
-various kinds of custom integrations that rely on some of this
-code, but it's unclear to which extent they do.  So please share
-any specific requirements you may have to help you transition to
-the new system.  While it's important to take KernelCI users into
-account and minimise disruption, please also keep in mind that
-the code base and services need to evolve in order for the
-project to scale in a sustainable way.  So the earlier we can
-drop old code (and Jenkins!) the better.
-
-Thanks,
-Guillaume
+On Fri, Dec 16, 2022 at 12:17 PM Todd Kjos <tkjos@google.com> wrote:
+>
+> +kernelci@lists.linux.dev
+>
+>
+> On Fri, Dec 16, 2022 at 11:45 AM Todd Kjos <tkjos@google.com> wrote:
+> >
+> > Please add android14-6.1 branch to kernelci testing.
+> >
+> > repo: https://android.googlesource.com/kernel/common
+> > branches: android14-6.1
+> >
+> > Thanks,
+> >
+> > -Todd
