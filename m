@@ -1,93 +1,95 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC94C29A8
-	for <kernelci@lists.linux.dev>; Fri,  3 Feb 2023 15:25:37 +0000 (UTC)
-Received: from localhost.localdomain (ip-185-104-137-32.ptr.icomera.net [185.104.137.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 53A076602F05;
-	Fri,  3 Feb 2023 15:25:26 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1675437930;
-	bh=LJFhso2nOYttoMJgKwPgZoKqQrPyp5Qa3zt/8fIFdZQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fqjVdAP75KxK9vv+9nwdq6WcQuwVar1CX4fbwPzZuHljWxhNP5f/6XIqdPE1qCfwc
-	 z3qhbTxUKI812BAQIronE5hAXjUc7Z93VSOsKuh0/KVA93F6TVNv/gtyuezK7cHDKo
-	 BXDJdLoMc1A/XDkvnh5w2P44+LHCogt2H8HIzFmAMGG6jJAVxzYkBHTLpIgkkC+uLi
-	 HhFhgke3fesExQdDioyeKYvKajwRypfkcXjRSjXBVxTSbzr+9EB4wP4eJMmT9fTn36
-	 RoOi1wtp9m082A5oDIeC83uGHzNIlDD+NsLUFFHe9opdybO/Nx/awcmqx2zuv+aqiJ
-	 /cjeaz69H651w==
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-To: Guillaume Tucker <guillaume.tucker@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Gautam <gautammenghani201@gmail.com>
-Cc: kernel@collabora.com,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernelci@lists.linux.dev
-Subject: [PATCH] selftests: find echo binary to use -ne options
-Date: Fri,  3 Feb 2023 16:26:03 +0100
-Message-Id: <20230203152603.11450-1-guillaume.tucker@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F8279C6
+	for <kernelci@lists.linux.dev>; Fri,  3 Feb 2023 16:26:38 +0000 (UTC)
+Received: by mail-il1-f171.google.com with SMTP id g16so2284095ilr.1
+        for <kernelci@lists.linux.dev>; Fri, 03 Feb 2023 08:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jzLSTilkTqHv5zqJq4XrgBlNDh4B17SJN2rgulEb5xk=;
+        b=d7kPQhIauFu7vhvmYuzzHJii3z93jbo8da5vvEAJvij6FF2hHODbovtTwaR//XIqB6
+         IDIvXVPISW0bwGn6f/uwmd8dHTwDSn2kOobXOqmYAgqMSghpBvDM48pRn5IzbuO+8qvj
+         YLDPv1eR3uAXHCfCs/3lhe8N2TuQC4ReiAR7M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jzLSTilkTqHv5zqJq4XrgBlNDh4B17SJN2rgulEb5xk=;
+        b=wsjnu5CWconc76F3IfAK1x1gVXxqeZHtLR/To34zRloB4WEPauHuRze5EAqd3ll0k9
+         WyHzVk0CDLoSpyBIajhLEm2xRVzip/MKfX7MKbmZLghhqh82xaGu5OMBZcNygL4TxuUt
+         vQNTJU17nao+WjCdv1z+0iIRCxA9dBhzUiYRknugS+OYDRNVZGH6QBjrY8zyrRl3TF/2
+         DpRCR8/egVYiwmrYhenxNd/0xI8d/nW8kkdjp88Oa5mPFQ0XqOBB4QfQvoT2DMHrPx23
+         f21QXlfCDF4awBhtB0yyW4hZG0T4y4wwReOLxBX7vWnMc6ih3ejverr9HRPSZicodtzy
+         Mhiw==
+X-Gm-Message-State: AO0yUKUTHr+De7soFyxx8BZvG6D3sTgIYucD3RfaCA83wFQbwp5Pc8eR
+	71x783ap/bEutLTvS4URPpQGdw==
+X-Google-Smtp-Source: AK7set+SWBkzsLF7SwKMgA+I+wyLq5+0NPN1Gmn1itfKTHMLjlocRZMy3fHFcQDgtVDC6mqhqZ7xwg==
+X-Received: by 2002:a05:6e02:1ba7:b0:310:b84b:c893 with SMTP id n7-20020a056e021ba700b00310b84bc893mr7862837ili.1.1675441597740;
+        Fri, 03 Feb 2023 08:26:37 -0800 (PST)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id q21-20020a056638345500b003af38f526aesm943667jav.81.2023.02.03.08.26.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Feb 2023 08:26:37 -0800 (PST)
+Message-ID: <ebaaa261-84db-c118-2c2b-d8a31c90a1aa@linuxfoundation.org>
+Date: Fri, 3 Feb 2023 09:26:36 -0700
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH] selftests: find echo binary to use -ne options
+Content-Language: en-US
+To: Guillaume Tucker <guillaume.tucker@collabora.com>,
+ Guillaume Tucker <guillaume.tucker@gmail.com>, Shuah Khan
+ <shuah@kernel.org>, Gautam <gautammenghani201@gmail.com>
+Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernelci@lists.linux.dev,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20230203152603.11450-1-guillaume.tucker@collabora.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20230203152603.11450-1-guillaume.tucker@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Find the actual echo binary using $(which echo) and use it for
-formatted output with -ne.  On some systems, the default echo command
-doesn't handle the -e option and the output looks like this (arm64
-build):
+On 2/3/23 08:26, Guillaume Tucker wrote:
+> Find the actual echo binary using $(which echo) and use it for
+> formatted output with -ne.  On some systems, the default echo command
+> doesn't handle the -e option and the output looks like this (arm64
+> build):
+> 
+> -ne Emit Tests for alsa
+> 
+> -ne Emit Tests for amd-pstate
+> 
+> -ne Emit Tests for arm64
+> 
+> This is for example the case with the KernelCI Docker images
+> e.g. kernelci/gcc-10:x86-kselftest-kernelci.  With the actual echo
+> binary (e.g. in /bin/echo), the output is formatted as expected (x86
+> build this time):
+> 
+> Emit Tests for alsa
+> Emit Tests for amd-pstate
+> Skipping non-existent dir: arm64
+> 
+> Only the install target is using "echo -ne" so keep the $ECHO variable
+> local to it.
+> 
+> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+> Fixes: 3297a4df805d ("kselftests: Enable the echo command to print newlines in Makefile")
+> Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
+> ---
 
--ne Emit Tests for alsa
+Thank you - will appear shortly in linuxk-selftest next.
 
--ne Emit Tests for amd-pstate
-
--ne Emit Tests for arm64
-
-This is for example the case with the KernelCI Docker images
-e.g. kernelci/gcc-10:x86-kselftest-kernelci.  With the actual echo
-binary (e.g. in /bin/echo), the output is formatted as expected (x86
-build this time):
-
-Emit Tests for alsa
-Emit Tests for amd-pstate
-Skipping non-existent dir: arm64
-
-Only the install target is using "echo -ne" so keep the $ECHO variable
-local to it.
-
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Fixes: 3297a4df805d ("kselftests: Enable the echo command to print newlines in Makefile")
-Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
----
- tools/testing/selftests/Makefile | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 41b649452560..9619d0f3b2ff 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -234,10 +234,11 @@ ifdef INSTALL_PATH
- 	@# While building kselftest-list.text skip also non-existent TARGET dirs:
- 	@# they could be the result of a build failure and should NOT be
- 	@# included in the generated runlist.
-+	ECHO=`which echo`; \
- 	for TARGET in $(TARGETS); do \
- 		BUILD_TARGET=$$BUILD/$$TARGET;	\
--		[ ! -d $(INSTALL_PATH)/$$TARGET ] && echo "Skipping non-existent dir: $$TARGET" && continue; \
--		echo -ne "Emit Tests for $$TARGET\n"; \
-+		[ ! -d $(INSTALL_PATH)/$$TARGET ] && $$ECHO "Skipping non-existent dir: $$TARGET" && continue; \
-+		$$ECHO -ne "Emit Tests for $$TARGET\n"; \
- 		$(MAKE) -s --no-print-directory OUTPUT=$$BUILD_TARGET COLLECTION=$$TARGET \
- 			-C $$TARGET emit_tests >> $(TEST_LIST); \
- 	done;
--- 
-2.30.2
+thanks,
+-- Shuah
 
