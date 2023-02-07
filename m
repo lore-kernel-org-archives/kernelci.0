@@ -1,100 +1,105 @@
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9B679DD
-	for <kernelci@lists.linux.dev>; Tue,  7 Feb 2023 20:33:06 +0000 (UTC)
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id A6F9192009C; Tue,  7 Feb 2023 21:23:06 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 9FCF892009B;
-	Tue,  7 Feb 2023 20:23:06 +0000 (GMT)
-Date: Tue, 7 Feb 2023 20:23:06 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, 
-    Nick Desaulniers <ndesaulniers@google.com>
-cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@kernel.org>, 
-    Mark Brown <broonie@kernel.org>, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-    Ingo Molnar <mingo@kernel.org>, x86@kernel.org, 
-    "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>, 
-    "kernelci-results@groups.io" <kernelci-results@groups.io>, 
-    "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: tip/master build: 205 builds: 5 failed, 200 passed, 9 errors,
- 22 warnings (v6.2-rc7-273-gd67c17ddc899)
-In-Reply-To: <85031c0c-d981-031e-8a50-bc4fad2ddcd8@collabora.com>
-Message-ID: <alpine.DEB.2.21.2302071942200.11790@angie.orcam.me.uk>
-References: <63e1f7e0.170a0220.7142.de7c@mx.google.com> <Y+IRiiRtXvUzXOGp@gmail.com> <c3cd3489-ca32-bdf5-4538-d95532bf9430@collabora.com> <Y+JU07y+lvYAtZQT@sirena.org.uk> <85031c0c-d981-031e-8a50-bc4fad2ddcd8@collabora.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E058BF1
+	for <kernelci@lists.linux.dev>; Tue,  7 Feb 2023 21:54:12 +0000 (UTC)
+Received: by mail-il1-f178.google.com with SMTP id s10so2295835iln.6
+        for <kernelci@lists.linux.dev>; Tue, 07 Feb 2023 13:54:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0hubqKtMuYwUvUIi4swYjWUkw4EbQmDjYbC8mfiwm2w=;
+        b=A1Msn2PKzn7+ypZXcJEEO+KbfACpwv+YUpC0RQgNRx0kwSGAW9ARdUBZRDNV7zF3oH
+         azuv26Gsgrga1pR6AimoOrdpDF9RwA7ZyXwyARW3FCOBegQFyCTMR+XUIWJRZ6aNks8l
+         MYfk4vAYR3Qof/DO/2CErbfvcAGaR4dE5liyg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0hubqKtMuYwUvUIi4swYjWUkw4EbQmDjYbC8mfiwm2w=;
+        b=dRwDDrgY4Si6V5M4gD/L5zcPR7UioPzYeX2ghVGFk+6yifpPOxAtoCIAC7POJ1TZXB
+         viCr3ibTQlGIQXHUlAOXVRZHsbJ0gMy6EDuL9et/ZwcMNsAU3DX2rMdYJJp8cCaOYmPE
+         ApQBgsY3Fox5oj8lZsOKGVOdkUaF5jsDK4TE0d1KHII2ZD5XBC/Wp9ayU0ovbD4iMqC2
+         PnrpOzljMPGBLdURAZnyP0JyVGN8q9iidV23KhhaK7SsTg+OzvIPdw0MoiJClvSxR9Do
+         1+BN4LV4YePPs5Jr4YmgDz5eAsJ1AsSZaMhywBR3mMommqc55rWOZErXA54ufjp2a1fR
+         AYpQ==
+X-Gm-Message-State: AO0yUKVMpc7AWQx+kAbYYwgbSr22WVjK7d6MMOwC+aXt5WRXPCsSc0A2
+	d5FfQomY5vUP+DVr+U7KV2r3Eg==
+X-Google-Smtp-Source: AK7set/eL/42HZlwEKUPckXmYxlgeRZ4Hwxiiwjnfo5/shFUQKriZV27m5QUZM3kAA2AfnAKtDWXKg==
+X-Received: by 2002:a92:d484:0:b0:313:cd79:adc2 with SMTP id p4-20020a92d484000000b00313cd79adc2mr3810400ilg.2.1675806851274;
+        Tue, 07 Feb 2023 13:54:11 -0800 (PST)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id r12-20020a056638130c00b003a432de0547sm4861530jad.163.2023.02.07.13.54.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Feb 2023 13:54:10 -0800 (PST)
+Message-ID: <96536043-2afe-c10d-b4ee-9625203c6242@linuxfoundation.org>
+Date: Tue, 7 Feb 2023 14:54:09 -0700
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v2] selftests: use printf instead of echo -ne
+Content-Language: en-US
+To: Guillaume Tucker <guillaume.tucker@collabora.com>,
+ Shuah Khan <shuah@kernel.org>, Gautam <gautammenghani201@gmail.com>,
+ David Laight <David.Laight@ACULAB.COM>
+Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernelci@lists.linux.dev,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20230204135652.336495-1-guillaume.tucker@collabora.com>
+ <97df8ef0-5eef-91cd-2d6d-eeff764c5e35@collabora.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <97df8ef0-5eef-91cd-2d6d-eeff764c5e35@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 7 Feb 2023, Guillaume Tucker wrote:
+On 2/7/23 01:36, Guillaume Tucker wrote:
+> On 04/02/2023 14:56, Guillaume Tucker wrote:
+>> On some systems, the default echo command doesn't handle the -e option
+>> and the output looks like this (arm64 build):
+>>
+>> -ne Emit Tests for alsa
+>>
+>> -ne Emit Tests for amd-pstate
+>>
+>> -ne Emit Tests for arm64
+>>
+>> This is for example the case with the KernelCI Docker images
+>> e.g. kernelci/gcc-10:x86-kselftest-kernelci.  To avoid this issue, use
+>> printf which handles escape characters as a standard feature and is
+>> more widespread among modern shells.
+>>
+>> The output is now formatted as expected (x86 build this time):
+>>
+>> Emit Tests for alsa
+>> Emit Tests for amd-pstate
+>> Skipping non-existent dir: arm64
+>>
+>> Reported-by: "kernelci.org bot" <bot@kernelci.org>
+>> Suggested-by: David Laight <David.Laight@ACULAB.COM>
+>> Fixes: 3297a4df805d ("kselftests: Enable the echo command to print newlines in Makefile")
+>> Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
+>> ---
+>>
+>> Notes:
+>>      v2: use printf insead of $(which echo)
+> 
+> Oh I see you've already applied the v1 on kselftest/next branch:
+> 
+>    79c16b1120fe selftests: find echo binary to use -ne options
+> 
+> Do you want me to send this printf fix rebased on top?
+> 
 
-> After some investigation, it turns out the error happens when
-> doing "make modules_install".  Here's the issue:
-> 
-> * modules_install is listed in "no-compiler-targets" in the
-> top-level Makefile
-> 
-> * as a result, scripts/Makefile.compiler is not included
-> 
-> * arch/mips/loongson64/Platform requires the "cc-option" function
->   to add -mnon-loongson-mmi
-> 
-> * since "cc-option" is not defined when just doing "make
->   modules_install", the flag is not added and the error mentioned
->   above occurs
-> 
-> GitHub issue: https://github.com/kernelci/kernelci-project/issues/176
-> 
-> Here's a hack to prove this point, need-compiler is defined in
-> the top-level Makefile so it shouldn't be used here but
-> this "fixes" the problem:
-> 
-> 
-> 
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 490dea07d4e0..024f62dbef76 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -317,10 +317,12 @@ KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
->  KBUILD_LDFLAGS         += -m $(ld-emul)
->  
->  ifdef CONFIG_MIPS
-> +ifdef need-compiler
->  CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
->         grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
->         sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
->  endif
-> +endif
+Yes please. Thank you.
 
- I think it is actually the proper way, and if this gets a go-ahead, then 
-all you need is to replace `CONFIG_MIPS' with `need-compiler' in the 
-existing conditional, as the very purpose of this conditional is to guard 
-the assignment against being invoked, except for `no-dot-config-targets' 
-only (as discussed here: 
-<https://lore.kernel.org/all/1675328702-8328-1-git-send-email-yangtiezhu@loongson.cn/> 
-as recently as last week) rather than all of `no-compiler-targets'.  
-Evidently that is not enough, but please mind that with embedded targets 
-people often do not use modules and therefore do not trip over issues with 
-`make modules_install'.
+thanks,
+--- Shuah
 
- This should probably be marked with:
-
-Fixes: 13ceb48bc19c ("MIPS: Loongson2ef: Remove unnecessary 
-{as,cc}-option calls")
-
-as it's when `-march=loongson2f' (which implies `-mloongson-mmi') started 
-being added unconditionally (and then `-march=loongson3a' followed with 
-commit 0e96ea5c3eb5 ("MIPS: Loongson64: Clean up use of cc-ifversion")).
-Nick, I'm afraid these were both your stuff.
-
- Also Loongson targets have their dedicated platform maintainers (cc-ed) 
-and general MIPS maintainers may pay less attention to such issues.
-
- FWIW and HTH,
-
-  Maciej
