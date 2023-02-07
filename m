@@ -1,52 +1,29 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6DA20FC
-	for <kernelci@lists.linux.dev>; Tue,  7 Feb 2023 10:43:15 +0000 (UTC)
-Received: by mail-ed1-f52.google.com with SMTP id i38so3820255eda.1
-        for <kernelci@lists.linux.dev>; Tue, 07 Feb 2023 02:43:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KtaXYio5Oeu1cRdDlA4KLVVfQih33KnE+clbGKmwvA0=;
-        b=oqv+kpynE97P+Mh52Q+WM4e2nX+GXWF5VZ/7ZiON5DkydbddGrnhPWSO9Dts+frrWH
-         CIvZESX2Nr+MhNsw+a4d9qNprcE59kaLEqtwcWyw1jqnvIp7J6zjp4RbzI7Ji7skQBvG
-         ayn1Om2qm5OX/GNoHkq+Owr+bsaqBrnLOAku6wTAwVRv13EworVzEGrhQ+KKoVqq/lui
-         nYur04Y9t9E8tRx/i7qpZ0rIhKlt9we0Xsn9U4Q0TZfN/82V/Rx7ZSSf0xOMW6hpL1Jd
-         dvvyppVF90WUmzxRoIBk4SVgG4APGP9dnygfS4h6dFmDHUc6kKfu05fTBtrqaFsaxdg4
-         Vq4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KtaXYio5Oeu1cRdDlA4KLVVfQih33KnE+clbGKmwvA0=;
-        b=FuHXUH2PoLIKsku/IztJsD5N51XKrBVvPXkRJP/fp2d6f0zDcvJmMYbDU9QM8MwyWQ
-         kflLfcOcB56m02ewnkiHaHAsl35h5BoSR2Jiv9Egk4U3gj+CT/4p4ncdMLdr/tCnyEMF
-         3pehhfejdzH/ggBnZW2J8Hr816gpASAZb+6RSb0CwbkDbUbHuwSR7+54p22vunGOJqss
-         Gdepa5+0kP9n7yzIf6eubY8zt3qunV+7D/hG0aBZCTpxV5M4EzV38F7dbIR5CeFyLTmA
-         qLJ+/dl8H88u1i1K5amZTBm8HsItcM1K0F7v4uejMSW/lBGz1lCDulHn33OGg2uyMmL6
-         eNQQ==
-X-Gm-Message-State: AO0yUKVLFnlZK1UxU1sn2SA9ftznxUGLlw2CTGk0ArH13+PqsaRrzWWp
-	n9lVZsZY9FQvkaefBDGWitU=
-X-Google-Smtp-Source: AK7set9WDZZGDrfyEMFwqSYiBi4lWCVxTdtD33CzWy+RYoZFlPSsFF+673F8FqTQh8e8AvAM0bOXag==
-X-Received: by 2002:a50:d516:0:b0:4aa:b34a:e536 with SMTP id u22-20020a50d516000000b004aab34ae536mr3371462edi.20.1675766593359;
-        Tue, 07 Feb 2023 02:43:13 -0800 (PST)
-Received: from gmail.com (1F2EF0FB.nat.pool.telekom.hu. [31.46.240.251])
-        by smtp.gmail.com with ESMTPSA id 17-20020a170906201100b007ae32daf4b9sm6704048ejo.106.2023.02.07.02.43.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Feb 2023 02:43:12 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Tue, 7 Feb 2023 11:43:10 +0100
-From: Ingo Molnar <mingo@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EB429CA
+	for <kernelci@lists.linux.dev>; Tue,  7 Feb 2023 13:40:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEB2C433EF;
+	Tue,  7 Feb 2023 13:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1675777239;
+	bh=GbvUBbdBctS0ZLdL6JanRImBjVkP4Pa9IPWpHUd/pF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tCmFL8dWL6wURj02FPMFo6SGsfCwZZNx4ZVbSltUNKjoOTRjYWjlNwSZb709yxe1t
+	 12TDJ4E0in4aImRyzN0GrCY0ImpZEKW0zxJELKBffsBNKYVnYBFtmC7BN5W56CMF0m
+	 XhtFi1TJC4e8V+uL/YpNJ2gmWqJji/ZnOhpi0lnr5OL23cAMK1oF5SJX/YjJTe5PMj
+	 as7YjHZRUIF1PsAdZr2Bj0FSzR/gIx/zJQNeGxpOn9hc7X2ninF4RS4NZalcGAYD0A
+	 neTuK1kW3O7j0fYIA4peuOgU6EtKP1ONhwOSl2gkxg74cNn1xpoLYzK3so/QbmY7CJ
+	 QekiDu/ZU2++A==
+Date: Tue, 7 Feb 2023 13:40:35 +0000
+From: Mark Brown <broonie@kernel.org>
 To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: x86@kernel.org, "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+Cc: mingo@kernel.org, x86@kernel.org,
+	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
 	"kernelci-results@groups.io" <kernelci-results@groups.io>
 Subject: Re: tip/master build: 205 builds: 5 failed, 200 passed, 9 errors, 22
  warnings (v6.2-rc7-273-gd67c17ddc899)
-Message-ID: <Y+IrPplefysppzDC@gmail.com>
+Message-ID: <Y+JU07y+lvYAtZQT@sirena.org.uk>
 References: <63e1f7e0.170a0220.7142.de7c@mx.google.com>
  <Y+IRiiRtXvUzXOGp@gmail.com>
  <c3cd3489-ca32-bdf5-4538-d95532bf9430@collabora.com>
@@ -56,111 +33,59 @@ List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="c0ozLuDvekasEivI"
+Content-Disposition: inline
+In-Reply-To: <c3cd3489-ca32-bdf5-4538-d95532bf9430@collabora.com>
+X-Cookie: Do not flush.
+
+
+--c0ozLuDvekasEivI
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c3cd3489-ca32-bdf5-4538-d95532bf9430@collabora.com>
+Content-Transfer-Encoding: quoted-printable
 
-
-* Guillaume Tucker <guillaume.tucker@collabora.com> wrote:
-
-> Hi Ingo,
-> 
+On Tue, Feb 07, 2023 at 10:56:04AM +0100, Guillaume Tucker wrote:
 > On 07/02/2023 09:53, Ingo Molnar wrote:
-> > 
-> > * kernelci.org bot <bot@kernelci.org> wrote:
-> > 
-> >> tip/master build: 205 builds: 5 failed, 200 passed, 9 errors, 22 warnings (v6.2-rc7-273-gd67c17ddc899)
-> >>
-> >> Full Build Summary: https://kernelci.org/build/tip/branch/master/kernel/v6.2-rc7-273-gd67c17ddc899/
-> >>
-> >> Tree: tip
-> >> Branch: master
-> > 
-> > Is anyone maintaining this CI build bot? Because it's either unmaintained, 
-> > or is blatantly lying about regressions.
-> > 
-> > Let's see one of the 'errors' it reported today:
-> 
-> Yes, it's being maintained.
 
-Good, and thanks for the quick response. :-)
-
-> However there's no way for the KernelCI core team to manually verify all 
-> the errors reported. So kernel developers following up on such errors is 
-> the best way to handle them and get them resolved.  Thanks for replying 
-> to the email report :)
-> 
-> >> Errors summary:
-> >>
-> >>     4    cc1: error: ‘-mloongson-mmi’ must be used with ‘-mhard-float’
-> > 
+> >>     4    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used wit=
+h =E2=80=98-mhard-float=E2=80=99
+> >=20
 > > ... but this exact same error was 'reported' a year ago on January 22:
-> > 
-> >>    2    cc1: error: ‘-mloongson-mmi’ must be used with ‘-mhard-float’
-> > 
-> > So these regression reports are useless in this form and they clutter 
-> > people's inboxes. Is any person reading them and acting on them to make 
+> >=20
+> >>    2    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used with=
+ =E2=80=98-mhard-float=E2=80=99
+
+> > So these regression reports are useless in this form and they clutter=
+=20
+> > people's inboxes. Is any person reading them and acting on them to make=
+=20
 > > sure these emails are sensible?
-> 
-> They are not reported as regressions but as build errors.  So it doesn't 
-> matter when it started failing or if this has always failed, any build 
-> error will show up in the report.  It's definitely something to improve, 
-> the runtime test reports differentiate regressions or "new failures" and 
-> errors that have always been there.  This will also apply to builds at 
-> some point, it's on the roadmap for the next few months.  Please bear 
-> with us in the meantime.
 
-At least the title of the email should report the 'delta' status of any 
-tree it is testing: the difference to Linus's tree.
+> About the actual kernel build error, I guess it's a shame nobody
+> has fixed this yet.  I'll take a look what the root cause might
+> be.  If it's a KernelCI build configuration issue e.g. using
+> wrong compiler flags then we can fix that, otherwise it's
+> probably something to report more directly to some MIPS
+> maintainers.
 
-For example if Linus's tree is:
+Honestly at this point I think we should just drop the affected MIPS
+configurations at this point, as Ingo says they've been failing for
+so long with nobody caring.
 
-   linus/master build: 205 builds: 5 failed, 200 passed, 9 errors, 22 warnings (v6.2-rc7-xxx-xxxxxxxxxxx)
+--c0ozLuDvekasEivI
+Content-Type: application/pgp-signature; name="signature.asc"
 
-   [ mockup. ]
+-----BEGIN PGP SIGNATURE-----
 
-Then the tip/master email title should not be:
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPiVNIACgkQJNaLcl1U
+h9Cr8Qf+OPNGuOUH8N0tS0gZ0u9sLARc9dyf/98D6kyZ6HeolJkfrPtKC7/ptve0
+vhAWSz/r4IKV4xA2PayKRpLDpV3DyJBpSoNO6aLPj2mW5xmU9kNhKZu6YDOmrcdj
+VaaRjIGnrqVID9CcUAUQbH2MVOI7j+ZHyxVAsPzsGvW0veBWhnjJvPh8CV5oX5zx
+7Tnez2LDlNdvxnMl2QPfIoTxDp4hwbiJZxrgDQz1xBkKfMdJh7TRnoRc1PTjzImi
+cSDJd+iccLbPRMkXItJfBfFWDVqWnY5XFmPBTGZpRO/eaMXnm16VERZgMxNN5JuU
+Ljyw2zStY2OgTR532jkseq+da5vRqQ==
+=Mbt1
+-----END PGP SIGNATURE-----
 
-   tip/master build: 205 builds: 5 failed, 200 passed, 9 errors, 22 warnings (v6.2-rc7-273-gd67c17ddc899)
-
-But something like this 'delta' report:
-
-   tip/master build: 205 builds: PASS (v6.2-rc7-273-gd67c17ddc899)
-
-Or if tip/master introduced new build failures/warnings, it should not 
-report this:
-
-   tip/master build: 205 builds: 6 failed, 199 passed, 10 errors, 24 warnings (v6.2-rc7-273-gd67c17ddc899)
-
-... but should report something like this:
-
-   tip/master build: 205 builds: FAIL [+1 errors, +2 warnings] (v6.2-rc7-273-gd67c17ddc899)
-
-BTW., if I got such 'delta' emails I could guarantee to handle each and 
-every one of them. With the current format it's the occasional spot check 
-of these emails and a frustrating excercise of trying to figure out the 
-delta to Linus's tree - and failing.
-
-Yes, if tip/master has an older base then these might not be entirely 
-accurate deltas, but *that* is something maintainers can fix in their 
-routine flow: merge in Linus's latest or fix a bug newly introduced 
-upstream.
-
-But prominently displaying years-old bugs as 'errors' in the title is not 
-just misleading, it's actively counterproductive. The primary output of 
-continuous integration reports must always be 'delta' based.
-
-> About the actual kernel build error, I guess it's a shame nobody has 
-> fixed this yet. [...]
-
-The main problem with the reports here is that there's no way to determine 
-'at a glance' whether there's any regressions compared to Linus's tree - 
-which is really what maintainers of non-Linus trees care about.
-
-The figures the bot sends out as email titles are fine for Linus's tree I 
-suspect, but are misleading in this form for any maintainer tree.
-
-Thanks,
-
-	Ingo
+--c0ozLuDvekasEivI--
