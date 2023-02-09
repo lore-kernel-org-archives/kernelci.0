@@ -1,105 +1,83 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E058BF1
-	for <kernelci@lists.linux.dev>; Tue,  7 Feb 2023 21:54:12 +0000 (UTC)
-Received: by mail-il1-f178.google.com with SMTP id s10so2295835iln.6
-        for <kernelci@lists.linux.dev>; Tue, 07 Feb 2023 13:54:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0hubqKtMuYwUvUIi4swYjWUkw4EbQmDjYbC8mfiwm2w=;
-        b=A1Msn2PKzn7+ypZXcJEEO+KbfACpwv+YUpC0RQgNRx0kwSGAW9ARdUBZRDNV7zF3oH
-         azuv26Gsgrga1pR6AimoOrdpDF9RwA7ZyXwyARW3FCOBegQFyCTMR+XUIWJRZ6aNks8l
-         MYfk4vAYR3Qof/DO/2CErbfvcAGaR4dE5liyg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0hubqKtMuYwUvUIi4swYjWUkw4EbQmDjYbC8mfiwm2w=;
-        b=dRwDDrgY4Si6V5M4gD/L5zcPR7UioPzYeX2ghVGFk+6yifpPOxAtoCIAC7POJ1TZXB
-         viCr3ibTQlGIQXHUlAOXVRZHsbJ0gMy6EDuL9et/ZwcMNsAU3DX2rMdYJJp8cCaOYmPE
-         ApQBgsY3Fox5oj8lZsOKGVOdkUaF5jsDK4TE0d1KHII2ZD5XBC/Wp9ayU0ovbD4iMqC2
-         PnrpOzljMPGBLdURAZnyP0JyVGN8q9iidV23KhhaK7SsTg+OzvIPdw0MoiJClvSxR9Do
-         1+BN4LV4YePPs5Jr4YmgDz5eAsJ1AsSZaMhywBR3mMommqc55rWOZErXA54ufjp2a1fR
-         AYpQ==
-X-Gm-Message-State: AO0yUKVMpc7AWQx+kAbYYwgbSr22WVjK7d6MMOwC+aXt5WRXPCsSc0A2
-	d5FfQomY5vUP+DVr+U7KV2r3Eg==
-X-Google-Smtp-Source: AK7set/eL/42HZlwEKUPckXmYxlgeRZ4Hwxiiwjnfo5/shFUQKriZV27m5QUZM3kAA2AfnAKtDWXKg==
-X-Received: by 2002:a92:d484:0:b0:313:cd79:adc2 with SMTP id p4-20020a92d484000000b00313cd79adc2mr3810400ilg.2.1675806851274;
-        Tue, 07 Feb 2023 13:54:11 -0800 (PST)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id r12-20020a056638130c00b003a432de0547sm4861530jad.163.2023.02.07.13.54.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Feb 2023 13:54:10 -0800 (PST)
-Message-ID: <96536043-2afe-c10d-b4ee-9625203c6242@linuxfoundation.org>
-Date: Tue, 7 Feb 2023 14:54:09 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45D6371
+	for <kernelci@lists.linux.dev>; Thu,  9 Feb 2023 08:54:56 +0000 (UTC)
+Received: from tincan.lan (unknown [IPv6:2001:861:4a40:8620:46d9:3185:bc09:aecb])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 9349266020B9;
+	Thu,  9 Feb 2023 08:54:48 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1675932888;
+	bh=vbnRXiU+r4c7lvYMbX38+Jok/UNcPnjR5Ne1oApjqZU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VB2WWYTp77n8ycy6ogtmSPtYStA4SHrxRDYimXiBgm2u3/9b2202H5BFiAkaYL5pv
+	 B3xXlmNMdE+v+VEAIWCfckf9tJAf1xHxt/90wU2OgfqTs08OxBKzRLtMDXjvIee6Hb
+	 airsB87vt3axe4qUe6k03OdamDha3R023xjKdpL/kMnfD39hZwwAT66WSwiTcMOBQM
+	 Wr8gwgCTxGwqsAiLm/bGyLc1wZN/q5HONco9swpH8+Cew5urZEn5Mtx4MXz/303UDy
+	 Shx87ijZ87Al8vXDIySHyDV4AByv38cC/YLTcS/VsEgR5Ct9PTmz+OF/7YN/lnoZuF
+	 tgkS7RkGUMyKg==
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+To: Shuah Khan <shuah@kernel.org>,
+	Gautam <gautammenghani201@gmail.com>,
+	David Laight <David.Laight@ACULAB.COM>
+Cc: Guillaume Tucker <guillaume.tucker@collabora.com>,
+	kernel@collabora.com,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernelci@lists.linux.dev
+Subject: [PATCH v3] selftests: use printf instead of echo -ne
+Date: Thu,  9 Feb 2023 09:55:36 +0100
+Message-Id: <20230209085536.1076662-1-guillaume.tucker@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2] selftests: use printf instead of echo -ne
-Content-Language: en-US
-To: Guillaume Tucker <guillaume.tucker@collabora.com>,
- Shuah Khan <shuah@kernel.org>, Gautam <gautammenghani201@gmail.com>,
- David Laight <David.Laight@ACULAB.COM>
-Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernelci@lists.linux.dev,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20230204135652.336495-1-guillaume.tucker@collabora.com>
- <97df8ef0-5eef-91cd-2d6d-eeff764c5e35@collabora.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <97df8ef0-5eef-91cd-2d6d-eeff764c5e35@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2/7/23 01:36, Guillaume Tucker wrote:
-> On 04/02/2023 14:56, Guillaume Tucker wrote:
->> On some systems, the default echo command doesn't handle the -e option
->> and the output looks like this (arm64 build):
->>
->> -ne Emit Tests for alsa
->>
->> -ne Emit Tests for amd-pstate
->>
->> -ne Emit Tests for arm64
->>
->> This is for example the case with the KernelCI Docker images
->> e.g. kernelci/gcc-10:x86-kselftest-kernelci.  To avoid this issue, use
->> printf which handles escape characters as a standard feature and is
->> more widespread among modern shells.
->>
->> The output is now formatted as expected (x86 build this time):
->>
->> Emit Tests for alsa
->> Emit Tests for amd-pstate
->> Skipping non-existent dir: arm64
->>
->> Reported-by: "kernelci.org bot" <bot@kernelci.org>
->> Suggested-by: David Laight <David.Laight@ACULAB.COM>
->> Fixes: 3297a4df805d ("kselftests: Enable the echo command to print newlines in Makefile")
->> Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
->> ---
->>
->> Notes:
->>      v2: use printf insead of $(which echo)
-> 
-> Oh I see you've already applied the v1 on kselftest/next branch:
-> 
->    79c16b1120fe selftests: find echo binary to use -ne options
-> 
-> Do you want me to send this printf fix rebased on top?
-> 
+Rather than trying to guess which implementation of "echo" to run with
+support for "-ne" options, use "printf" instead of "echo -ne".  It
+handles escape characters as a standard feature and it is widespread
+among modern shells.
 
-Yes please. Thank you.
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Suggested-by: David Laight <David.Laight@ACULAB.COM>
+Fixes: 3297a4df805d ("kselftests: Enable the echo command to print newlines in Makefile")
+Fixes: 79c16b1120fe ("selftests: find echo binary to use -ne options")
+Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
+---
 
-thanks,
---- Shuah
+Notes:
+    v2: use printf insead of $(which echo)
+    v3: rebase on top of fix with $(which echo)
+
+ tools/testing/selftests/Makefile | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+index 9619d0f3b2ff..06578963f4f1 100644
+--- a/tools/testing/selftests/Makefile
++++ b/tools/testing/selftests/Makefile
+@@ -234,11 +234,10 @@ ifdef INSTALL_PATH
+ 	@# While building kselftest-list.text skip also non-existent TARGET dirs:
+ 	@# they could be the result of a build failure and should NOT be
+ 	@# included in the generated runlist.
+-	ECHO=`which echo`; \
+ 	for TARGET in $(TARGETS); do \
+ 		BUILD_TARGET=$$BUILD/$$TARGET;	\
+-		[ ! -d $(INSTALL_PATH)/$$TARGET ] && $$ECHO "Skipping non-existent dir: $$TARGET" && continue; \
+-		$$ECHO -ne "Emit Tests for $$TARGET\n"; \
++		[ ! -d $(INSTALL_PATH)/$$TARGET ] && printf "Skipping non-existent dir: $$TARGET\n" && continue; \
++		printf "Emit Tests for $$TARGET\n"; \
+ 		$(MAKE) -s --no-print-directory OUTPUT=$$BUILD_TARGET COLLECTION=$$TARGET \
+ 			-C $$TARGET emit_tests >> $(TEST_LIST); \
+ 	done;
+-- 
+2.30.2
 
