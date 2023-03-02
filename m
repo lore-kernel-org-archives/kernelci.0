@@ -1,42 +1,27 @@
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A883624
-	for <kernelci@lists.linux.dev>; Fri, 10 Feb 2023 01:10:20 +0000 (UTC)
-Received: by mail-il1-f170.google.com with SMTP id f10so1616980ilc.7
-        for <kernelci@lists.linux.dev>; Thu, 09 Feb 2023 17:10:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v/rk3szIYpKAIRaNgREy62PBz6/2LxRSXh1DsRADJYU=;
-        b=glWpLY4dwbYR6L+EuXgrM7xpnBQwcy4cG8tTl4Iu6S5oeAe9XEeTtFQedpEob1PVsf
-         XDhBc6dcvKP5ITbMhU84oC9wLHu4u61U/5Mm5CDuiBGjg1ff+u7y+a6Wx+VivD/VPKcs
-         9aWC7QzL9MdRG8WZGfGt+erauZpDeGAPE4C04=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v/rk3szIYpKAIRaNgREy62PBz6/2LxRSXh1DsRADJYU=;
-        b=Gv2BD/N9kg1sgyyWTqJIARls5tUBZrN1Ug2Pul1yj6uDrNKFE72OC5csieW20reLYh
-         b6vHkAGzKkh+kNlMZDtlROwy3KAoSYoyYvtf9uJFgzMQATuiJeLMtmdWRV6bWDnazRNl
-         mSdWlBHqGrdf16l1ZidgTANXKOm753L20Y0/nPoO6rz3CYL9hN5byD2oYhLlKQGHRiOn
-         vIp8jDnqAahfya5R2+j48E/HU8y83CIgz3eXMBKkZXlml6aBdG5b5gG1DM+uxW0406ED
-         Deg/OOjTsoLiK9jpilonvRTCeVFwiE8wGm4AiwEQRz5fYCPHo9JAftAvjKacB8rP2YUt
-         EXaQ==
-X-Gm-Message-State: AO0yUKX/70vv4jX1mkBghdL7t9XIfLc/N3jJqnDFvOkg9ByFCMxD+hjU
-	Zrtev2ppPx4P5ydsOcem7d+WAw==
-X-Google-Smtp-Source: AK7set/lwVwMrh2gIxWEj3tHiccsh9dwYjh13O3kYY/qcLOTXN81uOX17NqMOY+FJluKLmXrlqXPYA==
-X-Received: by 2002:a05:6e02:1d95:b0:314:1579:be2c with SMTP id h21-20020a056e021d9500b003141579be2cmr872204ila.0.1675991419088;
-        Thu, 09 Feb 2023 17:10:19 -0800 (PST)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id o3-20020a02c6a3000000b0038a56594026sm887540jan.66.2023.02.09.17.10.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Feb 2023 17:10:18 -0800 (PST)
-Message-ID: <ee7976ca-ea15-e13f-3ea0-1b89eb29e39e@linuxfoundation.org>
-Date: Thu, 9 Feb 2023 18:10:17 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE901C10
+	for <kernelci@lists.linux.dev>; Thu,  2 Mar 2023 16:31:35 +0000 (UTC)
+Received: from [IPV6:2001:861:4a40:8620:656e:de35:bfcf:ff5d] (unknown [IPv6:2001:861:4a40:8620:656e:de35:bfcf:ff5d])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id A3634660206A;
+	Thu,  2 Mar 2023 16:31:27 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1677774687;
+	bh=bXW4FE1NNRdrxRwNvl1HA9uGv5Kt5tBRB3ts7PpRZV8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YNdMqiynLRmvhtUHREjx5ca3AlePKdZ6h7YZO7DxQZZc+1gVB+iLak2WyMF5d8v07
+	 d+uYdDhq2NCdzxPOn2AKTzIsriLqPIHHoBsnvkOgYLgz0XsewlE4Br4wXmba+G3JEl
+	 XpqBFmoQXdFXrTbfwqzD97Y9XAS482Aaq1R0dXndRCLC69C5slbeXBu9jP2N3Pci5J
+	 3wTf4EnEhuj3t3KalRKSN50mx+6EnXVRb1mmFH33hd+11sgtupFiKZqasTc6YAWY70
+	 dIIJhYicNqKxur6fgwQPkw31maQfq2BuEhZXu3OWZJZ11lU+pqnedEdLnfpHrDhRV2
+	 vdj18lu64W7QA==
+Message-ID: <4706bd68-fddd-05e5-137b-cf46c95a2ee5@collabora.com>
+Date: Thu, 2 Mar 2023 17:32:12 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -44,42 +29,71 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v3] selftests: use printf instead of echo -ne
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] selftests: amd-pstate: fix TEST_FILES
 Content-Language: en-US
-To: Guenter Roeck <groeck@google.com>,
- Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>, Gautam <gautammenghani201@gmail.com>,
- David Laight <David.Laight@aculab.com>, kernel@collabora.com,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernelci@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-References: <20230209085536.1076662-1-guillaume.tucker@collabora.com>
- <CABXOdTdnntA=oU4==suO-DP-8S9zb0AhqtwekCRCbpOpku7MQg@mail.gmail.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <CABXOdTdnntA=oU4==suO-DP-8S9zb0AhqtwekCRCbpOpku7MQg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Shuah Khan <shuah@kernel.org>, Huang Rui <ray.huang@amd.com>,
+ Meng Li <li.meng@amd.com>, Doug Smythies <dsmythies@telus.net>
+Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernelci@lists.linux.dev
+References: <20230204133454.260066-1-guillaume.tucker@collabora.com>
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+In-Reply-To: <20230204133454.260066-1-guillaume.tucker@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/9/23 09:19, Guenter Roeck wrote:
-> On Thu, Feb 9, 2023 at 12:55 AM Guillaume Tucker
-> <guillaume.tucker@collabora.com> wrote:
->>
->> Rather than trying to guess which implementation of "echo" to run with
->> support for "-ne" options, use "printf" instead of "echo -ne".  It
->> handles escape characters as a standard feature and it is widespread
->> among modern shells.
->>
->> Reported-by: "kernelci.org bot" <bot@kernelci.org>
->> Suggested-by: David Laight <David.Laight@ACULAB.COM>
->> Fixes: 3297a4df805d ("kselftests: Enable the echo command to print newlines in Makefile")
->> Fixes: 79c16b1120fe ("selftests: find echo binary to use -ne options")
->> Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
-> 
-> Reviewed-by: Guenter Roeck <groeck@chromium.org>
-> 
+Hi Shuah,
 
-Thank you. Applied to linux-kselftest next for Linux 6.3-rc1.
+On 04/02/2023 14:34, Guillaume Tucker wrote:
+> Bring back the Python scripts that were initially added with
+> TEST_GEN_FILES but now with TEST_FILES to avoid having them deleted
+> when doing a clean.  Also fix the way the architecture is being
+> determined as they should also be installed when ARCH=x86_64 is
+> provided explicitly.  Then also append extra files to TEST_FILES and
+> TEST_PROGS with += so they don't get discarded.
+> 
+> Fixes: ba2d788aa873 ("selftests: amd-pstate: Trigger tbench benchmark and test cpus")
+> Fixes: ac527cee87c9 ("selftests: amd-pstate: Don't delete source files via Makefile")
+> Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
+> ---
+>  tools/testing/selftests/amd-pstate/Makefile | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/amd-pstate/Makefile b/tools/testing/selftests/amd-pstate/Makefile
+> index 5fd1424db37d..c382f579fe94 100644
+> --- a/tools/testing/selftests/amd-pstate/Makefile
+> +++ b/tools/testing/selftests/amd-pstate/Makefile
+> @@ -4,10 +4,15 @@
+>  # No binaries, but make sure arg-less "make" doesn't trigger "run_tests"
+>  all:
+>  
+> -uname_M := $(shell uname -m 2>/dev/null || echo not)
+> -ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/x86/ -e s/x86_64/x86/)
+> +ARCH ?= $(shell uname -m 2>/dev/null || echo not)
+> +ARCH := $(shell echo $(ARCH) | sed -e s/i.86/x86/ -e s/x86_64/x86/)
+>  
+> -TEST_PROGS := run.sh
+> -TEST_FILES := basic.sh tbench.sh gitsource.sh
+> +ifeq (x86,$(ARCH))
+> +TEST_FILES += ../../../power/x86/amd_pstate_tracer/amd_pstate_trace.py
+> +TEST_FILES += ../../../power/x86/intel_pstate_tracer/intel_pstate_tracer.py
+> +endif
+> +
+> +TEST_PROGS += run.sh
+> +TEST_FILES += basic.sh tbench.sh gitsource.sh
+>  
+>  include ../lib.mk
 
-thanks,
--- Shuah
+Is there anything blocking this patch from being applied?  It
+brings back the tools needed to run the amd-pstate tests into the
+kselftest installation directory.
+
+I could try to run the test on an AMD platform and check it's
+working as before, but there was no change in the tools
+themselves and I've checked the scripts get installed correctly
+now like before.  We might also actually run this test in
+KernelCI since there are a few AMD platforms available.
+
+Thanks,
+Guillaume
 
