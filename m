@@ -1,72 +1,50 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C9D525C
-	for <kernelci@lists.linux.dev>; Mon,  6 Mar 2023 13:19:57 +0000 (UTC)
-Received: from [IPV6:2001:861:4a40:8620:49a7:8b15:c488:a958] (unknown [IPv6:2001:861:4a40:8620:49a7:8b15:c488:a958])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id C65A16602EB0;
-	Mon,  6 Mar 2023 13:10:57 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1678108258;
-	bh=0tMcyeiNW99YWWVLTGwnfutRuQu8PUN4S9RDqb8qBL0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NIalrTy4J5NhxwbF3U4UfRW8nwtIcJ0VM6B/jZ/jQb6bHIi/XThooH5tX8AWhgJSy
-	 xXMSFozLhDQH2ol1lZ4lXjCjRga/wxDn37SmDB9p0yZpJyAR9MYGnxDoB0w4+oBQmR
-	 ytj3MIdSQWhKzqM6ypv+vP5F1hReBrmg5R5A2+m2kalPzJC9Ob8ysrW0FYlXwgMBWF
-	 KQUfC4WSM1AX/CY//tlKwZs1ePtyTZsC03TTDVJm+ImpQJ0rg3jAxLCoVMpSRSBENw
-	 vbxKpjLFa9I9H3guIKIBwOFr53/ER9XxR76ghHqlFyKzNi3/uFMd/ns+63RsLjMmhA
-	 jXKpuEcLrcjhw==
-Message-ID: <9bd18c62-d922-992a-a776-a3064d4c2d73@collabora.com>
-Date: Mon, 6 Mar 2023 14:11:43 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472022F36
+	for <kernelci@lists.linux.dev>; Thu,  9 Mar 2023 08:26:54 +0000 (UTC)
+Received: by mail-ed1-f44.google.com with SMTP id cw28so3816557edb.5
+        for <kernelci@lists.linux.dev>; Thu, 09 Mar 2023 00:26:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678350412;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RMunSKb6o0mwi7lDDlMy5s5rILfzcqDsQ+m29tnpMuE=;
+        b=HbdOjIDiDtXYeDwwEuA5UNETvFHs0TkyNLCI1vagQtvrgZiYWCfLyQaPkgpHQjtNaJ
+         2LJ6d/pHFiNclkQ5CpD8O9edZBtJMozBrQgbU8CU0H/2lDMqd89evKLuRnEU8jMGkxxY
+         yV60Elguo2r5RP1IccXIGshGVLH3SiVlEIe8rgAJtBq0wCAdlBeFjz0iRJaHiRY4D4kn
+         M1AuoNrw5nemuUkyeVd2wbhtdltNVoNuWF1Ow218/pODKOiWLcmUgXxBdHuACupfi17n
+         qljMqQZFzXiYRlDYtAGhxlXGKP6mpJT2kZwDLK+ZNSD3OwBfS9G3Ua9i9ULz0dGmx8mo
+         qZLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678350412;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RMunSKb6o0mwi7lDDlMy5s5rILfzcqDsQ+m29tnpMuE=;
+        b=wsiXdHt5xfLH+VTEaJFcgL14mdeL/8VQw8e3TJltcZEzpRGfpAI90MT5164sKEKjZF
+         Z0KhOHPrtwpKRdFbac+qguduFfW8zUyCgR4Hq21n+WNr/VXa3n+h+AYnSbViuntPQuXn
+         UNtLPI7H9lRrolPvfF34L5SICQ2nRv72E6bW6HbvJW6mBN6s+dGkIKrRF7VezLcQ18Et
+         sGW+2qcP3O0xx52LZpvuQpLCuS9WBptJGUXWXkIKz9RkHoWCXcdP9Pbpd0a8QXSfcms3
+         ebGgtZrXWDk/rFMJmUNPWLuHl6a6TndGu7a1Pup8JvoVq9OHDTlA4I5EO9tA3Hpepqsk
+         zyiw==
+X-Gm-Message-State: AO0yUKXZ1lmW94qfFevDvFnz/dFQwUQd/z49mYToX5Zjg8Bp63uJPN9n
+	OYt5yQVvr3+vlZbuqbpxtA9qa01jo9mgM9C+P0NUTmjHDQZDV41u
+X-Google-Smtp-Source: AK7set+PPaOfsn+cIj3tTccw4KI21qVMCsAq07ejcRSanbwfrQA6An5X0YNyAM7GSijWG/8zhbljpwLOoAey7rIS/Rw=
+X-Received: by 2002:a17:906:498e:b0:901:e556:6e23 with SMTP id
+ p14-20020a170906498e00b00901e5566e23mr10624929eju.0.1678350412122; Thu, 09
+ Mar 2023 00:26:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] selftests: amd-pstate: fix TEST_FILES
-To: Shuah Khan <skhan@linuxfoundation.org>, Huang Rui <ray.huang@amd.com>
-Cc: Shuah Khan <shuah@kernel.org>, "Meng, Li (Jassmine)" <Li.Meng@amd.com>,
- Doug Smythies <dsmythies@telus.net>,
- "kernel@collabora.com" <kernel@collabora.com>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-References: <20230204133454.260066-1-guillaume.tucker@collabora.com>
- <ZAGOQznWjSNuhn73@amd.com>
- <3d051308-382f-0f90-41b3-e1ffdd6f11f7@linuxfoundation.org>
-Content-Language: en-US
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-In-Reply-To: <3d051308-382f-0f90-41b3-e1ffdd6f11f7@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Olofu Ojoachubione <olofuchubi@gmail.com>
+Date: Thu, 9 Mar 2023 09:26:41 +0100
+Message-ID: <CAOHb_39iXN2YqLpXz7_kfcvZcFjchCVA0gBHgDZhV_2E6zuNnw@mail.gmail.com>
+Subject: Introductory Message
+To: kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 03/03/2023 21:29, Shuah Khan wrote:
-> On 3/2/23 23:05, Huang Rui wrote:
->> On Sat, Feb 04, 2023 at 09:34:54PM +0800, Guillaume Tucker wrote:
->>> Bring back the Python scripts that were initially added with
->>> TEST_GEN_FILES but now with TEST_FILES to avoid having them deleted
->>> when doing a clean.  Also fix the way the architecture is being
->>> determined as they should also be installed when ARCH=x86_64 is
->>> provided explicitly.  Then also append extra files to TEST_FILES and
->>> TEST_PROGS with += so they don't get discarded.
->>>
->>> Fixes: ba2d788aa873 ("selftests: amd-pstate: Trigger tbench benchmark and test cpus")
->>> Fixes: ac527cee87c9 ("selftests: amd-pstate: Don't delete source files via Makefile")
->>> Signed-off-by: Guillaume Tucker <guillaume.tucker@collabora.com>
->>
->> Acked-by: Huang Rui <ray.huang@amd.com>
->>
-> 
-> Thank you both. I will pick this up for 6.3-rc2
-
-Great, many thanks.
-
-Guillaume
-
+Hello, I'm Chubi and I'm an outreachy applicant.
+I am happy and willing to contribute to this project.
