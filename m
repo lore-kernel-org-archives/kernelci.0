@@ -1,45 +1,27 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA5D33ED
-	for <kernelci@lists.linux.dev>; Thu,  9 Mar 2023 09:32:40 +0000 (UTC)
-Received: by mail-wm1-f54.google.com with SMTP id o11-20020a05600c4fcb00b003eb33ea29a8so795868wmq.1
-        for <kernelci@lists.linux.dev>; Thu, 09 Mar 2023 01:32:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678354358;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/XdqRykafIgvY1X5jhaRl3CDDkwg5O1URaBfOHzmjgo=;
-        b=hxuDEgUXY+iPQG/4kyca5aiIRh3nbiNBYnAZqmI53zKhtUQ10OIGl79qPZDS+RlH7O
-         AO1z8dbogSlvFZXfwN3wJfhc/XsGY91nSokx87NQw4nKLvPi2+4y1+mZT9Spg8Jf7F8I
-         cL/ZBmkx0BygxkuHaxo8aaDycopK2Qc7+5JdIHNJx17mi5Qjwrerl+cew/63iY7dFb98
-         Mx/k6oxoao2xV3+7aCdm9l/6zHKXEN7u4hQac1CG/p+zG+ekM85r/G04sW7g9MPouxUl
-         XPI8gQhxHvjM5nsWxkz10HQAPfgB+KxsQhEzBFjBD8rMMniho+nFhvwBgynE/F+PDKS4
-         7JlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678354358;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/XdqRykafIgvY1X5jhaRl3CDDkwg5O1URaBfOHzmjgo=;
-        b=7IiK5MQExoFWCYyrbpRg9Jt21WwMMBv0aN6o2BAHImKSH6wmJSkJP408Axrxk3PYm/
-         pRC5KrfcnTvSlViS8CprEwtf+CrBOhJAGVy85c/oOlU84iAxtMX6ch3NUAlBoLOCbaS8
-         YN6w5mkwtFI3Un2bBczSbjM3IyPS8qe02RWNpJOoiRbx2PazlSC7x2DwMQuROFYJOr+A
-         imsOxqQheYZTdo/9Yh3kn8dvmmDINtb8nrm6C3x8oFnwvhcI7NinLGpYnr5ssbsR22jX
-         p0EiaFJQPfmm3Sh4nxqkKOs4iVGjiv51JalHd3N46OqcQnikAR2aQECN2W2swDwXYIrn
-         3DFw==
-X-Gm-Message-State: AO0yUKUNPxpGUy7uemGb/BQLWBkEG6eAfRx+16dHa1hJHzXzGfYfs0f3
-	PXbdcMfBSeAHU9uL8EvJpe8=
-X-Google-Smtp-Source: AK7set8pE0n706QiI64C7va7H0tYzj0gCYZXmJdTDTvluUn9xcSTeRTQ6tBAWcPjXDmnwQ1WCCRgOQ==
-X-Received: by 2002:a05:600c:4750:b0:3eb:395b:8b62 with SMTP id w16-20020a05600c475000b003eb395b8b62mr19657506wmo.39.1678354358231;
-        Thu, 09 Mar 2023 01:32:38 -0800 (PST)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id d9-20020a05600c3ac900b003dc522dd25esm1929452wms.30.2023.03.09.01.32.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Mar 2023 01:32:37 -0800 (PST)
-Message-ID: <050008a3-8deb-4815-10cd-5557fa4afde0@gmail.com>
-Date: Thu, 9 Mar 2023 11:32:36 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714084431
+	for <kernelci@lists.linux.dev>; Wed, 15 Mar 2023 13:08:00 +0000 (UTC)
+Received: from [IPV6:2001:861:4a40:8620:2c75:7350:cd65:d027] (unknown [IPv6:2001:861:4a40:8620:2c75:7350:cd65:d027])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id B7ED2660304F;
+	Wed, 15 Mar 2023 13:07:52 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1678885673;
+	bh=5re/JPBZEH9+G9AWINTZ7qiFtAiq3TE2YC3ggLy0kHs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mey0BY8Bf4z0ZDu8KtlVA2aXK2UEiKmKvoFBkKFz4EWWiacdu98oZm4R1+7wVcr0W
+	 CdaFfacq3bz+flK8D8BWQgmb4t9lFMa4jQIe67Nkcfc6GBcA3KMLTwfG+C7NXXY8xi
+	 i4VBSQ6ZuZUpmZ+ohBUGQ8DAGQrMKWy74gmAAa2X8SkDnBdwQePKay9Oqei3bkB3QS
+	 ghvwp0DHX/rCPsFBE3jNfq/Tu7HTmaP1iPJOJj77j19g9LAMKYBQXt+ATFH0ifduMY
+	 y+66bZPVYZQXUSYQMfEyJoQdmYr70vm6yeqL9edONGmhQeIoNc5YovjEdJNjEHBZ0r
+	 9gK7+D8qVhcwg==
+Message-ID: <aeaae945-ddc1-09e1-4120-74868962e90c@collabora.com>
+Date: Wed, 15 Mar 2023 14:08:40 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -48,32 +30,161 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: Introductory Message
+Subject: Re: [KTAP V2 PATCH] ktap_v2: add skip test result
+To: Rae Moar <rmoar@google.com>, frowand.list@gmail.com, davidgow@google.com,
+ skhan@linuxfoundation.org, keescook@chromium.org, Tim.Bird@sony.com,
+ brendanhiggins@google.com
+Cc: corbet@lwn.net, dlatypov@google.com, kernelci@groups.io,
+ kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
+References: <20230310222002.3633162-1-rmoar@google.com>
 Content-Language: en-US
-To: Olofu Ojoachubione <olofuchubi@gmail.com>, kernelci@lists.linux.dev
-References: <CAOHb_39iXN2YqLpXz7_kfcvZcFjchCVA0gBHgDZhV_2E6zuNnw@mail.gmail.com>
-From: Nikolai Kondrashov <spbnick@gmail.com>
-In-Reply-To: <CAOHb_39iXN2YqLpXz7_kfcvZcFjchCVA0gBHgDZhV_2E6zuNnw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+In-Reply-To: <20230310222002.3633162-1-rmoar@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/9/23 10:26, Olofu Ojoachubione wrote:
-> Hello, I'm Chubi and I'm an outreachy applicant.
-> I am happy and willing to contribute to this project.
++ kernelci@lists.linux.dev
 
-Hi Chubi, and welcome to the project!
+Please note: kernelci@groups.io is not used any more, see details
+here about the move:
 
-I just sent you an invite to our Slack. Please proceed to the #outreachy 
-channel there with any questions you might have.
+  https://groups.io/g/kernelci
 
-We still have one "good first issue" unassigned, which you could pick:
+The new KernelCI email archives can be found here:
 
-https://github.com/issues?q=is%3Aopen+is%3Aissue+archived%3Afalse+no%3Aassignee+repo%3Akernelci%2Fkcidb-io+repo%3Akernelci%2Fkcidb+label%3A%22good+first+issue%22
+  https://lore.kernel.org/kernelci/
 
-and I could create some more. Once you're done with one or more of these, you 
-could move onto "good second issues", which would be harder:
+Thanks,
+Guillaume
 
-https://github.com/issues?q=is%3Aopen+is%3Aissue+archived%3Afalse+no%3Aassignee+repo%3Akernelci%2Fkcidb-io+repo%3Akernelci%2Fkcidb+label%3A%22good+second+issue%22+
 
-Have fun, and don't hesitate to ask questions!
-Nick
+On 10/03/2023 23:20, Rae Moar wrote:
+> Add the test result "skip" to KTAP version 2 as an alternative way to
+> indicate a test was skipped.
+> 
+> The current spec uses the "#SKIP" directive to indicate that a test was
+> skipped. However, the "#SKIP" directive is not always evident when quickly
+> skimming through KTAP results.
+> 
+> The "skip" result would provide an alternative that could make it clearer
+> that a test has not successfully passed because it was skipped.
+> 
+> Before:
+> 
+>  KTAP version 1
+>  1..1
+>    KTAP version 1
+>    1..2
+>    ok 1 case_1
+>    ok 2 case_2 #SKIP
+>  ok 1 suite
+> 
+> After:
+> 
+>  KTAP version 2
+>  1..1
+>    KTAP version 2
+>    1..2
+>    ok 1 case_1
+>    skip 2 case_2
+>  ok 1 suite
+> 
+> Here is a link to a version of the KUnit parser that is able to parse
+> the skip test result for KTAP version 2. Note this parser is still able
+> to parse the "#SKIP" directive.
+> 
+> Link: https://kunit-review.googlesource.com/c/linux/+/5689
+> 
+> Signed-off-by: Rae Moar <rmoar@google.com>
+> ---
+> 
+> Note: this patch is based on Frank's ktap_spec_version_2 branch.
+> 
+>  Documentation/dev-tools/ktap.rst | 27 ++++++++++++++++++---------
+>  1 file changed, 18 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+> index ff77f4aaa6ef..f48aa00db8f0 100644
+> --- a/Documentation/dev-tools/ktap.rst
+> +++ b/Documentation/dev-tools/ktap.rst
+> @@ -74,7 +74,8 @@ They are required and must have the format:
+>  	<result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
+>  
+>  The result can be either "ok", which indicates the test case passed,
+> -or "not ok", which indicates that the test case failed.
+> +"not ok", which indicates that the test case failed, or "skip", which indicates
+> +the test case did not run.
+>  
+>  <number> represents the number of the test being performed. The first test must
+>  have the number 1 and the number then must increase by 1 for each additional
+> @@ -91,12 +92,13 @@ A directive is a keyword that indicates a different outcome for a test other
+>  than passed and failed. The directive is optional, and consists of a single
+>  keyword preceding the diagnostic data. In the event that a parser encounters
+>  a directive it doesn't support, it should fall back to the "ok" / "not ok"
+> -result.
+> +/ "skip" result.
+>  
+>  Currently accepted directives are:
+>  
+> -- "SKIP", which indicates a test was skipped (note the result of the test case
+> -  result line can be either "ok" or "not ok" if the SKIP directive is used)
+> +- "SKIP", which indicates a test was skipped (note this is an alternative to
+> +  the "skip" result type and if the SKIP directive is used, the
+> +  result can be any type - "ok", "not ok", or "skip")
+>  - "TODO", which indicates that a test is not expected to pass at the moment,
+>    e.g. because the feature it is testing is known to be broken. While this
+>    directive is inherited from TAP, its use in the kernel is discouraged.
+> @@ -110,7 +112,7 @@ Currently accepted directives are:
+>  
+>  The diagnostic data is a plain-text field which contains any additional details
+>  about why this result was produced. This is typically an error message for ERROR
+> -or failed tests, or a description of missing dependencies for a SKIP result.
+> +or failed tests, or a description of missing dependencies for a skipped test.
+>  
+>  The diagnostic data field is optional, and results which have neither a
+>  directive nor any diagnostic data do not need to include the "#" field
+> @@ -130,11 +132,18 @@ The test "test_case_name" failed.
+>  
+>  ::
+>  
+> -	ok 1 test # SKIP necessary dependency unavailable
+> +	skip 1 test # necessary dependency unavailable
+>  
+> -The test "test" was SKIPPED with the diagnostic message "necessary dependency
+> +The test "test" was skipped with the diagnostic message "necessary dependency
+>  unavailable".
+>  
+> +::
+> +
+> +	ok 1 test_2 # SKIP this test should not run
+> +
+> +The test "test_2" was skipped with the diagnostic message "this test
+> +should not run".
+> +
+>  ::
+>  
+>  	not ok 1 test # TIMEOUT 30 seconds
+> @@ -225,7 +234,7 @@ An example format with multiple levels of nested testing:
+>  	    not ok 1 test_1
+>  	    ok 2 test_2
+>  	  not ok 1 test_3
+> -	  ok 2 test_4 # SKIP
+> +	  skip 2 test_4
+>  	not ok 1 example_test_1
+>  	ok 2 example_test_2
+>  
+> @@ -262,7 +271,7 @@ Example KTAP output
+>  	  ok 1 example_test_1
+>  	    KTAP version 2
+>  	    1..2
+> -	    ok 1 test_1 # SKIP test_1 skipped
+> +	    skip 1 test_1 # test_1 skipped
+>  	    ok 2 test_2
+>  	  ok 2 example_test_2
+>  	    KTAP version 2
+> 
+> base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
+
