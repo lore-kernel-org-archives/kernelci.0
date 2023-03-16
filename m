@@ -1,190 +1,188 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714084431
-	for <kernelci@lists.linux.dev>; Wed, 15 Mar 2023 13:08:00 +0000 (UTC)
-Received: from [IPV6:2001:861:4a40:8620:2c75:7350:cd65:d027] (unknown [IPv6:2001:861:4a40:8620:2c75:7350:cd65:d027])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id B7ED2660304F;
-	Wed, 15 Mar 2023 13:07:52 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1678885673;
-	bh=5re/JPBZEH9+G9AWINTZ7qiFtAiq3TE2YC3ggLy0kHs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mey0BY8Bf4z0ZDu8KtlVA2aXK2UEiKmKvoFBkKFz4EWWiacdu98oZm4R1+7wVcr0W
-	 CdaFfacq3bz+flK8D8BWQgmb4t9lFMa4jQIe67Nkcfc6GBcA3KMLTwfG+C7NXXY8xi
-	 i4VBSQ6ZuZUpmZ+ohBUGQ8DAGQrMKWy74gmAAa2X8SkDnBdwQePKay9Oqei3bkB3QS
-	 ghvwp0DHX/rCPsFBE3jNfq/Tu7HTmaP1iPJOJj77j19g9LAMKYBQXt+ATFH0ifduMY
-	 y+66bZPVYZQXUSYQMfEyJoQdmYr70vm6yeqL9edONGmhQeIoNc5YovjEdJNjEHBZ0r
-	 9gK7+D8qVhcwg==
-Message-ID: <aeaae945-ddc1-09e1-4120-74868962e90c@collabora.com>
-Date: Wed, 15 Mar 2023 14:08:40 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACBEAD4E
+	for <kernelci@lists.linux.dev>; Thu, 16 Mar 2023 22:59:19 +0000 (UTC)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-54196bfcd5fso29358937b3.4
+        for <kernelci@lists.linux.dev>; Thu, 16 Mar 2023 15:59:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1679007558;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qWalks976lIx9gM0rZXHprcJNgdQ23aAcuCS3sG+Yi4=;
+        b=tDU9PX7ro8icNVMA9iC29WCiEBLRgkY0S5CrNun6+PTEQjClU+V/wUZBzQmNmt9QGN
+         ZQ9+GGEvDNsPKndiypt2UPENk8mNhhdNmP2+9GEa0ZUW17xvaKykg31zO4XL4x1oaI0Q
+         ixPa21LWXdKiTjny36mrwUEooyVC4aHmFHcaf4x0NjEFWR9Dh0vmLebfU8TUvXqeoFro
+         eW/bznvVTNANsTwoFJGt48pZHVRk4wkC6kgvBIZFQv0qX98yqiSoyOxeQ5JgLJ6+NOAK
+         cSLNSeerYOozMDwjYy1GXPqPmXr7vqUcsveEynMzK6lpUDyAeBm6UkoIFzfeGkyGXJ++
+         hwSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679007558;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qWalks976lIx9gM0rZXHprcJNgdQ23aAcuCS3sG+Yi4=;
+        b=ON54BQu5i/W2amh1R3vu9j9YulWleybOxLhXkIQGJcsEId7g8/ng5ioWJKXpBmCo2i
+         Su6RAvc3tHQY07V6C9lCWR//HEjDG8WY2GEvykO8bhAgKXNPjzp8gkL2F5gccjN7LK/5
+         DIep0C62xdBqchJW/t96VI//tsFtxL4sfuWA9DLcBwTurjiGzQjbDcd8Vdcjl04/Mdgq
+         UYk2VjfOv2jYkwlpD3koldLjp2yYylgfKrcr+2jVMPkdqadi7zZP3k1FzAeQAS9vaHHN
+         s6ICj1gSpzHWAkUQ07XwHK42zh2pJGvJC4lo79HFor63aj2ypXq0Hwb+dDsXl9yrugq+
+         BiKQ==
+X-Gm-Message-State: AO0yUKWJtqEj0RNAPi+J6jdyYoccyaHRjPHL33nomzPgnTnccHH8QEEa
+	6e744mpvAaTG+lBNOWA31/JowwElrA==
+X-Google-Smtp-Source: AK7set+PsgVedABxdiCxAyh7j6bk5z0QFl1X1enf7V6rXMj1w7qnkz2nRGM1IaA5IByx14VygSQhFDWWGQ==
+X-Received: from rmoar-specialist.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:45d3])
+ (user=rmoar job=sendgmr) by 2002:a81:b284:0:b0:533:99bb:c296 with SMTP id
+ q126-20020a81b284000000b0053399bbc296mr3151151ywh.5.1679007558179; Thu, 16
+ Mar 2023 15:59:18 -0700 (PDT)
+Date: Thu, 16 Mar 2023 22:59:15 +0000
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [KTAP V2 PATCH] ktap_v2: add skip test result
-To: Rae Moar <rmoar@google.com>, frowand.list@gmail.com, davidgow@google.com,
- skhan@linuxfoundation.org, keescook@chromium.org, Tim.Bird@sony.com,
- brendanhiggins@google.com
-Cc: corbet@lwn.net, dlatypov@google.com, kernelci@groups.io,
- kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
-References: <20230310222002.3633162-1-rmoar@google.com>
-Content-Language: en-US
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-In-Reply-To: <20230310222002.3633162-1-rmoar@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.0.rc1.284.g88254d51c5-goog
+Message-ID: <20230316225915.494688-1-rmoar@google.com>
+Subject: [KTAP V2 PATCH] ktap_v2: add recognized test name line
+From: Rae Moar <rmoar@google.com>
+To: frowand.list@gmail.com, davidgow@google.com, skhan@linuxfoundation.org, 
+	keescook@chromium.org, Tim.Bird@sony.com, brendanhiggins@google.com
+Cc: corbet@lwn.net, guillaume.tucker@collabora.com, dlatypov@google.com, 
+	kernelci@lists.linux.dev, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Rae Moar <rmoar@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-+ kernelci@lists.linux.dev
+Add recognition of the test name line ("# Subtest: <name>") to the KTAP v2
+spec.
 
-Please note: kernelci@groups.io is not used any more, see details
-here about the move:
+The purpose of this line is to declare the name of a test before its
+results. This functionality is especially useful when trying to parse test
+results incrementally and when interpretting results after a crash.
 
-  https://groups.io/g/kernelci
+This line is already compliant with KTAP v1 as it is interpretted as a
+diagnostic line by parsers. Additionally, the line is currently used by
+KUnit tests and was derived from the TAP 14 spec:
+https://testanything.org/tap-version-14-specification.html.
 
-The new KernelCI email archives can be found here:
+Recognition of this line would create an accepted way for different test
+frameworks to declare the name of a test before its results.
 
-  https://lore.kernel.org/kernelci/
+The proposed location for this line is between the version line and the
+test plan line. This location ensures that the line would not be
+accidentally parsed as a subtest's diagnostic lines. Note this proposed
+location would be a slight differentiation from KTAP v1.
 
-Thanks,
-Guillaume
+Example of test name line:
 
+ KTAP version 2
+ # Subtest: main_test
+ 1..1
+   KTAP version 2
+   # Subtest: sub_test
+   1..2
+   ok 1 test_1
+   ok 2 test_2
+ ok 1 sub_test
 
-On 10/03/2023 23:20, Rae Moar wrote:
-> Add the test result "skip" to KTAP version 2 as an alternative way to
-> indicate a test was skipped.
-> 
-> The current spec uses the "#SKIP" directive to indicate that a test was
-> skipped. However, the "#SKIP" directive is not always evident when quickly
-> skimming through KTAP results.
-> 
-> The "skip" result would provide an alternative that could make it clearer
-> that a test has not successfully passed because it was skipped.
-> 
-> Before:
-> 
->  KTAP version 1
->  1..1
->    KTAP version 1
->    1..2
->    ok 1 case_1
->    ok 2 case_2 #SKIP
->  ok 1 suite
-> 
-> After:
-> 
->  KTAP version 2
->  1..1
->    KTAP version 2
->    1..2
->    ok 1 case_1
->    skip 2 case_2
->  ok 1 suite
-> 
-> Here is a link to a version of the KUnit parser that is able to parse
-> the skip test result for KTAP version 2. Note this parser is still able
-> to parse the "#SKIP" directive.
-> 
-> Link: https://kunit-review.googlesource.com/c/linux/+/5689
-> 
-> Signed-off-by: Rae Moar <rmoar@google.com>
-> ---
-> 
-> Note: this patch is based on Frank's ktap_spec_version_2 branch.
-> 
->  Documentation/dev-tools/ktap.rst | 27 ++++++++++++++++++---------
->  1 file changed, 18 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-> index ff77f4aaa6ef..f48aa00db8f0 100644
-> --- a/Documentation/dev-tools/ktap.rst
-> +++ b/Documentation/dev-tools/ktap.rst
-> @@ -74,7 +74,8 @@ They are required and must have the format:
->  	<result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
->  
->  The result can be either "ok", which indicates the test case passed,
-> -or "not ok", which indicates that the test case failed.
-> +"not ok", which indicates that the test case failed, or "skip", which indicates
-> +the test case did not run.
->  
->  <number> represents the number of the test being performed. The first test must
->  have the number 1 and the number then must increase by 1 for each additional
-> @@ -91,12 +92,13 @@ A directive is a keyword that indicates a different outcome for a test other
->  than passed and failed. The directive is optional, and consists of a single
->  keyword preceding the diagnostic data. In the event that a parser encounters
->  a directive it doesn't support, it should fall back to the "ok" / "not ok"
-> -result.
-> +/ "skip" result.
->  
->  Currently accepted directives are:
->  
-> -- "SKIP", which indicates a test was skipped (note the result of the test case
-> -  result line can be either "ok" or "not ok" if the SKIP directive is used)
-> +- "SKIP", which indicates a test was skipped (note this is an alternative to
-> +  the "skip" result type and if the SKIP directive is used, the
-> +  result can be any type - "ok", "not ok", or "skip")
->  - "TODO", which indicates that a test is not expected to pass at the moment,
->    e.g. because the feature it is testing is known to be broken. While this
->    directive is inherited from TAP, its use in the kernel is discouraged.
-> @@ -110,7 +112,7 @@ Currently accepted directives are:
->  
->  The diagnostic data is a plain-text field which contains any additional details
->  about why this result was produced. This is typically an error message for ERROR
-> -or failed tests, or a description of missing dependencies for a SKIP result.
-> +or failed tests, or a description of missing dependencies for a skipped test.
->  
->  The diagnostic data field is optional, and results which have neither a
->  directive nor any diagnostic data do not need to include the "#" field
-> @@ -130,11 +132,18 @@ The test "test_case_name" failed.
->  
->  ::
->  
-> -	ok 1 test # SKIP necessary dependency unavailable
-> +	skip 1 test # necessary dependency unavailable
->  
-> -The test "test" was SKIPPED with the diagnostic message "necessary dependency
-> +The test "test" was skipped with the diagnostic message "necessary dependency
->  unavailable".
->  
-> +::
-> +
-> +	ok 1 test_2 # SKIP this test should not run
-> +
-> +The test "test_2" was skipped with the diagnostic message "this test
-> +should not run".
-> +
->  ::
->  
->  	not ok 1 test # TIMEOUT 30 seconds
-> @@ -225,7 +234,7 @@ An example format with multiple levels of nested testing:
->  	    not ok 1 test_1
->  	    ok 2 test_2
->  	  not ok 1 test_3
-> -	  ok 2 test_4 # SKIP
-> +	  skip 2 test_4
->  	not ok 1 example_test_1
->  	ok 2 example_test_2
->  
-> @@ -262,7 +271,7 @@ Example KTAP output
->  	  ok 1 example_test_1
->  	    KTAP version 2
->  	    1..2
-> -	    ok 1 test_1 # SKIP test_1 skipped
-> +	    skip 1 test_1 # test_1 skipped
->  	    ok 2 test_2
->  	  ok 2 example_test_2
->  	    KTAP version 2
-> 
-> base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
+Here is a link to a version of the KUnit parser that is able to parse the
+test name line for KTAP version 2. Note this includes a test name line for
+the main level of KTAP.
+
+Link: https://kunit-review.googlesource.com/c/linux/+/5709
+
+Signed-off-by: Rae Moar <rmoar@google.com>
+---
+
+This is a RFC. I would like to know what people think and use this as a
+platform for discussion on KTAP v2.
+
+Note: this patch is based on Frank's ktap_spec_version_2 branch.
+
+ Documentation/dev-tools/ktap.rst | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+index ff77f4aaa6ef..9c7ed66d9f77 100644
+--- a/Documentation/dev-tools/ktap.rst
++++ b/Documentation/dev-tools/ktap.rst
+@@ -28,8 +28,7 @@ KTAP output is built from four different types of lines:
+ In general, valid KTAP output should also form valid TAP output, but some
+ information, in particular nested test results, may be lost. Also note that
+ there is a stagnant draft specification for TAP14, KTAP diverges from this in
+-a couple of places (notably the "Subtest" header), which are described where
+-relevant later in this document.
++a couple of places, which are described where relevant later in this document.
+ 
+ Version lines
+ -------------
+@@ -44,8 +43,8 @@ For example:
+ - "TAP version 14"
+ 
+ Note that, in KTAP, subtests also begin with a version line, which denotes the
+-start of the nested test results. This differs from TAP14, which uses a
+-separate "Subtest" line.
++start of the nested test results. This differs from TAP14, which uses only a
++"Subtest" line.
+ 
+ While, going forward, "KTAP version 2" should be used by compliant tests, it
+ is expected that most parsers and other tooling will accept the other versions
+@@ -166,6 +165,12 @@ even if they do not start with a "#": this is to capture any other useful
+ kernel output which may help debug the test. It is nevertheless recommended
+ that tests always prefix any diagnostic output they have with a "#" character.
+ 
++One recognized diagnostic line is the "# Subtest: <name>" line. This line
++is used to declare the name of a test before subtest results are printed. This
++is helpful for parsing and for providing context during crashes. As a rule,
++this line is placed after the version line and before the plan line. Note
++this line can be used for the main test, as well as subtests.
++
+ Unknown lines
+ -------------
+ 
+@@ -206,6 +211,7 @@ An example of a test with two nested subtests:
+ 	KTAP version 2
+ 	1..1
+ 	  KTAP version 2
++	  # Subtest: example
+ 	  1..2
+ 	  ok 1 test_1
+ 	  not ok 2 test_2
+@@ -219,6 +225,7 @@ An example format with multiple levels of nested testing:
+ 	KTAP version 2
+ 	1..2
+ 	  KTAP version 2
++	  # Subtest: example_test_1
+ 	  1..2
+ 	    KTAP version 2
+ 	    1..2
+@@ -245,7 +252,7 @@ allows an arbitrary number of tests to be nested     no         yes
+ 
+ The TAP14 specification does permit nested tests, but instead of using another
+ nested version line, uses a line of the form
+-"Subtest: <name>" where <name> is the name of the parent test.
++"Subtest: <name>" where <name> is the name of the parent test as discussed above.
+ 
+ Example KTAP output
+ --------------------
+@@ -254,6 +261,7 @@ Example KTAP output
+ 	KTAP version 2
+ 	1..1
+ 	  KTAP version 2
++	  # Subtest: main_test
+ 	  1..3
+ 	    KTAP version 2
+ 	    1..1
+@@ -266,6 +274,7 @@ Example KTAP output
+ 	    ok 2 test_2
+ 	  ok 2 example_test_2
+ 	    KTAP version 2
++		# Subtest: example_test_3
+ 	    1..3
+ 	    ok 1 test_1
+ 	    # test_2: FAIL
+
+base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
+-- 
+2.40.0.rc1.284.g88254d51c5-goog
 
