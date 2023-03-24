@@ -1,98 +1,73 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E3C360
-	for <kernelci@lists.linux.dev>; Fri, 24 Mar 2023 08:31:16 +0000 (UTC)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32O8BgCS032761;
-	Fri, 24 Mar 2023 08:31:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=0e1JPct0PV5qLc2uuBZtZz/MTun6DCifCDVF6FzhqAs=;
- b=lLwqWXyPmS8MgcqRbJehVMskzUMlIg/pPPXmfhp8gNFqDACdWVA4jX/Yv3Ougsg96mYE
- 1mk2iuqwIDWOHGBm//9xDmQdERn7Y3mf7v5cavfYxngcZpTNzTKp0k6Ec501nA4TYrpZ
- Eiodr0Kqsrcu7vQY6YRPI+5WB2cfak0DdvU1WtpUpVwWSb12Y2QgQbt0qz27mvQaDb5P
- lH93oZV1lj+Wg1GsRCJ87eEiw79Q/xgdm07NGpH1s0vi5gBcmRV27/bFNlWF4eEg+kdY
- H3YB2Sh3BxQ1bNBleLEp1NqRrBh3vjizfbeCf372G6VbiA+3qY4Qfs7SZ0ELPMNNnv+/ YQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ph84rrd28-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Mar 2023 08:31:08 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32O8LC3k007137;
-	Fri, 24 Mar 2023 08:31:08 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ph84rrcvs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Mar 2023 08:31:08 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32NLKktF024788;
-	Fri, 24 Mar 2023 08:30:50 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3pgxkrrjy1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Mar 2023 08:30:50 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32O8UmYR24773176
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Mar 2023 08:30:48 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F1D62006A;
-	Fri, 24 Mar 2023 08:30:48 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 41DE02004B;
-	Fri, 24 Mar 2023 08:30:47 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.22.236])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Mar 2023 08:30:47 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85CF3C24
+	for <kernelci@lists.linux.dev>; Fri, 24 Mar 2023 09:54:25 +0000 (UTC)
+Received: by mail-qv1-f44.google.com with SMTP id q88so1137775qvq.13
+        for <kernelci@lists.linux.dev>; Fri, 24 Mar 2023 02:54:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679651664;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1ylxntMwnisjhq7Mh3nsJFP8V2VdsnX73RHmkrDez0w=;
+        b=MPgp4pJ4EqmPR9pzNrVJj022/1aPfuiFX1j0T0zYJdmismR6qOfC41wmPCr2SZty59
+         8j0tcLhewc/mYa9Nx1s2UoQinWiHTWQIDhF0MDq2HU1M0ZXe9fdOibAlgn2ElSrKGTEv
+         pCmAs+/pFUXHf8ESS7A+kykPKAAJf1h7JrQJtR5cuDHfZscp4Pm/4ZPIx/BmqsPtPeLW
+         5aIz96HLS04k7IKwOzrXciWpRbIcEyrSztnEiX1PFYThauZL+gB/6Rp1IS3ybYx/Hfc2
+         ZSox0HDgnV3jFEwlKXMHADcROGXpOzdxuflhQQTZlDcRLmaEaHMdT0qPZqlPEqN9RAH6
+         JFDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679651664;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1ylxntMwnisjhq7Mh3nsJFP8V2VdsnX73RHmkrDez0w=;
+        b=INiK6ndRg70x35W+w2WNOJY9RZKCuwS/hKwernS3VJXtGofe1EIq20N63cpDqOt9Lb
+         ZGgewbIqT2N1EBagO+KHWNvCSEm6tMaJXy0TBOOwZ+HwMb9NRK8j584cFVSlVq2JLMmw
+         7s1u5G1jfkdTbUeFOi/ix8pooYH+Y76gu1QU8YGqD3JWW0/IJCXO2aFqPeWg5v2BfBMD
+         58PvZG2OHBSxmuAaDXLs025y1mMOM3pSxfjRvZ12Oim5vQqMBa9RaFNz3bpVOXSWhRvO
+         1jLNs3Z0j8MKTtYQhTkU6uS4iulsB5TWL6D4Ut8q0diP4GdLE9ropNM0NTO7Rvgl+9FI
+         f7Iw==
+X-Gm-Message-State: AAQBX9dKngpFQlgUY/GKBo6RqFBMWldfwxnjDB6E5qwaPXwNVAEwYQ0y
+	Lc/MZDOmfl8eTelMOIkaFeU=
+X-Google-Smtp-Source: AKy350aKJUKtONGxV8vdsdwwlDWZFJaH1VQYW+fLewl1j+TGaOBCKKVHpb2WsPqo+8gM8sft2dcrXw==
+X-Received: by 2002:a05:6214:f67:b0:56b:ee5a:89eb with SMTP id iy7-20020a0562140f6700b0056bee5a89ebmr3898214qvb.19.1679651664617;
+        Fri, 24 Mar 2023 02:54:24 -0700 (PDT)
+Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
+        by smtp.gmail.com with ESMTPSA id l7-20020a0cc207000000b005dd8b9345d0sm555259qvh.104.2023.03.24.02.54.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Mar 2023 02:54:24 -0700 (PDT)
+Message-ID: <7d5fb28e-ae17-c3ab-3f6b-e7b8d4f96e7d@gmail.com>
+Date: Fri, 24 Mar 2023 11:54:22 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.51.1.1\))
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
 Subject: Re: Contributing Linux on Power test results to KCIDB
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <6192485a-0229-7469-0c2d-856cdea35fbe@collabora.com>
-Date: Fri, 24 Mar 2023 14:00:35 +0530
-Cc: Nikolai Kondrashov <spbnick@gmail.com>, misbahanjumn@ibm.com,
-        "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <06240803-A229-4C5D-A5F0-57CE42B9429E@linux.ibm.com>
+Content-Language: en-US
+To: Sachin Sant <sachinp@linux.ibm.com>
+Cc: kernelci@groups.io, misbahanjumn@ibm.com, kernelci@lists.linux.dev
 References: <26F2B8E1-8A69-42E9-B3DF-A7E7E847756E@linux.ibm.com>
  <aaaa8f94-d901-500f-338d-a39ea8e350eb@gmail.com>
- <6192485a-0229-7469-0c2d-856cdea35fbe@collabora.com>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-X-Mailer: Apple Mail (2.3731.400.51.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 60hV9PxeD7fBey2bWk7XP-RTcCU0T67e
-X-Proofpoint-GUID: ZN1yS76oaoEoJGWiSyOWxygMUn6iXTy4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-24_04,2023-03-23_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- bulkscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0
- mlxlogscore=999 priorityscore=1501 clxscore=1011 adultscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2303240070
+ <D1BDE6C5-D5A9-40EE-95EB-DA0FBEA0EF2A@linux.ibm.com>
+From: Nikolai Kondrashov <spbnick@gmail.com>
+In-Reply-To: <D1BDE6C5-D5A9-40EE-95EB-DA0FBEA0EF2A@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 3/24/23 10:24, Sachin Sant wrote:
+>> Then decide and tell us what the "origin" of your CI system should be, so that we could identify it in the database, dashboards, and notifications.
+> 
+> Is there any consideration for the "origin" string?  Any unique value would suffice?
 
+It must match the "[a-z0-9_]+" regular expression, and be something that 
+people would easily associate with your CI system. E.g. something you could 
+say at a conference and be understood.
 
-> On 22-Mar-2023, at 6:37 PM, Guillaume Tucker =
-<guillaume.tucker@collabora.com> wrote:
->=20
-> +kernelci@lists.linux.dev
->=20
-> Please use the new list, kernelci@groups.io is now closed.
+Nick
 
-Thanks for the information. I was not aware of it.
-kernelci@groups.io email was mentioned on the KCIDB dashboard. I used =
-the same.
-
-I submitted a pull request against kcidb-grafana GitHub project to =
-update the same.
-
-- Sachin=
