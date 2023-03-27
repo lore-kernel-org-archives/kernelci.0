@@ -1,45 +1,45 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85CF3C24
-	for <kernelci@lists.linux.dev>; Fri, 24 Mar 2023 09:54:25 +0000 (UTC)
-Received: by mail-qv1-f44.google.com with SMTP id q88so1137775qvq.13
-        for <kernelci@lists.linux.dev>; Fri, 24 Mar 2023 02:54:25 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5845062A
+	for <kernelci@lists.linux.dev>; Mon, 27 Mar 2023 02:12:45 +0000 (UTC)
+Received: by mail-oi1-f173.google.com with SMTP id bi31so5243673oib.9
+        for <kernelci@lists.linux.dev>; Sun, 26 Mar 2023 19:12:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679651664;
+        d=gmail.com; s=20210112; t=1679883164;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1ylxntMwnisjhq7Mh3nsJFP8V2VdsnX73RHmkrDez0w=;
-        b=MPgp4pJ4EqmPR9pzNrVJj022/1aPfuiFX1j0T0zYJdmismR6qOfC41wmPCr2SZty59
-         8j0tcLhewc/mYa9Nx1s2UoQinWiHTWQIDhF0MDq2HU1M0ZXe9fdOibAlgn2ElSrKGTEv
-         pCmAs+/pFUXHf8ESS7A+kykPKAAJf1h7JrQJtR5cuDHfZscp4Pm/4ZPIx/BmqsPtPeLW
-         5aIz96HLS04k7IKwOzrXciWpRbIcEyrSztnEiX1PFYThauZL+gB/6Rp1IS3ybYx/Hfc2
-         ZSox0HDgnV3jFEwlKXMHADcROGXpOzdxuflhQQTZlDcRLmaEaHMdT0qPZqlPEqN9RAH6
-         JFDA==
+        bh=vEMCMLPR+Xjpl1WIVDjjcljkaYbB096H73XtZut4AIE=;
+        b=h8ttn/WZlHCnNrNjpePRY0xXuYnGRBM9uD3zdQ3BDLBFJUOcCKD+7XLAXzqkYpddkg
+         jCMTh+4qH0vxZglSyK/XHJKfePoNIxTCchfDLLoODWUOfEMPzO0uA3Ou2y08Jg1+CquQ
+         rSBHgXtQObUdZ/dhuUJjcFARridNUoGHemYivHXVDqUWijfxCGCVr8Lwm9MBlMe+5IUb
+         1T+8She3tCf2l9HAjXShKIJwkNUJCNkQGZtdcgaQNBkz8jKkZBFEzo/tGQ6lm4PVx4z1
+         KjO0Y4r6/Xf3TJMPS6CtoUmAyvIzNVk5E2jV17UGRKJe9o6vNre2YnqlfHTFb7JwvxKr
+         G8wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679651664;
+        d=1e100.net; s=20210112; t=1679883164;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1ylxntMwnisjhq7Mh3nsJFP8V2VdsnX73RHmkrDez0w=;
-        b=INiK6ndRg70x35W+w2WNOJY9RZKCuwS/hKwernS3VJXtGofe1EIq20N63cpDqOt9Lb
-         ZGgewbIqT2N1EBagO+KHWNvCSEm6tMaJXy0TBOOwZ+HwMb9NRK8j584cFVSlVq2JLMmw
-         7s1u5G1jfkdTbUeFOi/ix8pooYH+Y76gu1QU8YGqD3JWW0/IJCXO2aFqPeWg5v2BfBMD
-         58PvZG2OHBSxmuAaDXLs025y1mMOM3pSxfjRvZ12Oim5vQqMBa9RaFNz3bpVOXSWhRvO
-         1jLNs3Z0j8MKTtYQhTkU6uS4iulsB5TWL6D4Ut8q0diP4GdLE9ropNM0NTO7Rvgl+9FI
-         f7Iw==
-X-Gm-Message-State: AAQBX9dKngpFQlgUY/GKBo6RqFBMWldfwxnjDB6E5qwaPXwNVAEwYQ0y
-	Lc/MZDOmfl8eTelMOIkaFeU=
-X-Google-Smtp-Source: AKy350aKJUKtONGxV8vdsdwwlDWZFJaH1VQYW+fLewl1j+TGaOBCKKVHpb2WsPqo+8gM8sft2dcrXw==
-X-Received: by 2002:a05:6214:f67:b0:56b:ee5a:89eb with SMTP id iy7-20020a0562140f6700b0056bee5a89ebmr3898214qvb.19.1679651664617;
-        Fri, 24 Mar 2023 02:54:24 -0700 (PDT)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id l7-20020a0cc207000000b005dd8b9345d0sm555259qvh.104.2023.03.24.02.54.23
+        bh=vEMCMLPR+Xjpl1WIVDjjcljkaYbB096H73XtZut4AIE=;
+        b=B0mEiuViC2N5n9W/3FdJIQfmtu6CV8ikuq3UslaR/cFduqaG6qajj4BPJKC9n82+uM
+         s3muaxLW/K/m4nQa2q/k8W4zxaVwF++lAkX5iq7C08iG8y8ieZpxbVdO838NHEeWYarR
+         prpjgztzQ0OIp93l+xIo4Fi1E9kHmaippX+iAySOyrfm5ygivQUPUFywKRHaRTKz4csW
+         AWxapa4TlGyHYzeJkKbklLr73jke1khoQvR8J5HRjuiP3bwBz0p3KtVqV+KzqBGfooep
+         LlUgbDvKn17fRG0Qj04NGRWZKVs8AgH3kt89FBXslfyWZLA9M3wvpqvrGkrbJjsBQD/F
+         5lAQ==
+X-Gm-Message-State: AO0yUKVlVeQgz5LJa3RuYjXQ27pW21iy9Gfoz6MSHdyBmUJ5Qmn+/hyU
+	nu0aStpTNKaTT9GFGVclXTw=
+X-Google-Smtp-Source: AK7set+ZcGTcslKPlXsUuWQ2kqytCSF3wbKvkLhVBhilVcUsLVY9961WTiDRsPSA+mPzUZxoRQNBOQ==
+X-Received: by 2002:a05:6808:2804:b0:383:f5f8:651f with SMTP id et4-20020a056808280400b00383f5f8651fmr4015166oib.55.1679883164234;
+        Sun, 26 Mar 2023 19:12:44 -0700 (PDT)
+Received: from ?IPV6:2600:1700:2442:6db0:988b:7dda:764e:c744? ([2600:1700:2442:6db0:988b:7dda:764e:c744])
+        by smtp.gmail.com with ESMTPSA id m206-20020acabcd7000000b0037d7f4eb7e8sm10737093oif.31.2023.03.26.19.12.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Mar 2023 02:54:24 -0700 (PDT)
-Message-ID: <7d5fb28e-ae17-c3ab-3f6b-e7b8d4f96e7d@gmail.com>
-Date: Fri, 24 Mar 2023 11:54:22 +0200
+        Sun, 26 Mar 2023 19:12:43 -0700 (PDT)
+Message-ID: <5626cd99-f44a-97db-334e-99f1d62112a1@gmail.com>
+Date: Sun, 26 Mar 2023 21:12:42 -0500
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -47,27 +47,247 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: Contributing Linux on Power test results to KCIDB
+ Thunderbird/102.7.1
+Subject: Re: [KTAP V2 PATCH] ktap_v2: allow prefix to KTAP lines
 Content-Language: en-US
-To: Sachin Sant <sachinp@linux.ibm.com>
-Cc: kernelci@groups.io, misbahanjumn@ibm.com, kernelci@lists.linux.dev
-References: <26F2B8E1-8A69-42E9-B3DF-A7E7E847756E@linux.ibm.com>
- <aaaa8f94-d901-500f-338d-a39ea8e350eb@gmail.com>
- <D1BDE6C5-D5A9-40EE-95EB-DA0FBEA0EF2A@linux.ibm.com>
-From: Nikolai Kondrashov <spbnick@gmail.com>
-In-Reply-To: <D1BDE6C5-D5A9-40EE-95EB-DA0FBEA0EF2A@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Rae Moar <rmoar@google.com>, davidgow@google.com,
+ skhan@linuxfoundation.org, keescook@chromium.org, Tim.Bird@sony.com,
+ brendanhiggins@google.com
+Cc: corbet@lwn.net, guillaume.tucker@collabora.com, dlatypov@google.com,
+ kernelci@lists.linux.dev, kunit-dev@googlegroups.com,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20230316225926.494921-1-rmoar@google.com>
+From: Frank Rowand <frowand.list@gmail.com>
+In-Reply-To: <20230316225926.494921-1-rmoar@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/24/23 10:24, Sachin Sant wrote:
->> Then decide and tell us what the "origin" of your CI system should be, so that we could identify it in the database, dashboards, and notifications.
+On 3/16/23 17:59, Rae Moar wrote:
+> Change the KTAP v2 spec to allow variable prefixes to KTAP lines,
+> instead of fixed indentation of two spaces. However, the prefix must be
+> constant on the same level of testing (besides unknown lines).
 > 
-> Is there any consideration for the "origin" string?  Any unique value would suffice?
+> This was proposed by Tim Bird in 2021 and then supported by Frank Rowand
+> in 2022 (see link below).
+> 
+> Link: https://lore.kernel.org/all/bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com/
 
-It must match the "[a-z0-9_]+" regular expression, and be something that 
-people would easily associate with your CI system. E.g. something you could 
-say at a conference and be understood.
+Another link to the same thread, but expanded to show all replies in one page is:
 
-Nick
+  https://lore.kernel.org/all/bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com/T/#u
+
+Near the top of that thread I proposed alternative 1 (essentially what Tim
+originally suggested, and what Rae proposes here) and alternative 2 (with
+slight variant 2b).  The overall preference seemed to be alternative 1, but
+if we wanted to provide a method to provide test or system metadata then
+alternative 2 might provide both a test prefix and metadata.
+
+Alternate 1 provides the vast majority of what I need the prefix for, but
+I think there has been a recent comment that it would be useful to be able
+to report system metadata (sorry, I haven't found a reference for that yet).
+In my case, it would be informative to use metadata to report which config
+options that impact the DT unittests are enabled.
+
+> 
+> As cited in the original proposal, it is useful in some Fuego tests to
+> include an identifier in the prefix. This is an example:
+> 
+>  KTAP version 1
+>  1..2
+>  [batch_id 4] KTAP version 1
+>  [batch_id 4] 1..2
+>  [batch_id 4] ok 1 cyclictest with 1000 cycles
+>  [batch_id 4] # problem setting CLOCK_REALTIME
+>  [batch_id 4] not ok 2 cyclictest with CLOCK_REALTIME
+>  not ok 1 check realtime
+>  [batch_id 4] KTAP version 1
+>  [batch_id 4] 1..1
+>  [batch_id 4] ok 1 IOZone read/write 4k blocks
+>  ok 2 check I/O performance
+> 
+> Here is a link to a version of the KUnit parser that is able to parse
+> variable length prefixes for KTAP version 2. Note that the prefix must
+> be constant at the same level of testing.
+> 
+> Link: https://kunit-review.googlesource.com/c/linux/+/5710
+> 
+> Signed-off-by: Rae Moar <rmoar@google.com>
+> ---
+> 
+> This idea has already been proposed but I wanted to potentially
+> restart the discussion by demonstrating this change can by
+> implemented in the KUnit parser. Let me know what you think.
+> 
+> Note: this patch is based on Frank's ktap_spec_version_2 branch.
+> 
+>  Documentation/dev-tools/ktap.rst | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+> index ff77f4aaa6ef..ac61fdd97096 100644
+> --- a/Documentation/dev-tools/ktap.rst
+> +++ b/Documentation/dev-tools/ktap.rst
+
+Some additional lines of the Spec to be updated (from my alternate 1 email,
+I haven't checked the current Spec to see if these are the exact changes
+needed, but at least capture the intent:
+
+The "Version lines" format is changed from:
+
+   KTAP version 1
+
+to:
+
+   [<prefix string>] KTAP version 1
+
+The "Plan lines" format is changed from:
+
+   "1..N"
+
+to:
+
+   [<prefix string>] "1..N"
+
+The "Test case result lines" format is changed from:
+
+   <result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
+
+to:
+
+   [<prefix string>] <result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
+
+
+   <prefix content is a constant string>
+
+
+I wrote (with a bit of imprecision):
+
+  Indentation for "Nested tests" follows <prefix string>.  The indentation
+  does NOT precede <prefix string>.
+
+which was meant to imply that the two space indentation would follow the
+<prefix string>.
+
+The patch I am replying to instead replaces the two space indentation
+entirely with the <prefix string>.  I think this patches' version of
+indentation is superior to what I suggested.
+
+> @@ -192,9 +192,11 @@ starting with another KTAP version line and test plan, and end with the overall
+>  result. If one of the subtests fail, for example, the parent test should also
+>  fail.
+>  
+> -Additionally, all lines in a subtest should be indented. One level of
+> -indentation is two spaces: "  ". The indentation should begin at the version
+> -line and should end before the parent test's result line.
+> +Additionally, all lines in a subtest should be indented. The standard for one
+> +level of indentation is two spaces: "  ". However, any prefix for indentation
+> +is allowed as long as the prefix is consistent throughout that level of
+> +testing. The indentation should begin at the version line and should end
+> +before the parent test's result line.
+>  
+>  "Unknown lines" are not considered to be lines in a subtest and thus are
+>  allowed to be either indented or not indented.
+
+I was a little more verbose about "Unknown lines":
+
+   "Unknown lines" may optionally be prefixed with the <prefix string>, but
+   are not required to be prefixed with the <prefix string>.  It is allowed
+   for some "Unknown lines" to not be prefixed with the <prefix string>, even
+   if one or more other "Unknown lines" are prefixed with the <prefix string>.
+
+I think combining the intent ("not considered to be lines in a subtest") with
+the extra verbosity would be useful.
+
+> @@ -229,6 +231,19 @@ An example format with multiple levels of nested testing:
+>  	not ok 1 example_test_1
+>  	ok 2 example_test_2
+>  
+> +An example of a test with two nested subtests using prefixes:
+> +
+> +::
+> +
+> +	KTAP version 2
+> +	1..1
+> +	[prefix_1] KTAP version 2
+> +	[prefix_1] 1..2
+> +	[prefix_1] ok 1 test_1
+> +	[prefix_1] ok 2 test_2
+> +	# example passed
+> +	ok 1 example
+> +
+
+The "[" and "]" are meant to indicate an optional field, so the
+example would be:
+
++	KTAP version 2
++	1..1
++	prefix_1 KTAP version 2
++	prefix_1 1..2
++	prefix_1 ok 1 test_1
++	prefix_1 ok 2 test_2
++	# example passed
++	ok 1 example
++
+
+Of course, "[" and "]" are valid characters within the prefix string, so
+that an example of "[prefix_1]" could be mentioned as a valid example.
+
+I would suggest some additional more complex examples:
+
++	prefix_0 KTAP version 2
++	prefix_0 1..1
++	prefix_0 prefix_1 KTAP version 2
++	prefix_0 prefix_1 1..2
++	prefix_0 prefix_1 ok 1 test_1
++	prefix_0 prefix_1 ok 2 test_2
++	# example passed
++	prefix_0 ok 1 example
++
+
++	KTAP version 2
++	1..2
++	prefix_1 KTAP version 2
++	prefix_1 1..2
++	prefix_1 ok 1 test_a_1
++	prefix_1 ok 2 test_a_2
++	# example passed
++	ok 1 example
++	prefix_2 KTAP version 2
++	prefix_2 1..2
++	prefix_2 ok 1 test_b_1
++	prefix_2 ok 2 test_b_2
++	# example passed
++	ok 2 example
++
+
++	KTAP version 2
++	1..3
++	prefix_1 KTAP version 2
++	prefix_1 1..2
++	prefix_1 ok 1 test_a_1
++	prefix_1 ok 2 test_a_2
++	# example passed
++	ok 1 example
++	  KTAP version 2
++	  1..2
++	  ok 1 test_b_1
++	  ok 2 test_b_2
++	# example passed
++	ok 2 example
++	prefix_2 KTAP version 2
++	prefix_2 1..2
++	prefix_2 ok 1 test_c_1
++	prefix_2 ok 2 test_c_2
++	# example passed
++	ok 3 example
++
+
+
+
+>  
+>  Major differences between TAP and KTAP
+>  --------------------------------------
+> 
+> base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
 
