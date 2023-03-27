@@ -1,45 +1,45 @@
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5845062A
-	for <kernelci@lists.linux.dev>; Mon, 27 Mar 2023 02:12:45 +0000 (UTC)
-Received: by mail-oi1-f173.google.com with SMTP id bi31so5243673oib.9
-        for <kernelci@lists.linux.dev>; Sun, 26 Mar 2023 19:12:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A34622
+	for <kernelci@lists.linux.dev>; Mon, 27 Mar 2023 02:41:53 +0000 (UTC)
+Received: by mail-ot1-f48.google.com with SMTP id a30-20020a9d3e1e000000b006a13f728172so649438otd.3
+        for <kernelci@lists.linux.dev>; Sun, 26 Mar 2023 19:41:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679883164;
+        d=gmail.com; s=20210112; t=1679884912;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=vEMCMLPR+Xjpl1WIVDjjcljkaYbB096H73XtZut4AIE=;
-        b=h8ttn/WZlHCnNrNjpePRY0xXuYnGRBM9uD3zdQ3BDLBFJUOcCKD+7XLAXzqkYpddkg
-         jCMTh+4qH0vxZglSyK/XHJKfePoNIxTCchfDLLoODWUOfEMPzO0uA3Ou2y08Jg1+CquQ
-         rSBHgXtQObUdZ/dhuUJjcFARridNUoGHemYivHXVDqUWijfxCGCVr8Lwm9MBlMe+5IUb
-         1T+8She3tCf2l9HAjXShKIJwkNUJCNkQGZtdcgaQNBkz8jKkZBFEzo/tGQ6lm4PVx4z1
-         KjO0Y4r6/Xf3TJMPS6CtoUmAyvIzNVk5E2jV17UGRKJe9o6vNre2YnqlfHTFb7JwvxKr
-         G8wQ==
+        bh=FRauHu1FOjU1xQL/oXl2UNdyYQgBLhmS7p7OrBntk+k=;
+        b=JHmkY7tdYZSVVlBNau7p68ncdc1TURD1w8HYA/zw9iLP/+s6VluqD0EtQilHMCpgye
+         xjTRtJACHjnjcTq1Ukie0WmG5xgwqEtYBEh/qG3aWgzPmDVv86GpeXu0QWijd3zrrIwl
+         o2Psye6PONkyD1QZx3lMTz1njjravMGJqE0b2voJaIsErCDIVbexYINIrSBSIylVMr/t
+         bj9CZJJUeFbgXcbcu+XYtc4jWbLrghNXzbrnxsX1JsiXGE7W6p2aT/ovvvj2uWFGNpi5
+         M47mUo2tvWVknswz7dRd8xBr9+CR6pkRsyGLZxE4d+gSw+7UcUXjtNC8AUn2XM0ly2gM
+         xZUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679883164;
+        d=1e100.net; s=20210112; t=1679884912;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vEMCMLPR+Xjpl1WIVDjjcljkaYbB096H73XtZut4AIE=;
-        b=B0mEiuViC2N5n9W/3FdJIQfmtu6CV8ikuq3UslaR/cFduqaG6qajj4BPJKC9n82+uM
-         s3muaxLW/K/m4nQa2q/k8W4zxaVwF++lAkX5iq7C08iG8y8ieZpxbVdO838NHEeWYarR
-         prpjgztzQ0OIp93l+xIo4Fi1E9kHmaippX+iAySOyrfm5ygivQUPUFywKRHaRTKz4csW
-         AWxapa4TlGyHYzeJkKbklLr73jke1khoQvR8J5HRjuiP3bwBz0p3KtVqV+KzqBGfooep
-         LlUgbDvKn17fRG0Qj04NGRWZKVs8AgH3kt89FBXslfyWZLA9M3wvpqvrGkrbJjsBQD/F
-         5lAQ==
-X-Gm-Message-State: AO0yUKVlVeQgz5LJa3RuYjXQ27pW21iy9Gfoz6MSHdyBmUJ5Qmn+/hyU
-	nu0aStpTNKaTT9GFGVclXTw=
-X-Google-Smtp-Source: AK7set+ZcGTcslKPlXsUuWQ2kqytCSF3wbKvkLhVBhilVcUsLVY9961WTiDRsPSA+mPzUZxoRQNBOQ==
-X-Received: by 2002:a05:6808:2804:b0:383:f5f8:651f with SMTP id et4-20020a056808280400b00383f5f8651fmr4015166oib.55.1679883164234;
-        Sun, 26 Mar 2023 19:12:44 -0700 (PDT)
+        bh=FRauHu1FOjU1xQL/oXl2UNdyYQgBLhmS7p7OrBntk+k=;
+        b=v/UmHGXrzNpcji1CWrskoD14u3nmaA2kgHNqhbUkPjVFbezBIeSpEQ5J89aC0NFdg0
+         iG1Nj/PwGncT2SM3QX+OqY7bMexW0bgpu2F0E/Tnyvc6J8IuN6+LZKmxosSXuBr7tqjd
+         PaufKv6129u1XzI41t52WBPua/hQ3e0bEoZ/nAeKRus+SMRgJpi+3LOSC37siUfiyQSY
+         iFfSiX802qGEqkld4dKfK/L0F+qeI4aVLWL7+RRPzjoRAMbriVvQJOqkz759vVAh1Dho
+         q5jfyQ6jaj3pKk8loMitxsU3f8wiVyUUI2lIBDuVxfVNxoeRr+T6IPCE2u0riV70+PI4
+         ppyg==
+X-Gm-Message-State: AAQBX9fGwjBEUXdVGs3osR5nLUOY44FwhktYETQ7lD2Pn64O88v4mmfm
+	aDBwLaJTImh7xxVzoTxUzoFqM4TbEoY=
+X-Google-Smtp-Source: AKy350YaOvV4wgho3Y8Gqb2SQntKfrIJyqMdE2stCjweiVzT1ZH0s/MJG/fZbfLR/J/4VXW7Nj8goQ==
+X-Received: by 2002:a05:6830:1457:b0:6a1:37f1:9863 with SMTP id w23-20020a056830145700b006a137f19863mr1291505otp.11.1679884912460;
+        Sun, 26 Mar 2023 19:41:52 -0700 (PDT)
 Received: from ?IPV6:2600:1700:2442:6db0:988b:7dda:764e:c744? ([2600:1700:2442:6db0:988b:7dda:764e:c744])
-        by smtp.gmail.com with ESMTPSA id m206-20020acabcd7000000b0037d7f4eb7e8sm10737093oif.31.2023.03.26.19.12.43
+        by smtp.gmail.com with ESMTPSA id r25-20020a9d7519000000b006a11af03732sm2773600otk.67.2023.03.26.19.41.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Mar 2023 19:12:43 -0700 (PDT)
-Message-ID: <5626cd99-f44a-97db-334e-99f1d62112a1@gmail.com>
-Date: Sun, 26 Mar 2023 21:12:42 -0500
+        Sun, 26 Mar 2023 19:41:51 -0700 (PDT)
+Message-ID: <197889b6-5773-094c-8699-26843c6519fd@gmail.com>
+Date: Sun, 26 Mar 2023 21:41:50 -0500
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -48,7 +48,7 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.1
-Subject: Re: [KTAP V2 PATCH] ktap_v2: allow prefix to KTAP lines
+Subject: Re: [KTAP V2 PATCH] ktap_v2: add recognized test name line
 Content-Language: en-US
 To: Rae Moar <rmoar@google.com>, davidgow@google.com,
  skhan@linuxfoundation.org, keescook@chromium.org, Tim.Bird@sony.com,
@@ -57,237 +57,185 @@ Cc: corbet@lwn.net, guillaume.tucker@collabora.com, dlatypov@google.com,
  kernelci@lists.linux.dev, kunit-dev@googlegroups.com,
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <20230316225926.494921-1-rmoar@google.com>
+References: <20230316225915.494688-1-rmoar@google.com>
 From: Frank Rowand <frowand.list@gmail.com>
-In-Reply-To: <20230316225926.494921-1-rmoar@google.com>
+In-Reply-To: <20230316225915.494688-1-rmoar@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 3/16/23 17:59, Rae Moar wrote:
-> Change the KTAP v2 spec to allow variable prefixes to KTAP lines,
-> instead of fixed indentation of two spaces. However, the prefix must be
-> constant on the same level of testing (besides unknown lines).
+> Add recognition of the test name line ("# Subtest: <name>") to the KTAP v2
+> spec.
 > 
-> This was proposed by Tim Bird in 2021 and then supported by Frank Rowand
-> in 2022 (see link below).
+> The purpose of this line is to declare the name of a test before its
+> results. This functionality is especially useful when trying to parse test
+> results incrementally and when interpretting results after a crash.
 > 
-> Link: https://lore.kernel.org/all/bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com/
+> This line is already compliant with KTAP v1 as it is interpretted as a
+> diagnostic line by parsers. Additionally, the line is currently used by
+> KUnit tests and was derived from the TAP 14 spec:
+> https://testanything.org/tap-version-14-specification.html.
 
-Another link to the same thread, but expanded to show all replies in one page is:
+It is convenient that "# Subtest: <name>" is compatible with v1, but I think
+that there is a negative that overrides the convenience.
 
-  https://lore.kernel.org/all/bc6e9ed7-d98b-c4da-2a59-ee0915c18f10@gmail.com/T/#u
+The "# Subtest: <name>" syntax means that we need to restrict the format of
+diagnostic lines, such that "#Subtest:" is an illegal diagnostic, at least
+for the line immediately following the Version line.
 
-Near the top of that thread I proposed alternative 1 (essentially what Tim
-originally suggested, and what Rae proposes here) and alternative 2 (with
-slight variant 2b).  The overall preference seemed to be alternative 1, but
-if we wanted to provide a method to provide test or system metadata then
-alternative 2 might provide both a test prefix and metadata.
+I think it would be cleaner to modify the Version line syntax to be:
 
-Alternate 1 provides the vast majority of what I need the prefix for, but
-I think there has been a recent comment that it would be useful to be able
-to report system metadata (sorry, I haven't found a reference for that yet).
-In my case, it would be informative to use metadata to report which config
-options that impact the DT unittests are enabled.
+  KTAP version 2 [# <subtest_name>]
+
+I notice that the KTAP Specification version 1 fails to specify the
+Version line syntax.  So the Specification would be updated from:
+
+  All KTAP-formatted results begin with a "version line" which specifies which
+  version of the (K)TAP standard the result is compliant with.
+
+  For example:
+  - "KTAP version 1"
+  - "TAP version 13"
+  - "TAP version 14"
+
+to:
+
+  The Version line is required and must have the format:
+
+  .. code-block:: none
+
+        KTAP version 2 [# <subtest_name>]
+
+  All KTAP-formatted results begin with a "version line" which specifies which
+  version of the (K)TAP standard the result is compliant with.
+
+  For example:
+  - "KTAP version 2"
+  - "TAP version 13"
+  - "TAP version 14"
 
 > 
-> As cited in the original proposal, it is useful in some Fuego tests to
-> include an identifier in the prefix. This is an example:
+> Recognition of this line would create an accepted way for different test
+> frameworks to declare the name of a test before its results.
 > 
->  KTAP version 1
->  1..2
->  [batch_id 4] KTAP version 1
->  [batch_id 4] 1..2
->  [batch_id 4] ok 1 cyclictest with 1000 cycles
->  [batch_id 4] # problem setting CLOCK_REALTIME
->  [batch_id 4] not ok 2 cyclictest with CLOCK_REALTIME
->  not ok 1 check realtime
->  [batch_id 4] KTAP version 1
->  [batch_id 4] 1..1
->  [batch_id 4] ok 1 IOZone read/write 4k blocks
->  ok 2 check I/O performance
+> The proposed location for this line is between the version line and the
+> test plan line. This location ensures that the line would not be
+> accidentally parsed as a subtest's diagnostic lines. Note this proposed
+> location would be a slight differentiation from KTAP v1.
 > 
-> Here is a link to a version of the KUnit parser that is able to parse
-> variable length prefixes for KTAP version 2. Note that the prefix must
-> be constant at the same level of testing.
+> Example of test name line:
 > 
-> Link: https://kunit-review.googlesource.com/c/linux/+/5710
+>  KTAP version 2
+>  # Subtest: main_test
+>  1..1
+>    KTAP version 2
+>    # Subtest: sub_test
+>    1..2
+>    ok 1 test_1
+>    ok 2 test_2
+>  ok 1 sub_test
+> 
+> Here is a link to a version of the KUnit parser that is able to parse the
+> test name line for KTAP version 2. Note this includes a test name line for
+> the main level of KTAP.
+> 
+> Link: https://kunit-review.googlesource.com/c/linux/+/5709
 > 
 > Signed-off-by: Rae Moar <rmoar@google.com>
 > ---
 > 
-> This idea has already been proposed but I wanted to potentially
-> restart the discussion by demonstrating this change can by
-> implemented in the KUnit parser. Let me know what you think.
+> This is a RFC. I would like to know what people think and use this as a
+> platform for discussion on KTAP v2.
 > 
 > Note: this patch is based on Frank's ktap_spec_version_2 branch.
 > 
->  Documentation/dev-tools/ktap.rst | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
+>  Documentation/dev-tools/ktap.rst | 19 ++++++++++++++-----
+>  1 file changed, 14 insertions(+), 5 deletions(-)
 > 
 > diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-> index ff77f4aaa6ef..ac61fdd97096 100644
+> index ff77f4aaa6ef..9c7ed66d9f77 100644
 > --- a/Documentation/dev-tools/ktap.rst
 > +++ b/Documentation/dev-tools/ktap.rst
-
-Some additional lines of the Spec to be updated (from my alternate 1 email,
-I haven't checked the current Spec to see if these are the exact changes
-needed, but at least capture the intent:
-
-The "Version lines" format is changed from:
-
-   KTAP version 1
-
-to:
-
-   [<prefix string>] KTAP version 1
-
-The "Plan lines" format is changed from:
-
-   "1..N"
-
-to:
-
-   [<prefix string>] "1..N"
-
-The "Test case result lines" format is changed from:
-
-   <result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
-
-to:
-
-   [<prefix string>] <result> <number> [<description>][ # [<directive>] [<diagnostic data>]]
-
-
-   <prefix content is a constant string>
-
-
-I wrote (with a bit of imprecision):
-
-  Indentation for "Nested tests" follows <prefix string>.  The indentation
-  does NOT precede <prefix string>.
-
-which was meant to imply that the two space indentation would follow the
-<prefix string>.
-
-The patch I am replying to instead replaces the two space indentation
-entirely with the <prefix string>.  I think this patches' version of
-indentation is superior to what I suggested.
-
-> @@ -192,9 +192,11 @@ starting with another KTAP version line and test plan, and end with the overall
->  result. If one of the subtests fail, for example, the parent test should also
->  fail.
+> @@ -28,8 +28,7 @@ KTAP output is built from four different types of lines:
+>  In general, valid KTAP output should also form valid TAP output, but some
+>  information, in particular nested test results, may be lost. Also note that
+>  there is a stagnant draft specification for TAP14, KTAP diverges from this in
+> -a couple of places (notably the "Subtest" header), which are described where
+> -relevant later in this document.
+> +a couple of places, which are described where relevant later in this document.
 >  
-> -Additionally, all lines in a subtest should be indented. One level of
-> -indentation is two spaces: "  ". The indentation should begin at the version
-> -line and should end before the parent test's result line.
-> +Additionally, all lines in a subtest should be indented. The standard for one
-> +level of indentation is two spaces: "  ". However, any prefix for indentation
-> +is allowed as long as the prefix is consistent throughout that level of
-> +testing. The indentation should begin at the version line and should end
-> +before the parent test's result line.
+>  Version lines
+>  -------------
+> @@ -44,8 +43,8 @@ For example:
+>  - "TAP version 14"
 >  
->  "Unknown lines" are not considered to be lines in a subtest and thus are
->  allowed to be either indented or not indented.
+>  Note that, in KTAP, subtests also begin with a version line, which denotes the
 
-I was a little more verbose about "Unknown lines":
+> -start of the nested test results. This differs from TAP14, which uses a
+> -separate "Subtest" line.
 
-   "Unknown lines" may optionally be prefixed with the <prefix string>, but
-   are not required to be prefixed with the <prefix string>.  It is allowed
-   for some "Unknown lines" to not be prefixed with the <prefix string>, even
-   if one or more other "Unknown lines" are prefixed with the <prefix string>.
+^^^^ This is an error in the KTAP Specification version 1.  TAP14 allows the case
+of "Bare Subtests", which would be the equivalent of the KTAP v1 method.
 
-I think combining the intent ("not considered to be lines in a subtest") with
-the extra verbosity would be useful.
-
-> @@ -229,6 +231,19 @@ An example format with multiple levels of nested testing:
->  	not ok 1 example_test_1
->  	ok 2 example_test_2
+> +start of the nested test results. This differs from TAP14, which uses only a
+> +"Subtest" line.
 >  
-> +An example of a test with two nested subtests using prefixes:
+>  While, going forward, "KTAP version 2" should be used by compliant tests, it
+>  is expected that most parsers and other tooling will accept the other versions
+> @@ -166,6 +165,12 @@ even if they do not start with a "#": this is to capture any other useful
+>  kernel output which may help debug the test. It is nevertheless recommended
+>  that tests always prefix any diagnostic output they have with a "#" character.
+>  
+> +One recognized diagnostic line is the "# Subtest: <name>" line. This line
+> +is used to declare the name of a test before subtest results are printed. This
+> +is helpful for parsing and for providing context during crashes. As a rule,
+> +this line is placed after the version line and before the plan line. Note
+> +this line can be used for the main test, as well as subtests.
 > +
-> +::
-> +
-> +	KTAP version 2
-> +	1..1
-> +	[prefix_1] KTAP version 2
-> +	[prefix_1] 1..2
-> +	[prefix_1] ok 1 test_1
-> +	[prefix_1] ok 2 test_2
-> +	# example passed
-> +	ok 1 example
-> +
-
-The "[" and "]" are meant to indicate an optional field, so the
-example would be:
-
-+	KTAP version 2
-+	1..1
-+	prefix_1 KTAP version 2
-+	prefix_1 1..2
-+	prefix_1 ok 1 test_1
-+	prefix_1 ok 2 test_2
-+	# example passed
-+	ok 1 example
-+
-
-Of course, "[" and "]" are valid characters within the prefix string, so
-that an example of "[prefix_1]" could be mentioned as a valid example.
-
-I would suggest some additional more complex examples:
-
-+	prefix_0 KTAP version 2
-+	prefix_0 1..1
-+	prefix_0 prefix_1 KTAP version 2
-+	prefix_0 prefix_1 1..2
-+	prefix_0 prefix_1 ok 1 test_1
-+	prefix_0 prefix_1 ok 2 test_2
-+	# example passed
-+	prefix_0 ok 1 example
-+
-
-+	KTAP version 2
-+	1..2
-+	prefix_1 KTAP version 2
-+	prefix_1 1..2
-+	prefix_1 ok 1 test_a_1
-+	prefix_1 ok 2 test_a_2
-+	# example passed
-+	ok 1 example
-+	prefix_2 KTAP version 2
-+	prefix_2 1..2
-+	prefix_2 ok 1 test_b_1
-+	prefix_2 ok 2 test_b_2
-+	# example passed
-+	ok 2 example
-+
-
-+	KTAP version 2
-+	1..3
-+	prefix_1 KTAP version 2
-+	prefix_1 1..2
-+	prefix_1 ok 1 test_a_1
-+	prefix_1 ok 2 test_a_2
-+	# example passed
-+	ok 1 example
-+	  KTAP version 2
-+	  1..2
-+	  ok 1 test_b_1
-+	  ok 2 test_b_2
-+	# example passed
-+	ok 2 example
-+	prefix_2 KTAP version 2
-+	prefix_2 1..2
-+	prefix_2 ok 1 test_c_1
-+	prefix_2 ok 2 test_c_2
-+	# example passed
-+	ok 3 example
-+
-
-
-
+>  Unknown lines
+>  -------------
 >  
->  Major differences between TAP and KTAP
->  --------------------------------------
+> @@ -206,6 +211,7 @@ An example of a test with two nested subtests:
+>  	KTAP version 2
+>  	1..1
+>  	  KTAP version 2
+> +	  # Subtest: example
+>  	  1..2
+>  	  ok 1 test_1
+>  	  not ok 2 test_2
+> @@ -219,6 +225,7 @@ An example format with multiple levels of nested testing:
+>  	KTAP version 2
+>  	1..2
+>  	  KTAP version 2
+> +	  # Subtest: example_test_1
+>  	  1..2
+>  	    KTAP version 2
+>  	    1..2
+> @@ -245,7 +252,7 @@ allows an arbitrary number of tests to be nested     no         yes
+>  
+>  The TAP14 specification does permit nested tests, but instead of using another
+>  nested version line, uses a line of the form
+> -"Subtest: <name>" where <name> is the name of the parent test.
+> +"Subtest: <name>" where <name> is the name of the parent test as discussed above.
+>  
+>  Example KTAP output
+>  --------------------
+> @@ -254,6 +261,7 @@ Example KTAP output
+>  	KTAP version 2
+>  	1..1
+>  	  KTAP version 2
+> +	  # Subtest: main_test
+>  	  1..3
+>  	    KTAP version 2
+>  	    1..1
+> @@ -266,6 +274,7 @@ Example KTAP output
+>  	    ok 2 test_2
+>  	  ok 2 example_test_2
+>  	    KTAP version 2
+> +		# Subtest: example_test_3
+>  	    1..3
+>  	    ok 1 test_1
+>  	    # test_2: FAIL
 > 
 > base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
 
