@@ -1,91 +1,74 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD3AA21
-	for <kernelci@lists.linux.dev>; Thu,  6 Apr 2023 08:56:03 +0000 (UTC)
-Received: by mail-qv1-f46.google.com with SMTP id ly9so263669qvb.5
-        for <kernelci@lists.linux.dev>; Thu, 06 Apr 2023 01:56:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680771362;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ib4B0dtrKWf8z+bjQqwDwxC+mEiwVtXxPOuUhi+/Uzo=;
-        b=K7zMyTm66Cww6udebURpUZUMRbmtqYozNEGT4Hg8cpVNZp5S2ON/p1rfPqc4ytNBQj
-         hx2r+RyzyCQYsjDESAHLscvvc252dWQZZpPTP/kIv6wnJz+tQssNAeKoVToCk77UK5yg
-         u9KlhE3/X0ObIyriw7cVQGrzFD3L0k2vcES85hdqPQGRU0excJFexr1LJOUHoHT84FUu
-         yvAuv0smI0i9wlv3t9RThBe6+gEkJzQUL2H6kuu/KWN9yOwZVtTgnjVty30MC87jjokf
-         2WvDR5RkwypbKNn/BVv8LT4IUVgcAXypgF6IQ02stlL1+HHdVsjw5fs0GGr619PdVijq
-         fH1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680771362;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ib4B0dtrKWf8z+bjQqwDwxC+mEiwVtXxPOuUhi+/Uzo=;
-        b=GUL9tPjPqS9Yf8v+5V5530RA64vip5C+8DVx7WDJQ/+bV0q/K3Ff1Di6dNIwNTAqBY
-         g1tmUjQOVqotF+51+D4d81UvzdeILGVKTWxhtc+3wPKCRv9Y8fBe654eZm79QF8869pK
-         xTqFxwuegYAK5kDksEaN2WQOBJwo1k9wi/JcqrAvSJMtfIYzTwLwj31ug5oS0MCdZEWP
-         xVtm+GQ3XpOAHYC3jT4f3RHtQB1snwzeY3uk6bIHz2vW7DibROV6jLkd7/o97YUvH5sY
-         KY0FkRDcMTNbADemjLP4dYnsYUTSNcjRiiuWoQYH7adHKQAqmKeUFXWyHbvyPZKMSejC
-         Qhkg==
-X-Gm-Message-State: AAQBX9fnoK8Adgapg//lW0mu+3wIN3Th3E/3udRORk9PW2ec4JkEoCCU
-	0XsmvyMq7UgUtOiIZb5MNkM=
-X-Google-Smtp-Source: AKy350YjiUKNYVEZf0s6VsxeCnRHjNGD28GjJw6JtPP8gf91QAI5deGaF+WBQ4kh67p/sUD6QJ4z5A==
-X-Received: by 2002:a05:6214:c21:b0:56f:8ef:693 with SMTP id a1-20020a0562140c2100b0056f08ef0693mr3546934qvd.0.1680771362357;
-        Thu, 06 Apr 2023 01:56:02 -0700 (PDT)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id u6-20020a0cfe46000000b005e2007584f1sm370042qvs.24.2023.04.06.01.56.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Apr 2023 01:56:02 -0700 (PDT)
-Message-ID: <6d9d506b-9236-0c99-f49a-bdc7efa7eb60@gmail.com>
-Date: Thu, 6 Apr 2023 11:56:00 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93E72F38
+	for <kernelci@lists.linux.dev>; Thu,  6 Apr 2023 11:03:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F70C433EF;
+	Thu,  6 Apr 2023 11:03:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1680779017;
+	bh=bQY0NZ9I+8jLRbFkUpIN+oepqEKbbu2Ya1/1TF6uaNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AhwZ8yNrDd+wWnOx+v8/GuGvQsyzkDouFjaMonifBiuqdse2MEwkhFGvXKRMvk9ZT
+	 INP1kcERhBiADFnfqgWrckNbnAIRWuQZ65I8NE1TWxwjRTTx1oGbhCkCvCVK9fT0B1
+	 oFu1BU6u3ru9eLgzZ/wk07G19/mmzKrKza8oq35xOXOU14FCKDiEbi+PyEWLeqiXRx
+	 5/H7W2/SHgbntKtv+JYikuzAgqNkp0PDTvvi0YEDIBBe3d2Yxi3eqb64VbCHe1IIWZ
+	 p908IjH2UeEXGiYd+BV4LJHXjpDOiXmQGgCrkhY+KxEKxrSFgUUpUelvcvvNGAl5nl
+	 qDJxOuPcX1WaQ==
+Date: Thu, 6 Apr 2023 12:03:32 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Nikolai Kondrashov <spbnick@gmail.com>
+Cc: "Hambardzumyan, Minas" <minas@ti.com>,
+	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+	Guillaume Tucker <guillaume.tucker@collabora.com>
+Subject: Re: kcidb vs KernelCI APIs
+Message-ID: <b8de56e5-f9d6-4eed-8ebf-ee8fa6098399@sirena.org.uk>
+References: <ec413cbe0205479b8beb25f3d1c6dfc1@ti.com>
+ <d03f72ca-1efe-6912-1468-b8582dbbc2d8@gmail.com>
+ <6d9d506b-9236-0c99-f49a-bdc7efa7eb60@gmail.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: kcidb vs KernelCI APIs
-Content-Language: en-US
-From: Nikolai Kondrashov <spbnick@gmail.com>
-To: "Hambardzumyan, Minas" <minas@ti.com>
-Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- Guillaume Tucker <guillaume.tucker@collabora.com>
-References: <ec413cbe0205479b8beb25f3d1c6dfc1@ti.com>
- <d03f72ca-1efe-6912-1468-b8582dbbc2d8@gmail.com>
-In-Reply-To: <d03f72ca-1efe-6912-1468-b8582dbbc2d8@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PmirNaLvqOY7Nr0g"
+Content-Disposition: inline
+In-Reply-To: <6d9d506b-9236-0c99-f49a-bdc7efa7eb60@gmail.com>
+X-Cookie: Man and wife make one fool.
 
-On 4/6/23 11:40, Nikolai Kondrashov wrote:
->> Looking at the retuned json, I see the "id" is 
->> "kernelci:staging.kernelci.org:642d52183d363bbbfd0b9bd3".
->>     a) Where did this id string come from, and how do I create such an ID if 
->> I want to submit my own test result using kcidb?
-> 
-> This string was generated by KernelCI Native backend when submitting its data 
-> to KCIDB. I assume it took its internal test result ID 
-> "642d52183d363bbbfd0b9bd3", added "staging.kernelci.org:" to indicate it's 
-> coming from the staging instance, and to differentiate it from production 
-> results, and then added "kernelci:" to indicate this test result is coming 
-> from KernelCI itself, and to differentiate it from other CI systems.
-> 
-> The code doing that is likely here:
-> https://github.com/kernelci/kernelci-backend/blob/main/app/utils/kcidb.py
 
-To clarify further: the submitting CI system is solely responsible for keeping 
-the IDs of the objects it sends to KCIDB unique among themselves. You can 
-generate them however you wish, as long as they don't clash between 
-themselves. E.g. you could concatenate the name of the host where the test 
-executed with a timestamp, and the test process PID, to get a unique-enough 
-ID. Or get them from the database you're storing your test results in, if you 
-have any.
+--PmirNaLvqOY7Nr0g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-You're required to format them as a string and prepend them with "ti:" before 
-submitting to KCIDB, though. The latter ensures that your IDs don't clash with 
-IDs from others.
+On Thu, Apr 06, 2023 at 11:56:00AM +0300, Nikolai Kondrashov wrote:
 
-Nick
+> To clarify further: the submitting CI system is solely responsible for
+> keeping the IDs of the objects it sends to KCIDB unique among themselves.
+> You can generate them however you wish, as long as they don't clash between
+> themselves. E.g. you could concatenate the name of the host where the test
+> executed with a timestamp, and the test process PID, to get a unique-enough
+> ID. Or get them from the database you're storing your test results in, if
+> you have any.
+
+For one practical example, I'm using git commit hashes for commits and
+a UUID library for test results.
+
+--PmirNaLvqOY7Nr0g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQupwQACgkQJNaLcl1U
+h9DBpAf2PO1U1vQ/ut2LpYATqOnpIWiwepPZU+LaHVJz+uJ0JqOkjX28cOhfwwxR
+YG+/a9gnxwRne9Vqteo9NMGfN1fCjrJ3nnTnX3wq/6sGdfsY5/IMgLcCvhUw4HQ9
+uj/4+0guin9S8ul61ASTj/OxZ41TpjZq4KUWbq9hHwQ2eKWHjTWFMh/LwiUhO+eN
+kxU41BLINxvgdxVZ4wKgmS4va2OLqBz/XeF7Kbx0nkZ9WQohTFQXvxscNn+Aej9h
+R1cV3GWAwchxAw2mbJC/Uzs/6GOirocJdaF2IM2unWwmlbyu3671MNczpjRnQW/O
+GbTQoH54GzMGQ6uNp30EhGRVb7NB
+=QpO2
+-----END PGP SIGNATURE-----
+
+--PmirNaLvqOY7Nr0g--
