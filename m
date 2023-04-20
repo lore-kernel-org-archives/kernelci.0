@@ -1,51 +1,51 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04655661
-	for <kernelci@lists.linux.dev>; Thu, 20 Apr 2023 12:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2078C04
+	for <kernelci@lists.linux.dev>; Thu, 20 Apr 2023 16:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1681992528;
+	s=mimecast20190719; t=1682008683;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Pn78go24rJLZhBVsYkj1wDQEuZoJFwwOuKHugYs0q3o=;
-	b=VqOKy/4y7KsE5o6wNW7dA6FfUbU44h+ZRjvT52k+EGCUMGIm+L1ly7AF2KNJKoHoPGQ82l
-	xY9POxAhEvH3ZyK4fV0pbTBZ9l40hVfdPgGmcXhd6a70byiA+td9f0MzdKIk4izzCrUB+Q
-	3xML93BZE5sY/AlnnKc6Ue1jUc1ZeL4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=5HARdw4/kgl2BPJ8viJAFCPFbBzEbeN8WSy3mTgSimc=;
+	b=b3x5OQCO7DXvjd8ADMaQ664np/4AsZvCPqb3X8oAQ4DLmrwfr8XEwfBcIGV/36526kPZ/d
+	WG8eG6FxCNEa5LMyJKCZWFiUHUcvPbub/l2JyJ8k8YsbzPeYC1jMErrsDsRnPYuWMuUZ77
+	LNeRpKuSljxyBiLKQ40hVjsKLBgqEcs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-orNlxu5zPjKQ9RHhukrpkg-1; Thu, 20 Apr 2023 08:08:47 -0400
-X-MC-Unique: orNlxu5zPjKQ9RHhukrpkg-1
-Received: by mail-wm1-f70.google.com with SMTP id fl8-20020a05600c0b8800b003f16fe94249so2015817wmb.9
-        for <kernelci@lists.linux.dev>; Thu, 20 Apr 2023 05:08:47 -0700 (PDT)
+ us-mta-632-NttylN93OzCgCgkjXHeYBA-1; Thu, 20 Apr 2023 12:38:02 -0400
+X-MC-Unique: NttylN93OzCgCgkjXHeYBA-1
+Received: by mail-wm1-f71.google.com with SMTP id k39-20020a05600c1ca700b003f17b10763aso2191611wms.2
+        for <kernelci@lists.linux.dev>; Thu, 20 Apr 2023 09:38:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681992525; x=1684584525;
+        d=1e100.net; s=20221208; t=1682008681; x=1684600681;
         h=content-transfer-encoding:in-reply-to:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pn78go24rJLZhBVsYkj1wDQEuZoJFwwOuKHugYs0q3o=;
-        b=OhDGV2wzuWLZTK/v9cW1Mvr9/5x7ZVIvJtaxhmNuF9m+cAdS/AIngpNCcM8ScdwOfu
-         OFzzOppuTLm1spnlrUvuTCDrRUuG9286pSfVpYyiKsA53oCaUupdeUf9ikH6VMKpMZz/
-         CqE33nDK/FA2S2leoLT6kj/1PXMiEGIxYoLihQPshdgv+rhfNylFIHHtrVHdsdR3BBHQ
-         VS34LY5/NATe3sH/vh12UQ8L9lMCayWxGK4XCqddlIsSWkjYvaSVwWobYjLcyXh3urfZ
-         Bnj0GaYGQgbtx8DV8jzH48nEqw9qPrdsMrt9sHwXKKgR5fY3j1iOCvGnn9rdkZgr23GT
-         TkoQ==
-X-Gm-Message-State: AAQBX9cAk09DoZ6VTsDvlC7mJ2duco0fkK1P06ECzzKu6PtkKzzOwJvd
-	qIr07lmMZ8w4NVA8/Pf+96YoY9BbWZVUCqN861VK/6jQicni6eU1L1orgGvYptyfyMESZ4bB0xq
-	xiHMT4lkyLDSZF6v6E8U=
-X-Received: by 2002:a7b:cbd4:0:b0:3f1:7123:fd12 with SMTP id n20-20020a7bcbd4000000b003f17123fd12mr1098211wmi.34.1681992525543;
-        Thu, 20 Apr 2023 05:08:45 -0700 (PDT)
-X-Google-Smtp-Source: AKy350YbJjesCCk2+HLNTuQX/p5O1k6M40/IC89WQLgkX0lBwlAvQW3l0vjnnXkbLaaLi8VZ11TRJw==
-X-Received: by 2002:a7b:cbd4:0:b0:3f1:7123:fd12 with SMTP id n20-20020a7bcbd4000000b003f17123fd12mr1098190wmi.34.1681992525205;
-        Thu, 20 Apr 2023 05:08:45 -0700 (PDT)
+        bh=5HARdw4/kgl2BPJ8viJAFCPFbBzEbeN8WSy3mTgSimc=;
+        b=BnGeTY+jj274mKKVm7iw7lGCzT+tI0YL1NB2RPf/myP9qanFUjE47TmUGPetjbrrPH
+         kS+Jkn0z+j7oWKbAQL96kZICRF/5YvmOPYvbTmYPu5mTgcJKG2Qy5B0FfLYfvGgu4y+8
+         hV3sHdH8Ef1hqbPma/jNE28ZtEyEbOwLtSTc0gXE/bftI8z2njpVSALyRpHIceqEI0U/
+         x7374miWJAZHHpu9wCg0CDECZXS/8zvrZVL9P4O1FXqWrs9eU/xNxNgLdUGdhfG0FoCd
+         tmigfRgmppKTjqpYChhLTOeVLLhWB4n0RDLu9YieUJ3b3d3t1uO9L15VZmz6P2rIwJ6M
+         6DVg==
+X-Gm-Message-State: AAQBX9dFVYGMWMUv1DWLIfcxmvcheWSjrAxpeFPIarTPEeUs4Y8lcsuM
+	b5ycu0trSpCRd2tlFX66TXMzsoivgu0dNHEazG0SOmHC3V0MyBxg5bin86fDnsagFcetC4mqaLg
+	+sm/mQCGJuVZ4JktYM28=
+X-Received: by 2002:a1c:f608:0:b0:3f1:8430:523 with SMTP id w8-20020a1cf608000000b003f184300523mr1757171wmc.14.1682008680096;
+        Thu, 20 Apr 2023 09:38:00 -0700 (PDT)
+X-Google-Smtp-Source: AKy350ZrMpMshK2Bri0C+rDj1ZYwp4bGH7N3NHN28kPGn5+XwUsYh0xXK/Uz+n2xDEYH/i+/2k9YIQ==
+X-Received: by 2002:a1c:f608:0:b0:3f1:8430:523 with SMTP id w8-20020a1cf608000000b003f184300523mr1757155wmc.14.1682008679806;
+        Thu, 20 Apr 2023 09:37:59 -0700 (PDT)
 Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id s12-20020a7bc38c000000b003f1739a0116sm1836250wmj.33.2023.04.20.05.08.43
+        by smtp.gmail.com with ESMTPSA id e29-20020a5d595d000000b002fddcb73162sm2345504wri.71.2023.04.20.09.37.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Apr 2023 05:08:44 -0700 (PDT)
-Message-ID: <a5747b70-2dbe-769d-82be-9f9e96ee283f@redhat.com>
-Date: Thu, 20 Apr 2023 15:08:42 +0300
+        Thu, 20 Apr 2023 09:37:59 -0700 (PDT)
+Message-ID: <30ee8d77-3122-75d1-4a5e-c9f4a2d53b7f@redhat.com>
+Date: Thu, 20 Apr 2023 19:37:57 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -54,8 +54,8 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: KCIDB: Support one more test status
-To: "Bird, Tim" <Tim.Bird@sony.com>,
+Subject: Re: [Automated-testing] KCIDB: Support one more test status
+To: guillaume.tucker@collabora.com, "Bird, Tim" <Tim.Bird@sony.com>,
  "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
  Dmitry Vyukov <dvyukov@google.com>,
  Cristian Marussi <cristian.marussi@arm.com>,
@@ -68,134 +68,164 @@ To: "Bird, Tim" <Tim.Bird@sony.com>,
  Sachin Sant <sachinp@linux.ibm.com>
 References: <45be6714-b818-0be7-3e95-9f69af65096c@redhat.com>
  <BYAPR13MB2503FE8D3D92A95B8B331B8DFD629@BYAPR13MB2503.namprd13.prod.outlook.com>
+ <76255cf0-170b-a091-e7b7-544ce3d3af50@collabora.com>
 From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <BYAPR13MB2503FE8D3D92A95B8B331B8DFD629@BYAPR13MB2503.namprd13.prod.outlook.com>
+In-Reply-To: <76255cf0-170b-a091-e7b7-544ce3d3af50@collabora.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Tim,
+Hi Guillaume,
 
-Thanks a lot for your response!
-I will do some snipping and answering below.
+Thank you for your response!
 
-On 4/19/23 22:38, Bird, Tim wrote:
->> After the testing is done, or we gave up trying, we send the same KCIDB test
->> objects to the database, but this time only containing whatever results we
->> got, including the "status" fields. However, with the current set of status
->> strings [1], the only way we can try to express "wanted to run, but couldn't"
->> is with "SKIP", which is not supposed to alert anyone, yet this situation
->> should be treated as a problem.
->
-> Why can't "wanted to run, but couldn't" be expressed with "ERROR"?
+Snipping & answering below.
 
-This is a matter of responsibility area and distinguishing who should be 
-fixing the problem.
-
-The three layers I listed below correspond to the three distinct parties 
-involved in testing, at Red Hat, and other large CI systems: "CODE" is for 
-kernel developers/maintainers, "TEST" is for test maintainers, and "HARNESS+" 
-is for CI system maintainers.
-
-At Red Hat we have the CKI project, which is responsible for maintaining the 
-pipeline, builds, provisioning, reporting, etc - "HARNESS+". Then we have *a 
-lot* of test maintainers, both internal (for the tests Red Hat needs), and 
-external (for test suites like LTP) - "TEST". Finally, we have the kernel 
-developers/maintainers, of course - "CODE".
-
-Naturally, if there was an issue with the test (normally reported as ERROR), 
-we don't want to bother kernel developers. A test maintainer would need to 
-deal with that (and they would get their notification), although they would be 
-interested in just regular PASS/FAIL results too.
-
-Similarly, if the CI system couldn't manage to run the test, we won't want to 
-report it as ERROR, because that would alert the test maintainer, while it 
-wouldn't be their fault at all, and they shouldn't go and waste their time 
-investigating it.
-
-Now, of course, this particular split is not always there, or it's not so 
-clear-cut. E.g. kunit tests are normally maintained by kernel developers 
-themselves. So they would be interested in both "CODE" and "TEST" layers for 
-those, and so wouldn't really need the "ERROR" status - "FAIL" would be enough.
-
-CI system maintainers often take the role of test maintainers as well, and 
-they wouldn't really need to distinguish "TEST" and "HARNESS+", for them it 
-would be "TEST+", and they wouldn't need the "MISS" status - "ERROR" would be 
-enough.
-
-However, this split (and the various statuses) is a good tool for handling all 
-the various responsibility combinations the CI systems submitting to KCIDB 
-have. It allows precise targeting of notifications and dashboard data, saving 
-time and effort in many cases.
-
->> We propose to call this new status "MISS" (as in "the test result should be
->> there, but isn't"), and think it would be useful to others as well.
+On 4/20/23 08:53, Guillaume Tucker via lists.yoctoproject.org wrote:
+> On 19/04/2023 21:38, Bird, Tim wrote:
+>>> -----Original Message-----
+>>> From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+>>> Hello everyone involved with, or interested in KCIDB,
+>>>
+>>> After the testing is done, or we gave up trying, we send the same KCIDB test
+>>> objects to the database, but this time only containing whatever results we
+>>> got, including the "status" fields. However, with the current set of status
+>>> strings [1], the only way we can try to express "wanted to run, but couldn't"
+>>> is with "SKIP", which is not supposed to alert anyone, yet this situation
+>>> should be treated as a problem.
 >>
->> We can break down the testing stack into three layers: the tested code, the
->> test, and the harness (and everything above it) that runs the test. If we then
->> express each existing test status as one trinary outcome per each of those
->> layers, we would get this table (in order of descending status priority):
->>
->>       STATUS      CODE TEST HARNESS+           LEGEND
->>
->>       FAIL        ❌   ✅   ✅                 ❌ - failure
->>       ERROR       ➖   ❌   ✅                 ✅ - success
->>       PASS        ✅   ✅   ✅                 ➖ - no data
->>       DONE        ➖   ✅   ✅
->>       SKIP        ➖   ➖   ✅
->>                   ➖   ➖   ➖
->>
->> If you look at the above closely, you will notice one possible state missing
->> (because we didn't need to express failing harnesses), and that is the status
->> we want to introduce:
->>
->>       STATUS      CODE TEST HARNESS+           LEGEND
->>
->>       FAIL        ❌   ✅   ✅                 ❌ - failure
->>       ERROR       ➖   ❌   ✅                 ✅ - success
->>   =>  MISS        ➖   ➖   ❌ <=              ➖ - no data
->>       PASS        ✅   ✅   ✅
->>       DONE        ➖   ✅   ✅
->>       SKIP        ➖   ➖   ✅
->>                   ➖   ➖   ➖
->>
->> Please respond with comments, objections, and (counter-)proposals,
->> if you have them.
+>> Why can't "wanted to run, but couldn't" be expressed with "ERROR"?
 > 
-> I don't understand the rationale for distinguishing a test error from a harness
-> error.  In either case the test was not executed properly, and so there is no
-> useful test result data available.  Diagnostic information should enable
-> the user to determine whether the problem was due to the test code failing
-> or the test harness failing.
+> There's also "wanted to run, but didn't" if the test wasn't
+> actually run.  I guess failing to start the test is a harness
+> problem, and a failure while it's running is more likely a test
+> problem (but not necessarily).
 
-This works when the test maintainer and the harness/framework/CI system 
-maintainer are the same person or team. This doesn't work when everything from 
-CI system down to the test (suite) harness is maintained by one team, and the 
-test by a completely different team (e.g. CKI and LTP).
+Yes, that's the idea.
 
-> I think I'm missing something.  Are you trying to distinguish these so you
-> can determine whether there is a problem with the test itself, vs. the harness?
+> But also, what if a test has disappeared from a test suite?
 
-Yes.
+That depends where you slice your responsibility, I suppose.
 
-> Are you automatically re-running a test if the harness is the problem?
+If you want to control and make sure which exact sub-tests of a test suite 
+should be executed, then you should report the disappeared test as "MISS", 
+because it would be the fault of your harness not noticing that.
 
-We do try rerunning tests in case we hit a faulty host in our inventory (this 
-happens), or e.g. a network problem occurred. However, at some point we gotta 
-give up, and then we need a way to say: "this test result is not just missing 
-or in progress (as specified by a missing "status" property), but we're done 
-testing, and we couldn't run that test".
+If you'd prefer to leave it to the test suite maintainers to decide what 
+running their test suite (or a subset of) means, then you just collect 
+whatever you get, and only report "MISS" for the whole test suite when you 
+failed to run it.
 
-Because we usually run multiple suites on each machine, one after another, if 
-one of them crashes/locks up the machine (we're testing the kernel after all), 
-then the following suites won't be able to run. In this case we also need a 
-way to say "we finished testing, but those tests didn't even get to run".
+>>> If you look at the above closely, you will notice one possible state missing
+>>> (because we didn't need to express failing harnesses), and that is the status
+>>> we want to introduce:
+>>>
+>>>       STATUS      CODE TEST HARNESS+           LEGEND
+>>>
+>>>       FAIL        ❌   ✅   ✅                 ❌ - failure
+>>>       ERROR       ➖   ❌   ✅                 ✅ - success
+>>>   =>  MISS        ➖   ➖   ❌ <=              ➖ - no data
+>>>       PASS        ✅   ✅   ✅
+>>>       DONE        ➖   ✅   ✅
+>>>       SKIP        ➖   ➖   ✅
+>>>                   ➖   ➖   ➖
+> 
+> It seems there are many reasons for a test to not run correctly
+> and trying to put them in buckets isn't as simple as that.  I
+> would rather be in favour of having fewer states: pass, fail,
+> skip and unknown for when there's no clear test result.
 
-> Why do you want to distinguish these error cases?
+I agree, we could slice the test outcome into an infinite number of statuses, 
+for every little thing, and keep adding them until the cows come home.
 
-As described above, to alert the right people and avoid wasting time of others.
+However, if you look at the above table, you would see that we have statuses 
+strictly focusing on which part of the stack has passed/failed/had no data, 
+and these parts of the stack correspond to the clearly-separate responsibility 
+areas. We're just enumerating all the possibilities in that space, and "MISS" 
+plugs the one remaining hole.
 
+So, I think it has its place. That is unless we object to having harness (and 
+higher) failures reported to KCIDB.
+
+I would say, though, that we should accept them. Because, even if the CI 
+systems try hard to avoid them, their failures will creep in anyway, and then 
+the issue/incident system will be there to help them set the correct status 
+after the fact, for the situations when they failed to execute the test and 
+reported something else by mistake.
+
+And of course, I'd be happy if this new status helps CKI keep using KCIDB for 
+internal result reporting as well.
+
+> On a side note, the last line with no data anywhere doesn't have
+> a name.  Is the status field optional in KCIDB, so we can send
+> data with no status?  That would match the last line I guess.  Or
+> maybe it could be named as UNKNOWN or something.  I think that
+> kind of relates to missing test results if there's no positive
+> error reported by the test harness, see my other paragraph below.
+
+Yes, the "status" field is optional (same as most other fields), and yes, the 
+last line represents it missing (all missing fields represent "no data" in KCIDB).
+
+I don't think we should add an explicit "UNKNOWN" status, because then we 
+would have two kinds of "unknowns", with all the problems that follow.
+
+>> I think I'm missing something.  Are you trying to distinguish these so you
+>> can determine whether there is a problem with the test itself, vs. the harness?
+>> Are you automatically re-running a test if the harness is the problem?
+>>
+>> Why do you want to distinguish these error cases?
+> 
+> I was wondering the same thing.  Is MISS effectively like
+> a "null" default state for when the system knows a test has been
+> started and a result is expected but hasn't arrived yet?  Whereas
+> ERROR is when the test has clearly hit an error and failed to
+> run?  For example, if a test suite changed and a test case
+> disappeared or was renamed then you would see a MISS result with
+> the old test case name and that's not really an error.
+
+No, "MISS" is not the default state. The default state is the "status" field 
+missing, which indicates that the test is planned, but not (completely) 
+executed yet. That is the only field state that could be changed by the KCIDB 
+protocol.
+
+I.e. the only possible change to an already-submitted object is to add a 
+missing field. It's not possible to deterministically do any other change.
+Basically, whichever status string you submit is final for that test.
+
+"MISS" is for when you sent your "test plan" in the form of a set of tests 
+with missing "status" fields, proceeded to testing, and then e.g. network went 
+down in the middle of it, and you couldn't reach your hosts to get the results 
+until you ran out of time. Or e.g. you couldn't get the hosts you need for 
+some of the tests in a reasonable time, because they were taken by someone 
+else. Or the kernel simply failed to boot on some hosts, and no tests could be 
+executed there.
+
+In these cases, you can send the "MISS" status to indicate you gave up on this 
+run. Then people and machines can stop waiting for those results and go do 
+something else, like say "this version was not fully tested, so we cannot 
+release it, and gonna ask for a retry", or "we did our best, upstream, here 
+are your test results, such as they are, take 'em or leave 'em". Or you can 
+use this status in internal communication, to trigger a re-run of those 
+particular tests, before reporting the results to upstream KCIDB.
+
+Yes, the "ERROR" status is for when we actually got to executing the test 
+(suite), and then it messed up, and e.g. crashed in the middle of execution. 
+This is likely a problem for test maintainers to solve, and not for the CI 
+people (although they would do well to keep an eye on such results too).
+
+Yes, as I also described above, if you care about which exact tests a test 
+suite executes, and some tests in your previously-submitted plan didn't 
+execute after all, then you would need to set their status to "MISS".
+
+But if you only care that this suite executes, and runs whatever tests it 
+deems important, you could e.g. send an object for the whole test suite with 
+its status missing before starting. Then send its subtests with status filled 
+in with whatever you get as they execute, capping off with the final status of 
+the whole suite after it's done. And if you failed to run the suite for 
+whatever reason, then you could send the "MISS" status for it instead.
+
+Hope this helps :D
 Nick
 
