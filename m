@@ -1,45 +1,27 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E89533E5
-	for <kernelci@lists.linux.dev>; Tue, 25 Apr 2023 20:55:03 +0000 (UTC)
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-b980ec2a95cso8557651276.2
-        for <kernelci@lists.linux.dev>; Tue, 25 Apr 2023 13:55:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682456103; x=1685048103;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OU/Nt9B7XN1sCdbr/6eEb0oLClGSXdVDLD5Mdz4L6mI=;
-        b=DxsvyX9FhAGMU+w31NsiCPMJpBjiSmiusOxrrqMuWc7O2JrI3lOOhib9NUZ8evbkVb
-         hnpe+Dv76iu91frLgDA9nGUkKbjFzq0OvBXo0Xoy5xb+tpmzXuaDlwJQYj5J/J53DSjE
-         3v3ta/aG3bSsUUMmV78xGQmvmXq8YucDwfmouyPZOA9/J4waeSO8XWxhagfzpRzcXzAI
-         svko/KEuM58pa4AkiN3pHR7OQ1eIAZ26Cqn/5dxBes0BDJmsgrCcnAOUZ7nOQJVkEKW/
-         7k7i8gws9nQro3wQwqHnMi1d292dOmYhyF5+UUwSdrLE7o2eARF2luNFPTWuEy0N0H2v
-         xkhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682456103; x=1685048103;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OU/Nt9B7XN1sCdbr/6eEb0oLClGSXdVDLD5Mdz4L6mI=;
-        b=ViN/r9tUsnwUNIaGkzJofZdj2l65BTVDL9VF/RfGHWnRbDomiAfvOYZRq1xP+v0xEh
-         RKu7Rr2+/VRVSouRL8u5lVciP5tu5AKXIhgLHLaOvdcjsYAMMnjFoz/rEvsBvdMLKvIX
-         H3CG2ShfnAqrg2ivhWaM8TuIzAJwEuXdv6dTXPtxlw7nBNTYlhkB7kWnvviR1lzXkoUI
-         SlBJUqYL/7/fvJmxd36Y2xpgUZZHLEIWz8mzP+S2nXmFzlXsxAvZmwtUQEJaLVp3OA9i
-         SZ0uL0D/49km+Ku1za3IgHPNWVNYlVpkHVFR9b3B9Z64potyxmuh2v8qmkLFHXdtyplX
-         unXA==
-X-Gm-Message-State: AAQBX9eMzgiMtO51qLqiRs+cKWLQocBrsLOi9b4TkbnhW6flJ2P9t8x6
-	7k4ms6wO0yF0Ug6wTVv9VTQ=
-X-Google-Smtp-Source: AKy350ZBOeq+FuyZ+QGosrfgyVeMEZ16y1tOuiCk4iWVjMIHrX23nwDvyYSFgFY7ng6MxhuoZh/xcw==
-X-Received: by 2002:a25:4105:0:b0:b99:75f:8f24 with SMTP id o5-20020a254105000000b00b99075f8f24mr12009761yba.30.1682456102630;
-        Tue, 25 Apr 2023 13:55:02 -0700 (PDT)
-Received: from ?IPV6:2600:1700:2442:6db0:7dac:d9da:d59f:fcdb? ([2600:1700:2442:6db0:7dac:d9da:d59f:fcdb])
-        by smtp.gmail.com with ESMTPSA id o68-20020a254147000000b00b8f5b078eacsm3687976yba.39.2023.04.25.13.55.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Apr 2023 13:55:02 -0700 (PDT)
-Message-ID: <ce5b723d-2395-8974-ba62-1ee519732218@gmail.com>
-Date: Tue, 25 Apr 2023 15:55:01 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E561FC6
+	for <kernelci@lists.linux.dev>; Wed, 26 Apr 2023 13:12:20 +0000 (UTC)
+Received: from [IPV6:2a00:5f00:102:0:b115:306b:3f3d:f0c2] (unknown [IPv6:2a00:5f00:102:0:b115:306b:3f3d:f0c2])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 7B9746603009;
+	Wed, 26 Apr 2023 14:12:13 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1682514733;
+	bh=JVre2D+nC523KtZI+xCAUC6Xo4eDiT/I5mzXQYX2TNg=;
+	h=Date:To:Cc:From:Subject:From;
+	b=l5ypVbxX87rWumXvLrNEckyJyXthLrp8tw+mv7wD7BsZVVaEjaoKuB8io0Ht8PoGP
+	 CYGCoLl0AC5W3le5YK+VMU7u+jF5YuO2wbFakV+8MRQnIDa3FyWu1FyEJ7HbUrJ/e9
+	 KosA+WU6JJV7g776Mf7gLHzJdYz4Ji4E4aW1YR17jS2xMZjKFCQOAcFZnyVbglfZeu
+	 ZQQtpmceGMsM0olOgEmI0FZNlEBmB72RS1D9AyRBe9rNqaVYNP/Rg5rP98XmyEDU5h
+	 OAei4XrhkqHI+BlKxc4KBru6cc5LQIcI3OocwxJn92zOFs/LoB3HplN3KmPOzkSVqd
+	 H1u9w0frKO0PA==
+Message-ID: <09c2d79d-27f3-1cb1-0d52-df003926a132@collabora.com>
+Date: Wed, 26 Apr 2023 14:13:13 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -47,262 +29,184 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [KTAP V2 PATCH] ktap_v2: add test metadata
+ Thunderbird/102.8.0
 Content-Language: en-US
-To: Rae Moar <rmoar@google.com>, davidgow@google.com,
- skhan@linuxfoundation.org, keescook@chromium.org, Tim.Bird@sony.com,
- brendanhiggins@google.com
-Cc: corbet@lwn.net, guillaume.tucker@collabora.com, dlatypov@google.com,
- kernelci@lists.linux.dev, kunit-dev@googlegroups.com,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20230420205734.1288498-1-rmoar@google.com>
-From: Frank Rowand <frowand.list@gmail.com>
-In-Reply-To: <20230420205734.1288498-1-rmoar@google.com>
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ "automated-testing@lists.yoctoproject.org"
+ <automated-testing@lists.yoctoproject.org>
+Cc: "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+Subject: [RFC] KernelCI YAML pipeline configuration
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/20/23 15:57, Rae Moar wrote:
-> Add specification for declaring test metadata to the KTAP v2 spec.
-> 
-> The purpose of test metadata is to allow for the declaration of essential
-> testing information in KTAP output. This information includes test
-> names, test configuration info, test attributes, and test files.
-> 
-> There have been similar ideas around the idea of test metadata such as test
-> prefixes and test name lines. However, I propose this specification as an
-> overall fix for these issues.
+Along with the new KernelCI API & Pipeline currently under active development,
+the YAML pipeline configuration is also going through a redesign.  This comes
+from the fact that we now have a generic concept of "jobs" which could be
+kernel builds, tests or anything that's orchestrated by the pipeline.  It's
+also about defining dependencies between jobs rather than having implicit ones
+such as LAVA tests that require particular kernel builds etc.  Also, the YAML
+configuration used in the current Jenkins pipeline evolved from some legacy
+implementation using Python dictionaries embedded in the code and hasn't really
+been properly designed.  So now is a good time to take a fresh look at all this
+again and try to come up with a simpler and better design.
 
-This seems like a cleaner approach.
+It would also be the opportunity to fully document the schema of the YAML
+configuration with a version and separate it from the code in kernelci-core.
+This means we can more easily describe the pipeline used by kernelci.org as
+application data and less as a base configuration library that other instances
+depend upon.  Each instance should then have its own YAML configuration; we
+might just share some very generic entries such as kernel git trees and public
+API instances.
 
-> 
-> These test metadata lines are a form of diagnostic lines with the
-> format: "# <metadata_type>: <data>". As a type of diagnostic line, test
-> metadata lines are compliant with KTAP v1, which will help to not
-> interfere too much with current parsers.
-> 
-> Specifically the "# Subtest:" line is derived from the TAP 14 spec:
-> https://testanything.org/tap-version-14-specification.html.
-> 
-> The proposed location for test metadata is in the test header, between the
-> version line and the test plan line. Note including diagnostic lines in
-> the test header is a depature from KTAP v1.
-> 
-> This location provides two main benefits:
-> 
-> First, metadata will be printed prior to when subtests are run. Then if a
-> test fails, test metadata can help discern which test is causing the issue
-> and potentially why.
-> 
-> Second, this location ensures that the lines will not be accidentally
-> parsed as a subtest's diagnostic lines because the lines are bordered by
-> the version line and plan line.
+There's already some rough version of this in pipeline.yaml[1] which is used on
+the staging KernelCI instance to get things going, but we've now reached the
+point where we need to start finalising it with longer-term design decisions.
+So here's a proposal with the main high-level YAML tags, what they're for and
+some examples.  Please also see the GitHub discussion with more details:
 
-I like that.
+  https://github.com/kernelci/kernelci-core/discussions/1907
 
-> 
-> Here is an example of test metadata:
-> 
->  KTAP version 2
->  # Config: CONFIG_TEST=y
->  1..1
->      KTAP version 2
->      # Subtest: test_suite
->      # File: /sys/kernel/...
->      # Attributes: slow
->      # Other: example_test
->      1..2
->      ok 1 test_1
->      ok 2 test_2
->  ok 1 test_suite
-> 
-> Here is a link to a version of the KUnit parser that is able to parse test
-> metadata lines for KTAP version 2. Note this includes test metadata
-> lines for the main level of KTAP.
-> 
-> Link: https://kunit-review.googlesource.com/c/linux/+/5809
-> 
-> Signed-off-by: Rae Moar <rmoar@google.com>
-> ---
-> 
-> Hi everyone,
-> 
-> I would like to use this proposal similar to an RFC to gather ideas on the
-> topic of test metadata. Let me know what you think.
-> 
-> I am also interested in brainstorming a list of recognized metadata types.
-> Providing recognized metadata types would be helpful in parsing and
-> displaying test metadata in a useful way.
-> 
-> Current ideas:
-> - "# Subtest: <test_name>" to indicate test name (name must match
->   corresponding result line)
+Feel free to reply to this email or on GitHub, whatever works best for you.
+Gathering feedback at this stage means we can more easily make changes than in
+a few months' time when we start rolling things out in production.
 
-I would prefer "Test" to "Subtest" because the type should be allowed for the
-top level test, as well as for subtest levels.
+If you're missing some general context around the new API & Pipeline:
 
-> - "# Attributes: <attributes list>" to indicate test attributes (list
->   separated by commas)
-> - "# File: <file_path>" to indicate file used in testing
-> 
-> Any other ideas?
+  https://kernelci.org/docs/api/
 
-(Already used in an example above...)
 
-- "# Config: <config_option list> to indicate kernel configuration options
-  (list separated by commas)
+* APIs
 
-    config_option format:
-      Option XXX is enabled: CONFIG_XXX=y
-      Option XXX is not enabled: CONFIG_XXX=n
-      Option XXX is text: CONFIG_XXX="a text string"
+These config entries are about where the new API instances can be found.  While
+a lot of things can be done offline such as running jobs locally, the main
+use-case is to use the API to store / retrieve data and send / receive events
+via the Pub-Sub interface.  It relies on API tokens which are managed as
+secrets so not in the YAML configuration file.  So right now, we just need the
+URL.
 
-Linux .config format is "#CONFIG_XXX is not set",
-but this would be harder to parse in a list.
+APIs:
+  docker-host:
+    url: http://172.17.0.1:8001
 
-A text config option also complicates parsing of a list.  Maybe there
-should not be a list, instead have a separate "# Config:" line for
-each config option.
 
-I would like to bifurcate the name space of metadata types, to names
-specified in the standard vs names not in the standard that can be
-used on an experimental or for future use in existing tests.
+* storage
 
-I can think of at least two ways to implement this:
+The new API doesn't provide any built-in storage solution, instead it just
+requires all artifacts to be available via an http:// or https:// URL.  So any
+arbitrary storage solution can be used, by default the docker-compose setup
+comes with an SSH container for uploading files and an Nginx container for
+serving them using a shared Docker volume.  A production system might have an
+S3-compatible storage or anything that provides a way to retrieve the artifacts
+over HTTP.
 
-(1) types that are in the specification all begin with a specific prefix,
-such as "ktap_" (bike shedding on naming welcomed), so the examples woudld be
+storage:
+  docker-host:
+    type: ssh
+    host: 172.17.0.1
+    port: 8022
+    base_url: http://172.17.0.1:8002/
 
-  # ktap_test:
-  # ktap_attributes:
-  # ktap_file:
-  # ktap_config:
 
-(2) types that are _not_ in the specification all begin with a specific prefix,
-such as "custom_" (bike shedding on naming welcomed).
+* jobs
 
-> 
-> Note this proposal replaces two of my previous proposals: "ktap_v2: add
-> recognized test name line" and "ktap_v2: allow prefix to KTAP lines."
-> 
-> Thanks!
-> -Rae
-> 
-> Note: this patch is based on Frank's ktap_spec_version_2 branch.
-> 
->  Documentation/dev-tools/ktap.rst | 51 ++++++++++++++++++++++++++++++--
->  1 file changed, 48 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-> index ff77f4aaa6ef..a2d0a196c115 100644
-> --- a/Documentation/dev-tools/ktap.rst
-> +++ b/Documentation/dev-tools/ktap.rst
-> @@ -17,7 +17,9 @@ KTAP test results describe a series of tests (which may be nested: i.e., test
->  can have subtests), each of which can contain both diagnostic data -- e.g., log
->  lines -- and a final result. The test structure and results are
->  machine-readable, whereas the diagnostic data is unstructured and is there to
-> -aid human debugging.
-> +aid human debugging. One exception to this is test metadata lines - a type
-> +of diagnostic lines. Test metadata is located between the version line and
-> +plan line of a test and can be machine-readable.
->  
->  KTAP output is built from four different types of lines:
->  - Version lines
-> @@ -28,8 +30,7 @@ KTAP output is built from four different types of lines:
->  In general, valid KTAP output should also form valid TAP output, but some
->  information, in particular nested test results, may be lost. Also note that
->  there is a stagnant draft specification for TAP14, KTAP diverges from this in
-> -a couple of places (notably the "Subtest" header), which are described where
-> -relevant later in this document.
-> +a couple of places, which are described where relevant later in this document.
->  
->  Version lines
->  -------------
-> @@ -166,6 +167,45 @@ even if they do not start with a "#": this is to capture any other useful
->  kernel output which may help debug the test. It is nevertheless recommended
->  that tests always prefix any diagnostic output they have with a "#" character.
->  
-> +Test metadata lines
-> +-------------------
-> +
-> +Test metadata lines are a type of diagnostic lines used to the declare the
-> +name of a test and other helpful testing information in the test header.
-> +These lines are often helpful for parsing and for providing context during
-> +crashes.
-> +
-> +Test metadata lines must follow the format: "# <metadata_type>: <data>".
-> +These lines must be located between the version line and the plan line
-> +within a test header.
-> +
-> +There are a few currently recognized metadata types:
-> +- "# Subtest: <test_name>" to indicate test name (name must match
-> +  corresponding result line)
-> +- "# Attributes: <attributes list>" to indicate test attributes (list
-> +  separated by commas)
-> +- "# File: <file_path>" to indicate file used in testing
-> +
-> +As a rule, the "# Subtest:" line is generally first to declare the test
-> +name. Note that metadata lines do not necessarily need to use a
-> +recognized metadata type.
-> +
-> +An example of using metadata lines:
-> +
-> +::
-> +
-> +        KTAP version 2
-> +        1..1
-> +        # File: /sys/kernel/...
-> +          KTAP version 2
-> +          # Subtest: example
-> +          # Attributes: slow, example_test
-> +          1..1
-> +          ok 1 test_1
-> +        # example passed
-> +        ok 1 example
-> +
-> +
->  Unknown lines
->  -------------
->  
-> @@ -206,6 +246,7 @@ An example of a test with two nested subtests:
->  	KTAP version 2
->  	1..1
->  	  KTAP version 2
-> +	  # Subtest: example
->  	  1..2
->  	  ok 1 test_1
->  	  not ok 2 test_2
-> @@ -219,6 +260,7 @@ An example format with multiple levels of nested testing:
->  	KTAP version 2
->  	1..2
->  	  KTAP version 2
-> +	  # Subtest: example_test_1
->  	  1..2
->  	    KTAP version 2
->  	    1..2
-> @@ -254,6 +296,7 @@ Example KTAP output
->  	KTAP version 2
->  	1..1
->  	  KTAP version 2
-> +	  # Subtest: main_test
->  	  1..3
->  	    KTAP version 2
->  	    1..1
-> @@ -261,11 +304,13 @@ Example KTAP output
->  	    ok 1 test_1
->  	  ok 1 example_test_1
->  	    KTAP version 2
-> +            # Attributes: slow
->  	    1..2
->  	    ok 1 test_1 # SKIP test_1 skipped
->  	    ok 2 test_2
->  	  ok 2 example_test_2
->  	    KTAP version 2
-> +	    # Subtest: example_test_3
->  	    1..3
->  	    ok 1 test_1
->  	    # test_2: FAIL
-> 
-> base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
+A "job" is essentially anything that can be run.  This is a lot more generic
+than the test and build configurations used with the current Jenkins pipeline.
+There are still a few assumptions about "jobs" though as they typically come
+with a Jinja2 template to generate a job definition.  This is in principle
+independent of the runtime environment, so a same template can be used to run
+the job in a local shell, in a Docker container, in Kubernetes, in LAVA etc.
+It will do this by including a different base template that's specific to the
+chosen runtime.  Jobs are also expected to require an "image" name which can be
+pretty much anything that's usable by the runtime environment, typically a
+Docker image or a root file system.
 
+Another difference with the current Jenkins pipeline is that jobs have explicit
+dependencies on other jobs.  For example, a KUnit job or a kernel build job
+will require a source code tarball.  Then a kselftest job will require a
+particular kernel build.  This hinges on the Pub/Sub interface: every time a
+job node changes state an event is sent.  Then a pipeline service orchestrating
+the jobs will look for jobs that have requirements that match the event to run
+them.  This is what the "run_on" attribute is for.
+
+jobs:
+  kbuild-gcc-10-x86:
+    template: kbuild.jinja2
+    name: kbuild
+    image: kernelci/gcc-10:x86-kernelci
+    run_on:
+      - channel: node
+        name: checkout
+        result: pass
+    params:
+      arch: x86_64
+      compiler: gcc-10
+      defconfig:
+        - x86_64_defconfig
+        - allmodconfig
+
+
+* runtimes
+
+Jobs are run in runtime environments, or "runtimes".  Currently, the only
+runtimes implemented are a local shell directly on the host, Docker containers
+and Kubernetes.  The next ones should include LAVA and other hardware labs such
+as LabGrid or custom ones that don't rely on common frameworks.  Like the
+storage configurations, runtimes have a "type" to look up a matching
+implementation module.  The configuration attributes are therefore also
+specific to the runtime type.  Then also like storage, runtime implementations
+should be based on the abstract Runtime interface to provide standard methods
+for generating jobs and running them.
+
+runtimes:
+  k8s-gke-eu-west4:
+    type: kubernetes
+    context: gke_android-kernelci-external_europe-west4-c_kci-eu-west4
+
+
+* platforms
+
+Runtime environments often provide a variety of platforms which can be used to
+run jobs.  For example, Kubernetes clusters may provide different kinds of pods
+and hardware test labs may provide different types of boards or servers.  This
+is covered by the platform configurations.
+
+Each platform is tied to a runtime environment type so that the services
+running jobs can tell which ones need to be submitted for which runtime
+environment.  Then specific fields can be provided depending on the platform's
+associated runtime type.  For example, hardware platforms have a particular CPU
+architecture that the runtime implementation needs to use to determine whether
+it's compatible with a particular kernel build.
+
+platforms:
+  bcm2837-rpi-3-b:
+    runtime-type: lava
+    arch: arm64
+    boot_method: uboot
+    oem: broadcom
+    params:
+      context:
+        console_device: ttyS1
+        test_character_delay: 10
+
+
+* scheduler
+
+Finally, a list of scheduler combinations is used to tie things together.  This
+is like a switchboard to connect jobs, runtimes and platforms.  As such, each
+entry is anonymous so it takes the form of a list of dictionaries.  The initial
+proposal is to have at least a job and runtime defined in each scheduler entry,
+but we might need to refine it with additional criteria.  The idea being that
+job, runtime and platform configurations should be self-contained and all the
+"wiring" between them is done in the scheduler.
+
+scheduler:
+  - job: kunit
+    runtime:
+      name: k8s-gke-eu-west4
+
+
+Best wishes,
+Guillaume
+
+[1] https://github.com/kernelci/kernelci-pipeline/blob/main/config/pipeline.yaml
