@@ -1,45 +1,27 @@
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC0F6FC7
-	for <kernelci@lists.linux.dev>; Wed, 26 Apr 2023 21:57:13 +0000 (UTC)
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-187df75c906so5662425fac.3
-        for <kernelci@lists.linux.dev>; Wed, 26 Apr 2023 14:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682546232; x=1685138232;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oD7/aZPWXMbOzrPn/edlHT09GwXmGROZVgC42Y9X8mY=;
-        b=s0j9q0vaVvkz/0qrS0+oL17U9BRIn04FmDMASAQKVBd8Cuk0XlrR73psEqHcGefCa3
-         W6oYF8wcncBthEzIFtYkyTi3Lhfmmbdl96TtZy2C4YMk6BeyqTRsDGdZ7ANdJVkgj/EN
-         i7iVJr6bqeVrxBUcNLJ4uOi7tyCc0EGfomWIGU4npdsRNIzKsAeIOR7rXRTEvXWDQgf+
-         nD9lNeT06ns0lrdg94QX+kln/PzxEkIdmg7zYpzjKUam+oC8giEoJLcAvuJk0+THBnDm
-         sWtzj+IGuCumsJ324sJ8uql2TlEglk8OGRr5v5V/WPfn/VYiQcVRyRHrJSZKrpPEAhGt
-         8VbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682546232; x=1685138232;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oD7/aZPWXMbOzrPn/edlHT09GwXmGROZVgC42Y9X8mY=;
-        b=gFcHhNGtfb+r5noXt7w+UX4+WYqtlzgeUQM0T747NUGvwuqg3WK2wX8IOGfQi1oRj7
-         mmO6E+bVWi9RejnfJUtLuo+mO7RmcJ8XopzHHS0lsewO8wWyTAUW3qFY4wqzRKlC450Q
-         WA+vw2/aKNwHAoYpnsccY2POT1zSX4fA74v7XFPUSIotFyGqU5XlylCMD7utzHdduNJj
-         oKVJfV4HhvGwuZPfuP/gI4a/U92gigwLCbdKfP4sTCwzrp8sCypHLGVdIdBGS7WTLno2
-         /84n5ZeZsRV+fq8x8/snqYr743WYWRJm21aXqxGUv/NeoghHyFtjAl1bKdqZt8nUuQw3
-         zEVg==
-X-Gm-Message-State: AAQBX9cvU80wOydEFypiGaDvm78n6whRAOWfij0Jk+1VP4K6zN1SU7xy
-	zsCQGvwCH8LJxbpAiInxt60=
-X-Google-Smtp-Source: AKy350bZ11ByC/hX6kRdVTlnJMIeceQfdVAd0fnSJRcFtP6pheTgpqHuHv0sGlvuppBjTlEUpRa4qg==
-X-Received: by 2002:a05:6871:72a:b0:18e:2e25:a68 with SMTP id f42-20020a056871072a00b0018e2e250a68mr11741443oap.15.1682546232383;
-        Wed, 26 Apr 2023 14:57:12 -0700 (PDT)
-Received: from ?IPV6:2600:1700:2442:6db0:d566:c174:e87d:7b51? ([2600:1700:2442:6db0:d566:c174:e87d:7b51])
-        by smtp.gmail.com with ESMTPSA id n3-20020a056870e40300b00172ac40356csm7028594oag.50.2023.04.26.14.57.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Apr 2023 14:57:11 -0700 (PDT)
-Message-ID: <bfb72bc1-747a-fbac-f253-b1c68a82536b@gmail.com>
-Date: Wed, 26 Apr 2023 16:57:10 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF12A45;
+	Tue,  2 May 2023 09:48:49 +0000 (UTC)
+Received: from [IPV6:2405:201:0:21ea:73f6:2283:f432:3936] (unknown [IPv6:2405:201:0:21ea:73f6:2283:f432:3936])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: shreeya)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 8C9AA66029AB;
+	Tue,  2 May 2023 10:48:44 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1683020927;
+	bh=BTDP5HQlkjzIWb3E0kJ/uZm+RAC0iF2hvRKA0Tg7Bn0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PWvIxPMjXhzU3qoNaB3i1oE/ZQ9YV4vibOjIaRY4pw/dcd3S1e3c2jvAf5J+6ZZiy
+	 zK5t2UyNs8SWVt07L3g6O1TO41J1HkI3g7cC/BHclvKCTmr+EJlDESje9Oyw4fniVz
+	 gUL9Tyy1pmehNS8gUjzagLwuieX66RRcGHAUy+pPsVZQMhQ6qZq9cDPNRyqryIeuNf
+	 F+qnJ2tM+NSVh/I7oOiQM3v1o9KtxYdgAKwsUHWh/k/SM457ZNAv9FXZ0vpW42v3wD
+	 M/u8BbZEPH+sQI450thEGix9czWItzeXo7AphxYUjTW1ASqzP5tV9Wri+qUz+L1Ml4
+	 NUi5mRhReHwbA==
+Message-ID: <1209349b-9634-c1ca-d2ee-182e8dec2de5@collabora.com>
+Date: Tue, 2 May 2023 15:18:41 +0530
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -47,324 +29,294 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [KTAP V2 PATCH] ktap_v2: add test metadata
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
+ compiler-specific macros
+To: Thorsten Leemhuis <regressions@leemhuis.info>,
+ Nick Desaulniers <ndesaulniers@google.com>
+Cc: Michal Marek <michal.lkml@markovi.net>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ clang-built-linux <llvm@lists.linux.dev>, Bill Wendling <morbo@google.com>,
+ Nathan Chancellor <nathan@kernel.org>, regressions@lists.linux.dev,
+ kernelci@lists.linux.dev,
+ "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+ Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+ ricardo.canuelo@collabora.com, denys.f@collabora.com
+References: <CAK7LNAT_cMLGLBz7ugaLpJD3QmZmY8FK56x9nihvWeYhJpi2ag@mail.gmail.com>
+ <20220919170828.3718437-1-ndesaulniers@google.com>
+ <597ef55f-e7c1-ab60-b4aa-0071ff4b5e0e@collabora.com>
+ <325ae81d-b3a5-71b3-39e9-96408968ab0b@leemhuis.info>
 Content-Language: en-US
-To: Rae Moar <rmoar@google.com>
-Cc: davidgow@google.com, skhan@linuxfoundation.org, keescook@chromium.org,
- Tim.Bird@sony.com, brendanhiggins@google.com, corbet@lwn.net,
- guillaume.tucker@collabora.com, dlatypov@google.com,
- kernelci@lists.linux.dev, kunit-dev@googlegroups.com,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20230420205734.1288498-1-rmoar@google.com>
- <ce5b723d-2395-8974-ba62-1ee519732218@gmail.com>
- <CA+GJov5nG3fXz9KX-DdkpJ2R98f1LD=rnURomzvUzHHsAODr8A@mail.gmail.com>
-From: Frank Rowand <frowand.list@gmail.com>
-In-Reply-To: <CA+GJov5nG3fXz9KX-DdkpJ2R98f1LD=rnURomzvUzHHsAODr8A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <325ae81d-b3a5-71b3-39e9-96408968ab0b@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 4/26/23 11:18, Rae Moar wrote:
-> On Tue, Apr 25, 2023 at 4:55 PM Frank Rowand <frowand.list@gmail.com> wrote:
+Hi Thorsten,
+
+On 28/04/23 13:11, Thorsten Leemhuis wrote:
+> Hi Shreeya!
+>
+> On 27.04.23 13:53, Shreeya Patel wrote:
+>> On 19/09/22 22:38, Nick Desaulniers wrote:
+>>> cc-ifversion is GCC specific. Replace it with compiler specific
+>>> variants. Update the users of cc-ifversion to use these new macros.
+>>>
+>>> Link: https://github.com/ClangBuiltLinux/linux/issues/350
+>>> Link:
+>>> https://lore.kernel.org/llvm/CAGG=3QWSAUakO42kubrCap8fp-gm1ERJJAYXTnP1iHk_wrH=BQ@mail.gmail.com/
+>>> Suggested-by: Bill Wendling <morbo@google.com>
+>>> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+>>> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+>> KernelCI found this patch causes a regression in the
+>> baseline.logintest on qemu_arm-virt-gicv3-uefi [1],
+>> see the bisection report for more details [2].
 >>
->> On 4/20/23 15:57, Rae Moar wrote:
->>> Add specification for declaring test metadata to the KTAP v2 spec.
->>>
->>> The purpose of test metadata is to allow for the declaration of essential
->>> testing information in KTAP output. This information includes test
->>> names, test configuration info, test attributes, and test files.
->>>
->>> There have been similar ideas around the idea of test metadata such as test
->>> prefixes and test name lines. However, I propose this specification as an
->>> overall fix for these issues.
+>> Let me know if you have any questions.
 >>
->> This seems like a cleaner approach.
->>
->>>
->>> These test metadata lines are a form of diagnostic lines with the
->>> format: "# <metadata_type>: <data>". As a type of diagnostic line, test
->>> metadata lines are compliant with KTAP v1, which will help to not
->>> interfere too much with current parsers.
->>>
->>> Specifically the "# Subtest:" line is derived from the TAP 14 spec:
->>> https://testanything.org/tap-version-14-specification.html.
->>>
->>> The proposed location for test metadata is in the test header, between the
->>> version line and the test plan line. Note including diagnostic lines in
->>> the test header is a depature from KTAP v1.
->>>
->>> This location provides two main benefits:
->>>
->>> First, metadata will be printed prior to when subtests are run. Then if a
->>> test fails, test metadata can help discern which test is causing the issue
->>> and potentially why.
->>>
->>> Second, this location ensures that the lines will not be accidentally
->>> parsed as a subtest's diagnostic lines because the lines are bordered by
->>> the version line and plan line.
->>
->> I like that.
->>
->>>
->>> Here is an example of test metadata:
->>>
->>>  KTAP version 2
->>>  # Config: CONFIG_TEST=y
->>>  1..1
->>>      KTAP version 2
->>>      # Subtest: test_suite
->>>      # File: /sys/kernel/...
->>>      # Attributes: slow
->>>      # Other: example_test
->>>      1..2
->>>      ok 1 test_1
->>>      ok 2 test_2
->>>  ok 1 test_suite
->>>
->>> Here is a link to a version of the KUnit parser that is able to parse test
->>> metadata lines for KTAP version 2. Note this includes test metadata
->>> lines for the main level of KTAP.
->>>
->>> Link: https://kunit-review.googlesource.com/c/linux/+/5809
->>>
->>> Signed-off-by: Rae Moar <rmoar@google.com>
+>> [1] https://linux.kernelci.org/test/case/id/644596a0beca2ead032e8669/
+>> [2] https://groups.io/g/kernelci-results/message/40804> [...]
+>> #regzbot introduced: 88b61e3bff93
+> How much of this text is auto generated? I ask for two reasons:
+
+None of this text is auto generated yet but we plan to do it soon once
+we think the format of the reporting email is good enough for people to 
+understand
+and look into it. Which is why your comments are really helpful here.
+
+
+>
+> * You made regzbot track this, which is great, but didn't specify a
+> title. That is fine in general, if the subject round about says what the
+> regression is about. But in this case it doesn't; hence it would be
+> great if you in the future could specify one through "#regzbot title:"
+> or adjust the mail's subject (I guess the former is what developers will
+> prefer).
+
+
+Noted. If I think the title is not very explanatory then I'll change it 
+to reflect the problem in future.
+
+
+> * I'm not a developer that has to look into bugs like this, but from my
+> experience I expect a lot more developers are likely willing to look
+> into reports like this if you specified what the actual problem is --
+> ideally with the relevant error messages.
+>
+> Side note: I for one still am unsure what this is actually about after
+> looking at the page you provided as [1] and clicking on a few links
+> there (which took me a few minutes, which I guess not everyone is
+> willing to invest). I noticed two kernel warning in the log (one from
+> "arch/arm/kernel/insn.c:48 __arm_gen_branch+0x88/0xa4", the other
+> "kernel/trace/ftrace.c:2176 ftrace_bug+0x340/0x3b4") and a complaint
+> UBSAN (btw: those newlines in the logs make things harder to read, at
+> least for me).
+
+For this particular regression, it is possible that the following kernel 
+warnings/errors could be the reason of failure.
+
+
+   572 20:30:46.811318  <3>[    0.417001][    T1] UBSAN: 
+array-index-out-of-bounds in ../arch/arm/mach-sunxi/mc_smp.c:811:29
+   574 20:30:46.812203  <3>[    0.417963][    T1] index 2 is out of 
+range for type 'sunxi_mc_smp_data [2]'
+
+
+and
+
+   426 20:30:44.726421  <4>[    0.000000][    T0] WARNING: CPU: 0 PID: 0 
+at kernel/trace/ftrace.c:2176 ftrace_bug+0x340/0x3b4
+   428 20:30:44.727284  <4>[    0.000000][    T0] Modules linked in:
+   430 20:30:44.728487  <4>[    0.000000][    T0] CPU: 0 PID: 0 Comm: 
+swapper Tainted: G        W          6.3.0 #1
+.........
+
+I understand that it might be more helpful to atleast put little more 
+information about what is causing the regression here.
+I'll provide some more details in future for it to be easy for 
+developers to look into it.
+
+> To check if those were old or new problems, I tired to go back in the
+> history and on page 9 found an entry for the last succeeding test. But
+> clicking on the logs got me a 404 :-/
+>
+> Then I looked at the logs on [1] again and in the html view "Boot
+> result: FAIL". Is that the actual problem?
+
+Unfortunately, we do have some broken links in the current KernelCI 
+dashboard but the KernelCI team
+is working on a new API and database interface which will fix these issues.
+It might not be worth to spend time to fix issues on the current 
+dashboard since the process for getting the archived
+logs is not very straightforward.
+
+What I can do from my side is to attach logs of the working kernel if I 
+can get them through LAVA.
+But one thing to note is that even LAVA stores limited logs and we won't 
+be able to provide them always like in this case
+since the regression has been happening from a long time.
+
+Thanks for your input though, we will work on it and get a better format 
+ready for reporting the regressions.
+
+
+Thanks,
+Shreeya Patel
+
+>
+> Ciao, Thorsten
+>
+> P.S.: let me update the regzbot title while at it:
+>
+> #regzbot title: kernelci: qemu_arm-virt-gicv3-uefi stopped booting
+>
 >>> ---
+>>> Changes v3 -> v4:
+>>> * Split into its own patch again from series, as per Masahiro.
+>>> * Rebase on top of b0839b281c427e844143dba3893e25c83cdd6c17 and update
+>>>     clang -Wformat logic in scripts/Makefile.extrawarn, as per Masahiro.
 >>>
->>> Hi everyone,
+>>>    Documentation/kbuild/makefiles.rst          | 29 ++++++++++++---------
+>>>    Makefile                                    |  6 ++---
+>>>    drivers/gpu/drm/amd/display/dc/dml/Makefile |  2 +-
+>>>    scripts/Makefile.compiler                   | 10 ++++---
+>>>    scripts/Makefile.extrawarn                  |  4 +--
+>>>    5 files changed, 29 insertions(+), 22 deletions(-)
 >>>
->>> I would like to use this proposal similar to an RFC to gather ideas on the
->>> topic of test metadata. Let me know what you think.
->>>
->>> I am also interested in brainstorming a list of recognized metadata types.
->>> Providing recognized metadata types would be helpful in parsing and
->>> displaying test metadata in a useful way.
->>>
->>> Current ideas:
->>> - "# Subtest: <test_name>" to indicate test name (name must match
->>>   corresponding result line)
->>
->> I would prefer "Test" to "Subtest" because the type should be allowed for the
->> top level test, as well as for subtest levels.
-> 
-> Hi Frank!
-> 
-> Yes, I can see the reasoning to switch to "Test". Although this is a
-> departure from current behavior, it would be clearer. I am happy to
-> make this change.
-> 
->>
->>> - "# Attributes: <attributes list>" to indicate test attributes (list
->>>   separated by commas)
-
-Should the spec say that <attributes list> is test specific (and defined by
-the test) and not defined in the ktap specification?
-
-I think there is a balance between under specifying and over specifying
-within the ktap specification.  But I think the specification should
-be clear about what definition is left open to the test implementations.
-
-My wishy washy thought for the general case is that the ktap specification
-should leave as much as choice as possible to the test implementers,
-but should provide as much detail as needed to provide general guidance
-to parser implementers.
-
->>> - "# File: <file_path>" to indicate file used in testing
-
-nit question: Should both relative paths and absolute paths be allowed
-for <file_path>?  I think both have value in different contexts.
-
->>>
->>> Any other ideas?
->>
->> (Already used in an example above...)
->>
->> - "# Config: <config_option list> to indicate kernel configuration options
->>   (list separated by commas)
->>
->>     config_option format:
->>       Option XXX is enabled: CONFIG_XXX=y
->>       Option XXX is not enabled: CONFIG_XXX=n
->>       Option XXX is text: CONFIG_XXX="a text string"
->>
-> 
-> I like this addition of the "Config" metadata. I also like all of
-> these format options, including the text string option. Although, I
-> would be interested in adding "Option XXX is loadable as a module:
-> CONFIG_XXX=m" to the format list.
-
-Yes, definitely.  I thought I was blanking on an additional form
-of a config option when I wrote that.
-
-> 
->> Linux .config format is "#CONFIG_XXX is not set",
->> but this would be harder to parse in a list.
->>
->> A text config option also complicates parsing of a list.  Maybe there
->> should not be a list, instead have a separate "# Config:" line for
->> each config option.
-> 
-> I'm not sure how to deal with multiple config options. I am split
-> between either using a list or multiple "Config" lines. I would be
-> happy with either approach. Maybe a list would be slightly better,
-> since it is slightly closer to the defined behavior for the attributes
-> metadata line.
-
-I slightly prefer the single option per line. :-)
-
-> 
->>
->> I would like to bifurcate the name space of metadata types, to names
->> specified in the standard vs names not in the standard that can be
->> used on an experimental or for future use in existing tests.
->>
->> I can think of at least two ways to implement this:
->>
->> (1) types that are in the specification all begin with a specific prefix,
->> such as "ktap_" (bike shedding on naming welcomed), so the examples woudld be
->>
->>   # ktap_test:
->>   # ktap_attributes:
->>   # ktap_file:
->>   # ktap_config:
->>
->> (2) types that are _not_ in the specification all begin with a specific prefix,
->> such as "custom_" (bike shedding on naming welcomed).
->>
-> 
-> This is an interesting proposal. I like this idea of using a prefix. I
-> would be happy to add this. I like "ktap_" and "custom_".
-
-Those prefixes look good to me.
-
--Frank
-
-> 
-> Thanks!
-> -Rae
-> 
->>>
->>> Note this proposal replaces two of my previous proposals: "ktap_v2: add
->>> recognized test name line" and "ktap_v2: allow prefix to KTAP lines."
->>>
->>> Thanks!
->>> -Rae
->>>
->>> Note: this patch is based on Frank's ktap_spec_version_2 branch.
->>>
->>>  Documentation/dev-tools/ktap.rst | 51 ++++++++++++++++++++++++++++++--
->>>  1 file changed, 48 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
->>> index ff77f4aaa6ef..a2d0a196c115 100644
->>> --- a/Documentation/dev-tools/ktap.rst
->>> +++ b/Documentation/dev-tools/ktap.rst
->>> @@ -17,7 +17,9 @@ KTAP test results describe a series of tests (which may be nested: i.e., test
->>>  can have subtests), each of which can contain both diagnostic data -- e.g., log
->>>  lines -- and a final result. The test structure and results are
->>>  machine-readable, whereas the diagnostic data is unstructured and is there to
->>> -aid human debugging.
->>> +aid human debugging. One exception to this is test metadata lines - a type
->>> +of diagnostic lines. Test metadata is located between the version line and
->>> +plan line of a test and can be machine-readable.
->>>
->>>  KTAP output is built from four different types of lines:
->>>  - Version lines
->>> @@ -28,8 +30,7 @@ KTAP output is built from four different types of lines:
->>>  In general, valid KTAP output should also form valid TAP output, but some
->>>  information, in particular nested test results, may be lost. Also note that
->>>  there is a stagnant draft specification for TAP14, KTAP diverges from this in
->>> -a couple of places (notably the "Subtest" header), which are described where
->>> -relevant later in this document.
->>> +a couple of places, which are described where relevant later in this document.
->>>
->>>  Version lines
->>>  -------------
->>> @@ -166,6 +167,45 @@ even if they do not start with a "#": this is to capture any other useful
->>>  kernel output which may help debug the test. It is nevertheless recommended
->>>  that tests always prefix any diagnostic output they have with a "#" character.
->>>
->>> +Test metadata lines
->>> +-------------------
+>>> diff --git a/Documentation/kbuild/makefiles.rst
+>>> b/Documentation/kbuild/makefiles.rst
+>>> index 11a296e52d68..ee7e3ea1fbe1 100644
+>>> --- a/Documentation/kbuild/makefiles.rst
+>>> +++ b/Documentation/kbuild/makefiles.rst
+>>> @@ -682,22 +682,27 @@ more details, with real examples.
+>>>        In the above example, -Wno-unused-but-set-variable will be added to
+>>>        KBUILD_CFLAGS only if gcc really accepts it.
+>>>    -    cc-ifversion
+>>> -    cc-ifversion tests the version of $(CC) and equals the fourth
+>>> parameter
+>>> -    if version expression is true, or the fifth (if given) if the
+>>> version
+>>> -    expression is false.
+>>> +    gcc-min-version
+>>> +    gcc-min-version tests if the value of $(CONFIG_GCC_VERSION) is
+>>> greater than
+>>> +    or equal to the provided value and evaluates to y if so.
+>>>          Example::
+>>>    -        #fs/reiserfs/Makefile
+>>> -        ccflags-y := $(call cc-ifversion, -lt, 0402, -O1)
+>>> +        cflags-$(call gcc-min-version, 70100) := -foo
+>>>    -    In this example, ccflags-y will be assigned the value -O1 if the
+>>> -    $(CC) version is less than 4.2.
+>>> -    cc-ifversion takes all the shell operators:
+>>> -    -eq, -ne, -lt, -le, -gt, and -ge
+>>> -    The third parameter may be a text as in this example, but it may
+>>> also
+>>> -    be an expanded variable or a macro.
+>>> +    In this example, cflags-y will be assigned the value -foo if
+>>> $(CC) is gcc and
+>>> +    $(CONFIG_GCC_VERSION) is >= 7.1.
 >>> +
->>> +Test metadata lines are a type of diagnostic lines used to the declare the
->>> +name of a test and other helpful testing information in the test header.
->>> +These lines are often helpful for parsing and for providing context during
->>> +crashes.
+>>> +    clang-min-version
+>>> +    clang-min-version tests if the value of $(CONFIG_CLANG_VERSION)
+>>> is greater
+>>> +    than or equal to the provided value and evaluates to y if so.
 >>> +
->>> +Test metadata lines must follow the format: "# <metadata_type>: <data>".
->>> +These lines must be located between the version line and the plan line
->>> +within a test header.
+>>> +    Example::
 >>> +
->>> +There are a few currently recognized metadata types:
->>> +- "# Subtest: <test_name>" to indicate test name (name must match
->>> +  corresponding result line)
->>> +- "# Attributes: <attributes list>" to indicate test attributes (list
->>> +  separated by commas)
->>> +- "# File: <file_path>" to indicate file used in testing
+>>> +        cflags-$(call clang-min-version, 110000) := -foo
 >>> +
->>> +As a rule, the "# Subtest:" line is generally first to declare the test
->>> +name. Note that metadata lines do not necessarily need to use a
->>> +recognized metadata type.
+>>> +    In this example, cflags-y will be assigned the value -foo if
+>>> $(CC) is clang
+>>> +    and $(CONFIG_CLANG_VERSION) is >= 11.0.0.
+>>>          cc-cross-prefix
+>>>        cc-cross-prefix is used to check if there exists a $(CC) in path
+>>> with
+>>> diff --git a/Makefile b/Makefile
+>>> index 298f69060f10..411c8480b37e 100644
+>>> --- a/Makefile
+>>> +++ b/Makefile
+>>> @@ -790,7 +790,6 @@ KBUILD_CFLAGS += $(stackp-flags-y)
+>>>      KBUILD_CFLAGS-$(CONFIG_WERROR) += -Werror
+>>>    KBUILD_CFLAGS-$(CONFIG_CC_NO_ARRAY_BOUNDS) += -Wno-array-bounds
+>>> -KBUILD_CFLAGS += $(KBUILD_CFLAGS-y) $(CONFIG_CC_IMPLICIT_FALLTHROUGH)
+>>>      ifdef CONFIG_CC_IS_CLANG
+>>>    KBUILD_CPPFLAGS += -Qunused-arguments
+>>> @@ -972,7 +971,6 @@ ifdef CONFIG_CC_IS_GCC
+>>>    KBUILD_CFLAGS += -Wno-maybe-uninitialized
+>>>    endif
+>>>    -ifdef CONFIG_CC_IS_GCC
+>>>    # The allocators already balk at large sizes, so silence the compiler
+>>>    # warnings for bounds checks involving those possible values. While
+>>>    # -Wno-alloc-size-larger-than would normally be used here, earlier
+>>> versions
+>>> @@ -984,8 +982,8 @@ ifdef CONFIG_CC_IS_GCC
+>>>    # ignored, continuing to default to PTRDIFF_MAX. So, left with no other
+>>>    # choice, we must perform a versioned check to disable this warning.
+>>>    # https://lore.kernel.org/lkml/20210824115859.187f272f@canb.auug.org.au
+>>> -KBUILD_CFLAGS += $(call cc-ifversion, -ge, 0901,
+>>> -Wno-alloc-size-larger-than)
+>>> -endif
+>>> +KBUILD_CFLAGS-$(call gcc-min-version, 90100) +=
+>>> -Wno-alloc-size-larger-than
+>>> +KBUILD_CFLAGS += $(KBUILD_CFLAGS-y) $(CONFIG_CC_IMPLICIT_FALLTHROUGH)
+>>>      # disable invalid "can't wrap" optimizations for signed / pointers
+>>>    KBUILD_CFLAGS    += -fno-strict-overflow
+>>> diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile
+>>> b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+>>> index cb81ed2fbd53..d70838edba80 100644
+>>> --- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
+>>> +++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+>>> @@ -34,7 +34,7 @@ dml_ccflags := -mhard-float -maltivec
+>>>    endif
+>>>      ifdef CONFIG_CC_IS_GCC
+>>> -ifeq ($(call cc-ifversion, -lt, 0701, y), y)
+>>> +ifneq ($(call gcc-min-version, 70100),y)
+>>>    IS_OLD_GCC = 1
+>>>    endif
+>>>    endif
+>>> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+>>> index 94d0d40cddb3..9d18fb91890e 100644
+>>> --- a/scripts/Makefile.compiler
+>>> +++ b/scripts/Makefile.compiler
+>>> @@ -61,9 +61,13 @@ cc-option-yn = $(call try-run,\
+>>>    cc-disable-warning = $(call try-run,\
+>>>        $(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip
+>>> $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+>>>    -# cc-ifversion
+>>> -# Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
+>>> -cc-ifversion = $(shell [ $(CONFIG_GCC_VERSION)0 $(1) $(2)000 ] &&
+>>> echo $(3) || echo $(4))
+>>> +# gcc-min-version
+>>> +# Usage: cflags-$(call gcc-min-version, 70100) += -foo
+>>> +gcc-min-version = $(shell [ $(CONFIG_GCC_VERSION) -ge $(1) ] && echo y)
 >>> +
->>> +An example of using metadata lines:
->>> +
->>> +::
->>> +
->>> +        KTAP version 2
->>> +        1..1
->>> +        # File: /sys/kernel/...
->>> +          KTAP version 2
->>> +          # Subtest: example
->>> +          # Attributes: slow, example_test
->>> +          1..1
->>> +          ok 1 test_1
->>> +        # example passed
->>> +        ok 1 example
->>> +
->>> +
->>>  Unknown lines
->>>  -------------
->>>
->>> @@ -206,6 +246,7 @@ An example of a test with two nested subtests:
->>>       KTAP version 2
->>>       1..1
->>>         KTAP version 2
->>> +       # Subtest: example
->>>         1..2
->>>         ok 1 test_1
->>>         not ok 2 test_2
->>> @@ -219,6 +260,7 @@ An example format with multiple levels of nested testing:
->>>       KTAP version 2
->>>       1..2
->>>         KTAP version 2
->>> +       # Subtest: example_test_1
->>>         1..2
->>>           KTAP version 2
->>>           1..2
->>> @@ -254,6 +296,7 @@ Example KTAP output
->>>       KTAP version 2
->>>       1..1
->>>         KTAP version 2
->>> +       # Subtest: main_test
->>>         1..3
->>>           KTAP version 2
->>>           1..1
->>> @@ -261,11 +304,13 @@ Example KTAP output
->>>           ok 1 test_1
->>>         ok 1 example_test_1
->>>           KTAP version 2
->>> +            # Attributes: slow
->>>           1..2
->>>           ok 1 test_1 # SKIP test_1 skipped
->>>           ok 2 test_2
->>>         ok 2 example_test_2
->>>           KTAP version 2
->>> +         # Subtest: example_test_3
->>>           1..3
->>>           ok 1 test_1
->>>           # test_2: FAIL
->>>
->>> base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
+>>> +# clang-min-version
+>>> +# Usage: cflags-$(call clang-min-version, 110000) += -foo
+>>> +clang-min-version = $(shell [ $(CONFIG_CLANG_VERSION) -ge $(1) ] &&
+>>> echo y)
+>>>      # ld-option
+>>>    # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
+>>> diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+>>> index 6ae482158bc4..5769c1939d40 100644
+>>> --- a/scripts/Makefile.extrawarn
+>>> +++ b/scripts/Makefile.extrawarn
+>>> @@ -48,7 +48,7 @@ else
+>>>    ifdef CONFIG_CC_IS_CLANG
+>>>    KBUILD_CFLAGS += -Wno-initializer-overrides
+>>>    # Clang before clang-16 would warn on default argument promotions.
+>>> -ifeq ($(shell [ $(CONFIG_CLANG_VERSION) -lt 160000 ] && echo y),y)
+>>> +ifneq ($(call clang-min-version, 160000),y)
+>>>    # Disable -Wformat
+>>>    KBUILD_CFLAGS += -Wno-format
+>>>    # Then re-enable flags that were part of the -Wformat group that aren't
+>>> @@ -56,7 +56,7 @@ KBUILD_CFLAGS += -Wno-format
+>>>    KBUILD_CFLAGS += -Wformat-extra-args -Wformat-invalid-specifier
+>>>    KBUILD_CFLAGS += -Wformat-zero-length -Wnonnull
+>>>    # Requires clang-12+.
+>>> -ifeq ($(shell [ $(CONFIG_CLANG_VERSION) -ge 120000 ] && echo y),y)
+>>> +ifeq ($(call clang-min-version, 120000),y)
+>>>    KBUILD_CFLAGS += -Wformat-insufficient-args
+>>>    endif
+>>>    endif
 >>
-
