@@ -1,13 +1,27 @@
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4204510E4;
-	Tue,  2 May 2023 11:58:11 +0000 (UTC)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1ptodz-00072b-Gd; Tue, 02 May 2023 13:58:07 +0200
-Message-ID: <b61b60cb-0e8e-0a27-5f7b-71e7639e02f6@leemhuis.info>
-Date: Tue, 2 May 2023 13:58:06 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48C07E;
+	Tue,  2 May 2023 14:02:36 +0000 (UTC)
+Received: from [IPV6:2405:201:0:21ea:73f6:2283:f432:3936] (unknown [IPv6:2405:201:0:21ea:73f6:2283:f432:3936])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: shreeya)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 8A12B6603232;
+	Tue,  2 May 2023 15:02:29 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1683036153;
+	bh=xq+GCvhWDrpI4kqWLTSjKMKXim4TcqGGOuePu/Nq+us=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Mt6IWboNQ0mOLVpDukyzH4UNRI1F1ButfAO3t2pVQpqK0dNm87o1QXydpVJNNwMV2
+	 CsgV8zzxN4MY6W+oLs1rqQztOBNk1tHs3vCCivnS1ri9bLC9l+gtKvrbn5ABYJdKZH
+	 8uYRrlf21McuoEpn3kX0JQ22547y+gQnV5wKwTsPDHQr4wSrJMEuWpyOBhdX806MkE
+	 aFcJiv6RMR9+ouhCse0WR/3uP6ZGOBmzihGpsoDEXQKcQcHHXgcWPD9bhukmCwex94
+	 YZzPDFjUZ10zcZXXP8STALbsRodu7kd99cwh4qIw49SIgCZM0nbSMTX+RNf9t70Vje
+	 Oe07oyFxXDyqg==
+Message-ID: <5cfdd715-a59a-3bb2-1bec-1cc59e9b05c4@collabora.com>
+Date: Tue, 2 May 2023 19:32:25 +0530
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -15,117 +29,90 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
- compiler-specific macros
-Content-Language: en-US, de-DE
-To: Shreeya Patel <shreeya.patel@collabora.com>,
- Nick Desaulniers <ndesaulniers@google.com>
-Cc: Michal Marek <michal.lkml@markovi.net>,
- Masahiro Yamada <masahiroy@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- clang-built-linux <llvm@lists.linux.dev>, Bill Wendling <morbo@google.com>,
- Nathan Chancellor <nathan@kernel.org>, regressions@lists.linux.dev,
- kernelci@lists.linux.dev,
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v9 1/6] media: verisilicon: Do not set context src/dst
+ formats in reset functions
+To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kernel@collabora.com, robert.mader@collabora.com,
+ nicolas.dufresne@collabora.co.uk, ezequiel@vanguardiasur.com.ar,
+ festevam@gmail.com, p.zabel@pengutronix.de, mchehab@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ hverkuil-cisco@xs4all.nl, linux-imx@nxp.com, kernelci@lists.linux.dev,
  "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+ ricardo.canuelo@collabora.com,
  Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
- ricardo.canuelo@collabora.com, denys.f@collabora.com
-References: <CAK7LNAT_cMLGLBz7ugaLpJD3QmZmY8FK56x9nihvWeYhJpi2ag@mail.gmail.com>
- <20220919170828.3718437-1-ndesaulniers@google.com>
- <597ef55f-e7c1-ab60-b4aa-0071ff4b5e0e@collabora.com>
- <325ae81d-b3a5-71b3-39e9-96408968ab0b@leemhuis.info>
- <1209349b-9634-c1ca-d2ee-182e8dec2de5@collabora.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <1209349b-9634-c1ca-d2ee-182e8dec2de5@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1683028691;b202daa3;
-X-HE-SMSGID: 1ptodz-00072b-Gd
+ denys.f@collabora.com
+References: <20230220104849.398203-1-benjamin.gaignard@collabora.com>
+ <20230220104849.398203-2-benjamin.gaignard@collabora.com>
+ <26addb7d-bb9d-34e8-d4fe-e323ff488101@collabora.com>
+ <dcd317db-3c24-895d-572b-1b139c370ff7@leemhuis.info>
+ <05da00c0-2180-62ee-6276-8553ad9341c4@collabora.com>
+ <5a070053-2151-56d7-26a2-03871e1e4e8e@leemhuis.info>
+Content-Language: en-US
+From: Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <5a070053-2151-56d7-26a2-03871e1e4e8e@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 02.05.23 11:48, Shreeya Patel wrote:
-> On 28/04/23 13:11, Thorsten Leemhuis wrote:
->> On 27.04.23 13:53, Shreeya Patel wrote:
->>> On 19/09/22 22:38, Nick Desaulniers wrote:
->>>> cc-ifversion is GCC specific. Replace it with compiler specific
->>>> variants. Update the users of cc-ifversion to use these new macros.
+Hi Thorsten,
+
+On 02/05/23 16:42, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 02.05.23 08:56, Benjamin Gaignard wrote:
+>> Le 01/05/2023 à 09:21, Thorsten Leemhuis a écrit :
+>>> On 27.04.23 00:19, Shreeya Patel wrote:
+>>>> On 20/02/23 16:18, Benjamin Gaignard wrote:
+>>>>> Setting context source and destination formats should only be done
+>>>>> in hantro_set_fmt_out() and hantro_set_fmt_cap() after check that
+>>>>> the targeted queue is not busy.
+>>>>> Remove these calls from hantro_reset_encoded_fmt() and
+>>>>> hantro_reset_raw_fmt() to clean the driver.
+>>>>>
+>>>>> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+>>>> KernelCI found this patch causes a regression in the
+>>>> baseline.dmesg.alert test [1] on rk3399-rock-pi-4b [2],
+>>>> see the bisection report for more details [3].
 >>>>
->>>> Link: https://github.com/ClangBuiltLinux/linux/issues/350
->>>> Link:
->>>> https://lore.kernel.org/llvm/CAGG=3QWSAUakO42kubrCap8fp-gm1ERJJAYXTnP1iHk_wrH=BQ@mail.gmail.com/
->>>> Suggested-by: Bill Wendling <morbo@google.com>
->>>> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
->>>> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
->>> KernelCI found this patch causes a regression in the
->>> baseline.logintest on qemu_arm-virt-gicv3-uefi [1],
->>> see the bisection report for more details [2].
->>>
->>> Let me know if you have any questions.
->>>
->>> [1] https://linux.kernelci.org/test/case/id/644596a0beca2ead032e8669/
->>> [2] https://groups.io/g/kernelci-results/message/40804> [...]
->>> #regzbot introduced: 88b61e3bff93
->> How much of this text is auto generated? I ask for two reasons:
-> 
-> None of this text is auto generated yet but we plan to do it soon once
-> we think the format of the reporting email is good enough for people to
-> understand
-> and look into it. Which is why your comments are really helpful here.
+>>>> Let us know if you have any questions.
+>>>>
+>>>> [1]
+>>>> https://github.com/kernelci/kernelci-core/blob/main/config/rootfs/debos/overlays/baseline/opt/kernelci/dmesg.sh
+>>>> [2] https://linux.kernelci.org/test/case/id/6442e825f19134d74c2e865d/
+>>>> [3] https://groups.io/g/kernelci-results/message/40740
+>>> Thx for the report. FWIW, regzbot noticed there is a patch that refers
+>>> to the culprit that might have been landed in next after your test ran
+>>> for the last time (and meanwhile it was mainlined): f100ce3bbd6 ("media:
+>>> verisilicon: Fix crash when probing encoder")
+>> Yes that patch should fix the probing issue.
+>> Marek is working on an additional one to fix pixel format negotiation
+>> but that doesn't impact the boot.
+> Great, thx for the reply.
+>
+> Shreeya, normally I believe developers in cases like this and would have
+> included
+>
+>   #regzbot fix: f100ce3bbd6
+>
+> in this mail (without the space in front of the #) to mark the
+> regression as resolved. Would that be okay for you and other kernel.ci
+> people? Or do you want to confirm this first?
 
-Thx, glad to hear that. FWIW and YMMV, but I'm not sure if fully
-automating things is a good idea, as a bad report or two might be enough
-to make some developers start ignoring kernelci reports; a quick human
-review with small adjustments might help prevent that, as it's hard to
-get that ship turned around later (that's why regzbot up to this day
-doesn't send any mails automatically).
+I checked the commit pointed out and also double checked with Benjamin 
+internally so
+we are good to mark this as fixed.
 
->> * You made regzbot track this, which is great, but didn't specify a
->> title. That is fine in general, if the subject round about says what the
->> regression is about. But in this case it doesn't; hence it would be
->> great if you in the future could specify one through "#regzbot title:"
->> or adjust the mail's subject (I guess the former is what developers will
->> prefer).
-> 
-> Noted. If I think the title is not very explanatory then I'll change it
-> to reflect the problem in future.
 
-Many thx!
+#regzbot fix: f100ce3bbd6a
 
-> [...]
-> 
-> I understand that it might be more helpful to atleast put little more
-> information about what is causing the regression here.
-> I'll provide some more details in future for it to be easy for
-> developers to look into it.
 
-Yeah, especially a obvious "what's the actual problem (in 10 words or
-less)" afaics would have been really good here.
+Thanks,
+Shreeya Patel
 
->> To check if those were old or new problems, I tired to go back in the
->> history and on page 9 found an entry for the last succeeding test. But
->> clicking on the logs got me a 404 :-/
->>
->> Then I looked at the logs on [1] again and in the html view "Boot
->> result: FAIL". Is that the actual problem?
-> 
-> Unfortunately, we do have some broken links in the current KernelCI
-> dashboard [...]
-
-Happens :-D
-
-> What I can do from my side is to attach logs of the working kernel if I
-> can get them through LAVA.
-> But one thing to note is that even LAVA stores limited logs and we won't
-> be able to provide them always like in this case
-> since the regression has been happening from a long time.
-
-Before going down that route I'd work out with Nick why things work for
-him, maybe all that isn't needed.
-
-> Thanks for your input though, we will work on it and get a better format
-> ready for reporting the regressions.
-
-Thx for your work!
-
-Ciao, Thorsten
+>
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
