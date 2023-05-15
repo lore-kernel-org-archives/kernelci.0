@@ -1,160 +1,420 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93F6168AD
-	for <kernelci@lists.linux.dev>; Mon,  8 May 2023 10:16:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1683541014;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fmvnlmJGXlxlSG9ykEGsed6HchVBGeu9FKU7kpKy4jI=;
-	b=MrSFIdTe3RWckC7RqUHh4bAU2GdRHuP0zRLc1QGMUsdChBKg8xh0r3LqdzgOLPJ0QW9W9W
-	GVhEb3UtY9VVQFCuQwnickvSshJS8t6KO2Fcy6IB5yt9LpAhRGW9E+OV9L743EUssbUvgL
-	3GUkudq3sKyxE/B4KHfEoj5GOVt+IV8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-3EEpr149P2mO2qA06wkIlA-1; Mon, 08 May 2023 06:16:53 -0400
-X-MC-Unique: 3EEpr149P2mO2qA06wkIlA-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3f16f50aeb5so15989395e9.3
-        for <kernelci@lists.linux.dev>; Mon, 08 May 2023 03:16:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C98F2FB2
+	for <kernelci@lists.linux.dev>; Mon, 15 May 2023 23:01:49 +0000 (UTC)
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-757720be6abso544900485a.2
+        for <kernelci@lists.linux.dev>; Mon, 15 May 2023 16:01:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684191708; x=1686783708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ADMOqC+olNS9cVRNR1/+kvFh07BZA4lr1jflui+BU4A=;
+        b=ZYuyo4YGm8K7rjEdnGDR8VgMup24KVfV9lJdxzOag5LMJKPqMFA3F6wvMcv2UEVKb2
+         S1qCIi1+6CUDb3TbJNaZ20dCsKUFJXbeFwLhx5CMBtNxu3XYQC2+HzWrIQ8oAvFy2T20
+         /oYZU2sJXmybVj0tXmHRkyIC3L6W42Ljs+tEjumFAnaBrZ9x20y6kCb4iDkivGKKkNFS
+         jMLrK2LqKUJPoBDiY8Z0VVTfyWUG6vf3NWwOAVK59hiWavXJcgUznjDBIjEBdyEGFmJZ
+         WETwYDcVOL3ttcBOiBX/BbaN67bGOqGpKZSVI4ML8CIR41fdsrwL5Op/ZyLRXewEQYnf
+         DMvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683541012; x=1686133012;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fmvnlmJGXlxlSG9ykEGsed6HchVBGeu9FKU7kpKy4jI=;
-        b=Hh2pWfJp5ToJlEyxlL8K401mvVByGbjbmtzXCjaJpp5ivPRSknWzyt2jSdKRSyFV2U
-         k/3JSxXh0ZgToSZHOCSSyCQAHv8umzyoC+KS7l6HZl02ou0gtsq1Zm9nnyfji7JkuHIt
-         suBG7xfdxrKx63XjOXay+UPleyFfxBvlX03Zmz5Cu6RapT4kkyxmfb+iBT7kuStgNcwj
-         cvgkzUXKwHloZqnILnvfY/+WZpcUc88K/1b08HesFBfb87N8gQ4al3MRCNFOTUeTzADV
-         ICY/9hVE5KVYPTsM9kKLiXjJDrUUGN6AcXaE87Vdib6uUT/n/bho9jaXoy+8KpDrhvyG
-         cpyg==
-X-Gm-Message-State: AC+VfDyTcdjITKWEzSt5XZRIvzW3NS9Xu9+9/Htngz7Ap6GELt6ZkNuJ
-	nxQPlGkrXJumW0naLmI1a6N5prjErqlb1ecDt6FPVvGdosYHATzEdp4+NgSpfh/LDjkcDDkLHsW
-	SXvFxdp75bQRGmtEySJc=
-X-Received: by 2002:a05:600c:ad8:b0:3f2:54ae:6921 with SMTP id c24-20020a05600c0ad800b003f254ae6921mr6531104wmr.2.1683541012489;
-        Mon, 08 May 2023 03:16:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4+tHWjz/ZJurBNSgggdxkLutN1+RfZqkeby+lON4q3zYdlkdVY5ANc7ImPpw5KpNTjI8XXaQ==
-X-Received: by 2002:a05:600c:ad8:b0:3f2:54ae:6921 with SMTP id c24-20020a05600c0ad800b003f254ae6921mr6531084wmr.2.1683541012160;
-        Mon, 08 May 2023 03:16:52 -0700 (PDT)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id z17-20020a1c4c11000000b003ee20b4b2dasm16221212wmf.46.2023.05.08.03.16.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 May 2023 03:16:51 -0700 (PDT)
-Message-ID: <802d64a7-6caa-9ec8-3c02-f5be808f3e91@redhat.com>
-Date: Mon, 8 May 2023 13:16:49 +0300
+        d=1e100.net; s=20221208; t=1684191708; x=1686783708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ADMOqC+olNS9cVRNR1/+kvFh07BZA4lr1jflui+BU4A=;
+        b=XwFaDSDEdsdrq8b6c81kuXr2JkGmLBsM+qgs9ISuFQLO78E3qmkR4nhZDzkjpb1XzG
+         tIcgREH+fvsVEfb8Sph1OL9Tx8jV19TmJ5zkjPGKctoRwAUWdxDssHsWltqlyFp110cP
+         1TB6/arzI12N1SqRzlCOkbix5kGquvT36vN8jNRWf7zsLY0mzOxncaR3OtTcxclJgjOj
+         SaEyTkZsO6w+BtPVogktbYYdb+ElU7g9JwrwkD7eBACaK5DIjMwk99sa39MKVT30lZQc
+         s85Z9SAauZ0Q10saCoPKlT1N1AKHZtWDx//MTRx8gCKvx5sB87tGTeexd9zfLyB9jGwE
+         rqRQ==
+X-Gm-Message-State: AC+VfDwIy9QOEwy5Yw8PEHjvxvCby47IGMPmivkgcUDA63gOj8btLNcL
+	dhWcpccOsit5zr/41T2rP+UEhuN3qpplWSCgWiHQJg==
+X-Google-Smtp-Source: ACHHUZ7e86P0WxIWxK/ijSFkd/kdvcSidEXEcqIH7gc5VGUZ+Buib8DoKO+Ue0QfMdk9ThzM3sWrreF/RxqLt5k0Oj0=
+X-Received: by 2002:ad4:5aea:0:b0:61b:6872:146a with SMTP id
+ c10-20020ad45aea000000b0061b6872146amr56503672qvh.49.1684191707949; Mon, 15
+ May 2023 16:01:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [Automated-testing] KCIDB: Support one more test status
-To: Guillaume Tucker <guillaume.tucker@collabora.com>,
- "Bird, Tim" <Tim.Bird@sony.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- Dmitry Vyukov <dvyukov@google.com>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Alice Ferrazzi <alicef@gentoo.org>, Philip Li <philip.li@intel.com>,
- Vishal Bhoj <vishal.bhoj@linaro.org>,
- "automated-testing@lists.yoctoproject.org"
- <automated-testing@lists.yoctoproject.org>, CKI <cki-project@redhat.com>,
- Mark Brown <broonie@kernel.org>,
- Johnson George <Johnson.George@microsoft.com>,
- Sachin Sant <sachinp@linux.ibm.com>
-References: <45be6714-b818-0be7-3e95-9f69af65096c@redhat.com>
- <BYAPR13MB2503FE8D3D92A95B8B331B8DFD629@BYAPR13MB2503.namprd13.prod.outlook.com>
- <76255cf0-170b-a091-e7b7-544ce3d3af50@collabora.com>
- <30ee8d77-3122-75d1-4a5e-c9f4a2d53b7f@redhat.com>
- <2a3a2210-281f-a8b9-5b58-46e6f3d5cf5a@collabora.com>
-From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <2a3a2210-281f-a8b9-5b58-46e6f3d5cf5a@collabora.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CAK7LNAT_cMLGLBz7ugaLpJD3QmZmY8FK56x9nihvWeYhJpi2ag@mail.gmail.com>
+ <20220919170828.3718437-1-ndesaulniers@google.com> <597ef55f-e7c1-ab60-b4aa-0071ff4b5e0e@collabora.com>
+ <CAKwvOdmSrAxx-YY1Na3BSdYuxXCPKK+F0K5V6i+adTn_bVJEsw@mail.gmail.com>
+ <89961dfc-d40f-78e4-5d34-b86b7d152182@collabora.com> <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com>
+ <17c91d37-7d9c-0df4-2438-2b30ca0b5777@collabora.com>
+In-Reply-To: <17c91d37-7d9c-0df4-2438-2b30ca0b5777@collabora.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Mon, 15 May 2023 16:01:36 -0700
+Message-ID: <CAKwvOdk4QO8x_bs64fFRCsMu__AjhXd4Ew2KfgzQOb9Q3FMqSA@mail.gmail.com>
+Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
+ compiler-specific macros
+To: Shreeya Patel <shreeya.patel@collabora.com>
+Cc: Michal Marek <michal.lkml@markovi.net>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, clang-built-linux <llvm@lists.linux.dev>, 
+	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, regressions@lists.linux.dev, 
+	"gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>, 
+	Guillaume Charles Tucker <guillaume.tucker@collabora.com>, denys.f@collabora.com, 
+	ricardo.canuelo@collabora.com, kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Guillaume,
+On Wed, May 3, 2023 at 3:33=E2=80=AFPM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
+>
+>
+> On 04/05/23 02:45, Nick Desaulniers wrote:
+> > On Wed, May 3, 2023 at 2:02=E2=80=AFPM Shreeya Patel
+> > <shreeya.patel@collabora.com> wrote:
+> >> Hi Nick,
+> >>
+> >> On 28/04/23 22:57, Nick Desaulniers wrote:
+> >>> On Thu, Apr 27, 2023 at 4:54=E2=80=AFAM Shreeya Patel
+> >>> <shreeya.patel@collabora.com> wrote:
+> >>>> Hi Nick,
+> >>>>
+> >>>> On 19/09/22 22:38, Nick Desaulniers wrote:
+> >>>>> cc-ifversion is GCC specific. Replace it with compiler specific
+> >>>>> variants. Update the users of cc-ifversion to use these new macros.
+> >>>>>
+> >>>>> Link: https://github.com/ClangBuiltLinux/linux/issues/350
+> >>>>> Link: https://lore.kernel.org/llvm/CAGG=3D3QWSAUakO42kubrCap8fp-gm1=
+ERJJAYXTnP1iHk_wrH=3DBQ@mail.gmail.com/
+> >>>>> Suggested-by: Bill Wendling <morbo@google.com>
+> >>>>> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> >>>>> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> >>>> KernelCI found this patch causes a regression in the
+> >>>> baseline.logintest on qemu_arm-virt-gicv3-uefi [1],
+> >>>> see the bisection report for more details [2].
+> >>>>
+> >>>> Let me know if you have any questions.
+> >>>>
+> >>>>
+> >>>> [1] https://linux.kernelci.org/test/case/id/644596a0beca2ead032e8669=
+/
+> >>> Hi Shreeya,
+> >>> Thanks for the report.
+> >>>
+> >>> When I click the above link, then click `multi_v7_defconfig+debug` to
+> >>> get the config necessary to reproduce, I get an HTTP 404.
+> >>> https://storage.kernelci.org/mainline/master/v6.3/arm/multi_v7_defcon=
+fig+debug/gcc-10/kernel.config
+> >>>
+> >>> Same for zImage
+> >>> https://storage.kernelci.org/mainline/master/v6.3/arm/multi_v7_defcon=
+fig+debug/gcc-10/zImage
+> >> Apologies for the broken links. We will try to fix the important ones =
+if
+> >> we can but in the meantime,
+> >> following is the correct link that you can refer.
+> >>
+> >> config :-
+> >> https://storage.kernelci.org/mainline/master/v6.3/arm/multi_v7_defconf=
+ig+debug/gcc-10/config/kernel.config
+> >>
+> >> zImage :-
+> >> https://storage.kernelci.org/mainline/master/v6.3/arm/multi_v7_defconf=
+ig+debug/gcc-10/kernel/zImage
+> >>
+> >> If you notice, they are present under the kernel directory and same wa=
+y
+> >> you can find links for other kernel
+> >> builds if you'd like to check them out.
+> >>
+> >>> If I click on the log
+> >>> https://storage.kernelci.org/mainline/master/v6.3/arm/multi_v7_defcon=
+fig+debug/gcc-10/lab-collabora/baseline-qemu_arm-virt-gicv3-uefi.txt
+> >>> It looks like the machine powered up, then powered off. Is the test
+> >>> actually failing?
+> >> I recommend checking the html logs from the kernelci dashboard.
+> >> Also, FYI baseline.login test failure means that the device failed to
+> >> boot which I think is causing by the issues that you pointed out.
+> >>
+> >> <3>[    0.417001][    T1] UBSAN: array-index-out-of-bounds in
+> >> ../arch/arm/mach-sunxi/mc_smp.c:811:29
+> >>
+> >> And potentially another issue with ftrace
+> >>
+> >> <4>[    0.000000][    T0] WARNING: CPU: 0 PID: 0 at
+> >> kernel/trace/ftrace.c:2176 ftrace_bug+0x340/0x3b4
+> >>
+> >>
+> >> Let me know if you need more information from my side to reproduce thi=
+s
+> >> on your end.
+> >>
+> >>
+> >> Thanks,
+> >> Shreeya Patel
+> > Hi Shreeya,
+> > I may need your help to reproduce the failure.
 
-Thank you for the response.
-I snippet some old stuff, and answered a bit, below.
+Hi Shreeya,
+Sorry for the delay, I was out traveling last week.  I still need help
+reproducing. Trying this again from scratch, my VM is now failing to
+boot regardless of whether I revert the patch in question or not.
 
-On 5/5/23 14:39, Guillaume Tucker wrote:
-> On 20/04/2023 18:37, Nikolai Kondrashov wrote:
->> Yes, the "ERROR" status is for when we actually got to executing the test (suite), and then it messed up, and e.g. crashed in the middle of execution. This is likely a problem for test maintainers to solve, and not for the CI people (although they would do well to keep an eye on such results too).
-> 
-> OK I think the documentation could be updated to provide a bit
-> more context about what's expected from each status:
-> 
->    https://kernelci.org/docs/kcidb/submitter_guide/#status
-> 
-> At the moment, it just says that ERROR means:
-> 
->    "the test is faulty, the status of the tested code is unknown."
-> 
-> The word "test" here I think means the code written to run a test
-> to you, but I can see how this might be interpreted differently
-> and things that prevent the test from being run could slip in and
-> be reported as errors.  Maybe adding something about who in
-> principle is responsible for each error status would help as
-> discussed in yesterday's meeting (e.g. ERROR is for the test
-> authors, MISS is for the people in charge of the test
-> infrastructure).
+Can you please help verify this failure by hand, and see if applying
+https://github.com/ClangBuiltLinux/linux/commit/45c4fb6095d872785e077942da8=
+96d65d87ab56b.patch
+helps?  If you can repro; mind sharing your precise steps to reproduce?
 
-Yes, we could use better documentation, definitely. Have you taken a look at 
-the PR in question? I refined the schema docs there a bit, do they make more 
-sense now?
+> >
+> > $ wget https://storage.kernelci.org/mainline/master/v6.3/arm/multi_v7_d=
+efconfig+debug/gcc-10/config/kernel.config
+> > -O .config
+> > $ ARCH=3Darm CROSS_COMPILE=3Darm-linux-gnueabihf- make -j128 olddefconf=
+ig all -s
+> > <launch qemu>
+> > / # mount -t proc /proc
+> > / # cat /proc/version
+> > Linux version 6.3.0 (root@61385772abae) (arm-linux-gnueabihf-gcc
+> > (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian)
+> > 2.35.2) #2 SMP Wed May  3 21:10:27 UTC 2023
+> >
+> > I was able to boot the resulting kernel to a command line.  Perhaps
+> > there's something about the userspace image that tickles this? Can you
+> > supply the rootfs that's used in testing?
+>
+>
+> Following is the link to the rootfs for a different kernel build which
+> has the same test case failing.
+> http://storage.kernelci.org/images/rootfs/buildroot/buildroot-baseline/20=
+230414.0/armel/rootfs.cpio.gz
+>
+>
+> Lava job :-
+> https://lava.collabora.dev/scheduler/job/10135631
+>
+> You can usually get the rootfs link and many more information through
+> the "definition" present on Lava job dashboard.
+>
+> Kernelci test id for the above job :-
+> https://linux.kernelci.org/test/case/id/64497865a4bab57def2e85e8/
+>
+>
+> Thanks,
+> Shreeya Patel
+>
+> >>> I was able to boot ARCH=3Darm defconfig with CC=3Darm-linux-gnueabihf=
+-gcc
+> >>> (Debian 10.2.1-6) in QEMU just fine.  So I'm going to need some more
+> >>> information to help reproduce what specifically is failing.
+> >>>
+> >>> Linux version 6.3.0 (root@61385772abae) (arm-linux-gnueabihf-gcc
+> >>> (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian)
+> >>> 2.35.2) #1 SMP Fri Apr 28 17:19:59 UTC 2023
+> >>>
+> >>> ---
+> >>>
+> >>> It does look like UBSAN is flagging an array OOB:
+> >>>
+> >>> <3>[    0.417001][    T1] UBSAN: array-index-out-of-bounds in
+> >>> ../arch/arm/mach-sunxi/mc_smp.c:811:29
+> >>>
+> >>> And potentially another issue with ftrace
+> >>>
+> >>> <4>[    0.000000][    T0] WARNING: CPU: 0 PID: 0 at
+> >>> kernel/trace/ftrace.c:2176 ftrace_bug+0x340/0x3b4
+> >>>
+> >>>
+> >>>
+> >>>> [2] https://groups.io/g/kernelci-results/message/40804
+> >>>>
+> >>>>
+> >>>> Thanks,
+> >>>> Shreeya Patel
+> >>>>
+> >>>> #regzbot introduced: 88b61e3bff93
+> >>>>
+> >>>>> ---
+> >>>>> Changes v3 -> v4:
+> >>>>> * Split into its own patch again from series, as per Masahiro.
+> >>>>> * Rebase on top of b0839b281c427e844143dba3893e25c83cdd6c17 and upd=
+ate
+> >>>>>      clang -Wformat logic in scripts/Makefile.extrawarn, as per Mas=
+ahiro.
+> >>>>>
+> >>>>>     Documentation/kbuild/makefiles.rst          | 29 ++++++++++++--=
+-------
+> >>>>>     Makefile                                    |  6 ++---
+> >>>>>     drivers/gpu/drm/amd/display/dc/dml/Makefile |  2 +-
+> >>>>>     scripts/Makefile.compiler                   | 10 ++++---
+> >>>>>     scripts/Makefile.extrawarn                  |  4 +--
+> >>>>>     5 files changed, 29 insertions(+), 22 deletions(-)
+> >>>>>
+> >>>>> diff --git a/Documentation/kbuild/makefiles.rst b/Documentation/kbu=
+ild/makefiles.rst
+> >>>>> index 11a296e52d68..ee7e3ea1fbe1 100644
+> >>>>> --- a/Documentation/kbuild/makefiles.rst
+> >>>>> +++ b/Documentation/kbuild/makefiles.rst
+> >>>>> @@ -682,22 +682,27 @@ more details, with real examples.
+> >>>>>         In the above example, -Wno-unused-but-set-variable will be =
+added to
+> >>>>>         KBUILD_CFLAGS only if gcc really accepts it.
+> >>>>>
+> >>>>> -    cc-ifversion
+> >>>>> -     cc-ifversion tests the version of $(CC) and equals the fourth=
+ parameter
+> >>>>> -     if version expression is true, or the fifth (if given) if the=
+ version
+> >>>>> -     expression is false.
+> >>>>> +    gcc-min-version
+> >>>>> +     gcc-min-version tests if the value of $(CONFIG_GCC_VERSION) i=
+s greater than
+> >>>>> +     or equal to the provided value and evaluates to y if so.
+> >>>>>
+> >>>>>         Example::
+> >>>>>
+> >>>>> -             #fs/reiserfs/Makefile
+> >>>>> -             ccflags-y :=3D $(call cc-ifversion, -lt, 0402, -O1)
+> >>>>> +             cflags-$(call gcc-min-version, 70100) :=3D -foo
+> >>>>>
+> >>>>> -     In this example, ccflags-y will be assigned the value -O1 if =
+the
+> >>>>> -     $(CC) version is less than 4.2.
+> >>>>> -     cc-ifversion takes all the shell operators:
+> >>>>> -     -eq, -ne, -lt, -le, -gt, and -ge
+> >>>>> -     The third parameter may be a text as in this example, but it =
+may also
+> >>>>> -     be an expanded variable or a macro.
+> >>>>> +     In this example, cflags-y will be assigned the value -foo if =
+$(CC) is gcc and
+> >>>>> +     $(CONFIG_GCC_VERSION) is >=3D 7.1.
+> >>>>> +
+> >>>>> +    clang-min-version
+> >>>>> +     clang-min-version tests if the value of $(CONFIG_CLANG_VERSIO=
+N) is greater
+> >>>>> +     than or equal to the provided value and evaluates to y if so.
+> >>>>> +
+> >>>>> +     Example::
+> >>>>> +
+> >>>>> +             cflags-$(call clang-min-version, 110000) :=3D -foo
+> >>>>> +
+> >>>>> +     In this example, cflags-y will be assigned the value -foo if =
+$(CC) is clang
+> >>>>> +     and $(CONFIG_CLANG_VERSION) is >=3D 11.0.0.
+> >>>>>
+> >>>>>         cc-cross-prefix
+> >>>>>         cc-cross-prefix is used to check if there exists a $(CC) in=
+ path with
+> >>>>> diff --git a/Makefile b/Makefile
+> >>>>> index 298f69060f10..411c8480b37e 100644
+> >>>>> --- a/Makefile
+> >>>>> +++ b/Makefile
+> >>>>> @@ -790,7 +790,6 @@ KBUILD_CFLAGS +=3D $(stackp-flags-y)
+> >>>>>
+> >>>>>     KBUILD_CFLAGS-$(CONFIG_WERROR) +=3D -Werror
+> >>>>>     KBUILD_CFLAGS-$(CONFIG_CC_NO_ARRAY_BOUNDS) +=3D -Wno-array-boun=
+ds
+> >>>>> -KBUILD_CFLAGS +=3D $(KBUILD_CFLAGS-y) $(CONFIG_CC_IMPLICIT_FALLTHR=
+OUGH)
+> >>>>>
+> >>>>>     ifdef CONFIG_CC_IS_CLANG
+> >>>>>     KBUILD_CPPFLAGS +=3D -Qunused-arguments
+> >>>>> @@ -972,7 +971,6 @@ ifdef CONFIG_CC_IS_GCC
+> >>>>>     KBUILD_CFLAGS +=3D -Wno-maybe-uninitialized
+> >>>>>     endif
+> >>>>>
+> >>>>> -ifdef CONFIG_CC_IS_GCC
+> >>>>>     # The allocators already balk at large sizes, so silence the co=
+mpiler
+> >>>>>     # warnings for bounds checks involving those possible values. W=
+hile
+> >>>>>     # -Wno-alloc-size-larger-than would normally be used here, earl=
+ier versions
+> >>>>> @@ -984,8 +982,8 @@ ifdef CONFIG_CC_IS_GCC
+> >>>>>     # ignored, continuing to default to PTRDIFF_MAX. So, left with =
+no other
+> >>>>>     # choice, we must perform a versioned check to disable this war=
+ning.
+> >>>>>     # https://lore.kernel.org/lkml/20210824115859.187f272f@canb.auu=
+g.org.au
+> >>>>> -KBUILD_CFLAGS +=3D $(call cc-ifversion, -ge, 0901, -Wno-alloc-size=
+-larger-than)
+> >>>>> -endif
+> >>>>> +KBUILD_CFLAGS-$(call gcc-min-version, 90100) +=3D -Wno-alloc-size-=
+larger-than
+> >>>>> +KBUILD_CFLAGS +=3D $(KBUILD_CFLAGS-y) $(CONFIG_CC_IMPLICIT_FALLTHR=
+OUGH)
+> >>>>>
+> >>>>>     # disable invalid "can't wrap" optimizations for signed / point=
+ers
+> >>>>>     KBUILD_CFLAGS       +=3D -fno-strict-overflow
+> >>>>> diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/=
+gpu/drm/amd/display/dc/dml/Makefile
+> >>>>> index cb81ed2fbd53..d70838edba80 100644
+> >>>>> --- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> >>>>> +++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> >>>>> @@ -34,7 +34,7 @@ dml_ccflags :=3D -mhard-float -maltivec
+> >>>>>     endif
+> >>>>>
+> >>>>>     ifdef CONFIG_CC_IS_GCC
+> >>>>> -ifeq ($(call cc-ifversion, -lt, 0701, y), y)
+> >>>>> +ifneq ($(call gcc-min-version, 70100),y)
+> >>>>>     IS_OLD_GCC =3D 1
+> >>>>>     endif
+> >>>>>     endif
+> >>>>> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+> >>>>> index 94d0d40cddb3..9d18fb91890e 100644
+> >>>>> --- a/scripts/Makefile.compiler
+> >>>>> +++ b/scripts/Makefile.compiler
+> >>>>> @@ -61,9 +61,13 @@ cc-option-yn =3D $(call try-run,\
+> >>>>>     cc-disable-warning =3D $(call try-run,\
+> >>>>>         $(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip=
+ $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+> >>>>>
+> >>>>> -# cc-ifversion
+> >>>>> -# Usage:  EXTRA_CFLAGS +=3D $(call cc-ifversion, -lt, 0402, -O1)
+> >>>>> -cc-ifversion =3D $(shell [ $(CONFIG_GCC_VERSION)0 $(1) $(2)000 ] &=
+& echo $(3) || echo $(4))
+> >>>>> +# gcc-min-version
+> >>>>> +# Usage: cflags-$(call gcc-min-version, 70100) +=3D -foo
+> >>>>> +gcc-min-version =3D $(shell [ $(CONFIG_GCC_VERSION) -ge $(1) ] && =
+echo y)
+> >>>>> +
+> >>>>> +# clang-min-version
+> >>>>> +# Usage: cflags-$(call clang-min-version, 110000) +=3D -foo
+> >>>>> +clang-min-version =3D $(shell [ $(CONFIG_CLANG_VERSION) -ge $(1) ]=
+ && echo y)
+> >>>>>
+> >>>>>     # ld-option
+> >>>>>     # Usage: KBUILD_LDFLAGS +=3D $(call ld-option, -X, -Y)
+> >>>>> diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawar=
+n
+> >>>>> index 6ae482158bc4..5769c1939d40 100644
+> >>>>> --- a/scripts/Makefile.extrawarn
+> >>>>> +++ b/scripts/Makefile.extrawarn
+> >>>>> @@ -48,7 +48,7 @@ else
+> >>>>>     ifdef CONFIG_CC_IS_CLANG
+> >>>>>     KBUILD_CFLAGS +=3D -Wno-initializer-overrides
+> >>>>>     # Clang before clang-16 would warn on default argument promotio=
+ns.
+> >>>>> -ifeq ($(shell [ $(CONFIG_CLANG_VERSION) -lt 160000 ] && echo y),y)
+> >>>>> +ifneq ($(call clang-min-version, 160000),y)
+> >>>>>     # Disable -Wformat
+> >>>>>     KBUILD_CFLAGS +=3D -Wno-format
+> >>>>>     # Then re-enable flags that were part of the -Wformat group tha=
+t aren't
+> >>>>> @@ -56,7 +56,7 @@ KBUILD_CFLAGS +=3D -Wno-format
+> >>>>>     KBUILD_CFLAGS +=3D -Wformat-extra-args -Wformat-invalid-specifi=
+er
+> >>>>>     KBUILD_CFLAGS +=3D -Wformat-zero-length -Wnonnull
+> >>>>>     # Requires clang-12+.
+> >>>>> -ifeq ($(shell [ $(CONFIG_CLANG_VERSION) -ge 120000 ] && echo y),y)
+> >>>>> +ifeq ($(call clang-min-version, 120000),y)
+> >>>>>     KBUILD_CFLAGS +=3D -Wformat-insufficient-args
+> >>>>>     endif
+> >>>>>     endif
+> >>>
+> >
+> >
 
-Here's the PR: https://github.com/kernelci/kcidb-io/pull/74
 
-If that looks good, I'll update the Submitter Guide with this and go into a 
-bit more detail, adding the table I used here to break down the responsibility.
 
->> Yes, as I also described above, if you care about which exact tests a test suite executes, and some tests in your previously-submitted plan didn't execute after all, then you would need to set their status to "MISS".
-> 
-> Right, even though I think that's a grey area between the test
-> and the infrastructure.  Maybe no status would also work here.
-> 
-
-Yes, often it's hard to determine what's at fault, but when you can it's best 
-to avoid alerting people who are not responsible for the problem (such as not 
-notifying the test maintainer in case of CI failure).
-
->> But if you only care that this suite executes, and runs whatever tests it deems important, you could e.g. send an object for the whole test suite with its status missing before starting. Then send its subtests with status filled in with whatever you get as they execute, capping off with the final status of the whole suite after it's done. And if you failed to run the suite for whatever reason, then you could send the "MISS" status for it instead.
-> 
-> I think my main point was that we could just have ERROR with a
-> broader scope and then something else like an error type or
-> message to differentiate errors between the test, the
-> infrastructure or anything specific to the CI system.  So from a
-> user point of view, it's either a valid result i.e. PASS / FAIL /
-> SKIP or something went wrong and it's ERROR.
-
-Sure, some CI systems would only be able to report "ERROR", that's OK, and 
-even if you try hard to report a "MISS" when you can do it, "ERROR" would also 
-keep slipping in by mistake.
-
-While we already have a lot of fields (and need more still), I think "MISS" 
-fits the value space of existing test statuses quite well. After all, we 
-already try to distinguish "ERROR" from "FAIL", splitting the test maintainer 
-responsibility from the developer responsibility (when possible). We're just 
-adding a finer gradation here, splitting "ERROR" again, into test maintainer 
-and CI maintainer responsibilities.
-
-> On the other hand, having MISS shouldn't really be a problem.  I
-> can see why it could be very useful to have it in KCIDB for CKI's
-> use-case at least.  So I'm still not personally convinced by this
-> but I think it's fine to add it anyway as I don't see any
-> blocking reason for not adding it either.
-
-Thank you, Guillaume. I have now merged the PR and will proceed on finishing 
-support for it in the notifications and dashboards. Right now the new schema 
-version is not accepted by Production yet.
-
-Nick
-
+--=20
+Thanks,
+~Nick Desaulniers
