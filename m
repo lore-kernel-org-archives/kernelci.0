@@ -1,106 +1,75 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34611EA8E
-	for <kernelci@lists.linux.dev>; Wed, 17 May 2023 16:27:53 +0000 (UTC)
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7595561f2f0so58385085a.2
-        for <kernelci@lists.linux.dev>; Wed, 17 May 2023 09:27:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684340873; x=1686932873;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gKP3y2yRA1niickBAZNGt652pVuj+gN+BwTUxLrXHNQ=;
-        b=x6IZmmBCbPWXYEV1s7cwpW+6JSUPvlKX/pEzz5bkryXn1zZebfylT4DUapS4sia6Bm
-         593nM5GeWZJyZU3elQthsjSQjaLVUhiT1xATIBTlx6rJyiWe0BccHZKUZGy7Z49VVOLd
-         ULfJnBAe1kcFUWU2OIxI2oQBL0av3WUv1TcT/EojkwXeF6gWCYxGzmC+msS0zdE7h2c6
-         fFxl6SEEE9bf4C/2eLRqperK6PFAMdAo5Anph13Y+2ohfRM3KPQVKxLEiepYwlcZclQY
-         Kbs6f6WlYEPs0MMgn7IKu31Wd88GMhBytneV3IfZ4EFpknd5ojk0j/bgaMZ1fWbTt4V/
-         rOkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684340873; x=1686932873;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gKP3y2yRA1niickBAZNGt652pVuj+gN+BwTUxLrXHNQ=;
-        b=eVeN5kobJ9chWmePN6GqFXGi6mrWKA/csARy9ICFSjNqAiKzRSpcIbvN4uFpcK6V1l
-         yyo+7jqrq6dg6OytOlkmxkDh3aXVRvGi7NgJbrche9eOa2v6BSUfna93J5SGQ4Xayd0M
-         pR5CF2+G3XBiUHuL0+0A05IsnSMY3CGLn1s+XQ+wOXaVgfbyvgDLMdwqrQhq6+Z5o/qD
-         tEvA7RsZH4z2NBIU0TQikjIU1XW+cPM15YzYiOjU/+2BWb4CCXimmYFQxKnTboOuO95S
-         stajAspELGpVgUMaCc2986hwfU68NyhaK45SEfNSgdUeVUIYaQWGH3wG9EUaQlB7s1nm
-         TRmQ==
-X-Gm-Message-State: AC+VfDzAyTXGRok60Y+LoN4ueHbblYiMqNBmzbMilWkvgTUz2pR4Y3Vg
-	kBh85rgy4lQoqPf/uU2H7SJDwFIiDO5ONoAo5aBg0A==
-X-Google-Smtp-Source: ACHHUZ5i7gqrt52vlZ8Nnb/F0kMFD8QMC/x9Q5gQRUQ0nTJlG6e6Y29/q9q1G0M5KBatPnK9A2vJ9E/t/pXyL0yzlQ8=
-X-Received: by 2002:ad4:5dc4:0:b0:61a:c2bf:9f0b with SMTP id
- m4-20020ad45dc4000000b0061ac2bf9f0bmr658197qvh.6.1684340872605; Wed, 17 May
- 2023 09:27:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F9A23C69;
+	Thu, 18 May 2023 14:23:29 +0000 (UTC)
+Received: from localhost (unknown [IPv6:2a0c:5a83:9203:ad00:b00e:5f04:110d:a967])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: rcn)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id A01046605941;
+	Thu, 18 May 2023 15:23:16 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1684419796;
+	bh=xPO1unEEJVJK0T2OHZBtJMRAKEmESNmxmqAwbWmk0IM=;
+	h=From:To:Cc:Subject:References:In-reply-to:Date:From;
+	b=UZS18BmKRQMiohEWgPcA4RWHECb14V6w64eSrDuN9tKWNbUk22TMBHDX+9QVK/Q7Q
+	 SYCxCuNWHV7LuLpZ+Ev3T0RajaYu8YseXPs+rpaB/ToBUGrPW9DPxu7Kjp6xC0N1FP
+	 g4JOBtd+jww/UWoYRkR2rKGUA3ceSLy6USSLE/MdWs9UYGVYybN777OI2zQjFgz/qv
+	 doxGD+iRX8PUE8nITSPtE61/xoFPlae/utTC/gBSnxPfyPzXDTwx8C5J120RGlD3zQ
+	 lFfzjRS7mrGNv75xzoOJP91upfb+yp7n+ZNVKPFU0S37ATMUKWf5GEJ1Fsj6i1+PAs
+	 bUKiJNgBPTnyw==
+From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Shreeya Patel <shreeya.patel@collabora.com>, Michal Marek <michal.lkml@markovi.net>, Masahiro Yamada <masahiroy@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, clang-built-linux <llvm@lists.linux.dev>, Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, regressions@lists.linux.dev, "gustavo.padovan\@collabora.com" <gustavo.padovan@collabora.com>, Guillaume Charles Tucker <guillaume.tucker@collabora.com>, denys.f@collabora.com, kernelci@lists.linux.dev
+Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with compiler-specific macros
+References: <CAK7LNAT_cMLGLBz7ugaLpJD3QmZmY8FK56x9nihvWeYhJpi2ag@mail.gmail.com> <20220919170828.3718437-1-ndesaulniers@google.com> <597ef55f-e7c1-ab60-b4aa-0071ff4b5e0e@collabora.com> <CAKwvOdmSrAxx-YY1Na3BSdYuxXCPKK+F0K5V6i+adTn_bVJEsw@mail.gmail.com> <89961dfc-d40f-78e4-5d34-b86b7d152182@collabora.com> <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com> <17c91d37-7d9c-0df4-2438-2b30ca0b5777@collabora.com> <CAKwvOdk4QO8x_bs64fFRCsMu__AjhXd4Ew2KfgzQOb9Q3FMqSA@mail.gmail.com> <b5d0cf82-0e42-f6a1-c9f5-c145fdc4c622@collabora.com> <CAKwvOdkFxu9hYSL_RCXadpR0dQd1+dZmAUVXdfFiLUfxg4D_Xw@mail.gmail.com>
+In-reply-to: <CAKwvOdkFxu9hYSL_RCXadpR0dQd1+dZmAUVXdfFiLUfxg4D_Xw@mail.gmail.com>
+Date: Thu, 18 May 2023 16:23:13 +0200
+Message-ID: <878rdlk9bi.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAK7LNAT_cMLGLBz7ugaLpJD3QmZmY8FK56x9nihvWeYhJpi2ag@mail.gmail.com>
- <20220919170828.3718437-1-ndesaulniers@google.com> <597ef55f-e7c1-ab60-b4aa-0071ff4b5e0e@collabora.com>
- <CAKwvOdmSrAxx-YY1Na3BSdYuxXCPKK+F0K5V6i+adTn_bVJEsw@mail.gmail.com>
- <89961dfc-d40f-78e4-5d34-b86b7d152182@collabora.com> <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com>
- <17c91d37-7d9c-0df4-2438-2b30ca0b5777@collabora.com> <CAKwvOdk4QO8x_bs64fFRCsMu__AjhXd4Ew2KfgzQOb9Q3FMqSA@mail.gmail.com>
- <b5d0cf82-0e42-f6a1-c9f5-c145fdc4c622@collabora.com>
-In-Reply-To: <b5d0cf82-0e42-f6a1-c9f5-c145fdc4c622@collabora.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 17 May 2023 09:27:41 -0700
-Message-ID: <CAKwvOdkFxu9hYSL_RCXadpR0dQd1+dZmAUVXdfFiLUfxg4D_Xw@mail.gmail.com>
-Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
- compiler-specific macros
-To: =?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
-Cc: Shreeya Patel <shreeya.patel@collabora.com>, Michal Marek <michal.lkml@markovi.net>, 
-	Masahiro Yamada <masahiroy@kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, clang-built-linux <llvm@lists.linux.dev>, 
-	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, regressions@lists.linux.dev, 
-	"gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>, 
-	Guillaume Charles Tucker <guillaume.tucker@collabora.com>, denys.f@collabora.com, 
-	kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 17, 2023 at 8:39=E2=80=AFAM Ricardo Ca=C3=B1uelo
-<ricardo.canuelo@collabora.com> wrote:
->
-> Hi Nick,
->
-> On 16/5/23 1:01, Nick Desaulniers wrote:
-> > Can you please help verify this failure by hand, and see if applying
-> > https://github.com/ClangBuiltLinux/linux/commit/45c4fb6095d872785e07794=
-2da896d65d87ab56b.patch
-> > helps?  If you can repro; mind sharing your precise steps to reproduce?
->
-> I ran a few tests but the commit that introduced your changes
-> passes every time. There's a chance that the bisector got misled
-> due to the test runs failing for whatever reason unrelated to the
-> patch. There's definitely something introducing a bug somewhere,
-> as current mainline/master makes this test fail on this target
-> when kernel/configs/debug.config is applied, but it must be
-> somewhere else. I'll investigate this some more to see what I can
-> find.
 
-Thanks for verifying/reporting.
+Hi Nick,
 
+On mi=C3=A9, may 17 2023 at 09:27:41, Nick Desaulniers <ndesaulniers@google=
+.com> wrote:
+> Shreeya mentioned upthread that `qemu_arm-virt-gicv3-uefi` was
+> failing, so I assume others should be able to repro in qemu. I'd guess
+> that LAVA lets you have VMs adjacent to physical hardware.  Having the
+> qemu command line, kernel config, and perhaps the initramfs are going
+> to be the three most useful things for any similar bug report.
 
->
-> About the steps to reproduce it, we're using the current KernelCI
-> tools (kci_build) to generate the kernel. To actually launch the
-> tests I'm submitting jobs to Collabora's LAVA lab, which is
-> something that isn't available to external users, so it might be
-> a bit hard for you to reproduce the exact environment from the
-> original test. If you need to test something, I can do it for
-> you.
+Sure, I'm using LAVA because that's the safest way to match exactly the
+same setup from the original test, but anyone can try to reproduce it on
+their own. You can get the job info and setup from any of the related
+LAVA jobs. This one for example:
+https://lava.collabora.dev/scheduler/job/10373216
 
-Shreeya mentioned upthread that `qemu_arm-virt-gicv3-uefi` was
-failing, so I assume others should be able to repro in qemu. I'd guess
-that LAVA lets you have VMs adjacent to physical hardware.  Having the
-qemu command line, kernel config, and perhaps the initramfs are going
-to be the three most useful things for any similar bug report.
---=20
-Thanks,
-~Nick Desaulniers
+Trying to reproduce this type of setups is not as straightforward as
+we'd like, specially for people not familiar with KernelCI, but we're
+putting in some effort to improve that so that anyone can pick up a
+regression report and work on it right away.
+
+By the way, I found a breaking point in the commit right after the one
+that the bisector reported:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3D5750121ae7382ebac8d47ce6d68012d6cd1d7926
+but I can't find anything there either that makes the boot hang,
+specifically for configs including kernel/configs/debug.config. I
+wouldn't rule out a problem with the qemu configuration.
+
+Anyway, this is not a critical problem in any way, although it'd be
+interesting to find the cause in case we can use the findings to improve
+the test setups.
+
+Cheers,
+Ricardo
