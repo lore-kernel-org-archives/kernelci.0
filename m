@@ -1,78 +1,83 @@
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3487B7C
-	for <kernelci@lists.linux.dev>; Wed,  7 Jun 2023 01:00:24 +0000 (UTC)
-Date: Wed, 07 Jun 2023 01:00:02 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=revenni.com;
-	s=protonmail3; t=1686099614; x=1686358814;
-	bh=cZ5h97wKPJMkZpWRl1KdDx91V2gR48eE04m7sdMgQok=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=vWtNvd12MCzpTGo85bpwyzr7o+UJ5uNaYOGGXSzbbCRTgyvQOzOrG7rJPNkMZyETA
-	 D5ETRuOPuJRX+6JMCvuAjWC1FQgD/fcQsKL8I8aYhI+Fw5ymcBsh1h2Okge3qhsNZP
-	 Ww//NEkABrISXxugIHujL98bcWMN1QdrZ8f9+xgbACi+WxXo0QWIQnab70jKrnjcHo
-	 UUHW6KzjJ6pgi4batyONNm3jZGZeV/LGrtCEBImHpVxPSFkelazYcuLgZCdAyF2trA
-	 urCF+bvsFWbaZio2bbqfAlbDfQo9BuJ0QlehKIKw6sbX5m9s49WHAcqVpVUWuUB26M
-	 xVlo22RKpreBw==
-To: kernelci-sysadmin@groups.io, "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-From: Vince Hillier <vince@revenni.com>
-Subject: Re: [kernelci-sysadmin] Scheduled maintenance this week and next week
-Message-ID: <d7db790a-2b76-8c44-45d8-6cd46943fd8a@revenni.com>
-In-Reply-To: <554e1510-4c48-5074-4e6b-faecec6a4364@collabora.com>
-References: <84aef6eb-a761-f647-3b23-ff1bdd931115@collabora.com> <e89a3f40-e719-c3c2-6c7e-ffb1706ad380@collabora.com> <202534aa-a40a-5ac7-3fba-32c30cfc4a04@collabora.com> <607da614-ecda-a47f-94e3-0fad2e951f00@collabora.com> <554e1510-4c48-5074-4e6b-faecec6a4364@collabora.com>
-Feedback-ID: 25944540:user:proton
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341E03B407
+	for <kernelci@lists.linux.dev>; Thu,  8 Jun 2023 16:17:31 +0000 (UTC)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3063433fa66so622229f8f.3
+        for <kernelci@lists.linux.dev>; Thu, 08 Jun 2023 09:17:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686241050; x=1688833050;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nB35z5xXHRfKHBI1iVJZ/QQYI6/W4ZWNtqh0uqHYCXQ=;
+        b=NxkJpXGzFTxK0CRU/a0cGxt85hdHsSlX7On0Z9KP6OkxU6TfvG0CrL40vfUqNmw4dG
+         jUNrHUnNdHpcLmAMzg5geuv3t6DvTsfQsbeqSaYmH+1lcMDjmbSa66DmcJH3G7t4P9ij
+         FKtgN8om6zJMHJgjXOsxl3IvOg7iwSAlR6Q1TYgstPJedwsnUvZonKw/ZDt4RyMZAp15
+         UHYTdgqK2UmCVc/p0gXnH4ruP6rfw4OXkK+mRFEcmcCaIunGUmSBJ8sXyiR+ZmpfNPjp
+         kg4ebp1wWJoMCHX2M+xjDwm402F5cSMppfOHCVPj/A9jaBmnvTkV6u2uuFpbwQkuO09P
+         Mftw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686241050; x=1688833050;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nB35z5xXHRfKHBI1iVJZ/QQYI6/W4ZWNtqh0uqHYCXQ=;
+        b=Zi9sXYbIzIhWYlAVbtcletqvACK872czIH1NqKtkuQ9pt7SKZ0KNI3HNuSfN542UqN
+         mV2qCXDBTmq0/ojPCX6/8+E9p/I/2FMkuxQ7VbVzxQhC2lOLQ3eI6SmaSaflq4LT5av+
+         o1wgM20RxMHo5/VcJKlgCwikOSQfT/lFrs5773Tssowb2q+olAe6SlK7xD5rO2xvwA7w
+         YAzOL4XmDubFlTmR2M/lYMKh14Xipnr+ZzuhzCVETkBy0M1oB2bYu2cqIHF+SKwTaFp0
+         95YBsQSX2Mn0V8sFo9YWL3EHXaPXjiRnIVWcmIPWNostLNL45rYY1Yh7n4jDAD/4j5oz
+         PkOw==
+X-Gm-Message-State: AC+VfDyiCJ72DjIEePVbOJUPl+lQjuIGVAqmcntDB0uUJYrFFO6Hts8y
+	wS/C3YN5YKzj73zOKrmXCzlim127pNvJXA==
+X-Google-Smtp-Source: ACHHUZ7kkgWulvr/q9Burm6WhMwsUzEsEzWkcNekref8biRPxTD7uDXOEZ8C8gr7KMvqZsvCryumnw==
+X-Received: by 2002:adf:fccf:0:b0:309:5068:9ebe with SMTP id f15-20020adffccf000000b0030950689ebemr6661610wrs.50.1686241050042;
+        Thu, 08 Jun 2023 09:17:30 -0700 (PDT)
+Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
+        by smtp.gmail.com with ESMTPSA id m6-20020a5d6246000000b0030e52d4c1bcsm2023463wrv.71.2023.06.08.09.17.29
+        for <kernelci@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jun 2023 09:17:29 -0700 (PDT)
+Message-ID: <0a839a1c-b0bf-aefc-8c50-0365fc941423@gmail.com>
+Date: Thu, 8 Jun 2023 19:17:28 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+From: Nikolai Kondrashov <spbnick@gmail.com>
+Subject: What's general kernel CI like?
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 6/6/23 17:17, Guillaume Tucker via groups.io wrote:
-> On 02/06/2023 19:08, Guillaume Tucker wrote:
->> On 02/06/2023 09:53, Guillaume Tucker wrote:
->>>>> Once the staging move is complete, all the production services
->>>>> are scheduled to be moved next week:
->>>>>
->>>>> * https://kernelci.org (static website)
->>>>> * https://linux.kernelci.org (web dashboard, backend, Jenkins etc.)
->>>> Also:
->>>>
->>>> * https://chromeos.kernelci.org (ChromeOS KernelCI instance)
->>>>
->>>>> There may be some longer downtime next Monday compared with usual
->>>>> weekly production deployments.  We'll also be sending regular
->>>>> updates as things evolve.
->>>>>
->>>>> Please let us know if this downtime is causing any critical
->>>>> disruption and we'll see which measures we can take to mitigate
->>>>> the impact.
->>> We've now started transferring VMs for the production move.  It's
->>> still scheduled to happen on Monday as per the usual production
->>> updates, except this time we won't be updating any of the code to
->>> focus solely on the infrastructure.  If things to well, the
->>> downtime shouldn't last more than a couple of hours.  We'll soon
->>> confirm the exact time window for the downtime and provide
->>> regular updates.
->>
->> There is now a scheduled maintenance window on Tuesday 6th June
->> from 18:00 UTC to 22:00 UTC when the kernelci.org production
->> services will be down as part of the move to the new Azure
->> subscription.  If things go well, the downtime may be shorter.
->> There should be no downtime on Monday.
->=20
-> The planned maintenance window is meant to end within 1h, however
-> we've experienced some complications and it looks like it will
-> take longer to get all the services back online.  As it's nearing
-> completion we've opted for extending the maintenance window in
-> the hope that it gets resolved within the next couple of hours or
-> so.  We'll send an update once things have settled down.
-The production move has now been completed.  Thank you for your patience.
+Hi everyone,
 
-Vince Hillier |  President and Founder
-Revenni Inc.  |  https://revenni.com  | 647-812-0131 x301
+I'm preparing a talk titled "Kernel CI - How Far Can It Go?", which I'll be
+giving in a week at DevConf.cz and in three weeks at EOSS.
 
+I'm trying to assess the current state of continuous integration in the
+upstream development of the Linux kernel (such as it is) and have a couple
+questions, answers to which can help me get a better picture.
+
+1. Whoever sends their test results to upstream, have you ever looked at your
+    code coverage numbers, that is percentage of lines covered? What was it
+    like? Less than zero, single digits, double digits?
+
+    I know it's a very rough estimation of actual useful coverage, but it's
+    something we could measure and it can give an idea of the situation.
+
+2. If you're a developer, or maintainer, what is your perceived latency for
+    receiving test results from the various CI systems for your contributed
+    code? And how reliably do you get those results?
+
+    Is it within a few hours, a day, several days, more? Do you get results for
+    100% of your contributions, 50%, 25%, 5%?
+
+Thank you!
+Nick
