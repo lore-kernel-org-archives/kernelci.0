@@ -1,62 +1,92 @@
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D021DDF1
-	for <kernelci@lists.linux.dev>; Fri,  9 Jun 2023 20:50:26 +0000 (UTC)
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-19f45faedfbso1066708fac.0
-        for <kernelci@lists.linux.dev>; Fri, 09 Jun 2023 13:50:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686343825; x=1688935825;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=izWNb+6MP5eDvXpmmZ+4OuVugULQr70hbJDq79c8GxQ=;
-        b=dhy0kPyXZ+AfkpXG3XFGam30GemwS8wBRmKYh4AC21vaij1Q180iPOnjWCVC+IbyRB
-         34sC2Vrif/o2QhdRhWRKQ7ck762pqzaUwGf8Tcd6KvwXApl5K/6Bmq5jJ2j0ET5PqiKq
-         CFWAJnjP+kUDI2IgAlyQxDwkWk6JaDFfqq8uuAcNYZ7Syi46Ddv1KPAjjCsZh7oj1moH
-         b4LWp8DD/LZjcy/Gc5OHB1jSrugEWXBU+FpQTKIv2rLgAHmAgzCgSeUyE+Y5cUbp49+c
-         1y6n8n2zCnupQmgbM8ROVr0HPOKnUfhaCSAaccdp+eOXd/GRGEB5eyv8Roiv9DwK19SB
-         Vw5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686343825; x=1688935825;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=izWNb+6MP5eDvXpmmZ+4OuVugULQr70hbJDq79c8GxQ=;
-        b=Zi4mmZyyCrA4oNdvF0Nz0jRWERK0UJCfUhkjL1VMUz376eB053oBhf7tsKB1Ajox6i
-         91mIr/q4uwFqFrrRUrs6ltoXsulzOhIOxBh0KXhaVUGkfxnpFarulLd5SNgibqhmHXsG
-         cPQ/fomfDvQ2/LefwPTTB408kI43TqHdIpf0AKHbw56INKc/2JpbwumlChqOxtydwXsO
-         wCPORcp8ko6+sbrz7iKoUWNGKNlzyeg0hpkVXFvDKmgYWp/+FbECdq1frPo6Ll0++Aus
-         cZ3c0pdGc6sM/ALDg2yccC2WiEgo7zZgQOkzhpHbkjmTanCADj9nheOGnOmea65Ny6wr
-         LzNw==
-X-Gm-Message-State: AC+VfDw5h/Icj7bf5czzbAz4gDULXCrOjlAzhD06YEMvaO/NGQ4D2quh
-	wiYJv9Mwv7gVgejOJMM7ui9YqcvPjCN3N8wvGmnREdRS74eOFcti969QBg==
-X-Google-Smtp-Source: ACHHUZ79aq2sxiisEfauqcQBGDDi62j/FO370J9EeQLOVIT6GXGImVhWzLA8n8VCYaOwS6/pmn3+WwBr+2EpHu+fT4g=
-X-Received: by 2002:a05:6359:323:b0:123:4ea9:9fe9 with SMTP id
- ef35-20020a056359032300b001234ea99fe9mr2143900rwb.3.1686343824843; Fri, 09
- Jun 2023 13:50:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC471FC5
+	for <kernelci@lists.linux.dev>; Sun, 11 Jun 2023 07:42:38 +0000 (UTC)
+Date: Sun, 11 Jun 2023 07:42:26 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=revenni.com;
+	s=protonmail3; t=1686469349; x=1686728549;
+	bh=wWdImuRVgft6cvfeU/KGBrZjK07gwkFQc8ccN5RGAUo=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=walAl2ScdAfnshb1/CeWGZj+PE/OgADmFtnt/eZK7348a8adIRF9f8Wk9VCKOWtSy
+	 jw4ZLUNMh7ufBWuxpFuei5fpK6BTXQU0Ae4mIn3UgJAK0rfSZnXIPVlW8lO0FIXZuS
+	 ZEzO7GNowQQ+X28EMd8fhrJGb3Grkoi54kO4ON13UC+2QI2uT8o/C6sQvE1+4l75w/
+	 9rM0cHZleDKudYND2KADdz1QpdkDH/3oZBCGcnFoEHzrNGmQgcCQukwNHomH6e+f0V
+	 xPCJchZ9ayqiC1/qMGMOR3am+4IOcyO5vkDtYlkszPrKxGuBBRZBzlKcDWnzH9Od/T
+	 O80tEV3sMjlhg==
+To: kernelci-sysadmin@groups.io, "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+From: Vince Hillier <vince@revenni.com>
+Subject: Re: Scheduled maintenance this week and next week
+Message-ID: <09b922e6-5f1e-f4e4-e5bd-60ecc272383b@revenni.com>
+In-Reply-To: <d7db790a-2b76-8c44-45d8-6cd46943fd8a@revenni.com>
+References: <84aef6eb-a761-f647-3b23-ff1bdd931115@collabora.com> <e89a3f40-e719-c3c2-6c7e-ffb1706ad380@collabora.com> <202534aa-a40a-5ac7-3fba-32c30cfc4a04@collabora.com> <607da614-ecda-a47f-94e3-0fad2e951f00@collabora.com> <554e1510-4c48-5074-4e6b-faecec6a4364@collabora.com> <d7db790a-2b76-8c44-45d8-6cd46943fd8a@revenni.com>
+Feedback-ID: 25944540:user:proton
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Fri, 9 Jun 2023 13:50:13 -0700
-Message-ID: <CAKwvOd=qxNfPDo-=bxzyzmY3YmsBtxv686rr9Q_thrfC6ni3eg@mail.gmail.com>
-Subject: kernelci: please upgrade clang-17
-To: kernelci@lists.linux.dev
-Cc: clang-built-linux <llvm@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Starting a new thread because gmail cannot handle replying to an email
-w/ >45k warnings.
-https://lore.kernel.org/llvm/6482b7dd.170a0220.a93c3.9102@mx.google.com/
 
-instances of -Wbuiltin-macro-redefined have been fixed in ToT llvm.
-Updating clang-17 should resolve most of the error spew.
 
-Does kernel CI update ToT clang builds on a fixed cadence?
+Vince Hillier |  President and Founder
+Revenni Inc.  |  https://revenni.com  | 647-812-0131 x301
 
-Thanks for the tests and reports; we still read them daily.
--- 
+On 6/6/23 21:00, Vince Hillier wrote:
+> On 6/6/23 17:17, Guillaume Tucker via groups.io wrote:
+>> On 02/06/2023 19:08, Guillaume Tucker wrote:
+>>> On 02/06/2023 09:53, Guillaume Tucker wrote:
+>>>>>> Once the staging move is complete, all the production services
+>>>>>> are scheduled to be moved next week:
+>>>>>>
+>>>>>> * https://kernelci.org (static website)
+>>>>>> * https://linux.kernelci.org (web dashboard, backend, Jenkins etc.)
+>>>>> Also:
+>>>>>
+>>>>> * https://chromeos.kernelci.org (ChromeOS KernelCI instance)
+>>>>>
+>>>>>> There may be some longer downtime next Monday compared with usual
+>>>>>> weekly production deployments.  We'll also be sending regular
+>>>>>> updates as things evolve.
+>>>>>>
+>>>>>> Please let us know if this downtime is causing any critical
+>>>>>> disruption and we'll see which measures we can take to mitigate
+>>>>>> the impact.
+>>>> We've now started transferring VMs for the production move.  It's
+>>>> still scheduled to happen on Monday as per the usual production
+>>>> updates, except this time we won't be updating any of the code to
+>>>> focus solely on the infrastructure.  If things to well, the
+>>>> downtime shouldn't last more than a couple of hours.  We'll soon
+>>>> confirm the exact time window for the downtime and provide
+>>>> regular updates.
+>>>
+>>> There is now a scheduled maintenance window on Tuesday 6th June
+>>> from 18:00 UTC to 22:00 UTC when the kernelci.org production
+>>> services will be down as part of the move to the new Azure
+>>> subscription.  If things go well, the downtime may be shorter.
+>>> There should be no downtime on Monday.
+>>
+>> The planned maintenance window is meant to end within 1h, however
+>> we've experienced some complications and it looks like it will
+>> take longer to get all the services back online.  As it's nearing
+>> completion we've opted for extending the maintenance window in
+>> the hope that it gets resolved within the next couple of hours or
+>> so.  We'll send an update once things have settled down.
+ >
+> The production move has now been completed.  Thank you for your patience.
+
+As we reach the final stages of our migration we'll be moving the Jitsi=20
+instance at https://meet.kernel.social to our new subscription.  This=20
+will incur downtime for the service starting Monday June 12th at 5am UTC.
+
+The downtime is dependent on a DNS change that will be effected after=20
+the migration effort.
+
 Thanks,
-~Nick Desaulniers
+Vince
+
