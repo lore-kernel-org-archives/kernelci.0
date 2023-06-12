@@ -1,92 +1,153 @@
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC471FC5
-	for <kernelci@lists.linux.dev>; Sun, 11 Jun 2023 07:42:38 +0000 (UTC)
-Date: Sun, 11 Jun 2023 07:42:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=revenni.com;
-	s=protonmail3; t=1686469349; x=1686728549;
-	bh=wWdImuRVgft6cvfeU/KGBrZjK07gwkFQc8ccN5RGAUo=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=walAl2ScdAfnshb1/CeWGZj+PE/OgADmFtnt/eZK7348a8adIRF9f8Wk9VCKOWtSy
-	 jw4ZLUNMh7ufBWuxpFuei5fpK6BTXQU0Ae4mIn3UgJAK0rfSZnXIPVlW8lO0FIXZuS
-	 ZEzO7GNowQQ+X28EMd8fhrJGb3Grkoi54kO4ON13UC+2QI2uT8o/C6sQvE1+4l75w/
-	 9rM0cHZleDKudYND2KADdz1QpdkDH/3oZBCGcnFoEHzrNGmQgcCQukwNHomH6e+f0V
-	 xPCJchZ9ayqiC1/qMGMOR3am+4IOcyO5vkDtYlkszPrKxGuBBRZBzlKcDWnzH9Od/T
-	 O80tEV3sMjlhg==
-To: kernelci-sysadmin@groups.io, "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-From: Vince Hillier <vince@revenni.com>
-Subject: Re: Scheduled maintenance this week and next week
-Message-ID: <09b922e6-5f1e-f4e4-e5bd-60ecc272383b@revenni.com>
-In-Reply-To: <d7db790a-2b76-8c44-45d8-6cd46943fd8a@revenni.com>
-References: <84aef6eb-a761-f647-3b23-ff1bdd931115@collabora.com> <e89a3f40-e719-c3c2-6c7e-ffb1706ad380@collabora.com> <202534aa-a40a-5ac7-3fba-32c30cfc4a04@collabora.com> <607da614-ecda-a47f-94e3-0fad2e951f00@collabora.com> <554e1510-4c48-5074-4e6b-faecec6a4364@collabora.com> <d7db790a-2b76-8c44-45d8-6cd46943fd8a@revenni.com>
-Feedback-ID: 25944540:user:proton
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3EB18C29;
+	Mon, 12 Jun 2023 10:10:33 +0000 (UTC)
+Received: from [IPV6:2405:201:0:21ea:e49:10dd:40c0:e842] (unknown [IPv6:2405:201:0:21ea:e49:10dd:40c0:e842])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: shreeya)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 40CF366058B2;
+	Mon, 12 Jun 2023 11:10:22 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1686564626;
+	bh=dNUyljDJjaR0rrWhWk1Fy1aQiXjj6NBuMzXL8HS0YwA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TPfwOimf6Q6c1SuHD1GaIfhHJlltr7QfxRCZGGd+HBfjslFtzwo0pd9SaVltxcT9r
+	 71VvIs8QF2ab39T+/5W8bFk+CGFxMhUednyKQ/Au1Qhah19RwP1PZhDkxebV121yHG
+	 uTb6KDJLdV9H+Hc6kmUXhOtp0lXqsB9yy2qLpDNUtGqXHbmN3a6HVE+Hrv0qhY5O5l
+	 ZRnJEAfCRkeJJmckqFRQR4K+13YA4GvKuuMqGkSa1RbDlQy3UMxXeoz0txXPI4KRoE
+	 rNYrymcuIW+vk8AdX2tUJeTAHAS99netW9HhLI/DbGmEpTmLwLw9h//HzrPfS7yVPT
+	 oMB7PnVqqRdjQ==
+Message-ID: <a037a08c-44c4-24e8-1cba-7e4e8b21ffaa@collabora.com>
+Date: Mon, 12 Jun 2023 15:40:18 +0530
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
+ compiler-specific macros
+Content-Language: en-US
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Maksim Panchenko <maks@meta.com>,
+ =?UTF-8?Q?Ricardo_Ca=c3=b1uelo?= <ricardo.canuelo@collabora.com>,
+ Michal Marek <michal.lkml@markovi.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ clang-built-linux <llvm@lists.linux.dev>, Bill Wendling <morbo@google.com>,
+ Nathan Chancellor <nathan@kernel.org>, regressions@lists.linux.dev,
+ "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+ Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+ denys.f@collabora.com, Nick Desaulniers <ndesaulniers@google.com>,
+ kernelci@lists.linux.dev, Collabora Kernel ML <kernel@collabora.com>
+References: <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com>
+ <17c91d37-7d9c-0df4-2438-2b30ca0b5777@collabora.com>
+ <CAKwvOdk4QO8x_bs64fFRCsMu__AjhXd4Ew2KfgzQOb9Q3FMqSA@mail.gmail.com>
+ <b5d0cf82-0e42-f6a1-c9f5-c145fdc4c622@collabora.com>
+ <CAKwvOdkFxu9hYSL_RCXadpR0dQd1+dZmAUVXdfFiLUfxg4D_Xw@mail.gmail.com>
+ <878rdlk9bi.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <CAKwvOd=8LVU+iANkFx18Wm1jg7gYiAXovAmo9t5ZZaVdMULn-Q@mail.gmail.com>
+ <875y8ok9b5.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <CAKwvOdmJJibt6sHSp91v2s7BxUWBC6xG7F7+3C6gUxNMzZ2xRA@mail.gmail.com>
+ <87353ok78h.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <2023052247-bobtail-factsheet-d104@gregkh>
+ <CAKwvOd=2zAV_mizvzLFdyHE_4OzBY5OVu6KLWuQPOMZK37vsmQ@mail.gmail.com>
+ <cff33e12-3d80-7e62-1993-55411ccabc01@collabora.com>
+ <CAKwvOd=F29-UkNO7FtUWpVV=POOZLb6QgD=mhLMWtRfkRSSi2A@mail.gmail.com>
+From: Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <CAKwvOd=F29-UkNO7FtUWpVV=POOZLb6QgD=mhLMWtRfkRSSi2A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Hi Masahiro,
 
 
-
-Vince Hillier |  President and Founder
-Revenni Inc.  |  https://revenni.com  | 647-812-0131 x301
-
-On 6/6/23 21:00, Vince Hillier wrote:
-> On 6/6/23 17:17, Guillaume Tucker via groups.io wrote:
->> On 02/06/2023 19:08, Guillaume Tucker wrote:
->>> On 02/06/2023 09:53, Guillaume Tucker wrote:
->>>>>> Once the staging move is complete, all the production services
->>>>>> are scheduled to be moved next week:
->>>>>>
->>>>>> * https://kernelci.org (static website)
->>>>>> * https://linux.kernelci.org (web dashboard, backend, Jenkins etc.)
->>>>> Also:
->>>>>
->>>>> * https://chromeos.kernelci.org (ChromeOS KernelCI instance)
->>>>>
->>>>>> There may be some longer downtime next Monday compared with usual
->>>>>> weekly production deployments.  We'll also be sending regular
->>>>>> updates as things evolve.
->>>>>>
->>>>>> Please let us know if this downtime is causing any critical
->>>>>> disruption and we'll see which measures we can take to mitigate
->>>>>> the impact.
->>>> We've now started transferring VMs for the production move.  It's
->>>> still scheduled to happen on Monday as per the usual production
->>>> updates, except this time we won't be updating any of the code to
->>>> focus solely on the infrastructure.  If things to well, the
->>>> downtime shouldn't last more than a couple of hours.  We'll soon
->>>> confirm the exact time window for the downtime and provide
->>>> regular updates.
->>>
->>> There is now a scheduled maintenance window on Tuesday 6th June
->>> from 18:00 UTC to 22:00 UTC when the kernelci.org production
->>> services will be down as part of the move to the new Azure
->>> subscription.  If things go well, the downtime may be shorter.
->>> There should be no downtime on Monday.
+On 24/05/23 02:57, Nick Desaulniers wrote:
+> On Tue, May 23, 2023 at 3:27 AM Shreeya Patel
+> <shreeya.patel@collabora.com> wrote:
+>> Hi Nick and Masahiro,
 >>
->> The planned maintenance window is meant to end within 1h, however
->> we've experienced some complications and it looks like it will
->> take longer to get all the services back online.  As it's nearing
->> completion we've opted for extending the maintenance window in
->> the hope that it gets resolved within the next couple of hours or
->> so.  We'll send an update once things have settled down.
- >
-> The production move has now been completed.  Thank you for your patience.
+>> On 23/05/23 01:22, Nick Desaulniers wrote:
+>>> On Mon, May 22, 2023 at 9:52 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>>>> On Mon, May 22, 2023 at 12:09:34PM +0200, Ricardo Cañuelo wrote:
+>>>>> On vie, may 19 2023 at 08:57:24, Nick Desaulniers <ndesaulniers@google.com> wrote:
+>>>>>> It could be; if the link order was changed, it's possible that this
+>>>>>> target may be hitting something along the lines of:
+>>>>>> https://isocpp.org/wiki/faq/ctors#static-init-order i.e. the "static
+>>>>>> initialization order fiasco"
+>>>>>>
+>>>>>> I'm struggling to think of how this appears in C codebases, but I
+>>>>>> swear years ago I had a discussion with GKH (maybe?) about this. I
+>>>>>> think I was playing with converting Kbuild to use Ninja rather than
+>>>>>> Make; the resulting kernel image wouldn't boot because I had modified
+>>>>>> the order the object files were linked in.  If you were to randomly
+>>>>>> shuffle the object files in the kernel, I recall some hazard that may
+>>>>>> prevent boot.
+>>>>> I thought that was specifically a C++ problem? But then again, the
+>>>>> kernel docs explicitly say that the ordering of obj-y goals in kbuild is
+>>>>> significant in some instances [1]:
+>>>> Yes, it matters, you can not change it.  If you do, systems will break.
+>>>> It is the only way we have of properly ordering our init calls within
+>>>> the same "level".
+>>> Ah, right it was the initcall ordering. Thanks for the reminder.
+>>>
+>>> (There's a joke in there similar to the use of regexes to solve a
+>>> problem resulting in two new problems; initcalls have levels for
+>>> ordering, but we still have (unexpressed) dependencies between calls
+>>> of the same level; brittle!).
+>>>
+>>> +Maksim, since that might be relevant info for the BOLT+Kernel work.
+>>>
+>>> Ricardo,
+>>> https://elinux.org/images/e/e8/2020_ELCE_initcalls_myjosserand.pdf
+>>> mentions that there's a kernel command line param `initcall_debug`.
+>>> Perhaps that can be used to see if
+>>> 5750121ae7382ebac8d47ce6d68012d6cd1d7926 somehow changed initcall
+>>> ordering, resulting in a config that cannot boot?
+>>
+>> Here are the links to Lava jobs ran with initcall_debug added to the
+>> kernel command line.
+>>
+>> 1. Where regression happens (5750121ae7382ebac8d47ce6d68012d6cd1d7926)
+>> https://lava.collabora.dev/scheduler/job/10417706
+>> <https://lava.collabora.dev/scheduler/job/10417706>
+>>
+>> 2. With a revert of the commit 5750121ae7382ebac8d47ce6d68012d6cd1d7926
+>> https://lava.collabora.dev/scheduler/job/10418012
+>> <https://lava.collabora.dev/scheduler/job/10418012>
+> Thanks!
+>
+> Yeah, I can see a diff in the initcall ordering as a result of
+> commit 5750121ae738 ("kbuild: list sub-directories in ./Kbuild")
+>
+> https://gist.github.com/nickdesaulniers/c09db256e42ad06b90842a4bb85cc0f4
+>
+> Not just different orderings, but some initcalls seem unique to the
+> before vs. after, which is troubling. (example init_events and
+> init_fs_sysctls respectively)
+>
+> That isn't conclusive evidence that changes to initcall ordering are
+> to blame, but I suspect confirming that precisely to be very very time
+> consuming.
+>
+> Masahiro, what are your thoughts on reverting 5750121ae738? There are
+> conflicts in Kbuild and Makefile when reverting 5750121ae738 on
+> mainline.
 
-As we reach the final stages of our migration we'll be moving the Jitsi=20
-instance at https://meet.kernel.social to our new subscription.  This=20
-will incur downtime for the service starting Monday June 12th at 5am UTC.
+I'm not sure if you followed the conversation but we are still seeing 
+this regression with the latest kernel builds and would like to know if 
+you plan to revert 5750121ae738?
 
-The downtime is dependent on a DNS change that will be effected after=20
-the migration effort.
 
 Thanks,
-Vince
+Shreeya Patel
 
+>>
+>> Thanks,
+>> Shreeya Patel
+>>
+>
