@@ -1,70 +1,76 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A62DDBC
-	for <kernelci@lists.linux.dev>; Tue, 13 Jun 2023 10:22:51 +0000 (UTC)
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-bc43a73ab22so4600969276.0
-        for <kernelci@lists.linux.dev>; Tue, 13 Jun 2023 03:22:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686651771; x=1689243771;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YL5tImP8wsLO0a7j5rehugKU8GVq0JINrF9tm+JKd3c=;
-        b=Ih/i4SCMdeeJG0v99N2rGeFx0jpDfuC4yd5D7yglLRZk2sxG/EFAoJnMRjCvtn86kq
-         TJsgVsEGEiJD7JofQhQVL5hSxotYxY45OuYUtvkQLODc2sYOfJ9iDmoY2QUL2TIdOAyt
-         aVWLR1WzGrNTEMsJkVVbPpswG4f5elg4k0C0O+P9eJjQzNhscPgXE4FbX6Ixx/mGcnZu
-         KuGt7ZbKxRdAErFvrxpQNMXp1t8xaAfhXr3+ffwPR5WCHw9aS7TIrZ93AdvUcv0T5Rsm
-         IPjxGqaAg+NdQIPcwxjlBHmLeFW3LcoFhobRn6OCo9YMXzHfVYWtRNIx8MGVYFnFiX8E
-         RuDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686651771; x=1689243771;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YL5tImP8wsLO0a7j5rehugKU8GVq0JINrF9tm+JKd3c=;
-        b=IA7WQ4vOi55WRBdeFRSwBzv5ecOm8eipg3F5bQdnv2IXsAm+11kkZmmRmU3EgoC6sB
-         OIrstt5unpkmdob0nKoRM9ByZsZggSlarZrn3uqgAD4Vq+qJytnjCVxv9E4S+IFyAl4Y
-         wM+mC5Zz7T7QLAXqN/sj9PxHGNnDvUqfKebubeuBzX467fCqb07ZEpI0q8F7Uyw+YqR7
-         U0tJMdpicqPXPrGixNOfBJ7TeseUmvy4gd1HISLO4dIjkE1AUzB03B3xDZCwb5BBAcpJ
-         P3c+7WcPISSwYYJGhxg8AS7HOQTURyVD0P7DxU+AGkGQeZouReeKK/mnkRwegkAC4r94
-         Mf/w==
-X-Gm-Message-State: AC+VfDwIYrWYTPdFJN9X9GIU8zv+TJGPj4esuKu6K3lpXnNY+9nWiEnC
-	M6DejS9v9koEEw1X0/07WWU7EAfGZxf7jYgvh7mTygQwRNs=
-X-Google-Smtp-Source: ACHHUZ71SJDccecNWTrMhwTNwO3PfPR4DuKFUhQhFakLyFEqV8PhFWIG3b5ItgjmuXd7I2rIXUYIkRrSaYABkMWCGTo=
-X-Received: by 2002:a25:58c6:0:b0:ba8:4ab0:3b7a with SMTP id
- m189-20020a2558c6000000b00ba84ab03b7amr1044571ybb.2.1686651770895; Tue, 13
- Jun 2023 03:22:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA9129B0;
+	Tue, 13 Jun 2023 10:35:57 +0000 (UTC)
+Received: from [IPV6:2001:861:4a40:8620:ac8f:54cf:6e66:b8b4] (unknown [IPv6:2001:861:4a40:8620:ac8f:54cf:6e66:b8b4])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 36D576606EFD;
+	Tue, 13 Jun 2023 11:35:50 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1686652550;
+	bh=QvZoVMtSRfbKYzNTR8JdqBOwdHvxzvmP3UiPrsmqRzo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=g2kPUpusiVLEUh6bkquiemGCKqej3sLrqklLNIMGKqIk/hL62sKgNOIL6vWcevJco
+	 9HzbA6VKv922k2F/ncvzfIxEEJTnH36I+HwWrV+aFbH+f2Kn1FG8RmBhNDGoFPG2LW
+	 KBneWqBHdZ1F9CT1bxWmgZPfg5HvD+V0d0yGaoY256aHjpkc8e1yLcYc0MtpnteVW5
+	 ffqnMJ7MUtI4LuU8HuprAgmADoVTitnPGiZOHw86buQnm9Gx4hnThK3FGUO+tAQCdK
+	 9HpS9bigXubEEBMg/XgjxoneudHrVRGZJ6QwWHKbDPibhXUigoOoKPS8unctMu5YJ6
+	 mMjUWuJ0OJS0w==
+Message-ID: <dfa85ccc-693b-00cb-a4d9-af32e0dfbed8@collabora.com>
+Date: Tue, 13 Jun 2023 12:37:05 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 13 Jun 2023 12:22:39 +0200
-Message-ID: <CANiq72m=3yVV73R4OCWBkt54MaBhb-P472pPMeN-xPb6uWpvgA@mail.gmail.com>
-Subject: Missing Rust results
-To: kernelci@lists.linux.dev
-Cc: Guillaume Tucker <guillaume.tucker@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: kernelci: please upgrade clang-17
+Content-Language: en-US
+To: Mark Brown <broonie@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>
+Cc: kernelci@lists.linux.dev, clang-built-linux <llvm@lists.linux.dev>
+References: <CAKwvOd=qxNfPDo-=bxzyzmY3YmsBtxv686rr9Q_thrfC6ni3eg@mail.gmail.com>
+ <262df5fd-d8c4-47aa-a65d-dd79a303a9ca@sirena.org.uk>
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+In-Reply-To: <262df5fd-d8c4-47aa-a65d-dd79a303a9ca@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi KernelCI,
+On 12/06/2023 17:11, Mark Brown wrote:
+> On Fri, Jun 09, 2023 at 01:50:13PM -0700, Nick Desaulniers wrote:
+>> Starting a new thread because gmail cannot handle replying to an email
+>> w/ >45k warnings.
+>> https://lore.kernel.org/llvm/6482b7dd.170a0220.a93c3.9102@mx.google.com/
+>>
+>> instances of -Wbuiltin-macro-redefined have been fixed in ToT llvm.
+>> Updating clang-17 should resolve most of the error spew.
+>>
+>> Does kernel CI update ToT clang builds on a fixed cadence?
+> 
+> The containers with the tools should be being rebuilt during the
+> production update which normally happens every Monday.  There's some
+> disruption at the minute due to some infrastructure rebuilding that's
+> going on so today's update of the containers might be delayed.
 
-Apparently the Rust-related jobs are not working properly, e.g. see
-the last report from late April for `rust-for-linux`:
+Yes the LLVM-17 update has now trickled down into production and
+warnings are all gone:
 
-    https://linux.kernelci.org/job/rust-for-linux/
+  https://storage.kernelci.org/next/master/next-20230613/arm/multi_v7_defconfig/clang-17/logs/kernel.log
 
-Does somebody know what could be happening or how we could see the
-latest logs for everything Rust related (in case something hints there
-at the problem)?
+compared with the previous linux-next build which had all the warnings:
 
-Guillaume suggested it could be failing to find the new toolchain
-Docker image or something similar, given the recent changes/upgrades.
-The `rust-next` branch received the version bump only a couple weeks
-ago or so, so it would appear that something else broke before that?
-(i.e. it has not worked before nor after).
+  https://storage.kernelci.org/next/master/next-20230609/arm/multi_v7_defconfig/clang-17/logs/kernel.log
 
-Thanks!
+We skipped the regular production update last Monday to focus on
+migrating VMs to the new Azure subscription, sorry for the
+inconvenience.  We're back on the regular schedule now.
 
-Cheers,
-Miguel
+Thanks,
+Guillaume
+
