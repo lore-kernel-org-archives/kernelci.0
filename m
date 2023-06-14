@@ -1,92 +1,100 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563F823C6A
-	for <kernelci@lists.linux.dev>; Tue, 13 Jun 2023 17:25:37 +0000 (UTC)
-Received: from [192.168.0.109] (unknown [103.56.182.143])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jenysadadia)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 9B7846602121;
-	Tue, 13 Jun 2023 18:25:34 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1686677135;
-	bh=/0JuXBFhvuZZyjXgB4B9dY0IGz4nK0mU056Hpv1I2eE=;
-	h=Date:From:To:Cc:Subject:From;
-	b=YY4NWsFSeuMlor1BEh4ucjbu+Gkh3+VhaiV40JNuNowuCU8YCoNVYLqGeufJVYg9d
-	 fVjUnNlCgXyQlZyhOYI1T2i6FSvJzDv8amC/Gc0n6UVujfhlOUaVgY7BLTIAJ0lLOk
-	 lR01VaBiKxXU4lZOLLlwgYmednfcUN9dfxTKFOGEFOhKAgayukV9kW/mL7ir20Wx/s
-	 he4rWXPovjZyT8AVztGPSNKvngJTZdm1pXEjXFTGSA8b7xyqEH6x5taOHFhbOWn6fe
-	 2IJYc4JrpsW41NkE/SJdBHk7HbJD6kldjOUWbb/XNyceEBaI/tLfSjJ6//0PhlLtSX
-	 gm9fmOsOF5gqA==
-Message-ID: <96ca4b8a-ee61-5f57-3c01-5a36adbd47b2@collabora.com>
-Date: Tue, 13 Jun 2023 22:55:23 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCFA2EC00
+	for <kernelci@lists.linux.dev>; Wed, 14 Jun 2023 16:43:51 +0000 (UTC)
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-62ddb103debso20252646d6.1
+        for <kernelci@lists.linux.dev>; Wed, 14 Jun 2023 09:43:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1686761030; x=1689353030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cwxcE8abfYw4UDD2GwaIyR5gbC93lb1+WlKxHZUaJK4=;
+        b=YnaAofNwG+L1xpWJDFLiuB3ppaQpvkRQa5GmJ1Fo9B8EAI2N4K/P7cYjUjwwfY1RoK
+         sggYy4X+kAkcjfERRLyXJg+XwoOAKf8mKT04iTG2rEVFPkCJ0/qeFlPchkVdwV1tIS1B
+         YRZzWRvoCO9rr4zorVfdnBsD3p8Kf/2b60y5/Ki8sXkwt/Y52brl+5Ri1PuqUSD9dECe
+         M1UYr7AA7KRhPKwuJUV+45mg2ao2CA80CXq8rM7YrS6Z8471zIRwrG1qFf6jYJeugoc5
+         w7tsyWdbp+7K75JdJEtNFv0yyjWfDQFAjo6k1AaX0PZhb34Rqj3ECmIgiMgiC9/8B8Bj
+         3ImA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686761030; x=1689353030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cwxcE8abfYw4UDD2GwaIyR5gbC93lb1+WlKxHZUaJK4=;
+        b=Pm/GVU7GlFypoMODMlBhN5VOeZNZ3DVr7rqWS66Q1C0biFDwLCNOS2bV/9h8O5PNM0
+         Haf/iOmtWRvXemM1C6nSRx3dS8m+SEK48cBcNut5neqpu2q0Asc3sFb+pimOM41HbF3l
+         2lB9C24HbMHVO7aKwIpLYV8L29qkWFh1npE6CWKBzAZYyCF9M+PnbuZYiDEjSGFBQN0d
+         1IwWBFDVbPcOPrUECF13Ffw6sb8jGhETosK8rW7Hhy1zrnDrbYpoBfj8t9xs2sbJPYqj
+         Z3U0ecF0eBlFnwhste0lT8mEygKm5gKZ0RRhV7cIiFx9LP4QDcgWwcjRP/dGg00gvQJ8
+         d0Sg==
+X-Gm-Message-State: AC+VfDz5LiZs/zBpUc6iJoAi7Li8/Xi67bjjiM6r/c6ZrBOR83RKUJ8s
+	u4oJCSXWEEJN5m6W0/KMOQlUbOCtvNFENBhJx7JR7g==
+X-Google-Smtp-Source: ACHHUZ5o8sqdC4i4keALJfqNYXtPDam68Ipa/08xsOY3XLPJwD3/x42L275UgzABPRHZJgKAd+xS3V+jUiSWv462VUc=
+X-Received: by 2002:ad4:5f8e:0:b0:62a:d642:df29 with SMTP id
+ jp14-20020ad45f8e000000b0062ad642df29mr20295870qvb.39.1686761030496; Wed, 14
+ Jun 2023 09:43:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US
-From: Jeny Sheth <jeny.sadadia@collabora.com>
-To: kernelci-sysadmin@groups.io
-Cc: kernelci@lists.linux.dev
-Subject: Request for Github App for Authenticated calls
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <CAKwvOd=qxNfPDo-=bxzyzmY3YmsBtxv686rr9Q_thrfC6ni3eg@mail.gmail.com>
+ <262df5fd-d8c4-47aa-a65d-dd79a303a9ca@sirena.org.uk> <dfa85ccc-693b-00cb-a4d9-af32e0dfbed8@collabora.com>
+In-Reply-To: <dfa85ccc-693b-00cb-a4d9-af32e0dfbed8@collabora.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Wed, 14 Jun 2023 12:43:39 -0400
+Message-ID: <CAKwvOd=8eZbQWngCs1V_o9Z8ecd5vx39k=FJUE_P2wuXxu2HXA@mail.gmail.com>
+Subject: Re: kernelci: please upgrade clang-17
+To: Guillaume Tucker <guillaume.tucker@collabora.com>, Mark Brown <broonie@kernel.org>
+Cc: kernelci@lists.linux.dev, clang-built-linux <llvm@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+ack - thanks!
 
-
-It is a known issue that we are frequently hitting Github API rate limit 
-with staging jobs from kernelci-deploy scripts. We already have a Github 
-issue for this: https://github.com/kernelci/kernelci-deploy/issues/62
-
-Below are some error logs for reference:
-
-```
-
-Pushing kernel test branch for mainline
-path: checkout/linux
-repo: kernelci/linux
-Traceback (most recent call last):
-   File "/home/kernelci/kernelci-deploy/./kernel.py", line 87, in <module>
-     ret = main(args)
-   File "/home/kernelci/kernelci-deploy/./kernel.py", line 43, in main
-     repo = kernelci.GITHUB.get_repo(repo_name)
-   File "/usr/lib/python3/dist-packages/github/MainClass.py", line 294, 
-in get_repo
-     headers, data = self.__requester.requestJsonAndCheck(
-   File "/usr/lib/python3/dist-packages/github/Requester.py", line 275, 
-in requestJsonAndCheck
-     return self.__check(*self.requestJson(verb, url, parameters, 
-headers, input, self.__customConnection(url)))
-   File "/usr/lib/python3/dist-packages/github/Requester.py", line 286, 
-in __check
-     raise self.__createException(status, responseHeaders, output)
-github.GithubException.RateLimitExceededException: 403 {'message': "API 
-rate limit exceeded for 52.250.7.52. (But here's the good news: 
-Authenticated requests get a higher rate limit. Check out the 
-documentation for more details.)", 'documentation_url': 
-'https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting'}
-
-```
-
-I have been investigating the procedure to use authenticated Github API 
-calls to fix the issue. Please see the issue comment here for the 
-proposed solution: 
-https://github.com/kernelci/kernelci-deploy/issues/62#issuecomment-1525661902
-
-I have mentioned in the comment that we need to create a Github App for 
-the KernelCI organization. As I am not an authorized person to do that, 
-I would appreciate it if one of the admins can help me with this procedure.
+On Tue, Jun 13, 2023 at 6:35=E2=80=AFAM Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
+>
+> On 12/06/2023 17:11, Mark Brown wrote:
+> > On Fri, Jun 09, 2023 at 01:50:13PM -0700, Nick Desaulniers wrote:
+> >> Starting a new thread because gmail cannot handle replying to an email
+> >> w/ >45k warnings.
+> >> https://lore.kernel.org/llvm/6482b7dd.170a0220.a93c3.9102@mx.google.co=
+m/
+> >>
+> >> instances of -Wbuiltin-macro-redefined have been fixed in ToT llvm.
+> >> Updating clang-17 should resolve most of the error spew.
+> >>
+> >> Does kernel CI update ToT clang builds on a fixed cadence?
+> >
+> > The containers with the tools should be being rebuilt during the
+> > production update which normally happens every Monday.  There's some
+> > disruption at the minute due to some infrastructure rebuilding that's
+> > going on so today's update of the containers might be delayed.
+>
+> Yes the LLVM-17 update has now trickled down into production and
+> warnings are all gone:
+>
+>   https://storage.kernelci.org/next/master/next-20230613/arm/multi_v7_def=
+config/clang-17/logs/kernel.log
+>
+> compared with the previous linux-next build which had all the warnings:
+>
+>   https://storage.kernelci.org/next/master/next-20230609/arm/multi_v7_def=
+config/clang-17/logs/kernel.log
+>
+> We skipped the regular production update last Monday to focus on
+> migrating VMs to the new Azure subscription, sorry for the
+> inconvenience.  We're back on the regular schedule now.
+>
+> Thanks,
+> Guillaume
+>
 
 
-Thanks in advance.
-
-
-Thank you, Jeny
-
+--=20
+Thanks,
+~Nick Desaulniers
