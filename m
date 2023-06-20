@@ -1,160 +1,192 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B00BA23
-	for <kernelci@lists.linux.dev>; Fri, 16 Jun 2023 11:40:58 +0000 (UTC)
-Received: from [192.168.233.43] (unknown [80.215.5.65])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id B3FC76606F7F;
-	Fri, 16 Jun 2023 12:34:58 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1686915298;
-	bh=O+KEK8B09Q1wyj/tmWWkZp0ttxs2zrIyAgtAgV3YI+Q=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=brB/kU5ghT0oQBOO4CxMMCgnj7/BnJZB7g+dTeloLVvuzGn6R8o/VoB74NGQT63mp
-	 dCnrtK1hrCbCAcaSHOkzhmC0sEi9zV9K4cJ3VvvC43GXedHTFbeKEU8k8rm1/j2qJs
-	 ZIG0xGf0A1aCnp/djNLPhQGkPjxViS2kZLH+oqpvmACRK6Vt+f9W/LjDuoi0gLlSlA
-	 4RYdyZOp+03qDvdkgsvWfAYkTlYQhBL85ija7PiYo4DUu2P0CM8FahSDtc719S7LuY
-	 CImcADQi2VdDU+2iitC1ptvaqBOb2S1pCvOnJeOu3YShdkzgu0nMoY49H4XbXP6oni
-	 gj179HZFhteNQ==
-Message-ID: <3f0eb69d-1edd-5ec1-8c73-583473fa3afa@collabora.com>
-Date: Fri, 16 Jun 2023 13:36:12 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B3E15AE;
+	Tue, 20 Jun 2023 04:19:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C42C433CD;
+	Tue, 20 Jun 2023 04:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1687234778;
+	bh=NyGsLeW/FztEsf9dVsONe46AWBlbnmJSRV1nyDFVDmM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SyYSgxyRvMQ8bpj+1tiIcMRWk9Q70jG/7TLqBfKKy3zECmTd3QV/+M7adHuWfbg5z
+	 HswzlZkElK3j8hqijaUg3Ant3XNG94VmIBvI7gEnLscldIiyESkU/2vW97lJfx6pW9
+	 SxSEI8ds3VW0pXcBTMlMC2jBZjnrZmPk+ONpMHyQCTyxE9PpzshdH+Y9yo0Knpkt9x
+	 +NlNo4ZmmOKQT4VUiAX6qfPMdu95kzDFiSRFMkvZlAytkmrkTpK1uxBNoyCiWllxUv
+	 E1N4G3G7CrmWVXbzHGP4rRuCm9CzTe/J4FboxWm9y+PwWvNDemNb8YVszXybGz+iwK
+	 ZP5I3S++JFuTw==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-55b21c3f359so2660717eaf.0;
+        Mon, 19 Jun 2023 21:19:38 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzA1nk5Vj6tUZwoAfM1PJo1qrQd4epmieO5NMsrJKCIzALprxnH
+	z1RptUcevx+XJr1NgbIBKhdQc0cNtZWWME6O/kk=
+X-Google-Smtp-Source: ACHHUZ50dBIk80zRdS9T10z5yvKFkNOL2YvbT9WJB+0+jV9iiQvBtez20V9tVjAvd8EezQ0PGvBQj2XapoOMQguh5H0=
+X-Received: by 2002:a4a:c607:0:b0:558:b793:f10c with SMTP id
+ l7-20020a4ac607000000b00558b793f10cmr5116789ooq.3.1687234777440; Mon, 19 Jun
+ 2023 21:19:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Enabling TOML support for user settings
-Content-Language: en-US
-To: Jeny Sheth <jeny.sadadia@collabora.com>, kernelci@lists.linux.dev
-References: <0d91ed78-e648-d41e-1f29-2eb7dbb488ae@collabora.com>
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-In-Reply-To: <0d91ed78-e648-d41e-1f29-2eb7dbb488ae@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com>
+ <17c91d37-7d9c-0df4-2438-2b30ca0b5777@collabora.com> <CAKwvOdk4QO8x_bs64fFRCsMu__AjhXd4Ew2KfgzQOb9Q3FMqSA@mail.gmail.com>
+ <b5d0cf82-0e42-f6a1-c9f5-c145fdc4c622@collabora.com> <CAKwvOdkFxu9hYSL_RCXadpR0dQd1+dZmAUVXdfFiLUfxg4D_Xw@mail.gmail.com>
+ <878rdlk9bi.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <CAKwvOd=8LVU+iANkFx18Wm1jg7gYiAXovAmo9t5ZZaVdMULn-Q@mail.gmail.com>
+ <875y8ok9b5.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <CAKwvOdmJJibt6sHSp91v2s7BxUWBC6xG7F7+3C6gUxNMzZ2xRA@mail.gmail.com>
+ <87353ok78h.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <2023052247-bobtail-factsheet-d104@gregkh> <CAKwvOd=2zAV_mizvzLFdyHE_4OzBY5OVu6KLWuQPOMZK37vsmQ@mail.gmail.com>
+ <cff33e12-3d80-7e62-1993-55411ccabc01@collabora.com> <CAKwvOd=F29-UkNO7FtUWpVV=POOZLb6QgD=mhLMWtRfkRSSi2A@mail.gmail.com>
+ <a037a08c-44c4-24e8-1cba-7e4e8b21ffaa@collabora.com>
+In-Reply-To: <a037a08c-44c4-24e8-1cba-7e4e8b21ffaa@collabora.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 20 Jun 2023 13:19:01 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAS8Y9syCiHMO2r75D6hgCSsDDvJ_=VMKpYqjondnbSZjw@mail.gmail.com>
+Message-ID: <CAK7LNAS8Y9syCiHMO2r75D6hgCSsDDvJ_=VMKpYqjondnbSZjw@mail.gmail.com>
+Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
+ compiler-specific macros
+To: Shreeya Patel <shreeya.patel@collabora.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Maksim Panchenko <maks@meta.com>, 
+	=?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, 
+	Michal Marek <michal.lkml@markovi.net>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, clang-built-linux <llvm@lists.linux.dev>, 
+	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, regressions@lists.linux.dev, 
+	"gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>, 
+	Guillaume Charles Tucker <guillaume.tucker@collabora.com>, denys.f@collabora.com, 
+	Nick Desaulniers <ndesaulniers@google.com>, kernelci@lists.linux.dev, 
+	Collabora Kernel ML <kernel@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jeny,
-
-On 06/06/2023 09:12, Jeny Sheth wrote:
-> Hello everyone,
-> 
-> We have enabled TOML support for user settings in KernelCI-Core.
-> Python package `toml` has been integrated to parse the settings file. Please see the Github issue[1] for more details on this transition.
-> 
-> The sample config file `kernelci.toml.sample`[2] has been added to the repository.
-> As per the former convention with `.conf`, we will continue having a `DEFAULT` section and other sections for different command line tools in the `.toml` file.
-> For example:
-> ```
-> [DEFAULT]
-> 
-> storage = "http://localhost:5002"
-> db_config = "localhost"
-> api_config = "docker-host"
-> 
-> [kci_build]
-> 
-> build_config = "next"
-> arch="x86"
-> j = 3
-> ```
-> 
-> With TOML, we can use different data types for values (strings with double quotes, integers, float). Unlike `configparser` this removes the need for data type conversion for values.
-> 
-> Components such as database, labs, and storage will follow the convention of the form ["storage:docker-host"].
-> For the correct parsing from TOML decoder, we need to use double quotes around the name when it includes ":".
-> Below is the example for more detail:
-> ```
-> ["lab:my-lava-lab"]
-
-It's worth noting that "lab" configs have been renamed
-to "runtime" now.  But this is not related to the move to TOML,
-just to keep examples consistent with the YAML config.
-
-> user = "user-name"
-> lab_token = "1234-5678"
-> 
-> ["db:staging.kernelci.org"]
-> 
-> db_token = "XXX-XXXX-XXXX-XXXX"
-> api = "https://api.staging.kernelci.org/"
-> ```
-> 
-> Another suggestion is to use dotted keys instead of ":" for the above section names. That way we can remove double quotes around the section name. However, that can cause issues when we have dotted values e.g. "staging.kernelci.org".
-> If we go with the dotted name, it will look like [db.staging.kernelci.org] and the parser will assume that it is a nested dictionary.
-> 
-> For example:
-> ```
-> [db.staging.kernelci.org]
-> api = "https://api.staging.kernelci.org/"
-> 
-> ```
-> Above will be parsed as:
-> ```
-> 'db': {'staging': {'kernelci': {'org': {'api': 'https://api.staging.kernelci.org/'}}}}
-> ```
-> 
-> 
-> To overcome that,  we can use double quotes around the value for dotted notation.
-> Something like this:
-> ```
-> [db."staging.kernelci.org"]
-> api = "https://api.staging.kernelci.org/"
-> ```
-> 
-> That will be parsed as:
-> ```
-> 'db': {'staging.kernelci.org': {'api': 'https://api.staging.kernelci.org/'}}
-> ```
-> 
-> We would like your comments/suggestions to select the best approach possible here for naming conventions. Please check out the discussion[3] here and feel free to provide your input.
-
-Thanks for detailing the changes.  I would personally be in
-favour of relying on the built-in namespacing feature of TOML
-with dotted keys as that would simplify our code base and remove
-scope for bugs or corner cases.  The likelihood of users hitting
-the issue of creating a key such as api.staging.kernelci.org
-rather than api."staging.kernelci.org" can be easily avoided with
-a sample settings file and documentation examples.  Also this is
-a standard thing in TOML, and it's a widespread config language
-standard now so I would expect many users to already be aware of
-this.
-
-> The `kernelci-pipeline` has already started adapting to this new format. This is the work in progress[4] for reference.
+On Mon, Jun 12, 2023 at 7:10=E2=80=AFPM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
 >
-> Standard locations for the file are the same as `kernelci.conf` file i.e.
-> - kernelci.toml in the current working directory
-> - ~/.config/kernelci/kernelci.toml for per-user settings
-> - /etc/kernelci/kernelci.toml for system-wide settings
-> 
-> Along with this new format, we are still keeping support for the old `kernelci.conf` for now. However, It is recommended to switch from the `.conf` to `.toml` as the older format will eventually be deprecated.
+> Hi Masahiro,
+>
+>
+> On 24/05/23 02:57, Nick Desaulniers wrote:
+> > On Tue, May 23, 2023 at 3:27=E2=80=AFAM Shreeya Patel
+> > <shreeya.patel@collabora.com> wrote:
+> >> Hi Nick and Masahiro,
+> >>
+> >> On 23/05/23 01:22, Nick Desaulniers wrote:
+> >>> On Mon, May 22, 2023 at 9:52=E2=80=AFAM Greg KH <gregkh@linuxfoundati=
+on.org> wrote:
+> >>>> On Mon, May 22, 2023 at 12:09:34PM +0200, Ricardo Ca=C3=B1uelo wrote=
+:
+> >>>>> On vie, may 19 2023 at 08:57:24, Nick Desaulniers <ndesaulniers@goo=
+gle.com> wrote:
+> >>>>>> It could be; if the link order was changed, it's possible that thi=
+s
+> >>>>>> target may be hitting something along the lines of:
+> >>>>>> https://isocpp.org/wiki/faq/ctors#static-init-order i.e. the "stat=
+ic
+> >>>>>> initialization order fiasco"
+> >>>>>>
+> >>>>>> I'm struggling to think of how this appears in C codebases, but I
+> >>>>>> swear years ago I had a discussion with GKH (maybe?) about this. I
+> >>>>>> think I was playing with converting Kbuild to use Ninja rather tha=
+n
+> >>>>>> Make; the resulting kernel image wouldn't boot because I had modif=
+ied
+> >>>>>> the order the object files were linked in.  If you were to randoml=
+y
+> >>>>>> shuffle the object files in the kernel, I recall some hazard that =
+may
+> >>>>>> prevent boot.
+> >>>>> I thought that was specifically a C++ problem? But then again, the
+> >>>>> kernel docs explicitly say that the ordering of obj-y goals in kbui=
+ld is
+> >>>>> significant in some instances [1]:
+> >>>> Yes, it matters, you can not change it.  If you do, systems will bre=
+ak.
+> >>>> It is the only way we have of properly ordering our init calls withi=
+n
+> >>>> the same "level".
+> >>> Ah, right it was the initcall ordering. Thanks for the reminder.
+> >>>
+> >>> (There's a joke in there similar to the use of regexes to solve a
+> >>> problem resulting in two new problems; initcalls have levels for
+> >>> ordering, but we still have (unexpressed) dependencies between calls
+> >>> of the same level; brittle!).
+> >>>
+> >>> +Maksim, since that might be relevant info for the BOLT+Kernel work.
+> >>>
+> >>> Ricardo,
+> >>> https://elinux.org/images/e/e8/2020_ELCE_initcalls_myjosserand.pdf
+> >>> mentions that there's a kernel command line param `initcall_debug`.
+> >>> Perhaps that can be used to see if
+> >>> 5750121ae7382ebac8d47ce6d68012d6cd1d7926 somehow changed initcall
+> >>> ordering, resulting in a config that cannot boot?
+> >>
+> >> Here are the links to Lava jobs ran with initcall_debug added to the
+> >> kernel command line.
+> >>
+> >> 1. Where regression happens (5750121ae7382ebac8d47ce6d68012d6cd1d7926)
+> >> https://lava.collabora.dev/scheduler/job/10417706
+> >> <https://lava.collabora.dev/scheduler/job/10417706>
+> >>
+> >> 2. With a revert of the commit 5750121ae7382ebac8d47ce6d68012d6cd1d792=
+6
+> >> https://lava.collabora.dev/scheduler/job/10418012
+> >> <https://lava.collabora.dev/scheduler/job/10418012>
+> > Thanks!
+> >
+> > Yeah, I can see a diff in the initcall ordering as a result of
+> > commit 5750121ae738 ("kbuild: list sub-directories in ./Kbuild")
+> >
+> > https://gist.github.com/nickdesaulniers/c09db256e42ad06b90842a4bb85cc0f=
+4
+> >
+> > Not just different orderings, but some initcalls seem unique to the
+> > before vs. after, which is troubling. (example init_events and
+> > init_fs_sysctls respectively)
+> >
+> > That isn't conclusive evidence that changes to initcall ordering are
+> > to blame, but I suspect confirming that precisely to be very very time
+> > consuming.
+> >
+> > Masahiro, what are your thoughts on reverting 5750121ae738? There are
+> > conflicts in Kbuild and Makefile when reverting 5750121ae738 on
+> > mainline.
+>
+> I'm not sure if you followed the conversation but we are still seeing
+> this regression with the latest kernel builds and would like to know if
+> you plan to revert 5750121ae738?
 
-In particular, the new LAVA callback handler service now
-exclusively relies on a TOML settings file to be present in order
-to find credentials for uploading files to storage (job logs...).
 
-All the regular command line tools and new pipeline services
-support both the legacy .conf settings and the new TOML format.
+Reverting 5750121ae738 does not solve the issue
+because the issue happens even before 5750121ae738.
+multi_v7_defconfig + debug.config + CONFIG_MODULES=3Dn
+fails to boot in the same way.
 
-> We are planning to support the older format until we move from the old backend to the new API. As per the planning, the transition will take place by the end of 2023. Suggestions for deciding the deprecation timeline are welcome.
+The revert would hide the issue on a particular build setup.
 
-Please note that the official timeline for deprecating the legacy
-system hasn't been confirmed yet, but yes in principle it
-shouldn't happen earlier than the end of 2023.  So roughly
-speaking, users should move to TOML settings by the end of the
-year.  A formal timeline with more details will be shared later
-when things are more certain.
 
-Thanks,
-Guillaume
+I submitted a patch to more pin-point the issue.
+Let's see how it goes.
+https://lore.kernel.org/lkml/ZJEni98knMMkU%2Fcl@buildd.core.avm.de/T/#t
 
-> [1] https://github.com/kernelci/kernelci-core/issues/1913
-> [2] https://github.com/kernelci/kernelci-core/blob/main/kernelci.toml.sample
-> [3] https://github.com/kernelci/kernelci-core/issues/1913#issuecomment-1572217965
-> [4] https://github.com/kernelci/kernelci-pipeline/pull/266/
 
+(BTW, the initcall order is unrelated)
+
+
+
+
+
+>
+>
+> Thanks,
+> Shreeya Patel
+>
+> >>
+> >> Thanks,
+> >> Shreeya Patel
+> >>
+> >
+
+--
+Best Regards
+Masahiro Yamada
