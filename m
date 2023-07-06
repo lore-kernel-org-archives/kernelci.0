@@ -1,27 +1,27 @@
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D815257
-	for <kernelci@lists.linux.dev>; Thu, 29 Jun 2023 07:10:49 +0000 (UTC)
-Received: from [IPV6:2001:861:4a40:8620:dc26:f845:fb8:f5b0] (unknown [IPv6:2001:861:4a40:8620:dc26:f845:fb8:f5b0])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BDB9440
+	for <kernelci@lists.linux.dev>; Thu,  6 Jul 2023 13:51:56 +0000 (UTC)
+Received: from [192.168.196.47] (unknown [80.215.130.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id EF1FE660701E;
-	Thu, 29 Jun 2023 08:10:47 +0100 (BST)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 3BA946606FCD
+	for <kernelci@lists.linux.dev>; Thu,  6 Jul 2023 14:51:49 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1688022648;
-	bh=2cY/zWQ2rVf4eOmWcalm4M2kOTp5eP6wtW8WuMGH6hI=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Qh9USK6/qyG6agApm4l2Jj3MBLmJJAoWQlqi3ruJ6et96M1k+w7mZA4hweOwLW9Pi
-	 dPJ71VXeFrJ7ADcpsE+DjddYDehmfoIdgylfIFACzxbANI/js09yyD8hYdra60lgbz
-	 dxCM/oZf0IQT8RHWCiDtByLpizh+9s24q25Rn6nH0bE0UdBPDq+EbWfWjvpPdLZo4A
-	 DbfwXaFeti1fx/ivH2JVbCK9fxQKuxtfOQDRYYJq8ci3yPspNnTXCMqSdQTBrPsczy
-	 siA3pqH+kQs408Mt/LMR6bo6eaGik55645kf9LlB/mTISNe0EvBXOzkGMa8GlZoge0
-	 yS04mLF2P2iqw==
-Message-ID: <14cdf331-5c29-e708-0aec-7da0690856c8@collabora.com>
-Date: Thu, 29 Jun 2023 09:11:57 +0200
+	s=mail; t=1688651509;
+	bh=fR7WsM/nfT/+zeb+kI7eksBvTk+XGxySpGuRsmfHPRw=;
+	h=Date:To:From:Subject:From;
+	b=RO2HqOhpUYJWYnINwCLQxC0FF7Ukd6oOjiCfznU6dCa8DreqrqzULnsaPAGBFS9dT
+	 urCLmEcgWyBRBT+Cv+eHTdcHd5iuIkjcHVQvx1NKLyUZErYAgHxRmQydB1XvkPWXZt
+	 GMfXhzz5sqkusiGVnNc0WoVchZsDtv+L1JfWX17IrOwbVcYw9YHV2RexXM+snEtFYE
+	 jvH2p7078WwQQZJXSeHtDM+A//IblVxa8Rly6wC2E3s5gEmHvry+QzEZSsTmBGgUQ0
+	 s/5eEa2+OieCh0CsMKmpkKJ5NhbwNWBtEw/nNPSxf8H557nE95bu+gDe3GWJoqrP3L
+	 nUL6Kvke2QzUg==
+Message-ID: <3e1a3658-2842-0eaa-efd6-bf61aca191dd@collabora.com>
+Date: Thu, 6 Jul 2023 15:51:47 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -30,31 +30,36 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: kernelci.org currently offline due to Azure outage
 Content-Language: en-US
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
 From: Guillaume Tucker <guillaume.tucker@collabora.com>
-To: kernelci@lists.linux.dev
-Cc: kernelci-sysadmin@groups.io, kernelci-members@groups.io
-References: <d33464ef-b4c8-59c1-399a-5f3d071c289d@collabora.com>
-In-Reply-To: <d33464ef-b4c8-59c1-399a-5f3d071c289d@collabora.com>
+Subject: Reduced build and test coverage
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/06/2023 21:38, Guillaume Tucker wrote:
-> Hello,
-> 
-> In a totally unpredictable move, our new MS Azure subscription
-> just got disabled for some reasons we're still trying to clarify
-> with Microsoft.  As a result, basically all kernelci.org services
-> are currently offline.  It's most likely just going to be a short
-> glitch as there's no known reason for this to happen, so we're
-> hoping to have things back online very shortly.  If this takes
-> longer we'll consider some alternatives to at least get part of
-> the services restored in a timely fashion.
+While we now have a stable Azure subscription, it turns out the
+resources we're using are burning our newly allocated budget much
+more quickly than what we had before.  There are several ways to
+address this so we're confident it's only a temporary issue, but
+in the meantime we have to downscale our build and test coverage
+to keep the daily costs as low as possible.
 
-All services are now back to normal, thanks to the Microsoft
-support team and KernelCI sysadmins for their quick response.
+As such, we're planning to make the following changes during
+Monday's production update:
 
-Best wishes,
+* no allmodconfig builds
+* no builds with special config fragments (crypto, ima, x86_kvm_guest...)
+* most trees will only be building a minimal set of configs
+* kselftest and LTP test collections are each run on only one platform
+* baseline-nfs is disabled on platforms that don't run tests using NFS
+
+This will allow us to shut down some Kubernetes clusters used for
+kernel builds and reduce the data transfers from storage.  We'll
+confirm next week whether this is going to be rolled out in
+production and provide more updates as we find some solutions.
+Please let us know if this is causing some disruption and we may
+be able to tweak things to reach a compromise until things are
+back to normal.
+
+Thanks,
 Guillaume
-
