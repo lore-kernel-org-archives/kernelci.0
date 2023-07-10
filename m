@@ -1,85 +1,59 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62472581
-	for <kernelci@lists.linux.dev>; Mon, 10 Jul 2023 19:23:46 +0000 (UTC)
-Received: from [IPV6:2001:861:4a40:8620:d901:c525:a85f:2da3] (unknown [IPv6:2001:861:4a40:8620:d901:c525:a85f:2da3])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 356946602B7B;
-	Mon, 10 Jul 2023 20:23:39 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1689017019;
-	bh=v3OpYtK5KlSY50zlw4L0lKNZXUv0DKtGj8jL4vUZSHA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=CkcXS705r828rrdhl0lvy+JHVpUe8d3B23+cY+A0EKn4jqDTtRbJZg/tkqL7gcdWP
-	 ClPzBGq43mlYdvzEelkJr5jQkPR7fhBSCeFwEolOzDYST0ihIFXkPGJsdY0i9RvaZc
-	 VWIqoWVVPXer1wz6CRPlRncmo1R6LZ+TnffF0dyDSxUweEV7GAPVPhw1CksLigBu84
-	 f03bypfPSGSvrgRWCF6Y/7nd3eHN5KO1/u3kSptZBAqjV1dJrzueXI+joPJrRShjpo
-	 LxSG7ghVdt5xDXLRarOaamwHQikMd9WcDoq8sTtv41uhrKSKZTXTRj7bNNOPCgb+mM
-	 k5VOMAkfmXL2w==
-Message-ID: <2ee84d61-3cb4-f745-2aad-c6319cf4e5ac@collabora.com>
-Date: Mon, 10 Jul 2023 21:23:36 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF26156E2
+	for <kernelci@lists.linux.dev>; Mon, 10 Jul 2023 22:42:06 +0000 (UTC)
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-401d1d967beso63041cf.0
+        for <kernelci@lists.linux.dev>; Mon, 10 Jul 2023 15:42:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689028925; x=1691620925;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KwijgclT2oZSItO/Hh2KyeFqi7suiMFEV1yfkdQSD4Q=;
+        b=ouYhu7jTVjxmrWhMNvS3Cy/gtOB07v3V1U6Vvm6SaXmyreyAGue4amcUdhNBW09Cfh
+         w2LD9q6QFszxh6SXS1asCWZv5MfHn63Hcw3DyPe6KdBn//LlhdpeRub7Zd8jrGE/zXS5
+         KKWCCedP1leGU4uTCoIAJT4zKZtCzn54yi6UqaJbp1T0cCxWy/vLFgqDlWQPFUXW+HAN
+         DKiTDEGnlbmqh/NXomprzzMcijQhJOunIQwvhd2RBHUX1r5hlp95Y2hxwz+nCLX1cew2
+         YvGqkIv9qkNyUBSKFT8FjXlFcd+1+F9/tOD2EDvb7cFRELqQ84xKgzH5Sp1gTQDHw0Nd
+         OvMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689028925; x=1691620925;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KwijgclT2oZSItO/Hh2KyeFqi7suiMFEV1yfkdQSD4Q=;
+        b=EA6FefAh5t00FWJKL8QkaxWMW7DzFWovVQ7R2EypD57T0f9slmPVNVyrJkIacijhVq
+         TAsehDPHkN8uoorHZNnHtPmfa68LYYjISXkCQPGbnlKZWcsLWyOq+p8uGouSy6j03R4/
+         6exRdXzPbSSGoII2HnmlA4TlmxONMc6o8bngj2un8WXUlBqqWgco4OzlwUqEn4RtwdUg
+         2hbSfk1S1kcGWWLnYJxC8MLu123Bx0vVH+91tlALa3V4/IyLleR3XFDApK/f8bvoshao
+         P0nWR0yfbJC/80YY0SdTgKNMRwJkveYw4Wqj+dMUEs9J5WqMPnci4JIxEHFoZ/B5S9N4
+         V5Ag==
+X-Gm-Message-State: ABy/qLbiHG6F79Fh5RHWnYh8UAqBbLnY1OnkwwLkkaaLaUJGu5s5tOLl
+	T1qyV1Ga7EI6GoekKOLbDAJVrRizUsCyfXMunfMuhQqm4v4NN94704ALo3/n
+X-Google-Smtp-Source: APBJJlFVvDSc2y81kzRrPAGG7mNNc5oZLt9xesvh8WrOenPN8TpvsXYv52lq3JZOH91eZ4tUtLZvH1dGTTnVw6lPRnk=
+X-Received: by 2002:a05:622a:1a84:b0:3f4:f0fd:fe7e with SMTP id
+ s4-20020a05622a1a8400b003f4f0fdfe7emr32250qtc.3.1689028925053; Mon, 10 Jul
+ 2023 15:42:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Request for Proposals: UX Analysis 2023
-Content-Language: en-US
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- automated-testing@lists.yoctoproject.org
-Cc: kernelci-members@groups.io
-References: <74ac6506-7171-5b78-52c5-d6a3095df9dd@collabora.com>
-In-Reply-To: <74ac6506-7171-5b78-52c5-d6a3095df9dd@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Todd Kjos <tkjos@google.com>
+Date: Mon, 10 Jul 2023 15:41:49 -0700
+Message-ID: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+Subject: Please add new Android branches
+To: kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 21/06/2023 09:48, Guillaume Tucker wrote:
-> KernelCI is now looking for proposals to conduct an UX Analysis
-> for a new web dashboard.
-> 
-> Based on the Community Survey in 2020 and after gathering
-> feedback and ideas from kernel developers, we now have a clearer
-> idea of what would be expected from an ideal web dashboard for
-> KernelCI.  The next steps are to start thinking about how that
-> could be turned into reality, and for this we need some
-> professional help from web designers and developers as we don't
-> have such skills in-house.
-> 
-> The goal of this RFP is to go through an initial UX Analysis
-> phase which would then become the foundation for making
-> specifications to implement a real web dashboard.  The full RFP
-> document can be found here:
-> 
->   https://kernelci.org/blog/posts/2023/rfp-ux-analysis/RFP-UX-Analysis-2023-v2.pdf
-> 
-> See also the blog post which can easily be shared:
-> 
->   https://kernelci.org/blog/posts/2023/rfp-ux-analysis/
-> 
-> Please send any proposals or inquiries to the KernelCI members:
-> 
->   kernelci-members@groups.io
-> 
-> The deadline for submitting proposals is 10th July.  However, as
-> we're already half-way through the initial 6-week period and we
-> didn't send any email about the RFP earlier, we might choose to
-> give it some extra time if the original deadline turns out to be
-> too short notice.  Please let us know if that is the case.
+Please add the following new Android branches to kernelci testing.
 
-Please note that following a recent surge of queries about the
-RFP, the advisory board has agreed to extend the timeline by two
-weeks.  As such, the new deadline for submitting proposals is now
-July 24th.
+repo: https://android.googlesource.com/kernel/common
+branches:
+- android15-6.1
+- android14-6.1-lts
+- android14-5.15-lts
 
-Thank you,
-Guillaume,
-On behalf of the KernelCI board of members
+Thanks,
 
+-Todd
