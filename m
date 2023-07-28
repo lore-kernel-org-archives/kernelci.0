@@ -1,45 +1,27 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27651F186
-	for <kernelci@lists.linux.dev>; Tue, 25 Jul 2023 20:20:04 +0000 (UTC)
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-d09ba80fbcaso3974935276.2
-        for <kernelci@lists.linux.dev>; Tue, 25 Jul 2023 13:20:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690316403; x=1690921203;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JplYEBO71eE2jWz0LBGOQOzxtjuDy5Pj6xly4aLbp8o=;
-        b=H09+KHs9AN3LWmXS6SPrW4PqJzV40N+orlppWvBqAiSUAsN3OCzQqNvk4oHI342SlA
-         g86MgYnYgIKaIukvul2s9uolMA4Wg5FCLaBwOSnqzZFhU1vZJEFJEuZM3ulsIikf1Ukl
-         H/0l1STde/VwcUpuyK/FV5lSUse9uQSTpy59ge6p+LV2HSwgkASve5UxiZUd02QC+Wko
-         3jzR54YCLrGKk8MCNKh4j1fp/3KKNd2kSBxD3KGhrO9wxZuPJ02oZ35txH8IEXqwgjI9
-         jel5IkcDismkgxJxOCokPp/T6anhKyc86mh7GkKjDu842h4l1ZmgwtEi42L2ldTHLR//
-         p3Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690316403; x=1690921203;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JplYEBO71eE2jWz0LBGOQOzxtjuDy5Pj6xly4aLbp8o=;
-        b=JrKhW2iT5aP85bB3vasCHa6kHl74XTGssQjiyRakVZUKqnxsewsHsBoOiY2au5OF24
-         IzYUcoBKv0sOMbQL8z6IsKr8Lur9+lNNc4Al+tITziUDaM3puhaZKr7YIbIdgkjdvB8a
-         Hq47NzQoN+xUfisk4WF3V5sJLDlsITG5pNlU8sEhLCHZN2h5A+XX06OBCH3DeahECgVT
-         WKrwnWcnTPTrQ7bx0o5lRGwhQuVNNixoC7g0caHlPpvZ6aWsiykPXoow7W3Fmbd9+bqY
-         nVUjaAAviVw+lcv2mxnvZ27VX91NxtEROl6y9cPb7cg2If/1LFF0CQKMnWyO6IdwNL8M
-         9rGw==
-X-Gm-Message-State: ABy/qLYYl6mIO7c54cdWnQIkJJbdm08nM2tW1uutKi5qh6uBUQGeVxK2
-	jwvhofJ7Y0BqAjNngAc/Zv4=
-X-Google-Smtp-Source: APBJJlHAzkLPRR+D+g6g9SGSb/9OeFtEgu+KQqwuBmcYCg21b/sad8a+CK4BWrGPiFr7fXtaQ5YBng==
-X-Received: by 2002:a25:4217:0:b0:d19:86a8:24c6 with SMTP id p23-20020a254217000000b00d1986a824c6mr51337yba.42.1690316403322;
-        Tue, 25 Jul 2023 13:20:03 -0700 (PDT)
-Received: from ?IPV6:2600:1700:2442:6db0:3122:9f86:908c:8eb3? ([2600:1700:2442:6db0:3122:9f86:908c:8eb3])
-        by smtp.gmail.com with ESMTPSA id q16-20020a5b0350000000b00bcf788d09e3sm3042194ybp.34.2023.07.25.13.20.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jul 2023 13:20:02 -0700 (PDT)
-Message-ID: <a825567e-ff51-fdae-0e58-eb9365ecc6b5@gmail.com>
-Date: Tue, 25 Jul 2023 15:20:01 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03CA11CBA
+	for <kernelci@lists.linux.dev>; Fri, 28 Jul 2023 11:16:57 +0000 (UTC)
+Received: from [IPV6:2001:861:4a40:8620:d901:c525:a85f:2da3] (unknown [IPv6:2001:861:4a40:8620:d901:c525:a85f:2da3])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id BA376660716E;
+	Fri, 28 Jul 2023 12:16:55 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1690543015;
+	bh=5KpmPw0wUn30aW4LbIUyyvcbaaFA23KWVFGeyFNBKGw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=fGI4nywB8uftS+MU9yGshb6cpoFlgeJH0/Smti6QgBxuXmRy85EAOm766hCSNSFHh
+	 F3mmZNqApMGj9gcavA2+RCWyemlxxvcWfn9uiWJUqI4upqeoWjl1Rh9YG11e7tyc9M
+	 2rHCH9TtdqruTuRMW8PA/EStw6PxjlNLDHcJg1/NI7h4JrctlfR00XiyVjkQTS/LlC
+	 pxk2T1/gqj634uYPZIKH3JzdzWkL9+pOGxEHKG9/mad90IbDe6bYnj4pgq90bE9uNJ
+	 RGgLpdU1ZAuGuWWZnzUfEpRs+ZuGKzbHPBoGuROlttUjvHOogjcQtNCqo2deWV+tsq
+	 5uXpqCqu5yQXA==
+Message-ID: <15e8d276-0ca5-ecc3-ab57-604226995bd7@collabora.com>
+Date: Fri, 28 Jul 2023 13:16:52 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -47,178 +29,116 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [KTAP V2 PATCH] ktap_v2: add test metadata
+ Thunderbird/102.13.0
+Subject: Re: BPF-CI integration with KernelCI
 Content-Language: en-US
-To: Rae Moar <rmoar@google.com>, davidgow@google.com,
- skhan@linuxfoundation.org, keescook@chromium.org, Tim.Bird@sony.com,
- brendanhiggins@google.com
-Cc: corbet@lwn.net, guillaume.tucker@collabora.com, dlatypov@google.com,
- kernelci@lists.linux.dev, kunit-dev@googlegroups.com,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20230420205734.1288498-1-rmoar@google.com>
- <CA+GJov6w2GvD8th0t9RW=K1ntHk4dQRuYa4hoDHcmzBDK5YriA@mail.gmail.com>
-From: Frank Rowand <frowand.list@gmail.com>
-In-Reply-To: <CA+GJov6w2GvD8th0t9RW=K1ntHk4dQRuYa4hoDHcmzBDK5YriA@mail.gmail.com>
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+To: Nikolay Yurin <yurinnick@meta.com>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Cc: David Vernet <void@manifault.com>
+References: <87afa4a50985db47ee5681c4913514f0ce8bac1f.camel@meta.com>
+ <c39423d0-f7e4-a55f-45e0-6c02888766fd@collabora.com>
+ <c20bab15-5b86-34e7-50bf-d85c2f2661e0@collabora.com>
+In-Reply-To: <c20bab15-5b86-34e7-50bf-d85c2f2661e0@collabora.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 7/20/23 16:31, Rae Moar wrote:
-> On Thu, Apr 20, 2023 at 4:57 PM Rae Moar <rmoar@google.com> wrote:
+On 21/07/2023 19:21, Guillaume Tucker wrote:
+> On 18/07/2023 22:06, Guillaume Tucker wrote:
+>> Hi Nikolay,
 >>
->> Add specification for declaring test metadata to the KTAP v2 spec.
->>
->> The purpose of test metadata is to allow for the declaration of essential
->> testing information in KTAP output. This information includes test
->> names, test configuration info, test attributes, and test files.
->>
->> There have been similar ideas around the idea of test metadata such as test
->> prefixes and test name lines. However, I propose this specification as an
->> overall fix for these issues.
->>
->> These test metadata lines are a form of diagnostic lines with the
->> format: "# <metadata_type>: <data>". As a type of diagnostic line, test
->> metadata lines are compliant with KTAP v1, which will help to not
->> interfere too much with current parsers.
->>
->> Specifically the "# Subtest:" line is derived from the TAP 14 spec:
->> https://testanything.org/tap-version-14-specification.html.
->>
->> The proposed location for test metadata is in the test header, between the
->> version line and the test plan line. Note including diagnostic lines in
->> the test header is a depature from KTAP v1.
->>
->> This location provides two main benefits:
->>
->> First, metadata will be printed prior to when subtests are run. Then if a
->> test fails, test metadata can help discern which test is causing the issue
->> and potentially why.
->>
->> Second, this location ensures that the lines will not be accidentally
->> parsed as a subtest's diagnostic lines because the lines are bordered by
->> the version line and plan line.
->>
->> Here is an example of test metadata:
->>
->>  KTAP version 2
->>  # Config: CONFIG_TEST=y
->>  1..1
->>      KTAP version 2
->>      # Subtest: test_suite
->>      # File: /sys/kernel/...
->>      # Attributes: slow
->>      # Other: example_test
->>      1..2
->>      ok 1 test_1
->>      ok 2 test_2
->>  ok 1 test_suite
+>> On 12/07/2023 05:01, Nikolay Yurin wrote:
+>>> Hi everyone,
+>>>
+>>> I am part of the Kernel PE team at Meta, working on BPF CI [1].
+>>> Currently we aggregate patches from Kernel Patchworks into Github pull
+>>> requests [2], run Github CI and sending results back into Patchworks.
+>>> I'd like to explore ways to integrate with KernelCI and see how it
+>>> works with our current setup and tests.
 > 
-> Hi everyone!
+> Just so that everyone knows, there's now a GitHub issue to
+> discuss this as well as this email thread:
 > 
-> I have been doing some more thinking on KTAP Metadata as I have been
-> working on the KUnit Test Attributes patch set
-> (https://lore.kernel.org/all/20230719222338.259684-1-rmoar@google.com/).
-> Two additional ideas have come up in the discussion:
+>   https://github.com/kernelci/kernelci-api/issues/307
 > 
-> 1) I wonder if it would be easier to separate "ktap_attributes" into
-> individual attributes.
-> 
-> The two proposed KUnit attributes currently are speed and module name.
-> I think it would be easier for parsing and reading if these attributes
-> had corresponding "ktap_speed" and "ktap_module" categories. Then, in
-> the future if there are too many attributes to print on separate lines
-> they could be grouped into a "ktap_attributes" category later.
+> Thanks Nikolay for creating it.
 
-I am fine with the above.  This basically removes the special case of
-"attribute", and what we have been calling attributes are now metadata,
-just like any other metadata.
+We've agreed to schedule an extra meeting next Wednesday at 17:00
+UTC with Nikolay as the regular weekly ones aren't convenient for
+AMER timezones.  If anyone else wants to attend, please let us
+know (on this thread, or IRC or Slack...) as this is a public
+community meeting just like the weekly and the open hours.
 
-> 
-> 2) I wonder if we can shift the concept of KTAP metadata to all tests
-> rather than just suites.
-> 
-> I think it would be very valuable to have a KTAP metadata format that
-> is flexible to work for both suites and test cases. To transition this
-> to test cases, I propose we would use the same format we have been
-> discussing but just printed just before the test result line (David
-> Gow originally came up with this idea). This would look something like
-> this:
-> 
-> KTAP version 2
-> # ktap_config: CONFIG_TEST=y
-> 1..1
->     KTAP version 2
->     # ktap_test: test_suite
->     # ktap_module: example
->     1..2
->     ok 1 test_1
->     # ktap_test: test_2
->     # ktap_speed: slow
->     # test initializing   // diagnostic data
->     ok 2 test_2
-> ok 1 test_suite
+Thanks,
+Guillaume
 
-That is the way I would expect metadata to exist.  I think I had implicitly
-expected test metadata and suite metadata to be of the same format.
-
-It seems to me that "suite" is more a kunit concept than a KTAP concept.
-The kunit suite naturally maps into the top level KTAP test, but I don't
-think that KTAP should use the term "suite".
-
+>> It's great to see this topic being revived now that the new API
+>> is getting ready for beta testing.  We discussed it with David
+>> Vernet (on Cc) last year at Kernel Recipes.  The idea is to have
+>> a service making a bridge between your Patchwork system and the
+>> KernelCI API.  I think it's a great way to start doing pre-merge
+>> testing with patches from mailing lists as the scope is pretty
+>> well defined.  If I understood this correctly, the target branch
+>> is always the same and only one or two small kernel builds are
+>> required to test them.
+>>
+>>> I saw comment by Guillaume Tucker [3] saying that kernelci-backend is
+>>> unmaintained. Could you point me out to the up-to-date documentation on
+>>> how to setup local instances?
+>>
+>> You can find a quickstart guide here:
+>>
+>>   https://kernelci.org/docs/api/getting-started/
+>>
+>> Please note that it still needs some polishing, we have a few
+>> things left before we can host an instance publicly available
+>> with early access for some beta testers.  Doing a PoC around this
+>> would be a very good way to exercise it and get some feedback.
+>> The guide is about setting up a local instance which you can
+>> already take a look into and get a bit familiar with the
+>> architecture.
+>>
+>>> I'm open for feedback and discussions on the future of BPF CI, feel
+>>> free to reach out to me if you have any questions. Thanks!
+>>
+>> Sounds great.  I guess we can already start discussing some
+>> high-level concepts and think about how this could be done in
+>> practice.  Then there will be an email announcement once we have
+>> a public instance available which should facilitate work on this
+>> topic.
+>>
+>> It would be good also for us to get to know how BPF CI works a
+>> bit more, maybe you could join a weekly KernelCI community
+>> meeting to discuss this?  It's every Thursday at 11:00 UTC.  If
+>> this is not a convenient time, please let us know and we can
+>> arrange something.  There's also https://kernelci.slack.com in
+>> addition to IRC.  And thanks for the links, I'll take a look.
+>>
+>> Put simply, one approach would be for Patchwork or a GitHub
+>> action to generate an event on the API's Pub/Sub interface when
+>> some new patches need to be tested.  Then a service would be
+>> listening for this, preparing the source code tarball and the
+>> rest is in principle the same as when testing code taken from a
+>> git repo.
+>>
+>> Then we can look into more advanced things such as doing
+>> incremental builds for series of patches like 0-day does and
+>> tying new revisions of the same patch series together to compare
+>> results, track regressions against to the base git version before
+>> the patches are applied etc.  Reporting the results via Patchwork
+>> and email replies on the original thread would also seem like
+>> typical things to consider.
+>>
+>> Thanks,
+>> Guillaume
+>>
+>>> [1] http://vger.kernel.org/bpfconf2022_material/lsfmmbpf2022-bpf-ci.pdf
+>>> [2] https://github.com/kernel-patches/bpf/pulls
+>>> [3] https://github.com/kernelci/kernelci-
+>>> backend/issues/301#issuecomment-1630386265
+>>
+>>
+>>
 > 
-> I don't love using the "ktap_test: test_2" line since the test name is
-> repeated. However, I like that this mirrors the same format used for a
-> suite and I currently think it is the best way to define the start of
-> the metadata header.
 > 
-> The test name line could actually be useful by providing context for
-> any test diagnostic data printed below or if the test crashes while
-> running.
-> 
-> What do people think of these ideas?
-
-Sounds good to me.
-
--Frank
-
-> 
-> Thanks!
-> -Rae
-> 
->>
->> Here is a link to a version of the KUnit parser that is able to parse test
->> metadata lines for KTAP version 2. Note this includes test metadata
->> lines for the main level of KTAP.
->>
->> Link: https://kunit-review.googlesource.com/c/linux/+/5809
->>
->> Signed-off-by: Rae Moar <rmoar@google.com>
->> ---
->>
->> Hi everyone,
->>
->> I would like to use this proposal similar to an RFC to gather ideas on the
->> topic of test metadata. Let me know what you think.
->>
->> I am also interested in brainstorming a list of recognized metadata types.
->> Providing recognized metadata types would be helpful in parsing and
->> displaying test metadata in a useful way.
->>
->> Current ideas:
->> - "# Subtest: <test_name>" to indicate test name (name must match
->>   corresponding result line)
->> - "# Attributes: <attributes list>" to indicate test attributes (list
->>   separated by commas)
->> - "# File: <file_path>" to indicate file used in testing
->>
->> Any other ideas?
->>
->> Note this proposal replaces two of my previous proposals: "ktap_v2: add
->> recognized test name line" and "ktap_v2: allow prefix to KTAP lines."
->>
->> Thanks!
->> -Rae
->>
->> Note: this patch is based on Frank's ktap_spec_version_2 branch.
 
