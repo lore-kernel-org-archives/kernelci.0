@@ -1,201 +1,120 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456BF1426B
-	for <kernelci@lists.linux.dev>; Mon, 31 Jul 2023 10:01:54 +0000 (UTC)
-Received: from [192.168.0.109] (unknown [103.56.182.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: jenysadadia)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 0DC176607176;
-	Mon, 31 Jul 2023 11:01:52 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1690797713;
-	bh=OLrNP0LwG7atgZ6SBZKO2E+ff2F9zvPGXFw8eD3lqnE=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=aJ0azd+bx5vvZo9bnzKxu+ghSTmzNqE8oJsqp6uasdIfuJ8jTEIyFt/E1sr7+9HMG
-	 0njd38nXxzuoSqEAWNUkfU1cbFA+bhki2kkACS4iycriWP9xL04VIw3hbyIMcZmam2
-	 K7n7OPrysPy8y/KkYFThrSv+wMvOOqMI1Grn4Lu6DgchBbTWvZ/b0KiF0gmlY/QdnA
-	 ZTaIT2it68hWTcKGusNiuCeTN1xY6aVRR/Kg8FdFGKe5zSkz6iGJq8tmL6DV8Gq1DH
-	 pssQGwM8ZTxRvDXSZYk/gFZQhsD2EHGKDAh3DNs1/7r+a4KEnhZSK7y4xc61We3hVW
-	 h3IFAH9bnBj4A==
-Message-ID: <a7efc8a3-e63f-6a88-88be-d436d8273fe2@collabora.com>
-Date: Mon, 31 Jul 2023 15:31:48 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54FA19BA5
+	for <kernelci@lists.linux.dev>; Mon, 31 Jul 2023 18:07:36 +0000 (UTC)
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-bff89873d34so3847315276.2
+        for <kernelci@lists.linux.dev>; Mon, 31 Jul 2023 11:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690826855; x=1691431655;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pmX6G/YqEJmRL0+As/pQBiGwoVdPc36MX+CeWWmykE8=;
+        b=JH7rlv8mE7jMa1dppH0iRqa2yK2Kq6lP9Y1Dic0OmQB6i9LU8tOkS9Fy0hQt49l8d2
+         FwdfpZ9ztcdgYbCP+4BE8n5lCtNUz6R2nmZ81wer6NaWS1QSY/O/yOwNzduGcXCScAcp
+         vmI0KZhTMuLyn0HI94JmK6a2Maf7L1a/rPz0b/FedwrKYaLgqfZgs1MZas8M1wp9Wqpd
+         DmjcS+MrhFn2FrcOqe/4m2KJmLPZSDgViZ+CFSL+awMvEvhfesIcjchHg8GBJnGn3tsQ
+         2RHFcPNtRmsVbP+142syys/c/hSXL/JrBphg98wJUTEg5JTwq/3ShYlU8dikKMDGFzu+
+         wrtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690826855; x=1691431655;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pmX6G/YqEJmRL0+As/pQBiGwoVdPc36MX+CeWWmykE8=;
+        b=k9BddGIn1V6Mw5nmLz51fywNf2l1UDlk84H95r7hSMP8dWEwmIr56RwsUx4IzOn6EO
+         JXt6HK/PU21tFekvAHbDEHtkR98fbmLO3u2OqAhnfLbyCUTQ6j9dllyyjIvkcS+s6w2r
+         6+Q9QWa3Jh1mx3Ln+fUPhAOzx3cOhU9azFtDSWwWH3JcK1YD3iDZps50OcYmCrXHjAZx
+         xZPjmnmaHzEGznY/8OyEzLi7G0oiX9uabrpVCDB7Kbz5u3ybp7zhC3wl7uOQ+cDeDt+x
+         Je1ZyWoMFtB3L8HDcZAySd0F8q1IXe8JXipww0iNURkoJOV2gBa3Ee3xs+yDdQLNuTX6
+         O6+g==
+X-Gm-Message-State: ABy/qLa9CmopwJzRBsrgLdotlKQGjbsOUbE+hVNGDFWFBEW2ONK7keUL
+	9dTvD69HI8Nh3lllJv9FWFO0TZbI8WpXVluCxfA=
+X-Google-Smtp-Source: APBJJlHuludvI8anpx7a43Ulpv/g9K9QpAbjBrk2vJzXj09BjKTW21dLhYsB42pyn1fKPLUV0P0zB3BHai3vyrPzBkE=
+X-Received: by 2002:a25:d394:0:b0:d00:7d6d:4767 with SMTP id
+ e142-20020a25d394000000b00d007d6d4767mr8129263ybf.44.1690826855368; Mon, 31
+ Jul 2023 11:07:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Enabling TOML support for user settings
-Content-Language: en-US
-To: Guillaume Tucker <guillaume.tucker@collabora.com>,
- kernelci@lists.linux.dev
-References: <0d91ed78-e648-d41e-1f29-2eb7dbb488ae@collabora.com>
- <3f0eb69d-1edd-5ec1-8c73-583473fa3afa@collabora.com>
-From: Jeny Sheth <jeny.sadadia@collabora.com>
-In-Reply-To: <3f0eb69d-1edd-5ec1-8c73-583473fa3afa@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <CANiq72m=3yVV73R4OCWBkt54MaBhb-P472pPMeN-xPb6uWpvgA@mail.gmail.com>
+ <2f443a56-3a84-dead-2c79-a25781780357@collabora.com>
+In-Reply-To: <2f443a56-3a84-dead-2c79-a25781780357@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 31 Jul 2023 20:07:24 +0200
+Message-ID: <CANiq72mxfHOOKU2ZGWDUnZNRFvz49REmzkTKLMH2TVtkSyBOtw@mail.gmail.com>
+Subject: Re: Missing Rust results
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: kernelci@lists.linux.dev, adrian.ratiu@collabora.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi Guillaume,
 
-Thank you Guillaume for your suggestions and comments.
-
-
-Followed by our discussions with other community members in the KernelCI
-community meeting, we decided to use TOML dotted keys as it is a standard way
-of defining sub-tables in TOML.
-
-The syntax will look like "section-name.section-config".
-
-
-For example,
-```
-[db.docker-host]
-     api ="http://localhost:8001"
-```
-
-
-In case the section config name includes "." (dot) in the name,
-it must be surrounded by "" (double-quotes) to parse it properly with
-TOML decoder.
-
-For example,
-```
-[db."staging.kernelci.org"]
-
-api ="https://api.staging.kernelci.org/"
-```
-
-
-Please look at these pull requests for further clarification:
-1.https://github.com/kernelci/kernelci-core/pull/2033
-2.https://github.com/kernelci/kernelci-pipeline/pull/288
-3.https://github.com/kernelci/kernelci-pipeline/pull/289
-
-Please note that the old `.conf` setting file will continue to support ":" separator for
-section names during the deprecation period.
-
-
-Thank you,
-Jeny
-
-On 16/06/23 5:06 pm, Guillaume Tucker wrote:
-> Hi Jeny,
+On Mon, Jul 24, 2023 at 2:38=E2=80=AFPM Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
 >
-> On 06/06/2023 09:12, Jeny Sheth wrote:
->> Hello everyone,
->>
->> We have enabled TOML support for user settings in KernelCI-Core.
->> Python package `toml` has been integrated to parse the settings file. Please see the Github issue[1] for more details on this transition.
->>
->> The sample config file `kernelci.toml.sample`[2] has been added to the repository.
->> As per the former convention with `.conf`, we will continue having a `DEFAULT` section and other sections for different command line tools in the `.toml` file.
->> For example:
->> ```
->> [DEFAULT]
->>
->> storage = "http://localhost:5002"
->> db_config = "localhost"
->> api_config = "docker-host"
->>
->> [kci_build]
->>
->> build_config = "next"
->> arch="x86"
->> j = 3
->> ```
->>
->> With TOML, we can use different data types for values (strings with double quotes, integers, float). Unlike `configparser` this removes the need for data type conversion for values.
->>
->> Components such as database, labs, and storage will follow the convention of the form ["storage:docker-host"].
->> For the correct parsing from TOML decoder, we need to use double quotes around the name when it includes ":".
->> Below is the example for more detail:
->> ```
->> ["lab:my-lava-lab"]
-> It's worth noting that "lab" configs have been renamed
-> to "runtime" now.  But this is not related to the move to TOML,
-> just to keep examples consistent with the YAML config.
+> Sorry about that and for the delay in replying, I think it's been
+> overlooked for a little while now.  We've also been distracted by
+> some infrastructure issues but that's getting resolved now.
+
+No apologies needed, and thanks for taking a look!
+
+> Then one issue is that gcc is not installed since rustc-1.70 is
+> based on the clang toolchain Docker image.  So LLVM=3D1 needs to be
+> used, e.g.:
+
+Yeah, `LLVM=3D1` is what we should definitely use. While some GCC builds
+work and boot in QEMU, they are just intended as a proof of concept,
+and we will probably want to use, eventually, `gccrs` for GCC builds
+with Rust enabled.
+
+So even if GCC builds happen to work, we would prefer that CIs focus
+on `LLVM=3D1`, at least for the moment.
+
+> Then we can start building a kernel.  I don't think KernelCI is
+> currently using LLVM=3D1 with Rust builds, but I can't be
+> completely sure of that either since I still haven't found a job
+> log showing the error.  I'll keep looking this week and maybe
+> schedule jobs by hand if needed.
 >
->> user = "user-name"
->> lab_token = "1234-5678"
->>
->> ["db:staging.kernelci.org"]
->>
->> db_token = "XXX-XXXX-XXXX-XXXX"
->> api = "https://api.staging.kernelci.org/"
->> ```
->>
->> Another suggestion is to use dotted keys instead of ":" for the above section names. That way we can remove double quotes around the section name. However, that can cause issues when we have dotted values e.g. "staging.kernelci.org".
->> If we go with the dotted name, it will look like [db.staging.kernelci.org] and the parser will assume that it is a nested dictionary.
->>
->> For example:
->> ```
->> [db.staging.kernelci.org]
->> api = "https://api.staging.kernelci.org/"
->>
->> ```
->> Above will be parsed as:
->> ```
->> 'db': {'staging': {'kernelci': {'org': {'api': 'https://api.staging.kernelci.org/'}}}}
->> ```
->>
->>
->> To overcome that,  we can use double quotes around the value for dotted notation.
->> Something like this:
->> ```
->> [db."staging.kernelci.org"]
->> api = "https://api.staging.kernelci.org/"
->> ```
->>
->> That will be parsed as:
->> ```
->> 'db': {'staging.kernelci.org': {'api': 'https://api.staging.kernelci.org/'}}
->> ```
->>
->> We would like your comments/suggestions to select the best approach possible here for naming conventions. Please check out the discussion[3] here and feel free to provide your input.
-> Thanks for detailing the changes.  I would personally be in
-> favour of relying on the built-in namespacing feature of TOML
-> with dotted keys as that would simplify our code base and remove
-> scope for bugs or corner cases.  The likelihood of users hitting
-> the issue of creating a key such as api.staging.kernelci.org
-> rather than api."staging.kernelci.org" can be easily avoided with
-> a sample settings file and documentation examples.  Also this is
-> a standard thing in TOML, and it's a widespread config language
-> standard now so I would expect many users to already be aware of
-> this.
->
->> The `kernelci-pipeline` has already started adapting to this new format. This is the work in progress[4] for reference.
->>
->> Standard locations for the file are the same as `kernelci.conf` file i.e.
->> - kernelci.toml in the current working directory
->> - ~/.config/kernelci/kernelci.toml for per-user settings
->> - /etc/kernelci/kernelci.toml for system-wide settings
->>
->> Along with this new format, we are still keeping support for the old `kernelci.conf` for now. However, It is recommended to switch from the `.conf` to `.toml` as the older format will eventually be deprecated.
-> In particular, the new LAVA callback handler service now
-> exclusively relies on a TOML settings file to be present in order
-> to find credentials for uploading files to storage (job logs...).
->
-> All the regular command line tools and new pipeline services
-> support both the legacy .conf settings and the new TOML format.
->
->> We are planning to support the older format until we move from the old backend to the new API. As per the planning, the transition will take place by the end of 2023. Suggestions for deciding the deprecation timeline are welcome.
-> Please note that the official timeline for deprecating the legacy
-> system hasn't been confirmed yet, but yes in principle it
-> shouldn't happen earlier than the end of 2023.  So roughly
-> speaking, users should move to TOML settings by the end of the
-> year.  A formal timeline with more details will be shared later
-> when things are more certain.
->
-> Thanks,
-> Guillaume
->
->> [1] https://github.com/kernelci/kernelci-core/issues/1913
->> [2] https://github.com/kernelci/kernelci-core/blob/main/kernelci.toml.sample
->> [3] https://github.com/kernelci/kernelci-core/issues/1913#issuecomment-1572217965
->> [4] https://github.com/kernelci/kernelci-pipeline/pull/266/
+> It shouldn't be very hard to add the bits needed to pass LLVM=3D1
+> for Rust.  The main potential issue is if we want to build with
+> Rust enabled and another toolchain than clang in the future, but
+> I think we'll have a better way of configurting compiler flags by
+> then anyway.  So if that's the issue we should be able to fix it
+
+Yeah, I agree.
+
+> this week too.  I wonder how it worked in the past though.
+
+Good question, especially since Adrian had to deal with GCC not being
+installed (the linker story), so I assume GCC was never installed (as
+intended).
+
+`kernelci/build.py`, from a very quick look, seems to enable `LLVM=3D1`
+in two places (when generating a config merging fragments, and when
+building the kernel), so shouldn't `LLVM=3D1` be already there? Of
+course, when calling `make` directly, we still need it, but the CI
+should still work since I assume it uses the Python code. So perhaps
+something changed and it is now not getting into that branch?
+
+If `kci_build` is indeed what is used by the CI too, I can try to
+reproduce it locally and see what is going on, since I guess it is not
+complex to setup in that case?
+
+> Then the build fails but that's another issue.  In principle we
+> should get these errors in KernelCI:
+
+Yeah, those look as expected.
+
+> Hope this helps :)
+
+It does, thanks again!
+
+Cheers,
+Miguel
