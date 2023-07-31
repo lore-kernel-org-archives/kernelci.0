@@ -1,120 +1,96 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54FA19BA5
-	for <kernelci@lists.linux.dev>; Mon, 31 Jul 2023 18:07:36 +0000 (UTC)
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-bff89873d34so3847315276.2
-        for <kernelci@lists.linux.dev>; Mon, 31 Jul 2023 11:07:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690826855; x=1691431655;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pmX6G/YqEJmRL0+As/pQBiGwoVdPc36MX+CeWWmykE8=;
-        b=JH7rlv8mE7jMa1dppH0iRqa2yK2Kq6lP9Y1Dic0OmQB6i9LU8tOkS9Fy0hQt49l8d2
-         FwdfpZ9ztcdgYbCP+4BE8n5lCtNUz6R2nmZ81wer6NaWS1QSY/O/yOwNzduGcXCScAcp
-         vmI0KZhTMuLyn0HI94JmK6a2Maf7L1a/rPz0b/FedwrKYaLgqfZgs1MZas8M1wp9Wqpd
-         DmjcS+MrhFn2FrcOqe/4m2KJmLPZSDgViZ+CFSL+awMvEvhfesIcjchHg8GBJnGn3tsQ
-         2RHFcPNtRmsVbP+142syys/c/hSXL/JrBphg98wJUTEg5JTwq/3ShYlU8dikKMDGFzu+
-         wrtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690826855; x=1691431655;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pmX6G/YqEJmRL0+As/pQBiGwoVdPc36MX+CeWWmykE8=;
-        b=k9BddGIn1V6Mw5nmLz51fywNf2l1UDlk84H95r7hSMP8dWEwmIr56RwsUx4IzOn6EO
-         JXt6HK/PU21tFekvAHbDEHtkR98fbmLO3u2OqAhnfLbyCUTQ6j9dllyyjIvkcS+s6w2r
-         6+Q9QWa3Jh1mx3Ln+fUPhAOzx3cOhU9azFtDSWwWH3JcK1YD3iDZps50OcYmCrXHjAZx
-         xZPjmnmaHzEGznY/8OyEzLi7G0oiX9uabrpVCDB7Kbz5u3ybp7zhC3wl7uOQ+cDeDt+x
-         Je1ZyWoMFtB3L8HDcZAySd0F8q1IXe8JXipww0iNURkoJOV2gBa3Ee3xs+yDdQLNuTX6
-         O6+g==
-X-Gm-Message-State: ABy/qLa9CmopwJzRBsrgLdotlKQGjbsOUbE+hVNGDFWFBEW2ONK7keUL
-	9dTvD69HI8Nh3lllJv9FWFO0TZbI8WpXVluCxfA=
-X-Google-Smtp-Source: APBJJlHuludvI8anpx7a43Ulpv/g9K9QpAbjBrk2vJzXj09BjKTW21dLhYsB42pyn1fKPLUV0P0zB3BHai3vyrPzBkE=
-X-Received: by 2002:a25:d394:0:b0:d00:7d6d:4767 with SMTP id
- e142-20020a25d394000000b00d007d6d4767mr8129263ybf.44.1690826855368; Mon, 31
- Jul 2023 11:07:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757F119BD5
+	for <kernelci@lists.linux.dev>; Mon, 31 Jul 2023 19:44:43 +0000 (UTC)
+Received: from [192.168.1.100] (176-169-236-103.abo.bbox.fr [176.169.236.103])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 8BA756607003;
+	Mon, 31 Jul 2023 20:44:41 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1690832681;
+	bh=CkG+/zKofkxwh+i44LbU/xgDaZChWkCdD8S/DoCh21I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PnuO424OnAruHLHsJAjST9avs/ffQIaQsD07PEB6sZM3F8M2a3zD6Jbi2Pn36mU/V
+	 Whv3MhwNPqljvtRRn6Yq73WssrSNtcdUMF3fLkWIoIW6zNYLRJPFeLO8VknJ4MqjDB
+	 2QryvTMXxrDin/x/hDg4cOCklKUQ29sZKknBVInyVBqmcDSMjYCmH+BukXZmnZvtO4
+	 /72e5go3H2tW1XaYCuDHoeZo5/ZEQmDA6OMGgn9+UEFjg4p2NVEXupQ5Fg9WM6stbt
+	 IpZJPXsaHrnUn+x2nThDeCy6N+I/FNjCKJpzlKtVloAhVoRtIEwZvLHaqLH+cpLDZx
+	 cqyOgeWlfL1iw==
+Message-ID: <16476e24-b3b2-5f9a-9ae9-50062857d348@collabora.com>
+Date: Mon, 31 Jul 2023 21:44:38 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CANiq72m=3yVV73R4OCWBkt54MaBhb-P472pPMeN-xPb6uWpvgA@mail.gmail.com>
- <2f443a56-3a84-dead-2c79-a25781780357@collabora.com>
-In-Reply-To: <2f443a56-3a84-dead-2c79-a25781780357@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 31 Jul 2023 20:07:24 +0200
-Message-ID: <CANiq72mxfHOOKU2ZGWDUnZNRFvz49REmzkTKLMH2TVtkSyBOtw@mail.gmail.com>
-Subject: Re: Missing Rust results
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: kernelci@lists.linux.dev, adrian.ratiu@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: could you give me a job configuration that can post job, build
+ and test to kernelci-backend
+To: jwjiang@mail.com
+Cc: jiangjianwen@uniontech.com,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+References: <trinity-dd9b2fbe-c328-4f84-ac7c-d6c59e4a526f-1690508189736@3c-app-mailcom-lxa08>
+Content-Language: en-US
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+In-Reply-To: <trinity-dd9b2fbe-c328-4f84-ac7c-d6c59e4a526f-1690508189736@3c-app-mailcom-lxa08>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Guillaume,
+On 28/07/2023 03:36, jevon qiang via groups.io wrote:
+> Hello,
+> 
+> I'm a newer to kernelci. And now I can use following notify block to post test to kernelci-backend successfully:
 
-On Mon, Jul 24, 2023 at 2:38=E2=80=AFPM Guillaume Tucker
-<guillaume.tucker@collabora.com> wrote:
->
-> Sorry about that and for the delay in replying, I think it's been
-> overlooked for a little while now.  We've also been distracted by
-> some infrastructure issues but that's getting resolved now.
+Please send an email to the new mailing list:
 
-No apologies needed, and thanks for taking a look!
+  kernelci@lists.linux.dev,
 
-> Then one issue is that gcc is not installed since rustc-1.70 is
-> based on the clang toolchain Docker image.  So LLVM=3D1 needs to be
-> used, e.g.:
+as explained on the groups.io home page:
 
-Yeah, `LLVM=3D1` is what we should definitely use. While some GCC builds
-work and boot in QEMU, they are just intended as a proof of concept,
-and we will probably want to use, eventually, `gccrs` for GCC builds
-with Rust enabled.
+  https://groups.io/g/kernelci
 
-So even if GCC builds happen to work, we would prefer that CIs focus
-on `LLVM=3D1`, at least for the moment.
+> notify:
+> 
+> criteria:
+> 
+> status: complete
+> 
+> callbacks:
+> 
+> - url: http://192.1 68.122.208:8 000/api/v0.2 /jobs/ ( http://192.168.122.208:8000/api/v0.2/jobs/ ) {LAVA_JOB_ID}/tests/?format=json
+> 
+> method: GET
+> 
+> - url: http://192.1 68.122.208:8 081/callback /lava/test?l ab_name=lab- 01&status= ( http://192.168.122.208:8081/callback/lava/test?lab_name=lab-01&status= ) {STATUS}&status_string={STATUS_STRING}
+> 
+> method: POST
+> 
+> dataset: all
+> 
+> token: kernelci-token
+> 
+> content-type: json
+> 
+> However, I couldn't find a way to post that job's definition and its build to kernelci-backend.
+> 
+> Could you give me a demo job containing those proper notify block(s)?
 
-> Then we can start building a kernel.  I don't think KernelCI is
-> currently using LLVM=3D1 with Rust builds, but I can't be
-> completely sure of that either since I still haven't found a job
-> log showing the error.  I'll keep looking this week and maybe
-> schedule jobs by hand if needed.
->
-> It shouldn't be very hard to add the bits needed to pass LLVM=3D1
-> for Rust.  The main potential issue is if we want to build with
-> Rust enabled and another toolchain than clang in the future, but
-> I think we'll have a better way of configurting compiler flags by
-> then anyway.  So if that's the issue we should be able to fix it
+This code is now all deprecated and should only be supported for
+about 6 months.  We're now focusing on the new KernelCI API, some
+more details about that will be communicated soon on the mailing
+list.
 
-Yeah, I agree.
+In the meantime, here's a sample LAVA job that has a valid
+notification callback if that helps:
 
-> this week too.  I wonder how it worked in the past though.
+  https://lava.collabora.dev/scheduler/job/11178187/definition#defline108
 
-Good question, especially since Adrian had to deal with GCC not being
-installed (the linker story), so I assume GCC was never installed (as
-intended).
+Thanks,
+Guillaume
 
-`kernelci/build.py`, from a very quick look, seems to enable `LLVM=3D1`
-in two places (when generating a config merging fragments, and when
-building the kernel), so shouldn't `LLVM=3D1` be already there? Of
-course, when calling `make` directly, we still need it, but the CI
-should still work since I assume it uses the Python code. So perhaps
-something changed and it is now not getting into that branch?
-
-If `kci_build` is indeed what is used by the CI too, I can try to
-reproduce it locally and see what is going on, since I guess it is not
-complex to setup in that case?
-
-> Then the build fails but that's another issue.  In principle we
-> should get these errors in KernelCI:
-
-Yeah, those look as expected.
-
-> Hope this helps :)
-
-It does, thanks again!
-
-Cheers,
-Miguel
