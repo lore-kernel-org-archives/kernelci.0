@@ -1,79 +1,99 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8AC9440
-	for <kernelci@lists.linux.dev>; Thu,  3 Aug 2023 07:55:57 +0000 (UTC)
-Received: from [IPV6:2001:861:4a40:8620:35fb:242a:88f1:9f80] (unknown [IPv6:2001:861:4a40:8620:35fb:242a:88f1:9f80])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id B4AD96607088;
-	Thu,  3 Aug 2023 08:55:55 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1691049355;
-	bh=7sCg1teFSltfjHqyNz3axUrrirMHTc8DAPFPWo+djfc=;
-	h=Date:From:Subject:To:Cc:From;
-	b=DIxIw1DxvFlHmKrXr7fGtd4z57rTixk6N73IPQWSyBarjz0HtVXdKAeNdjH2DFLXb
-	 kasuEUOJZKBBC7AlCzN5vTbjR4kQTphVohRWn0p1234pQNGsu8LhNCU+rMTk4ksH0b
-	 jENPxvx7uikA1N7lmT8uBht95CbUYoBHMJqnGPjcNnvdiZB8mnUPQ+i5agDewZivoo
-	 ns/PFSflXLr8AC9RY8eMoYrGGd8xMMhl6l3QAA9TXstQ+IoDP7SVHn81Hz+Y8574U4
-	 1LjhW8tPJ4zHMDplzzPBjB74jJb+pxU2vgK+hv6wFf6ev3EmqmQts8V7cfUYsINb1Y
-	 gMN41aFFRsWJg==
-Message-ID: <13fdbb33-e3d8-d0f9-f4ea-552100573cf8@collabora.com>
-Date: Thu, 3 Aug 2023 09:55:53 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD408F7C
+	for <kernelci@lists.linux.dev>; Thu,  3 Aug 2023 12:24:01 +0000 (UTC)
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-d29a5f7dc74so895336276.3
+        for <kernelci@lists.linux.dev>; Thu, 03 Aug 2023 05:24:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691065440; x=1691670240;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4TnkODSa4qCNwghcPkD/w2/BY01K28Q2s8sSULRzzHs=;
+        b=YGoujQpNktm+uTzcRd/VYtlSsVn4tzyuDXpSOhRyEYZZ2oGE/1x3MtREbmr52hd9ta
+         5fhmNIgxiiMI5GyvCA93vCQpqKWCLQk/3e6EfMMUufOdLJIA0gH/VM/0fHCvAA5v6N70
+         QHlFa8ug8moSHFlFW5YgsPE8g37kX6vWfTmNpdHf9z/i33qtoe/qnQnWORpKWgA9XqHo
+         8YwDEAExiID/R8zHXJYuMMUfd1G6FLk/YbqxQo8o2OVnxjSk1VxrWzu5UHDd/q1mWJue
+         MhnAdn5ihqMIMc96L8ueJ6MkuWY8r5lyCL5gydGcSpfWRNCs6j0rF3hPTEfbL+Qj2s1L
+         xz6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691065440; x=1691670240;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4TnkODSa4qCNwghcPkD/w2/BY01K28Q2s8sSULRzzHs=;
+        b=eDXQvzg5vVog3tW3fAXqkOz3PPcBiFR0I9T0nL+i8hc+jX3a7xvU/AnFsoWCtblA3x
+         go3hJsXlrRH+WVXRGMbSP+UevewS6u3uNBYGI7/b7HJ0IuUe9s/vohV2LEUd/zCkZu1Y
+         oSvQ6tReYLROfwg7tpOGAMDqPsPYIrMWk7igOHNw34iOm20LXMBMMhhUgCEcwSzk7rDc
+         UQphmEh2qguJAT2cRZrwfvn5+7ZnLvhBb006kQhwVc0lXvE72DOzP6jHtUy8p9b2vs3F
+         msSm217jl7fxaFESJA32VTFnq5EnUQrH3m3U3w4OglAm17fs3+qxbfSJno+chizzcusc
+         S07g==
+X-Gm-Message-State: ABy/qLbCrgqMz4XSHbSHR0v1oweRjStUCSG6g3/6uYgQSZR9myAOkd4x
+	Uxr2Svv3tJMcJHOy5FUOEdrRcilh/yomkNgRjCc/fvqP764=
+X-Google-Smtp-Source: APBJJlHfMhrLAdYIv2vJ0tY6assk+XLE6KBUL8bvs4lsCi78pzX69NhftoASGGd7B9F+5+msNpAdphuOqQx9w8OUWA4=
+X-Received: by 2002:a25:216:0:b0:d08:5632:6b78 with SMTP id
+ 22-20020a250216000000b00d0856326b78mr18048728ybc.47.1691065440610; Thu, 03
+ Aug 2023 05:24:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-Subject: KernelCI API Transition Timeline
-To: kernelci@lists.linux.dev
-Cc: automated-testing@lists.yoctoproject.org, kernelci-tsc@groups.io
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CANiq72m=3yVV73R4OCWBkt54MaBhb-P472pPMeN-xPb6uWpvgA@mail.gmail.com>
+ <2f443a56-3a84-dead-2c79-a25781780357@collabora.com> <CANiq72mxfHOOKU2ZGWDUnZNRFvz49REmzkTKLMH2TVtkSyBOtw@mail.gmail.com>
+In-Reply-To: <CANiq72mxfHOOKU2ZGWDUnZNRFvz49REmzkTKLMH2TVtkSyBOtw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 3 Aug 2023 14:23:49 +0200
+Message-ID: <CANiq72kO85_ekw7ycNTvrVPKN3rRDMWZKSFj+TWp0=Xnb5LLkg@mail.gmail.com>
+Subject: Re: Missing Rust results
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: kernelci@lists.linux.dev, adrian.ratiu@collabora.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We're glad to finally be able to announce a timeline for rolling
-out the new KernelCI API & Pipeline and deprecating the legacy
-system currently in production.  Here's a blog post with all the
-details:
+On Mon, Jul 31, 2023 at 8:07=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> `kernelci/build.py`, from a very quick look, seems to enable `LLVM=3D1`
+> in two places (when generating a config merging fragments, and when
+> building the kernel), so shouldn't `LLVM=3D1` be already there? Of
+> course, when calling `make` directly, we still need it, but the CI
+> should still work since I assume it uses the Python code. So perhaps
+> something changed and it is now not getting into that branch?
+>
+> If `kci_build` is indeed what is used by the CI too, I can try to
+> reproduce it locally and see what is going on, since I guess it is not
+> complex to setup in that case?
 
-  https://kernelci.org/blog/posts/2023/api-timeline/
+So I tried `kci_build` (without Docker), and if I am doing things
+correctly, running:
 
+    ./kci_build update_repo --build-config rust-for-linux_rust-next
+    ./kci_build init_bmeta --build-config rust-for-linux_rust-next
+    ./kci_build make_config --verbose --defconfig defconfig+rust
+    ./kci_build make_kernel --verbose
 
-In a nutshell, there are 4 milestones:
+with a config like:
 
-* Early Access: Monday 4th September 2023
+    [kci_build]
+    kdir =3D "linux"
+    arch =3D "x86_64"
+    build_env =3D "rustc-1.70"
+    j =3D 16
 
-  For users to start experimenting with an production-like
-  instance of the new API.
+Gives me output like:
 
-* Production Deployment: Monday 4th December 2023
+    export LLVM=3D1
+    ...
+    make KBUILD_BUILD_USER=3DKernelCI ARCH=3Dx86_64 LLVM=3D1 ... defconfig
+    make KBUILD_BUILD_USER=3DKernelCI ARCH=3Dx86_64 LLVM=3D1 ... bzImage
 
-  To have a permanent instance which will eventually become the
-  new production one.
+So it seems it is using `LLVM=3D1` for that build environment? If I use
+`gcc-10`, it uses GCC as expected. So the build environment at least
+it seems to work from that point of view. Does the Docker image change
+how things work somehow?
 
-* Legacy System Deprecation: Monday 4th March 2024
-
-  When the new API becomes the main KernelCI production service.
-
-* Legacy System Sunset: Monday 4th November 2024
-
-  When the legacy system gets permanently shut down.
-
-
-We'll be sending regular updates about KernelCI developments in
-general and how the new API roll-out is progressing in
-particular, typically once a month.  In the meantime, please let
-us know if you need any clarification about each milestone, raise
-any concern you may have with this timeline or ask any question
-about the new API.
-
-Thanks,
-Guillaume,
-On behalf of the KernelCI Technical Steering Committee
+Cheers,
+Miguel
