@@ -1,174 +1,229 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7C7C8C0;
-	Mon,  7 Aug 2023 08:29:17 +0000 (UTC)
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-3fe4ad22eb0so25687405e9.3;
-        Mon, 07 Aug 2023 01:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691396955; x=1692001755;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xedCfYnu7czqa8+w0BoRZkS95VJKbfhAvT84gadWBaQ=;
-        b=KJ2v+8P5T7FADtAwsbOhuzi61mzvR1n4HyST8IoTE14WUadiVYAj8bcixUS70lVDuJ
-         uoi/Oy+5mVguqk53vI8lECmjIRCpiMs2FmaAmKQ/Ollou3HB9AWtOKEiO6to+JyIkOXf
-         sp5CmXaypEnAaZAxllmkXcAICXQ3z2ms38lRaWNpTw1W1Lqn6KNPtWBlA0c9OvILior9
-         URNEn7R85E6iwLNizheIzMJ7Yq79nN+oVjNBaaPeKGKdrPoRsgOcsFQAXRp3LFkYBx/b
-         f+E04UShl8WS7sgpjiSQkESxMCukp8S0nnY8f9OwpXIDQHxxfs0OZihj+mjUvCjBi1cb
-         6m9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691396955; x=1692001755;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xedCfYnu7czqa8+w0BoRZkS95VJKbfhAvT84gadWBaQ=;
-        b=S3bUVWOmJDkRPQKtecS7VuQfksKKvmFDEQ6vGYFAKo7kJ7iXzuchQ6CHRVcId9PIKT
-         o4wVsotVD6FYGv/zE6V279/5PVvVAe8YB/8WZDyQ3r3xr/UXCiSaUQ1w48EoapHv2t1Y
-         lqZp9HQjlI/Wd1gBS0lXFtpy8QuW0RPh12q1W8Bnq8NeP8UW1QLcUmllobGGWbERZevg
-         5itg1BTzupnRAILrV/htjtNJDiukQu35nDYVBMJEhUZrzKa/PVmY7lddcJRS8UCRR5DN
-         bqdcLx2NDuN9BGRfmI+CqEkmdRuYXJSyc/898523VIryqfGyk3hQaMggQdsi0PNxsRX2
-         W1NQ==
-X-Gm-Message-State: AOJu0YyiYsj4J7tHOu9jt8BPRJTH0UEU9EtgKiP+YSVcGuOSxMxDHbGA
-	kCUb+SMbMn2rSxsqNNIPnqo=
-X-Google-Smtp-Source: AGHT+IGZc6ZOK0l/SXR4eXxv2Uq9owLaIVHisIsoNGlxGTL2VSplKSwRiG+i8/bMfg3xyYMR8pNl+w==
-X-Received: by 2002:a05:600c:2286:b0:3fa:8c68:4aba with SMTP id 6-20020a05600c228600b003fa8c684abamr6396840wmf.25.1691396955320;
-        Mon, 07 Aug 2023 01:29:15 -0700 (PDT)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id n1-20020a05600c4f8100b003fe15ac0934sm20884809wmq.1.2023.08.07.01.29.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Aug 2023 01:29:14 -0700 (PDT)
-Message-ID: <b3f9b848-be97-8ce8-9f6c-b9abcb0086f5@gmail.com>
-Date: Mon, 7 Aug 2023 11:29:13 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B821DDBF;
+	Tue,  8 Aug 2023 09:55:57 +0000 (UTC)
+Received: from localhost (unknown [IPv6:2a0c:5a83:9201:1300:c39b:5cf0:4d57:ce7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: rcn)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 29B4066071EE;
+	Tue,  8 Aug 2023 10:55:50 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1691488550;
+	bh=YoAY9Fw/9c6MO4ZIunTXxK9WxUDg1XM2ZcHTlhXdURE=;
+	h=From:To:Cc:Subject:References:In-reply-to:Date:From;
+	b=mwdnbXehlEpzg7R2KR4tUl44XSUn7006sUv9sHuEGDqfG3qRAjZvk+tlu3f/jURb+
+	 cqToTLsYTT+W/3DTCDfSZNeibTZTZQx0RVqUW00H1oxd6XqpGu+sN2bKH+sGlbwu8X
+	 kJ4tauJeWcF3D4RAmq4QLYDpD6T1gnHOtB9SPW25A+tQdzvSXv6BxjDkB9o9YQDP8R
+	 +7FixGgo/B3w2XAChcsYeu7oH7t1K/7v+M69LuEbvjcHur8Bc36TlXRJkx24JdEgPG
+	 nzvH6sFAdr4ietd3J2LSmP6zThzv+dWi/r3FHC9qIhs8zwaLb7ALR27aolP/SnxbXl
+	 IbFn4S/3zsWYg==
+From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
+To: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@lists.linux.dev, gregkh@linuxfoundation.org, thorsten@leemhuis.info, regressions@lists.linux.dev
+Cc: kernel@collabora.com, linux-kernel@vger.kernel.org, Gustavo Padovan <gustavo.padovan@collabora.com>, Shreeya Patel <shreeya.patel@collabora.com>
+Subject: Re: Kernel regression tracking/reporting initiatives and KCIDB
+References: <874jljhtmj.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me> <f40c35d3-5558-6a46-4ad4-1631ca9e1805@gmail.com>
+In-reply-to: <f40c35d3-5558-6a46-4ad4-1631ca9e1805@gmail.com>
+Date: Tue, 08 Aug 2023 11:55:47 +0200
+Message-ID: <87v8dphn8c.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: Kernel regression tracking/reporting initiatives and KCIDB
-Content-Language: en-US
-To: Thorsten Leemhuis <regressions@leemhuis.info>,
- =?UTF-8?Q?Ricardo_Ca=c3=b1uelo?= <ricardo.canuelo@collabora.com>,
- kernelci@lists.linux.dev, gregkh@linuxfoundation.org,
- regressions@lists.linux.dev
-Cc: kernel@collabora.com, linux-kernel@vger.kernel.org,
- Gustavo Padovan <gustavo.padovan@collabora.com>,
- Shreeya Patel <shreeya.patel@collabora.com>
-References: <874jljhtmj.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
- <ed9a0b64-b7e7-7735-85f7-d688a3b8e89e@leemhuis.info>
-From: Nikolai Kondrashov <spbnick@gmail.com>
-In-Reply-To: <ed9a0b64-b7e7-7735-85f7-d688a3b8e89e@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Thorsten,
+Hi Nikolai,
 
-On 8/2/23 11:07, Thorsten Leemhuis wrote:
- > On 01.08.23 13:47, Ricardo Cañuelo wrote:
- >> So far, we’ve been using the KernelCI regression data and reports as
- >> data source, we're now wondering if we could tackle the problem with a
- >> more general approach by building on top of what KCIDB already provides.
- >
- > That's more your area of expertise, but I have to wonder: doesn't that
- > mainly depend on what the people/projects want which feed their test
- > results into KCIDB? I had expected some of them might already have
- > something to stay on top of regressions found by their systems, to at
- > least ensure they notice and fix tests that broke for external reasons
- > -- e.g. a test script going sideways, faulty hardware, a network
- > miss-configuration or others things which naturally will occur in this
- > line of work.
+Thanks for the comprehensive answer, see my comments below,
 
-Yes, some of this is already done by some CI systems submitting results to
-KCIDB. Syzbot is doing a very good job deduplicating crashes they have found,
-0day is looking for outcome differences, AFAIK, and CKI has its known-issue
-tracking system, which handles problems of various origin.
+On vie, ago 04 2023 at 19:06:26, Nikolai Kondrashov <spbnick@gmail.com> wrote:
+> I tried to review these efforts last year:
+> https://archive.fosdem.org/2022/schedule/event/masking_known_issues_across_six_kernel_ci_systems/
 
- >> In general, CI systems tend to define regressions as a low-level concept
- >> which is rather static: a snapshot of a test result at a certain point
- >> in time. When it comes to reporting them to developers, there's much
- >> more info that could be added to them.
- >
- > I wonder if it should be s/could/should/ here, as *if I* would be
- > running CI systems I'd fear that developers sooner or later might start
- > ignoring more and more of the reports my systems sends when too many of
- > them turn out to be bogus/misleading -- which naturally will happen for
- > various reasons you outlined below yourself (broken
- > hardware/test/network/...) (and seem to happen regularly, as mentioned
- > in https://lwn.net/Articles/939538/ ).
+That's a good summary, and it's nice to see an unbiased analysis of the
+current state of the art and what could be improved. I think we agree in
+most of the points.
 
-Yes, this is a constant struggle.
+> At this moment KCIDB submitters can send data linking a particular test or
+> build result to an issue and its category (kernel/test/framework). We can
+> generate notifications on e.g. a new issue being found by CI system
+> (maintainers) in a particular repo/branch. There's no support on dashboards
+> yet, and I'm yet to push for integration with particular CI systems.
+>
+> Here's the full announcement with examples:
+> https://lore.kernel.org/kernelci/182b43fa-0261-11b7-2edb-f379a669bc28@redhat.com/
 
- > That doesn't mean that I think each failed test should be judged by a
- > human before it's sent to the developers. Compile errors for example
- > will be helpful often right away, especially for stable-rc.
+What's the current status of this? Have any of the CI systems provided a
+set of issues and incidents yet?
 
-Ehhh, KCIDB gets build failures all the time (in merged code) and it takes
-a while before a fix propagates across all the trees.
+I like the solution to bring CI-specific patterns and definitions into a
+CI-agnostic aggregator like KCIDB. I'm not familiar with the KCIDB
+schemas so I'm not aware of the different ways that each individual CI
+system chooses to define their test results.
 
-For example, the recent v6.5-rc5 has got 14 build failures (out of 865 builds
-received):
+A different approach could be to define a standard way to report CI test
+results that every CI system could adhere to, but I guess that task
+could become way too expensive. I think defining some common
+abstractions is definitely possible and the way you did it is a good
+start. Hopefully it can be extended if needed.
 
-https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=52a93d39b17dc7eb98b6aa3edb93943248e03b2f&var-patchset_hash=
+>  > - is it possible that the test failed because of an infrastructure
+>  >    error?
+>
+> Not sure how to approach this in KCIDB. How do you (plan to) do it?
 
-I suspect that someone somewhere is already working on these, or even their
-fix has been merged somewhere already, but the CI just keeps failing
-meanwhile.
+In general, we can tell certain common errors very clearly by parsing
+the test log. We had prior experience running tests in different
+platforms in Collabora's LAVA lab so we were familiar with the most
+frequent types of infrastructure errors seen there: assorted network
+errors, failure to mount an NFS volume, failure to find the ramdisk,
+etc.
 
- >> In particular, the context of it
- >> and the fact that a reported regression has a life cycle:
- >>
- >> - did this test also fail on other hardware targets or with other kernel
- >>    configurations?
- >> - is it possible that the test failed because of an infrastructure
- >>    error?
- >> - does the test fail consistently since that commit or does it show
- >>    unstable results?
- >> - does the test output show any traces of already known bugs?
- >> - has this regression been bisected and reported anywhere?
- >> - was the regression reported by anyone? If so, is there someone already
- >>    working on it?
- >>
- >> Many of these info points can be extracted from the CI results databases
- >> and processed to provide additional regression data. That’s what we’re
- >> trying to do with the Regression Tracker tool, and we think it’d be
- >> interesting to start experimenting with the data in KCIDB to see how
- >> this could be improved and what would be the right way to integrate this
- >> type of functionality.
- >
- > I (with my likely somewhat biased view due to regzbot and my work with
- > it) wonder if we have two aspects here that might be wise to keep separated:
- >
- > * tests suddenly failing in one or multiple CI systems, which might be
- > due to something going sideways in the tests or a real kernel regression
- >
- > * regressions found by individuals or CI systems where a human with some
- > knowledge about the kernel did a sanity check (and also looked for
- > duplicates) to ensure this most likely is a regression that should be
- > acted upon -- and thus is also something that definitely should not be
- > forgotten.
- >
- > Your regression tracking tool could be the former, regzbot the latter
- > (which could feed the outcome back to the CI regression tracking
- > system). But as I said, my view is obviously biased, so maybe I'm to
- > blinded to see a better solution.
+We define a set of strings to match against:
+https://gitlab.collabora.com/kernel/kernelci-regressions-tracker/-/blob/main/configs/logs-string-match.yaml
+and we keep adding to the list when we found new patterns
 
-I agree that a human would be trusted more most of the time, and it would be
-beneficial to give the results of human review a boost. However, ultimately,
-automatic error detection is also made by humans, and it doesn't get tired,
-can detect harder-to-spot problems, and problems happening en-masse, as you
-mention.
+At some point we'd like to use a similar approach, although automatized,
+to detect frequent patterns in test outputs so that a regression
+analyzer can match test results with known issues to avoid excessive
+report duplication and also to do a first-stage tagging and triaging of
+regressions.
 
-If we consider applying patterns defined by humans to find already-known
-issues in other test results, we get a combination of the two. I think
-training an AI on the manually-detected issues, and those picked by those
-patterns, could help us find completely new issues, and would further blur the
-line between manual and automatic issue detection. Something that I'm looking
-forward to exploring.
+>  > - does the test fail consistently since that commit or does it show
+>  >    unstable results?
+>
+> This is a difficult thing to properly figure out in KCIDB, because it
+> aggregates data from multiple CI systems. A single CI system can assume that
+> earlier results for a branch correspond to earlier commits. However, because
+> different CI systems test at different speeds, KCIDB cannot make that
+> assumption. Commits and their testing results can come in any order. So we
+> cannot draw these kinds of conclusions based on time alone.
 
-Regardless, I think we need both, and, in general, every trick in the book to
-get Linux quality control on track.
+Couldn't the results be filtered by CI-system origin so they can be
+analyzed without the noise of results from other origins? I was thinking
+about filtering the results by CI origin and then sorting them by
+date. But, as I said, I'm not familiar with the KCIDB schema so I
+wouldn't really know how to navigate through the results.
 
-Nick
+I can check the code to find the schema definitions but I was wondering
+if there's a quick way to visualize the raw test results data and the
+relationships between them.
+
+> The only way KCIDB can make this work correctly is by correlating with actual
+> git history, following the commit graph.
+
+I think this might depend on the context that we have for every test
+result. That could be different depending on the data origin, but in our
+case, when checking the recent history of a KernelCI test we took
+advantage of the fact that KernelCI builds progress linearly (new builds
+are always newer versions of old builds, AFAICT), so we built the
+queries around that and we don't have to do any processing of the git
+repos to fetch the list of test runs of a particular test configuration
+after the last failed run:
+https://gitlab.collabora.com/kernel/kernelci-regressions-tracker/-/blob/main/common/analysis.py#L27
+
+For other systems this will be different, of course. But the key idea is
+that we might be able to get to the same point using different paths,
+maybe simpler.
+
+> E.g. on the dashboard of a particular test result, display graphs of this
+> test's results over time: overall, and for
+> architecture/compiler/config/repo/branch of this test run. And something
+> similar for test views on revision/checkout/build dashboards.
+
+Yes, we have similar visions about how the dashboard
+features. Unfortunately, a proper dashboard would be a key part of the
+solution but it looks like it's still pretty far away in the future.
+
+> BTW, a couple Mercurial folks approached me after the talk above, saying that
+> they're working on supporting storing test results in history so they could do
+> a similar kind of correlation and reasoning. So the idea is in the air.
+
+This is very interesting. I think one thing we're missing from git is
+a standard way to keep commits metadata that won't be tied to specific
+refs (ie. metadata that could be linked to a commit even if it gets
+rebased).
+There's plenty of commit metadata scattered all over the kernel commit
+logs in the form of tags, and then anyone can write tools on top of that
+to find relationships between commits, patches and tests, but that's
+kind of suboptimal. Having proper support for that in the repo would
+make a huge difference in how the repo data is used, beyond tracking code
+changes.
+
+> This is what the KCIDB issue-linking support described above is working
+> towards. Next step is to build a triaging system linking issues to build/test
+> results automatically, based on patterns submitted by both CI systems, via the
+> regular submission interface, and humans, via a dedicated UI.
+>
+> Patterns would specify which issue (bug URL) they're matching and include
+> basic things like test name, architecture, hardware, and so on, but also
+> patterns to find in e.g. test output files, logs, or in dmesg.
+>
+> That should answer questions of whether a test or a build exhibit a particular
+> issue seen before.
+
+This is a good approach, and it could tie in with what I mentioned above
+about log parsing and identifying similar issues from their test log
+outputs.
+
+> One comment regarding the prototype you shared is that it's quite verbose and
+> it's difficult to put together a feeling of what's been happening from
+> overabundance of textual information. I think a visual touch could help here.
+
+I agree, this started as an experiment and it shows. Having a nice and
+flexible html output was never the main requirement.
+
+> E.g. drawing a timeline of test results, pointing particular events (first
+> failed, first passed, stability and so on) along its length.
+>
+> So instead of this:
+>
+>  > first failed: today (2023-08-02)
+>  >
+>  >     kernel: chromeos-stable-20230802.0
+>  >     commit: 5c04267bed569d41aea3940402c7ce8cf975a5fe
+>  >
+>  > most recent fail: today (2023-08-02)
+>  >
+>  >     kernel: chromeos-stable-20230802.0
+>  >     commit: 5c04267bed569d41aea3940402c7ce8cf975a5fe
+>  >
+>  > last passed: 1 day ago (2023-08-01)
+>  >
+>  >     kernel: chromeos-stable-20230801.1
+>  >     commit: cd496545d91d820441277cd6a855b9af725fdb8a
+>
+> Something like this (roughly):
+>
+>               |
+> 2023-08-02   F - last FAIL
+>               F
+>               |
+>               P
+>               F
+>               |
+> 2023-08-02   F - first FAIL
+>               |
+> 2023-08-01   P - last PASS
+>               |
+>               P
+
+That's absolutely right. We have the data, I just wish I had the webdev
+chops to do that XD. Although we could probably give it a try now that
+the feature set is mostly stable.
+
+Thanks for the detailed answers and your insights. It's great to see we
+share many points of view. Now that we know there's a long road ahead
+it's time to draw an initial roadmap and see how far it can get us.
+
+So, what would you recommend we can start with KCIDB? Would there be a
+way for us to consume the data, even if it's only partially, to
+experiment and get some ideas about what to do next? Would you rather
+have these features implemented as part of KCIDB itself?
+
+Cheers,
+Ricardo
