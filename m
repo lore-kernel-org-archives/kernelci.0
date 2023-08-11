@@ -1,28 +1,37 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937D622F02
-	for <kernelci@lists.linux.dev>; Thu, 10 Aug 2023 21:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A17CC433C7;
-	Thu, 10 Aug 2023 21:54:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691704496;
-	bh=LKd+4Ea4HCc6qzOyCezsC0/UcrPbS4S07GBHDZkZ1oY=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F9E63B3
+	for <kernelci@lists.linux.dev>; Fri, 11 Aug 2023 13:17:48 +0000 (UTC)
+Received: from notapiano (zone.collabora.co.uk [167.235.23.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nfraprado)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id BAECC6607247;
+	Fri, 11 Aug 2023 14:17:44 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1691759866;
+	bh=L9YasLlSzK5k+C3DoxCi9Qs1i1/Jfe91wWSnXZpz0PE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pifn18Yu5ypIOo15CTwZwrMGt2/uGXQeVBRDuy7SXkmxTJ2DXc9M5Qc9Awv1/Oo+r
-	 NLZKWHWNSh33/MU1zynCRI7cRh0cW4ZWTDyYUHihzDS3O8DEnh+1XMB9+4ndA/DY0w
-	 t15aacXpbNRvVNqbuTd6K8jF9uJunzunn74PApf01w47FcJBJkUhTIcuM03uHoTvqX
-	 2vN/nxeOwBpClcEbiJE48E6/DuY5pctgzOOvfCSk1zPsij3aYYJP8AekO9HUsHebfB
-	 NwXcTCQpkFpKXaxO5xe05r5pCTH7l5ife1Rjthj4kDcNPJrly03fUUcErsKRyKtJOs
-	 ccyh4ngx4R58Q==
-Received: (nullmailer pid 1346033 invoked by uid 1000);
-	Thu, 10 Aug 2023 21:54:53 -0000
-Date: Thu, 10 Aug 2023 15:54:53 -0600
-From: Rob Herring <robh@kernel.org>
-To: =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>
-Cc: Frank Rowand <frowand.list@gmail.com>, Shuah Khan <shuah@kernel.org>, cocci@inria.fr, Mark Brown <broonie@kernel.org>, Nicolas Palix <nicolas.palix@imag.fr>, kernelci@lists.linux.dev, Julia Lawall <Julia.Lawall@inria.fr>, Bjorn Andersson <andersson@kernel.org>, kernel@collabora.com, Guenter Roeck <groeck@chromium.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+	b=l4gr2y6+v6uvPxZoRsge8aKFNhLdLxOvlD+Nyb0Owsm+ZmjXzxtJng++00GSR5n9V
+	 /m/PLS6ePwLcciNzJ5wpB3S2uswrBqqGL/4pDvU9X93VY/ycDYBNV0SsAolwuzPIGw
+	 EQ68F86OpAxnVwNn8BSTadCBTnSbKssPYSJNrmPbWsTgfuQoE2Dy35Epxuk0q81R+3
+	 uetDCzkip61SSNIRcqNlqz/p+S7P/ad0LPIloe/2yCQGZWMRmQ1ONdE8YLQtbK4kh+
+	 /iKdm0VQsSaaIZDaN0rKQLkICv6ACqAyS7yLbTxpblm0xO3xBpaKWurorPfF7ILOTt
+	 Aas1zU6hflC5g==
+Date: Fri, 11 Aug 2023 09:17:40 -0400
+From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>, Shuah Khan <shuah@kernel.org>,
+	cocci@inria.fr, Mark Brown <broonie@kernel.org>,
+	Nicolas Palix <nicolas.palix@imag.fr>, kernelci@lists.linux.dev,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Bjorn Andersson <andersson@kernel.org>, kernel@collabora.com,
+	Guenter Roeck <groeck@chromium.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Subject: Re: [RFC PATCH 0/2] Add a test to catch unprobed Devicetree devices
-Message-ID: <20230810215453.GA1341305-robh@kernel.org>
+Message-ID: <7e915b52-c356-4a39-b286-27b31fa1abf9@notapiano>
 References: <20230810202413.1780286-1-nfraprado@collabora.com>
  <20230810214309.GA1226583-robh@kernel.org>
 Precedence: bulk
@@ -79,7 +88,45 @@ On Thu, Aug 10, 2023 at 03:43:09PM -0600, Rob Herring wrote:
 > I just sent a patch[1] last week fixing missing a bunch. I only looked 
 > at the change in count of undocumented (by schema) though.
 
-With the existing script, I get 11761 compatibles and 12916 with my fix. 
-So how are you getting only 3k?
+Ah, looks like I mixed up the output from the dt-extract-compatibles script and
+the output from the make dt_compatible_check. The python script does list
+practically (*) all compatibles that Coccinelle found. So I'll look into
+extending it for the purposes of this test next.
 
-Rob
+(*) it misses 3 compatibles in .h files, and fsl,mpc5200-gpt-gpio because the
+comment above it has ';'. Those are easy to fix though, either on the regex or
+on the driver's code.
+
+> 
+> In any case, I'm happy if we have a better solution, but really we 
+> should only have 1. So your script would need to replace the existing 
+> one.
+
+Agreed.
+
+> 
+> I'd be interested in a performance comparison. IME, coccinelle is 
+> fairly slow. Slower is okay to a point though.
+
+Yes, Coccinelle seems to be quite a bit slower. I can provide a comparison after
+I've tweaked the python script to get the same matches as Coccinelle so it is a
+fair comparison.
+
+> 
+> > 
+> > The reason for parsing the kernel source instead of relying on
+> > information exposed by the kernel at runtime (say, looking at modaliases
+> > or introducing some other mechanism), is to be able to catch issues
+> > where a config was renamed or a driver moved across configs, and the
+> > .config used by the kernel not updated accordingly. We need to parse the
+> > source to find all compatibles present in the kernel independent of the
+> > current config being run.
+> 
+> I've been down this route. I had another implementation using gdb to 
+> extract all of_device_id objects from a built kernel, but besides the 
+> build time, it was really slow.
+
+Interesting to know, that's another option that I'd considered.
+
+Thanks,
+Nícolas
