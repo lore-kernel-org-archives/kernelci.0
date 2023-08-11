@@ -1,132 +1,81 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F9E63B3
-	for <kernelci@lists.linux.dev>; Fri, 11 Aug 2023 13:17:48 +0000 (UTC)
-Received: from notapiano (zone.collabora.co.uk [167.235.23.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id BAECC6607247;
-	Fri, 11 Aug 2023 14:17:44 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1691759866;
-	bh=L9YasLlSzK5k+C3DoxCi9Qs1i1/Jfe91wWSnXZpz0PE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A864E63B3
+	for <kernelci@lists.linux.dev>; Fri, 11 Aug 2023 13:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DB1C433C7;
+	Fri, 11 Aug 2023 13:55:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691762101;
+	bh=KhZcaIG5xy1vW5rnxc77mFzoV3j3AEu0bgxbc/xhT30=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l4gr2y6+v6uvPxZoRsge8aKFNhLdLxOvlD+Nyb0Owsm+ZmjXzxtJng++00GSR5n9V
-	 /m/PLS6ePwLcciNzJ5wpB3S2uswrBqqGL/4pDvU9X93VY/ycDYBNV0SsAolwuzPIGw
-	 EQ68F86OpAxnVwNn8BSTadCBTnSbKssPYSJNrmPbWsTgfuQoE2Dy35Epxuk0q81R+3
-	 uetDCzkip61SSNIRcqNlqz/p+S7P/ad0LPIloe/2yCQGZWMRmQ1ONdE8YLQtbK4kh+
-	 /iKdm0VQsSaaIZDaN0rKQLkICv6ACqAyS7yLbTxpblm0xO3xBpaKWurorPfF7ILOTt
-	 Aas1zU6hflC5g==
-Date: Fri, 11 Aug 2023 09:17:40 -0400
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>, Shuah Khan <shuah@kernel.org>,
-	cocci@inria.fr, Mark Brown <broonie@kernel.org>,
+	b=WiCnX3S9fK2Rn1vjsJehHuXxMuqnHIv5KAQHSUy7/Lwqry+6O2MxAfEAFZhuP+T94
+	 mtzGWJz1ed/GuuDsPqVERfkdM+BnRmqhbX9z0gASEULfOIGAbYc827+Oyimw7XNunu
+	 MqP3Fkm3BWv4u/6eEmtgPAUP/Wj3pUnX+6UWhwW73N/NZDHs/h6V//hjVhGzqVLTJZ
+	 znM2XpHNZ/ZOMSq4dVY8VBKQ1Hx3mLf1hCJvP2GTzgTBrw4IXq4vnPqTuDbp24m3RE
+	 8zecKJYsy/KuV8W9N3qBrnI/SXpJm7RHy1Ql7/h3L1RRxKDAFFXkD56GV5BvV99qzX
+	 H1SqYRGy5aDgA==
+Date: Fri, 11 Aug 2023 14:54:56 +0100
+From: Mark Brown <broonie@kernel.org>
+To: =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>
+Cc: Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, cocci@inria.fr,
 	Nicolas Palix <nicolas.palix@imag.fr>, kernelci@lists.linux.dev,
 	Julia Lawall <Julia.Lawall@inria.fr>,
 	Bjorn Andersson <andersson@kernel.org>, kernel@collabora.com,
-	Guenter Roeck <groeck@chromium.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] Add a test to catch unprobed Devicetree devices
-Message-ID: <7e915b52-c356-4a39-b286-27b31fa1abf9@notapiano>
+	Guenter Roeck <groeck@chromium.org>, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] kselftest: Add Devicetree unprobed devices test
+Message-ID: <ZNY9sBgzrEQVVQT+@finisterre.sirena.org.uk>
 References: <20230810202413.1780286-1-nfraprado@collabora.com>
- <20230810214309.GA1226583-robh@kernel.org>
+ <20230810202413.1780286-3-nfraprado@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YBiry2C1ACyZhi5x"
+Content-Disposition: inline
+In-Reply-To: <20230810202413.1780286-3-nfraprado@collabora.com>
+X-Cookie: Give him an evasive answer.
+
+
+--YBiry2C1ACyZhi5x
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230810214309.GA1226583-robh@kernel.org>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 10, 2023 at 03:43:09PM -0600, Rob Herring wrote:
-> On Thu, Aug 10, 2023 at 04:23:49PM -0400, Nícolas F. R. A. Prado wrote:
-> > 
-> > Regressions that cause a device to no longer be probed by a driver can
-> > have a big impact on the platform's functionality, and despite being
-> > relatively common there isn't currently any generic test to detect them.
-> > As an example, bootrr [1] does test for device probe, but it requires
-> > defining the expected probed devices for each platform.
-> > 
-> > Given that the Devicetree already provides a static description of
-> > devices on the system, it is a good basis for building such a test on
-> > top.
-> > 
-> > This series introduces a test to catch regressions that prevent devices
-> > from probing.
-> > 
-> > Patch 1 introduces a script to parse the kernel source using Coccinelle
-> > and extract all compatibles that can be matched by a Devicetree node to
-> > a driver. Patch 2 adds a kselftest that walks over the Devicetree nodes
-> > on the current platform and compares the compatibles to the ones on the
-> > list, and on an ignore list, to point out devices that failed to be
-> > probed.
-> > 
-> > A compatible list is needed because not all compatibles that can show up
-> > in a Devicetree node can be used to match to a driver, for example the
-> > code for that compatible might use "OF_DECLARE" type macros and avoid
-> > the driver framework, or the node might be controlled by a driver that
-> > was bound to a different node.
-> > 
-> > An ignore list is needed for the few cases where it's common for a
-> > driver to match a device but not probe, like for the "simple-mfd"
-> > compatible, where the driver only probes if that compatible is the
-> > node's first compatible.
-> > 
-> > Even though there's already scripts/dtc/dt-extract-compatibles that does
-> > a similar job, it didn't seem to find all compatibles, returning ~3k,
-> > while Coccinelle found ~11k. Besides that, Coccinelle actually parses
-> > the C files, so it should be a more robust solution than relying on
-> > regexes.
-> 
-> I just sent a patch[1] last week fixing missing a bunch. I only looked 
-> at the change in count of undocumented (by schema) though.
+On Thu, Aug 10, 2023 at 04:23:51PM -0400, N=EDcolas F. R. A. Prado wrote:
+> Introduce a new kselftest to detect devices that were declared in the
+> Devicetree, and are expected to be probed by a driver, but weren't.
+>=20
+> The test uses two lists: a list of compatibles that can match a
+> Devicetree device to a driver, and a list of compatibles that should be
+> ignored. The first is automatically generated from a script that parses
+> the kernel source using Coccinelle, and will be run as part of building
+> this test, therefore Coccinelle is a build-time dependency for this
+> test. The list of compatibles to ignore is a hand-crafted list to
+> capture the few exceptions of compatibles that are expected to match a
+> driver but not be bound to it.
 
-Ah, looks like I mixed up the output from the dt-extract-compatibles script and
-the output from the make dt_compatible_check. The python script does list
-practically (*) all compatibles that Coccinelle found. So I'll look into
-extending it for the purposes of this test next.
+This doesn't appear to produce KTAP output which is going to make it
+less useful for generic kselftest runners.
 
-(*) it misses 3 compatibles in .h files, and fsl,mpc5200-gpt-gpio because the
-comment above it has ';'. Those are easy to fix though, either on the regex or
-on the driver's code.
+--YBiry2C1ACyZhi5x
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
-> In any case, I'm happy if we have a better solution, but really we 
-> should only have 1. So your script would need to replace the existing 
-> one.
+-----BEGIN PGP SIGNATURE-----
 
-Agreed.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTWPawACgkQJNaLcl1U
+h9BnHgf/cXFsgTdlRlxShMvzuWgYlkgOS1VSqUTQh8iNOqiDU3RAsnDLNA2YDMJM
+x3hGTDn+EGy06P2hVjDrFOTpuQJ0zi2GtBoVhCRRR5k3keavSVmMe8d+YC6PPe6N
+uMc1XEYnM3sqEV/+BIEZohMBi5NuvpRR1/p4QnEPiK/9PTFHLAzLLSwiu9xbrnE2
+bM2yfcAaq7cdPsDlLBa90KZ4cS2bMwZBj/qDij7968mN5LbZy6qm5Tmjjx2bh4bm
+PxK8FXkJYavfIEgL4CiC02mtOWgE47+RZt4LlLzMShl9kV+fGYJSFGaqktMmno/r
+7EIlN4+OtUQ5XuQGxIpxuq9UWZ9Khg==
+=J+CL
+-----END PGP SIGNATURE-----
 
-> 
-> I'd be interested in a performance comparison. IME, coccinelle is 
-> fairly slow. Slower is okay to a point though.
-
-Yes, Coccinelle seems to be quite a bit slower. I can provide a comparison after
-I've tweaked the python script to get the same matches as Coccinelle so it is a
-fair comparison.
-
-> 
-> > 
-> > The reason for parsing the kernel source instead of relying on
-> > information exposed by the kernel at runtime (say, looking at modaliases
-> > or introducing some other mechanism), is to be able to catch issues
-> > where a config was renamed or a driver moved across configs, and the
-> > .config used by the kernel not updated accordingly. We need to parse the
-> > source to find all compatibles present in the kernel independent of the
-> > current config being run.
-> 
-> I've been down this route. I had another implementation using gdb to 
-> extract all of_device_id objects from a built kernel, but besides the 
-> build time, it was really slow.
-
-Interesting to know, that's another option that I'd considered.
-
-Thanks,
-Nícolas
+--YBiry2C1ACyZhi5x--
