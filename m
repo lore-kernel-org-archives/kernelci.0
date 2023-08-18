@@ -1,144 +1,81 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03C3171C0;
-	Fri, 18 Aug 2023 07:50:56 +0000 (UTC)
-Received: from localhost (unknown [IPv6:2a0c:5a83:9102:5a00:2980:60a0:e717:d129])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: rcn)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id C5C1A6607143;
-	Fri, 18 Aug 2023 08:50:54 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1692345054;
-	bh=hY+hsh+mHzNdHs2QGRKGuV2G4Hjv9CP76nBsrSXjAjg=;
-	h=From:To:Cc:Cc:Subject:References:In-reply-to:Date:From;
-	b=krJ9SDFC592y9pLWdqiJ0CS5EQTcBaNjL/6CPs8Ig6HxgujAVuSpeN0iaxCFx0Pii
-	 QoCSksXsgqMgvaO61Xmi4AsAQReKlsn5yhqgbaQvWK9W0ECgMyj2W9W2Lt0HxgVSb0
-	 ujU1+PnRbYYI2dl+sglpzTdl8kcmNZxpYZhp3SI+A1/swEL4WxVwB7sTY3183hk0Pt
-	 UrTNLZiordTVP4vqWgjjHe3bqvH6IOknVnbJY1jEzunQ9zGrfHVNfimro5zImvPCV+
-	 HvlPbSLHTEdYpZCoutKgPaWLgOLuDvQ6yEW9evZyCxME7VCHo/9Q3VbxaGQQ63Av+Q
-	 eAwv2/i/v1Zsw==
-From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, kernelci@lists.linux.dev, gregkh@linuxfoundation.org, thorsten@leemhuis.info, regressions@lists.linux.dev
-Cc: kernel@collabora.com, linux-kernel@vger.kernel.org, Gustavo Padovan <gustavo.padovan@collabora.com>, Shreeya Patel <shreeya.patel@collabora.com>
-Cc: 
-Subject: Re: Kernel regression tracking/reporting initiatives and KCIDB
-References: <874jljhtmj.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me> <c7120c90-e40b-0433-0175-f23f928daa50@collabora.com>
-In-reply-to: <c7120c90-e40b-0433-0175-f23f928daa50@collabora.com>
-Date: Fri, 18 Aug 2023 09:50:51 +0200
-Message-ID: <87o7j4hjqc.fsf@collabora.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3DC63B4
+	for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 12:54:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB92AC433C8;
+	Fri, 18 Aug 2023 12:54:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692363266;
+	bh=orKiM/AYBzvSh3wzYTayQ45OuPrlWY7ULQPgi6qbpLc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JmlJJOM06l+xQoLCh+CVGObMiAfkKrRTsYKUxly0YIRPRvx5EnMz5m5o4FMqSWkvO
+	 EPEDRQYiixgn52l1vHxxJDtFJsp7jzmzq8TkZ0iTElk1IZpQmsDvNJljwkaEpab21S
+	 ZNoDJHWPA6T1C8GBJiPv3PdrRwW3CcrVQmtLLWXNlRwKfn7JeT+PIk04i/4a4mJMwV
+	 9OGcQQ0CpcQbjqM2jy7Bnd2e39Xf7/tPOBmxbKPX2rvoUSTk6ucX2IBxJKBS4NHP4D
+	 eA1MsCS8aH8oERuWf5yVzBBdGlFy9oJxlL4763wxqECHmRfiypGtBh5HrxBmpcbgy+
+	 HeEp2vN3T1KmA==
+Date: Fri, 18 Aug 2023 13:54:21 +0100
+From: Mark Brown <broonie@kernel.org>
+To: =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>
+Cc: Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, kernelci@lists.linux.dev,
+	Guenter Roeck <groeck@chromium.org>, kernel@collabora.com,
+	Bjorn Andersson <andersson@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] kselftest: Add new test for detecting unprobed
+ Devicetree devices
+Message-ID: <69848238-17d8-4b87-8bc1-474cae127410@sirena.org.uk>
+References: <20230817233635.2306377-1-nfraprado@collabora.com>
+ <20230817233635.2306377-4-nfraprado@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="S4sLu4sSqqlfNLG9"
+Content-Disposition: inline
+In-Reply-To: <20230817233635.2306377-4-nfraprado@collabora.com>
+X-Cookie: Your aim is high and to the right.
 
-Hi,
 
-On jue, ago 17 2023 at 15:32:21, Guillaume Tucker <guillaume.tucker@collabora.com> wrote:
-> With the new API, data is owned by the users who submit it so we can
-> effectively provide a solution for grouping data from multiple CI
-> systems like KCIDB does.
->
-> The key thing here is that KernelCI as a project will be
-> providing a database with regression information collected from
-> any public CI system.
+--S4sLu4sSqqlfNLG9
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Does this mean that KernelCI will replace KCIDB? or will they both keep
-working separately?
+On Thu, Aug 17, 2023 at 07:35:27PM -0400, N=EDcolas F. R. A. Prado wrote:
 
-> So the topic of tracking regressions for the whole kernel is already
-> part of the roadmap for KernelCI, and if just waiting for CI systems
-> to push data is not enough we can have services that actively go and
-> look for regressions to feed them into the database under a particular
-> category (or user).
-> It would be good to align ideas you may have with KernelCI's
-> plans
+> --- /dev/null
+> +++ b/tools/testing/selftests/dt/ktap_helpers.sh
+> @@ -0,0 +1,57 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Copyright (c) 2023 Collabora Ltd
+> +#
+> +# Helpers for outputting in KTAP format
+> +#
 
-Our ideas start by studying the required features and needs for
-regression analysis, reporting and tracking in a general and
-system-agnostic way. First the concepts, then the implementation. I
-think that analyzing the problem from the specific perspective of
-KernelCI (or any other CI system in particular). If we start with a
-general approach we can always specialize it later to a particular
-implementation, but starting a design with a restricted design in mind,
-tailored to a specific system, will probably tie it to that system
-permanently.
+These look generic so could be at the top level kselftest directory in
+case any other tests want to use them?
 
-IMO the work we want to do with regressions should be higher-level,
-based on the data produced by a CI system (any of them) and not
-dependent on any particular implementation.
+The test itself looks good in so far as I can read shell.
 
-> also please take into account the fact that the current
-> Regression tracker you've created relies on the legacy system
-> which is going to be retired in the coming months.
+--S4sLu4sSqqlfNLG9
+Content-Type: application/pgp-signature; name="signature.asc"
 
-That's correct. The regression tracker started as a proof of concept to
-explore ideas and we based it on KernelCI test data. We're aware that
-the legacy system will be retired soon, that's why we want to look into
-KCIDB as a data source.
+-----BEGIN PGP SIGNATURE-----
 
->> - did this test also fail on other hardware targets or with other kernel
->>   configurations?
->> - is it possible that the test failed because of an infrastructure
->>   error?
->
-> This should be treated as a false-positive failing test rather
-> than a "regression".  But yes of course we need to deal with
-> them, it's just slightly off-topic here I think.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTfafwACgkQJNaLcl1U
+h9D54wf5AdYx/ucoN/omjRE/OASexlSt6X45/Ke1OOogDr+mlhkQBJP3zbGFj697
+EGbmQxxAk9J1A4wAWul2+r39m5ccV3AXmdL9EWkGLhX7BB9mFTctb+57vNlvjY7Y
+NttfaUuzOj7MR2d7KhrVHhAv9bDEhdaA8d+kMk09qUv/IfbMeIaFqkAiT5wk8UCL
+pZYWuzX6ZYRpkqPaCGc8XpOKcbOCPi46M+oKir75Cpz6UkSTCOnsTJaoLNanLoDw
+MXlgFfMYT8/wd5BaYn6yD8fYQh8cjs2Er4ORC/YngdVAva31UK0cBG3EuwSrnEZp
+VaB9uLK3zqNtlbJg6zHCXocxBUhR1w==
+=n0TR
+-----END PGP SIGNATURE-----
 
-Not regressions, that's right, but I don't think these should be simply
-categorized as false-positives. If we treated these two particular cases
-as false positives we would be hiding and missing important results:
-
-- If the same test case on the same kernel version failed with different
-  configurations or in other boards, highlighting that information could
-  help narrow down the investigation or point it to the right
-  direction. There's definitely a failure (probablyl not a regression)
-  but the thing to fix might not be a kernel code commit but the
-  configuration used for the test. This can be submitted to the test
-  authors or the maintainers of the CI system running the test.
-
-- If the test failed because of an infrastructure error, that's
-  something that can be reported to the lab maintainers to fix. This can
-  be done automatically.
-
->> - does the test fail consistently since that commit or does it show
->>   unstable results?
->> - does the test output show any traces of already known bugs?
->> - has this regression been bisected and reported anywhere?
->> - was the regression reported by anyone? If so, is there someone already
->>   working on it?
->
-> These are all part of the post-regression checks we've been
-> discussing to run as part of KernelCI.  Basically, extending from
-> the current automated bisection jobs we have and also taking into
-> account the notion of dynamic scheduling.  However, when
-> collecting data from other CI systems I don't think there is much
-> we can do if the data is not there.  But we might be able to
-> create collaborations to run extra post-regression checks in
-> other CI systems to tackle this.
-
-This is why I think handling this at a higher level, once all the test
-data from multiple CI systems has been collected, could be the right
-strategy. Can't these post-regression checks be applied to a common DB
-with results aggregated from different CI systems? As long as the
-results are collected in a common and standard way, I mean.  We could
-have those checks implemented only once, in a centralized and generic
-way, instead of having a different implementation of the same process in
-each of the data sources.
-
-> Experimenting with KCIDB now may be interesting, but depending on
-> the outcome of the discussions around having one central database
-> for KernelCI it might not be the optimal way to do it.
-
-Why not? Sorry, I might not have the full context, can you or Nikolai
-give a bit more insight about the possible future status of KCIDB and
-KernelCI and the relationship between them?
-
-Thanks,
-Ricardo
+--S4sLu4sSqqlfNLG9--
