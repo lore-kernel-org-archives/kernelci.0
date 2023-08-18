@@ -1,53 +1,161 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3DC63B4
-	for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 12:54:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB92AC433C8;
-	Fri, 18 Aug 2023 12:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CC2374
+	for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 15:05:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACC9C433C8
+	for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 15:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692363266;
-	bh=orKiM/AYBzvSh3wzYTayQ45OuPrlWY7ULQPgi6qbpLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JmlJJOM06l+xQoLCh+CVGObMiAfkKrRTsYKUxly0YIRPRvx5EnMz5m5o4FMqSWkvO
-	 EPEDRQYiixgn52l1vHxxJDtFJsp7jzmzq8TkZ0iTElk1IZpQmsDvNJljwkaEpab21S
-	 ZNoDJHWPA6T1C8GBJiPv3PdrRwW3CcrVQmtLLWXNlRwKfn7JeT+PIk04i/4a4mJMwV
-	 9OGcQQ0CpcQbjqM2jy7Bnd2e39Xf7/tPOBmxbKPX2rvoUSTk6ucX2IBxJKBS4NHP4D
-	 eA1MsCS8aH8oERuWf5yVzBBdGlFy9oJxlL4763wxqECHmRfiypGtBh5HrxBmpcbgy+
-	 HeEp2vN3T1KmA==
-Date: Fri, 18 Aug 2023 13:54:21 +0100
-From: Mark Brown <broonie@kernel.org>
-To: =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>
-Cc: Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, kernelci@lists.linux.dev,
-	Guenter Roeck <groeck@chromium.org>, kernel@collabora.com,
-	Bjorn Andersson <andersson@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] kselftest: Add new test for detecting unprobed
- Devicetree devices
-Message-ID: <69848238-17d8-4b87-8bc1-474cae127410@sirena.org.uk>
-References: <20230817233635.2306377-1-nfraprado@collabora.com>
- <20230817233635.2306377-4-nfraprado@collabora.com>
+	s=k20201202; t=1692371115;
+	bh=6orISlGJkrk5AwvasxRjT35F7ynLA4E1pATy72EGrCo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Kwi2YM1ZCF1Y9OK30Zx3DREaJdYbFWWuWbaXumT06EKuNrxKoEgYWRpymAR4M/QiI
+	 ZwkhSUUIOhx/Ct1fiN0+VQu60UqO5GG1DZ12mt6AnJcqltVDsWgJfO2tzsnvAwfMwD
+	 +R9390FVr45fpyEUg50QmVyzJzUZ1vd2nuNdeE7nnfwYuJSPaGT0M4Olweu1nto5dq
+	 KepEg6yt4osratSXpwqMc2Ame5n+y/3U+8bh4xe/oiPCX6jTR99HfIICVBmIylGw1a
+	 qIvmwKySPkM9Y2I3emJ9RGQdzsnnSgioWGIBU3inRBxbX6dlT0YwkRkCaMkf4jK2JN
+	 wl8UUidV+WJGw==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2bb734a9081so24369811fa.1
+        for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 08:05:15 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw5cm82U3Qp1Wvm43M1a/Y057UbiLkV/zMfb2TRuu1ROrQ0wPMH
+	MT+es1JGedD/EtldIARFZdxYBmOeuooQwwgybw==
+X-Google-Smtp-Source: AGHT+IH3gWRyBCluruzZkILdMi3VBsoIDTx/zK7O3RFcB/BS3seDkQMIAI7pCo/jm0dtJmi2ycCZWZXsUDjccWjXNiw=
+X-Received: by 2002:a05:651c:1243:b0:2b6:fdae:903a with SMTP id
+ h3-20020a05651c124300b002b6fdae903amr2117850ljh.5.1692371113056; Fri, 18 Aug
+ 2023 08:05:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="S4sLu4sSqqlfNLG9"
-Content-Disposition: inline
+References: <20230817233635.2306377-1-nfraprado@collabora.com> <20230817233635.2306377-4-nfraprado@collabora.com>
 In-Reply-To: <20230817233635.2306377-4-nfraprado@collabora.com>
-X-Cookie: Your aim is high and to the right.
-
-
---S4sLu4sSqqlfNLG9
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+From: Rob Herring <robh+dt@kernel.org>
+Date: Fri, 18 Aug 2023 10:05:00 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLyimRvcnL_O8sMB8SnezXv3Z431VckMC-26w-aT1nYmQ@mail.gmail.com>
+Message-ID: <CAL_JsqLyimRvcnL_O8sMB8SnezXv3Z431VckMC-26w-aT1nYmQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] kselftest: Add new test for detecting unprobed
+ Devicetree devices
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
+Cc: Frank Rowand <frowand.list@gmail.com>, Shuah Khan <shuah@kernel.org>, 
+	Mark Brown <broonie@kernel.org>, kernelci@lists.linux.dev, 
+	Guenter Roeck <groeck@chromium.org>, kernel@collabora.com, 
+	Bjorn Andersson <andersson@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 17, 2023 at 07:35:27PM -0400, N=EDcolas F. R. A. Prado wrote:
+On Thu, Aug 17, 2023 at 6:36=E2=80=AFPM N=C3=ADcolas F. R. A. Prado
+<nfraprado@collabora.com> wrote:
+>
+> Introduce a new kselftest to detect devices that were declared in the
+> Devicetree, and are expected to be probed by a driver, but weren't.
+>
+> The test uses two lists: a list of compatibles that can match a
+> Devicetree device to a driver, and a list of compatibles that should be
+> ignored. The first is automatically generated by the
+> dt-extract-compatibles script, and is run as part of building this test.
+> The list of compatibles to ignore is a hand-crafted list to capture the
+> few exceptions of compatibles that are expected to match a driver but
+> not be bound to it.
+>
+> Signed-off-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
+>
+> ---
+>
+> Changes in v2:
+> - Switched output to be in KTAP format
+> - Changed Makefile to make use of the dt-extract-compatibles instead of
+>   the Coccinelle script
+> - Dropped compatibles from compatible_ignore_list that are now already
+>   filtered out by extraction script
+> - Added early exit if /proc/device-tree is not present
+>
+>  tools/testing/selftests/Makefile              |  1 +
+>  tools/testing/selftests/dt/.gitignore         |  1 +
+>  tools/testing/selftests/dt/Makefile           | 21 +++++
 
+Please add this path to DT maintainers entry.
+
+>  .../selftests/dt/compatible_ignore_list       |  1 +
+>  tools/testing/selftests/dt/ktap_helpers.sh    | 57 +++++++++++++
+
+As Mark said, looks common.
+
+>  .../selftests/dt/test_unprobed_devices.sh     | 79 +++++++++++++++++++
+>  6 files changed, 160 insertions(+)
+>  create mode 100644 tools/testing/selftests/dt/.gitignore
+>  create mode 100644 tools/testing/selftests/dt/Makefile
+>  create mode 100644 tools/testing/selftests/dt/compatible_ignore_list
+>  create mode 100644 tools/testing/selftests/dt/ktap_helpers.sh
+>  create mode 100755 tools/testing/selftests/dt/test_unprobed_devices.sh
+>
+> diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/M=
+akefile
+> index 42806add0114..e8823097698c 100644
+> --- a/tools/testing/selftests/Makefile
+> +++ b/tools/testing/selftests/Makefile
+> @@ -18,6 +18,7 @@ TARGETS +=3D drivers/dma-buf
+>  TARGETS +=3D drivers/s390x/uvdevice
+>  TARGETS +=3D drivers/net/bonding
+>  TARGETS +=3D drivers/net/team
+> +TARGETS +=3D dt
+>  TARGETS +=3D efivarfs
+>  TARGETS +=3D exec
+>  TARGETS +=3D fchmodat2
+> diff --git a/tools/testing/selftests/dt/.gitignore b/tools/testing/selfte=
+sts/dt/.gitignore
+> new file mode 100644
+> index 000000000000..f6476c9f2884
+> --- /dev/null
+> +++ b/tools/testing/selftests/dt/.gitignore
+> @@ -0,0 +1 @@
+> +compatible_list
+
+Not sure on the selftests, but is this enough that it gets cleaned?
+
+> diff --git a/tools/testing/selftests/dt/Makefile b/tools/testing/selftest=
+s/dt/Makefile
+> new file mode 100644
+> index 000000000000..62dc00ee4978
+> --- /dev/null
+> +++ b/tools/testing/selftests/dt/Makefile
+> @@ -0,0 +1,21 @@
+> +PY3 =3D $(shell which python3 2>/dev/null)
+> +
+> +ifneq ($(PY3),)
+> +
+> +TEST_PROGS :=3D test_unprobed_devices.sh
+> +TEST_GEN_FILES :=3D compatible_list
+> +TEST_FILES :=3D compatible_ignore_list ktap_helpers.sh
+> +
+> +include ../lib.mk
+> +
+> +$(OUTPUT)/compatible_list:
+> +       $(top_srcdir)/scripts/dtc/dt-extract-compatibles -d $(top_srcdir)=
+ > $@
+> +
+> +else
+> +
+> +all: no_py3_warning
+> +
+> +no_py3_warning:
+> +       @echo "Missing python3. This test will be skipped."
+> +
+> +endif
+> diff --git a/tools/testing/selftests/dt/compatible_ignore_list b/tools/te=
+sting/selftests/dt/compatible_ignore_list
+> new file mode 100644
+> index 000000000000..1323903feca9
+> --- /dev/null
+> +++ b/tools/testing/selftests/dt/compatible_ignore_list
+> @@ -0,0 +1 @@
+> +simple-mfd
+> diff --git a/tools/testing/selftests/dt/ktap_helpers.sh b/tools/testing/s=
+elftests/dt/ktap_helpers.sh
+> new file mode 100644
+> index 000000000000..27e89a31e602
 > --- /dev/null
 > +++ b/tools/testing/selftests/dt/ktap_helpers.sh
 > @@ -0,0 +1,57 @@
@@ -57,25 +165,158 @@ On Thu, Aug 17, 2023 at 07:35:27PM -0400, N=EDcolas F. R. A. Prado wrote:
 > +#
 > +# Helpers for outputting in KTAP format
 > +#
+> +KTAP_TESTNO=3D1
+> +
+> +ktap_print_header() {
+> +       echo "TAP version 13"
+> +}
+> +
+> +ktap_set_plan() {
+> +       num_tests=3D"$1"
+> +
+> +       echo "1..$num_tests"
+> +}
+> +
+> +ktap_skip_all() {
+> +       echo -n "1..0 # SKIP "
+> +       echo $@
+> +}
+> +
+> +__ktap_test() {
+> +       result=3D"$1"
+> +       description=3D"$2"
+> +       directive=3D"$3" # optional
+> +
+> +       local directive_str=3D
+> +       [[ ! -z "$directive" ]] && directive_str=3D"# $directive"
+> +
+> +       echo $result $KTAP_TESTNO $description $directive_str
+> +
+> +       KTAP_TESTNO=3D$((KTAP_TESTNO+1))
+> +}
+> +
+> +ktap_test_pass() {
+> +       description=3D"$1"
+> +
+> +       result=3D"ok"
+> +       __ktap_test "$result" "$description"
+> +}
+> +
+> +ktap_test_skip() {
+> +       description=3D"$1"
+> +
+> +       result=3D"ok"
+> +       directive=3D"SKIP"
+> +       __ktap_test "$result" "$description" "$directive"
+> +}
+> +
+> +ktap_test_fail() {
+> +       description=3D"$1"
+> +
+> +       result=3D"not ok"
+> +       __ktap_test "$result" "$description"
+> +}
+> diff --git a/tools/testing/selftests/dt/test_unprobed_devices.sh b/tools/=
+testing/selftests/dt/test_unprobed_devices.sh
+> new file mode 100755
+> index 000000000000..b523767cdbfb
+> --- /dev/null
+> +++ b/tools/testing/selftests/dt/test_unprobed_devices.sh
+> @@ -0,0 +1,79 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Copyright (c) 2023 Collabora Ltd
+> +#
+> +# Based on Frank Rowand's dt_stat script.
+> +#
+> +# This script tests for devices that were declared on the Devicetree and=
+ are
+> +# expected to bind to a driver, but didn't.
+> +#
+> +# To achieve this, two lists are used:
+> +# * a list of the compatibles that can be matched by a Devicetree node
+> +# * a list of compatibles that should be ignored
+> +#
+> +
+> +DIR=3D"$(dirname $(readlink -f "$0"))"
+> +
+> +source "${DIR}"/ktap_helpers.sh
+> +
+> +PDT=3D/proc/device-tree/
 
-These look generic so could be at the top level kselftest directory in
-case any other tests want to use them?
+This is considered the legacy path though we will probably never get
+rid of it. Use the sysfs path instead.
 
-The test itself looks good in so far as I can read shell.
+> +COMPAT_LIST=3D"${DIR}"/compatible_list
+> +IGNORE_LIST=3D"${DIR}"/compatible_ignore_list
+> +
+> +KSFT_PASS=3D0
+> +KSFT_FAIL=3D1
+> +KSFT_SKIP=3D4
+> +
+> +ktap_print_header
+> +
+> +if [[ ! -d "${PDT}" ]]; then
+> +       ktap_skip_all "${PDT} doesn't exist."
+> +       exit "${KSFT_SKIP}"
+> +fi
+> +
+> +nodes_compatible=3D$(
+> +       for node_compat in $(find ${PDT} -name compatible); do
+> +               node=3D$(dirname "${node_compat}")
+> +               # Check if node is available
+> +               [[ -e "${node}"/status && $(tr -d '\000' < "${node}"/stat=
+us) !=3D "okay" ]] && continue
 
---S4sLu4sSqqlfNLG9
-Content-Type: application/pgp-signature; name="signature.asc"
+Note that "ok" is accepted by the kernel and does show up some. But
+for your use, probably okay as is.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTfafwACgkQJNaLcl1U
-h9D54wf5AdYx/ucoN/omjRE/OASexlSt6X45/Ke1OOogDr+mlhkQBJP3zbGFj697
-EGbmQxxAk9J1A4wAWul2+r39m5ccV3AXmdL9EWkGLhX7BB9mFTctb+57vNlvjY7Y
-NttfaUuzOj7MR2d7KhrVHhAv9bDEhdaA8d+kMk09qUv/IfbMeIaFqkAiT5wk8UCL
-pZYWuzX6ZYRpkqPaCGc8XpOKcbOCPi46M+oKir75Cpz6UkSTCOnsTJaoLNanLoDw
-MXlgFfMYT8/wd5BaYn6yD8fYQh8cjs2Er4ORC/YngdVAva31UK0cBG3EuwSrnEZp
-VaB9uLK3zqNtlbJg6zHCXocxBUhR1w==
-=n0TR
------END PGP SIGNATURE-----
-
---S4sLu4sSqqlfNLG9--
+> +               echo "${node}" | sed -e 's|\/proc\/device-tree||'
+> +       done | sort
+> +       )
+> +
+> +nodes_dev_bound=3D$(
+> +       IFS=3D$'\n'
+> +       for uevent in $(find /sys/devices -name uevent); do
+> +               if [[ -d "$(dirname "${uevent}")"/driver ]]; then
+> +                       grep '^OF_FULLNAME=3D' "${uevent}" | sed -e 's|OF=
+_FULLNAME=3D||'
+> +               fi
+> +       done
+> +       )
+> +
+> +num_tests=3D$(echo ${nodes_compatible} | wc -w)
+> +ktap_set_plan "${num_tests}"
+> +
+> +retval=3D"${KSFT_PASS}"
+> +for node in ${nodes_compatible}; do
+> +       if ! echo "${nodes_dev_bound}" | grep -E -q "(^| )${node}( |\$)";=
+ then
+> +               compatibles=3D$(tr '\000' '\n' < "${PDT}"/"${node}"/compa=
+tible)
+> +
+> +               for compatible in ${compatibles}; do
+> +                       if grep -x -q "${compatible}" "${IGNORE_LIST}"; t=
+hen
+> +                               continue
+> +                       fi
+> +
+> +                       if grep -x -q "${compatible}" "${COMPAT_LIST}"; t=
+hen
+> +                               ktap_test_fail "${node}"
+> +                               retval=3D"${KSFT_FAIL}"
+> +                               continue 2
+> +                       fi
+> +               done
+> +               ktap_test_skip "${node}"
+> +       else
+> +               ktap_test_pass "${node}"
+> +       fi
+> +
+> +done
+> +
+> +exit "${retval}"
+> --
+> 2.41.0
+>
