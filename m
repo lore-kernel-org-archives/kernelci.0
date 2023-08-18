@@ -1,203 +1,246 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F63A19BCC;
-	Fri, 18 Aug 2023 20:11:59 +0000 (UTC)
-Received: from [IPV6:2001:861:4a40:8620:d901:c525:a85f:2da3] (unknown [IPv6:2001:861:4a40:8620:d901:c525:a85f:2da3])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 5B6116607258;
-	Fri, 18 Aug 2023 21:11:57 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1692389517;
-	bh=RcFpcsfDPDN4mOQYH1rUm7zeWESMm9I//cj7N7OvWFE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nqiIjfCqUWZMEjYGR+ftRqsZtL4gFwYYJVRX6WJCxRikBLKl29bUqGoBXlnMtSxFl
-	 jeSRM++7KI8PNhBBpORtepuSA9vKv1sf+GsiYKILowCHvW4duMeemPimFZsrwHUrE5
-	 XhE2wBBSlnmKL9mS4w1tPK09pOcL0uu4tn5xOJtod3jN3cWWKn9I4CZqiC0ZsCpLqa
-	 mQND76skBt3hh6ltTmJdl7IdauQa9GOHwdjQLcNXatPr/UEWQIALFWyhzJE3bHkrg1
-	 MVH+4adf2DMiEEO75ERNzqhVtTL5UZeIhpM86wu4Qp2dtSdYC99i6R+/tQBrTlIWRt
-	 WMRus9Xf8QNCQ==
-Message-ID: <517c702f-5b75-b999-2224-bc27951f03f3@collabora.com>
-Date: Fri, 18 Aug 2023 22:11:52 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B2819BCC
+	for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 20:20:24 +0000 (UTC)
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-40a47e8e38dso18281cf.1
+        for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 13:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692390023; x=1692994823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hJivKRUQVufG/gPmQeTicJgOw5YOtNiOedA2X8vU9zE=;
+        b=G3VGxR5zQ/wn8bs1jFo/t0VmyFqMoOtDmLslbRIHJk21UrHdZY8HT8PexNES69U8cc
+         COydRhoSc2QngvCduPSEVYlodpuas9ObmPtUWW122HK8lZTSSCvjoy30H7lDXADy4EXV
+         5C1siSFS37lpkbu/yoolDQK8T/bXCB7/7pnZ0E7eraoK1ikRGty5FCbdgH7oR8AYFbS+
+         zO7O/LqS2xLH9BzUgKyBFydjigHDw9QQKSK25RA/gnWIpbLhEJlj3WcgLwP+XBVe17Mq
+         cO5v1MaDpawx4RoM46uQ94x3vozEKXF6MjTydtMTTAlt+XTyWdZlDPZbjfwvbnNnRpqG
+         qmPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692390023; x=1692994823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hJivKRUQVufG/gPmQeTicJgOw5YOtNiOedA2X8vU9zE=;
+        b=dh/Q4YF5NCDzC76ehSe4cFbji6usgoUKAHazM3pgE3JNUz9ExEHK//ptqv5dby7puH
+         nseSB12NxhwVoVAeEBS3CcZTXi1JMGgksuhE93htTawb9yIROwyVmuZuFaUnq8rNwARa
+         pVbWu/mnqO6GRf7Setw1EUKS399zwVXMtlVGNOO5ABNiHpNzKmsMBx2p+PF6fNMUbQEt
+         3xcBwtUaw/jZxD2koyRD10i+/m/mKi9HeuRnnJ8d8wSB7MV3MsojUHusDllXM/LtJVo4
+         SeSowWyYCwB0/ShsdCKCjJCcO657QqbHUOf4AZZiEKUNkhhclTD6fomxzkSsu8soyBEz
+         6FeA==
+X-Gm-Message-State: AOJu0YxS1TuigInL3AS9nO4Kq27LQtcW/SMwRQS4CTvWETtzRA6Rny40
+	1BiTd214VnXpbym8EUFIL+cO8rlyg4xpFFOyT1AZ1A==
+X-Google-Smtp-Source: AGHT+IEhwnsWoqhjrCcucUjO6z8QLTGzlIDf8prugA9O2RpP4srmVZqsJbmCcbZ5tZ9oWV31HG4wWi04/nNC4NUYdz4=
+X-Received: by 2002:ac8:5782:0:b0:40f:d1f4:aa58 with SMTP id
+ v2-20020ac85782000000b0040fd1f4aa58mr288786qta.8.1692390022713; Fri, 18 Aug
+ 2023 13:20:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: Kernel regression tracking/reporting initiatives and KCIDB
-Content-Language: en-US
-To: =?UTF-8?Q?Ricardo_Ca=c3=b1uelo?= <ricardo.canuelo@collabora.com>,
- kernelci@lists.linux.dev, gregkh@linuxfoundation.org,
- thorsten@leemhuis.info, regressions@lists.linux.dev
-Cc: kernel@collabora.com, linux-kernel@vger.kernel.org,
- Gustavo Padovan <gustavo.padovan@collabora.com>,
- Shreeya Patel <shreeya.patel@collabora.com>
-References: <874jljhtmj.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
- <c7120c90-e40b-0433-0175-f23f928daa50@collabora.com>
- <87o7j4hjqc.fsf@collabora.com>
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-In-Reply-To: <87o7j4hjqc.fsf@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20220613094924.913340374@linuxfoundation.org> <20220613094928.793712131@linuxfoundation.org>
+ <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com> <2023081619-slapping-congrats-8e85@gregkh>
+ <471bf84d-9d58-befc-8224-359a62e29786@collabora.com> <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
+ <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
+In-Reply-To: <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Fri, 18 Aug 2023 13:19:46 -0700
+Message-ID: <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
+Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
+ deferred_probe_timeout interaction
+To: Shreeya Patel <shreeya.patel@collabora.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	John Stultz <jstultz@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>, Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Naresh Kamboju <naresh.kamboju@linaro.org>, Basil Eljuse <Basil.Eljuse@arm.com>, 
+	Ferry Toth <fntoth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Anders Roxell <anders.roxell@linaro.org>, linux-pm@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
+	"gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>, 
+	=?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <ricardo.canuelo@collabora.com>, 
+	Guillaume Charles Tucker <guillaume.tucker@collabora.com>, usama.anjum@collabora.com, 
+	kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 18/08/2023 09:50, Ricardo Cañuelo wrote:
-> Hi,
-> 
-> On jue, ago 17 2023 at 15:32:21, Guillaume Tucker <guillaume.tucker@collabora.com> wrote:
->> With the new API, data is owned by the users who submit it so we can
->> effectively provide a solution for grouping data from multiple CI
->> systems like KCIDB does.
->>
->> The key thing here is that KernelCI as a project will be
->> providing a database with regression information collected from
->> any public CI system.
-> 
-> Does this mean that KernelCI will replace KCIDB? or will they both keep
-> working separately?
+On Thu, Aug 17, 2023 at 4:13=E2=80=AFPM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
+>
+> Hi Geert, Saravana,
+>
+> On 18/08/23 00:03, Saravana Kannan wrote:
+> > On Thu, Aug 17, 2023 at 4:37=E2=80=AFAM Shreeya Patel
+> > <shreeya.patel@collabora.com> wrote:
+> >> Hi Greg,
+> >>
+> >> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+> >>> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+> >>>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+> >>>>> From: Saravana Kannan<saravanak@google.com>
+> >>>>>
+> >>>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+> >>>>>
+> >>>>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
+> >>>>> non-zero [1].  This was because ip_auto_config() initcall times out
+> >>>>> waiting for the network interfaces to show up when
+> >>>>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
+> >>>>> wait_for_device_probe() to make sure any currently running deferred
+> >>>>> probe work or asynchronous probe finishes, that wasn't sufficient t=
+o
+> >>>>> account for devices being deferred until deferred_probe_timeout.
+> >>>>>
+> >>>>> Commit 35a672363ab3 ("driver core: Ensure wait_for_device_probe() w=
+aits
+> >>>>> until the deferred_probe_timeout fires") tried to fix that by makin=
+g
+> >>>>> sure wait_for_device_probe() waits for deferred_probe_timeout to ex=
+pire
+> >>>>> before returning.
+> >>>>>
+> >>>>> However, if wait_for_device_probe() is called from the kernel_init(=
+)
+> >>>>> context:
+> >>>>>
+> >>>>> - Before deferred_probe_initcall() [2], it causes the boot process =
+to
+> >>>>>      hang due to a deadlock.
+> >>>>>
+> >>>>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
+> >>>>>      continuing till deferred_probe_timeout expires and beats the p=
+oint of
+> >>>>>      deferred_probe_timeout that's trying to wait for userspace to =
+load
+> >>>>>      modules.
+> >>>>>
+> >>>>> Neither of this is good. So revert the changes to
+> >>>>> wait_for_device_probe().
+> >>>>>
+> >>>>> [1] -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41F=
+D8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+> >>>>> [2] -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-=
+3990X/
+> >>>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
+> >>>> Hi Saravana, Greg,
+> >>>>
+> >>>>
+> >>>> KernelCI found this patch causes the baseline.bootrr.deferred-probe-=
+empty test to fail on r8a77960-ulcb,
+> >>>> see the following details for more information.
+> >>>>
+> >>>> KernelCI dashboard link:
+> >>>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
+> >>>>
+> >>>> Error messages from the logs :-
+> >>>>
+> >>>> + UUID=3D11236495_1.5.2.4.5
+> >>>> + set +x
+> >>>> + export 'PATH=3D/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1=
+/../bin:/sbin:/usr/sbin:/bin:/usr/bin'
+> >>>> + cd /opt/bootrr/libexec/bootrr
+> >>>> + sh helpers/bootrr-auto
+> >>>> e6800000.ethernet
+> >>>> e6700000.dma-controller
+> >>>> e7300000.dma-controller
+> >>>> e7310000.dma-controller
+> >>>> ec700000.dma-controller
+> >>>> ec720000.dma-controller
+> >>>> fea20000.vsp
+> >>>> feb00000.display
+> >>>> fea28000.vsp
+> >>>> fea30000.vsp
+> >>>> fe9a0000.vsp
+> >>>> fe9af000.fcp
+> >>>> fea27000.fcp
+> >>>> fea2f000.fcp
+> >>>> fea37000.fcp
+> >>>> sound
+> >>>> ee100000.mmc
+> >>>> ee140000.mmc
+> >>>> ec500000.sound
+> >>>> /lava-11236495/1/../bin/lava-test-case
+> >>>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE TEST_CASE_ID=3Ddeferred-prob=
+e-empty RESULT=3Dfail>
+> >>>>
+> >>>> Test case failing :-
+> >>>> Baseline Bootrr deferred-probe-empty test -https://github.com/kernel=
+ci/bootrr/blob/main/helpers/bootrr-generic-tests
+> >>>>
+> >>>> Regression Reproduced :-
+> >>>>
+> >>>> Lava job after reverting the commit 5ee76c256e92
+> >>>> https://lava.collabora.dev/scheduler/job/11292890
+> >>>>
+> >>>>
+> >>>> Bisection report from KernelCI can be found at the bottom of the ema=
+il.
+> >>>>
+> >>>> Thanks,
+> >>>> Shreeya Patel
+> >>>>
+> >>>> #regzbot introduced: 5ee76c256e92
+> >>>> #regzbot title: KernelCI: Multiple devices deferring on r8a77960-ulc=
+b
+> >>>>
+> >>>> --------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+----
+> >>>>
+> >>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+> >>>> * If you do send a fix, please include this trailer: *
+> >>>> * Reported-by: "kernelci.org bot" <bot@...> *
+> >>>> * *
+> >>>> * Hope this helps! *
+> >>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+> >>>>
+> >>>> stable-rc/linux-5.10.y bisection: baseline.bootrr.deferred-probe-emp=
+ty on
+> >>>> r8a77960-ulcb
+> >>> You are testing 5.10.y, yet the subject says 5.17?
+> >>>
+> >>> Which is it here?
+> >> Sorry, I accidentally used the lore link for 5.17 while reporting this
+> >> issue,
+> >> but this test does fail on all the stable releases from 5.10 onwards.
+> >>
+> >> stable 5.15 :-
+> >> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+> >> mainline :-
+> >> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+> >>
+> > Shreeya, can you try the patch Geert suggested and let us know if it
+> > helps? If not, then I can try to take a closer look.
+>
+> I tried to test the kernel with 9be4cbd09da8 but it didn't change the
+> result.
+> https://lava.collabora.dev/scheduler/job/11311615
+>
+> Also, I am not sure if this can change things but just FYI, KernelCI
+> adds some kernel parameters when running these tests and one of the
+> parameter is deferred_probe_timeout=3D60.
 
-Like I wrote, how it will be implemented is still being
-discussed.  But I think we all agree it makes sense to have a
-single database for KernelCI with an API to access it.  For
-example, the new API could be directly based on the KCIDB schema
-etc. or KCIDB could become a translation layer on top of the new
-API.  Or something else could happen a bit later.  But that
-doesn't matter as far as this discussion about regressions is
-concerned, there should eventually be a single source of data for
-regressions collected by KernelCI and that will be shared by what
-we currently refer to as the new API and KCIDB.
+Ah this is good to know.
 
->> So the topic of tracking regressions for the whole kernel is already
->> part of the roadmap for KernelCI, and if just waiting for CI systems
->> to push data is not enough we can have services that actively go and
->> look for regressions to feed them into the database under a particular
->> category (or user).
->> It would be good to align ideas you may have with KernelCI's
->> plans
-> 
-> Our ideas start by studying the required features and needs for
-> regression analysis, reporting and tracking in a general and
-> system-agnostic way. First the concepts, then the implementation. I
-> think that analyzing the problem from the specific perspective of
-> KernelCI (or any other CI system in particular). If we start with a
-> general approach we can always specialize it later to a particular
-> implementation, but starting a design with a restricted design in mind,
-> tailored to a specific system, will probably tie it to that system
-> permanently.
-> 
-> IMO the work we want to do with regressions should be higher-level,
-> based on the data produced by a CI system (any of them) and not
-> dependent on any particular implementation.
+> You can check this in the definition details given in the Lava job. I
+> also tried to remove this parameter and rerun the test but again I got
+> the same result.
 
-KernelCI is not any CI, it's designed to be the main system for
-the upstream kernel.  So it already took the high-level approach
-to look at all this after becoming an LF project and we came up
-with KCIDB and now the new API as the community still needs
-an "active" system and not just a database for collecting data
-from other systems.
+How long does the test wait after boot before checking for the
+deferred devices list?
 
->> also please take into account the fact that the current
->> Regression tracker you've created relies on the legacy system
->> which is going to be retired in the coming months.
-> 
-> That's correct. The regression tracker started as a proof of concept to
-> explore ideas and we based it on KernelCI test data. We're aware that
-> the legacy system will be retired soon, that's why we want to look into
-> KCIDB as a data source.
+> I will try to add 9be4cbd09da8 to mainline kernel and see what results I
+> get.
 
-Right, except you might hit another deprecation hurdle if we
-start changing how things are designed around KCIDB and the new
-API.  There's no doubt KCIDB will be supported for a long time,
-but taking into considerations all the new developments can save
-you a lot of trouble.
+Now I'm confused. What do you mean by mainline? Are you saying the tip
+of tree of Linus's tree is also hitting this issue?
 
->>> - did this test also fail on other hardware targets or with other kernel
->>>   configurations?
->>> - is it possible that the test failed because of an infrastructure
->>>   error?
->>
->> This should be treated as a false-positive failing test rather
->> than a "regression".  But yes of course we need to deal with
->> them, it's just slightly off-topic here I think.
-> 
-> Not regressions, that's right, but I don't think these should be simply
-> categorized as false-positives. If we treated these two particular cases
-> as false positives we would be hiding and missing important results:
-> 
-> - If the same test case on the same kernel version failed with different
->   configurations or in other boards, highlighting that information could
->   help narrow down the investigation or point it to the right
->   direction. There's definitely a failure (probablyl not a regression)
->   but the thing to fix might not be a kernel code commit but the
->   configuration used for the test. This can be submitted to the test
->   authors or the maintainers of the CI system running the test.
-> 
-> - If the test failed because of an infrastructure error, that's
->   something that can be reported to the lab maintainers to fix. This can
->   be done automatically.
-
-Sure, these things are important too.  I just wanted to say
-they're not regressions per se.  There are lots of other things
-that can be done to report issues to "lab" owners or anyone in
-charge or test infrastructure.  It's just a different category.
-
->>> - does the test fail consistently since that commit or does it show
->>>   unstable results?
->>> - does the test output show any traces of already known bugs?
->>> - has this regression been bisected and reported anywhere?
->>> - was the regression reported by anyone? If so, is there someone already
->>>   working on it?
->>
->> These are all part of the post-regression checks we've been
->> discussing to run as part of KernelCI.  Basically, extending from
->> the current automated bisection jobs we have and also taking into
->> account the notion of dynamic scheduling.  However, when
->> collecting data from other CI systems I don't think there is much
->> we can do if the data is not there.  But we might be able to
->> create collaborations to run extra post-regression checks in
->> other CI systems to tackle this.
-> 
-> This is why I think handling this at a higher level, once all the test
-> data from multiple CI systems has been collected, could be the right
-> strategy. Can't these post-regression checks be applied to a common DB
-> with results aggregated from different CI systems? As long as the
-> results are collected in a common and standard way, I mean.  We could
-> have those checks implemented only once, in a centralized and generic
-> way, instead of having a different implementation of the same process in
-> each of the data sources.
-> 
->> Experimenting with KCIDB now may be interesting, but depending on
->> the outcome of the discussions around having one central database
->> for KernelCI it might not be the optimal way to do it.
-> 
-> Why not? Sorry, I might not have the full context, can you or Nikolai
-> give a bit more insight about the possible future status of KCIDB and
-> KernelCI and the relationship between them?
-
-We don't have such insight right now, as I explained earlier.
-However, this means you could also play a role in shaping things
-up based on your findings so far.  Everyone is welcome to join
-the discussion.  It has been informal chats in weekly video calls
-so far but we should start keeping track of things in a more
-formal way soon.
-
-My point here is that KernelCI started tackling this issue of
-reporting kernel bugs several years ago at a very high level and
-we've come up with some carefully engineered solutions for it, so
-it looks like you're walking in our footsteps now.  The new web
-dashboard, new API & Pipeline and KCIDB which pioneered working
-outside the native realm of KernelCI provide some answers to the
-challenges you're currently investigating.  So maybe it is
-actually the best strategy for you to carry on doing things
-independently, but it would seem to me like due diligence for
-each of us to know what others are doing.  This email thread
-contributes to it, and I can only thank you for starting it and
-encourage more communication of this kind.
-
-Thanks,
-Guillaume
+-Saravana
