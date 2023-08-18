@@ -1,75 +1,110 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF032374
-	for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 15:09:08 +0000 (UTC)
-Received: from notapiano (zone.collabora.co.uk [167.235.23.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 3F84A660724E;
-	Fri, 18 Aug 2023 16:08:59 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1692371341;
-	bh=mhdojlCbmeEU7uCj6+adG3ogY7i8gXwpuCCoPvyHEk8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BF+ggUAG96t74cPQvxQ7IRVH+/ZTDlYjKL9esEnrKF/6O3C6IWWX2L2fmKOqVwA+h
-	 xO0b8m3PjTKxo8ySeW19TSs3ZBbQh94oSLZ6gMZV5TeYG/ga+n1DzX4wAGFV34O05D
-	 MeQeLppnmA4INaiRKUpKWR+HGetn7IgOYwxPCak5fHhMYVoKAz7VR68lRmHPUUowhV
-	 oCpdXt1gS5RctrtksIuLTNor45m8oScdWRPvG2AR0CbanCY+pp1URzJrNMOagULp4R
-	 9w2wn6fqn+r4OY1FPxq+T9KIHw+HjYaZYutjAKOJedFqowPNdWiy0QrPQdvoi/XNYL
-	 Q9XxJ5k/rjmBQ==
-Date: Fri, 18 Aug 2023 11:08:55 -0400
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, kernelci@lists.linux.dev,
-	Guenter Roeck <groeck@chromium.org>, kernel@collabora.com,
-	Bjorn Andersson <andersson@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] kselftest: Add new test for detecting unprobed
- Devicetree devices
-Message-ID: <bdd6da06-d790-42c1-a5ea-372d38bf0ea7@notapiano>
-References: <20230817233635.2306377-1-nfraprado@collabora.com>
- <20230817233635.2306377-4-nfraprado@collabora.com>
- <69848238-17d8-4b87-8bc1-474cae127410@sirena.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2DF18AF5
+	for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 16:11:57 +0000 (UTC)
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-790af3bfa5cso13850539f.1
+        for <kernelci@lists.linux.dev>; Fri, 18 Aug 2023 09:11:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1692375116; x=1692979916;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HgOUhrzygLSqZdauIc0uVm9MlbbDR2SIBt1AEcio6xE=;
+        b=RjgLNxjyYy4EB/PEs0GWly50tA3Mc6O+p3KRLXDartocn3ajnzKW+O6Wj9lWK/ukUX
+         5GgloCF5lD65JykgEYfBnpT4e/M3xTcBuRqwCiC89AViJVElf7Y8bfEI7Ja5E+a+3N7q
+         L1GYNCv7JeBeBQ2SUBaLgtEQ1MOcZLNfGocLA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692375116; x=1692979916;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HgOUhrzygLSqZdauIc0uVm9MlbbDR2SIBt1AEcio6xE=;
+        b=Qtw9p/25/QHUw4B57jFn2KZoUdyzIqy8qwKqGjfeBMJq+RU6CNW4+emEVN5Oz1GMkQ
+         FLJXgmhmZ1aDYcW1NJ2Q6F163/mQKlRNspEc4RHaWYBe8pE2JJ+9CtD60Jm1QVCZEaeM
+         CxtVDVAIvUsVqxLbR7N2FTjc0ZsSCbMgb5LGJdPvw/TILgVctI+FLjrcD4e1cckK84wy
+         6QPsk3zYN4NaGQyvnbzHiasOeMFO6JytJmCAnXVtHn+DJuz0TyWnw5JxqrvOudHw9w5C
+         osXvretHmGseia8fiHFuuiRUhr/m9pOh1QjMhyRfWJ2XnRkXxVe5i251jwg8nMBCSSpY
+         z39w==
+X-Gm-Message-State: AOJu0Yw1/45gbfng31dXlr1AfVzFJ0EpOxnS33q3XY8HLlyE6MLskLbc
+	uLKYz/mzvwgAxCwkuUVtCH2oRQ==
+X-Google-Smtp-Source: AGHT+IEcNw1RSnNlbNsCdDxT7TVaSrBRorddbxy54Y3BOOfQrA79h8aB0G9+LlR9q9CnCMMbIYPWMQ==
+X-Received: by 2002:a5d:9d8b:0:b0:791:ad39:660b with SMTP id ay11-20020a5d9d8b000000b00791ad39660bmr4992529iob.0.1692375116181;
+        Fri, 18 Aug 2023 09:11:56 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id v19-20020a02cbb3000000b0042b265bf3besm603455jap.115.2023.08.18.09.11.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Aug 2023 09:11:55 -0700 (PDT)
+Message-ID: <54fe5a4b-e0eb-b2e2-e39a-fc840acac70e@linuxfoundation.org>
+Date: Fri, 18 Aug 2023 10:11:55 -0600
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 3/3] kselftest: Add new test for detecting unprobed
+ Devicetree devices
+Content-Language: en-US
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ kernelci@lists.linux.dev, Guenter Roeck <groeck@chromium.org>,
+ kernel@collabora.com, Bjorn Andersson <andersson@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20230817233635.2306377-1-nfraprado@collabora.com>
+ <20230817233635.2306377-4-nfraprado@collabora.com>
+ <69848238-17d8-4b87-8bc1-474cae127410@sirena.org.uk>
+ <bdd6da06-d790-42c1-a5ea-372d38bf0ea7@notapiano>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <bdd6da06-d790-42c1-a5ea-372d38bf0ea7@notapiano>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <69848238-17d8-4b87-8bc1-474cae127410@sirena.org.uk>
 
-On Fri, Aug 18, 2023 at 01:54:21PM +0100, Mark Brown wrote:
-> On Thu, Aug 17, 2023 at 07:35:27PM -0400, Nícolas F. R. A. Prado wrote:
+On 8/18/23 09:08, NÃ­colas F. R. A. Prado wrote:
+> On Fri, Aug 18, 2023 at 01:54:21PM +0100, Mark Brown wrote:
+>> On Thu, Aug 17, 2023 at 07:35:27PM -0400, NÃ­colas F. R. A. Prado wrote:
+>>
+>>> --- /dev/null
+>>> +++ b/tools/testing/selftests/dt/ktap_helpers.sh
+>>> @@ -0,0 +1,57 @@
+>>> +# SPDX-License-Identifier: GPL-2.0
+>>> +#
+>>> +# Copyright (c) 2023 Collabora Ltd
+>>> +#
+>>> +# Helpers for outputting in KTAP format
+>>> +#
+>>
+>> These look generic so could be at the top level kselftest directory in
+>> case any other tests want to use them?
 > 
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/dt/ktap_helpers.sh
-> > @@ -0,0 +1,57 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +#
-> > +# Copyright (c) 2023 Collabora Ltd
-> > +#
-> > +# Helpers for outputting in KTAP format
-> > +#
+> Yes, they're generic. And sure, we can move it up. The tests using it will need
+> to source it at run-time, so we can either update the kselftest Makefile to
+> always copy this helper when installing, or each test's Makefile can
+> make its own copy during build.
 > 
-> These look generic so could be at the top level kselftest directory in
-> case any other tests want to use them?
 
-Yes, they're generic. And sure, we can move it up. The tests using it will need
-to source it at run-time, so we can either update the kselftest Makefile to
-always copy this helper when installing, or each test's Makefile can
-make its own copy during build.
+Moving this up would require the above changes. I prefer
+making these later after this test goes in to avoid conflicts
+with linux-kselftest next and Rob's dt as this one depends
+on  patches 1&2 which aren't in my Inbox.
 
+I would like also  to see a common solution that works for C
+and shell tests. Sourcing works just for shell tests.
+
+>>
+>> The test itself looks good in so far as I can read shell.
 > 
-> The test itself looks good in so far as I can read shell.
+> Thanks for the feedback!
+>
+Rob, Are you planning to take this through your tree. If you
+do, here is my Reviewed-by
 
-Thanks for the feedback!
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Thanks,
-Nícolas
+thanks,
+-- Shuah
+
