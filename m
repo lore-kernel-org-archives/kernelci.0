@@ -1,39 +1,27 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF64A3B
-	for <kernelci@lists.linux.dev>; Mon, 21 Aug 2023 11:35:49 +0000 (UTC)
-Received: from [IPV6:2405:201:0:21ea:73f6:2283:f432:3936] (unknown [IPv6:2405:201:0:21ea:73f6:2283:f432:3936])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: shreeya)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id C187466071B1;
-	Mon, 21 Aug 2023 12:35:41 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1692617748;
-	bh=RUeyD6fiUTInSG+vr6OnkVhCqjVHmBcaBXTucCoGaj0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U6OUHJ+E5Ae2IEp9b3Ecss5bZQRKbOxHTaX/XHV/gkgTguh7jOZ7nppyIBGZT0Vt1
-	 GT/DzB3uwT0FdClmA1JIZ2TmQN7H9qrGza911OVNMCi7YQ/0bWL5dVKzCJhECtcdBk
-	 jZBskPu3HKlHlHePWozlCECyGOdf8tv6k8/5eU5OUzNhLRCvu+VvLwD5qDKbPIE1Gr
-	 ZioyPEqL624HIWq7YdSw0fwJPHu6dpj3jjJHITNEcWgKQqdX3pZOVpcp1a1WlMgfIt
-	 eL56iTviF7vKgE9YXIqA41ZjPAF9kr0U5ZtRzXCQ7OZ/6HR2pOy0UtLBe9OzBtOEQp
-	 Lf6b4BRtaCxhg==
-Message-ID: <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com>
-Date: Mon, 21 Aug 2023 17:05:37 +0530
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F84538F
+	for <kernelci@lists.linux.dev>; Mon, 21 Aug 2023 12:39:33 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3DC792F4;
+	Mon, 21 Aug 2023 05:40:13 -0700 (PDT)
+Received: from [10.57.3.137] (unknown [10.57.3.137])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C6A3D3F762;
+	Mon, 21 Aug 2023 05:39:27 -0700 (PDT)
+Message-ID: <6d7a7ecc-1364-5cbe-0485-01d693dbdc6c@arm.com>
+Date: Mon, 21 Aug 2023 13:39:11 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
 Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
  deferred_probe_timeout interaction
-Content-Language: en-US
-To: Saravana Kannan <saravanak@google.com>
+Content-Language: en-GB
+To: Shreeya Patel <shreeya.patel@collabora.com>,
+ Saravana Kannan <saravanak@google.com>
 Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
  John Stultz <jstultz@google.com>, "David S. Miller" <davem@davemloft.net>,
@@ -42,7 +30,6 @@ Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
  <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
  Geert Uytterhoeven <geert@linux-m68k.org>,
  Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- Robin Murphy <robin.murphy@arm.com>,
  Andy Shevchenko <andy.shevchenko@gmail.com>,
  Sudeep Holla <sudeep.holla@arm.com>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -66,172 +53,207 @@ References: <20220613094924.913340374@linuxfoundation.org>
  <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
  <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
  <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
-From: Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
+ <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com>
+From: Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-
-On 19/08/23 01:49, Saravana Kannan wrote:
-> On Thu, Aug 17, 2023 at 4:13 PM Shreeya Patel
-> <shreeya.patel@collabora.com> wrote:
->> Hi Geert, Saravana,
->>
->> On 18/08/23 00:03, Saravana Kannan wrote:
->>> On Thu, Aug 17, 2023 at 4:37 AM Shreeya Patel
->>> <shreeya.patel@collabora.com> wrote:
->>>> Hi Greg,
->>>>
->>>> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
->>>>> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
->>>>>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
->>>>>>> From: Saravana Kannan<saravanak@google.com>
->>>>>>>
->>>>>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
->>>>>>>
->>>>>>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
->>>>>>> non-zero [1].  This was because ip_auto_config() initcall times out
->>>>>>> waiting for the network interfaces to show up when
->>>>>>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
->>>>>>> wait_for_device_probe() to make sure any currently running deferred
->>>>>>> probe work or asynchronous probe finishes, that wasn't sufficient to
->>>>>>> account for devices being deferred until deferred_probe_timeout.
->>>>>>>
->>>>>>> Commit 35a672363ab3 ("driver core: Ensure wait_for_device_probe() waits
->>>>>>> until the deferred_probe_timeout fires") tried to fix that by making
->>>>>>> sure wait_for_device_probe() waits for deferred_probe_timeout to expire
->>>>>>> before returning.
->>>>>>>
->>>>>>> However, if wait_for_device_probe() is called from the kernel_init()
->>>>>>> context:
->>>>>>>
->>>>>>> - Before deferred_probe_initcall() [2], it causes the boot process to
->>>>>>>       hang due to a deadlock.
->>>>>>>
->>>>>>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
->>>>>>>       continuing till deferred_probe_timeout expires and beats the point of
->>>>>>>       deferred_probe_timeout that's trying to wait for userspace to load
->>>>>>>       modules.
->>>>>>>
->>>>>>> Neither of this is good. So revert the changes to
->>>>>>> wait_for_device_probe().
->>>>>>>
->>>>>>> [1] -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41FD8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
->>>>>>> [2] -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-3990X/
->>>>>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
->>>>>> Hi Saravana, Greg,
->>>>>>
->>>>>>
->>>>>> KernelCI found this patch causes the baseline.bootrr.deferred-probe-empty test to fail on r8a77960-ulcb,
->>>>>> see the following details for more information.
->>>>>>
->>>>>> KernelCI dashboard link:
->>>>>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
->>>>>>
->>>>>> Error messages from the logs :-
->>>>>>
->>>>>> + UUID=11236495_1.5.2.4.5
->>>>>> + set +x
->>>>>> + export 'PATH=/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1/../bin:/sbin:/usr/sbin:/bin:/usr/bin'
->>>>>> + cd /opt/bootrr/libexec/bootrr
->>>>>> + sh helpers/bootrr-auto
->>>>>> e6800000.ethernet
->>>>>> e6700000.dma-controller
->>>>>> e7300000.dma-controller
->>>>>> e7310000.dma-controller
->>>>>> ec700000.dma-controller
->>>>>> ec720000.dma-controller
->>>>>> fea20000.vsp
->>>>>> feb00000.display
->>>>>> fea28000.vsp
->>>>>> fea30000.vsp
->>>>>> fe9a0000.vsp
->>>>>> fe9af000.fcp
->>>>>> fea27000.fcp
->>>>>> fea2f000.fcp
->>>>>> fea37000.fcp
->>>>>> sound
->>>>>> ee100000.mmc
->>>>>> ee140000.mmc
->>>>>> ec500000.sound
->>>>>> /lava-11236495/1/../bin/lava-test-case
->>>>>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE TEST_CASE_ID=deferred-probe-empty RESULT=fail>
->>>>>>
->>>>>> Test case failing :-
->>>>>> Baseline Bootrr deferred-probe-empty test -https://github.com/kernelci/bootrr/blob/main/helpers/bootrr-generic-tests
->>>>>>
->>>>>> Regression Reproduced :-
->>>>>>
->>>>>> Lava job after reverting the commit 5ee76c256e92
->>>>>> https://lava.collabora.dev/scheduler/job/11292890
->>>>>>
->>>>>>
->>>>>> Bisection report from KernelCI can be found at the bottom of the email.
->>>>>>
->>>>>> Thanks,
->>>>>> Shreeya Patel
->>>>>>
->>>>>> #regzbot introduced: 5ee76c256e92
->>>>>> #regzbot title: KernelCI: Multiple devices deferring on r8a77960-ulcb
->>>>>>
->>>>>> ---------------------------------------------------------------------------------------------------------------------------------------------------
->>>>>>
->>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
->>>>>> * If you do send a fix, please include this trailer: *
->>>>>> * Reported-by: "kernelci.org bot" <bot@...> *
->>>>>> * *
->>>>>> * Hope this helps! *
->>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
->>>>>>
->>>>>> stable-rc/linux-5.10.y bisection: baseline.bootrr.deferred-probe-empty on
->>>>>> r8a77960-ulcb
->>>>> You are testing 5.10.y, yet the subject says 5.17?
+On 2023-08-21 12:35, Shreeya Patel wrote:
+> 
+> On 19/08/23 01:49, Saravana Kannan wrote:
+>> On Thu, Aug 17, 2023 at 4:13 PM Shreeya Patel
+>> <shreeya.patel@collabora.com> wrote:
+>>> Hi Geert, Saravana,
+>>>
+>>> On 18/08/23 00:03, Saravana Kannan wrote:
+>>>> On Thu, Aug 17, 2023 at 4:37 AM Shreeya Patel
+>>>> <shreeya.patel@collabora.com> wrote:
+>>>>> Hi Greg,
 >>>>>
->>>>> Which is it here?
->>>> Sorry, I accidentally used the lore link for 5.17 while reporting this
->>>> issue,
->>>> but this test does fail on all the stable releases from 5.10 onwards.
->>>>
->>>> stable 5.15 :-
->>>> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
->>>> mainline :-
->>>> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
->>>>
->>> Shreeya, can you try the patch Geert suggested and let us know if it
->>> helps? If not, then I can try to take a closer look.
->> I tried to test the kernel with 9be4cbd09da8 but it didn't change the
->> result.
->> https://lava.collabora.dev/scheduler/job/11311615
+>>>>> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+>>>>>> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+>>>>>>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+>>>>>>>> From: Saravana Kannan<saravanak@google.com>
+>>>>>>>>
+>>>>>>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+>>>>>>>>
+>>>>>>>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
+>>>>>>>> non-zero [1].  This was because ip_auto_config() initcall times out
+>>>>>>>> waiting for the network interfaces to show up when
+>>>>>>>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
+>>>>>>>> wait_for_device_probe() to make sure any currently running deferred
+>>>>>>>> probe work or asynchronous probe finishes, that wasn't 
+>>>>>>>> sufficient to
+>>>>>>>> account for devices being deferred until deferred_probe_timeout.
+>>>>>>>>
+>>>>>>>> Commit 35a672363ab3 ("driver core: Ensure 
+>>>>>>>> wait_for_device_probe() waits
+>>>>>>>> until the deferred_probe_timeout fires") tried to fix that by 
+>>>>>>>> making
+>>>>>>>> sure wait_for_device_probe() waits for deferred_probe_timeout to 
+>>>>>>>> expire
+>>>>>>>> before returning.
+>>>>>>>>
+>>>>>>>> However, if wait_for_device_probe() is called from the 
+>>>>>>>> kernel_init()
+>>>>>>>> context:
+>>>>>>>>
+>>>>>>>> - Before deferred_probe_initcall() [2], it causes the boot 
+>>>>>>>> process to
+>>>>>>>>       hang due to a deadlock.
+>>>>>>>>
+>>>>>>>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
+>>>>>>>>       continuing till deferred_probe_timeout expires and beats 
+>>>>>>>> the point of
+>>>>>>>>       deferred_probe_timeout that's trying to wait for userspace 
+>>>>>>>> to load
+>>>>>>>>       modules.
+>>>>>>>>
+>>>>>>>> Neither of this is good. So revert the changes to
+>>>>>>>> wait_for_device_probe().
+>>>>>>>>
+>>>>>>>> [1] 
+>>>>>>>> -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41FD8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+>>>>>>>> [2] 
+>>>>>>>> -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-3990X/
+>>>>>>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
+>>>>>>> Hi Saravana, Greg,
+>>>>>>>
+>>>>>>>
+>>>>>>> KernelCI found this patch causes the 
+>>>>>>> baseline.bootrr.deferred-probe-empty test to fail on r8a77960-ulcb,
+>>>>>>> see the following details for more information.
+>>>>>>>
+>>>>>>> KernelCI dashboard link:
+>>>>>>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
+>>>>>>>
+>>>>>>> Error messages from the logs :-
+>>>>>>>
+>>>>>>> + UUID=11236495_1.5.2.4.5
+>>>>>>> + set +x
+>>>>>>> + export 
+>>>>>>> 'PATH=/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1/../bin:/sbin:/usr/sbin:/bin:/usr/bin'
+>>>>>>> + cd /opt/bootrr/libexec/bootrr
+>>>>>>> + sh helpers/bootrr-auto
+>>>>>>> e6800000.ethernet
+>>>>>>> e6700000.dma-controller
+>>>>>>> e7300000.dma-controller
+>>>>>>> e7310000.dma-controller
+>>>>>>> ec700000.dma-controller
+>>>>>>> ec720000.dma-controller
+>>>>>>> fea20000.vsp
+>>>>>>> feb00000.display
+>>>>>>> fea28000.vsp
+>>>>>>> fea30000.vsp
+>>>>>>> fe9a0000.vsp
+>>>>>>> fe9af000.fcp
+>>>>>>> fea27000.fcp
+>>>>>>> fea2f000.fcp
+>>>>>>> fea37000.fcp
+>>>>>>> sound
+>>>>>>> ee100000.mmc
+>>>>>>> ee140000.mmc
+>>>>>>> ec500000.sound
+>>>>>>> /lava-11236495/1/../bin/lava-test-case
+>>>>>>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE 
+>>>>>>> TEST_CASE_ID=deferred-probe-empty RESULT=fail>
+>>>>>>>
+>>>>>>> Test case failing :-
+>>>>>>> Baseline Bootrr deferred-probe-empty test 
+>>>>>>> -https://github.com/kernelci/bootrr/blob/main/helpers/bootrr-generic-tests
+>>>>>>>
+>>>>>>> Regression Reproduced :-
+>>>>>>>
+>>>>>>> Lava job after reverting the commit 5ee76c256e92
+>>>>>>> https://lava.collabora.dev/scheduler/job/11292890
+>>>>>>>
+>>>>>>>
+>>>>>>> Bisection report from KernelCI can be found at the bottom of the 
+>>>>>>> email.
+>>>>>>>
+>>>>>>> Thanks,
+>>>>>>> Shreeya Patel
+>>>>>>>
+>>>>>>> #regzbot introduced: 5ee76c256e92
+>>>>>>> #regzbot title: KernelCI: Multiple devices deferring on 
+>>>>>>> r8a77960-ulcb
+>>>>>>>
+>>>>>>> ---------------------------------------------------------------------------------------------------------------------------------------------------
+>>>>>>>
+>>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+>>>>>>> * If you do send a fix, please include this trailer: *
+>>>>>>> * Reported-by: "kernelci.org bot" <bot@...> *
+>>>>>>> * *
+>>>>>>> * Hope this helps! *
+>>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+>>>>>>>
+>>>>>>> stable-rc/linux-5.10.y bisection: 
+>>>>>>> baseline.bootrr.deferred-probe-empty on
+>>>>>>> r8a77960-ulcb
+>>>>>> You are testing 5.10.y, yet the subject says 5.17?
+>>>>>>
+>>>>>> Which is it here?
+>>>>> Sorry, I accidentally used the lore link for 5.17 while reporting this
+>>>>> issue,
+>>>>> but this test does fail on all the stable releases from 5.10 onwards.
+>>>>>
+>>>>> stable 5.15 :-
+>>>>> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+>>>>> mainline :-
+>>>>> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+>>>>>
+>>>> Shreeya, can you try the patch Geert suggested and let us know if it
+>>>> helps? If not, then I can try to take a closer look.
+>>> I tried to test the kernel with 9be4cbd09da8 but it didn't change the
+>>> result.
+>>> https://lava.collabora.dev/scheduler/job/11311615
+>>>
+>>> Also, I am not sure if this can change things but just FYI, KernelCI
+>>> adds some kernel parameters when running these tests and one of the
+>>> parameter is deferred_probe_timeout=60.
+>> Ah this is good to know.
 >>
->> Also, I am not sure if this can change things but just FYI, KernelCI
->> adds some kernel parameters when running these tests and one of the
->> parameter is deferred_probe_timeout=60.
-> Ah this is good to know.
->
->> You can check this in the definition details given in the Lava job. I
->> also tried to remove this parameter and rerun the test but again I got
->> the same result.
-> How long does the test wait after boot before checking for the
-> deferred devices list?
->
+>>> You can check this in the definition details given in the Lava job. I
+>>> also tried to remove this parameter and rerun the test but again I got
+>>> the same result.
+>> How long does the test wait after boot before checking for the
+>> deferred devices list?
+>>
+> 
+> AFAIK, script for running the tests is immediately ran after the boot 
+> process is complete so there is no wait time.
 
-AFAIK, script for running the tests is immediately ran after the boot 
-process is complete so there is no wait time.
+Regardless of what the kernel is doing, it seems like a fundamentally 
+dumb test to specifically ask deferred probe to wait for up to a minute 
+then complain that it hasn't finished after 11 seconds :/
 
->> I will try to add 9be4cbd09da8 to mainline kernel and see what results I
->> get.
-> Now I'm confused. What do you mean by mainline? Are you saying the tip
-> of tree of Linus's tree is also hitting this issue?
+If anything, it seems plausible that the "regression" might actually be 
+the correct behaviour, and it was wrong before. I can't manage to pull 
+up a boot log for a pre-5.10 kernel since all the async stuff on the 
+KernelCI dashboard always just times out for me with a helpful "Error 
+while loading data from the server (error code: 0)", but what would be 
+interesting is whether those devices on the list are expected to 
+successfully probe anyway - the mainline log below also shows other 
+stuff failing to probe and CPUs failing to come online, so it's clearly 
+not a very happy platform to begin with.
 
+Robin.
 
-KernelCI runs tests on different kernel branches and trees, we also have 
-this same test running on mainline tree.
-Following is the link to the dashboard for it and as you can see, it 
-does fail there too.
-
-
-https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
-
-
-> -Saravana
->
+>>> I will try to add 9be4cbd09da8 to mainline kernel and see what results I
+>>> get.
+>> Now I'm confused. What do you mean by mainline? Are you saying the tip
+>> of tree of Linus's tree is also hitting this issue?
+> 
+> 
+> KernelCI runs tests on different kernel branches and trees, we also have 
+> this same test running on mainline tree.
+> Following is the link to the dashboard for it and as you can see, it 
+> does fail there too.
+> 
+> 
+> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+> 
+> 
+>> -Saravana
+>>
