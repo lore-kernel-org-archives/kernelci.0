@@ -1,92 +1,237 @@
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5DE4C6D;
-	Mon, 21 Aug 2023 10:30:19 +0000 (UTC)
-Received: from localhost (unknown [IPv6:2a0c:5a83:9103:1700:7ffc:59a:ffce:ded])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FF64A3B
+	for <kernelci@lists.linux.dev>; Mon, 21 Aug 2023 11:35:49 +0000 (UTC)
+Received: from [IPV6:2405:201:0:21ea:73f6:2283:f432:3936] (unknown [IPv6:2405:201:0:21ea:73f6:2283:f432:3936])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: rcn)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 7AAF76606EFD;
-	Mon, 21 Aug 2023 11:30:11 +0100 (BST)
+	(Authenticated sender: shreeya)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id C187466071B1;
+	Mon, 21 Aug 2023 12:35:41 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1692613811;
-	bh=3/SpDn4E/YYhiEBouzxukYNTQ4Iz0kF66TTL4tJYLSo=;
-	h=From:To:Cc:Cc:Subject:References:In-reply-to:Date:From;
-	b=nu2b9sg+XBfDx+1Q6998faAp9JCeba9ElDRqA99Thl8OOW5W87WK6Kh8TBPiZdLLM
-	 4nJQNWPYRcjkxhe5ga5g5mblRa6HQYT6mGp1neY0LM08ma/SZHUQCUTyd7W3XNNFr2
-	 7clr28GaKyo3QJ5hMg+4CETFKOXc60qx1vn1ZjYBvcEwDpVrrpwZ04xZ1lSS0NcrK8
-	 1En56btg2BKo1uSaFQy7nzh46JfCx4MJsKRRHaRJpN0YOPDuhXacZs2RzFJGLZGJxi
-	 NYnGETNYtXz+1jsBsj2FA3ePlSPolqf/phixY6r/uT9qwNIgxNs9fHLWkLl4HLtHo8
-	 Huic0ZIG2jWiQ==
-From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>, kernelci@lists.linux.dev, gregkh@linuxfoundation.org, thorsten@leemhuis.info, regressions@lists.linux.dev
-Cc: kernel@collabora.com, linux-kernel@vger.kernel.org, Gustavo Padovan <gustavo.padovan@collabora.com>, Shreeya Patel <shreeya.patel@collabora.com>
-Cc: 
-Subject: Re: Kernel regression tracking/reporting initiatives and KCIDB
-References: <874jljhtmj.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me> <c7120c90-e40b-0433-0175-f23f928daa50@collabora.com> <87o7j4hjqc.fsf@collabora.com> <517c702f-5b75-b999-2224-bc27951f03f3@collabora.com>
-In-reply-to: <517c702f-5b75-b999-2224-bc27951f03f3@collabora.com>
-Date: Mon, 21 Aug 2023 12:30:08 +0200
-Message-ID: <87jztohemn.fsf@collabora.com>
+	s=mail; t=1692617748;
+	bh=RUeyD6fiUTInSG+vr6OnkVhCqjVHmBcaBXTucCoGaj0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=U6OUHJ+E5Ae2IEp9b3Ecss5bZQRKbOxHTaX/XHV/gkgTguh7jOZ7nppyIBGZT0Vt1
+	 GT/DzB3uwT0FdClmA1JIZ2TmQN7H9qrGza911OVNMCi7YQ/0bWL5dVKzCJhECtcdBk
+	 jZBskPu3HKlHlHePWozlCECyGOdf8tv6k8/5eU5OUzNhLRCvu+VvLwD5qDKbPIE1Gr
+	 ZioyPEqL624HIWq7YdSw0fwJPHu6dpj3jjJHITNEcWgKQqdX3pZOVpcp1a1WlMgfIt
+	 eL56iTviF7vKgE9YXIqA41ZjPAF9kr0U5ZtRzXCQ7OZ/6HR2pOy0UtLBe9OzBtOEQp
+	 Lf6b4BRtaCxhg==
+Message-ID: <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com>
+Date: Mon, 21 Aug 2023 17:05:37 +0530
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
+ deferred_probe_timeout interaction
+Content-Language: en-US
+To: Saravana Kannan <saravanak@google.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ John Stultz <jstultz@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+ Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, Jakub Kicinski
+ <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Basil Eljuse <Basil.Eljuse@arm.com>, Ferry Toth <fntoth@gmail.com>,
+ Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>,
+ linux-pm@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+ =?UTF-8?Q?Ricardo_Ca=c3=b1uelo_Navarro?= <ricardo.canuelo@collabora.com>,
+ Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+ usama.anjum@collabora.com, kernelci@lists.linux.dev
+References: <20220613094924.913340374@linuxfoundation.org>
+ <20220613094928.793712131@linuxfoundation.org>
+ <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com>
+ <2023081619-slapping-congrats-8e85@gregkh>
+ <471bf84d-9d58-befc-8224-359a62e29786@collabora.com>
+ <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
+ <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
+ <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
+From: Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On vie, ago 18 2023 at 22:11:52, Guillaume Tucker <guillaume.tucker@collabora.com> wrote:
-> KernelCI is not any CI, it's designed to be the main system for
-> the upstream kernel.  So it already took the high-level approach
-> to look at all this after becoming an LF project and we came up
-> with KCIDB and now the new API as the community still needs
-> an "active" system and not just a database for collecting data
-> from other systems.
 
-That sounds good and I think that's the way to go, but does that mean
-that, in theory, most or all current CI systems (0-day, CKI, etc) will
-"push" their results to the new KernelCI in the future?
+On 19/08/23 01:49, Saravana Kannan wrote:
+> On Thu, Aug 17, 2023 at 4:13 PM Shreeya Patel
+> <shreeya.patel@collabora.com> wrote:
+>> Hi Geert, Saravana,
+>>
+>> On 18/08/23 00:03, Saravana Kannan wrote:
+>>> On Thu, Aug 17, 2023 at 4:37 AM Shreeya Patel
+>>> <shreeya.patel@collabora.com> wrote:
+>>>> Hi Greg,
+>>>>
+>>>> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+>>>>> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+>>>>>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+>>>>>>> From: Saravana Kannan<saravanak@google.com>
+>>>>>>>
+>>>>>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+>>>>>>>
+>>>>>>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
+>>>>>>> non-zero [1].  This was because ip_auto_config() initcall times out
+>>>>>>> waiting for the network interfaces to show up when
+>>>>>>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
+>>>>>>> wait_for_device_probe() to make sure any currently running deferred
+>>>>>>> probe work or asynchronous probe finishes, that wasn't sufficient to
+>>>>>>> account for devices being deferred until deferred_probe_timeout.
+>>>>>>>
+>>>>>>> Commit 35a672363ab3 ("driver core: Ensure wait_for_device_probe() waits
+>>>>>>> until the deferred_probe_timeout fires") tried to fix that by making
+>>>>>>> sure wait_for_device_probe() waits for deferred_probe_timeout to expire
+>>>>>>> before returning.
+>>>>>>>
+>>>>>>> However, if wait_for_device_probe() is called from the kernel_init()
+>>>>>>> context:
+>>>>>>>
+>>>>>>> - Before deferred_probe_initcall() [2], it causes the boot process to
+>>>>>>>       hang due to a deadlock.
+>>>>>>>
+>>>>>>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
+>>>>>>>       continuing till deferred_probe_timeout expires and beats the point of
+>>>>>>>       deferred_probe_timeout that's trying to wait for userspace to load
+>>>>>>>       modules.
+>>>>>>>
+>>>>>>> Neither of this is good. So revert the changes to
+>>>>>>> wait_for_device_probe().
+>>>>>>>
+>>>>>>> [1] -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41FD8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+>>>>>>> [2] -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-3990X/
+>>>>>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
+>>>>>> Hi Saravana, Greg,
+>>>>>>
+>>>>>>
+>>>>>> KernelCI found this patch causes the baseline.bootrr.deferred-probe-empty test to fail on r8a77960-ulcb,
+>>>>>> see the following details for more information.
+>>>>>>
+>>>>>> KernelCI dashboard link:
+>>>>>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
+>>>>>>
+>>>>>> Error messages from the logs :-
+>>>>>>
+>>>>>> + UUID=11236495_1.5.2.4.5
+>>>>>> + set +x
+>>>>>> + export 'PATH=/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1/../bin:/sbin:/usr/sbin:/bin:/usr/bin'
+>>>>>> + cd /opt/bootrr/libexec/bootrr
+>>>>>> + sh helpers/bootrr-auto
+>>>>>> e6800000.ethernet
+>>>>>> e6700000.dma-controller
+>>>>>> e7300000.dma-controller
+>>>>>> e7310000.dma-controller
+>>>>>> ec700000.dma-controller
+>>>>>> ec720000.dma-controller
+>>>>>> fea20000.vsp
+>>>>>> feb00000.display
+>>>>>> fea28000.vsp
+>>>>>> fea30000.vsp
+>>>>>> fe9a0000.vsp
+>>>>>> fe9af000.fcp
+>>>>>> fea27000.fcp
+>>>>>> fea2f000.fcp
+>>>>>> fea37000.fcp
+>>>>>> sound
+>>>>>> ee100000.mmc
+>>>>>> ee140000.mmc
+>>>>>> ec500000.sound
+>>>>>> /lava-11236495/1/../bin/lava-test-case
+>>>>>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE TEST_CASE_ID=deferred-probe-empty RESULT=fail>
+>>>>>>
+>>>>>> Test case failing :-
+>>>>>> Baseline Bootrr deferred-probe-empty test -https://github.com/kernelci/bootrr/blob/main/helpers/bootrr-generic-tests
+>>>>>>
+>>>>>> Regression Reproduced :-
+>>>>>>
+>>>>>> Lava job after reverting the commit 5ee76c256e92
+>>>>>> https://lava.collabora.dev/scheduler/job/11292890
+>>>>>>
+>>>>>>
+>>>>>> Bisection report from KernelCI can be found at the bottom of the email.
+>>>>>>
+>>>>>> Thanks,
+>>>>>> Shreeya Patel
+>>>>>>
+>>>>>> #regzbot introduced: 5ee76c256e92
+>>>>>> #regzbot title: KernelCI: Multiple devices deferring on r8a77960-ulcb
+>>>>>>
+>>>>>> ---------------------------------------------------------------------------------------------------------------------------------------------------
+>>>>>>
+>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+>>>>>> * If you do send a fix, please include this trailer: *
+>>>>>> * Reported-by: "kernelci.org bot" <bot@...> *
+>>>>>> * *
+>>>>>> * Hope this helps! *
+>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+>>>>>>
+>>>>>> stable-rc/linux-5.10.y bisection: baseline.bootrr.deferred-probe-empty on
+>>>>>> r8a77960-ulcb
+>>>>> You are testing 5.10.y, yet the subject says 5.17?
+>>>>>
+>>>>> Which is it here?
+>>>> Sorry, I accidentally used the lore link for 5.17 while reporting this
+>>>> issue,
+>>>> but this test does fail on all the stable releases from 5.10 onwards.
+>>>>
+>>>> stable 5.15 :-
+>>>> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+>>>> mainline :-
+>>>> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+>>>>
+>>> Shreeya, can you try the patch Geert suggested and let us know if it
+>>> helps? If not, then I can try to take a closer look.
+>> I tried to test the kernel with 9be4cbd09da8 but it didn't change the
+>> result.
+>> https://lava.collabora.dev/scheduler/job/11311615
+>>
+>> Also, I am not sure if this can change things but just FYI, KernelCI
+>> adds some kernel parameters when running these tests and one of the
+>> parameter is deferred_probe_timeout=60.
+> Ah this is good to know.
+>
+>> You can check this in the definition details given in the Lava job. I
+>> also tried to remove this parameter and rerun the test but again I got
+>> the same result.
+> How long does the test wait after boot before checking for the
+> deferred devices list?
+>
 
-> Right, except you might hit another deprecation hurdle if we
-> start changing how things are designed around KCIDB and the new
-> API.  There's no doubt KCIDB will be supported for a long time,
-> but taking into considerations all the new developments can save
-> you a lot of trouble.
+AFAIK, script for running the tests is immediately ran after the boot 
+process is complete so there is no wait time.
 
-So, if using KCIDB as a data source is not a good idea right now, do you
-have any suggestions on how to keep contributing to the improvement of
-regression analysis?
+>> I will try to add 9be4cbd09da8 to mainline kernel and see what results I
+>> get.
+> Now I'm confused. What do you mean by mainline? Are you saying the tip
+> of tree of Linus's tree is also hitting this issue?
 
-If the new KernelCI API is already working with a large enough
-regression database maybe this analysis work can be plugged into the
-pipeline and we can start working on that.
 
-> My point here is that KernelCI started tackling this issue of
-> reporting kernel bugs several years ago at a very high level and
-> we've come up with some carefully engineered solutions for it, so
-> it looks like you're walking in our footsteps now.  The new web
-> dashboard, new API & Pipeline and KCIDB which pioneered working
-> outside the native realm of KernelCI provide some answers to the
-> challenges you're currently investigating.  So maybe it is
-> actually the best strategy for you to carry on doing things
-> independently, but it would seem to me like due diligence for
-> each of us to know what others are doing.
+KernelCI runs tests on different kernel branches and trees, we also have 
+this same test running on mainline tree.
+Following is the link to the dashboard for it and as you can see, it 
+does fail there too.
 
-I surely must have missed most of those discussions but I couldn't find
-any traces of the functionalities I listed either in a design document
-or implemented anywhere. We certainly wouldn't have started this stream
-of work if we knew this was already a work in progress. If there are
-already concrete plans and some kind of design for this, let me know so
-we can contribute to it.
 
-If the solutions that have been engineered so far are still unplanned,
-then I agree it'll be better to keep improving on this
-independently. But in order to do that we'd need to be able to use other
-data sources (KCIDB). Then, once the new KernelCI is ready to implement
-these functionalities we can try to move them there after they've been
-tested independently.
+https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
 
-Cheers,
-Ricardo
+
+> -Saravana
+>
