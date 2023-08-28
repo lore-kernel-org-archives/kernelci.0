@@ -1,111 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8882011CBE
-	for <kernelci@lists.linux.dev>; Mon, 28 Aug 2023 16:37:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2ACC433C8
-	for <kernelci@lists.linux.dev>; Mon, 28 Aug 2023 16:37:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693240646;
-	bh=5/rxVeG6x8nfv9WdsXwFM5Izp0kRg7av+TJmtt40YZ4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dEryC2PtnaWP4fKdHKnen//f81/NyciXir5OjQ3AGq2NKPv5k12MJkef/K1iCDj8m
-	 vQq3UaW9+xFj4PIp0ilLQUJ5OzCR83XPre7KE98abqKqwsMIM6oW2glu886EsgddeH
-	 /O/4NDhJsdaoziykk4I/LLmgIaFrMdOvNNGVe1FVzkm7JQfLCTZYVhkz3gKgGHiUFA
-	 9ZuGjPkVbYRH+DbFhg12zQBvtiRyVBpNh9yZIvvOhbmhr2IJdWB8uvzzshr5UtZ/23
-	 yBKMHRcVYcP1PKkw0uWxlfdUn6nL10M87WJYuG/YtpKQw1bLIyslYkCzQKbwvQS50t
-	 1TaiMCnOdaBfQ==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2b703a0453fso50468581fa.3
-        for <kernelci@lists.linux.dev>; Mon, 28 Aug 2023 09:37:25 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yz7R+bgZy0b99mrkrAOajQopOoM7hJ732YZCnpYKrv0LRlMAhl0
-	mwmlV9EJ+cpr+UFLuyA6txZtUiXKu+CzKA7t9Q==
-X-Google-Smtp-Source: AGHT+IHFxk8DWeEarqMDPvqi+IlBzRLuZt0EOmcKGY4FQSVxQ1otfV7rimOsurYef1JzMoJPiH7UCcrydqBfPG0VEMU=
-X-Received: by 2002:a05:651c:154e:b0:2bd:bc9:4f71 with SMTP id
- y14-20020a05651c154e00b002bd0bc94f71mr3700640ljp.18.1693240643938; Mon, 28
- Aug 2023 09:37:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A0510F4
+	for <kernelci@lists.linux.dev>; Mon, 28 Aug 2023 21:14:31 +0000 (UTC)
+Received: from notapiano.myfiosgateway.com (zone.collabora.co.uk [167.235.23.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nfraprado)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 973B6660087A;
+	Mon, 28 Aug 2023 22:14:27 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1693257269;
+	bh=kMWLY6tuvILGJ3usJxrB0TPO3XiaNxG6Cf6+Lo6rdrg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RMNPZO/Vg4Y6R4vwYhpxQUY1VAdEKCTsmFKQPKgOcbOtPRYThJQEHvXlQ9gAGH+WE
+	 LYbU7idaQDV1eWwELh4Gg6uAY76d9fHg5o2clXfcQc6rgc3oeB2CGWPTV580aZBHY6
+	 rqUP5JU99WeKQL3Dls4/thGN11p/BvD6gPj0aIl1IOz+3Sy8zzvfibq7PHS43pbyy9
+	 7SoGu5ir4DRtMq2YKYRLx8EmlSgUa2oACKOqkONTCAHW9A+n3n+T+JmbgxmqgHu0LR
+	 x+EipqMVAq2OARILiP/Rxzjj0CETuU6qYc8MtK6geZ3V3PWd97+QSN73Jba8rR+tyB
+	 YSJdcmIKCcVhA==
+From: =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>
+To: Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	kernelci@lists.linux.dev,
+	kernel@collabora.com,
+	Guenter Roeck <groeck@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v3 0/3] Add a test to catch unprobed Devicetree devices
+Date: Mon, 28 Aug 2023 17:13:09 -0400
+Message-ID: <20230828211424.2964562-1-nfraprado@collabora.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230817233635.2306377-1-nfraprado@collabora.com>
- <20230817233635.2306377-4-nfraprado@collabora.com> <CAL_JsqLyimRvcnL_O8sMB8SnezXv3Z431VckMC-26w-aT1nYmQ@mail.gmail.com>
- <12afe9a4-6d5c-4a0f-b5f8-6db346f60d08@notapiano>
-In-Reply-To: <12afe9a4-6d5c-4a0f-b5f8-6db346f60d08@notapiano>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Mon, 28 Aug 2023 11:37:11 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKroreUv7MviWe7c2fTU8wXRnXP7XSBNub6KgMZQiYiRw@mail.gmail.com>
-Message-ID: <CAL_JsqKroreUv7MviWe7c2fTU8wXRnXP7XSBNub6KgMZQiYiRw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] kselftest: Add new test for detecting unprobed
- Devicetree devices
-To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
-Cc: Frank Rowand <frowand.list@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, kernelci@lists.linux.dev, 
-	Guenter Roeck <groeck@chromium.org>, kernel@collabora.com, 
-	Bjorn Andersson <andersson@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 18, 2023 at 11:38=E2=80=AFAM N=C3=ADcolas F. R. A. Prado
-<nfraprado@collabora.com> wrote:
->
-> On Fri, Aug 18, 2023 at 10:05:00AM -0500, Rob Herring wrote:
-> > On Thu, Aug 17, 2023 at 6:36=E2=80=AFPM N=C3=ADcolas F. R. A. Prado
-> > <nfraprado@collabora.com> wrote:
-> [..]
-> > >  tools/testing/selftests/Makefile              |  1 +
-> > >  tools/testing/selftests/dt/.gitignore         |  1 +
-> > >  tools/testing/selftests/dt/Makefile           | 21 +++++
-> >
-> > Please add this path to DT maintainers entry.
->
-> OK.
->
-> >
-> > >  .../selftests/dt/compatible_ignore_list       |  1 +
-> > >  tools/testing/selftests/dt/ktap_helpers.sh    | 57 +++++++++++++
-> >
-> > As Mark said, looks common.
->
-> Yes, I'll move it one folder up.
->
-> >
-> [..]
-> > > --- /dev/null
-> > > +++ b/tools/testing/selftests/dt/.gitignore
-> > > @@ -0,0 +1 @@
-> > > +compatible_list
-> >
-> > Not sure on the selftests, but is this enough that it gets cleaned?
->
-> I've just double-checked that compatible_list does get removed with make =
-clean.
-> Not because it is in this gitignore, but because it is listed in TEST_GEN=
-_FILES
-> in the Makefile.
->
-> >
-> [..]
-> > > --- /dev/null
-> > > +++ b/tools/testing/selftests/dt/test_unprobed_devices.sh
-> [..]
-> > > +PDT=3D/proc/device-tree/
-> >
-> > This is considered the legacy path though we will probably never get
-> > rid of it. Use the sysfs path instead.
->
-> The /sys/firmware/devicetree/* entry in
-> Documentation/ABI/testing/sysfs-firmware-ofw reads:
->
-> Userspace must not use the /sys/firmware/devicetree/base
-> path directly, but instead should follow /proc/device-tree
-> symlink. It is possible that the absolute path will change
-> in the future, but the symlink is the stable ABI.
->
-> So is this information outdated?
 
-No, my memory is just wrong...
+Regressions that cause a device to no longer be probed by a driver can
+have a big impact on the platform's functionality, and despite being
+relatively common there isn't currently any generic test to detect them.
+As an example, bootrr [1] does test for device probe, but it requires
+defining the expected probed devices for each platform.
 
-Rob
+Given that the Devicetree already provides a static description of
+devices on the system, it is a good basis for building such a test on
+top.
+
+This series introduces a test to catch regressions that prevent devices
+from probing.
+
+Patches 1 and 2 extend the existing dt-extract-compatibles to be able to
+output only the compatibles that can be expected to match a Devicetree
+node to a driver. Patch 2 adds a kselftest that walks over the
+Devicetree nodes on the current platform and compares the compatibles to
+the ones on the list, and on an ignore list, to point out devices that
+failed to be probed.
+
+A compatible list is needed because not all compatibles that can show up
+in a Devicetree node can be used to match to a driver, for example the
+code for that compatible might use "OF_DECLARE" type macros and avoid
+the driver framework, or the node might be controlled by a driver that
+was bound to a different node.
+
+An ignore list is needed for the few cases where it's common for a
+driver to match a device but not probe, like for the "simple-mfd"
+compatible, where the driver only probes if that compatible is the
+node's first compatible.
+
+The reason for parsing the kernel source instead of relying on
+information exposed by the kernel at runtime (say, looking at modaliases
+or introducing some other mechanism), is to be able to catch issues
+where a config was renamed or a driver moved across configs, and the
+.config used by the kernel not updated accordingly. We need to parse the
+source to find all compatibles present in the kernel independent of the
+current config being run.
+
+[1] https://github.com/kernelci/bootrr
+
+Changes in v3:
+- Added DT selftest path to MAINTAINERS
+- Enabled device probe test for nodes with 'status = "ok"'
+- Added pass/fail/skip totals to end of test output
+
+Changes in v2:
+- Extended dt-extract-compatibles script to be able to extract driver
+  matching compatibles, instead of adding a new one in Coccinelle
+- Made kselftest output in the KTAP format
+
+Nícolas F. R. A. Prado (3):
+  dt: dt-extract-compatibles: Handle cfile arguments in generator
+    function
+  dt: dt-extract-compatibles: Add flag for driver matching compatibles
+  kselftest: Add new test for detecting unprobed Devicetree devices
+
+ MAINTAINERS                                   |  1 +
+ scripts/dtc/dt-extract-compatibles            | 74 +++++++++++++----
+ tools/testing/selftests/Makefile              |  1 +
+ tools/testing/selftests/dt/.gitignore         |  1 +
+ tools/testing/selftests/dt/Makefile           | 21 +++++
+ .../selftests/dt/compatible_ignore_list       |  1 +
+ tools/testing/selftests/dt/ktap_helpers.sh    | 70 ++++++++++++++++
+ .../selftests/dt/test_unprobed_devices.sh     | 83 +++++++++++++++++++
+ 8 files changed, 236 insertions(+), 16 deletions(-)
+ create mode 100644 tools/testing/selftests/dt/.gitignore
+ create mode 100644 tools/testing/selftests/dt/Makefile
+ create mode 100644 tools/testing/selftests/dt/compatible_ignore_list
+ create mode 100644 tools/testing/selftests/dt/ktap_helpers.sh
+ create mode 100755 tools/testing/selftests/dt/test_unprobed_devices.sh
+
+-- 
+2.42.0
+
