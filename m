@@ -1,326 +1,211 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6A3111A
-	for <kernelci@lists.linux.dev>; Mon, 28 Aug 2023 21:14:36 +0000 (UTC)
-Received: from notapiano.myfiosgateway.com (zone.collabora.co.uk [167.235.23.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id D3AFB660724E;
-	Mon, 28 Aug 2023 22:14:33 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1693257275;
-	bh=PJO1cV4PjsVt8b7S0PBv6ZhVq40xvut+Z0FrT2Wokw0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5AYsiQxEMj0rnY1EMKHtJMNZ5RngozgMhVOXoKYpY2fCd2jVkJfA6ItvF4xK9AuG
-	 WRktojnn2n5qHMwAk679s6k28j5jcoUJ5wv8X8O92dKkSapdkZ9VS7yiavBA7X13yg
-	 wIdC9OhJhRrWE6PuVwkiSeN3RAEX6MWohlDK0/gvnUriIZyraDeST9V9izvsAIj+QC
-	 m0Wjz2M+ycOjS+W/Prk8Nu42jAEj/qqARYE32kyqvC9MuTb3NWAkDO1o6EWmp06mK6
-	 6UdMvRlxiP2glAkpvGXL6Qb6yn/BEGhzj+kj8/6y5niGX4+hkDUohIDV9Hf+6sXy5J
-	 iEtqkIrmYG6Xg==
-From: =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>
-To: Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	kernelci@lists.linux.dev,
-	kernel@collabora.com,
-	Guenter Roeck <groeck@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	=?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v3 3/3] kselftest: Add new test for detecting unprobed Devicetree devices
-Date: Mon, 28 Aug 2023 17:13:12 -0400
-Message-ID: <20230828211424.2964562-4-nfraprado@collabora.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828211424.2964562-1-nfraprado@collabora.com>
-References: <20230828211424.2964562-1-nfraprado@collabora.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E4A1548D;
+	Tue, 29 Aug 2023 11:28:41 +0000 (UTC)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1qawtj-0000jk-0q; Tue, 29 Aug 2023 13:28:39 +0200
+Message-ID: <26aa6f92-2376-51a4-bbdc-abbbd62c23d2@leemhuis.info>
+Date: Tue, 29 Aug 2023 13:28:37 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
+ compiler-specific macros
+Content-Language: en-US, de-DE
+To: Shreeya Patel <shreeya.patel@collabora.com>,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Masahiro Yamada <masahiroy@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Maksim Panchenko <maks@meta.com>,
+ =?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>,
+ Michal Marek <michal.lkml@markovi.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ clang-built-linux <llvm@lists.linux.dev>, Bill Wendling <morbo@google.com>,
+ Nathan Chancellor <nathan@kernel.org>,
+ "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+ Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+ denys.f@collabora.com, Nick Desaulniers <ndesaulniers@google.com>,
+ kernelci@lists.linux.dev, Collabora Kernel ML <kernel@collabora.com>
+References: <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com>
+ <CAKwvOdkFxu9hYSL_RCXadpR0dQd1+dZmAUVXdfFiLUfxg4D_Xw@mail.gmail.com>
+ <878rdlk9bi.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <CAKwvOd=8LVU+iANkFx18Wm1jg7gYiAXovAmo9t5ZZaVdMULn-Q@mail.gmail.com>
+ <875y8ok9b5.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <CAKwvOdmJJibt6sHSp91v2s7BxUWBC6xG7F7+3C6gUxNMzZ2xRA@mail.gmail.com>
+ <87353ok78h.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <2023052247-bobtail-factsheet-d104@gregkh>
+ <CAKwvOd=2zAV_mizvzLFdyHE_4OzBY5OVu6KLWuQPOMZK37vsmQ@mail.gmail.com>
+ <cff33e12-3d80-7e62-1993-55411ccabc01@collabora.com>
+ <CAKwvOd=F29-UkNO7FtUWpVV=POOZLb6QgD=mhLMWtRfkRSSi2A@mail.gmail.com>
+ <a037a08c-44c4-24e8-1cba-7e4e8b21ffaa@collabora.com>
+ <CAK7LNAS8Y9syCiHMO2r75D6hgCSsDDvJ_=VMKpYqjondnbSZjw@mail.gmail.com>
+ <267b73d6-8c4b-40d9-542d-1910dffc3238@leemhuis.info>
+ <2833d0db-f122-eccd-7393-1f0169dc0741@collabora.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <2833d0db-f122-eccd-7393-1f0169dc0741@collabora.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1693308521;f33d514a;
+X-HE-SMSGID: 1qawtj-0000jk-0q
 
-Introduce a new kselftest to detect devices that were declared in the
-Devicetree, and are expected to be probed by a driver, but weren't.
+On 11.07.23 13:16, Shreeya Patel wrote:
+> On 10/07/23 17:39, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+>> for once, to make this easily accessible to everyone.
+>>
+>> Shreeya Patel, Masahiro Yamada: what's the status of this? Was any
+>> progress made to address this? Or is this maybe (accidentally?) fixed
+>> with 6.5-rc1?
+> 
+> I still see the regression happening so it doesn't seem to be fixed.
+> https://linux.kernelci.org/test/case/id/64ac675a8aebf63753bb2a8c/
+> 
+> Masahiro had submitted a fix for this issue here.
+> 
+> https://lore.kernel.org/lkml/ZJEni98knMMkU%2Fcl@buildd.core.avm.de/T/#t
+> 
+> But I don't see any movement there. Masahiro, are you planning to send a
+> v2 for it?
 
-The test uses two lists: a list of compatibles that can match a
-Devicetree device to a driver, and a list of compatibles that should be
-ignored. The first is automatically generated by the
-dt-extract-compatibles script, and is run as part of building this test.
-The list of compatibles to ignore is a hand-crafted list to capture the
-few exceptions of compatibles that are expected to match a driver but
-not be bound to it.
+That was weeks ago and we didn't get a answer. :-/ Was this fixed in
+between? Doesn't look like it from here, but I might be missing something.
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
----
+#regzbot poke
 
-Changes in v3:
-- Added DT selftest path to MAINTAINERS
-- Enabled test for nodes with 'status = "ok"'
-- Added pass/fail/skip totals to end of test output
-
-Changes in v2:
-- Switched output to be in KTAP format
-- Changed Makefile to make use of the dt-extract-compatibles instead of
-  the Coccinelle script
-- Dropped compatibles from compatible_ignore_list that are now already
-  filtered out by extraction script
-- Added early exit if /proc/device-tree is not present
-
- MAINTAINERS                                   |  1 +
- tools/testing/selftests/Makefile              |  1 +
- tools/testing/selftests/dt/.gitignore         |  1 +
- tools/testing/selftests/dt/Makefile           | 21 +++++
- .../selftests/dt/compatible_ignore_list       |  1 +
- tools/testing/selftests/dt/ktap_helpers.sh    | 70 ++++++++++++++++
- .../selftests/dt/test_unprobed_devices.sh     | 83 +++++++++++++++++++
- 7 files changed, 178 insertions(+)
- create mode 100644 tools/testing/selftests/dt/.gitignore
- create mode 100644 tools/testing/selftests/dt/Makefile
- create mode 100644 tools/testing/selftests/dt/compatible_ignore_list
- create mode 100644 tools/testing/selftests/dt/ktap_helpers.sh
- create mode 100755 tools/testing/selftests/dt/test_unprobed_devices.sh
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ff1f273b4f36..4f5c13349eb8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15969,6 +15969,7 @@ F:	Documentation/ABI/testing/sysfs-firmware-ofw
- F:	drivers/of/
- F:	include/linux/of*.h
- F:	scripts/dtc/
-+F:	tools/testing/selftests/dt/
- K:	of_overlay_notifier_
- K:	of_overlay_fdt_apply
- K:	of_overlay_remove
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 42806add0114..e8823097698c 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -18,6 +18,7 @@ TARGETS += drivers/dma-buf
- TARGETS += drivers/s390x/uvdevice
- TARGETS += drivers/net/bonding
- TARGETS += drivers/net/team
-+TARGETS += dt
- TARGETS += efivarfs
- TARGETS += exec
- TARGETS += fchmodat2
-diff --git a/tools/testing/selftests/dt/.gitignore b/tools/testing/selftests/dt/.gitignore
-new file mode 100644
-index 000000000000..f6476c9f2884
---- /dev/null
-+++ b/tools/testing/selftests/dt/.gitignore
-@@ -0,0 +1 @@
-+compatible_list
-diff --git a/tools/testing/selftests/dt/Makefile b/tools/testing/selftests/dt/Makefile
-new file mode 100644
-index 000000000000..62dc00ee4978
---- /dev/null
-+++ b/tools/testing/selftests/dt/Makefile
-@@ -0,0 +1,21 @@
-+PY3 = $(shell which python3 2>/dev/null)
-+
-+ifneq ($(PY3),)
-+
-+TEST_PROGS := test_unprobed_devices.sh
-+TEST_GEN_FILES := compatible_list
-+TEST_FILES := compatible_ignore_list ktap_helpers.sh
-+
-+include ../lib.mk
-+
-+$(OUTPUT)/compatible_list:
-+	$(top_srcdir)/scripts/dtc/dt-extract-compatibles -d $(top_srcdir) > $@
-+
-+else
-+
-+all: no_py3_warning
-+
-+no_py3_warning:
-+	@echo "Missing python3. This test will be skipped."
-+
-+endif
-diff --git a/tools/testing/selftests/dt/compatible_ignore_list b/tools/testing/selftests/dt/compatible_ignore_list
-new file mode 100644
-index 000000000000..1323903feca9
---- /dev/null
-+++ b/tools/testing/selftests/dt/compatible_ignore_list
-@@ -0,0 +1 @@
-+simple-mfd
-diff --git a/tools/testing/selftests/dt/ktap_helpers.sh b/tools/testing/selftests/dt/ktap_helpers.sh
-new file mode 100644
-index 000000000000..8dfae51bb4e2
---- /dev/null
-+++ b/tools/testing/selftests/dt/ktap_helpers.sh
-@@ -0,0 +1,70 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2023 Collabora Ltd
-+#
-+# Helpers for outputting in KTAP format
-+#
-+KTAP_TESTNO=1
-+KTAP_CNT_PASS=0
-+KTAP_CNT_FAIL=0
-+KTAP_CNT_SKIP=0
-+
-+ktap_print_header() {
-+	echo "TAP version 13"
-+}
-+
-+ktap_set_plan() {
-+	num_tests="$1"
-+
-+	echo "1..$num_tests"
-+}
-+
-+ktap_skip_all() {
-+	echo -n "1..0 # SKIP "
-+	echo $@
-+}
-+
-+__ktap_test() {
-+	result="$1"
-+	description="$2"
-+	directive="$3" # optional
-+
-+	local directive_str=
-+	[[ ! -z "$directive" ]] && directive_str="# $directive"
-+
-+	echo $result $KTAP_TESTNO $description $directive_str
-+
-+	KTAP_TESTNO=$((KTAP_TESTNO+1))
-+}
-+
-+ktap_test_pass() {
-+	description="$1"
-+
-+	result="ok"
-+	__ktap_test "$result" "$description"
-+
-+	KTAP_CNT_PASS=$((KTAP_CNT_PASS+1))
-+}
-+
-+ktap_test_skip() {
-+	description="$1"
-+
-+	result="ok"
-+	directive="SKIP"
-+	__ktap_test "$result" "$description" "$directive"
-+
-+	KTAP_CNT_SKIP=$((KTAP_CNT_SKIP+1))
-+}
-+
-+ktap_test_fail() {
-+	description="$1"
-+
-+	result="not ok"
-+	__ktap_test "$result" "$description"
-+
-+	KTAP_CNT_FAIL=$((KTAP_CNT_FAIL+1))
-+}
-+
-+ktap_print_totals() {
-+	echo "# Totals: pass:$KTAP_CNT_PASS fail:$KTAP_CNT_FAIL xfail:0 xpass:0 skip:$KTAP_CNT_SKIP error:0"
-+}
-diff --git a/tools/testing/selftests/dt/test_unprobed_devices.sh b/tools/testing/selftests/dt/test_unprobed_devices.sh
-new file mode 100755
-index 000000000000..b07af2a4c4de
---- /dev/null
-+++ b/tools/testing/selftests/dt/test_unprobed_devices.sh
-@@ -0,0 +1,83 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2023 Collabora Ltd
-+#
-+# Based on Frank Rowand's dt_stat script.
-+#
-+# This script tests for devices that were declared on the Devicetree and are
-+# expected to bind to a driver, but didn't.
-+#
-+# To achieve this, two lists are used:
-+# * a list of the compatibles that can be matched by a Devicetree node
-+# * a list of compatibles that should be ignored
-+#
-+
-+DIR="$(dirname $(readlink -f "$0"))"
-+
-+source "${DIR}"/ktap_helpers.sh
-+
-+PDT=/proc/device-tree/
-+COMPAT_LIST="${DIR}"/compatible_list
-+IGNORE_LIST="${DIR}"/compatible_ignore_list
-+
-+KSFT_PASS=0
-+KSFT_FAIL=1
-+KSFT_SKIP=4
-+
-+ktap_print_header
-+
-+if [[ ! -d "${PDT}" ]]; then
-+	ktap_skip_all "${PDT} doesn't exist."
-+	exit "${KSFT_SKIP}"
-+fi
-+
-+nodes_compatible=$(
-+	for node_compat in $(find ${PDT} -name compatible); do
-+		node=$(dirname "${node_compat}")
-+		# Check if node is available
-+		if [[ -e "${node}"/status ]]; then
-+			status=$(tr -d '\000' < "${node}"/status)
-+			[[ "${status}" != "okay" && "${status}" != "ok" ]] && continue
-+		fi
-+		echo "${node}" | sed -e 's|\/proc\/device-tree||'
-+	done | sort
-+	)
-+
-+nodes_dev_bound=$(
-+	IFS=$'\n'
-+	for uevent in $(find /sys/devices -name uevent); do
-+		if [[ -d "$(dirname "${uevent}")"/driver ]]; then
-+			grep '^OF_FULLNAME=' "${uevent}" | sed -e 's|OF_FULLNAME=||'
-+		fi
-+	done
-+	)
-+
-+num_tests=$(echo ${nodes_compatible} | wc -w)
-+ktap_set_plan "${num_tests}"
-+
-+retval="${KSFT_PASS}"
-+for node in ${nodes_compatible}; do
-+	if ! echo "${nodes_dev_bound}" | grep -E -q "(^| )${node}( |\$)"; then
-+		compatibles=$(tr '\000' '\n' < "${PDT}"/"${node}"/compatible)
-+
-+		for compatible in ${compatibles}; do
-+			if grep -x -q "${compatible}" "${IGNORE_LIST}"; then
-+				continue
-+			fi
-+
-+			if grep -x -q "${compatible}" "${COMPAT_LIST}"; then
-+				ktap_test_fail "${node}"
-+				retval="${KSFT_FAIL}"
-+				continue 2
-+			fi
-+		done
-+		ktap_test_skip "${node}"
-+	else
-+		ktap_test_pass "${node}"
-+	fi
-+
-+done
-+
-+ktap_print_totals
-+exit "${retval}"
--- 
-2.42.0
-
+>> On 20.06.23 06:19, Masahiro Yamada wrote:
+>>> On Mon, Jun 12, 2023 at 7:10 PM Shreeya Patel
+>>> <shreeya.patel@collabora.com> wrote:
+>>>> On 24/05/23 02:57, Nick Desaulniers wrote:
+>>>>> On Tue, May 23, 2023 at 3:27 AM Shreeya Patel
+>>>>> <shreeya.patel@collabora.com> wrote:
+>>>>>> Hi Nick and Masahiro,
+>>>>>>
+>>>>>> On 23/05/23 01:22, Nick Desaulniers wrote:
+>>>>>>> On Mon, May 22, 2023 at 9:52 AM Greg KH
+>>>>>>> <gregkh@linuxfoundation.org> wrote:
+>>>>>>>> On Mon, May 22, 2023 at 12:09:34PM +0200, Ricardo Cañuelo wrote:
+>>>>>>>>> On vie, may 19 2023 at 08:57:24, Nick Desaulniers
+>>>>>>>>> <ndesaulniers@google.com> wrote:
+>>>>>>>>>> It could be; if the link order was changed, it's possible that
+>>>>>>>>>> this
+>>>>>>>>>> target may be hitting something along the lines of:
+>>>>>>>>>> https://isocpp.org/wiki/faq/ctors#static-init-order i.e. the
+>>>>>>>>>> "static
+>>>>>>>>>> initialization order fiasco"
+>>>>>>>>>>
+>>>>>>>>>> I'm struggling to think of how this appears in C codebases, but I
+>>>>>>>>>> swear years ago I had a discussion with GKH (maybe?) about
+>>>>>>>>>> this. I
+>>>>>>>>>> think I was playing with converting Kbuild to use Ninja rather
+>>>>>>>>>> than
+>>>>>>>>>> Make; the resulting kernel image wouldn't boot because I had
+>>>>>>>>>> modified
+>>>>>>>>>> the order the object files were linked in.  If you were to
+>>>>>>>>>> randomly
+>>>>>>>>>> shuffle the object files in the kernel, I recall some hazard
+>>>>>>>>>> that may
+>>>>>>>>>> prevent boot.
+>>>>>>>>> I thought that was specifically a C++ problem? But then again, the
+>>>>>>>>> kernel docs explicitly say that the ordering of obj-y goals in
+>>>>>>>>> kbuild is
+>>>>>>>>> significant in some instances [1]:
+>>>>>>>> Yes, it matters, you can not change it.  If you do, systems will
+>>>>>>>> break.
+>>>>>>>> It is the only way we have of properly ordering our init calls
+>>>>>>>> within
+>>>>>>>> the same "level".
+>>>>>>> Ah, right it was the initcall ordering. Thanks for the reminder.
+>>>>>>>
+>>>>>>> (There's a joke in there similar to the use of regexes to solve a
+>>>>>>> problem resulting in two new problems; initcalls have levels for
+>>>>>>> ordering, but we still have (unexpressed) dependencies between calls
+>>>>>>> of the same level; brittle!).
+>>>>>>>
+>>>>>>> +Maksim, since that might be relevant info for the BOLT+Kernel work.
+>>>>>>>
+>>>>>>> Ricardo,
+>>>>>>> https://elinux.org/images/e/e8/2020_ELCE_initcalls_myjosserand.pdf
+>>>>>>> mentions that there's a kernel command line param `initcall_debug`.
+>>>>>>> Perhaps that can be used to see if
+>>>>>>> 5750121ae7382ebac8d47ce6d68012d6cd1d7926 somehow changed initcall
+>>>>>>> ordering, resulting in a config that cannot boot?
+>>>>>> Here are the links to Lava jobs ran with initcall_debug added to the
+>>>>>> kernel command line.
+>>>>>>
+>>>>>> 1. Where regression happens
+>>>>>> (5750121ae7382ebac8d47ce6d68012d6cd1d7926)
+>>>>>> https://lava.collabora.dev/scheduler/job/10417706
+>>>>>> <https://lava.collabora.dev/scheduler/job/10417706>
+>>>>>>
+>>>>>> 2. With a revert of the commit
+>>>>>> 5750121ae7382ebac8d47ce6d68012d6cd1d7926
+>>>>>> https://lava.collabora.dev/scheduler/job/10418012
+>>>>>> <https://lava.collabora.dev/scheduler/job/10418012>
+>>>>> Thanks!
+>>>>>
+>>>>> Yeah, I can see a diff in the initcall ordering as a result of
+>>>>> commit 5750121ae738 ("kbuild: list sub-directories in ./Kbuild")
+>>>>>
+>>>>> https://gist.github.com/nickdesaulniers/c09db256e42ad06b90842a4bb85cc0f4
+>>>>>
+>>>>> Not just different orderings, but some initcalls seem unique to the
+>>>>> before vs. after, which is troubling. (example init_events and
+>>>>> init_fs_sysctls respectively)
+>>>>>
+>>>>> That isn't conclusive evidence that changes to initcall ordering are
+>>>>> to blame, but I suspect confirming that precisely to be very very time
+>>>>> consuming.
+>>>>>
+>>>>> Masahiro, what are your thoughts on reverting 5750121ae738? There are
+>>>>> conflicts in Kbuild and Makefile when reverting 5750121ae738 on
+>>>>> mainline.
+>>>> I'm not sure if you followed the conversation but we are still seeing
+>>>> this regression with the latest kernel builds and would like to know if
+>>>> you plan to revert 5750121ae738?
+>>>
+>>> Reverting 5750121ae738 does not solve the issue
+>>> because the issue happens even before 5750121ae738.
+>>> multi_v7_defconfig + debug.config + CONFIG_MODULES=n
+>>> fails to boot in the same way.
+>>>
+>>> The revert would hide the issue on a particular build setup.
+>>>
+>>>
+>>> I submitted a patch to more pin-point the issue.
+>>> Let's see how it goes.
+>>> https://lore.kernel.org/lkml/ZJEni98knMMkU%2Fcl@buildd.core.avm.de/T/#t
+>>>
+>>>
+>>> (BTW, the initcall order is unrelated)
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>>
+>>>> Thanks,
+>>>> Shreeya Patel
+>>>>
+>>>>>> Thanks,
+>>>>>> Shreeya Patel
+>>>>>>
+>>> -- 
+>>> Best Regards
+>>> Masahiro Yamada
+>>>
+>>>
+> 
+> 
