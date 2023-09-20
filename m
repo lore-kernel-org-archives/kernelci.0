@@ -1,127 +1,101 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1AC36B12
-	for <kernelci@lists.linux.dev>; Wed, 20 Sep 2023 14:03:19 +0000 (UTC)
-Received: from notapiano (unknown [IPv6:2600:4041:5b1a:cd00:524d:e95d:1a9c:492a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 8A6936607201;
-	Wed, 20 Sep 2023 15:03:10 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1695218591;
-	bh=0As1l5pUnNWGSkzZabr2JsNuZssFSpilRQkjdz8AJ1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=igMB+AMiayEFp612LIiv/IJGUNWjv/yfNcI67RWl3fmXUEAusqwBRIlxTDEnn2i74
-	 okinKpYzPipz6KpaHM6vvNcdzoEXqnTJ2BgQiVicY1/H3HXJHGjSAysNjpxU7HhdCs
-	 F5ZGEAKOmET+xH7LYlgwLFAJMwlcvTf/KRpwxU2fn4JmBJ5QOlVGdMJrEJoPX7bOvB
-	 twcnEEonoCMblVmogccUDxSIVxOChfpO4MI6qbNxW0kQh0YGDbPdJRKLlZxhsddiz6
-	 ZMNqYv8Rg1RsUg86xJu1pzQnOcJAVnrGWtuFpq4W0DC1i2LZFeNKUErHFMEZd6klRr
-	 Efc5V3eD7jPiw==
-Date: Wed, 20 Sep 2023 10:03:06 -0400
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, kernelci@lists.linux.dev,
-	kernel@collabora.com, Guenter Roeck <groeck@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] Add a test to catch unprobed Devicetree devices
-Message-ID: <97c368a1-9c76-490a-848e-eacd6411e810@notapiano>
-References: <20230828211424.2964562-1-nfraprado@collabora.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACED53B2BE
+	for <kernelci@lists.linux.dev>; Wed, 20 Sep 2023 16:57:32 +0000 (UTC)
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-65627d499e1so50126d6.0
+        for <kernelci@lists.linux.dev>; Wed, 20 Sep 2023 09:57:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695229051; x=1695833851; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rE6msmUqmGcfVIIk5iKjgmbNuSZmm7Q5B7TAvprOzeg=;
+        b=pPgy8ndkWR05VRLUh+n/DYA3sBrKut8p+90swkDWsPIdv9bd+2Y6LjnlHFgZ9MR/l/
+         NTAGIJ6ELYI6ubJQa5CVu/fGIdNM/dteKn9mAo6EJbjiDNsg7KmgtrYKa1n/NTR/HJ1l
+         0G2MG8HheXtqmbb3lhrS1CPuhKqt5raV7oJ1VaXYLFn2GJUHbHJT3257XEqi4m5CYIFT
+         nmvgCqZ78i78Roq29+vYQY3xWbaaElwvn3SSZz3aoFhy5ALo5Ps7qEqhlpjMQXIvq3Sj
+         PWl8iunlAXceH3PHNQrVElA1RuhTmyp9vM+apFv9O2anMsLcNqMdrAo/WDamWm94znJR
+         Qjsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695229051; x=1695833851;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rE6msmUqmGcfVIIk5iKjgmbNuSZmm7Q5B7TAvprOzeg=;
+        b=rrzs110t885shQCqfc5zZryZTVEqHRYNHZp+RJRpm9KgTO2RKYJF5W660zEsdFYxBN
+         IyiQ3M5S2RCByXlc2rT7wQx2BYyZ0I4nQ+IScEhBMywe7qe7VS1R6nlVkSY1fMMMz664
+         r2N5HcjmwKRRyVfoEAGn9Xsd/C7nI/YE4p3UWNfFAB/6qmdbJf0qNxEa/2KhVyXBCQ8i
+         WdSZta3iCPV5tnqTy4tM8Oy10zlJUyQEdFGfHZOoB8x6dMElG3rQTjCXSa3EGDJ1Ir+g
+         nkbuqk6CZg92zq2I/j6d7etepQ/h8XhTzwuf3f8xWgD8Q4goysAAJ16eGRqy8dgakMJ4
+         0deg==
+X-Gm-Message-State: AOJu0YxiM8/VMRNrsFmq+HXM/DcylEnFgs/FFTe2aTe/PlAuQvvc99cj
+	3jiavOYnG8LtnNAzBXTt6PYrK2U5Az/TpG6g6GgpkQ==
+X-Google-Smtp-Source: AGHT+IH1Mgmwmw/RXkmel6yA1q5k12TlxQn+FD3HEwMcGWZoHvHTjly0JMF75R4tNml/EEPhv3kAJr88IyhrJZFpptY=
+X-Received: by 2002:a05:6214:4185:b0:658:708c:4d56 with SMTP id
+ ld5-20020a056214418500b00658708c4d56mr3087170qvb.17.1695229051379; Wed, 20
+ Sep 2023 09:57:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230828211424.2964562-1-nfraprado@collabora.com>
+References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+ <a94cd4e0-7092-04fb-9b89-da236bfec57f@collabora.com> <CAHRSSEzMo=-eS8KRqHjSMcBqWCsK2mU4zWg=5KFYx2XyL29Z0w@mail.gmail.com>
+ <CAHRSSEzasi7ZRSe3t_ij26cYCc_58eALNn_mMn6B5HFqEbU9EQ@mail.gmail.com>
+ <ffab5719-e6f4-4e21-1095-c129928076af@collabora.com> <CAHRSSEzo0cSQCp_zk4h2BP2EGdqVHSbZOLC-3gf7c6+uOK9R4g@mail.gmail.com>
+ <CAHRSSEw6Vv+3R0OOva8qY3pF-00TZdQku3MxN2OFSaZkN2di+Q@mail.gmail.com>
+ <CAKwvOdmni7Vqo0W1qgGkVx8GH4+D7JXO5QTQgqGv8D=Go4oPAA@mail.gmail.com>
+ <CAHRSSEz=S_c=KmgDNL_FenUJ25jLmwKe-QXo7-_nUC-7avD0Gg@mail.gmail.com>
+ <CAKwvOdkHE7rXgOUyUSCKZ690bjV88E9yVfmG-7vLH6iqqr2G-Q@mail.gmail.com> <CAHRSSEzD=nMKjnmJxsGuPdMy2iqc-jxcppna_eKOb8PH0SQOXA@mail.gmail.com>
+In-Reply-To: <CAHRSSEzD=nMKjnmJxsGuPdMy2iqc-jxcppna_eKOb8PH0SQOXA@mail.gmail.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Wed, 20 Sep 2023 09:57:20 -0700
+Message-ID: <CAKwvOdk5qut5-EX9N2eJQ7KiaUNFv4CBo_Hh2BJOD+bnupKvQA@mail.gmail.com>
+Subject: Re: Please add new Android branches
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>, 
+	kernelci@lists.linux.dev, clang-built-linux <llvm@lists.linux.dev>, 
+	Todd Kjos <tkjos@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 28, 2023 at 05:13:09PM -0400, Nícolas F. R. A. Prado wrote:
-> 
-> Regressions that cause a device to no longer be probed by a driver can
-> have a big impact on the platform's functionality, and despite being
-> relatively common there isn't currently any generic test to detect them.
-> As an example, bootrr [1] does test for device probe, but it requires
-> defining the expected probed devices for each platform.
-> 
-> Given that the Devicetree already provides a static description of
-> devices on the system, it is a good basis for building such a test on
-> top.
-> 
-> This series introduces a test to catch regressions that prevent devices
-> from probing.
-> 
-> Patches 1 and 2 extend the existing dt-extract-compatibles to be able to
-> output only the compatibles that can be expected to match a Devicetree
-> node to a driver. Patch 2 adds a kselftest that walks over the
-> Devicetree nodes on the current platform and compares the compatibles to
-> the ones on the list, and on an ignore list, to point out devices that
-> failed to be probed.
-> 
-> A compatible list is needed because not all compatibles that can show up
-> in a Devicetree node can be used to match to a driver, for example the
-> code for that compatible might use "OF_DECLARE" type macros and avoid
-> the driver framework, or the node might be controlled by a driver that
-> was bound to a different node.
-> 
-> An ignore list is needed for the few cases where it's common for a
-> driver to match a device but not probe, like for the "simple-mfd"
-> compatible, where the driver only probes if that compatible is the
-> node's first compatible.
-> 
-> The reason for parsing the kernel source instead of relying on
-> information exposed by the kernel at runtime (say, looking at modaliases
-> or introducing some other mechanism), is to be able to catch issues
-> where a config was renamed or a driver moved across configs, and the
-> .config used by the kernel not updated accordingly. We need to parse the
-> source to find all compatibles present in the kernel independent of the
-> current config being run.
-> 
-> [1] https://github.com/kernelci/bootrr
-> 
-> Changes in v3:
-> - Added DT selftest path to MAINTAINERS
-> - Enabled device probe test for nodes with 'status = "ok"'
-> - Added pass/fail/skip totals to end of test output
-> 
-> Changes in v2:
-> - Extended dt-extract-compatibles script to be able to extract driver
->   matching compatibles, instead of adding a new one in Coccinelle
-> - Made kselftest output in the KTAP format
-> 
-> Nícolas F. R. A. Prado (3):
->   dt: dt-extract-compatibles: Handle cfile arguments in generator
->     function
->   dt: dt-extract-compatibles: Add flag for driver matching compatibles
->   kselftest: Add new test for detecting unprobed Devicetree devices
-> 
->  MAINTAINERS                                   |  1 +
->  scripts/dtc/dt-extract-compatibles            | 74 +++++++++++++----
->  tools/testing/selftests/Makefile              |  1 +
->  tools/testing/selftests/dt/.gitignore         |  1 +
->  tools/testing/selftests/dt/Makefile           | 21 +++++
->  .../selftests/dt/compatible_ignore_list       |  1 +
->  tools/testing/selftests/dt/ktap_helpers.sh    | 70 ++++++++++++++++
->  .../selftests/dt/test_unprobed_devices.sh     | 83 +++++++++++++++++++
->  8 files changed, 236 insertions(+), 16 deletions(-)
->  create mode 100644 tools/testing/selftests/dt/.gitignore
->  create mode 100644 tools/testing/selftests/dt/Makefile
->  create mode 100644 tools/testing/selftests/dt/compatible_ignore_list
->  create mode 100644 tools/testing/selftests/dt/ktap_helpers.sh
->  create mode 100755 tools/testing/selftests/dt/test_unprobed_devices.sh
+On Tue, Sep 19, 2023 at 5:12=E2=80=AFPM Todd Kjos <tkjos@google.com> wrote:
+>
+> On Tue, Sep 19, 2023 at 4:19=E2=80=AFPM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+> >
+> > Half of the red exclamation marks on that link are are "0 warnings - 0
+> > errors".  What's up with that?
+>
+> This more recent build has "0 warnings - 0 errors":
+> https://linux.kernelci.org/build/android/branch/android15-6.1/kernel/ASB-=
+2023-07-05_14-6.1-2620-gf2d0380464d3/
+>
+> Here is the error (not sure why it bubbled up as 0/0):
+>
+>   AR      drivers/base/power/built-in.a
+> ../fs/namei.c:2172:13: error: use of bitwise '|' with boolean operands
+> [-Werror,-Wbitwise-instead-of-logical]
+>         } while (!(has_zero(a, &adata, &constants) | has_zero(b,
+> &bdata, &constants)));
+>
+> ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>                                                    ||
+> ../fs/namei.c:2172:13: note: cast one or both operands to int to
+> silence this warning
+>   CC      drivers/base/firmware_loader/builtin/main.o
+> 1 error generated.
+> make[3]: *** [../scripts/Makefile.build:250: fs/namei.o] Error 1
+> make[3]: *** Waiting for unfinished jobs....
+> make[2]: *** [../scripts/Makefile.build:500: fs] Error 2
 
-Hi Rob,
+Guillaume,
+Any idea what's up with that? Seems like the existence of diagnostics
+is detected correctly; the number of warnings and errors is not.
 
-gentle ping on this series.
 
-I take it you'll be merging this through your tree, so I've added Shuah's R-b
-that she supplied on v2 for the kselftest patch.
-
+--=20
 Thanks,
-Nícolas
+~Nick Desaulniers
