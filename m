@@ -1,27 +1,27 @@
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27391094F
-	for <kernelci@lists.linux.dev>; Mon, 25 Sep 2023 07:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9001A10787;
+	Mon, 25 Sep 2023 08:16:25 +0000 (UTC)
 Received: from [IPV6:2001:861:4a40:8620:fcef:69b2:fccd:bd45] (unknown [IPv6:2001:861:4a40:8620:fcef:69b2:fccd:bd45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: gtucker)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id D9BED66072FA;
-	Mon, 25 Sep 2023 08:22:36 +0100 (BST)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 8AB6966072FA;
+	Mon, 25 Sep 2023 09:16:23 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1695626557;
-	bh=IJYtnNXluabAeFlIS0UFBpRSDF/js4GxO9B7+krQZYw=;
+	s=mail; t=1695629783;
+	bh=amPKdjtMA8QAOFF9EQ8eyDnbvaTauDnWFNA/dhbWnBA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Koq+HtLIo055uwICN6mgE9BxAxxfAfzCLrfNmPU8WjzRLovsRkHLiT9FJ/FHR7xOE
-	 NZpbO+Rgy7/9mYVorShBDfdS9jj3mzB/oQtJU7OLc18uLn6ENOdB435ggOrIReEAwk
-	 hBNwEYsxDM24WvxoaRpkn8M4SfdiiJ2Mxlj+PbX96tZBF/BkTt6ZrnEyg9f5fiI2ky
-	 rM3gnrACqlFc2l+oLVgqvPuzJqitSGlx486pTQq1EgiG88ougsJPFdCMXvip27ly6Q
-	 FJ5Ynmnk/sz87pasg5VMRzvjJdItTdF7WwdntsenfN4cgDuAx1nYaaP4dG5zslbK1D
-	 8J5fApOf9GNcA==
-Message-ID: <ee67f2d5-3229-0258-c572-9a7f3f1e76af@collabora.com>
-Date: Mon, 25 Sep 2023 09:23:53 +0200
+	b=TINknH8mVjWGtQGi0pB4YGGGgI5ZwhI4Z2GvafLl/3UwNRqjMo1ypx3Hs6xZbYbJE
+	 2TTu0E/EP73N3rgguY9/XTXkXIja9xgQ9q7J6iFTteDZbQVfhzNLjNTzNy1Zh95oJu
+	 yfkQXa7+Pc0WYuBx/jsDCVYA/SIPkuNnjijaCSEmayxnR99UetPsPQu+Z0/BhC5YAf
+	 0voi/rrXrmo47GVuceUFMkrg9PWOkqixDARmJRP0NgnOryUf5qSrHsXXj0doGG95RA
+	 KZtrMEmHbXgKEILDGKhc92NxAY3BCIedR1mqCdQeAK5tadXiTBfgBcPyGOauK+aW2A
+	 cjFJ3/eadoP0Q==
+Message-ID: <e6e5f76b-9303-82a6-f414-5753d80a0ad2@collabora.com>
+Date: Mon, 25 Sep 2023 10:17:41 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -30,46 +30,75 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.1
-Subject: Re: kci command line poll: Click or Typer?
+Subject: Re: Please add new Android branches
 Content-Language: en-US
-To: Cyril Hrubis <chrubis@suse.cz>, Tim Bird <tim.bird@sony.com>
-Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- "automated-testing@lists.yoctoproject.org"
- <automated-testing@lists.yoctoproject.org>
-References: <9acfa649-4ae0-2e56-16b8-b7c24ab60a30@collabora.com>
- <BYAPR13MB2503E4A7D66BEFE5B8E95B30FDF8A@BYAPR13MB2503.namprd13.prod.outlook.com>
- <ZQ1JRywfnmUB0tdb@yuki>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Viktor Martensson <vmartensson@google.com>,
+ Betty Zhou <bettyzhou@google.com>, kernelci@lists.linux.dev,
+ clang-built-linux <llvm@lists.linux.dev>, Todd Kjos <tkjos@google.com>
+References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+ <a94cd4e0-7092-04fb-9b89-da236bfec57f@collabora.com>
+ <CAHRSSEzMo=-eS8KRqHjSMcBqWCsK2mU4zWg=5KFYx2XyL29Z0w@mail.gmail.com>
+ <CAHRSSEzasi7ZRSe3t_ij26cYCc_58eALNn_mMn6B5HFqEbU9EQ@mail.gmail.com>
+ <ffab5719-e6f4-4e21-1095-c129928076af@collabora.com>
+ <CAHRSSEzo0cSQCp_zk4h2BP2EGdqVHSbZOLC-3gf7c6+uOK9R4g@mail.gmail.com>
+ <CAHRSSEw6Vv+3R0OOva8qY3pF-00TZdQku3MxN2OFSaZkN2di+Q@mail.gmail.com>
+ <CAKwvOdmni7Vqo0W1qgGkVx8GH4+D7JXO5QTQgqGv8D=Go4oPAA@mail.gmail.com>
+ <CAHRSSEz=S_c=KmgDNL_FenUJ25jLmwKe-QXo7-_nUC-7avD0Gg@mail.gmail.com>
+ <CAKwvOdkHE7rXgOUyUSCKZ690bjV88E9yVfmG-7vLH6iqqr2G-Q@mail.gmail.com>
+ <CAHRSSEzD=nMKjnmJxsGuPdMy2iqc-jxcppna_eKOb8PH0SQOXA@mail.gmail.com>
+ <CAKwvOdk5qut5-EX9N2eJQ7KiaUNFv4CBo_Hh2BJOD+bnupKvQA@mail.gmail.com>
 From: Guillaume Tucker <guillaume.tucker@collabora.com>
-In-Reply-To: <ZQ1JRywfnmUB0tdb@yuki>
+In-Reply-To: <CAKwvOdk5qut5-EX9N2eJQ7KiaUNFv4CBo_Hh2BJOD+bnupKvQA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Cyril,
-
-On 22/09/2023 09:59, Cyril Hrubis wrote:
-> Hi!
->> I see exactly 0% of the people saying to stay with argparse, but that would be my recommendation.
->> The rationale for this is that argparse is old and unlikely to be changed in an incompatible way in
->> some future version of Python. 
+On 20/09/2023 18:57, Nick Desaulniers wrote:
+> On Tue, Sep 19, 2023 at 5:12 PM Todd Kjos <tkjos@google.com> wrote:
+>>
+>> On Tue, Sep 19, 2023 at 4:19 PM Nick Desaulniers
+>> <ndesaulniers@google.com> wrote:
+>>>
+>>> Half of the red exclamation marks on that link are are "0 warnings - 0
+>>> errors".  What's up with that?
+>>
+>> This more recent build has "0 warnings - 0 errors":
+>> https://linux.kernelci.org/build/android/branch/android15-6.1/kernel/ASB-2023-07-05_14-6.1-2620-gf2d0380464d3/
+>>
+>> Here is the error (not sure why it bubbled up as 0/0):
+>>
+>>   AR      drivers/base/power/built-in.a
+>> ../fs/namei.c:2172:13: error: use of bitwise '|' with boolean operands
+>> [-Werror,-Wbitwise-instead-of-logical]
+>>         } while (!(has_zero(a, &adata, &constants) | has_zero(b,
+>> &bdata, &constants)));
+>>
+>> ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>                                                    ||
+>> ../fs/namei.c:2172:13: note: cast one or both operands to int to
+>> silence this warning
+>>   CC      drivers/base/firmware_loader/builtin/main.o
+>> 1 error generated.
+>> make[3]: *** [../scripts/Makefile.build:250: fs/namei.o] Error 1
+>> make[3]: *** Waiting for unfinished jobs....
+>> make[2]: *** [../scripts/Makefile.build:500: fs] Error 2
 > 
-> +1
+> Guillaume,
+> Any idea what's up with that? Seems like the existence of diagnostics
+> is detected correctly; the number of warnings and errors is not.
 
-So that's +1 vote count for argparse I guess?
+Yes I think there's some heuristics in the legacy log parsing
+tool to count the number of compiler warnings and errors.  This
+probably is outdated with Clang now, so the build exit status is
+used to detect a failure but then the stats are off.
 
-> We recently started to work on new tooling for running LTP tests written
-> in python and after a few up and downs we ended up with using the bare
-> minimum of modules we can get away with. Less is clearly more in this
-> context.
+It's better to avoid fixing this code as it's going to be retired
+in a few months' time to be replaced with a fresh implementation
+based on the new API.  I believe some tweaks could be done to fix
+critical issues, but if the detail of warnings and errors can be
+found even though the stats are off then maybe we can save the
+effort of fixing it?
 
-That's very valuable feedback, thanks.  I would expect a similar
-kind of audience running the new kci tool as the LTP ones.
-
-Next step, we can start designing a stable kci syntax this week
-with commands and arguments regardless of the implementation
-framework.  Then next week we'll recap on this discussion to come
-up with a plan that maximises both maintainability and user
-adoption in the community.
-
-Thanks,
+Cheers,
 Guillaume
 
