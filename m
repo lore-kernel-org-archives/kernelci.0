@@ -1,216 +1,135 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E37219EC
-	for <kernelci@lists.linux.dev>; Mon, 25 Sep 2023 15:58:12 +0000 (UTC)
-Received: from localhost.localdomain (unknown [IPv6:2001:b07:646b:e2:e4be:399f:af39:e0db])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 40F08660730F;
-	Mon, 25 Sep 2023 16:58:10 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1695657490;
-	bh=EEqhOcRvF/DQtqCs/NvE/9iYGwFlvA+3yXcKw/uNJ1A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDYOjgxLNbXIw54fenrFdcQCvwvGY7mnYuayj2hL4NMTFxgAC0gU14bcb2bVq3ESh
-	 765GV5yygLzr2tVcO/TomhaJbO0nLqmnkGPKxstwoNY7kV4hKvnPsTtgheddykarPR
-	 QTRk8zhDhS9ZUCFn9iXCu+xApzZTRt1NevLLj/0IJLhI8i0EvyfU9YAbsJZB/QlI/P
-	 +TXRNekYaRl2ED+W80EWI+w8fnmQ79OtzkOszhpEefdPkME5qfBGrzfEK6OERUwmAC
-	 N1HnFxbqjjIKUghOr1iOv5GuGNEx48lvkAmwcvuUPne82THfucX8yi90Xvp8j6gl0T
-	 2awAeHU7PJKRA==
-From: Laura Nao <laura.nao@collabora.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	shuah@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	groeck@chromium.org,
-	broonie@kernel.org,
-	robh+dt@kernel.org,
-	kernelci@lists.linux.dev,
-	kernel@collabora.com,
-	Laura Nao <laura.nao@collabora.com>
-Subject: [RFC PATCH 2/2] kselftest: Add test to detect unprobed devices on ACPI platforms
-Date: Mon, 25 Sep 2023 17:58:06 +0200
-Message-Id: <20230925155806.1812249-3-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230925155806.1812249-1-laura.nao@collabora.com>
-References: <20230925155806.1812249-1-laura.nao@collabora.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E942F5F;
+	Sat, 30 Sep 2023 10:24:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83005C433C9;
+	Sat, 30 Sep 2023 10:24:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1696069488;
+	bh=ywUyJEuvnD0Kgh/Zdaq0tfehPoYx9KX55IzcG8hICEE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MxFwfYaOxaybirbDqia4s9Jeg1tkYSJOUnqURDXYpjT74rStmD3hwGIRwzZDzUYwq
+	 WjBReF2NVj5yvBHquqzritT7CX/QYVE/0gMrnkFy+jvc8FYWTH/8nFkEvZc1jLpWYF
+	 7d3yKt/4FpG8k2ceCgYnyDfx6z5uquwQcABLjNq3OqEu7gdavt3/zEqD3BVDlAnH4f
+	 5YafvbpcNTY3DWmp7DtOQp4j9HprnZMPV4DbkUTKO79MfSz+WGmlNU7ucgl/87BmQr
+	 I1Scgy1wCk9yXxia1B4dEp4/6TaucijUIeY1/cZC7ToUYpiaMWSD60THVjnnVceut+
+	 S5iuyGbycaEDw==
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1dcdfeb7e44so6775610fac.0;
+        Sat, 30 Sep 2023 03:24:48 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwjJ6i41oI5u2sKU6X5wKk5k0dUAZXo0ca9vQZ0K4C3B4ceuiCI
+	1PawV00sklkcNLUiV9OMnftC30Xq0xiFpvxd7xI=
+X-Google-Smtp-Source: AGHT+IFQY627N4XOGyg1zrHOyarFome//M5MMfUPvElHfYga63GM8cBT9gzNQaseQuRx+LxO0LDTMzT33lUgZv6xYM4=
+X-Received: by 2002:a05:6870:b4a1:b0:1d5:5660:3ae0 with SMTP id
+ y33-20020a056870b4a100b001d556603ae0mr7274199oap.20.1696069487933; Sat, 30
+ Sep 2023 03:24:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com>
+ <CAKwvOd=8LVU+iANkFx18Wm1jg7gYiAXovAmo9t5ZZaVdMULn-Q@mail.gmail.com>
+ <875y8ok9b5.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <CAKwvOdmJJibt6sHSp91v2s7BxUWBC6xG7F7+3C6gUxNMzZ2xRA@mail.gmail.com>
+ <87353ok78h.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
+ <2023052247-bobtail-factsheet-d104@gregkh> <CAKwvOd=2zAV_mizvzLFdyHE_4OzBY5OVu6KLWuQPOMZK37vsmQ@mail.gmail.com>
+ <cff33e12-3d80-7e62-1993-55411ccabc01@collabora.com> <CAKwvOd=F29-UkNO7FtUWpVV=POOZLb6QgD=mhLMWtRfkRSSi2A@mail.gmail.com>
+ <a037a08c-44c4-24e8-1cba-7e4e8b21ffaa@collabora.com> <CAK7LNAS8Y9syCiHMO2r75D6hgCSsDDvJ_=VMKpYqjondnbSZjw@mail.gmail.com>
+ <267b73d6-8c4b-40d9-542d-1910dffc3238@leemhuis.info> <2833d0db-f122-eccd-7393-1f0169dc0741@collabora.com>
+ <26aa6f92-2376-51a4-bbdc-abbbd62c23d2@leemhuis.info> <859c6dde-37ad-492e-baa0-4ea100d8381f@leemhuis.info>
+ <b31cae57-89ab-eb8b-1085-1d7476735d58@collabora.com>
+In-Reply-To: <b31cae57-89ab-eb8b-1085-1d7476735d58@collabora.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 30 Sep 2023 19:24:11 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQCNVHg=brV-iPL__HAhoNtAKzCiiG2M3Q9jkMvTnrbog@mail.gmail.com>
+Message-ID: <CAK7LNAQCNVHg=brV-iPL__HAhoNtAKzCiiG2M3Q9jkMvTnrbog@mail.gmail.com>
+Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
+ compiler-specific macros
+To: Shreeya Patel <shreeya.patel@collabora.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>, Greg KH <gregkh@linuxfoundation.org>, 
+	Maksim Panchenko <maks@meta.com>, =?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, 
+	Michal Marek <michal.lkml@markovi.net>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, clang-built-linux <llvm@lists.linux.dev>, 
+	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	"gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>, 
+	Guillaume Charles Tucker <guillaume.tucker@collabora.com>, denys.f@collabora.com, 
+	Nick Desaulniers <ndesaulniers@google.com>, kernelci@lists.linux.dev, 
+	Collabora Kernel ML <kernel@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add new kselftest that tests whether devices declared in the ACPI
-namespace and supported by the kernel are correctly bound
-to a driver.
+On Fri, Sep 15, 2023 at 6:33=E2=80=AFPM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
+>
+> On 11/09/23 15:35, Thorsten Leemhuis wrote:
+>
+> Hi Thorsten,
+>
+> > On 29.08.23 13:28, Linux regression tracking (Thorsten Leemhuis) wrote:
+> >> On 11.07.23 13:16, Shreeya Patel wrote:
+> >>> On 10/07/23 17:39, Linux regression tracking (Thorsten Leemhuis) wrot=
+e:
+> >>>> Hi, Thorsten here, the Linux kernel's regression tracker. Top-postin=
+g
+> >>>> for once, to make this easily accessible to everyone.
+> >>>>
+> >>>> Shreeya Patel, Masahiro Yamada: what's the status of this? Was any
+> >>>> progress made to address this? Or is this maybe (accidentally?) fixe=
+d
+> >>>> with 6.5-rc1?
+> >>> I still see the regression happening so it doesn't seem to be fixed.
+> >>> https://linux.kernelci.org/test/case/id/64ac675a8aebf63753bb2a8c/
+> >>>
+> >>> Masahiro had submitted a fix for this issue here.
+> >>>
+> >>> https://lore.kernel.org/lkml/ZJEni98knMMkU%2Fcl@buildd.core.avm.de/T/=
+#t
+> >>>
+> >>> But I don't see any movement there. Masahiro, are you planning to sen=
+d a
+> >>> v2 for it?
+> >> That was weeks ago and we didn't get a answer. :-/ Was this fixed in
+> >> between? Doesn't look like it from here, but I might be missing someth=
+ing.
+> > Still no reply. :-/
+> >
+> > Shreeya Patel, does the problem still happen with 6.6-rc1 and do you
+> > still want to see it fixed? In that case our only option to get things
+> > rolling again might be to involve Linus, unless someone in the CC list
+> > has a idea to resolve this. Might also be good to know if reverting the
+> > culprit fixes the problem.
+>
+>
+> I don't see this issue happening on 6.6-rc1 kernel and it was only last
+> seen in 6.5 kernel.
+> But there was no fix added to Kbuild in the meantime so not sure which
+> commit really fixed this issue.
+>
+> For now we can mark this as resolved and I'll keep an eye on the future
+> test results to see if this pops up again.
+>
+>
+> Thanks,
+> Shreeya Patel
+>
+> #regzbot resolve: Fixed in 6.6-rc1 kernel, fix commit is unknown.
 
-The test runs the acpi-extract-ids script to generate a list
-of all the ACPI device IDs present in the kernel sources.
-The list is then used as a reference to determine which of the
-devices declared in the ACPI namespace are supported by the kernel
-and therefore expected to bind to a driver.
 
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
- MAINTAINERS                                   |  1 +
- tools/testing/selftests/Makefile              |  1 +
- tools/testing/selftests/acpi/.gitignore       |  2 +
- tools/testing/selftests/acpi/Makefile         | 23 ++++++
- .../selftests/acpi/test_unprobed_devices.sh   | 75 +++++++++++++++++++
- 5 files changed, 102 insertions(+)
- create mode 100644 tools/testing/selftests/acpi/.gitignore
- create mode 100644 tools/testing/selftests/acpi/Makefile
- create mode 100755 tools/testing/selftests/acpi/test_unprobed_devices.sh
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7540316d82f5..5c83b36f26ed 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -295,6 +295,7 @@ F:	include/acpi/
- F:	include/linux/acpi.h
- F:	include/linux/fwnode.h
- F:	scripts/acpi/acpi-extract-ids
-+F:	tools/testing/selftests/acpi/
- F:	tools/power/acpi/
- 
- ACPI APEI
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 11aa8a834794..bb95daf9ae91 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
-+TARGETS += acpi
- TARGETS += alsa
- TARGETS += amd-pstate
- TARGETS += arm64
-diff --git a/tools/testing/selftests/acpi/.gitignore b/tools/testing/selftests/acpi/.gitignore
-new file mode 100644
-index 000000000000..2526540468f4
---- /dev/null
-+++ b/tools/testing/selftests/acpi/.gitignore
-@@ -0,0 +1,2 @@
-+supported_id_list
-+ktap_helpers.sh
-\ No newline at end of file
-diff --git a/tools/testing/selftests/acpi/Makefile b/tools/testing/selftests/acpi/Makefile
-new file mode 100644
-index 000000000000..806e75f15824
---- /dev/null
-+++ b/tools/testing/selftests/acpi/Makefile
-@@ -0,0 +1,23 @@
-+PY3 = $(shell which python3 2>/dev/null)
-+
-+ifneq ($(PY3),)
-+
-+TEST_PROGS := test_unprobed_devices.sh
-+TEST_GEN_FILES := supported_id_list ktap_helpers.sh
-+
-+include ../lib.mk
-+
-+$(OUTPUT)/supported_id_list:
-+	$(top_srcdir)/scripts/acpi/acpi-extract-ids $(top_srcdir) > $@
-+
-+$(OUTPUT)/ktap_helpers.sh:
-+	cp $(top_srcdir)/tools/testing/selftests/dt/ktap_helpers.sh $@
-+
-+else
-+
-+all: no_py3_warning
-+
-+no_py3_warning:
-+	@echo "Missing python3. This test will be skipped."
-+
-+endif
-\ No newline at end of file
-diff --git a/tools/testing/selftests/acpi/test_unprobed_devices.sh b/tools/testing/selftests/acpi/test_unprobed_devices.sh
-new file mode 100755
-index 000000000000..aa8c62166b4d
---- /dev/null
-+++ b/tools/testing/selftests/acpi/test_unprobed_devices.sh
-@@ -0,0 +1,75 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2023 Collabora Ltd
-+#
-+# Inspired by the tools/testing/selftests/dt/test_unprobed_devices.sh
-+# script, adapted for the ACPI use case.
-+#
-+# This script checks whether devices declared in the ACPI namespace
-+# and supported by the kernel are correctly bound to a driver.
-+#
-+# A list of all the ACPI device IDs present in the kernel sources
-+# is used as reference to determine which of the devices declared
-+# in the ACPI tables are supported.
-+#
-+
-+DIR="$(dirname "$(readlink -f "$0")")"
-+
-+source "${DIR}"/ktap_helpers.sh
-+
-+ACPI_SYSTEM_DIR="/sys/devices/LNXSYSTM:00"
-+SUPPORTED_ID_LIST="${DIR}"/supported_id_list
-+
-+KSFT_PASS=0
-+KSFT_FAIL=1
-+KSFT_SKIP=4
-+
-+ktap_print_header
-+
-+if [[ ! -d "${ACPI_SYSTEM_DIR}" ]]; then
-+	ktap_skip_all "${ACPI_SYSTEM_DIR} doesn't exist."
-+	exit "${KSFT_SKIP}"
-+fi
-+
-+# The ACPI specification mandates that ACPI objects representing devices on
-+# non-enumerable and enumerable busses contain a _HID or an _ADR identification
-+# object respectively.
-+# Get a list of devices of both types, by searching the ACPI sysfs subtree for
-+# directories containing a hid or adr attribute.
-+supp_dev_paths=$(while IFS=$'\n' read -r dev_path; do
-+	if [ ! -f "${dev_path}"/hid ] && [ ! -f "${dev_path}"/adr ]; then
-+		continue
-+	fi
-+
-+	if [ -f "${dev_path}"/hid ]; then
-+		if ! grep -x -q -i "$(cat "${dev_path}"/hid)" "${SUPPORTED_ID_LIST}"; then
-+			continue
-+		fi
-+	fi
-+
-+	echo "${dev_path}"
-+done < <(find ${ACPI_SYSTEM_DIR} -name uevent -exec dirname {} \;))
-+
-+supp_dev_paths_num=$(echo "${supp_dev_paths}" | wc -w)
-+ktap_set_plan "${supp_dev_paths_num}"
-+
-+ret="${KSFT_PASS}"
-+for dev_path in ${supp_dev_paths}; do
-+	desc="$(cat "${dev_path}"/path)"
-+	[ -f "${dev_path}"/hid ] && desc+=" $(cat "${dev_path}"/hid)"
-+
-+	# ACPI device objects might be linked to other objects in the device
-+	# hierarchy (e.g. devices on the PCI bus).
-+	# In these cases, the driver folder will be in the companion object's sysfs
-+	# directory, linked by physical_node.
-+	if [ -d "${dev_path}"/physical_node/driver ] || [ -d "${dev_path}"/driver ]; then
-+		ktap_test_pass "${desc}"
-+	else
-+		ret="${KSFT_FAIL}"
-+		ktap_test_fail "${desc}"
-+	fi
-+done
-+
-+ktap_print_totals
-+exit "${ret}"
--- 
-2.30.2
+Not fixed in 6.6-rc1.
 
+I submitted a patch to shoot the root cause.
+
+https://lore.kernel.org/all/20230925110023.1796789-1-masahiroy@kernel.org/
+
+
+Now it is in Russell's patch tracker.
+
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
