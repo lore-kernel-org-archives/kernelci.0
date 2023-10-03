@@ -1,135 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E942F5F;
-	Sat, 30 Sep 2023 10:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83005C433C9;
-	Sat, 30 Sep 2023 10:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696069488;
-	bh=ywUyJEuvnD0Kgh/Zdaq0tfehPoYx9KX55IzcG8hICEE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MxFwfYaOxaybirbDqia4s9Jeg1tkYSJOUnqURDXYpjT74rStmD3hwGIRwzZDzUYwq
-	 WjBReF2NVj5yvBHquqzritT7CX/QYVE/0gMrnkFy+jvc8FYWTH/8nFkEvZc1jLpWYF
-	 7d3yKt/4FpG8k2ceCgYnyDfx6z5uquwQcABLjNq3OqEu7gdavt3/zEqD3BVDlAnH4f
-	 5YafvbpcNTY3DWmp7DtOQp4j9HprnZMPV4DbkUTKO79MfSz+WGmlNU7ucgl/87BmQr
-	 I1Scgy1wCk9yXxia1B4dEp4/6TaucijUIeY1/cZC7ToUYpiaMWSD60THVjnnVceut+
-	 S5iuyGbycaEDw==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1dcdfeb7e44so6775610fac.0;
-        Sat, 30 Sep 2023 03:24:48 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwjJ6i41oI5u2sKU6X5wKk5k0dUAZXo0ca9vQZ0K4C3B4ceuiCI
-	1PawV00sklkcNLUiV9OMnftC30Xq0xiFpvxd7xI=
-X-Google-Smtp-Source: AGHT+IFQY627N4XOGyg1zrHOyarFome//M5MMfUPvElHfYga63GM8cBT9gzNQaseQuRx+LxO0LDTMzT33lUgZv6xYM4=
-X-Received: by 2002:a05:6870:b4a1:b0:1d5:5660:3ae0 with SMTP id
- y33-20020a056870b4a100b001d556603ae0mr7274199oap.20.1696069487933; Sat, 30
- Sep 2023 03:24:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9912FD533
+	for <kernelci@lists.linux.dev>; Tue,  3 Oct 2023 08:17:41 +0000 (UTC)
+Received: from [192.168.1.100] (176-169-236-103.abo.bbox.fr [176.169.236.103])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: gtucker)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 1E3AC660087A;
+	Tue,  3 Oct 2023 09:17:40 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1696321060;
+	bh=op0pw6O4S7g//AQyZYO2NKbryW1xU9RN9fjo1Zu9cv8=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Wp1EZP0xxz+uP2b8Z280UODhIJIpSpNm41wWnRd0oIHtS502RAlWLTHK92FXvUcT6
+	 w1qlQtEGpgfn0C6fNNBhUUc1SooOkfXmqoHdtn0KmGuIr15b2r2SQkojslVKh2F41i
+	 abpgWIQjM+s8wfmVqx+3o4MSeOS4T8t+IvVjUwU12MGYNlZPlXrtb16Qyn0kGqxqw8
+	 zbsxmS2vTlHgLmMc5Yq7t1dTDRw3d4ijMmLmOli7W/PxFDvnaAj/ddFz9lnyATEbu1
+	 OI/asMPVFZjN43Gcibsc7Vgbwsv7Y3+Fq0Z+gaswK3erm+liaWzz6u30hno7K4166a
+	 z5sCULEPymbjg==
+Message-ID: <a14b8281-005b-e9c2-bae9-cbc2e18ae0d2@collabora.com>
+Date: Tue, 3 Oct 2023 10:17:49 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKwvOd=4hBcU4fAkddU0b-GOZc9FzTZoj3PFW6ZZrX0jS8x+bg@mail.gmail.com>
- <CAKwvOd=8LVU+iANkFx18Wm1jg7gYiAXovAmo9t5ZZaVdMULn-Q@mail.gmail.com>
- <875y8ok9b5.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
- <CAKwvOdmJJibt6sHSp91v2s7BxUWBC6xG7F7+3C6gUxNMzZ2xRA@mail.gmail.com>
- <87353ok78h.fsf@rcn-XPS-13-9305.i-did-not-set--mail-host-address--so-tickle-me>
- <2023052247-bobtail-factsheet-d104@gregkh> <CAKwvOd=2zAV_mizvzLFdyHE_4OzBY5OVu6KLWuQPOMZK37vsmQ@mail.gmail.com>
- <cff33e12-3d80-7e62-1993-55411ccabc01@collabora.com> <CAKwvOd=F29-UkNO7FtUWpVV=POOZLb6QgD=mhLMWtRfkRSSi2A@mail.gmail.com>
- <a037a08c-44c4-24e8-1cba-7e4e8b21ffaa@collabora.com> <CAK7LNAS8Y9syCiHMO2r75D6hgCSsDDvJ_=VMKpYqjondnbSZjw@mail.gmail.com>
- <267b73d6-8c4b-40d9-542d-1910dffc3238@leemhuis.info> <2833d0db-f122-eccd-7393-1f0169dc0741@collabora.com>
- <26aa6f92-2376-51a4-bbdc-abbbd62c23d2@leemhuis.info> <859c6dde-37ad-492e-baa0-4ea100d8381f@leemhuis.info>
- <b31cae57-89ab-eb8b-1085-1d7476735d58@collabora.com>
-In-Reply-To: <b31cae57-89ab-eb8b-1085-1d7476735d58@collabora.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 30 Sep 2023 19:24:11 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQCNVHg=brV-iPL__HAhoNtAKzCiiG2M3Q9jkMvTnrbog@mail.gmail.com>
-Message-ID: <CAK7LNAQCNVHg=brV-iPL__HAhoNtAKzCiiG2M3Q9jkMvTnrbog@mail.gmail.com>
-Subject: Re: [PATCH v4] Makefile.compiler: replace cc-ifversion with
- compiler-specific macros
-To: Shreeya Patel <shreeya.patel@collabora.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>, Greg KH <gregkh@linuxfoundation.org>, 
-	Maksim Panchenko <maks@meta.com>, =?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, 
-	Michal Marek <michal.lkml@markovi.net>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, clang-built-linux <llvm@lists.linux.dev>, 
-	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, 
-	"gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>, 
-	Guillaume Charles Tucker <guillaume.tucker@collabora.com>, denys.f@collabora.com, 
-	Nick Desaulniers <ndesaulniers@google.com>, kernelci@lists.linux.dev, 
-	Collabora Kernel ML <kernel@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: kci command line poll: Click or Typer?
+From: Guillaume Tucker <guillaume.tucker@collabora.com>
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Cc: "automated-testing@lists.yoctoproject.org"
+ <automated-testing@lists.yoctoproject.org>
+References: <9acfa649-4ae0-2e56-16b8-b7c24ab60a30@collabora.com>
+Content-Language: en-US
+In-Reply-To: <9acfa649-4ae0-2e56-16b8-b7c24ab60a30@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 15, 2023 at 6:33=E2=80=AFPM Shreeya Patel
-<shreeya.patel@collabora.com> wrote:
+On 21/09/2023 10:59, Guillaume Tucker wrote:
+> Alongside the new KernelCI API we're also working on the new
+> command-line tool "kci".  One of the key decisions to make is the
+> framework to use for its implementation.  The legacy KernelCI
+> tools use the standard argparse, now we may consider using Click
+> or Typer as they are popular Python alternatives.
+> 
+> Here's a small poll with extra context to help people make up
+> their mind and vote for their favourite choice:
+> 
+>   https://github.com/kernelci/kernelci-project/discussions/258
+> 
+> If you don't have a GitHub account, you can also reply to this
+> email to vote instead.  Feel free to also bring up any discussion
+> topics here or with GitHub comments of course.
+> 
+> We'll look at the results at the end of the month so there's a
+> bit more than a week left to answer the poll.
+
+The results are in, basically all 3 options received the same
+number of votes!  However, there have been very constructive
+discussions around it and a fair amount of engagement from the
+community which is very encouraging.
+
+Here's a summary with collected pros/cons for each option:
+
+  https://github.com/kernelci/kernelci-project/discussions/258#discussioncomment-7172705
+
+an a proposal going forward:
+
+  https://github.com/kernelci/kernelci-project/discussions/258#discussioncomment-7172800
+
+I'm including a copy of the proposal from the GitHub comment here
+for the benefit of the mailing list:
+
+> What I would propose is to start with Click using the version
+> currently in Debian Stable (v8.1.3) as it has so many
+> advantages over argparse.  Then if users find the Click
+> dependencies too cumbersome, we may consider bundling it
+> directly with the kernelci package, probably with a Git
+> submodule or directly added to the repository under
+> kernelci.click.
 >
-> On 11/09/23 15:35, Thorsten Leemhuis wrote:
->
-> Hi Thorsten,
->
-> > On 29.08.23 13:28, Linux regression tracking (Thorsten Leemhuis) wrote:
-> >> On 11.07.23 13:16, Shreeya Patel wrote:
-> >>> On 10/07/23 17:39, Linux regression tracking (Thorsten Leemhuis) wrot=
-e:
-> >>>> Hi, Thorsten here, the Linux kernel's regression tracker. Top-postin=
-g
-> >>>> for once, to make this easily accessible to everyone.
-> >>>>
-> >>>> Shreeya Patel, Masahiro Yamada: what's the status of this? Was any
-> >>>> progress made to address this? Or is this maybe (accidentally?) fixe=
-d
-> >>>> with 6.5-rc1?
-> >>> I still see the regression happening so it doesn't seem to be fixed.
-> >>> https://linux.kernelci.org/test/case/id/64ac675a8aebf63753bb2a8c/
-> >>>
-> >>> Masahiro had submitted a fix for this issue here.
-> >>>
-> >>> https://lore.kernel.org/lkml/ZJEni98knMMkU%2Fcl@buildd.core.avm.de/T/=
-#t
-> >>>
-> >>> But I don't see any movement there. Masahiro, are you planning to sen=
-d a
-> >>> v2 for it?
-> >> That was weeks ago and we didn't get a answer. :-/ Was this fixed in
-> >> between? Doesn't look like it from here, but I might be missing someth=
-ing.
-> > Still no reply. :-/
-> >
-> > Shreeya Patel, does the problem still happen with 6.6-rc1 and do you
-> > still want to see it fixed? In that case our only option to get things
-> > rolling again might be to involve Linus, unless someone in the CC list
-> > has a idea to resolve this. Might also be good to know if reverting the
-> > culprit fixes the problem.
->
->
-> I don't see this issue happening on 6.6-rc1 kernel and it was only last
-> seen in 6.5 kernel.
-> But there was no fix added to Kbuild in the meantime so not sure which
-> commit really fixed this issue.
->
-> For now we can mark this as resolved and I'll keep an eye on the future
-> test results to see if this pops up again.
->
->
-> Thanks,
-> Shreeya Patel
->
-> #regzbot resolve: Fixed in 6.6-rc1 kernel, fix commit is unknown.
+> As a fallback, if we later find that adopting Click in the
+> community still requires a larger effort than maintaining an
+> implementation based on argparse we might be able to convert
+> the tool to argparse then.  This scenario seems very unlikely
+> as there aren't any actual signs that Click is more difficult
+> to adopt than the existing dependencies (see requirements.txt
+> in kernelci-core repository).  So the risk seems very low, and
+> if we did hit this kind of problem we would still have a way to
+> mitigate it.
+
+Like many important technical decision, it's a compromise between
+diverging requirements.  Please raise any concerns you may have
+now if anyone believes there are going to be blockers with using
+Click as the kci command line framework.  We need to have a
+stable implementation by the end of November to meet the next
+KernelCI API milestone, as such the implementation of the new kci
+tool will probably start next week.  Also, please let us know if
+you want to contribute ;)
+
+Thanks,
+Guillaume
 
 
-
-Not fixed in 6.6-rc1.
-
-I submitted a patch to shoot the root cause.
-
-https://lore.kernel.org/all/20230925110023.1796789-1-masahiroy@kernel.org/
-
-
-Now it is in Russell's patch tracker.
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+PS: We should bundle CloudEvents with the kernelci package...
