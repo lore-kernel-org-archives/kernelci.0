@@ -1,357 +1,223 @@
-Received: from outbound23.service-now.com (outbound23.service-now.com [149.96.6.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC7125A0
-	for <kernelci@lists.linux.dev>; Fri, 13 Oct 2023 11:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from app130155.ycg3.service-now.com (unknown [10.248.3.236])
-	by outbound23.service-now.com (Postfix) with ESMTP id 4E5F54038493;
-	Fri, 13 Oct 2023 04:03:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 outbound23.service-now.com 4E5F54038493
-Date: Fri, 13 Oct 2023 04:03:57 -0700 (PDT)
-From: Red Hat Product Security <secalert@redhat.com>
-Reply-To: Red Hat Product Security <secalert@redhat.com>
-To: security@redhat.com, kernelci@lists.linux.dev
-Message-ID: <10938477.32355.1697195037303@app130155.ycg3.service-now.com>
-Subject: Re: ZDI-CAN-22317: New Vulnerability Report
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697E82E3EB
+	for <kernelci@lists.linux.dev>; Tue, 17 Oct 2023 20:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CIvnP8+x"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-41b19dda4c6so25821cf.1
+        for <kernelci@lists.linux.dev>; Tue, 17 Oct 2023 13:42:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697575377; x=1698180177; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZsmviGdy3ewdtya1BhVwNOVjz+qj3fKvQCoqjjHhjCk=;
+        b=CIvnP8+xx/5n3nDXjMHTu6LFV60nX7Yogqac/nxZbHsk4Imf7PO3cBDeY+8O2zeBX6
+         ztFkKtdQAu0NbBz5r+r6rZ+zV8Zr9fEsEznjPJ0B7aREsppJ5t2bSm7XptVDgcvTl5KO
+         TFtMYJleJyhreT9EnAwnGfGhPSh+hTYLATU0WrfRgUYbvCIB82yWahcYAIZkYNwKqh+v
+         YxbOtwNWIuejykJ/THzEVTncO38ASqxbPHY9sNGyb9FnvslZw3gyRqIaUvuSU/j+v4Yo
+         f+/HCgkFXI9530prnMvm5PFTsCYmuGF19DfmkknHZlzWKfA5uP2koRKuUVeh0rUnbgou
+         od2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697575377; x=1698180177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZsmviGdy3ewdtya1BhVwNOVjz+qj3fKvQCoqjjHhjCk=;
+        b=UnfVsyHoXeOKOBABd+2Yo786V2Iz8E7dkeBZWFsuXC5XBowahc0RYvd8AEG4k6TQS8
+         YYhJWSUThzmKr5d62kBcXM2uXEBvV5QNxEA/zJ/b1kaPzQ8kznRfadOIWl3S7BJ96YkA
+         UeSpCDC6ZoDwjPrTsdEzyE4rnUSb8lpp0KjJYRKhpwSLx9yEc/bUjT6SwGTV27BBX1ng
+         Hnz8wU3c4M8GKXidBoYfECSQfi6ZDRrLqol6eSowE0o7gBJRL3dgHSwwmK7n1dpy7DhB
+         7DclLSD0nawiQ/q/kYYOS4GT0KfrBb2NTpuRIg4SPuloq5MEWeBXJuOhbrGz72a0zXG8
+         jxtw==
+X-Gm-Message-State: AOJu0Yzn7zcknqRaJiaD/nOJaSwt+IpZEYNbhgzC6ZatFMXsqXoR/Kgu
+	sv+H7D7DVf2E3XGKPY6iH83yA9Jc+cQ3XsOvmPh1dA==
+X-Google-Smtp-Source: AGHT+IGgLKvbychF9dc3gIRgMl7GYYKPKvzEgn0WQxA/ID4RK/aWS/BVJACLOro/yhEmiNHDVBrHduku9Cv1cVLE6Tg=
+X-Received: by 2002:a05:622a:268c:b0:419:7d7e:7d83 with SMTP id
+ kd12-20020a05622a268c00b004197d7e7d83mr21736qtb.5.1697575377107; Tue, 17 Oct
+ 2023 13:42:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; 
-	boundary="----=_Part_32353_3771767.1697195037302"
-X-ServiceNow-Source: Notification-ec04d32213ede300196f7e276144b04e
-X-ServiceNow-SysEmail-Version: 2
-Precedence: bulk
-Auto-Submitted: auto-generated
-X-ServiceNow-Generated: true
-
-------=_Part_32353_3771767.1697195037302
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_32354_22740156.1697195037302"
-
-------=_Part_32354_22740156.1697195037302
+References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+ <a94cd4e0-7092-04fb-9b89-da236bfec57f@collabora.com> <CAHRSSEzMo=-eS8KRqHjSMcBqWCsK2mU4zWg=5KFYx2XyL29Z0w@mail.gmail.com>
+ <CAHRSSEzasi7ZRSe3t_ij26cYCc_58eALNn_mMn6B5HFqEbU9EQ@mail.gmail.com>
+ <ffab5719-e6f4-4e21-1095-c129928076af@collabora.com> <CAHRSSEzo0cSQCp_zk4h2BP2EGdqVHSbZOLC-3gf7c6+uOK9R4g@mail.gmail.com>
+ <CAHRSSEw6Vv+3R0OOva8qY3pF-00TZdQku3MxN2OFSaZkN2di+Q@mail.gmail.com>
+ <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com> <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
+In-Reply-To: <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Tue, 17 Oct 2023 13:42:43 -0700
+Message-ID: <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
+Subject: Re: Please add new Android branches
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>, 
+	kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
 
-Hello!
+Guillaume,
 
-INC2757115 (ZDI-CAN-22317: New Vulnerability Report) has been acknowledged.
+I guess we didn't get to a complete plan... From above, can we enable these=
+:
 
-Opened for:=C2=A0security@redhat.com
-Followers:=C2=A0kernelci@lists.linux.dev
+1) compilers: gcc-10, clang-17
+2) archs: arm, arm64, i386, x80_64, riscv
+3) same configs as current android tests
+4) plus configs used by corresponding stable kernel
+(https://linux.kernelci.org/job/stable) not included in #3
 
-A Guest updated your request with the following comments:
 
-Reply from: security@redhat.com [mailto:security@redhat.com]
-=C2=A0Dear Nitesh Surana,
-=C2=A0Thank you for bringing this security advisory to our attention. We ha=
-ve
-revoked the exposed token and are working to provide early access users
-with personal tokens and self-hosted solutions for uploading their
-files.
-=C2=A0While the exposed token did not pose a risk to users, as any files
-published in this share are public and not used in a production
-environment, we understand that this incident may have caused concern.
-=C2=A0We will provide further updates via this public mailing list.
-=C2=A0Thank you for your cooperation.
-=C2=A0On Thu, 2023-10-12 at 21:44 +0000, zdi-disclosures@trendmicro.com [ma=
-ilto:zdi-disclosures@trendmicro.com]
-wrote:
-> ZDI-CAN-22317: KernelCI SAS Token Incorrect Permission Assignment
-> Authentication Bypass Vulnerability
->=20
-> -- CVSS -----------------------------------------
->=20
-> 8.2: AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:L
->=20
-> -- ABSTRACT -------------------------------------
->=20
-> Trend Micro's Zero Day Initiative has identified a vulnerability
-> affecting the following products:
-> KernelCI - KernelCI
->=20
-> -- VULNERABILITY DETAILS ------------------------
-> * Version tested:=C2=A0 NA
-> * Installer file:=C2=A0 hxxps://kernelci.org/ [http://kernelci.org/]
-> * Platform tested: Azure
->=20
-> ---
->=20
-> ### Analysis
->=20
->=20
-> We found an overly permissive SAS token mentioned in the GitHub
-> repository for Kernel CI (an upstream Linux Kernel validation project
-> under The Linux Foundation). The token allows for write access on the
-> Storage Account, allowing anyone with the publicly available
-> token+URL to possibly.
->=20
-> While checking for files on GitHub with possible SAS tokens having
-> the expiry sometime after 2023 and having read and write permissions
-> on the storage service (blob, file, queue), we come across the below
-> code snippet
->=20
-> ```
-> hxxps://github.com/kernelci/kernelci [http://github.com/kernelci/kernelci=
-]-
-> project/blob/104f95d1909fcccd7389f4a42ffa11a4d8d30cc8/kernelci.org/co [ht=
-tp://kernelci.org/co]
-> ntent/en/docs/admin/api.md?plain=3D1#L91 [http://api.md?plain=3D1#L91]
-> ```
->=20
-> The over-permissive SAS token is: "sv=3D2022-11-
-> 02&ss=3Dbfq&srt=3Dsco&sp=3Drwdlacpitfx&se=3D2023-12-03T00:00:00Z&st=3D202=
-3-09-
-> 04T00:00:00Z&spr=3Dhttps&sig=3Dg1lP2bLomBFr81hNnxi%2Bdi%2F8rvLI0aOZgzIgiZ
-> NDnIg%3D"
->=20
-> ```
-> - The SAS token expires on `2023-12-03`
-> - The permissions `rwdlacpitfx` are over-permissive (Read, Write,
-> Delete, List, Add, Create, Process, Immutability, Tag, Filter, Delete
-> Version)
-> - The storage types accessible are blob, file, queue
-> ```
->=20
-> Using Azure Storage Explorer, we could read write and list the
-> contents of all the storage types in the Storage Account.
->=20
->=20
-> An attacker could modify any file on the File Share of the Storage
-> Account and possibly impact users of Kernel CI. The expectation is to
-> see that the SAS token allows for read, write and delete operations
-> (based on the documentation at
-> https://github.com/kernelci/kernelci-api/blob/b7a0f8f19fdba8f9649b282bd2d=
-6fef874820efc/doc/early-access.md?plain=3D1#L149 [https://github.com/kernel=
-ci/kernelci-api/blob/b7a0f8f19fdba8f9649b282bd2d6fef874820efc/doc/early-acc=
-ess.md?plain=3D1#L149]
-> ). However, any user with the SAS token and File Share URL could
-> control files on the File Share of the Storage Account.
->=20
->=20
-> -- CREDIT ---------------------------------------
-> This vulnerability was discovered by:
-> Nitesh Surana (@_niteshsurana) of Trend Micro
->=20
-> -- FURTHER DETAILS ------------------------------
->=20
-> Supporting files:
->=20
->=20
-> If supporting files were contained with this report they are provided
-> within a password protected ZIP file. The password is the ZDI
-> candidate number in the form: ZDI-CAN-XXXX where XXXX is the ID
-> number.
->=20
-> Please confirm receipt of this report. We expect all vendors to
-> remediate ZDI vulnerabilities within 120 days of the reported date.
-> If you are ready to release a patch at any point leading up to the
-> deadline, please coordinate with us so that we may release our
-> advisory detailing the issue. If the 120-day deadline is reached and
-> no patch has been made available we will release a limited public
-> advisory with our own mitigations, so that the public can protect
-> themselves in the absence of a patch. Please keep us updated
-> regarding the status of this issue and feel free to contact us at any
-> time:
->=20
-> Zero Day Initiative
-> zdi-disclosures@trendmicro.com [mailto:zdi-disclosures@trendmicro.com]
->=20
-> The PGP key used for all ZDI vendor communications is available from:
->=20
-> =C2=A0 http://www.zerodayinitiative.com/documents/disclosures-pgp-key.asc=
- [http://www.zerodayinitiative.com/documents/disclosures-pgp-key.asc]
->=20
-> -- INFORMATION ABOUT THE ZDI --------------------
-> Established by TippingPoint and acquired by Trend Micro, the Zero Day
-> Initiative (ZDI) neither re-sells vulnerability details nor exploit
-> code. Instead, upon notifying the affected product vendor, the ZDI
-> provides its Trend Micro TippingPoint customers with zero day
-> protection through its intrusion prevention technology. Explicit
-> details regarding the specifics of the vulnerability are not exposed
-> to any parties until an official vendor patch is publicly available.
->=20
-> Please contact us for further details or refer to:
->=20
-> =C2=A0 http://www.zerodayinitiative.com [http://www.zerodayinitiative.com=
-]
->=20
-> -- DISCLOSURE POLICY ----------------------------
->=20
-> Our vulnerability disclosure policy is available online at:
->=20
-> =C2=A0 http://www.zerodayinitiative.com/advisories/disclosure_policy/ [ht=
-tp://www.zerodayinitiative.com/advisories/disclosure_policy/]
->=20
-> TREND MICRO EMAIL NOTICE
->=20
-> The information contained in this email and any attachments is
-> confidential and may be subject to copyright or other intellectual
-> property protection. If you are not the intended recipient, you are
-> not authorized to use or disclose this information, and we request
-> that you notify us by reply mail or telephone and delete the original
-> message from your mail system.
->=20
-> For details about what personal information we collect and why,
-> please see our Privacy Notice on our website at: Read privacy
-> policy<http://www.trendmicro.com/privacy [http://www.trendmicro.com/priva=
-cy]>
+On Mon, Sep 25, 2023 at 8:17=E2=80=AFAM Todd Kjos <tkjos@google.com> wrote:
 >
-
-How can I track and update my request?
-
-To respond, reply to this email. You may also create a new email and includ=
-e the request number (INC2757115) in the subject.
-
-Thank you,
-Product Security
-
-Ref:MSG80461454
-------=_Part_32354_22740156.1697195037302
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset=UTF-8
-
-<html><head></head><body><div><p style=3D"margin-top:0;margin-bottom:10px;"=
->Hello!</p><p style=3D"margin-top:0;margin-bottom:10px;">INC2757115 (ZDI-CA=
-N-22317: New Vulnerability Report) has been acknowledged.</p><p style=3D"ma=
-rgin-top:0;margin-bottom:10px;">Opened for:&nbsp;security@redhat.com<br>Fol=
-lowers:&nbsp;kernelci@lists.linux.dev</p></div>
-<p style=3D"margin-top: 10px; margin-bottom: 10px;">A Guest updated your re=
-quest with the following comments:</p>
-<div style=3D"padding: 10px 0 10px 10px; background-color: ivory;"><div>Rep=
-ly from: <a target=3D"_blank" href=3D"mailto:security@redhat.com" rel=3D"no=
-opener noreferrer nofollow">security@redhat.com</a></div><div>&nbsp;</div><=
-div>Dear Nitesh Surana,</div><div>&nbsp;</div><div>Thank you for bringing t=
-his security advisory to our attention. We have</div><div>revoked the expos=
-ed token and are working to provide early access users</div><div>with perso=
-nal tokens and self-hosted solutions for uploading their</div><div>files.</=
-div><div>&nbsp;</div><div>While the exposed token did not pose a risk to us=
-ers, as any files</div><div>published in this share are public and not used=
- in a production</div><div>environment, we understand that this incident ma=
-y have caused concern.</div><div>&nbsp;</div><div>We will provide further u=
-pdates via this public mailing list.</div><div>&nbsp;</div><div>Thank you f=
-or your cooperation.</div><div>&nbsp;</div><div>On Thu, 2023-10-12 at 21:44=
- +0000, <a target=3D"_blank" href=3D"mailto:zdi-disclosures@trendmicro.com"=
- rel=3D"noopener noreferrer nofollow">zdi-disclosures@trendmicro.com</a></d=
-iv><div>wrote:</div><div>&gt; ZDI-CAN-22317: KernelCI SAS Token Incorrect P=
-ermission Assignment</div><div>&gt; Authentication Bypass Vulnerability</di=
-v><div>&gt; </div><div>&gt; -- CVSS ---------------------------------------=
---</div><div>&gt; </div><div>&gt; 8.2: AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:L<=
-/div><div>&gt; </div><div>&gt; -- ABSTRACT --------------------------------=
------</div><div>&gt; </div><div>&gt; Trend Micro's Zero Day Initiative has =
-identified a vulnerability</div><div>&gt; affecting the following products:=
-</div><div>&gt; KernelCI - KernelCI</div><div>&gt; </div><div>&gt; -- VULNE=
-RABILITY DETAILS ------------------------</div><div>&gt; * Version tested:&=
-nbsp; NA</div><div>&gt; * Installer file:&nbsp; hxxps://<a target=3D"_blank=
-" href=3D"http://kernelci.org/" rel=3D"noopener noreferrer nofollow">kernel=
-ci.org/</a></div><div>&gt; * Platform tested: Azure</div><div>&gt; </div><d=
-iv>&gt; ---</div><div>&gt; </div><div>&gt; ### Analysis</div><div>&gt; </di=
-v><div>&gt; </div><div>&gt; We found an overly permissive SAS token mention=
-ed in the GitHub</div><div>&gt; repository for Kernel CI (an upstream Linux=
- Kernel validation project</div><div>&gt; under The Linux Foundation). The =
-token allows for write access on the</div><div>&gt; Storage Account, allowi=
-ng anyone with the publicly available</div><div>&gt; token+URL to possibly.=
-</div><div>&gt; </div><div>&gt; While checking for files on GitHub with pos=
-sible SAS tokens having</div><div>&gt; the expiry sometime after 2023 and h=
-aving read and write permissions</div><div>&gt; on the storage service (blo=
-b, file, queue), we come across the below</div><div>&gt; code snippet</div>=
-<div>&gt; </div><div>&gt; ```</div><div>&gt; hxxps://<a target=3D"_blank" h=
-ref=3D"http://github.com/kernelci/kernelci" rel=3D"noopener noreferrer nofo=
-llow">github.com/kernelci/kernelci</a>-</div><div>&gt; project/blob/104f95d=
-1909fcccd7389f4a42ffa11a4d8d30cc8/<a target=3D"_blank" href=3D"http://kerne=
-lci.org/co" rel=3D"noopener noreferrer nofollow">kernelci.org/co</a></div><=
-div>&gt; ntent/en/docs/admin/<a target=3D"_blank" href=3D"http://api.md?pla=
-in=3D1#L91" rel=3D"noopener noreferrer nofollow">api.md?plain=3D1#L91</a></=
-div><div>&gt; ```</div><div>&gt; </div><div>&gt; The over-permissive SAS to=
-ken is: "sv=3D2022-11-</div><div>&gt; 02&amp;ss=3Dbfq&amp;srt=3Dsco&amp;sp=
-=3Drwdlacpitfx&amp;se=3D2023-12-03T00:00:00Z&amp;st=3D2023-09-</div><div>&g=
-t; 04T00:00:00Z&amp;spr=3Dhttps&amp;sig=3Dg1lP2bLomBFr81hNnxi%2Bdi%2F8rvLI0=
-aOZgzIgiZ</div><div>&gt; NDnIg%3D"</div><div>&gt; </div><div>&gt; ```</div>=
-<div>&gt; - The SAS token expires on `2023-12-03`</div><div>&gt; - The perm=
-issions `rwdlacpitfx` are over-permissive (Read, Write,</div><div>&gt; Dele=
-te, List, Add, Create, Process, Immutability, Tag, Filter, Delete</div><div=
->&gt; Version)</div><div>&gt; - The storage types accessible are blob, file=
-, queue</div><div>&gt; ```</div><div>&gt; </div><div>&gt; Using Azure Stora=
-ge Explorer, we could read write and list the</div><div>&gt; contents of al=
-l the storage types in the Storage Account.</div><div>&gt; </div><div>&gt; =
-</div><div>&gt; An attacker could modify any file on the File Share of the =
-Storage</div><div>&gt; Account and possibly impact users of Kernel CI. The =
-expectation is to</div><div>&gt; see that the SAS token allows for read, wr=
-ite and delete operations</div><div>&gt; (based on the documentation at</di=
-v><div>&gt; <a target=3D"_blank" href=3D"https://github.com/kernelci/kernel=
-ci-api/blob/b7a0f8f19fdba8f9649b282bd2d6fef874820efc/doc/early-access.md?pl=
-ain=3D1#L149" rel=3D"noopener noreferrer nofollow">https://github.com/kerne=
-lci/kernelci-api/blob/b7a0f8f19fdba8f9649b282bd2d6fef874820efc/doc/early-ac=
-cess.md?plain=3D1#L149</a></div><div>&gt; ). However, any user with the SAS=
- token and File Share URL could</div><div>&gt; control files on the File Sh=
-are of the Storage Account.</div><div>&gt; </div><div>&gt; </div><div>&gt; =
--- CREDIT ---------------------------------------</div><div>&gt; This vulne=
-rability was discovered by:</div><div>&gt; Nitesh Surana (@_niteshsurana) o=
-f Trend Micro</div><div>&gt; </div><div>&gt; -- FURTHER DETAILS -----------=
--------------------</div><div>&gt; </div><div>&gt; Supporting files:</div><=
-div>&gt; </div><div>&gt; </div><div>&gt; If supporting files were contained=
- with this report they are provided</div><div>&gt; within a password protec=
-ted ZIP file. The password is the ZDI</div><div>&gt; candidate number in th=
-e form: ZDI-CAN-XXXX where XXXX is the ID</div><div>&gt; number.</div><div>=
-&gt; </div><div>&gt; Please confirm receipt of this report. We expect all v=
-endors to</div><div>&gt; remediate ZDI vulnerabilities within 120 days of t=
-he reported date.</div><div>&gt; If you are ready to release a patch at any=
- point leading up to the</div><div>&gt; deadline, please coordinate with us=
- so that we may release our</div><div>&gt; advisory detailing the issue. If=
- the 120-day deadline is reached and</div><div>&gt; no patch has been made =
-available we will release a limited public</div><div>&gt; advisory with our=
- own mitigations, so that the public can protect</div><div>&gt; themselves =
-in the absence of a patch. Please keep us updated</div><div>&gt; regarding =
-the status of this issue and feel free to contact us at any</div><div>&gt; =
-time:</div><div>&gt; </div><div>&gt; Zero Day Initiative</div><div>&gt; <a =
-target=3D"_blank" href=3D"mailto:zdi-disclosures@trendmicro.com" rel=3D"noo=
-pener noreferrer nofollow">zdi-disclosures@trendmicro.com</a></div><div>&gt=
-; </div><div>&gt; The PGP key used for all ZDI vendor communications is ava=
-ilable from:</div><div>&gt; </div><div>&gt; &nbsp; <a target=3D"_blank" hre=
-f=3D"http://www.zerodayinitiative.com/documents/disclosures-pgp-key.asc" re=
-l=3D"noopener noreferrer nofollow">http://www.zerodayinitiative.com/documen=
-ts/disclosures-pgp-key.asc</a></div><div>&gt; </div><div>&gt; -- INFORMATIO=
-N ABOUT THE ZDI --------------------</div><div>&gt; Established by TippingP=
-oint and acquired by Trend Micro, the Zero Day</div><div>&gt; Initiative (Z=
-DI) neither re-sells vulnerability details nor exploit</div><div>&gt; code.=
- Instead, upon notifying the affected product vendor, the ZDI</div><div>&gt=
-; provides its Trend Micro TippingPoint customers with zero day</div><div>&=
-gt; protection through its intrusion prevention technology. Explicit</div><=
-div>&gt; details regarding the specifics of the vulnerability are not expos=
-ed</div><div>&gt; to any parties until an official vendor patch is publicly=
- available.</div><div>&gt; </div><div>&gt; Please contact us for further de=
-tails or refer to:</div><div>&gt; </div><div>&gt; &nbsp; <a target=3D"_blan=
-k" href=3D"http://www.zerodayinitiative.com" rel=3D"noopener noreferrer nof=
-ollow">http://www.zerodayinitiative.com</a></div><div>&gt; </div><div>&gt; =
--- DISCLOSURE POLICY ----------------------------</div><div>&gt; </div><div=
->&gt; Our vulnerability disclosure policy is available online at:</div><div=
->&gt; </div><div>&gt; &nbsp; <a target=3D"_blank" href=3D"http://www.zeroda=
-yinitiative.com/advisories/disclosure_policy/" rel=3D"noopener noreferrer n=
-ofollow">http://www.zerodayinitiative.com/advisories/disclosure_policy/</a>=
-</div><div>&gt; </div><div>&gt; TREND MICRO EMAIL NOTICE</div><div>&gt; </d=
-iv><div>&gt; The information contained in this email and any attachments is=
-</div><div>&gt; confidential and may be subject to copyright or other intel=
-lectual</div><div>&gt; property protection. If you are not the intended rec=
-ipient, you are</div><div>&gt; not authorized to use or disclose this infor=
-mation, and we request</div><div>&gt; that you notify us by reply mail or t=
-elephone and delete the original</div><div>&gt; message from your mail syst=
-em.</div><div>&gt; </div><div>&gt; For details about what personal informat=
-ion we collect and why,</div><div>&gt; please see our Privacy Notice on our=
- website at: Read privacy</div><div>&gt; policy&lt;<a target=3D"_blank" hre=
-f=3D"http://www.trendmicro.com/privacy" rel=3D"noopener noreferrer nofollow=
-">http://www.trendmicro.com/privacy</a>&gt;</div><div>&gt;</div></div>
-<div><p style=3D"margin-top:20px;margin-bottom:10px;"><strong>How can I tra=
-ck and update my request?</strong></p><p style=3D"margin-top:0;margin-botto=
-m:10px;">To respond, reply to this email. You may also create a new email a=
-nd include the request number (INC2757115) in the subject.</p></div>
-<p style=3D"margin-top: 14px; margin-bottom: 0;">Thank you,<br>Product Secu=
-rity</p><div>&nbsp;</div><div style=3D"display:inline">Ref:MSG80461454</div=
-></body></html>
-------=_Part_32354_22740156.1697195037302--
-
-------=_Part_32353_3771767.1697195037302--
+> On Mon, Sep 25, 2023 at 1:22=E2=80=AFAM Guillaume Tucker
+> <guillaume.tucker@collabora.com> wrote:
+> >
+> > On 20/09/2023 00:54, Todd Kjos wrote:
+> > > Guillaume,
+> > >
+> > > How about this for android trees:
+> > >
+> > > 1) same compilers as current config (gcc-10, clang-14)
+> > > 2) archs: arm, arm64, i386, x80_64, riscv
+> > > 3) same configs as current android tests
+> > > 4) plus configs used by corresponding stable kernel
+> > > (https://linux.kernelci.org/job/stable) not included in #3
+> >
+> > OK thanks, I think we can set this up easily.  We'll get back to
+> > you if there's any ambiguity.
+> >
+> > > We get a nice benefit from sync'ing with the stable kernels since it
+> > > allows us to tell which issues originate upstream and which are
+> > > introduced by android changes. It's also useful to build each with
+> > > both toolchains so we can expose the cases where gcc-10 is OK but
+> > > clang-14 has issues (and visa-versa).
+> > >
+> > > I don't think we need to build all of the combinations if there are
+> > > too many builds - we could trim out some of the configs from #4 (you
+> > > can recommend which).
+> >
+> > OK, we can look at past results or optimise incrementally over
+> > the weeks to streamline the overall build coverage.
+> >
+> > > We'd also like to start in an all-green state. So let's trim out the
+> > > error cases that aren't caused by android kernel code. I think there
+> > > are some 32-bit cases that fail with the clang-14 tools and some othe=
+r
+> > > cases that fail in stable.
+> > >
+> > > Could we start with all of the builds for #1 - #4 and then tune it up
+> > > after a few runs to get rid of long-failing cases and/or to just
+> > > reduce the load on the build service?
+> >
+> > I believe this part of the discussion is still unresolved with
+> > Nick, and maybe it would make more sense to address this when the
+> > builds get moved to the new API where we'll have more flexibility
+> > and more accurate log parsing etc.
+> >
+> > Another aspect that wasn't too clear in the discussions, should
+> > it be clang-14 or a more recent version?  Right now, mainline
+> > builds already include clang-11 (oldest supported one) and
+> > clang-16 and linux-next builds use clang-17.  So there is
+> > upstream build coverage for them, and if clang-14 is the standard
+> > version for Android kernels then I guess it would make sense to
+> > stick to it - but that's up to you.  Doing both clang-14 and
+> > clang-17 for Android builds would seem overkill to me though.
+>
+> I'd be fine with tracking the latest stable clang version (clang-17
+> now) and dropping clang-14 so we can help the clang team find
+> regressions.
+>
+> >
+> > Cheers,
+> > Guillaume
+> >
+> > > On Wed, Sep 6, 2023 at 12:50=E2=80=AFPM Todd Kjos <tkjos@google.com> =
+wrote:
+> > >>
+> > >> +Viktor Martensson +Betty Zhou
+> > >>
+> > >> Guillaume,
+> > >>
+> > >> I think that's a great idea. I'll get back to you with the set of
+> > >> configs, arch, compilers we'd like to have coverage for.
+> > >>
+> > >> -Todd
+> > >>
+> > >>
+> > >> On Wed, Sep 6, 2023 at 11:46=E2=80=AFAM Guillaume Tucker
+> > >> <guillaume.tucker@collabora.com> wrote:
+> > >>>
+> > >>> Hi Todd,
+> > >>>
+> > >>> On 05/09/2023 19:18, Todd Kjos wrote:
+> > >>>> On Thu, Aug 10, 2023 at 8:56=E2=80=AFAM Todd Kjos <tkjos@google.co=
+m> wrote:
+> > >>>>>
+> > >>>>>
+> > >>>>>
+> > >>>>> On Tue, Jul 11, 2023 at 4:57=E2=80=AFAM Guillaume Tucker <guillau=
+me.tucker@collabora.com> wrote:
+> > >>>>>>
+> > >>>>>> Hi Todd,
+> > >>>>>>
+> > >>>>>> On 11/07/2023 00:41, Todd Kjos wrote:
+> > >>>>>>> Please add the following new Android branches to kernelci testi=
+ng.
+> > >>>>>>>
+> > >>>>>>> repo: https://android.googlesource.com/kernel/common
+> > >>>>>>> branches:
+> > >>>>>>> - android15-6.1
+> > >>>>>>> - android14-6.1-lts
+> > >>>>>>> - android14-5.15-lts
+> > >>>>>>
+> > >>>>>> I've created this PR accordingly:
+> > >>>>>>
+> > >>>>>>   https://github.com/kernelci/kernelci-core/pull/2002
+> > >>>>>>
+> > >>>>>> Please note that we're now operating with reduced build coverage
+> > >>>>>> due to some temporary limitations with our Azure subscription.  =
+I
+> > >>>>>> know the Android kernel builds should be covered by the GCP
+> > >>>>>> clusters but right now the system is designed to distribute
+> > >>>>>> kernel builds randomly across all clusters so we can't easily ti=
+e
+> > >>>>>> Android builds to the Android clusters.  Hopefully we'll find a
+> > >>>>>> solution to go back to normal coverage within a week or two.
+> > >>>>>
+> > >>>>>
+> > >>>>> Hi Guillaume, Any ETA for when the full set of builds is restored=
+? We still have greatly reduced build coverage and it's been a month.
+> > >>>>
+> > >>>> Ping. We are getting a lot less value out of kernelci with the gre=
+atly
+> > >>>> reduced set of builds for the Android kernels. When will the full
+> > >>>> build coverage be resumed?
+> > >>>>
+> > >>>> If it needs to stay reduced, can we decide precisely which builds =
+are
+> > >>>> done for Android kernels?
+> > >>>
+> > >>> Sorry for the slow reply.
+> > >>>
+> > >>> I think it's fine now to re-enable the Android builds and maybe
+> > >>> we should also take this opportunity to confirm which ones are
+> > >>> the most relevant to you guys.  As part of the process of
+> > >>> adjusting the build coverage, I also fixed the GKI builds which I
+> > >>> thought were the main ones.  Even if there is enough build
+> > >>> capacity to build "everything", keeping it streamlined to what is
+> > >>> really useful makes the overall system more effective.
+> > >>>
+> > >>> Are there any particular combinations of arch, config, compilers
+> > >>> you care about more than others?
+> > >>>
+> > >>> Thanks,
+> > >>> Guillaume
+> > >>>
+> >
