@@ -1,223 +1,122 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697E82E3EB
-	for <kernelci@lists.linux.dev>; Tue, 17 Oct 2023 20:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60D914A99
+	for <kernelci@lists.linux.dev>; Mon, 23 Oct 2023 11:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CIvnP8+x"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-41b19dda4c6so25821cf.1
-        for <kernelci@lists.linux.dev>; Tue, 17 Oct 2023 13:42:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697575377; x=1698180177; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZsmviGdy3ewdtya1BhVwNOVjz+qj3fKvQCoqjjHhjCk=;
-        b=CIvnP8+xx/5n3nDXjMHTu6LFV60nX7Yogqac/nxZbHsk4Imf7PO3cBDeY+8O2zeBX6
-         ztFkKtdQAu0NbBz5r+r6rZ+zV8Zr9fEsEznjPJ0B7aREsppJ5t2bSm7XptVDgcvTl5KO
-         TFtMYJleJyhreT9EnAwnGfGhPSh+hTYLATU0WrfRgUYbvCIB82yWahcYAIZkYNwKqh+v
-         YxbOtwNWIuejykJ/THzEVTncO38ASqxbPHY9sNGyb9FnvslZw3gyRqIaUvuSU/j+v4Yo
-         f+/HCgkFXI9530prnMvm5PFTsCYmuGF19DfmkknHZlzWKfA5uP2koRKuUVeh0rUnbgou
-         od2A==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AfQvEstp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1698059700;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZLfctlRyNeTcc25g/JQXZaSbQYuP+VyVaudnPbp2gIY=;
+	b=AfQvEstpdUzaUbD2eMUa/HVcAhOnpuH+SlLHsrXGW09qTOUnzxA3O5OAZer985ZbPBnyTh
+	oPRNCQT7oAt7BSRY9z3rc/pwbez1nqZS/qXEIYAltyamt1VDVKTg/tDHb+uohVWCuSbAOb
+	ri4EPP0dUzVaAxBKNVRss4TO2ItrAo0=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-7ezu4uXsOp66mJFyc6or9g-1; Mon, 23 Oct 2023 07:14:59 -0400
+X-MC-Unique: 7ezu4uXsOp66mJFyc6or9g-1
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3b2e44c8664so5030212b6e.3
+        for <kernelci@lists.linux.dev>; Mon, 23 Oct 2023 04:14:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697575377; x=1698180177;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZsmviGdy3ewdtya1BhVwNOVjz+qj3fKvQCoqjjHhjCk=;
-        b=UnfVsyHoXeOKOBABd+2Yo786V2Iz8E7dkeBZWFsuXC5XBowahc0RYvd8AEG4k6TQS8
-         YYhJWSUThzmKr5d62kBcXM2uXEBvV5QNxEA/zJ/b1kaPzQ8kznRfadOIWl3S7BJ96YkA
-         UeSpCDC6ZoDwjPrTsdEzyE4rnUSb8lpp0KjJYRKhpwSLx9yEc/bUjT6SwGTV27BBX1ng
-         Hnz8wU3c4M8GKXidBoYfECSQfi6ZDRrLqol6eSowE0o7gBJRL3dgHSwwmK7n1dpy7DhB
-         7DclLSD0nawiQ/q/kYYOS4GT0KfrBb2NTpuRIg4SPuloq5MEWeBXJuOhbrGz72a0zXG8
-         jxtw==
-X-Gm-Message-State: AOJu0Yzn7zcknqRaJiaD/nOJaSwt+IpZEYNbhgzC6ZatFMXsqXoR/Kgu
-	sv+H7D7DVf2E3XGKPY6iH83yA9Jc+cQ3XsOvmPh1dA==
-X-Google-Smtp-Source: AGHT+IGgLKvbychF9dc3gIRgMl7GYYKPKvzEgn0WQxA/ID4RK/aWS/BVJACLOro/yhEmiNHDVBrHduku9Cv1cVLE6Tg=
-X-Received: by 2002:a05:622a:268c:b0:419:7d7e:7d83 with SMTP id
- kd12-20020a05622a268c00b004197d7e7d83mr21736qtb.5.1697575377107; Tue, 17 Oct
- 2023 13:42:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698059698; x=1698664498;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZLfctlRyNeTcc25g/JQXZaSbQYuP+VyVaudnPbp2gIY=;
+        b=PBUDnPemCVPk+yxDVFlSpF6lwh0kth0/nzmDx/14JKHkWGP/4UVuEvpFtMv8ghR0Kn
+         w2XIMyeHuGThIFxv1DhkpdGH9SuJEwTCM/UgCcaJnDKWJiB24SPm2E/Dk4GF+7rEl202
+         Xx0QJHOD0IjXBwsQRPJTBijprqbLH+oJWo+KE2aM/hqUoIVje1+/v3SjZXTURKqylaqA
+         g3HeSgt0r+DQ+XqMqRZ+QULMM1XFMMJMdUA7STO5RduOFVIlDrEyJA2Jw59F15sGI34n
+         ZB6qiocW0UfVtNe8XlnHqmU1kkIMsoxQx2BRR2LUx3SDgXKWNGx/41SClu819xor8X5B
+         qRyg==
+X-Gm-Message-State: AOJu0YzmYc2n7LmQKjCcCqermj6uQjFukw2v6pUpUVuHWKU2CR0DzEE6
+	A08drScZfEePDfI3qLkvtz0AxJ+ewdvp2OTfdJjopUPvX4ntjS4nvpCgujWMFm3GKkS6oLT1UQo
+	UF8MM5+QIWlKMpeO5E8S4iuha1XMZvbbiUkjtwpw74xt5kDsSUT/whqF/LGc5EIwZX1EfnjKz1a
+	0LRqI16TEiY1qEnVDRjN0=
+X-Received: by 2002:a05:6808:a94:b0:3b2:e469:904c with SMTP id q20-20020a0568080a9400b003b2e469904cmr9643280oij.28.1698059698387;
+        Mon, 23 Oct 2023 04:14:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESL8+JKSv+fWYkV0lJQ+dB9kNflvM7X7b5qAYVFMZmPrNDy6QPoGuxeCSaTgAURDzjtj0XIw==
+X-Received: by 2002:a05:6808:a94:b0:3b2:e469:904c with SMTP id q20-20020a0568080a9400b003b2e469904cmr9643261oij.28.1698059698124;
+        Mon, 23 Oct 2023 04:14:58 -0700 (PDT)
+Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
+        by smtp.gmail.com with ESMTPSA id dw14-20020a0562140a0e00b0066d02f0af01sm2811227qvb.72.2023.10.23.04.14.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Oct 2023 04:14:57 -0700 (PDT)
+Message-ID: <df217387-5e45-4b37-957f-5474a34af1db@redhat.com>
+Date: Mon, 23 Oct 2023 14:14:53 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
- <a94cd4e0-7092-04fb-9b89-da236bfec57f@collabora.com> <CAHRSSEzMo=-eS8KRqHjSMcBqWCsK2mU4zWg=5KFYx2XyL29Z0w@mail.gmail.com>
- <CAHRSSEzasi7ZRSe3t_ij26cYCc_58eALNn_mMn6B5HFqEbU9EQ@mail.gmail.com>
- <ffab5719-e6f4-4e21-1095-c129928076af@collabora.com> <CAHRSSEzo0cSQCp_zk4h2BP2EGdqVHSbZOLC-3gf7c6+uOK9R4g@mail.gmail.com>
- <CAHRSSEw6Vv+3R0OOva8qY3pF-00TZdQku3MxN2OFSaZkN2di+Q@mail.gmail.com>
- <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com> <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
-In-Reply-To: <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Tue, 17 Oct 2023 13:42:43 -0700
-Message-ID: <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
-Subject: Re: Please add new Android branches
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>, 
-	kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Subject: KCIDB: Add timestamp metadata
+To: kernelci@lists.linux.dev, Dmitry Vyukov <dvyukov@google.com>,
+ Cristian Marussi <cristian.marussi@arm.com>,
+ Alice Ferrazzi <alicef@gentoo.org>, Philip Li <philip.li@intel.com>,
+ Vishal Bhoj <vishal.bhoj@linaro.org>,
+ automated-testing@lists.yoctoproject.org, Tim Bird <Tim.Bird@sony.com>,
+ CKI <cki-project@redhat.com>, Mark Brown <broonie@kernel.org>,
+ Johnson George <Johnson.George@microsoft.com>,
+ Sachin Sant <sachinp@linux.ibm.com>,
+ Aditya Nagesh <adityanagesh@microsoft.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Guillaume,
+Hello everyone involved with, or interested in KCIDB,
 
-I guess we didn't get to a complete plan... From above, can we enable these=
-:
+As we're working on transitioning away from BigQuery as our main database, and
+lowering our growing costs, we have to implement data retention policies in
+order to maintain performance of PostgreSQL as the replacement.
 
-1) compilers: gcc-10, clang-17
-2) archs: arm, arm64, i386, x80_64, riscv
-3) same configs as current android tests
-4) plus configs used by corresponding stable kernel
-(https://linux.kernelci.org/job/stable) not included in #3
+For that purpose I'd like to introduce a concept of "metadata" to the KCIDB
+I/O schema. Specifically a timestamp field for each object. The change will
+bump the latest schema to v4.3.
 
+The "metadata" is any field with a name starting with an underscore ("_").
+Such fields are always discarded on submission, and are not loaded into, or
+fetched from the database, by default. The API and the tools will have the
+option to load them, however. E.g. for transferring raw data between
+databases.
 
-On Mon, Sep 25, 2023 at 8:17=E2=80=AFAM Todd Kjos <tkjos@google.com> wrote:
->
-> On Mon, Sep 25, 2023 at 1:22=E2=80=AFAM Guillaume Tucker
-> <guillaume.tucker@collabora.com> wrote:
-> >
-> > On 20/09/2023 00:54, Todd Kjos wrote:
-> > > Guillaume,
-> > >
-> > > How about this for android trees:
-> > >
-> > > 1) same compilers as current config (gcc-10, clang-14)
-> > > 2) archs: arm, arm64, i386, x80_64, riscv
-> > > 3) same configs as current android tests
-> > > 4) plus configs used by corresponding stable kernel
-> > > (https://linux.kernelci.org/job/stable) not included in #3
-> >
-> > OK thanks, I think we can set this up easily.  We'll get back to
-> > you if there's any ambiguity.
-> >
-> > > We get a nice benefit from sync'ing with the stable kernels since it
-> > > allows us to tell which issues originate upstream and which are
-> > > introduced by android changes. It's also useful to build each with
-> > > both toolchains so we can expose the cases where gcc-10 is OK but
-> > > clang-14 has issues (and visa-versa).
-> > >
-> > > I don't think we need to build all of the combinations if there are
-> > > too many builds - we could trim out some of the configs from #4 (you
-> > > can recommend which).
-> >
-> > OK, we can look at past results or optimise incrementally over
-> > the weeks to streamline the overall build coverage.
-> >
-> > > We'd also like to start in an all-green state. So let's trim out the
-> > > error cases that aren't caused by android kernel code. I think there
-> > > are some 32-bit cases that fail with the clang-14 tools and some othe=
-r
-> > > cases that fail in stable.
-> > >
-> > > Could we start with all of the builds for #1 - #4 and then tune it up
-> > > after a few runs to get rid of long-failing cases and/or to just
-> > > reduce the load on the build service?
-> >
-> > I believe this part of the discussion is still unresolved with
-> > Nick, and maybe it would make more sense to address this when the
-> > builds get moved to the new API where we'll have more flexibility
-> > and more accurate log parsing etc.
-> >
-> > Another aspect that wasn't too clear in the discussions, should
-> > it be clang-14 or a more recent version?  Right now, mainline
-> > builds already include clang-11 (oldest supported one) and
-> > clang-16 and linux-next builds use clang-17.  So there is
-> > upstream build coverage for them, and if clang-14 is the standard
-> > version for Android kernels then I guess it would make sense to
-> > stick to it - but that's up to you.  Doing both clang-14 and
-> > clang-17 for Android builds would seem overkill to me though.
->
-> I'd be fine with tracking the latest stable clang version (clang-17
-> now) and dropping clang-14 so we can help the clang team find
-> regressions.
->
-> >
-> > Cheers,
-> > Guillaume
-> >
-> > > On Wed, Sep 6, 2023 at 12:50=E2=80=AFPM Todd Kjos <tkjos@google.com> =
-wrote:
-> > >>
-> > >> +Viktor Martensson +Betty Zhou
-> > >>
-> > >> Guillaume,
-> > >>
-> > >> I think that's a great idea. I'll get back to you with the set of
-> > >> configs, arch, compilers we'd like to have coverage for.
-> > >>
-> > >> -Todd
-> > >>
-> > >>
-> > >> On Wed, Sep 6, 2023 at 11:46=E2=80=AFAM Guillaume Tucker
-> > >> <guillaume.tucker@collabora.com> wrote:
-> > >>>
-> > >>> Hi Todd,
-> > >>>
-> > >>> On 05/09/2023 19:18, Todd Kjos wrote:
-> > >>>> On Thu, Aug 10, 2023 at 8:56=E2=80=AFAM Todd Kjos <tkjos@google.co=
-m> wrote:
-> > >>>>>
-> > >>>>>
-> > >>>>>
-> > >>>>> On Tue, Jul 11, 2023 at 4:57=E2=80=AFAM Guillaume Tucker <guillau=
-me.tucker@collabora.com> wrote:
-> > >>>>>>
-> > >>>>>> Hi Todd,
-> > >>>>>>
-> > >>>>>> On 11/07/2023 00:41, Todd Kjos wrote:
-> > >>>>>>> Please add the following new Android branches to kernelci testi=
-ng.
-> > >>>>>>>
-> > >>>>>>> repo: https://android.googlesource.com/kernel/common
-> > >>>>>>> branches:
-> > >>>>>>> - android15-6.1
-> > >>>>>>> - android14-6.1-lts
-> > >>>>>>> - android14-5.15-lts
-> > >>>>>>
-> > >>>>>> I've created this PR accordingly:
-> > >>>>>>
-> > >>>>>>   https://github.com/kernelci/kernelci-core/pull/2002
-> > >>>>>>
-> > >>>>>> Please note that we're now operating with reduced build coverage
-> > >>>>>> due to some temporary limitations with our Azure subscription.  =
-I
-> > >>>>>> know the Android kernel builds should be covered by the GCP
-> > >>>>>> clusters but right now the system is designed to distribute
-> > >>>>>> kernel builds randomly across all clusters so we can't easily ti=
-e
-> > >>>>>> Android builds to the Android clusters.  Hopefully we'll find a
-> > >>>>>> solution to go back to normal coverage within a week or two.
-> > >>>>>
-> > >>>>>
-> > >>>>> Hi Guillaume, Any ETA for when the full set of builds is restored=
-? We still have greatly reduced build coverage and it's been a month.
-> > >>>>
-> > >>>> Ping. We are getting a lot less value out of kernelci with the gre=
-atly
-> > >>>> reduced set of builds for the Android kernels. When will the full
-> > >>>> build coverage be resumed?
-> > >>>>
-> > >>>> If it needs to stay reduced, can we decide precisely which builds =
-are
-> > >>>> done for Android kernels?
-> > >>>
-> > >>> Sorry for the slow reply.
-> > >>>
-> > >>> I think it's fine now to re-enable the Android builds and maybe
-> > >>> we should also take this opportunity to confirm which ones are
-> > >>> the most relevant to you guys.  As part of the process of
-> > >>> adjusting the build coverage, I also fixed the GKI builds which I
-> > >>> thought were the main ones.  Even if there is enough build
-> > >>> capacity to build "everything", keeping it streamlined to what is
-> > >>> really useful makes the overall system more effective.
-> > >>>
-> > >>> Are there any particular combinations of arch, config, compilers
-> > >>> you care about more than others?
-> > >>>
-> > >>> Thanks,
-> > >>> Guillaume
-> > >>>
-> >
+The timestamp field will be called "_timestamp", and added to the schema of
+each object. It will be impossible to submit it through normal means, and it
+will be generated/updated by the database automatically on each submission.
+
+The new field will allow us to implement a de-duplication deadline in
+PostgreSQL, after which object updates won't be allowed, and the data could be
+transferred into BigQuery for long-term storage and public access for
+analysis. Allowing only de-duplicated data in BigQuery would let us partition
+the dataset by timestamp, reducing query costs for public access.
+
+The new field would also let us delete the data archived in BigQuery from
+PostgreSQL, after a while, and thus help us maintain its performance for
+notification generation and dashboards.
+
+Note that the "_timestamp" field will be different from the existing
+"start_time" fields. The former will be automatically-generated by the
+database, and the latter are submitter-supplied and optional. However, when
+the database schema is upgraded to support the "_timestamp" field, it will
+receive the value of "start_time" where it exists and is specified, for
+existing objects. Otherwise the existing objects will receive the time of
+upgrade as its value.
+
+Please respond with your comments here, or in the corresponding PR for
+kcidb-io:
+
+https://github.com/kernelci/kcidb-io/pull/76
+
+Thank you.
+Nick
+
