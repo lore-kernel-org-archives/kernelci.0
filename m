@@ -1,200 +1,111 @@
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE8E14A89
-	for <kernelci@lists.linux.dev>; Thu,  2 Nov 2023 13:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDF01DA2B;
+	Thu,  2 Nov 2023 17:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yoe3oV3O"
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7ba170ac211so340717241.2
-        for <kernelci@lists.linux.dev>; Thu, 02 Nov 2023 06:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698932770; x=1699537570; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GJhHm2XHGMd0cXtLzgcvnKoFChgDo5Gjqf+1+H8tOko=;
-        b=Yoe3oV3OgPA9SEJj6jbE+VmwDZIJJesagVhA6CNaG4yqfmapAmwSQomfXDO1xHYUPQ
-         SWyg/2EkJ77uhcAY+KWPI6QSbc4ImQDFuUHuB7ZHIX7XKgGHfyPa23VMVfw+Tfn2l1f5
-         kwCAqLEjk0jj/luvye3mV3MweZKfidMEUwviuQmApvtWrmQGnuWdMJOYMyVg3DFWac6Y
-         UcHcloo4JJGBEDRAVDPOPk5oDPb+r8xc7qd2L0YwxE0CNIr6+P1p5zVAP3qzEwET2wbl
-         SBXMKOCOPjuYbKCy4SslC1jJSG9VVy/X5EfhNJ3Spc/i+WtBLT8FpO4laBGXebzFUOOC
-         y4ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698932770; x=1699537570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GJhHm2XHGMd0cXtLzgcvnKoFChgDo5Gjqf+1+H8tOko=;
-        b=fTKgY5khSLUk2mMFIWqWZFE8xECHAuPwk4YORbyoViPi7/FnF9D9g56c9a59q+BTI7
-         x67nEls5zKCCYtNC2f6ERvU5qcxs10xvaRm5212/ksnCdAE/f4qbNDQexhJqIr020eDr
-         NnYRbF8D41ull4qvLK6twwK+SgcoXq+rqRKzbOfwBp7+D4BvZLi1leVhJbLwCy4DRiyZ
-         KtgKhwM2nw5t9pek7bDSFOr1GMW6osS3crM6oxLDGP1+M/9SoosrOLUsyNa+fiYR82iV
-         p8IFnvWDX3zQXSgQdDrZ9N8pUnbASspDGmWkIv5h2GM5q1Stm0VtidTkBUkmFCoVWG8V
-         EK5A==
-X-Gm-Message-State: AOJu0Ywb6sr+21mIf8NShfe4PJBL/itXHD3GhzirBAsM7ayNo5YkVITk
-	VMD79oG+oHP6QhrFZcIq33pCxPStVIlqfODkUv5Cvg==
-X-Google-Smtp-Source: AGHT+IE3+bEozoJdnZ59uxYB6mWfKI1iSnVC64atBxRf2N39zd2ZRJUat2R/g4PSKasOK/8DHc/jAmBDp8E5SnFFvME=
-X-Received: by 2002:a67:e092:0:b0:45d:56e0:7178 with SMTP id
- f18-20020a67e092000000b0045d56e07178mr2224367vsl.2.1698932769829; Thu, 02 Nov
- 2023 06:46:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nS8RJb4G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7937FC433C7;
+	Thu,  2 Nov 2023 17:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698946591;
+	bh=E1TTEAOAkqbcpJE5z717MbPqX+Y4ObtvXO4GZpIrpbs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nS8RJb4GMZsLnV33wab1tAIurl5vrN/BaXAd984kYUysKdv9QSUmVI6QvhdB/Qd84
+	 T/rMu9CeKSFoCZ41Yi4ed53YPC9RMOAU3wueinCnNiWh3/nLB5Egs4GTEPuLb/hP64
+	 Vh10jMfNcgncDKB2M0aEneEm1eE+xBkhJngpNv2ILjvBRV7qWGpYdxHQNhgIQojn0j
+	 BTlSPCB6tL5T2++8TKNUxucf8I7PIbwzWGy1L6flKxQ4O7haW1KoVOMAWJ7lYOeaW6
+	 ubZaiAuvSzi4Aa4M0bgpZCMjrVSQAJinmbj6xdCSzIEwEZVXV61risvTQNWlPxVNO8
+	 zsiiXOAauJMPw==
+Date: Thu, 2 Nov 2023 17:36:25 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Aishwarya TCV <aishwarya.tcv@arm.com>,
+	=?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>,
+	kernelci@lists.linux.dev, kernel@collabora.com,
+	Guenter Roeck <groeck@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v3 3/3] kselftest: Add new test for detecting unprobed
+ Devicetree devices
+Message-ID: <e72e144a-c617-4a9e-adfb-e25ddabeb4c7@sirena.org.uk>
+References: <20230828211424.2964562-1-nfraprado@collabora.com>
+ <20230828211424.2964562-4-nfraprado@collabora.com>
+ <e90cb52f-d55b-d3ba-3933-6cc7b43fcfbc@arm.com>
+ <CA+G9fYsbq28w7m-sf6LhMscXHdPs0cGXU7kK6YzjKdUFKuQ+6A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230828211424.2964562-1-nfraprado@collabora.com>
- <20230828211424.2964562-4-nfraprado@collabora.com> <e90cb52f-d55b-d3ba-3933-6cc7b43fcfbc@arm.com>
-In-Reply-To: <e90cb52f-d55b-d3ba-3933-6cc7b43fcfbc@arm.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 2 Nov 2023 19:15:58 +0530
-Message-ID: <CA+G9fYsbq28w7m-sf6LhMscXHdPs0cGXU7kK6YzjKdUFKuQ+6A@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] kselftest: Add new test for detecting unprobed
- Devicetree devices
-To: Aishwarya TCV <aishwarya.tcv@arm.com>
-Cc: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	Mark Brown <broonie@kernel.org>, kernelci@lists.linux.dev, kernel@collabora.com, 
-	Guenter Roeck <groeck@chromium.org>, Bjorn Andersson <andersson@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Aishwarya,
-
-On Thu, 2 Nov 2023 at 17:41, Aishwarya TCV <aishwarya.tcv@arm.com> wrote:
->
->
->
-> On 28/08/2023 22:13, N=C3=ADcolas F. R. A. Prado wrote:
-> > Introduce a new kselftest to detect devices that were declared in the
-> > Devicetree, and are expected to be probed by a driver, but weren't.
-> >
-> > The test uses two lists: a list of compatibles that can match a
-> > Devicetree device to a driver, and a list of compatibles that should be
-> > ignored. The first is automatically generated by the
-> > dt-extract-compatibles script, and is run as part of building this test=
-.
-> > The list of compatibles to ignore is a hand-crafted list to capture the
-> > few exceptions of compatibles that are expected to match a driver but
-> > not be bound to it.
-> >
-> > Signed-off-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
-> > Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-> >
->
-> Hi Nicolas,
->
-> Currently when building kselftest against next-master and
-> mainline-master the below build error is observed. A bisect (full log
-> below) identified this patch as introducing the failure.
->
-> Full log from a failure:
->
-> https://storage.kernelci.org/mainline/master/v6.6-9152-gdeefd5024f07/arm6=
-4/defconfig%2Bkselftest/gcc-10/logs/kselftest.log
->
-> make[4]: Entering directory '/tmp/kci/linux/tools/testing/selftests/dt'
-> /tmp/kci/linux/tools/testing/selftests/../../../scripts/dtc/dt-extract-co=
-mpatibles
-> -d /tmp/kci/linux/tools/testing/selftests/../../.. >
-> /tmp/kci/linux/build/kselftest/dt/compatible_list
-> Traceback (most recent call last):
->   File
-> "/tmp/kci/linux/tools/testing/selftests/../../../scripts/dtc/dt-extract-c=
-ompatibles",
-> line 107, in <module>
->     compat_ignore_list.extend(parse_compatibles_to_ignore(f))
->   File
-> "/tmp/kci/linux/tools/testing/selftests/../../../scripts/dtc/dt-extract-c=
-ompatibles",
-> line 67, in parse_compatibles_to_ignore
->     with open(file, 'r', encoding=3D'utf-8') as f:
-> OSError: [Errno 40] Too many levels of symbolic links:
-
-OSError: [Errno 40] Too many levels of symbolic links:
-This is not related to selftests/dt tests build.
-
-May be due to, A loop of symlinks that are pointing to self / same files ?
-
-> '/tmp/kci/linux/tools/testing/selftests/../../../build/source/build/sourc=
-e/build/source/build/source/build/source/build/source/build/source/build/so=
-urce/build/source/build/source/build/source/build/source/build/source/build=
-/source/build/source/build/source/build/source/build/source/build/source/bu=
-ild/source/build/source/build/source/build/source/build/source/build/source=
-/build/source/build/source/build/source/build/source/build/source/build/sou=
-rce/build/source/build/source/build/source/build/source/build/source/build/=
-source/build/source/build/source/build/source/tools/testing/selftests/power=
-pc/vphn/vphn.c'
-> make[4]: *** [Makefile:12:
-> /tmp/kci/linux/build/kselftest/dt/compatible_list] Error 1
-> make[4]: Leaving directory '/tmp/kci/linux/tools/testing/selftests/dt'
-
-Here is the log showing selftests/dt build pass for arm64 build from
-Linux next master branch.
-
-Links to the successful build and kselftest.tar file shared below [1].
-
-Build log:
-=3D=3D=3D=3D=3D=3D=3D=3D
-make[4]: Entering directory 'tools/testing/selftests/dt'
-tools/testing/selftests/../../../scripts/dtc/dt-extract-compatibles -d
-tools/testing/selftests/../../.. >
-/home/tuxbuild/.cache/tuxmake/builds/1/build/kselftest/dt/compatible_list
-make[4]: Leaving directory 'tools/testing/selftests/dt
-
-Please build by using tuxmake and validate builds are working.
-
-steps to reproduce:
-=3D=3D=3D=3D=3D=3D
-#!/bin/sh
-
-# TuxMake is a command line tool and Python library that provides
-# portable and repeatable Linux kernel builds across a variety of
-# architectures, toolchains, kernel configurations, and make targets.
-#
-# TuxMake supports the concept of runtimes.
-# See https://docs.tuxmake.org/runtimes/, for that to work it requires
-# that you install podman or docker on your system.
-#
-# To install tuxmake to your home directory at ~/.local/bin:
-# pip3 install -U --user tuxmake
-#
-# Or install a deb/rpm depending on the running distribution
-# See https://tuxmake.org/install-deb/ or
-# https://tuxmake.org/install-rpm/
-#
-# See https://docs.tuxmake.org/ for complete documentation.
-# Original tuxmake command with fragments listed below.
-# tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
---kconfig defconfig --kconfig-add
-https://raw.githubusercontent.com/Linaro/meta-lkft/kirkstone/meta/recipes-k=
-ernel/linux/files/systemd.config
---kconfig-add CONFIG_BCMGENET=3Dy --kconfig-add
-tools/testing/selftests/cgroup/config --kconfig-add
-tools/testing/selftests/cpufreq/config --kconfig-add
-tools/testing/selftests/efivarfs/config --kconfig-add
-tools/testing/selftests/filesystems/binderfs/config --kconfig-add
-tools/testing/selftests/filesystems/fat/config --kconfig-add
-tools/testing/selftests/firmware/config --kconfig-add
-tools/testing/selftests/ftrace/config --kconfig-add
-tools/testing/selftests/gpio/config --kconfig-add
-tools/testing/selftests/ipc/config --kconfig-add
-tools/testing/selftests/memfd/config dtbs dtbs-legacy headers kernel
-kselftest modules
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PzOuAaApHfvNPDUY"
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYsbq28w7m-sf6LhMscXHdPs0cGXU7kK6YzjKdUFKuQ+6A@mail.gmail.com>
+X-Cookie: A is for Apple.
 
 
-tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
---kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2XYjd2yxHi=
-ay3gVALCGpAch4G8o/config
-dtbs dtbs-legacy headers kernel kselftest modules
+--PzOuAaApHfvNPDUY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Thu, Nov 02, 2023 at 07:15:58PM +0530, Naresh Kamboju wrote:
+> On Thu, 2 Nov 2023 at 17:41, Aishwarya TCV <aishwarya.tcv@arm.com> wrote:
 
-Build links:
- [1] https://storage.tuxsuite.com/public/linaro/lkft/builds/2XYjd2yxHiay3gV=
-ALCGpAch4G8o/
+> > https://storage.kernelci.org/mainline/master/v6.6-9152-gdeefd5024f07/arm64/defconfig%2Bkselftest/gcc-10/logs/kselftest.log
 
-- Naresh
+...
+
+> May be due to, A loop of symlinks that are pointing to self / same files ?
+
+Right, it does look like something bad is going on with symlinks:
+
+> > '/tmp/kci/linux/tools/testing/selftests/../../../build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/tools/testing/selftests/powerpc/vphn/vphn.c'
+
+> Please build by using tuxmake and validate builds are working.
+
+Note that tuxmake does an in tree build of kselftest:
+
+  make --silent --keep-going --jobs=8 O=/home/tuxbuild/.cache/tuxmake/builds/1/build INSTALL_PATH=/home/tuxbuild/.cache/tuxmake/builds/1/build/kselftest_install ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- 'CC=sccache aarch64-linux-gnu-gcc' 'HOSTCC=sccache gcc' kselftest-install
+
+and does it's own tarball build too, whereas kernelci does an out of
+tree build and uses kselftest-gen_tar:
+
+  make KBUILD_BUILD_USER=KernelCI FORMAT=.xz ARCH=arm64 HOSTCC=gcc CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- CC="ccache aarch64-linux-gnu-gcc" O=/tmp/kci/linux/build -C/tmp/kci/linux -j10 kselftest-gen_tar
+
+and that the error is in the dt-extract-compatibles program which is
+part of the kernel (well, imported into the kernel from dtc upstream):
+
+  File "/tmp/kci/linux/tools/testing/selftests/../../../scripts/dtc/dt-extract-compatibles", line 107, in <module>
+    compat_ignore_list.extend(parse_compatibles_to_ignore(f))
+
+This all suggests that something to do with how the build is set up is
+resulting in the source symlink that gets created for out of tree builds
+blowing up, I guess it's not specifically the DT stuff that's blowing it
+up but rather that it's tripping over an existing bug.  Really does look
+like a legitimate bug though, the source link is set up by the in tree
+kernel build infrastructure.
+
+I did poke a bit at reproducing outside of the KernelCI scripts but
+didn't manage to yet.
+
+--PzOuAaApHfvNPDUY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVD3hgACgkQJNaLcl1U
+h9CV1Af/XvDWEqs0dEvo3YSlq7hdCU87XwG4tii0WazqGAe4BTjhDtd9QMjkuiHa
+jbGSp4XI1Ip54USgUpM5MkQSXo2VAz+gAVSnK8Xv6OGHEbSS7ECve7ZUTBnyE7ld
+F6o2OIR3omBOfmdI8dXZbfemhcsBOMGzos8C1u/AmffeRtn7l75zyARxo2rsO5Dy
+2Ljz9xf1g3U2hQySTGRRYpF4ZmsQcevnh3lFoh1mwV6rr2E6+05khAIbpTvGUDhL
+o0d8MBGvot0pxqdlciZi3LX1Hd6UPe66pHnpf8HDvi1OgM6QTrngIbuCM2tdrVp5
+1QLv1gI2QfDJgR47QoV2AzS24XcHcw==
+=JKT+
+-----END PGP SIGNATURE-----
+
+--PzOuAaApHfvNPDUY--
