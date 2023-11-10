@@ -1,122 +1,349 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC2D30654
-	for <kernelci@lists.linux.dev>; Tue,  7 Nov 2023 23:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8B43B78C
+	for <kernelci@lists.linux.dev>; Fri, 10 Nov 2023 21:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="nT+oFqWT"
-Received: from notapiano (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id CFE8366074D8;
-	Tue,  7 Nov 2023 23:02:50 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1699398173;
-	bh=HNuFXAmcr38Mjsj1EcQwzGsMmMNd5OK9/yCfyVW4N7E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nT+oFqWTGc+4wcTmMdloWWi/XInr7UbLO36ivjlKIj541/njlF6/1JmYBN/9SdZXF
-	 KLSi6IH9AO5SU9we2nGYDD7XiN9ovEDl9BeJPMFKLiX9JF79hgHfT3mn3jDqzlelKx
-	 crgKKPLIm8Hgju51OfnZ9/R9lVg4TXpWQoa5y7m0WBlD8vrJGg/VlMBG9d4Ubmnz+9
-	 K+vo2TLj9Q9w6CR/9W1rZsHX+9RnCjHSbodX4wN3Z1FEIdwyEh03iOEuXHdyotN7fw
-	 U82ZVuC2fE8Wh45D+BNIunm8YuRvMZ477t4NNemoQWYA5ypwIi6kPcjhBXBQHOhwe+
-	 9LxEOu/MGP6/w==
-Date: Tue, 7 Nov 2023 18:02:47 -0500
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Rob Herring <robh+dt@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>, kernelci@lists.linux.dev,
-	kernel@collabora.com, Guenter Roeck <groeck@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Frank Rowand <frowand.list@gmail.com>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v3 3/3] kselftest: Add new test for detecting unprobed
- Devicetree devices
-Message-ID: <59bca032-2657-46a8-9070-7528ffcc3e28@notapiano>
-References: <20230828211424.2964562-1-nfraprado@collabora.com>
- <20230828211424.2964562-4-nfraprado@collabora.com>
- <e90cb52f-d55b-d3ba-3933-6cc7b43fcfbc@arm.com>
- <CA+G9fYsbq28w7m-sf6LhMscXHdPs0cGXU7kK6YzjKdUFKuQ+6A@mail.gmail.com>
- <e72e144a-c617-4a9e-adfb-e25ddabeb4c7@sirena.org.uk>
- <CAL_JsqL-3O6omPf4HcPFctgid+br04QW5p81qDx0CPMqh_eXTg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vsz5kFAB"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-41cdc669c5eso15201cf.1
+        for <kernelci@lists.linux.dev>; Fri, 10 Nov 2023 13:14:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1699650870; x=1700255670; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WbTwn1gaJHwmEYcaJu4dGV7x1N76HAjko1TDtpf+Fpk=;
+        b=Vsz5kFABiFUzBb4Owrr0gqcgaQRd4qAulr78QAS7qtlzj09guXjZNKMjSlwd0YMe/6
+         bt1pTd1lyOqijRkA4a6kK2/MYxoiwjpCUWE57YSbC8qqOD8NiRTOBc6oy7ZeQTY6vSDm
+         MJLdat7Z7VTzpfyLd3Ym+aI5QYuZqT2Mz3vb9p7GsBTV3CZlDqjsx1KHrw6RYief+w9C
+         pxya8TkDaxwRWQIppiAOLoYGTukjhNJPxRTcISWFJEiJYaJbsERCpjCYzhRn/3fmwBxb
+         LI6fNX4UrCMPR1QV0EBl6x+k+6whBxJ27WBfsFTQH1rbA5TsCXy83S+GPIB30vbJAlqg
+         ijdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699650870; x=1700255670;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WbTwn1gaJHwmEYcaJu4dGV7x1N76HAjko1TDtpf+Fpk=;
+        b=f6xuDGL6zEmGvtgHktc1PQzEm9A76q6uz1eEUurK2NIQ3tK+VUwGkpXzm7SmFNQzUe
+         YPY7262s9959PxGREnlj0v+HT0HElytDNjDjdZRXCKbio/YPzsjaVdaUNHK4vO2ozgsj
+         Z1YOO+GTLpM5d8frsM/c9BProl9GvlRygYJs8++7evvUyFdYGSkZcOQn0eLpKBZVZRAB
+         gmTf5VpLd/rbuy+gNP6IfwFm3LWLon0C6WRWXay4Bs8TBGgb4SQVmH+XBdk/JZKWl7q6
+         6eDGE0F/ufRAVpPfNHOpnB744n93qOJXTPZoyF5HOQV03CJ2vmuyi2cOYVqL24fU1p+R
+         hhkg==
+X-Gm-Message-State: AOJu0YysfTGF8S/hmZfAOLsQebDJ7qmmff6DngtGSOPvtkIuDeUSz3Ea
+	AjveNogMETGsXDEbYkLCjC3MaD6CPq0ZjKz9ABnNeQ==
+X-Google-Smtp-Source: AGHT+IHDn+wmzJdYVnvzk/OsUz6D7nxJjyXBPjvlbyAVSglYB+gvHjM0LQMgcxuTpVH6krHwmEst2GdOXR6O7IVG018=
+X-Received: by 2002:a05:622a:4286:b0:421:3a1c:4b43 with SMTP id
+ cr6-20020a05622a428600b004213a1c4b43mr13081qtb.10.1699650869495; Fri, 10 Nov
+ 2023 13:14:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqL-3O6omPf4HcPFctgid+br04QW5p81qDx0CPMqh_eXTg@mail.gmail.com>
+References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+ <a94cd4e0-7092-04fb-9b89-da236bfec57f@collabora.com> <CAHRSSEzMo=-eS8KRqHjSMcBqWCsK2mU4zWg=5KFYx2XyL29Z0w@mail.gmail.com>
+ <CAHRSSEzasi7ZRSe3t_ij26cYCc_58eALNn_mMn6B5HFqEbU9EQ@mail.gmail.com>
+ <ffab5719-e6f4-4e21-1095-c129928076af@collabora.com> <CAHRSSEzo0cSQCp_zk4h2BP2EGdqVHSbZOLC-3gf7c6+uOK9R4g@mail.gmail.com>
+ <CAHRSSEw6Vv+3R0OOva8qY3pF-00TZdQku3MxN2OFSaZkN2di+Q@mail.gmail.com>
+ <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com> <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
+ <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
+ <CAHRSSEwYk1oGmJEn5xvB91GKSmaJ_ku5D7hvbS00Jb9-piUbOQ@mail.gmail.com>
+ <a5fef4b96be3c80aff75eb3b20e1edc90e8bfe42.camel@collabora.com>
+ <CAHRSSEzfXJU=GcyC_HfUUnNQdyjT8S68HqhN1bdaB6NE0TPGsA@mail.gmail.com> <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com>
+In-Reply-To: <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 10 Nov 2023 13:14:15 -0800
+Message-ID: <CAHRSSExAb_tH32ZuKwf+LU-zpwYHDKyDz3-QYcBmJUpeQ8efFQ@mail.gmail.com>
+Subject: Re: Please add new Android branches
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Denys Fedoryshchenko <denys.f@collabora.com>, Viktor Martensson <vmartensson@google.com>, 
+	Betty Zhou <bettyzhou@google.com>, kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 06, 2023 at 11:09:44AM -0600, Rob Herring wrote:
-> On Thu, Nov 2, 2023 at 12:36 PM Mark Brown <broonie@kernel.org> wrote:
-> >
-> > On Thu, Nov 02, 2023 at 07:15:58PM +0530, Naresh Kamboju wrote:
-> > > On Thu, 2 Nov 2023 at 17:41, Aishwarya TCV <aishwarya.tcv@arm.com> wrote:
-> >
-> > > > https://storage.kernelci.org/mainline/master/v6.6-9152-gdeefd5024f07/arm64/defconfig%2Bkselftest/gcc-10/logs/kselftest.log
-> >
-> > ...
-> >
-> > > May be due to, A loop of symlinks that are pointing to self / same files ?
-> >
-> > Right, it does look like something bad is going on with symlinks:
-> >
-> > > > '/tmp/kci/linux/tools/testing/selftests/../../../build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/build/source/tools/testing/selftests/powerpc/vphn/vphn.c'
-> >
-> > > Please build by using tuxmake and validate builds are working.
-> >
-> > Note that tuxmake does an in tree build of kselftest:
-> >
-> >   make --silent --keep-going --jobs=8 O=/home/tuxbuild/.cache/tuxmake/builds/1/build INSTALL_PATH=/home/tuxbuild/.cache/tuxmake/builds/1/build/kselftest_install ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- 'CC=sccache aarch64-linux-gnu-gcc' 'HOSTCC=sccache gcc' kselftest-install
-> >
-> > and does it's own tarball build too, whereas kernelci does an out of
-> > tree build and uses kselftest-gen_tar:
-> >
-> >   make KBUILD_BUILD_USER=KernelCI FORMAT=.xz ARCH=arm64 HOSTCC=gcc CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- CC="ccache aarch64-linux-gnu-gcc" O=/tmp/kci/linux/build -C/tmp/kci/linux -j10 kselftest-gen_tar
-> >
-> > and that the error is in the dt-extract-compatibles program which is
-> > part of the kernel (well, imported into the kernel from dtc upstream):
-> >
-> >   File "/tmp/kci/linux/tools/testing/selftests/../../../scripts/dtc/dt-extract-compatibles", line 107, in <module>
-> >     compat_ignore_list.extend(parse_compatibles_to_ignore(f))
-> >
-> > This all suggests that something to do with how the build is set up is
-> > resulting in the source symlink that gets created for out of tree builds
-> > blowing up, I guess it's not specifically the DT stuff that's blowing it
-> > up but rather that it's tripping over an existing bug.  Really does look
-> > like a legitimate bug though, the source link is set up by the in tree
-> > kernel build infrastructure.
-> >
-> > I did poke a bit at reproducing outside of the KernelCI scripts but
-> > didn't manage to yet.
-> 
-> I can repro with "make dt_compatible_check". The problem is with an
-> 'out of tree' build within the tree. That's my normal setup, but the
-> difference is I have ".build" directories. If I use "build" instead,
-> then I can repro. The issue is the iglob will recurse into "build" but
-> not hidden directories (by default). There's no option to not follow
-> symlinks which would solve this (there is an open python issue since
-> 2017 to add it). I don't see a simple solution in python other than
-> getting a full list with glob(), convert to absolute paths, and remove
-> duplicates. I imagine that will be somewhat slow.
+can we add allyesconfig and allmodconfig to the android profiles?
+These have been the most fruitful at finding build issues in the past.
 
-Hi, sorry for the delay, I was on vacation last week.
 
-I was able to reproduce the issue the way you described. And I also suspected
-an alternative approach would be slower, but after trying it out it ran just as
-fast as the current one, even on cold cache, so I sent it out:
-
-https://lore.kernel.org/all/20231107225624.9811-1-nfraprado@collabora.com
-
-Let me know your thoughts there.
-
-Thanks,
-Nícolas
+On Tue, Nov 7, 2023 at 12:26=E2=80=AFAM Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
+>
+> On 06/11/2023 19:03, Todd Kjos wrote:
+> > On Fri, Nov 3, 2023 at 6:57=E2=80=AFPM Denys Fedoryshchenko
+> > <denys.f@collabora.com> wrote:
+> >>
+> >> Hello Todd,
+> >>
+> >> I've seen your request for updates on the Android tests. Guillaume is
+> >> probably swamped at the moment, so I'm jumping in to help out.
+> >>
+> >> Let me know if there's anything I've missed or if you have any pointer=
+s
+> >> for me as I get up to speed:
+> >>
+> >> I've updated android tree configs to use clang-17, instead of 14.
+> >> Regarding the stable kernel configurations, the differences are as
+> >> follows:
+> >>
+> >>     Added 'imx_v6_v7_defconfig'
+> >>     Added 'omap2plus_defconfig'
+> >>     Added 'vexpress_defconfig'
+> >>
+> >> Additionally, in our stable trees, we include 'arm64-chromebook' and
+> >> 'x86-board' config fragments, which are tailored for running on actual
+> >> hardware. Would you require these as well?
+> >
+> > It would be great to add this to ensure we haven't broken anything
+> > that is supported in stable.
+>
+> I don't think it's worth adding these extra builds, the Android
+> kernel trees aren't really tested in LAVA labs and these
+> fragments are only there to enable more platforms to boot with
+> mainline.
+>
+> >> We are also building kselftests, which are useful only for real
+> >> hardware tests. Should we build them for the Android trees?
+> >
+> > Yes, please do.
+>
+> It's already done, we don't need to add anything else.  The
+> kselftest build step is run with all builds now.  Just some
+> builds have more config fragments enabled to build more kselftest
+> binaries, but that's not useful as kselftest isn't run with
+> Android trees anyway.
+>
+> >> Relevant PR: https://github.com/kernelci/kernelci-core/pull/2165
+> >>
+> >> If it is ok, i will merge it at Sunday and enable in monday production
+> >> update.
+> >
+> > Thanks Denys. I expect we will want to watch these builds for a few
+> > weeks and probably trim out a few that we don't think are as useful
+> > (this is part of the discussion on this thread). I'll reach out when
+> > we are ready for that.
+> >
+> > I look forward to seeing the increased coverage!
+>
+> Probably we should remove the fragments for x86-chromebook,
+> x86-board and kselftest for the reasons explained above.  We
+> really need to make sure the build and test configs are
+> streamlined, what might look like more coverage can actually be
+> just added noise that makes the system less efficient and
+> increase the costs of operation.
+>
+> Then as mentioned before, I'm sure you'll be glad to know that
+> the GKI builds got fixed in July as part of the efforts to
+> improve the overall signal/noise ratio.
+>
+> Thanks,
+> Guillaume
+>
+> >> On Thu, 2023-11-02 at 15:11 -0700, Todd Kjos wrote:
+> >>> Guillaume, any ETA on when we can ramp up the Android tests as
+> >>> discussed on this thread?
+> >>>
+> >>>
+> >>> On Tue, Oct 17, 2023 at 1:42=E2=80=AFPM Todd Kjos <tkjos@google.com> =
+wrote:
+> >>>>
+> >>>> Guillaume,
+> >>>>
+> >>>> I guess we didn't get to a complete plan... From above, can we
+> >>>> enable these:
+> >>>>
+> >>>> 1) compilers: gcc-10, clang-17
+> >>>> 2) archs: arm, arm64, i386, x80_64, riscv
+> >>>> 3) same configs as current android tests
+> >>>> 4) plus configs used by corresponding stable kernel
+> >>>> (https://linux.kernelci.org/job/stable) not included in #3
+> >>>>
+> >>>>
+> >>>> On Mon, Sep 25, 2023 at 8:17=E2=80=AFAM Todd Kjos <tkjos@google.com>=
+ wrote:
+> >>>>>
+> >>>>> On Mon, Sep 25, 2023 at 1:22=E2=80=AFAM Guillaume Tucker
+> >>>>> <guillaume.tucker@collabora.com> wrote:
+> >>>>>>
+> >>>>>> On 20/09/2023 00:54, Todd Kjos wrote:
+> >>>>>>> Guillaume,
+> >>>>>>>
+> >>>>>>> How about this for android trees:
+> >>>>>>>
+> >>>>>>> 1) same compilers as current config (gcc-10, clang-14)
+> >>>>>>> 2) archs: arm, arm64, i386, x80_64, riscv
+> >>>>>>> 3) same configs as current android tests
+> >>>>>>> 4) plus configs used by corresponding stable kernel
+> >>>>>>> (https://linux.kernelci.org/job/stable) not included in #3
+> >>>>>>
+> >>>>>> OK thanks, I think we can set this up easily.  We'll get back
+> >>>>>> to
+> >>>>>> you if there's any ambiguity.
+> >>>>>>
+> >>>>>>> We get a nice benefit from sync'ing with the stable kernels
+> >>>>>>> since it
+> >>>>>>> allows us to tell which issues originate upstream and which
+> >>>>>>> are
+> >>>>>>> introduced by android changes. It's also useful to build each
+> >>>>>>> with
+> >>>>>>> both toolchains so we can expose the cases where gcc-10 is OK
+> >>>>>>> but
+> >>>>>>> clang-14 has issues (and visa-versa).
+> >>>>>>>
+> >>>>>>> I don't think we need to build all of the combinations if
+> >>>>>>> there are
+> >>>>>>> too many builds - we could trim out some of the configs from
+> >>>>>>> #4 (you
+> >>>>>>> can recommend which).
+> >>>>>>
+> >>>>>> OK, we can look at past results or optimise incrementally over
+> >>>>>> the weeks to streamline the overall build coverage.
+> >>>>>>
+> >>>>>>> We'd also like to start in an all-green state. So let's trim
+> >>>>>>> out the
+> >>>>>>> error cases that aren't caused by android kernel code. I
+> >>>>>>> think there
+> >>>>>>> are some 32-bit cases that fail with the clang-14 tools and
+> >>>>>>> some other
+> >>>>>>> cases that fail in stable.
+> >>>>>>>
+> >>>>>>> Could we start with all of the builds for #1 - #4 and then
+> >>>>>>> tune it up
+> >>>>>>> after a few runs to get rid of long-failing cases and/or to
+> >>>>>>> just
+> >>>>>>> reduce the load on the build service?
+> >>>>>>
+> >>>>>> I believe this part of the discussion is still unresolved with
+> >>>>>> Nick, and maybe it would make more sense to address this when
+> >>>>>> the
+> >>>>>> builds get moved to the new API where we'll have more
+> >>>>>> flexibility
+> >>>>>> and more accurate log parsing etc.
+> >>>>>>
+> >>>>>> Another aspect that wasn't too clear in the discussions, should
+> >>>>>> it be clang-14 or a more recent version?  Right now, mainline
+> >>>>>> builds already include clang-11 (oldest supported one) and
+> >>>>>> clang-16 and linux-next builds use clang-17.  So there is
+> >>>>>> upstream build coverage for them, and if clang-14 is the
+> >>>>>> standard
+> >>>>>> version for Android kernels then I guess it would make sense to
+> >>>>>> stick to it - but that's up to you.  Doing both clang-14 and
+> >>>>>> clang-17 for Android builds would seem overkill to me though.
+> >>>>>
+> >>>>> I'd be fine with tracking the latest stable clang version (clang-
+> >>>>> 17
+> >>>>> now) and dropping clang-14 so we can help the clang team find
+> >>>>> regressions.
+> >>>>>
+> >>>>>>
+> >>>>>> Cheers,
+> >>>>>> Guillaume
+> >>>>>>
+> >>>>>>> On Wed, Sep 6, 2023 at 12:50=E2=80=AFPM Todd Kjos <tkjos@google.c=
+om>
+> >>>>>>> wrote:
+> >>>>>>>>
+> >>>>>>>> +Viktor Martensson +Betty Zhou
+> >>>>>>>>
+> >>>>>>>> Guillaume,
+> >>>>>>>>
+> >>>>>>>> I think that's a great idea. I'll get back to you with the
+> >>>>>>>> set of
+> >>>>>>>> configs, arch, compilers we'd like to have coverage for.
+> >>>>>>>>
+> >>>>>>>> -Todd
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> On Wed, Sep 6, 2023 at 11:46=E2=80=AFAM Guillaume Tucker
+> >>>>>>>> <guillaume.tucker@collabora.com> wrote:
+> >>>>>>>>>
+> >>>>>>>>> Hi Todd,
+> >>>>>>>>>
+> >>>>>>>>> On 05/09/2023 19:18, Todd Kjos wrote:
+> >>>>>>>>>> On Thu, Aug 10, 2023 at 8:56=E2=80=AFAM Todd Kjos
+> >>>>>>>>>> <tkjos@google.com> wrote:
+> >>>>>>>>>>>
+> >>>>>>>>>>>
+> >>>>>>>>>>>
+> >>>>>>>>>>> On Tue, Jul 11, 2023 at 4:57=E2=80=AFAM Guillaume Tucker
+> >>>>>>>>>>> <guillaume.tucker@collabora.com> wrote:
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> Hi Todd,
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> On 11/07/2023 00:41, Todd Kjos wrote:
+> >>>>>>>>>>>>> Please add the following new Android branches to
+> >>>>>>>>>>>>> kernelci testing.
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> repo:
+> >>>>>>>>>>>>> https://android.googlesource.com/kernel/common
+> >>>>>>>>>>>>> branches:
+> >>>>>>>>>>>>> - android15-6.1
+> >>>>>>>>>>>>> - android14-6.1-lts
+> >>>>>>>>>>>>> - android14-5.15-lts
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> I've created this PR accordingly:
+> >>>>>>>>>>>>
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> https://github.com/kernelci/kernelci-core/pull/2002
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> Please note that we're now operating with reduced
+> >>>>>>>>>>>> build coverage
+> >>>>>>>>>>>> due to some temporary limitations with our Azure
+> >>>>>>>>>>>> subscription.  I
+> >>>>>>>>>>>> know the Android kernel builds should be covered by
+> >>>>>>>>>>>> the GCP
+> >>>>>>>>>>>> clusters but right now the system is designed to
+> >>>>>>>>>>>> distribute
+> >>>>>>>>>>>> kernel builds randomly across all clusters so we
+> >>>>>>>>>>>> can't easily tie
+> >>>>>>>>>>>> Android builds to the Android clusters.  Hopefully
+> >>>>>>>>>>>> we'll find a
+> >>>>>>>>>>>> solution to go back to normal coverage within a
+> >>>>>>>>>>>> week or two.
+> >>>>>>>>>>>
+> >>>>>>>>>>>
+> >>>>>>>>>>> Hi Guillaume, Any ETA for when the full set of builds
+> >>>>>>>>>>> is restored? We still have greatly reduced build
+> >>>>>>>>>>> coverage and it's been a month.
+> >>>>>>>>>>
+> >>>>>>>>>> Ping. We are getting a lot less value out of kernelci
+> >>>>>>>>>> with the greatly
+> >>>>>>>>>> reduced set of builds for the Android kernels. When
+> >>>>>>>>>> will the full
+> >>>>>>>>>> build coverage be resumed?
+> >>>>>>>>>>
+> >>>>>>>>>> If it needs to stay reduced, can we decide precisely
+> >>>>>>>>>> which builds are
+> >>>>>>>>>> done for Android kernels?
+> >>>>>>>>>
+> >>>>>>>>> Sorry for the slow reply.
+> >>>>>>>>>
+> >>>>>>>>> I think it's fine now to re-enable the Android builds and
+> >>>>>>>>> maybe
+> >>>>>>>>> we should also take this opportunity to confirm which
+> >>>>>>>>> ones are
+> >>>>>>>>> the most relevant to you guys.  As part of the process of
+> >>>>>>>>> adjusting the build coverage, I also fixed the GKI builds
+> >>>>>>>>> which I
+> >>>>>>>>> thought were the main ones.  Even if there is enough
+> >>>>>>>>> build
+> >>>>>>>>> capacity to build "everything", keeping it streamlined to
+> >>>>>>>>> what is
+> >>>>>>>>> really useful makes the overall system more effective.
+> >>>>>>>>>
+> >>>>>>>>> Are there any particular combinations of arch, config,
+> >>>>>>>>> compilers
+> >>>>>>>>> you care about more than others?
+> >>>>>>>>>
+> >>>>>>>>> Thanks,
+> >>>>>>>>> Guillaume
+> >>>>>>>>>
+> >>>>>>
+> >>>
+> >>
+> >>
+>
