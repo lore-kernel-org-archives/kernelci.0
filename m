@@ -1,36 +1,36 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61853BB37
-	for <kernelci@lists.linux.dev>; Wed, 15 Nov 2023 17:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B93B3BB37
+	for <kernelci@lists.linux.dev>; Wed, 15 Nov 2023 17:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="djyX4GdG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aneFGOa+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700070739;
+	s=mimecast20190719; t=1700070746;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zkma+ytFECSmUGaVR3H0P8/excTRmPEEewT1e65f88Q=;
-	b=djyX4GdGBtXUbTShd5hB7nm1y0ASZwfhq7E0zGw2ipQ4vo1bC2vgbMvdazIa6TrAhUD8gK
-	wgoL4UH/TSx7YcMaMizWxT3Pix7RCF+KJEN5FYHqgskzJBq0b9Aoa+dr5J/8cUsvIXQ3mX
-	g/7XBhfytKtVOJ+MSmC4kaFT1VGFSiU=
+	bh=OG/PdxLPzgrb2SSqLq85wNnPv1wHigzKlm1PKA/CjnI=;
+	b=aneFGOa+xQt38lk318r4MwsDYI6DEX/WcYE0mgsvA3WOBLEOHppU1VX7z5jp1FD99hCKb5
+	hEp1GeJuGVxJ3f0pVBvKJDZVGknHUqcoJ/1fVVSiH5dxKNhITGhxeC8bhrhXMCzdYB+HwZ
+	EZoM913jDSgqJSJGYK5X86pXxbPpZe4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-X-IRN8qTPlG_KX3opGHxDA-1; Wed, 15 Nov 2023 12:52:18 -0500
-X-MC-Unique: X-IRN8qTPlG_KX3opGHxDA-1
+ us-mta-438-1_fhHc8YNcmXv39uhnoUYw-1; Wed, 15 Nov 2023 12:52:21 -0500
+X-MC-Unique: 1_fhHc8YNcmXv39uhnoUYw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 760498007B3;
-	Wed, 15 Nov 2023 17:52:17 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C039D834FC6;
+	Wed, 15 Nov 2023 17:52:20 +0000 (UTC)
 Received: from ruby.redhat.com (unknown [10.39.192.56])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0FB741121306;
-	Wed, 15 Nov 2023 17:52:14 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B96FA1121306;
+	Wed, 15 Nov 2023 17:52:17 +0000 (UTC)
 From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
 To: workflows@vger.kernel.org,
 	Joe Perches <joe@perches.com>,
@@ -47,9 +47,9 @@ Cc: kunit-dev@googlegroups.com,
 	CKI <cki-project@redhat.com>,
 	kernelci@lists.linux.dev,
 	Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Subject: [PATCH 2/3] MAINTAINERS: Require kvm-xfstests smoke for ext4
-Date: Wed, 15 Nov 2023 19:43:50 +0200
-Message-ID: <20231115175146.9848-3-Nikolai.Kondrashov@redhat.com>
+Subject: [PATCH 3/3] MAINTAINERS: Require kunit core tests for framework changes
+Date: Wed, 15 Nov 2023 19:43:51 +0200
+Message-ID: <20231115175146.9848-4-Nikolai.Kondrashov@redhat.com>
 In-Reply-To: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
 References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
 Precedence: bulk
@@ -63,62 +63,43 @@ X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
 Signed-off-by: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
 ---
- Documentation/process/tests.rst | 32 ++++++++++++++++++++++++++++++++
+ Documentation/process/tests.rst | 13 +++++++++++++
  MAINTAINERS                     |  1 +
- 2 files changed, 33 insertions(+)
+ 2 files changed, 14 insertions(+)
 
 diff --git a/Documentation/process/tests.rst b/Documentation/process/tests.rst
-index 907311e91ec45..9a9ea3fe65c37 100644
+index 9a9ea3fe65c37..56a7911f69031 100644
 --- a/Documentation/process/tests.rst
 +++ b/Documentation/process/tests.rst
-@@ -33,3 +33,35 @@ particularly useful:
+@@ -65,3 +65,16 @@ kvm-xfstests smoke
  
- :Source: A URL pointing to the source code of the test suite
- :Docs: A URL pointing to further test suite documentation
+ The "kvm-xfstests smoke" is a minimal subset of xfstests for testing all major
+ file systems, running under KVM.
 +
-+xfstests
-+--------
++kunit
++-----
 +
-+:Summary: File system regression test suite
-+:Source: git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
-+:Docs: https://github.com/tytso/xfstests-bld/blob/master/Documentation/what-is-xfstests.md
++:Summary: The complete set of KUnit unit tests
++:Command: tools/testing/kunit/kunit.py run --alltests
 +
-+As the name might imply, xfstests is a file system regression test suite which
-+was originally developed by Silicon Graphics (SGI) for the XFS file system.
-+Originally, xfstests, like XFS was only supported on the SGI's Irix operating
-+system. When XFS was ported to Linux, so was xfstests, and now xfstests is
-+only supported on Linux.
++kunit core
++----------
 +
-+Today, xfstests is used as a file system regression test suite for all of
-+Linux's major file systems: xfs, ext2, ext4, cifs, btrfs, f2fs, reiserfs, gfs,
-+jfs, udf, nfs, and tmpfs. Many file system maintainers will run a full set of
-+xfstests before sending patches to Linus, and will require that any major
-+changes be tested using xfstests before they are submitted for integration.
-+
-+The easiest way to start running xfstests is under KVM with xfstests-bld:
-+https://github.com/tytso/xfstests-bld/blob/master/Documentation/kvm-quickstart.md
-+
-+kvm-xfstests smoke
-+------------------
-+
-+:Summary: File system smoke tests
-+:Superset: xfstests
-+:Docs: https://github.com/tytso/xfstests-bld/blob/master/Documentation/kvm-quickstart.md
-+
-+The "kvm-xfstests smoke" is a minimal subset of xfstests for testing all major
-+file systems, running under KVM.
++:Summary: KUnit tests for the framework itself
++:Superset: kunit
++:Command: tools/testing/kunit/kunit.py run --kunitconfig lib/kunit
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 2565c04f0490e..f81a47d87ac26 100644
+index f81a47d87ac26..5f3261e96c90f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -7974,6 +7974,7 @@ L:	linux-ext4@vger.kernel.org
+@@ -11626,6 +11626,7 @@ L:	linux-kselftest@vger.kernel.org
+ L:	kunit-dev@googlegroups.com
  S:	Maintained
- W:	http://ext4.wiki.kernel.org
- Q:	http://patchwork.ozlabs.org/project/linux-ext4/list/
-+V:	kvm-xfstests smoke
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tytso/ext4.git
- F:	Documentation/filesystems/ext4/
- F:	fs/ext4/
+ W:	https://google.github.io/kunit-docs/third_party/kernel/docs/
++V:	kunit core
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git kunit
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git kunit-fixes
+ F:	Documentation/dev-tools/kunit/
 -- 
 2.42.0
 
