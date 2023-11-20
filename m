@@ -1,156 +1,79 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956A715B3
-	for <kernelci@lists.linux.dev>; Mon, 20 Nov 2023 18:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73EA20B1E
+	for <kernelci@lists.linux.dev>; Mon, 20 Nov 2023 20:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KHJ5PEuC"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-54744e66d27so1762a12.0
-        for <kernelci@lists.linux.dev>; Mon, 20 Nov 2023 10:49:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700506140; x=1701110940; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bdPcdKbJJEtVfw0r849sRaSkguh4va/xoo2bi7A5PKo=;
-        b=KHJ5PEuCSpQx32h4YBJrk0f51M5H1YEgxShcxiT9iR2XyE2emwnov7vWOsHtfyrL+v
-         VVEZoeR7L0d7aAeJ3O6++oL95i1a651zxW0X0Dw1tetFwv+vD2WUXPTwTCKCDuqhLyOO
-         BGppNozZk7r2ktAbKVXxfML/NykktsCzaWgthuxe7Y5EXi2ibGGzNE7Er49eLJWBCa4q
-         q+mbG2HL9ilAJWDsjOjPVMn7NX4w7Js024d6sl5Y6p+DsSml9Zk2IyhArD9m7NmAyC16
-         Pny5bW38JVh2Uk9E3Fvere4eF6jSJA4mbPPUsSOAC0fRqHPBhCwH6+Xq+/g9Z6jOJOF5
-         hDLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700506140; x=1701110940;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bdPcdKbJJEtVfw0r849sRaSkguh4va/xoo2bi7A5PKo=;
-        b=FDqBxr013drySOUrcZb7cCWtXklF5brphe/CJAIbf0uQQyBUrwEhT0sNOFPdBxHNKB
-         pONnDjVjTQ0PIG5KjGtdlDpqKtGlIs4ed9UdfcxgAiJL4CdaCSEr+nv+gqFUOzYw/qA5
-         vSFpZRMFfyAf0CT3HmVjwlDB7inIrVnUmx3OaWQKWB75HcGAygw7wFwiQUz4btLdO04x
-         7bUPQuQXJsuZ4YTOjgg78duYxKV813MkCJf+OKBdVQanpvQg6Iz864ts155LiHUwm+wu
-         PbDpRu1vVEk2ErLBMVXoYuj5D1Mr0vxrKdMCYXhbgxxOz/NJLqHA6NVx/cCGEapgFqhX
-         je8A==
-X-Gm-Message-State: AOJu0YxmgN0hqoEgkOnyHnyTF+2fN/c7H/C2lFP/QJ2M2e/OJuGb2L2G
-	Tsw+2WYfhffU3TaSzngaSBMN1LMGfcRBVKQgUgav4w==
-X-Google-Smtp-Source: AGHT+IHq1hNH843682vHffeGYc3GnkUtzYfC3xNjbXwDnYLAsQHGWgA3K2SQs1zb1ehyjwsV2INDePz3p5PhpVYrMgA=
-X-Received: by 2002:aa7:d8cf:0:b0:544:e37e:d597 with SMTP id
- k15-20020aa7d8cf000000b00544e37ed597mr231268eds.7.1700506139627; Mon, 20 Nov
- 2023 10:48:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="FeS+4Q71"
+Received: from cwcc.thunk.org (pool-173-48-82-21.bstnma.fios.verizon.net [173.48.82.21])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 3AKKpVHE031574
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Nov 2023 15:51:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1700513494; bh=Qhra/PeadF+kxbhZQdWkm4KjSgZyzyt74oOIJ4DgkH4=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=FeS+4Q71mi0SljGJGvZds2wEUXSIMXqejzcia7Ms7oY6UKeyeuQjQ/mZKfRxqU7BE
+	 RoXIEs4X8FSNKE8FJtYbXdNks0Hlc9uCGeQmofrG1mIZvxOac0mkOnGcZAEqU8louQ
+	 1VT67MKG61XIPamVBtaLLvjqOzWeGDpbiBExz9DaLDoj1vOlWCtPshUEbUSPucX0mz
+	 Xi+d+Um2Ft5zLv01aURrVORoOYHFFSQ2N7rjLs8qIkx1wG4rzMZ0w9qeju/3SJ7XL7
+	 oK4Vbhgzl50cG9cNefjUY9Cm64/bcDdPGcpznWiy7pRM1qjRcannRD3EuZ7bDv9DMN
+	 tF0vic9HTaCIg==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 43EB615C02B0; Mon, 20 Nov 2023 15:51:31 -0500 (EST)
+Date: Mon, 20 Nov 2023 15:51:31 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Ricardo =?iso-8859-1?Q?Ca=F1uelo?= <ricardo.canuelo@collabora.com>
+Cc: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>,
+        workflows@vger.kernel.org, joe@perches.com, apw@canonical.com,
+        davidgow@google.com, rostedt@goodmis.org, broonie@kernel.org,
+        skhan@linuxfoundation.org, djwong@kernel.org,
+        kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
+        vkabatov@redhat.com, cki-project@redhat.com, kernelci@lists.linux.dev
+Subject: Re: [PATCH 1/3] MAINTAINERS: Introduce V: field for required tests
+Message-ID: <20231120205131.GA291888@mit.edu>
+References: <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
+ <87sf50imba.fsf@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com> <20231115175146.9848-4-Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <20231115175146.9848-4-Nikolai.Kondrashov@redhat.com>
-From: Daniel Latypov <dlatypov@google.com>
-Date: Mon, 20 Nov 2023 10:48:46 -0800
-Message-ID: <CAGS_qxpfnQ6kmanEUQWosuixo+FGUxp3VJ_TSjBdRf_p9riTSQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] MAINTAINERS: Require kunit core tests for framework changes
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: workflows@vger.kernel.org, Joe Perches <joe@perches.com>, 
-	Andy Whitcroft <apw@canonical.com>, "Theodore Ts'o" <tytso@mit.edu>, David Gow <davidgow@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, "Darrick J . Wong" <djwong@kernel.org>, 
-	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
-	Veronika Kabatova <vkabatov@redhat.com>, CKI <cki-project@redhat.com>, kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87sf50imba.fsf@collabora.com>
 
-On Wed, Nov 15, 2023 at 9:52=E2=80=AFAM Nikolai Kondrashov
-<Nikolai.Kondrashov@redhat.com> wrote:
-> +kunit core
-> +----------
-> +
-> +:Summary: KUnit tests for the framework itself
-> +:Superset: kunit
-> +:Command: tools/testing/kunit/kunit.py run --kunitconfig lib/kunit
+On Mon, Nov 20, 2023 at 02:30:49PM +0100, Ricardo Cañuelo wrote:
+> 
+> This is not trivial because tests vary a lot and we'd first need to
+> define which artifacts to link to, and because whatever is linked (test
+> commands, output log, results summary) would need to be stored
+> forever. But since we're doing that already for basically all kernel
+> mailing lists, I wonder if something like "public-inbox for test
+> results" could be possible some day.
 
-Note: we'd want this to instead be
-  ./tools/testing/kunit/run_checks.py
+What we have at work is a way to upload the test results summary
+(e.g., just KTAP result lines, or the xfstests junit XML) along with
+test run metadata (e.g., what was the kernel commit on which the test
+was run, and the test hardware), and this would be stored permanently.
+Test artifacts is also preserved but for a limited amount of time
+(e.g., some number of months or a year).
 
-That will run, in parallel
-* kunit.py run --kunitconfig lib/kunit
-* kunit_tool_test.py (the unit test for kunit.py)
-* two python type-checkers, if installed
+The difference in storage lifetimes is because the junit XML file
+might be a few kilobytes to tens of kilobytes. but the test artifacts
+might be a few megabytes to tens of megabytes.
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f81a47d87ac26..5f3261e96c90f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11626,6 +11626,7 @@ L:      linux-kselftest@vger.kernel.org
->  L:     kunit-dev@googlegroups.com
->  S:     Maintained
->  W:     https://google.github.io/kunit-docs/third_party/kernel/docs/
-> +V:     kunit core
+Of course once you have this data, it becomes possible to detect when
+a test may have regressed, or to detect flaky tests, and perhaps to
+figure out if certain hardware configurations or kernel configurations
+are more likely to trigger a particular test to fail.  So having all
+of this data stored centrally would be really cool.  The only question
+is who might be able to create such an infrastructure, and be able to
+pay for the ongoing development and operational costs....
 
-Maybe this topic should go in the main thread, but I wanted to call it
-out here since this is a good concrete example.
-
-I'm wondering if this entry could simply be
-  V: ./tools/testing/kunit/run_checks.py
-
-And what if, for ext4, we could have multiple of these like
-  V: kvm-xfstests smoke
-  V: tools/testing/kunit/kunit.py run --kunitconfig fs/ext4
-
-I.e. what if we allowed the `V:` field to contain the command itself?
-
-# Complexity of the tests
-
-I appreciate the current "named test-set" approach since it encourages
-documenting *why* the test command is applicable.
-And for a lot of tests, it's not as simple as a binary GOOD/BAD
-result, e.g. benchmarks.
-Patch authors need to understand what they're testing, if they're
-testing the right thing, etc.
-
-But on the other hand, for simpler functional tests (e.g. KUnit),
-maybe it's not necessary.
-Ideally, KUnit tests should be written so the failure messages are
-immediately actionable w/o having to read a couple paragraphs.
-I.e. the test case names should make it clear what scenario they're
-testing, or the test code should be sufficiently documented, etc.
-
-# Variations on commands
-
-And there might be a bunch of slight variations on these commands,
-e.g. only different in terms of `--kunitconfig`.
-We'd probably have at least 18, given
-$ find -type f -name '.kunitconfig' | wc -l
-18
-
-And again using a kunit.py flag as an example, what if maintainers want KAS=
-AN?
-  ./tools/testing/kunit/kunit.py run --kunitconfig lib/kunit
---kconfig_add CONFIG_KASAN=3Dy
-Or what if it's too annoying to split up a larger kunit suite, so I
-ask people to run a subset?
-  ./tools/testing/kunit/kunit.py run --kunitconfig lib/kunit <suite_glob>
-
-
-P.S.
-Tbh, I have always hoped we'd eventually have a field like
-  V: <one-liner test command>
-
-That is part of why I added all those features above (--kunitconfig,
---kconfig_add, glob support, run_checks.py, etc.).
-I wanted kunit.py to be flexible enough that maintainers could state
-their testing requirements as a one-liner that people can just
-copy-paste and run.
-
-Also, I recently talked to David Gow and I know he was interested in
-adding another feature to kunit.py to fit this use case.
-Namely, the ability to do something like
-  kunit.py run --arches=3Dx86_64,s390,...
-and have it run the tests built across N different arches and maybe w/
-M different kconfig options (e.g. a variation built w/ clang, etc.).
-
-That would be another very powerful tool for maintainers to have.
-
-Thanks so much for this patch series and starting this discussion!
-Daniel
+    	    	    		    		- Ted
