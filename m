@@ -1,175 +1,172 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0561047788
-	for <kernelci@lists.linux.dev>; Tue, 21 Nov 2023 10:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76207168CB;
+	Tue, 21 Nov 2023 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zNvoZoxU"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-54744e66d27so11487a12.0
-        for <kernelci@lists.linux.dev>; Tue, 21 Nov 2023 02:37:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700563044; x=1701167844; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dPrc9nfbErLQtEutSr2Px32acqL3VY6NlbZGpOwpaBQ=;
-        b=zNvoZoxU9ZMXrylgroe5C0y5VSbMBzksUPwOmR2LxP6RBaZmEE1+87hoYRp1lC3bkL
-         kaTOnLvcIbmVyTeZcWrKgLij/lrDg4qmPsOkHAoINdk/kO+PkIEumsVJGQHESkMNcJkP
-         Q1ZL2uDIHBc5DNcPc1u05WUdAqp5ZkGJsBzRdfHbBi4BzvhxTMbTB+djbOultLR9vDVw
-         3kFH7sLDrWBqEZytMMC4dNw1WPUgLlYBE4qL04kt2pvkfTh11Zsah5u7saDI4gPuqjiV
-         moPMk3Bj3DKj8MQWTWbThJ0Q/6BeVD+DwLzJrEbz9UbmAzXUmkwMx+401xJuHZKUSSLL
-         Pa3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700563044; x=1701167844;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dPrc9nfbErLQtEutSr2Px32acqL3VY6NlbZGpOwpaBQ=;
-        b=fzYq5k2CuGgMR1AYxI8HHf8f4cQWFwQkCmltKNtLwCSWPAZ75BdxTOlk4f9h4NMOnh
-         Q00FdO/T1KED+A9exnGpTvuotCuxPlxNVFTjfBVxTp9Mw2/g/bco11dkGxU4WyPDxMn4
-         y8GEatNPUaeAIQs6uHZZNwCDIiVwcE+ayKMvi/VMtfWDLvGX5xOiWe/g4aZbfkMQZFk+
-         jT9J9kvfD6FrOQALJPC02FuManklg4XkUnbT7gY9PjRZgTwbIi7Yo9/gEQiVJ7hng6a/
-         C2U9A8nTw1J5QACt2XhBJVG+mE9ufIAjiU1JG21/o2HtQGbvO0b8YlMDrM9W1SPx/Ayg
-         iWwQ==
-X-Gm-Message-State: AOJu0YwmYsJYtTPIDDS0Q01kp7OTxEUM9IVOtkX3WeDwagbMJpSJWdt0
-	IGEcjuwaSXSi017uzQzmHkvyDmgmPHTOm5NUY4f8FQ==
-X-Google-Smtp-Source: AGHT+IFPrpwxx4kFbn4LuB+9FjU0DiFk3Bf4M0rdi40zLOimdIwdUcE8NqvY2kMPdZxBaB7xZsOr8794lXDIjWssTkQ=
-X-Received: by 2002:a05:6402:4414:b0:544:e2b8:ba6a with SMTP id
- y20-20020a056402441400b00544e2b8ba6amr481119eda.3.1700563044041; Tue, 21 Nov
- 2023 02:37:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s/Cj1hs8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09A7C433C8;
+	Tue, 21 Nov 2023 13:27:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700573271;
+	bh=HsbZm4i+W0o1xTWC6fqvVGXLlSas3MdzUj56Sie1+dk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s/Cj1hs8TekOYMJY8u198suyeCM8gyvEOV+i5vEDjSCKFRfz67WAMTEGoxjgYZAax
+	 WGa6CehOYC1MIpazeHmXZlRtUeoB2/rhy/rcVtU3XheSoDtiBlu5j4rVKQeo38mgo7
+	 J80NmKCOxwXcNA0vVbs4xcuEs/EvONdLm/Pk3g5iyBfIGFZNswjJX+rpWRkmhgmRZ+
+	 wEpygIBB/r90G0IJIFpAHiMZohh17d0OrYFWpWiLFTkNKRrDtm3k1JDcM0NDDo9zcQ
+	 ewpxEGZYEN4V3oQPpnLRXmZZH264mqxHMmSq7to2PfN3COmxSn6cqjSpofukRlvruf
+	 3m5EqiDnhgaWg==
+Date: Tue, 21 Nov 2023 13:27:44 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Theodore Ts'o <tytso@mit.edu>
+Cc: Ricardo =?iso-8859-1?Q?Ca=F1uelo?= <ricardo.canuelo@collabora.com>,
+	Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>,
+	workflows@vger.kernel.org, joe@perches.com, apw@canonical.com,
+	davidgow@google.com, rostedt@goodmis.org, skhan@linuxfoundation.org,
+	djwong@kernel.org, kunit-dev@googlegroups.com,
+	linux-kselftest@vger.kernel.org, vkabatov@redhat.com,
+	cki-project@redhat.com, kernelci@lists.linux.dev
+Subject: Re: [PATCH 1/3] MAINTAINERS: Introduce V: field for required tests
+Message-ID: <5d69e9ef-e60c-4eb9-b067-5b44488dd8c9@sirena.org.uk>
+References: <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
+ <87sf50imba.fsf@collabora.com>
+ <20231120205131.GA291888@mit.edu>
+ <92c2f89d-f8a6-4260-b10d-671011cf1f70@sirena.org.uk>
+ <20231121060450.GB335601@mit.edu>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
- <87sf50imba.fsf@collabora.com> <20231120205131.GA291888@mit.edu>
- <92c2f89d-f8a6-4260-b10d-671011cf1f70@sirena.org.uk> <20231121060450.GB335601@mit.edu>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4ChVjL7ja6bjs4kb"
+Content-Disposition: inline
 In-Reply-To: <20231121060450.GB335601@mit.edu>
-From: David Gow <davidgow@google.com>
-Date: Tue, 21 Nov 2023 18:37:12 +0800
-Message-ID: <CABVgOSmw6pn5eRg6Z+4am=OJ9E4RN30Zsfaci6DE+dRKA+-4iw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] MAINTAINERS: Introduce V: field for required tests
-To: "Theodore Ts'o" <tytso@mit.edu>
-Cc: Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, 
-	Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>, workflows@vger.kernel.org, joe@perches.com, 
-	apw@canonical.com, rostedt@goodmis.org, skhan@linuxfoundation.org, 
-	djwong@kernel.org, kunit-dev@googlegroups.com, 
-	linux-kselftest@vger.kernel.org, vkabatov@redhat.com, cki-project@redhat.com, 
-	kernelci@lists.linux.dev
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000002f3a8f060aa7302b"
+X-Cookie: Hindsight is an exact science.
 
---0000000000002f3a8f060aa7302b
-Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 21 Nov 2023 at 14:05, Theodore Ts'o <tytso@mit.edu> wrote:
->
+--4ChVjL7ja6bjs4kb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Nov 21, 2023 at 01:04:50AM -0500, Theodore Ts'o wrote:
 > On Mon, Nov 20, 2023 at 10:27:33PM +0000, Mark Brown wrote:
+
 > > This is the sort of thing that kcidb (which Nikolai works on) is good at
 > > ingesting, I actually do push all my CI's test results into there
 > > already:
-> >
+
 > >    https://github.com/kernelci/kcidb/
-> >
+
 > > (the dashboard is down currently.)  A few other projects including the
 > > current KernelCI and RedHat's CKI push their data in there too, I'm sure
 > > Nikolai would be delighted to get more people pushing data in.  The goal
 > > is to merge this with the main KernelCI infrastructure, it's currently
 > > separate while people figure out the whole big data thing.
->
+
 > Looking at the kernelci, it appears that it's using a JSON submission
 > format.  Is there conversion scripts that take a KTAP test report, or
 > a Junit XML test report?
 
-The kunit.py script has a very basic KCIDB JSON exporter, via the
---json option. This can be used as a generic KTAP -> KCIDB converter
-with
-kunit.py parse --json
+Probably - I know I've got something for KUnit which is annoyingly
+difficult to publish for non-technical reasons and is a little broken
+(things weren't visible in the dashboard when it was up which might mean
+some missing field or a date set wrong).  My KTAP stuff is all mediated
+through LAVA, that can push results into a web hook directly so it's
+really easy to just add a notifier to your job and stream the results in
+directly (I intend to push that into kcidb in my copious free time so
+other people can use my code there).  It's relatively straightforward to
+write these things.
 
-It definitely still needs some work (there are a bunch of bugs,
-hardcoded fields for things KTAP doesn't expose, some other output may
-get mixed in, etc), but does exist as a starting point.
+> > The KernelCI LF project is funding kcidb with precisely this goal for
+> > the reasons you outline, the data collection part seems to be relatively
+> > mature at this point but AIUI there's a bunch of open questions with the
+> > analysis and usage side, partly due to needing to find people to work on
+> > it.
 
--- David
+> Indeed, this is the super hard part.  Having looked at the kernelci
+> web site, its dashboard isn't particularly useful for what I'm trying
+> to do with it.  For my part, when analyizing a single test run, the
+> kernelci dashboard isn't particularly helpful.  What I need is
+> something more like this:
+>=20
+> ext4/4k: 554 tests, 48 skipped, 4301 seconds
+> ext4/1k: 550 tests, 3 failures, 51 skipped, 6739 seconds
+>   Failures: generic/051 generic/475 generic/476
 
---0000000000002f3a8f060aa7302b
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+That should be achievable with the KernelCI stuff (which is different to
+kcidb at present) - you're a lot of the way there with how kselftest is
+currently reported modulo the list of failures which currently requires
+you to drill down to a second level page.
 
-MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
-dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
-6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
-c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
-I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
-AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
-BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
-CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
-AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
-MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
-My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
-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
-ddIn9n5Jt6Z1o79zxraLMEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
-dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
-AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
-c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
-LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
-LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
-Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQBtHFwIgQZjer5K
-H+4Q+wns10k7qN+4wN2Uf+JsyOYjukaMEgdLErfA1wwtQ9uHkoYQZcWBuVVkQFa5hI+sqI2m1Weq
-riMCFSiU38s1tADdMX12IMfJRN60Nznhrw+nPyDRZqRhUTW24TwnHorkDnFPW8PHo7fAw4FrpI0n
-impZAng7ccvvK09K3ZuhwTIxJMsPXCZYsrXWORTw5sczRAP6XvKbPBJnsJoSTe5dFBPBHOQJOGhU
-qWfEfWnWMJPF3LxSGLpLFQXO3RwQqmxv08avwXfVPouh1xuB3FX7rpDabT8YDhu9JgIZkLEKko7L
-yQt6zWwng7k8YF/jGbiAta6VMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
-R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCa
-x2irT4JHJO0tc3XLpY+oJq6b72CB9v2T9Dpy96GlmzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMzExMjExMDM3MjRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
-BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYJ3C9MYbbCKiYz9JxP5d
-MqrDRVmauLzz8OT/A9/WkGsiLj9o7TFhsbd4b6d7l3ds5bOTFoDTRK+wwY0/OJXMXa7WVhGPPwo9
-zZtUSJ8C1EfA1ZxBw1QVlVKT6gcTZWo3lxOsbFcdKzofcktm7zRrqmCEncH6U3y3fj9EOdA7PcTt
-N/qjKAh44d2/NFi2e1Zuf1o5PucPcJ4qaOq/wIj5z8Wf4enbkf8yZOCzkqx5UatZoDbSsF82AHOc
-S1yUOjo+SswHohogPLVDF6xhJIpDiZx2TTHF3Utt9S2Le0kT7z7XtLy98c+bIPumt/M6TJkVBYpf
-YDpp8UvX9NbFWGIK8g==
---0000000000002f3a8f060aa7302b--
+> ... which summarizes 6,592 tests in 20 lines, and for any test that
+> has failed, we rerun it four more times, so we can get an indication
+> of whether a test is a hard failure, or a flaky failure.
+
+> (I don't need to see all of the tests that passes; it's the test
+> failures or the test flakes that are significant.)
+
+The listing of tests does get a bit more complex when you mix in running
+on different platforms.
+
+> And then when comparing between multiple test runs, that's when I'm
+> interesting in see which tests may have regressed, or which tests may
+> have been fixed when going in between version A and version B.
+
+Yup, that comparison stuff is useful.  The landing pages for individual
+tests do have something there but not really anything higher level:
+
+   https://linux.kernelci.org/test/case/id/655b0fa18dc4b7e0c47e4a88/
+
+> And right now, kernelci doesn't have any of that.  So it might be hard
+> to convinced overloaded maintainers to upload test runs to kernelci,
+> when they don't see any immediate benefit of uploading the kernelci db.
+
+Note that kcidb and KernelCI are currently different databases - with
+the dashboard being done kcidb has no UI at all.  Personally I'm pushing
+my data in on the basis that it costs me basically nothing to do so
+given that I'm already running the tests.
+
+> There is a bit of a chicken-and-egg problem, since without the test
+> results getting uploaded, it's hard to get the analysis functionality
+> implemented, and without the analysis features, it's hard to get
+> developers to upload the data.
+
+I think if we get tooling in place so that people can just run a script,
+add a flag to their tools or whatever to ingest results from the
+standard testsuites the barrier to reporting becomes sufficiently low
+that it's more of a "why not?" type thing.
+
+There's also other things we can do beyond big data analysis, some of
+which are a lot easier - for example checking other people's CI results
+for your branch before sending or accepting a pull request (if you've
+got a one stop shop to pull data from that's a lot easier than if you
+have to go round a bunch of places).
+
+> That being said, a number of file system developers probably have
+> several years worth of test results that we could probably give you.
+> I have hundreds of junit.xml files, with information about how kernel
+> version, what version of xfstesets, etc, that was used.  I'm happy to
+> make samples of it available for anyone who is interested.
+
+Right, I've likewise got a pile of results I can reprocess at will.
+
+--4ChVjL7ja6bjs4kb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVcsE8ACgkQJNaLcl1U
+h9COYwf/fTMDLpXwvVNNxK+v5hlq41OYVt2sklCaJ/43xLnOUqxbRElV4yTxNnW6
+i83EPXz5J9rw1kYcPjR7NFJWeZuLJz45r5G4M2++NfS/sJGI16DpM6Lo3gD0+Oky
+sJt7j2HlvKDIxRtitaajVL4dsWKxlFkn5Xqhz6JrNONTxdbl/kEaKR6hf141NERB
+OKq70z8drw82CZvAfesZk4gxkY0qOPg8SYrgc/N2pWuYAm2sQsISRBnb9xiauNbC
+bucWk+Yx9o4n8siFE0gi2Cn5ZdKAzGbZOOr/20JrCP4Ukj1sULHTniLdORKwzYQ3
+u0KziIdFTugVPPYsOw19YE8IZvhrcw==
+=weIR
+-----END PGP SIGNATURE-----
+
+--4ChVjL7ja6bjs4kb--
