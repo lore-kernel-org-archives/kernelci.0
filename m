@@ -1,215 +1,101 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3DF3C697
-	for <kernelci@lists.linux.dev>; Tue, 21 Nov 2023 10:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0561047788
+	for <kernelci@lists.linux.dev>; Tue, 21 Nov 2023 10:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ovzHbACl"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-548ae9a5eeaso8290a12.1
-        for <kernelci@lists.linux.dev>; Tue, 21 Nov 2023 02:36:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zNvoZoxU"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-54744e66d27so11487a12.0
+        for <kernelci@lists.linux.dev>; Tue, 21 Nov 2023 02:37:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700562984; x=1701167784; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1700563044; x=1701167844; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=k8nmwBxs87z2VhovS5qt/rj+JP9V5IoNMhMi/TVXefs=;
-        b=ovzHbAClnVEdVLrvnhGqUH/qRhxNxT0l/qB24w59Y6qEMsInr+cQ63xI8H9HDOT1S7
-         yeBuk4RbJnGks7LqYsFvwd+pkOE9hH5prHbXz9Qvr72PFfORu9UGlCFQ2ff99GMcpb1s
-         Mdi0dvZKkCVmjXHYjZngs9x2Sr0kMaiCUW4fViGLeUIK73zqEuKnWuW26MacWTuwZqzm
-         eRhdf1n2NJUFfiDryxLpcvvOdRRAxXcKh+fMSrkGYZJQzG/Nlibr/23qpo8D7eVLwrrx
-         H9p7ONN3a5nHLDoZueF4VMZX4AaVRyG8BJIQRCc21g7crYWWLKfDu2i3/IvkDlOpoJJX
-         96nA==
+        bh=dPrc9nfbErLQtEutSr2Px32acqL3VY6NlbZGpOwpaBQ=;
+        b=zNvoZoxU9ZMXrylgroe5C0y5VSbMBzksUPwOmR2LxP6RBaZmEE1+87hoYRp1lC3bkL
+         kaTOnLvcIbmVyTeZcWrKgLij/lrDg4qmPsOkHAoINdk/kO+PkIEumsVJGQHESkMNcJkP
+         Q1ZL2uDIHBc5DNcPc1u05WUdAqp5ZkGJsBzRdfHbBi4BzvhxTMbTB+djbOultLR9vDVw
+         3kFH7sLDrWBqEZytMMC4dNw1WPUgLlYBE4qL04kt2pvkfTh11Zsah5u7saDI4gPuqjiV
+         moPMk3Bj3DKj8MQWTWbThJ0Q/6BeVD+DwLzJrEbz9UbmAzXUmkwMx+401xJuHZKUSSLL
+         Pa3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700562984; x=1701167784;
+        d=1e100.net; s=20230601; t=1700563044; x=1701167844;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=k8nmwBxs87z2VhovS5qt/rj+JP9V5IoNMhMi/TVXefs=;
-        b=r/pQzpeQtWHGSqxodL5P6bXHVWsLDUDFjS0iludo1i6JOdvdL0oEQlXY12o0J+Wm5o
-         fu9ee6Bzhj5Dur83akf9csDOpfQXmf7PuiApE6Sfhhar053e4EWc5xnLQYTeWfwYdoIi
-         7HaldNenwbbtaZrSOIRz1w4GjnGKiaKb/Y9DHdjawgW5U0lexg3MXRGZrFoVnojkUy/p
-         Edd57U31rv9WbVPNdZRUaD2UMfClXJFRgoJqPGWZU0vdZbsTCtklZfxNQ4+yDdlLCfWU
-         ujOsEAHG2hRK/TyhDqGKmZ1/TWkKuHe5/r9R4+iB8GLKVDVpVDtdHPGQFlCuGoX80MKw
-         VCGQ==
-X-Gm-Message-State: AOJu0Yym321RBsXBq+gV7P1U1tM+QtBYV8LdRpywGKA+ai9NW9oKSET1
-	p6/MMTul3C8EQDP5NpyZz1mnG+0W2HqE16AYyIL/rw==
-X-Google-Smtp-Source: AGHT+IFlfYxhc1wYiwZZD+5VzZiy6eFom+SNf0ddy/txlFD9FuUOH500t2rQeDi2yBvvLHFaya9UYf+ebVtWVdG1KFo=
-X-Received: by 2002:a05:6402:1a32:b0:548:b26f:9980 with SMTP id
- be18-20020a0564021a3200b00548b26f9980mr223690edb.5.1700562983628; Tue, 21 Nov
- 2023 02:36:23 -0800 (PST)
+        bh=dPrc9nfbErLQtEutSr2Px32acqL3VY6NlbZGpOwpaBQ=;
+        b=fzYq5k2CuGgMR1AYxI8HHf8f4cQWFwQkCmltKNtLwCSWPAZ75BdxTOlk4f9h4NMOnh
+         Q00FdO/T1KED+A9exnGpTvuotCuxPlxNVFTjfBVxTp9Mw2/g/bco11dkGxU4WyPDxMn4
+         y8GEatNPUaeAIQs6uHZZNwCDIiVwcE+ayKMvi/VMtfWDLvGX5xOiWe/g4aZbfkMQZFk+
+         jT9J9kvfD6FrOQALJPC02FuManklg4XkUnbT7gY9PjRZgTwbIi7Yo9/gEQiVJ7hng6a/
+         C2U9A8nTw1J5QACt2XhBJVG+mE9ufIAjiU1JG21/o2HtQGbvO0b8YlMDrM9W1SPx/Ayg
+         iWwQ==
+X-Gm-Message-State: AOJu0YwmYsJYtTPIDDS0Q01kp7OTxEUM9IVOtkX3WeDwagbMJpSJWdt0
+	IGEcjuwaSXSi017uzQzmHkvyDmgmPHTOm5NUY4f8FQ==
+X-Google-Smtp-Source: AGHT+IFPrpwxx4kFbn4LuB+9FjU0DiFk3Bf4M0rdi40zLOimdIwdUcE8NqvY2kMPdZxBaB7xZsOr8794lXDIjWssTkQ=
+X-Received: by 2002:a05:6402:4414:b0:544:e2b8:ba6a with SMTP id
+ y20-20020a056402441400b00544e2b8ba6amr481119eda.3.1700563044041; Tue, 21 Nov
+ 2023 02:37:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com> <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
+References: <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
+ <87sf50imba.fsf@collabora.com> <20231120205131.GA291888@mit.edu>
+ <92c2f89d-f8a6-4260-b10d-671011cf1f70@sirena.org.uk> <20231121060450.GB335601@mit.edu>
+In-Reply-To: <20231121060450.GB335601@mit.edu>
 From: David Gow <davidgow@google.com>
-Date: Tue, 21 Nov 2023 18:36:10 +0800
-Message-ID: <CABVgOSkRpL9KC4FDMrQ-g51b0_BB-=m71LzaQNG8UsqHJ7VrkQ@mail.gmail.com>
+Date: Tue, 21 Nov 2023 18:37:12 +0800
+Message-ID: <CABVgOSmw6pn5eRg6Z+4am=OJ9E4RN30Zsfaci6DE+dRKA+-4iw@mail.gmail.com>
 Subject: Re: [PATCH 1/3] MAINTAINERS: Introduce V: field for required tests
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: workflows@vger.kernel.org, Joe Perches <joe@perches.com>, 
-	Andy Whitcroft <apw@canonical.com>, "Theodore Ts'o" <tytso@mit.edu>, Steven Rostedt <rostedt@goodmis.org>, 
-	Mark Brown <broonie@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
-	"Darrick J . Wong" <djwong@kernel.org>, kunit-dev@googlegroups.com, 
-	linux-kselftest@vger.kernel.org, Veronika Kabatova <vkabatov@redhat.com>, 
-	CKI <cki-project@redhat.com>, kernelci@lists.linux.dev
+To: "Theodore Ts'o" <tytso@mit.edu>
+Cc: Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, 
+	Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>, workflows@vger.kernel.org, joe@perches.com, 
+	apw@canonical.com, rostedt@goodmis.org, skhan@linuxfoundation.org, 
+	djwong@kernel.org, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, vkabatov@redhat.com, cki-project@redhat.com, 
+	kernelci@lists.linux.dev
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000009625c0060aa72c66"
+	boundary="0000000000002f3a8f060aa7302b"
 
---0000000000009625c0060aa72c66
+--0000000000002f3a8f060aa7302b
 Content-Type: text/plain; charset="UTF-8"
 
-Thanks so much for doing this! I think everyone agrees that we need
-_some_ way of documenting which tests to run, and I think this is our
-best option.
-
-In any case, this patch does a lot, and I'll comment on them
-one-by-one. (It may be worth splitting this patch up into a few
-separate bits, if only so that we can better separate the
-uncontroversial bits from the open questions.)
-
-On Thu, 16 Nov 2023 at 01:52, Nikolai Kondrashov
-<Nikolai.Kondrashov@redhat.com> wrote:
+On Tue, 21 Nov 2023 at 14:05, Theodore Ts'o <tytso@mit.edu> wrote:
 >
-> Introduce a new 'V:' ("Verify") field to MAINTAINERS. The field accepts
-> a name of a test suite which is required to be executed for each
-> contribution to the subsystem.
-
-Yes -- this is exactly what I'd like. (As much as I'd love 'T' to have
-been available. Alas...)
-
-The other thing discussed at plumbers was to include this in the
-'maintainer profile', but having it as a separate MAINTAINERS entry is
-my preference, and is better for automation.
-
-The question for what the tag actually contains brings us to...
+> On Mon, Nov 20, 2023 at 10:27:33PM +0000, Mark Brown wrote:
+> > This is the sort of thing that kcidb (which Nikolai works on) is good at
+> > ingesting, I actually do push all my CI's test results into there
+> > already:
+> >
+> >    https://github.com/kernelci/kcidb/
+> >
+> > (the dashboard is down currently.)  A few other projects including the
+> > current KernelCI and RedHat's CKI push their data in there too, I'm sure
+> > Nikolai would be delighted to get more people pushing data in.  The goal
+> > is to merge this with the main KernelCI infrastructure, it's currently
+> > separate while people figure out the whole big data thing.
 >
-> Each referenced test suite is expected to be documented in the new
-> Documentation/process/tests.rst file, which must have enough structure
-> (documented inside) for the tools to make use of it. Apart from basic
-> data, each test can refer to its "superset" - a test suite which this
-> one is a part of. The expected use is to describe both a large test
-> suite and its subsets, so the former would also be accepted, if a
-> subsystem requires only a subset.
+> Looking at the kernelci, it appears that it's using a JSON submission
+> format.  Is there conversion scripts that take a KTAP test report, or
+> a Junit XML test report?
 
-I think this could work, but is a bit complicated.
+The kunit.py script has a very basic KCIDB JSON exporter, via the
+--json option. This can be used as a generic KTAP -> KCIDB converter
+with
+kunit.py parse --json
 
-My initial thought was to have this as a more free-form field, which
-either contained a:
-- Path to a command to run (e.g. tools/testing/kunit/run_checks.py)
-- Path to a documentation file describing the test.
-- URL to a page describing the test
-- (Maybe) freeform text.
+It definitely still needs some work (there are a bunch of bugs,
+hardcoded fields for things KTAP doesn't expose, some other output may
+get mixed in, etc), but does exist as a starting point.
 
-It's probably worth also looking at this proposal to auto-generate
-similar documentation:
-https://lore.kernel.org/linux-kselftest/cover.1689171160.git.mchehab@kernel.org/
-
-The other question is how to handle outdated results when a new patch
-revision is sent out. Personally, I think this is something we can
-solve similarly to 'Reviewed-by', depending on the extent of the
-changes and cost of the tests. I suspect for most automated tests,
-this would mean never carrying the 'Tested-with' tag over, but if
-testing it involved manually building and running kernels against 50
-different hardware setups, I could imagine it making sense to not
-re-do this if a new revision just changed a doc typo. If a URL is used
-here, it could contain version info, too.
-
->
-> Introduce a new tag, 'Tested-with:', documented in the
-> Documentation/process/submitting-patches.rst file. The tag is expected
-> to reference the documented test suites, similarly to the 'V:' field,
-> and to certify that the submitter executed the test suite on the change,
-> and that it passed.
-
-I'm also 100% for this, though I'd considered it separately from the
-MAINTAINERS change.
-
-I think, in the ideal case, we want this to link to the results
-somehow. kcidb would seem to be the obvious choice there.
-
-Again, as a fallback, a plain text field would be useful to describe
-cases where a patch was tested by some means other than a formal test
-suite. This might not be ideal, but I'd still rather have people
-describe that something "builds and boots on <x> hardware" than have
-to guess if a patch was tested at all.
-
-Of course, it'd then be up to maintainers to decide what they'd
-accept: I'd expect that some would require there be a 'Tested-with'
-header which links to valid results for the tests described in
-MAINTAINERS.
-
->
-> Make scripts/checkpatch.pl ensure any added V: fields reference
-> documented test suites only, and output a warning if a change to a
-> subsystem doesn't certify the required test suites were executed,
-> if any.
->
-
-I'd definitely want something like this to run at some point in the
-patch-submission workflow. I think that, ultimately, we'll want to be
-able to run some tests automatically (e.g., a git hook could run the
-tests and add the 'Tested-with' line).
-
-Personally, I'd like to require that all patches have a 'Tested-with'
-field, even if there's not a corresponding 'V' MAINTAINERS entry, as
-people should at least think of how something's tested, even if
-there's not a formal 'test suite' for it. Though that seems a
-longer-term goal
-
-
-> If the test suite description includes a "Command", then checkpatch.pl
-> will output it as the one executing the suite. The command should run
-> with only the kernel tree and the regular developer environment set up.
-> But, at the same time, could simply output instructions for installing
-> any extra dependencies (or pull some automatically). The idea is to
-> get the developer into feedback loop quicker and easier, so they have
-> something to run and iterate on, even if it involves installing some
-> more stuff first. Therefore it's a good idea to add such wrappers to the
-> kernel tree proper and refer to them from the tests.rst.
->
-> Extend scripts/get_maintainer.pl to support retrieving the V: fields,
-> and scripts/parse-maintainers.pl to maintain their ordering.
->
-> Signed-off-by: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-> ---
-
-The questions I think we need to answer to get this in are:
-1. Do we want to split this up (and potentially land it
-piece-by-piece), or is it more valuable to have a stricter, more
-complete system from the get-go?
-2. What format should the 'V' line take? If it is simply a test name,
-do we use a doc as suggested (or one generated in part from some other
-process), or something like a command name or URL? Can it just be
-freeform text?
-3. Should 'Tested-with' be a test name in the same format as 'V', a
-URL to results (any URL, or just kcidb?), or freeform text? How does
-this evolve with multiple versions of patches?
-4. How should this be enforced? A warning (not an 'error') from
-checkpatch? A separate script?
-
-Personally, my gut feeling is that we should land the simplest, most
-minimal version of this (the 'V' field, as freeform text) now, and
-build on that as consensus and tooling permits. I'd probably also add
-the 'Tested-with' or similar tag, as freeform text, too. I don't think
-either of those would cause major problems if we needed to change or
-restrict the format later; I imagine there won't be a huge need to
-parse old commits for test data, and even if so, it wouldn't be too
-hard to ignore any which don't conform to any stricter future
-convention.
-
-But I don't think there's anything fundamentally wrong with the full
-plan as-is, so if everyone's happy with it, I'd not object to having
-it.
-
-Cheers,
 -- David
 
---0000000000009625c0060aa72c66
+--0000000000002f3a8f060aa7302b
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -276,14 +162,14 @@ impZAng7ccvvK09K3ZuhwTIxJMsPXCZYsrXWORTw5sczRAP6XvKbPBJnsJoSTe5dFBPBHOQJOGhU
 qWfEfWnWMJPF3LxSGLpLFQXO3RwQqmxv08avwXfVPouh1xuB3FX7rpDabT8YDhu9JgIZkLEKko7L
 yQt6zWwng7k8YF/jGbiAta6VMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
 R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAq
-IB8+6lHgjYlH3l7w5GObmRl/iEGqJKNCiDrN+bekZDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMzExMjExMDM2MjRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCa
+x2irT4JHJO0tc3XLpY+oJq6b72CB9v2T9Dpy96GlmzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzExMjExMDM3MjRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
 BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAoXUNJNXhyXyoRaJmBbSg
-GqRPt686O54xamh9ZUcaKhUbRO1tWX6b6SwnKGgxN7AUmdb9CBsPafYeTjoseY9gLZBbTIlxx1yF
-koFY3/59W8BwT5EMbpqAWbJXCpAsXx1tDlmgG0/9L+uP7lDLlKQ5/i1RcLQBy/mGINosD+6iXpnS
-fitRM1Zc8IURT3uK+PIVqBWXm44YPnBNyINbOg+eG1AYy5NZ8LQdDWUFO9ZtfTkaOlBEimdV0a0G
-t66OeY+MC7edN8Xpfdi2FlLDRXoogVZ1aCLGpBw56txPfWKU6B/4F2sy2NFlECJzYR1RxfLDtckN
-hvPsprjtb90mPzVufA==
---0000000000009625c0060aa72c66--
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYJ3C9MYbbCKiYz9JxP5d
+MqrDRVmauLzz8OT/A9/WkGsiLj9o7TFhsbd4b6d7l3ds5bOTFoDTRK+wwY0/OJXMXa7WVhGPPwo9
+zZtUSJ8C1EfA1ZxBw1QVlVKT6gcTZWo3lxOsbFcdKzofcktm7zRrqmCEncH6U3y3fj9EOdA7PcTt
+N/qjKAh44d2/NFi2e1Zuf1o5PucPcJ4qaOq/wIj5z8Wf4enbkf8yZOCzkqx5UatZoDbSsF82AHOc
+S1yUOjo+SswHohogPLVDF6xhJIpDiZx2TTHF3Utt9S2Le0kT7z7XtLy98c+bIPumt/M6TJkVBYpf
+YDpp8UvX9NbFWGIK8g==
+--0000000000002f3a8f060aa7302b--
