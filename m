@@ -1,105 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2943942076;
-	Tue, 21 Nov 2023 20:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEAD17CB;
+	Wed, 22 Nov 2023 01:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKhUW0WC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06810C433C8;
-	Tue, 21 Nov 2023 20:48:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700599731;
-	bh=KolmBwKpbH8naVtlkDeppnK3S5S+HMNbhSd3gc0CZxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dKhUW0WCGHF12g7ooSZO9omLXTl4ZDn7ynQ20GnZgxM7ibLgdypYYdQ6so4kas9ni
-	 yByBTagw90rO8Wjft/2KURnmg82qBdlqGi0Xe3BDWWmUML2qm/sCllHaRKZCFj1KT5
-	 avxMFmTwveLnrhmGz6KEPfgG9eWLXeNscGBwBVB8yo3xyddcQ8IpHNj0voNyzqbLeS
-	 waDhkDNt1ZmZ2ev9BeBmZ+Cp7gzf+BtufTaPQS1AGtnUHQFE+I82Au1TmsI/rXEeiW
-	 69fitct9TaAJxSKlfQ3cfQlqdVdgOAgi05b5b7P4Ujxhf65MwbGHnxdNqe5f7K9OIu
-	 2XwC5s1/gZyiQ==
-Date: Tue, 21 Nov 2023 20:48:48 +0000
-From: Mark Brown <broonie@kernel.org>
-To: David Gow <davidgow@google.com>
-Cc: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hqVkZLxa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700615329; x=1732151329;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2+fdHO12ohmJATutgg6iYR9BqC3ibMl5puCl9Ejbv/A=;
+  b=hqVkZLxadL4kEMxrOG/hsCbwKqMHkhwAcePfNhngXFlgdlwR41050ltT
+   vsE/z8QmA3w/IvDW9QwfKEm7B8uUJqNuPLTBLpCwRH3TDo0OFYYmfrC1G
+   3odYzX6nohrHNTi3B92rWxMb/P3W7jkwKhLBeExbpdx1YZZjwh7uJaxZG
+   jd3wQ0rFUc95uSFHbRumZrC6MAgN3mzgCzBZ89phM8XFbFd5SQ3Ynqd4b
+   /4XsNLJWfPKghm3ejDtsba5Z8L8UJwmS9bgXhNqaXZ6ydRWtwSZxcUQQP
+   qMEkQXYI0ZmN25lVsCKhCiKjvhJqBtA9qW1XUj10AxgvcO99B7mQw7Vre
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="5154723"
+X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
+   d="scan'208";a="5154723"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 17:08:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="801726701"
+X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
+   d="scan'208";a="801726701"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 21 Nov 2023 17:08:43 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r5bjM-0008Tj-2M;
+	Wed, 22 Nov 2023 01:08:40 +0000
+Date: Wed, 22 Nov 2023 09:08:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>,
 	workflows@vger.kernel.org, Joe Perches <joe@perches.com>,
 	Andy Whitcroft <apw@canonical.com>, Theodore Ts'o <tytso@mit.edu>,
+	David Gow <davidgow@google.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
+	Mark Brown <broonie@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
-	"Darrick J . Wong" <djwong@kernel.org>, kunit-dev@googlegroups.com,
+	"Darrick J . Wong" <djwong@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, kunit-dev@googlegroups.com,
 	linux-kselftest@vger.kernel.org,
 	Veronika Kabatova <vkabatov@redhat.com>,
-	CKI <cki-project@redhat.com>, kernelci@lists.linux.dev
+	CKI <cki-project@redhat.com>, kernelci@lists.linux.dev,
+	Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
 Subject: Re: [PATCH 1/3] MAINTAINERS: Introduce V: field for required tests
-Message-ID: <ZV0XsLBUnzoP3KqA@finisterre.sirena.org.uk>
-References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
- <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
- <CABVgOSkRpL9KC4FDMrQ-g51b0_BB-=m71LzaQNG8UsqHJ7VrkQ@mail.gmail.com>
+Message-ID: <202311220843.vh7WyxDF-lkp@intel.com>
+References: <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+Qm4wxwj82KSPBf4"
-Content-Disposition: inline
-In-Reply-To: <CABVgOSkRpL9KC4FDMrQ-g51b0_BB-=m71LzaQNG8UsqHJ7VrkQ@mail.gmail.com>
-X-Cookie: Slow day.  Practice crawling.
-
-
---+Qm4wxwj82KSPBf4
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20231115175146.9848-2-Nikolai.Kondrashov@redhat.com>
 
-On Tue, Nov 21, 2023 at 06:36:10PM +0800, David Gow wrote:
+Hi Nikolai,
 
-> The other question is how to handle outdated results when a new patch
-> revision is sent out. Personally, I think this is something we can
-> solve similarly to 'Reviewed-by', depending on the extent of the
-> changes and cost of the tests. I suspect for most automated tests,
-> this would mean never carrying the 'Tested-with' tag over, but if
-> testing it involved manually building and running kernels against 50
-> different hardware setups, I could imagine it making sense to not
-> re-do this if a new revision just changed a doc typo. If a URL is used
-> here, it could contain version info, too.
+kernel test robot noticed the following build warnings:
 
-One thing with Reviewed-by that's a bit different to testing is that
-Reviewed-by is generally invalidated by doing a change to the specific
-patch that needs at least a commit --amend.
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.7-rc2 next-20231121]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Personally, I'd like to require that all patches have a 'Tested-with'
-> field, even if there's not a corresponding 'V' MAINTAINERS entry, as
-> people should at least think of how something's tested, even if
-> there's not a formal 'test suite' for it. Though that seems a
-> longer-term goal
+url:    https://github.com/intel-lab-lkp/linux/commits/Nikolai-Kondrashov/MAINTAINERS-Introduce-V-field-for-required-tests/20231116-015419
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20231115175146.9848-2-Nikolai.Kondrashov%40redhat.com
+patch subject: [PATCH 1/3] MAINTAINERS: Introduce V: field for required tests
+reproduce: (https://download.01.org/0day-ci/archive/20231122/202311220843.vh7WyxDF-lkp@intel.com/reproduce)
 
-A requirement feels like it'd be pretty painful for my workflow, or at
-least result in me adding the thing in hope of what I'm actually going
-to do rather than as a result of the testing - all my CI stuff
-(including what I do for outgoing patches) is keyed off the git commits
-being tested so updating the commits to reflect testing would have
-unfortunate side effects.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311220843.vh7WyxDF-lkp@intel.com/
 
-> The questions I think we need to answer to get this in are:
-> 1. Do we want to split this up (and potentially land it
-> piece-by-piece), or is it more valuable to have a stricter, more
-> complete system from the get-go?
+All warnings (new ones prefixed by >>):
 
-I think splitting things makes sense.
+>> Documentation/process/tests.rst: WARNING: document isn't included in any toctree
 
---+Qm4wxwj82KSPBf4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVdF60ACgkQJNaLcl1U
-h9A5vAf/f7C2XrRwjIRIADD8Ve0hYKnWBqwkrLTphkTj23ZtQSNnLIITZ05iaoQw
-71Tv3qjAA6hNllYEMhokmzVR3tnWSwIrjrl4kgejoIl0xxkYvfwovMneEy0zvwHW
-Qlwfz4MoIXXJxOrbMCfD7RVXYWhu/XYzheIKMul6/KbJskCdg9Zr1qC2boS6F09i
-mu6jEGy3PP8/iRBd4l8cgotkPjia61cLiN55iI8YHw6FA3+t3MhSVTpCT6djwWFe
-0h19srptjeRH41akN5l7j6rgBSjlSjlluk3cip7pC+31FtUFy3pW2gg12GPE5POr
-uVWCogn0zxnbnN0INipYeYnMZD6KEQ==
-=x8lK
------END PGP SIGNATURE-----
-
---+Qm4wxwj82KSPBf4--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
