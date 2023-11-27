@@ -1,130 +1,151 @@
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BCC3309F
-	for <kernelci@lists.linux.dev>; Fri, 24 Nov 2023 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3768728DCF
+	for <kernelci@lists.linux.dev>; Mon, 27 Nov 2023 23:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ZVEHfkXZ"
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="H9emDfZb"
+Received: from notapiano.myfiosgateway.com (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 3328D660739E;
-	Fri, 24 Nov 2023 16:04:43 +0000 (GMT)
+	(Authenticated sender: nfraprado)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 1075566022D1;
+	Mon, 27 Nov 2023 23:36:02 +0000 (GMT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1700841884;
-	bh=LqihOK0Q++RpV7t8zDmObDhhj1W5mEV5lqPp+ZJjtFA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVEHfkXZVaaljYC+c+rShwxSy6W2K/woOPGWZ2aqLDOZ/IElPcKWNsZDZC2v90jZc
-	 itV08P9+7v8wplZvKM2c8AH0j89MwvO2xkjrU2Da7Nq4nbBiR/Iz5/wRgOZX180uMm
-	 sxDwrFQ4TXcC/b8eL6pvt38G8ijksVAFo5rPW7mzJeBfl2sIbxOXidVorvihH3VHUM
-	 Vpzfb7olMrTzWM71B/TZR69uSprO0LcdzR87r3uZPkeFWvw35ys81EKwv0I7IVDnOo
-	 Q9NBBVJGOn0SL/fQH4wTVvU8P40BMVSGHcssaSbW6M03SeWmSktMAKP/eTxO/Ei5Rd
-	 L4ruxXRf40P7w==
-From: Laura Nao <laura.nao@collabora.com>
-To: dan.carpenter@linaro.org
-Cc: broonie@kernel.org,
-	groeck@chromium.org,
-	kernel@collabora.com,
+	s=mail; t=1701128167;
+	bh=YEe8v7wDFFs3gQgZ9RcTV5I1wDd3U2Sg4ahCaTkprQo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H9emDfZbsGRiS+F7o/zTjCwpKOs9ATigOjvWWhy0SbmNQ69YCARc1007iQcAPpPaJ
+	 d68ud9ABQ5h4isZTQstZd7TVlnqHPX+5aKqTnST515c8vuv+CdsdgBAmIu2PRQ1o6J
+	 KHiWC5kJd7I4I0SWI99sgftn5KTtNDda51pfVjMR/5HjQAbu2WG3eegfZxZQSDEHBg
+	 kZ8kQDTJOOkQrAGLZQgsBlcTnAYqgwoEJxwEdYGzT7sispRNN7BzmSS8D9wQbZhQW9
+	 HeRoF10/cE7rO/VNqgF7DVIO74rsHEBCma2H6cqN+If86xm+TY7TP7x8AYbEHmH/Pq
+	 IWg9QJj2qfGZQ==
+From: =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>
+To: Shuah Khan <shuah@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Saravana Kannan <saravanak@google.com>,
+	Rob Herring <robh+dt@kernel.org>,
 	kernelci@lists.linux.dev,
-	laura.nao@collabora.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	David Gow <davidgow@google.com>,
+	Guenter Roeck <groeck@chromium.org>,
 	linux-kselftest@vger.kernel.org,
-	rafael@kernel.org,
-	robh+dt@kernel.org,
-	shuah@kernel.org
-Subject: Re: [RFC PATCH 0/2] Add a test to verify device probing on ACPI platforms
-Date: Fri, 24 Nov 2023 17:04:42 +0100
-Message-Id: <20231124160442.50928-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <431009f0-56e7-46e8-a3a0-a8070554b727@suswa.mountain>
-References: <431009f0-56e7-46e8-a3a0-a8070554b727@suswa.mountain>
+	linux-usb@vger.kernel.org,
+	kernel@collabora.com,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tim Bird <Tim.Bird@sony.com>,
+	linux-pci@vger.kernel.org,
+	Doug Anderson <dianders@chromium.org>,
+	devicetree@vger.kernel.org,
+	=?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH v2 0/2] Add test to verify probe of devices from discoverable busses
+Date: Mon, 27 Nov 2023 18:34:05 -0500
+Message-ID: <20231127233558.868365-1-nfraprado@collabora.com>
+X-Mailer: git-send-email 2.42.1
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 11/23/23 16:14, Dan Carpenter wrote:
-> On Thu, Nov 23, 2023 at 01:09:42PM +0100, Laura Nao wrote:
->>> Your talk was interesting at Linux Plumbers.
->>>
->>> https://www.youtube.com/watch?v=oE73eVSyFXQ [time +2:35]
->>>
->>> This is probably a stupid question, but why not just add something to
->>> call_driver_probe() which creates a sysfs directory tree with all the
->>> driver information?
->>>
->>
->> Thanks for the feedback!
->>
->> Improving the device driver model to publish driver and devices info
->> was indeed another option we considered. We could have a debugfs entry
->> storing this kind of information, similar to what devices_deferred
->> does and in a standardized format. This would provide an interface
->> that is easier to query at runtime for getting a list of devices that
->> were probed correctly.
->> This would cover devices with a driver that's built into the kernel or
->> as a module; in view of catching also those cases where a device is
->> not probed because the relevant config is not enabled, I think we'd
->> still need another way of building a list of devices present on the
->> platform to be used as reference.
-> 
-> Yeah.  So we'd still need patch #1 as-is and but patch #2 would probably
-> be simpler if we had this information in sysfs.  Or a different solution
-> would be to do what someone said in the LPC talk and just save the
-> output of the previous boot and complain if there was a regression where
-> something didn't probe.
-> 
 
-Right. The main drawback of using the status of a known good boot as
-reference is to keep it up to date over time. If support for a
-peripheral gets added at a later stage, the reference needs to be updated
-as well.
+Hi,
 
->>
->> The solution proposed in this RFC follows the same approach used for
->> dt based platforms for simplicity. But if adding a new sysfs entry
->> storing devices and driver info proves to be a viable option for
->> upstream, we can surely explore it and improve the probe test to
->> leverage that.
-> 
-> You're saying "simplicity" but I think you mean easiest from a political
-> point of view.  It's not the most simple format at all.  It's like
-> massive detective work to find the information and then you'll have to
-> redo it for DT and for USB.  Are there other kinds of devices which can
-> be probed?
-> 
+v1 [1] was discussed during Plumbers [2], where a lot of feedback was given. I
+hope to justify the changes in v2 and address the feedback here.
 
-Yeah, that's what I meant. The ACPI use case is in a way simpler to
-handle than the dt one, as we can get information on non removable
-devices on enumerable buses such as PCI from the ACPI
-tables (leveraging the _ADR objects). But it still requires quite a lot
-digging in sysfs to get info on what was actually probed.
-So having a list of probed devices would help both use cases.
+One feedback from Shuah was that keeping per-platform files with the USB/PCI
+devices to test as part of the kselftest tree wasn't maintainable. One proposed
+alternative was to generate a list of probed devices on a known-good kernel and
+use that as a reference. However you need someone to look at that generated
+reference to be able to say it is a good one, and you need to save it to ensure
+it will be reproducible later anyway, so that wouldn't actually solve the
+problem. It is a matter of hand-crafting vs generating the test definitions, but
+they will need to be vouched by someone and stored somewhere in both cases.
 
-> I feel like you're not valuing your stuff at the right level.  This
-> shouldn't be in debugfs.  It should be a first class citizen in sysfs.
-> 
-> The exact format for this information is slightly tricky and people will
-> probably debate that.  But I think most people will agree that it's
-> super useful.
->
+So for this v2, in patch 2 I just have a sample test definition, and the
+per-platform test definitions would be added to a separate repository.
 
-Right, agreeing on a format will be tricky. Judging by the response here
-and in LPC it's still worth a shot though. I'll put some thought into
-this and experiment a bit to come up with a proposal to submit in
-another RFC.
+The other feedback received was that the BIOS might reconfigure the PCI
+topology (at least on x86), meaning that relying on a sequence of device and
+function numbers (eg 1d.0/02.0/0.0) as a stable description of a device on the
+platform is not possible. I couldn't verify whether this is really the case (if
+you have any more insight into this, please let me know), but with that in mind,
+here in v2 I have taken a different approach. Here I'm using the device's
+properties which are used for driver matching (the same that show on modalias)
+to identify a device in a stable way.
 
-Again, thanks for the helpful feedback!
+This approach has some drawbacks compared to the one on v1. For one it doesn't
+uniquely identify a device, so if there are multiple of the same device on a
+platform they have to be checked as a group. Also the test definition isn't as
+human-readable.
 
-Best,
-Laura
+I'm adding in CC the people I recognized at the Plumbers session that were
+interested in this work. Feel free to add anyone missing.
+
+Thanks,
+Nícolas
+
+[1] https://lore.kernel.org/all/20231024211818.365844-1-nfraprado@collabora.com
+[2] https://www.youtube.com/watch?v=oE73eVSyFXQ&t=9377s
+
+Original cover letter:
+
+This is part of an effort to improve detection of regressions impacting
+device probe on all platforms. The recently merged DT kselftest [3]
+detects probe issues for all devices described statically in the DT.
+That leaves out devices discovered at run-time from discoverable busses.
+
+This is where this test comes in. All of the devices that are connected
+through discoverable busses (ie USB and PCI), and which are internal and
+therefore always present, can be described in a per-platform file so
+they can be checked for. The test will check that the device has been
+instantiated and bound to a driver.
+
+Patch 1 introduces the test. Patch 2 adds the test definitions for the
+google,spherion machine (Acer Chromebook 514) as an example.
+
+This is the sample output from the test running on Spherion:
+
+TAP version 13
+ Using board file:  boards/google,spherion
+1..3
+ok 1 usb.camera
+ok 2 usb.bluetooth
+ok 3 pci.wifi
+ Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+[3] https://lore.kernel.org/all/20230828211424.2964562-1-nfraprado@collabora.com/
+
+Changes in v2:
+- Changed approach of encoding stable device reference in test file from
+  HW topology to device match fields (the ones from modalias)
+- Better documented test format
+
+Nícolas F. R. A. Prado (2):
+  kselftest: Add test to verify probe of devices from discoverable
+    busses
+  kselftest: devices: Add sample board file for google,spherion
+
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/devices/.gitignore    |   1 +
+ tools/testing/selftests/devices/Makefile      |   8 +
+ .../selftests/devices/boards/google,spherion  |  12 ++
+ .../devices/test_discoverable_devices.sh      | 160 ++++++++++++++++++
+ 5 files changed, 182 insertions(+)
+ create mode 100644 tools/testing/selftests/devices/.gitignore
+ create mode 100644 tools/testing/selftests/devices/Makefile
+ create mode 100644 tools/testing/selftests/devices/boards/google,spherion
+ create mode 100755 tools/testing/selftests/devices/test_discoverable_devices.sh
+
+-- 
+2.42.1
 
