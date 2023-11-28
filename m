@@ -1,129 +1,110 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F6044365
-	for <kernelci@lists.linux.dev>; Tue, 28 Nov 2023 21:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521B344C67
+	for <kernelci@lists.linux.dev>; Tue, 28 Nov 2023 21:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Kh7dkKyQ"
-Received: from notapiano (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id BB2F66602F24;
-	Tue, 28 Nov 2023 21:05:38 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1701205542;
-	bh=s7rR2Rat8SrAjrdLaEbiFvlrPgXrqFu53OZ4LGKJWWE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kh7dkKyQX4OzBE18csALgyO/a/ZQcAgejLadYxotEYVWGHXi6CIeFRmzTqvrEYcNs
-	 W5l5c2H4zmP5KyL60WN4jxIJX4gslSDDOMPWb5cTGkYKEC62WeGrUU6Zwh26GOuBBO
-	 8fQhFeiomH+EO1UHTSylTMoBDWTGeHFfeZh6qoUbn6G6lPTNTAQ+GASZ23+IhNCh4L
-	 WBYGLVAxEiiylzwSjbl56RUS/Ktp5dIl8v9sv9gl5LI8TBaX5o83t/HViUqjeQ11ej
-	 ImEsktfwPxvyIbIv4aMtH/f6Jx+oknva3/fPfAMGSRrLc9ozl4LQl6TPh7AsZQNx3T
-	 ple876rAgvx0g==
-Date: Tue, 28 Nov 2023 16:05:33 -0500
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: "Bird, Tim" <Tim.Bird@sony.com>
-Cc: Christopher Obbard <chris.obbard@collabora.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
-	David Gow <davidgow@google.com>,
-	Guenter Roeck <groeck@chromium.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"kernel@collabora.com" <kernel@collabora.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	Doug Anderson <dianders@chromium.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 2/2] kselftest: devices: Add sample board file for
- google,spherion
-Message-ID: <ca434109-7f98-42a3-98b1-eb39480d707d@notapiano>
-References: <20231127233558.868365-1-nfraprado@collabora.com>
- <20231127233558.868365-3-nfraprado@collabora.com>
- <897e404e0097a0c422bdb1d0e2d6cbb996500e8e.camel@collabora.com>
- <BN8PR13MB2738FFDE8693A90B781CCADDFDBCA@BN8PR13MB2738.namprd13.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JrLs1dP/"
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-58d521f12ebso2296850eaf.2
+        for <kernelci@lists.linux.dev>; Tue, 28 Nov 2023 13:34:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1701207292; x=1701812092; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ihcRsJVfXn/hFvJX6im4GsYJsFIm1qPB9DwXHfMEgPI=;
+        b=JrLs1dP/iDt14Bf9w4tCF/j1ZGyTLeAkUMPMFnPuGAm8d+gw4a6Ql1E2izkqxBRCNL
+         BMpb+EDkx50oiETFkP90c1rWjGIwjXocE6I3fTltEy/ChkcGawFDXMvkGq7vW9rkEhQx
+         FLaVyWF9yrZGT6N8hp9YhKSNRFbJCy0Bd/jzbWlZljgwB//ksSBZorvHXiXiBaPvxt61
+         TZlS93jdim1CSIDD4OUCGLeBEeTxi0xZShRQSP6iI2my/LXyJE76vijsVYzMbOrX8p5n
+         tY9MZzTzB9OHQryYcDsUF04eJLeF7Qs2F785N2euaKJUXEXjJG4QDH3sVbtKzTmilt9j
+         eRWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701207292; x=1701812092;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ihcRsJVfXn/hFvJX6im4GsYJsFIm1qPB9DwXHfMEgPI=;
+        b=ac/FRZTMnilv2a27PFMsgxRpoU1pCyngW+7B+k1gPTlR7lwJ/S8jtsyqTs9H7vvk0V
+         YHWrXftL7a2y7vYK8+YDBPRIkerE0CIqYqn6EMTfdQI3x2AYHy+hnqgD974ddUpclWkV
+         QUiiNVwa0ukgyQLFsl82yGNMnhzRA55X2vSSW0LsltBBzWvJ6LSF75jSjYgabPPqESql
+         xt5NkC0YCiDvUXsCAFaOLJFMO2dc2UrNHTitYIQg6Sswmk9s+VLtWPcNoecMOp7x2irZ
+         R882dd8Z09dR78/dApEfWcXus/NNOwWirrvFtXw6z32AZQdl71nx54Qre6oNAoh0kUjq
+         EsUg==
+X-Gm-Message-State: AOJu0YylEfN8hgh84+55lTNZRVRkRlMW23GtOCK7TnT5ljk68Vo0h9mT
+	e3sXxqSScWescwvvweyUH+iNeg==
+X-Google-Smtp-Source: AGHT+IHosCtnSOkBEespo9S+IOuKQ4xI1rVw06cDD3voEKUuhwR1LuNKGnfqrhZ8aGkMvXUmmbrOHA==
+X-Received: by 2002:a05:6358:4194:b0:16b:fbd6:9bab with SMTP id w20-20020a056358419400b0016bfbd69babmr17522296rwc.32.1701207292050;
+        Tue, 28 Nov 2023 13:34:52 -0800 (PST)
+Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id lf5-20020a0562142cc500b0067a6392a323sm436908qvb.133.2023.11.28.13.34.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Nov 2023 13:34:51 -0800 (PST)
+Message-ID: <b281cbba-8013-4701-9352-a176f4e692fc@baylibre.com>
+Date: Tue, 28 Nov 2023 16:34:50 -0500
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: KernelCI Local Instance docs have missing/outdated info
+Content-Language: en-US
+To: Jeny Sheth <jeny.sadadia@collabora.com>
+Cc: kernelci@lists.linux.dev
+References: <7ee32af8-341f-429b-96c1-ca407cb17f0d@baylibre.com>
+ <9820b359-cfc0-45b6-9edc-722b50e533c7@collabora.com>
+From: Trevor Gamblin <tgamblin@baylibre.com>
+In-Reply-To: <9820b359-cfc0-45b6-9edc-722b50e533c7@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <BN8PR13MB2738FFDE8693A90B781CCADDFDBCA@BN8PR13MB2738.namprd13.prod.outlook.com>
 
-On Tue, Nov 28, 2023 at 06:33:52PM +0000, Bird, Tim wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Christopher Obbard <chris.obbard@collabora.com>
-> > Hi Nícolas,
-> > 
-> > On Mon, 2023-11-27 at 18:34 -0500, Nícolas F. R. A. Prado wrote:
-> > > Add a sample board file describing the file's format and with the list
-> > > of devices expected to be probed on the google,spherion machine as an
-> > > example.
-> > 
-> > Did you consider using some machine-readable & extensible format like yaml?
-> > Surely we don't need to invent yet-another file-format? :-)
 
-For this RFC my focus was to gather feedback on even more basic aspects of the
-test, mainly:
-- Is using a device's match properties (the ones that constitute modalias) a
-  good way to encode a device in a stable way or can we do better? (See cover
-  letter for comparison to HW topology approach)
+On 2023-11-27 23:43, Jeny Sheth wrote:
+> Hello Trevor,
+>
+> Thanks for reporting the issue. Due to recent API updates on user 
+> management side, a few endpoints have been redesigned and renamed. 
+> Endpoint to get access tokens has been renamed to `/user/login`.
+>
+> We have updated documentation accordingly and updates have been 
+> rolled-out to https://kernelci.org/docs/api. You can continue 
+> referring to the same link. Sorry for the hurdles you had to face.
 
-So I just went for the simplest format I could think of. Moving forward, I agree
-YAML might be a better fit and I can try it out for the next version.
+Hi Jeny,
 
-> 
-> I went back to examine the test more closely.  These board files are loaded via
-> the shell's 'source' command.
-> 
-> If I'm reading the test correctly, the format is machine-readable and extensible, since
-> it's a fragment of a shell script.  The 'usb' and 'pci' first entries on the lines are
-> actually function calls, and the other items in a test line are arguments.
-> 
-> So, as an RFC - how about calling the board files: "<compatible-string>.sh" to make this
-> clear, and maybe adding a comment at the top about the nature of the file?
-> 
-> There's probably a use case for reading this file not in this original shell script context,
-> so I think Christopher's point about a machine-readable AND easily human-readable
-> format is valid.  Personally, I find this format not too bad to read (but then I'm a
-> shell junky.)
+Thanks for the update! I've got it running now.
 
-That's right, the board files are shell scripts that are sourced. I went this
-route for simplicity rather than necessity. In fact, I'd prefer to have the
-board files be dumb files with just the data necessary to describe the devices
-on the platform moving forward. For this purpose I'll try using YAML for the
-next version and seeing how it goes.
-
-> 
-> I believe, Nicolas, that you were already planning on putting some comments in the
-> file to describe the line format (function arguments?), based on feedback from Greg KH.
-> IMHO, knowing that the format allows comments is useful, so adding a sample
-> comment would be welcome.
-
-Well, the text added at the top of this file describing the format of each line
-was already done in response to Greg's comment. Although I didn't mention
-anything about comments indeed, I'll make sure to document that for next
-version (even if it is in YAML it doesn't hurt to have comments as part of the
-example).
-
-Also, I've noticed that my patches show "(no changes since v1)". Please
-disregard these. There have clearly been changes since v1 (the whole approach is
-different), which I've documented on the cover letter, but those trailers were
-added by mistake when generating the patches.
-
-Thanks,
-Nícolas
+- Trevor
+>
+> Thank you, Jeny
+>
+>
+> On 14/11/23 3:13 am, Trevor Gamblin wrote:
+>> Hello,
+>>
+>> While following https://kernelci.org/docs/api/local-instance/, I have 
+>> run into an issue when trying to generate an admin API token:
+>>
+>> [tgamblin@homunculus ~]$ curl -X 'POST' \
+>> Â  'http://localhost:8001/latest/token' \
+>> Â  -H 'accept: application/json' \
+>> Â  -H 'Content-Type: application/x-www-form-urlencoded' \
+>> Â  -d 'grant_type=&username=admin&password=hello&scope=admin users'
+>> {"detail":"Not Found"}[tgamblin@homunculus ~]$
+>>
+>> The previous steps to start the instance and confirm API availability 
+>> work fine, but the "token" endpoint doesn't appear to be up, and I 
+>> can't continue without it.
+>>
+>> Is there a newer set of documentation that can be followed, or can 
+>> someone point me at what I've missed?
+>>
+>> Thanks,
+>>
+>> - Trevor
+>>
+>>
