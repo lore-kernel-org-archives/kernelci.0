@@ -1,83 +1,89 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBA7258D
-	for <kernelci@lists.linux.dev>; Tue, 28 Nov 2023 04:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5D35A0E4;
+	Tue, 28 Nov 2023 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="gxmLYXsT"
-Received: from [100.100.149.248] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jenysadadia)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 5BF536606F5E;
-	Tue, 28 Nov 2023 04:43:27 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1701146610;
-	bh=AnpXknAnVdeRTMdXS1SET8Y9y6X99ZM/jbffA4YRCNk=;
-	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-	b=gxmLYXsTE8JZFO6rjftcPTPo52kRcUSkO5+nzbFavvf4DCykdWJnsH9k0LwqZI5Fg
-	 WHYUTklTXqxBJic+lsrSgAdSORSDv5oBLyuJ3sNXBJ72f094FEbHNOFwUReFuMq+2Y
-	 59A4U8dQkUtkh/Z65jOTjihXSIeDtIaAop3x670ZIlq0Y0XKToeNaPE+17/dke47Nb
-	 kA7tTKaG01DSAOdwNkhGhwSTfLbbDhWOSQAGKhpPSu3SOoH4zthW9bjsD6PMygRmZ2
-	 wg4miVK6w5ydKnqfB+3vTyYYOOLiLVrLJeuzaz5Vu+su3XvsQA4dAVzOvuzgQIoekG
-	 LShhG7CN3t6zQ==
-Message-ID: <9820b359-cfc0-45b6-9edc-722b50e533c7@collabora.com>
-Date: Tue, 28 Nov 2023 10:13:22 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X4OShPFU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BD3C433C9;
+	Tue, 28 Nov 2023 14:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701180629;
+	bh=60EtB08YT7Ko8yqV3Wwijj0Q4rDlAXw7Ibne/o3zM/s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X4OShPFUo67/hTM7CP0T5xlROgke47ag9YYEcSS/ddt4MiwJzPweh7w6xdi0Cvesx
+	 F/8yEKqXWrixCvb1kA2smHWsNtmgQN/ovflspS+geIMXD2+AJgKxKXTlYxvH7K6Vhn
+	 WHbqKUN3K31QmfxQ2/pKM+CXH3J95hQTGtOETNXh/ZnWapdNWYEFpZEtLvvMXvrV+F
+	 4+8ofw5pC1p64zwwB2+Axp/kGR/Oz2Q5idf3lljuruSLhgfx+NyLdo1+IwK0RAni4O
+	 hvuf9HEsXlCgWGIE3Zx9ZJIVmOxHcwv2gKqkZT/JltiXlFI1ncAeRdqMRMa1u+NTn2
+	 L+JXI1dxyLYMQ==
+Date: Tue, 28 Nov 2023 14:10:22 +0000
+From: Mark Brown <broonie@kernel.org>
+To: "Bird, Tim" <Tim.Bird@sony.com>
+Cc: =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+	David Gow <davidgow@google.com>,
+	Guenter Roeck <groeck@chromium.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"kernel@collabora.com" <kernel@collabora.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	Doug Anderson <dianders@chromium.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 2/2] kselftest: devices: Add sample board file for
+ google,spherion
+Message-ID: <1baeddbe-83ed-476e-a748-7d2838b44c5f@sirena.org.uk>
+References: <20231127233558.868365-1-nfraprado@collabora.com>
+ <20231127233558.868365-3-nfraprado@collabora.com>
+ <BN8PR13MB27384F089C7DAAF06DF9DDECFDBCA@BN8PR13MB2738.namprd13.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KernelCI Local Instance docs have missing/outdated info
-Content-Language: en-US
-To: Trevor Gamblin <tgamblin@baylibre.com>
-References: <7ee32af8-341f-429b-96c1-ca407cb17f0d@baylibre.com>
-Cc: kernelci@lists.linux.dev
-From: Jeny Sheth <jeny.sadadia@collabora.com>
-In-Reply-To: <7ee32af8-341f-429b-96c1-ca407cb17f0d@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-Hello Trevor,
-
-Thanks for reporting the issue. Due to recent API updates on user 
-management side, a few endpoints have been redesigned and renamed. 
-Endpoint to get access tokens has been renamed to `/user/login`.
-
-We have updated documentation accordingly and updates have been 
-rolled-out to https://kernelci.org/docs/api. You can continue referring 
-to the same link. Sorry for the hurdles you had to face.
-
-Thank you, Jeny
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VIfEQR6tichIZgMF"
+Content-Disposition: inline
+In-Reply-To: <BN8PR13MB27384F089C7DAAF06DF9DDECFDBCA@BN8PR13MB2738.namprd13.prod.outlook.com>
+X-Cookie: Must be over 21.
 
 
-On 14/11/23 3:13 am, Trevor Gamblin wrote:
-> Hello,
->
-> While following https://kernelci.org/docs/api/local-instance/, I have 
-> run into an issue when trying to generate an admin API token:
->
-> [tgamblin@homunculus ~]$ curl -X 'POST' \
->   'http://localhost:8001/latest/token' \
->   -H 'accept: application/json' \
->   -H 'Content-Type: application/x-www-form-urlencoded' \
->   -d 'grant_type=&username=admin&password=hello&scope=admin users'
-> {"detail":"Not Found"}[tgamblin@homunculus ~]$
->
-> The previous steps to start the instance and confirm API availability 
-> work fine, but the "token" endpoint doesn't appear to be up, and I 
-> can't continue without it.
->
-> Is there a newer set of documentation that can be followed, or can 
-> someone point me at what I've missed?
->
-> Thanks,
->
-> - Trevor
->
->
+--VIfEQR6tichIZgMF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Nov 28, 2023 at 12:10:46AM +0000, Bird, Tim wrote:
+
+> I'm not a big fan of naming these with a comma in the name.  Is there a r=
+eason
+> you are not using dash or underscore?
+
+That's a common patter with this sort of software (eg, bootrr does the
+same).  It's convenient to just be able to use the compatible straight
+=66rom DT without having to mangle it.
+
+--VIfEQR6tichIZgMF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVl9M0ACgkQJNaLcl1U
+h9Cktgf+Oq0BN8WyZ7CzPTibZyr6k1r2sWjG2VUqEZQKYA66zH1D965ND5J8XJB8
+cqw3KD0X/8KNc/u890NCBnr7QTxlKdczAbTEMZtYAcy/7xiA41z0ITXFc6DE8/nO
+V76cOaRGh2vCNkBROokKzewYxb+4MWHHFNUBu/7AXYZHVhtt4U1kcxNcm9HwvC/j
+S3ubDODyZk++hbyHQhxf3ENesyQuIObeKWx6qVPieVbbeCEn3SLZH1KTEOcEr4Cz
+uCkWQKMpUS4iMafKTdMigLtOE4TskFAd+eH+cFMm4Yy7bhr+5pxKmAaDleKBAORF
+/OS87yV3a5qUCNslQ03RnzaSJr1BmQ==
+=ujz7
+-----END PGP SIGNATURE-----
+
+--VIfEQR6tichIZgMF--
