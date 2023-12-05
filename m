@@ -1,57 +1,89 @@
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6B16D1BC
-	for <kernelci@lists.linux.dev>; Tue,  5 Dec 2023 19:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1884D120237;
-	Tue,  5 Dec 2023 18:55:43 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf03.hostedemail.com (Postfix) with ESMTPA id DFE226000C;
-	Tue,  5 Dec 2023 18:55:38 +0000 (UTC)
-Message-ID: <9fe310a9d4486ecf57669bf7b44a49c1788452c1.camel@perches.com>
-Subject: Re: [RFC PATCH v2 01/10] get_maintainer: Survive querying missing
- files
-From: Joe Perches <joe@perches.com>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>, 
-	workflows@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Andy Whitcroft
-	 <apw@canonical.com>, Theodore Ts'o <tytso@mit.edu>, David Gow
-	 <davidgow@google.com>, Steven Rostedt <rostedt@goodmis.org>, Mark Brown
-	 <broonie@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, "Darrick J .
-	Wong" <djwong@kernel.org>
-Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, Veronika
- Kabatova <vkabatov@redhat.com>, CKI <cki-project@redhat.com>,
- kernelci@lists.linux.dev
-Date: Tue, 05 Dec 2023 10:55:37 -0800
-In-Reply-To: <20231205184503.79769-2-Nikolai.Kondrashov@redhat.com>
-References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
-	 <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com>
-	 <20231205184503.79769-2-Nikolai.Kondrashov@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6684F405D8
+	for <kernelci@lists.linux.dev>; Tue,  5 Dec 2023 23:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="QL73S9sP"
+Received: from [100.75.103.134] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: padovan)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 5DADD660715D;
+	Tue,  5 Dec 2023 23:38:22 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1701819504;
+	bh=2CZFIUejLgdcAX8+486gEwTLlC8kPQFmxUo3clcFhOU=;
+	h=Date:To:Cc:From:Subject:From;
+	b=QL73S9sPuUGuwn8rgNhwsp5GOmkxycaNKPeOkMyQidqpwQbiE/JNzCs3NSW+Ij7GC
+	 +yQOFy7FX0TbxHGTknKAifrhee+GfAwm3gmHQkXf+3wbX5N4XJNho1Bn5LhXygwcZv
+	 I7K+/f3M6CWNUkkhZJ7jzHgA6gnMCEc3K9eyjdc9mEDlfwOWNnall6ZRCmUzgROtRp
+	 MWK/nuMZ2P3AwKkDSa8Qp1HhF+oK2sQISDFP9aMZmDMweL50JMvfCBUYafhGHYlFi7
+	 OPncCX+T2iUqldZE8Lwi7dJwtPpYBtRPc0svFsd0Bmr/k5pxEmxrX/Ns1NE0slG4RE
+	 x5FLyfqQeeEkQ==
+Message-ID: <5d48c1fa-d577-6f4c-5d3c-37884053e1a9@collabora.com>
+Date: Tue, 5 Dec 2023 20:38:17 -0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: DFE226000C
-X-Rspamd-Server: rspamout06
-X-Stat-Signature: gj851n1tw478d59kry4f4sgzaoyu3ejq
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+pAWtFOOiT1czbuUFmAevEF0hBsfbYuVg=
-X-HE-Tag: 1701802538-803811
-X-HE-Meta: U2FsdGVkX1+HD2pYenfxZjLJYvw3eCy+sNXc7z0F5XHJk3yx0Vo/Kcs3/NVi8U3EgOrsYCPpt1tA1fkkq2BQPcAeSTtJ0rjaJQkrQiXZK4nwIaHLzsys2/3LLUhn/6Qq3Wc5xdIGZfxMLcjxR/36JCAZNhEhPkrnD6X11DNwUFGO3cFo6q/V0pLg7h18cd+KAY29IIXE3lSKOzkDcOXfAPXQavHHqKe3NoQSlfDt7L2fH3HI+qlMpAi7Ys8mL05jpsKRVrGDeOOO8Mkw15aR2PJMNLyjaFV9pDdC8+bCUz9aLN0qbkkmCbseY1/vcD5DSEAjUB3NrBTIMGTiZA+ws1M02cCIIPBygijlm5HorKE=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ "automated-testing@lists.yoctoproject.org"
+ <automated-testing@lists.yoctoproject.org>,
+ "kernelci-webdashboard@groups.io" <kernelci-webdashboard@groups.io>
+Cc: =?UTF-8?Q?Jo=c3=a3o_Bertacchi?= <joaobertacchi@profusion.mobi>,
+ Ricardo Dourado <ricardo.dourado@profusion.mobi>
+From: Gustavo Padovan <gustavo.padovan@collabora.com>
+Subject: KernelCI is designing a new Web Dashboard: we want your feedback!
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2023-12-05 at 20:02 +0200, Nikolai Kondrashov wrote:
-> Do not die, but only warn when scripts/get_maintainer.pl is asked to
-> retrieve information about a missing file.
->=20
-> This allows scripts/checkpatch.pl to query MAINTAINERS while processing
-> patches which are removing files.
+Hello,
 
-Why is this useful?
+TL;DR: KernelCI engaged with an UX speacialist vendor to design a new 
+web dashboard to show our test results data. If you want to give your 
+feedback, let us know. We still have a few spots for UX interviews!
 
-Give a for-instance example please.
+
+As we shared previously, we are in the process of designing a new Web 
+Dashboard for KernelCI. As you may know, at same time, we are putting 
+together a new core infra to replace our legacy and limited system.
+
+Ultimately, we will have a CI pipeline that allows tests to be run not 
+only in KernelCI labs but outside of it too, but with test results 
+contributed back to the already available common database. Then on top 
+that, we want to have a powerful dashboard to help the community 
+evaluate the test results in the best manner possible.
+
+You can read our blog post for a quick summary of the UX redesign 
+project: https://kernelci.org/blog/posts/2023/ux-analysis/
+
+We have just started the first phase with the UX team interviewing 
+kernel maintainers and other users of KernelCI.
+
+If you are interested in providing your feedback just reply to this 
+email or reach out to me directly. We will try to accommodate everyone 
+that is interested.
+
+Regards,
+
+- Gus (as Project Manager for the KernelCI project)
+
+-- 
+Gustavo Padovan
+Kernel Lead
+
+Collabora Ltd.
+Platinum Building, St John's Innovation Park
+Cambridge CB4 0DS, UK
+Registered in England & Wales, no. 5513718
+
