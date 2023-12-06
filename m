@@ -1,43 +1,43 @@
 Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4638C14F6D
-	for <kernelci@lists.linux.dev>; Wed,  6 Dec 2023 08:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD13618AF2
+	for <kernelci@lists.linux.dev>; Wed,  6 Dec 2023 08:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u7I5ervz"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-54c77d011acso5515a12.1
-        for <kernelci@lists.linux.dev>; Wed, 06 Dec 2023 00:04:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tNpzkTIy"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-54c77d011acso5627a12.1
+        for <kernelci@lists.linux.dev>; Wed, 06 Dec 2023 00:12:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701849838; x=1702454638; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1701850341; x=1702455141; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZpI2ekBK6Uq6GIDWQaxBXvuMSPK97lS7DS6hPqw/r/s=;
-        b=u7I5ervz3tVkn7LfHwEcI6t+q/AOEAGLZoKyy22KhMsv02/stUb8WJr2/l6anfiEDa
-         yhHExebwxJ6twWh2t4pbMNVidpT5OAfue7aYpjM0brSi5y+EiWPPknmgX6Ou+L9DROp6
-         B3LLirG5Z2ZV+GZ3H3LMOBt85cojcU8TqrzMXtpQFnGwaPJr7fK2edV2ftcn+DGtHJzF
-         +8ofLF5QlkrD6t7uoT5rFze9EF8aPNn3li8HqlMWwtzxp7uGB7ba7NRfuIiKQbTNGeT5
-         tw1qH76AxRDQNLEhQxCCOCjEUEd5b2eJlPtGOf5UPEG6ahvfJqE58CnoOo2krEAkRAgs
-         r9pA==
+        bh=9W27k/SFrs04mLSi3/+0v3V0oE5N0VXVkL4an3yZQ5s=;
+        b=tNpzkTIyumrZDQ7OqZWSvU/LOxufgNJm6S5ZNYSUcwbWoVbKBKkBTOCEMw/xW94KgZ
+         sTk+A492MNcaB1RlisMSJQpaClsX54UXkDtXz2b8OBvU+EbR65xNueaJi1UwYS8b7kkQ
+         IJGz5BtMO+ooHZDHwapDTmiaq5OuW+WSVFzorOvvYQmf5oggUHKubVCsi2BIBAtLoJj2
+         Jv2bWiVdsObmcwGkCpI0aIMuK8KC3SMiNnv2eYN3VKUZzytmcO1dyRSppms/h+mjUOxI
+         jfOEdSIZ2Do2lrKSQAfVenPpGAjaVyCT9XC4TRqhHqpu8VcapeA7KXFK4K/LSVuv/VaH
+         2f5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701849838; x=1702454638;
+        d=1e100.net; s=20230601; t=1701850341; x=1702455141;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZpI2ekBK6Uq6GIDWQaxBXvuMSPK97lS7DS6hPqw/r/s=;
-        b=FYQIQSUDIT1736mBo2UPBlGkRVEee9bDMfidlOX9D6v7bRIADIX8hXqdDSFUwoUP1V
-         gegaDqPBp70PidZIUV3EW2AfHmzbE5tvu8jv5dnWnrfiUSvwlDHWWVSppXHKrdm8+9RZ
-         +CUbcU7ZILyuNZ1Vnm7TCBOqD+DbsTnwlfpu4OfvQa2lWfyZ60+MjbAVTvHgtrwMgsCu
-         SWA5aS/Nx2pNTYhL7y+AudZZtcmDQDoVBwvB/dZlOMa3TFI9Dc8W4Gvw5w6zcVtXuSi9
-         G3Ct/mGlyCuLK5k9k0E3zZTLfnPcn3QnMsQNV4OEKI7NO0KqJlv4WX+QVur8a3zsMT1/
-         pAZQ==
-X-Gm-Message-State: AOJu0YyLWR75wyu2TBcm5tf+X4XC79GN+CwIIFaJCWhqTYnRCBDKXzCQ
-	Mklr1t3kvfiR1ymmizFXAAuMXDPe/xly+aGczRpAOQ==
-X-Google-Smtp-Source: AGHT+IEaO+94iDBEXay94ezSPUxJ91cw5Aey+lBPpm7zInTNoW+eAVYUvOH98LT91lcesH3+n2Wv3kvyGNmnBQEJtFc=
+        bh=9W27k/SFrs04mLSi3/+0v3V0oE5N0VXVkL4an3yZQ5s=;
+        b=qJTwbFLmlFkB7Fir0HR/o1x+ypTsTOL02zjQELwzzOYGXZ0x/8CfpcAdWN8mBiL/wU
+         hFFAfLL30NEzYCBi+dBpvp/pPLiNZ7dwD1kWaIgCm5k3zC5sHzh2pDvQWuwMQqxgJOmf
+         z1Q8mf4mpub+8kSInd/gCdTFzSVXEwsg0EpgdHyQIUr5XwdkUauIzyJUpF0gsKNBuFuO
+         TQin53bgSacPlIXeRYaVde3CtnUWq57vSXtp7R+pxc49ZqqEuL9ycZsLhiAEwU+7jSHM
+         mwgqxSSngzyXjSgFRTtlec17J3ltt7FuVvOqjINCSt8UytFYxyaeYRcsGNc/wa8ROHBk
+         dyHQ==
+X-Gm-Message-State: AOJu0Yxzo7NIA9na/uicY2D9+vDze9NTgWJW/SjoySJ8weuAHRYwpMyK
+	UmA+P+jpGMqkLxKjyF4IjNfw66Zn9Zd3wj+uK2562w==
+X-Google-Smtp-Source: AGHT+IEA1ulS5xaDm437Hb3xvdqucH0fEVeqIGpUJmjqFD3gLRCKe/pBXQkQ9tKRQbnJqWloZYVY7bSIH+EBvglbxO4=
 X-Received: by 2002:a50:d744:0:b0:543:fb17:1a8 with SMTP id
- i4-20020a50d744000000b00543fb1701a8mr40204edj.3.1701849838267; Wed, 06 Dec
- 2023 00:03:58 -0800 (PST)
+ i4-20020a50d744000000b00543fb1701a8mr41012edj.3.1701850340503; Wed, 06 Dec
+ 2023 00:12:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -45,13 +45,12 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
- <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com> <20231205184503.79769-7-Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <20231205184503.79769-7-Nikolai.Kondrashov@redhat.com>
+ <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com> <20231205184503.79769-3-Nikolai.Kondrashov@redhat.com>
+In-Reply-To: <20231205184503.79769-3-Nikolai.Kondrashov@redhat.com>
 From: David Gow <davidgow@google.com>
-Date: Wed, 6 Dec 2023 16:03:44 +0800
-Message-ID: <CABVgOSnW1Yzz-1Zdr-k-qWL25yUDZo+jbhPwNkK7dG-8-WonFg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 06/10] MAINTAINERS: Support referencing test docs
- in V:
+Date: Wed, 6 Dec 2023 16:12:09 +0800
+Message-ID: <CABVgOSnCNJcEfVp_k3emEHziYx55ecNaEj4fsbcfgrsCN4CrNQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 02/10] MAINTAINERS: Introduce V: entry for tests
 To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
 Cc: workflows@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
 	Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>, "Theodore Ts'o" <tytso@mit.edu>, 
@@ -60,74 +59,49 @@ Cc: workflows@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
 	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
 	Veronika Kabatova <vkabatov@redhat.com>, CKI <cki-project@redhat.com>, kernelci@lists.linux.dev
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000001ad63b060bd2cb23"
+	boundary="0000000000000dac1f060bd2e9b4"
 
---0000000000001ad63b060bd2cb23
+--0000000000000dac1f060bd2e9b4
 Content-Type: text/plain; charset="UTF-8"
 
 On Wed, 6 Dec 2023 at 02:45, Nikolai Kondrashov
 <Nikolai.Kondrashov@redhat.com> wrote:
 >
-> Support referencing test suite documentation in the V: entries of
-> MAINTAINERS file. Use the '*<name>' syntax (like C pointer dereference),
-> where '<name>' is a second-level heading in the new
-> Documentation/process/tests.rst file, with the suite's description.
-> This syntax allows distinguishing the references from test commands.
+> Introduce a new 'V:' ("Verify") entry to MAINTAINERS. The entry accepts
+> a test suite command which is proposed to be executed for each
+> contribution to the subsystem.
 >
-> Add a boiler-plate Documentation/process/tests.rst file, describing a
-> way to add structured info to the test suites in the form of field
-> lists. Apart from a "summary" and "command" fields, they can also
-> contain a "superset" field specifying the superset of the test suite,
-> helping reuse documentation and express both wider and narrower test
-> sets.
+> Extend scripts/get_maintainer.pl to support retrieving the V: entries
+> when '--test' option is specified.
 >
-> Make scripts/checkpatch.pl load the tests from the file, along with the
-> structured data, validate the references in MAINTAINERS, dereference
-> them, and output the test suite information in the CHECK messages
-> whenever the corresponding subsystems are changed. But only if there was
-> no corresponding Tested-with: tag in the commit message, certifying it
-> was executed successfully already.
+> Require the entry values to not contain the '@' character, so they could
+> be distinguished from emails (always) output by get_maintainer.pl. Make
+> scripts/checkpatch.pl check that they don't.
 >
-> This is supposed to help propose executing test suites which cannot be
-> executed immediately, and need extra setup, as well as provide a place
-> for extra documentation and information on directly-available suites.
+> Update entry ordering in both scripts/checkpatch.pl and
+> scripts/parse-maintainers.pl.
 >
 > Signed-off-by: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
 > ---
 
-I like the idea here, but wonder whether it makes sense to put all of
-these tests into a single 'tests.rst' file. There's already lots of
-existing documentation scattered around the tree, and while keeping
-all of the testing information in one place does have advantages, I
-think there's a lot to be said for keeping subsystem-specific test
-docs alongside the rest of the documentation for the subsystem itself.
-And it'd be less work, as the docs are already there.
+I'm pretty happy with this personally, though I definitely think we
+need the support for tests which aren't just executable scripts (e.g.
+the docs in patch 6).
 
-So, could we just make this a path under Documentation/ (possibly with
-an #anchor if we need to reference just one part of a file)?
+The get_maintailer.pl bits, and hence the requirement to not include
+'@', feel a little bit 'off': I'd rather get_maintainer.pl kept emails
+and tests separate by some other means (either having --test _only_
+print tests, not emails at all, or by giving them a prefix like
+'TEST:' or something). But that is diverging more from the existing
+behaviour of get_maintainer.pl, so I could go either way.
 
-e.g., something like these, all of which are existing docs:
-V: *Documentation/dev-tools/kasan.rst#Tests
-or
-V: *Dcoumentation/RCU/torture.rst
-or
-V: *Documentation/gpu/automated_testing.rst
-or
-V: *Documentation/process/maintainer-kvm-x86.rst#Testing
+Otherwise, this looks pretty good. I'll give it a proper test tomorrow
+alongside the other patches.
 
-(We could even get rid of the '*' and just use 'Documentation/' as a
-prefix, or the executable bit on the file, or similar to distinguish
-these from scripts.)
-
-If we wanted to be very brave, we could extend this further to
-arbitrary webpages, like:
-V: https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git/tree/README
-
-Thoughts?
-
+Cheers,
 -- David
 
---0000000000001ad63b060bd2cb23
+--0000000000000dac1f060bd2e9b4
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -194,14 +168,14 @@ impZAng7ccvvK09K3ZuhwTIxJMsPXCZYsrXWORTw5sczRAP6XvKbPBJnsJoSTe5dFBPBHOQJOGhU
 qWfEfWnWMJPF3LxSGLpLFQXO3RwQqmxv08avwXfVPouh1xuB3FX7rpDabT8YDhu9JgIZkLEKko7L
 yQt6zWwng7k8YF/jGbiAta6VMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
 R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAi
-4zRGZTPrAx8Sdr2fXBo12qgoaqGEkHi0dxeSeXWQZjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMzEyMDYwODAzNThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC5
+frpM5s+CUCA22eqZxX97UypNIPo6SIptoHuGn3v9rjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzEyMDYwODEyMjFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
 BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAeC4llIqdeMMwKOLglV8Z
-XqGVAdlUjsO+cG8/wUtR0TPh7rkgynB+oBlzgf51JYaDqo2tdBn7AK6ECfBx9Hw+4yyyGMY3hRtG
-MdLLgmJlAB4DQtr8DMnsPi9xK1hu+nVkpxCaUzptyCe4FgsBCaXRg4Au7b6z8r7QVSgdcmXcvxxd
-vIly5XegcVB2TFX8v3SuDS4rUDyn8iiqpTwZMQoXuZtlYQP0Ay9txaFOs+Bm1puub+1MjRK2tLfH
-jvJB9xh71J54wPQklybmW3WnGbUKmW18PIw2p/5cZp2UKoVfQWEGAd2yTSEi62E7pC3bckn4ZP/V
-YZMkS2d372hhut0agw==
---0000000000001ad63b060bd2cb23--
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFFQ7jjiyAZ3wB62FGaZY
+PON5cF2LX5hkNFBPXt2McMW3rxAgkS3jI9lFTexfmDS11kLwIwQN9ZR9X1azjTzoNHT1fLV+oehw
+gPJ30fckCQU5kmNozfvoQGfdC6tDalivJCYO7CdrmwOJ+8dcnrpZlWPM2KLWZN/r2blfIwIbKQxf
+qcl0/HHV1hmELSrj2zzkFAw3R/pILnY/w/Je3cnE2j88STMwDfdN8iVItD5sWO/9PFXoi1c/osGu
+VvWqO9D/e/f5sjhJIM1bD5AW9dnWH59wu+ipPCKbjwU120hHtjH3c72cZ3vtt1tl7woZFsMP15M0
+zuutKcFECxPkpQgh7g==
+--0000000000000dac1f060bd2e9b4--
