@@ -1,89 +1,207 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6684F405D8
-	for <kernelci@lists.linux.dev>; Tue,  5 Dec 2023 23:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4638C14F6D
+	for <kernelci@lists.linux.dev>; Wed,  6 Dec 2023 08:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="QL73S9sP"
-Received: from [100.75.103.134] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: padovan)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 5DADD660715D;
-	Tue,  5 Dec 2023 23:38:22 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1701819504;
-	bh=2CZFIUejLgdcAX8+486gEwTLlC8kPQFmxUo3clcFhOU=;
-	h=Date:To:Cc:From:Subject:From;
-	b=QL73S9sPuUGuwn8rgNhwsp5GOmkxycaNKPeOkMyQidqpwQbiE/JNzCs3NSW+Ij7GC
-	 +yQOFy7FX0TbxHGTknKAifrhee+GfAwm3gmHQkXf+3wbX5N4XJNho1Bn5LhXygwcZv
-	 I7K+/f3M6CWNUkkhZJ7jzHgA6gnMCEc3K9eyjdc9mEDlfwOWNnall6ZRCmUzgROtRp
-	 MWK/nuMZ2P3AwKkDSa8Qp1HhF+oK2sQISDFP9aMZmDMweL50JMvfCBUYafhGHYlFi7
-	 OPncCX+T2iUqldZE8Lwi7dJwtPpYBtRPc0svFsd0Bmr/k5pxEmxrX/Ns1NE0slG4RE
-	 x5FLyfqQeeEkQ==
-Message-ID: <5d48c1fa-d577-6f4c-5d3c-37884053e1a9@collabora.com>
-Date: Tue, 5 Dec 2023 20:38:17 -0300
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u7I5ervz"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-54c77d011acso5515a12.1
+        for <kernelci@lists.linux.dev>; Wed, 06 Dec 2023 00:04:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1701849838; x=1702454638; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZpI2ekBK6Uq6GIDWQaxBXvuMSPK97lS7DS6hPqw/r/s=;
+        b=u7I5ervz3tVkn7LfHwEcI6t+q/AOEAGLZoKyy22KhMsv02/stUb8WJr2/l6anfiEDa
+         yhHExebwxJ6twWh2t4pbMNVidpT5OAfue7aYpjM0brSi5y+EiWPPknmgX6Ou+L9DROp6
+         B3LLirG5Z2ZV+GZ3H3LMOBt85cojcU8TqrzMXtpQFnGwaPJr7fK2edV2ftcn+DGtHJzF
+         +8ofLF5QlkrD6t7uoT5rFze9EF8aPNn3li8HqlMWwtzxp7uGB7ba7NRfuIiKQbTNGeT5
+         tw1qH76AxRDQNLEhQxCCOCjEUEd5b2eJlPtGOf5UPEG6ahvfJqE58CnoOo2krEAkRAgs
+         r9pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701849838; x=1702454638;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZpI2ekBK6Uq6GIDWQaxBXvuMSPK97lS7DS6hPqw/r/s=;
+        b=FYQIQSUDIT1736mBo2UPBlGkRVEee9bDMfidlOX9D6v7bRIADIX8hXqdDSFUwoUP1V
+         gegaDqPBp70PidZIUV3EW2AfHmzbE5tvu8jv5dnWnrfiUSvwlDHWWVSppXHKrdm8+9RZ
+         +CUbcU7ZILyuNZ1Vnm7TCBOqD+DbsTnwlfpu4OfvQa2lWfyZ60+MjbAVTvHgtrwMgsCu
+         SWA5aS/Nx2pNTYhL7y+AudZZtcmDQDoVBwvB/dZlOMa3TFI9Dc8W4Gvw5w6zcVtXuSi9
+         G3Ct/mGlyCuLK5k9k0E3zZTLfnPcn3QnMsQNV4OEKI7NO0KqJlv4WX+QVur8a3zsMT1/
+         pAZQ==
+X-Gm-Message-State: AOJu0YyLWR75wyu2TBcm5tf+X4XC79GN+CwIIFaJCWhqTYnRCBDKXzCQ
+	Mklr1t3kvfiR1ymmizFXAAuMXDPe/xly+aGczRpAOQ==
+X-Google-Smtp-Source: AGHT+IEaO+94iDBEXay94ezSPUxJ91cw5Aey+lBPpm7zInTNoW+eAVYUvOH98LT91lcesH3+n2Wv3kvyGNmnBQEJtFc=
+X-Received: by 2002:a50:d744:0:b0:543:fb17:1a8 with SMTP id
+ i4-20020a50d744000000b00543fb1701a8mr40204edj.3.1701849838267; Wed, 06 Dec
+ 2023 00:03:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- "automated-testing@lists.yoctoproject.org"
- <automated-testing@lists.yoctoproject.org>,
- "kernelci-webdashboard@groups.io" <kernelci-webdashboard@groups.io>
-Cc: =?UTF-8?Q?Jo=c3=a3o_Bertacchi?= <joaobertacchi@profusion.mobi>,
- Ricardo Dourado <ricardo.dourado@profusion.mobi>
-From: Gustavo Padovan <gustavo.padovan@collabora.com>
-Subject: KernelCI is designing a new Web Dashboard: we want your feedback!
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
+ <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com> <20231205184503.79769-7-Nikolai.Kondrashov@redhat.com>
+In-Reply-To: <20231205184503.79769-7-Nikolai.Kondrashov@redhat.com>
+From: David Gow <davidgow@google.com>
+Date: Wed, 6 Dec 2023 16:03:44 +0800
+Message-ID: <CABVgOSnW1Yzz-1Zdr-k-qWL25yUDZo+jbhPwNkK7dG-8-WonFg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 06/10] MAINTAINERS: Support referencing test docs
+ in V:
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: workflows@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>, "Theodore Ts'o" <tytso@mit.edu>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, "Darrick J . Wong" <djwong@kernel.org>, 
+	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
+	Veronika Kabatova <vkabatov@redhat.com>, CKI <cki-project@redhat.com>, kernelci@lists.linux.dev
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000001ad63b060bd2cb23"
 
-Hello,
+--0000000000001ad63b060bd2cb23
+Content-Type: text/plain; charset="UTF-8"
 
-TL;DR: KernelCI engaged with an UX speacialist vendor to design a new 
-web dashboard to show our test results data. If you want to give your 
-feedback, let us know. We still have a few spots for UX interviews!
+On Wed, 6 Dec 2023 at 02:45, Nikolai Kondrashov
+<Nikolai.Kondrashov@redhat.com> wrote:
+>
+> Support referencing test suite documentation in the V: entries of
+> MAINTAINERS file. Use the '*<name>' syntax (like C pointer dereference),
+> where '<name>' is a second-level heading in the new
+> Documentation/process/tests.rst file, with the suite's description.
+> This syntax allows distinguishing the references from test commands.
+>
+> Add a boiler-plate Documentation/process/tests.rst file, describing a
+> way to add structured info to the test suites in the form of field
+> lists. Apart from a "summary" and "command" fields, they can also
+> contain a "superset" field specifying the superset of the test suite,
+> helping reuse documentation and express both wider and narrower test
+> sets.
+>
+> Make scripts/checkpatch.pl load the tests from the file, along with the
+> structured data, validate the references in MAINTAINERS, dereference
+> them, and output the test suite information in the CHECK messages
+> whenever the corresponding subsystems are changed. But only if there was
+> no corresponding Tested-with: tag in the commit message, certifying it
+> was executed successfully already.
+>
+> This is supposed to help propose executing test suites which cannot be
+> executed immediately, and need extra setup, as well as provide a place
+> for extra documentation and information on directly-available suites.
+>
+> Signed-off-by: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+> ---
 
+I like the idea here, but wonder whether it makes sense to put all of
+these tests into a single 'tests.rst' file. There's already lots of
+existing documentation scattered around the tree, and while keeping
+all of the testing information in one place does have advantages, I
+think there's a lot to be said for keeping subsystem-specific test
+docs alongside the rest of the documentation for the subsystem itself.
+And it'd be less work, as the docs are already there.
 
-As we shared previously, we are in the process of designing a new Web 
-Dashboard for KernelCI. As you may know, at same time, we are putting 
-together a new core infra to replace our legacy and limited system.
+So, could we just make this a path under Documentation/ (possibly with
+an #anchor if we need to reference just one part of a file)?
 
-Ultimately, we will have a CI pipeline that allows tests to be run not 
-only in KernelCI labs but outside of it too, but with test results 
-contributed back to the already available common database. Then on top 
-that, we want to have a powerful dashboard to help the community 
-evaluate the test results in the best manner possible.
+e.g., something like these, all of which are existing docs:
+V: *Documentation/dev-tools/kasan.rst#Tests
+or
+V: *Dcoumentation/RCU/torture.rst
+or
+V: *Documentation/gpu/automated_testing.rst
+or
+V: *Documentation/process/maintainer-kvm-x86.rst#Testing
 
-You can read our blog post for a quick summary of the UX redesign 
-project: https://kernelci.org/blog/posts/2023/ux-analysis/
+(We could even get rid of the '*' and just use 'Documentation/' as a
+prefix, or the executable bit on the file, or similar to distinguish
+these from scripts.)
 
-We have just started the first phase with the UX team interviewing 
-kernel maintainers and other users of KernelCI.
+If we wanted to be very brave, we could extend this further to
+arbitrary webpages, like:
+V: https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git/tree/README
 
-If you are interested in providing your feedback just reply to this 
-email or reach out to me directly. We will try to accommodate everyone 
-that is interested.
+Thoughts?
 
-Regards,
+-- David
 
-- Gus (as Project Manager for the KernelCI project)
+--0000000000001ad63b060bd2cb23
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
--- 
-Gustavo Padovan
-Kernel Lead
-
-Collabora Ltd.
-Platinum Building, St John's Innovation Park
-Cambridge CB4 0DS, UK
-Registered in England & Wales, no. 5513718
-
+MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+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
+ddIn9n5Jt6Z1o79zxraLMEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
+AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
+c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
+LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
+LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
+Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQBtHFwIgQZjer5K
+H+4Q+wns10k7qN+4wN2Uf+JsyOYjukaMEgdLErfA1wwtQ9uHkoYQZcWBuVVkQFa5hI+sqI2m1Weq
+riMCFSiU38s1tADdMX12IMfJRN60Nznhrw+nPyDRZqRhUTW24TwnHorkDnFPW8PHo7fAw4FrpI0n
+impZAng7ccvvK09K3ZuhwTIxJMsPXCZYsrXWORTw5sczRAP6XvKbPBJnsJoSTe5dFBPBHOQJOGhU
+qWfEfWnWMJPF3LxSGLpLFQXO3RwQqmxv08avwXfVPouh1xuB3FX7rpDabT8YDhu9JgIZkLEKko7L
+yQt6zWwng7k8YF/jGbiAta6VMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
+R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
+MDIwAhABzgV+4+mJnUzG7XDy6d2uMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAi
+4zRGZTPrAx8Sdr2fXBo12qgoaqGEkHi0dxeSeXWQZjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzEyMDYwODAzNThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAeC4llIqdeMMwKOLglV8Z
+XqGVAdlUjsO+cG8/wUtR0TPh7rkgynB+oBlzgf51JYaDqo2tdBn7AK6ECfBx9Hw+4yyyGMY3hRtG
+MdLLgmJlAB4DQtr8DMnsPi9xK1hu+nVkpxCaUzptyCe4FgsBCaXRg4Au7b6z8r7QVSgdcmXcvxxd
+vIly5XegcVB2TFX8v3SuDS4rUDyn8iiqpTwZMQoXuZtlYQP0Ay9txaFOs+Bm1puub+1MjRK2tLfH
+jvJB9xh71J54wPQklybmW3WnGbUKmW18PIw2p/5cZp2UKoVfQWEGAd2yTSEi62E7pC3bckn4ZP/V
+YZMkS2d372hhut0agw==
+--0000000000001ad63b060bd2cb23--
