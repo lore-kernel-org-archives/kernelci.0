@@ -1,55 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B414653A
-	for <kernelci@lists.linux.dev>; Wed,  6 Dec 2023 16:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43DD3BB30
+	for <kernelci@lists.linux.dev>; Wed,  6 Dec 2023 16:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DoqKhGRB"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aFML5kFJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701879367;
+	s=mimecast20190719; t=1701879680;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yV+EAjFiNperhRT8qfQcFC8inivxo54rtgnFwg4w55c=;
-	b=DoqKhGRBAh97X6riznhTORyE8RjcMugN4ZfhtM6a5V1a31zAqO7HcsuCIl0a+Y6vBCXgFH
-	xST7e926zitS3ZDj1NNhs5i5FLmAKcmA2Aa9Ia9FNb4BYheSxzwoWHJyF2OkfNC88sphO0
-	i5fqZwPlZm24RJf3L424c/0X/0xYWhs=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jnDM1HJKqWOdQigrGIN1Lmh2VUfuZ+5e9f0FasCk2Cg=;
+	b=aFML5kFJGwHZIWgcTf1/mGJfW+Nc+JwLd0ID7Rss04gY+24QmOs9Y7IJ1dsU5a16rZkerZ
+	uLZZ4FnZaHyAW1dVLtwBQyhCJJBRepWjtd0l0F1vNt3V51Vyzdl96lmg1BGRg0/wMVnavc
+	Y7lixbDME8qIOuIpr6N5IBcERzw7mlA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-z5rZCdDBPvu0RLGVEQln0A-1; Wed, 06 Dec 2023 11:16:04 -0500
-X-MC-Unique: z5rZCdDBPvu0RLGVEQln0A-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-332e82bb756so542844f8f.1
-        for <kernelci@lists.linux.dev>; Wed, 06 Dec 2023 08:16:04 -0800 (PST)
+ us-mta-231-OBODaQwIOQqV_bTtVse7MA-1; Wed, 06 Dec 2023 11:21:18 -0500
+X-MC-Unique: OBODaQwIOQqV_bTtVse7MA-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-33335c6d495so744248f8f.2
+        for <kernelci@lists.linux.dev>; Wed, 06 Dec 2023 08:21:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701879363; x=1702484163;
+        d=1e100.net; s=20230601; t=1701879677; x=1702484477;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yV+EAjFiNperhRT8qfQcFC8inivxo54rtgnFwg4w55c=;
-        b=nN9HY6kpQ4xg7GO5uH1BpAkEqdBQ7eMCgKxSnDx3RTbMoeeqBj7M4pDSuQoMWTsZYh
-         qyrzZIxqBq3sKDix6V3IRkxu8h4W10HrpC/cb0qWLfZ+tM9RseHWwpsZrJOxAGarpwdo
-         20SkMwtKhZG4xhS+wcmPXjwSkqnD1tX+Ifs/uOKTWACpsNNZAyY+zTyCAd5TrkMv9GAH
-         oapp7sx4VG18FxiW0MJ2yod45RNHWmKErQmxmaXZFG8FF+p7gqvwyWPGrBdg+xxb8vUc
-         cMh5VQ+/DxqFWMR4w5rqOP2XH53PETQ+WgyO071DOeK88Rxx9P9rtwLKKzbjYBdgpRUV
-         AQPg==
-X-Gm-Message-State: AOJu0YzrH68jtOuBC2m18qzdFbROkF3w6BuKi1ppCh+bt/zp6xXWkemr
-	LaVZHgjfMz4aDT8sUde5S9NFA6XWJt1Xd7Tq4qom0Z3fXQCz9cvQV4rM3xHCmgSOEoVzDz2eDUX
-	BvwL5Gqc5jBnB30a3fb8=
-X-Received: by 2002:adf:e0d2:0:b0:333:18f6:e1d1 with SMTP id m18-20020adfe0d2000000b0033318f6e1d1mr663767wri.4.1701879363669;
-        Wed, 06 Dec 2023 08:16:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGTaUa0QpxcS/ure11HIYA1UTotIBwm18sFisuwlNoxHyxz08KDkgP4xAFLPJmyFS2n0/MTpg==
-X-Received: by 2002:adf:e0d2:0:b0:333:18f6:e1d1 with SMTP id m18-20020adfe0d2000000b0033318f6e1d1mr663760wri.4.1701879363301;
-        Wed, 06 Dec 2023 08:16:03 -0800 (PST)
+        bh=jnDM1HJKqWOdQigrGIN1Lmh2VUfuZ+5e9f0FasCk2Cg=;
+        b=H/fwx2XD+Oz3C0py7vJ1UejGKHP5jo5AzpiA7JTmxmYgU9tWg8Oi7Gk+eOP+8CsJb9
+         SKGenAzzglDfjjnxf7eNs/REFO7IQp49kshOCq4R7G+p9A2ItdjRQ7dr2qL5Yen44DA9
+         Jge+yMYgeKAzHAKeKgCVy0FsGfTxyCpbGUiF5m2z4Bzysbj41eWKd0XcW4zD+veZ5ID2
+         MolKVGpMCBu2m3ldGFwvueG4ptHovATDQvEIwNGZVjPXe9BJ8GfeaevOAG1KhCCk8FvN
+         i/OkDysbhoQ5iCuSASst4DtTcaXBTZF73JWvRURCK1BXIJGy37DVtYa/RZ3EunnqbAk2
+         iC3A==
+X-Gm-Message-State: AOJu0YxvV0MMheSt4hLlad5SBw/fZEcyHOMTLbENbz/Qo6X0J1oIqe7k
+	cz6STcaRdpWx+earLOmq57Z5McAP5dlUphNSC/9gbdDYOfS7ByooPAoWo1+il4VvfSmShyB7gqk
+	8bEj18jlCbwiQ39Rj3vE=
+X-Received: by 2002:a05:6000:104c:b0:333:381d:6a26 with SMTP id c12-20020a056000104c00b00333381d6a26mr659630wrx.135.1701879676953;
+        Wed, 06 Dec 2023 08:21:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE0M8npnzyq3aNQOSPp1ixrdvrLxRqjwbHwEtuDDUKK7QuZkJOge4GzDtikk9SdC8IxUFmI1Q==
+X-Received: by 2002:a05:6000:104c:b0:333:381d:6a26 with SMTP id c12-20020a056000104c00b00333381d6a26mr659614wrx.135.1701879676675;
+        Wed, 06 Dec 2023 08:21:16 -0800 (PST)
 Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id e25-20020adfa459000000b0033338c3ba42sm37676wra.111.2023.12.06.08.16.01
+        by smtp.gmail.com with ESMTPSA id a5-20020a5d53c5000000b003333c2c313bsm46918wrw.100.2023.12.06.08.21.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Dec 2023 08:16:02 -0800 (PST)
-Message-ID: <7f662f61-330a-4134-b1a4-4bffcc4040d3@redhat.com>
-Date: Wed, 6 Dec 2023 18:16:00 +0200
+        Wed, 06 Dec 2023 08:21:16 -0800 (PST)
+Message-ID: <5baadfe9-089d-4802-8f9f-5ed49103710c@redhat.com>
+Date: Wed, 6 Dec 2023 18:21:14 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -57,8 +57,7 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 01/10] get_maintainer: Survive querying missing
- files
+Subject: Re: [RFC PATCH v2 02/10] MAINTAINERS: Introduce V: entry for tests
 To: Joe Perches <joe@perches.com>, workflows@vger.kernel.org,
  Jonathan Corbet <corbet@lwn.net>, Andy Whitcroft <apw@canonical.com>,
  Theodore Ts'o <tytso@mit.edu>, David Gow <davidgow@google.com>,
@@ -70,69 +69,39 @@ Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
  kernelci@lists.linux.dev
 References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
  <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com>
- <20231205184503.79769-2-Nikolai.Kondrashov@redhat.com>
- <9fe310a9d4486ecf57669bf7b44a49c1788452c1.camel@perches.com>
+ <20231205184503.79769-3-Nikolai.Kondrashov@redhat.com>
+ <7181366346c744a544515f69b1c21d5dba6ab25a.camel@perches.com>
 From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <9fe310a9d4486ecf57669bf7b44a49c1788452c1.camel@perches.com>
+In-Reply-To: <7181366346c744a544515f69b1c21d5dba6ab25a.camel@perches.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Joe,
-
-On 12/5/23 20:55, Joe Perches wrote:
+On 12/5/23 20:58, Joe Perches wrote:
 > On Tue, 2023-12-05 at 20:02 +0200, Nikolai Kondrashov wrote:
->> Do not die, but only warn when scripts/get_maintainer.pl is asked to
->> retrieve information about a missing file.
->>
->> This allows scripts/checkpatch.pl to query MAINTAINERS while processing
->> patches which are removing files.
+>> Require the entry values to not contain the '@' character, so they could
+>> be distinguished from emails (always) output by get_maintainer.pl.
 > 
 > Why is this useful?
-> 
-> Give a for-instance example please.
+> Why the need to distinguish?
 
-Sure! Take the ebb0130dad751e88c28ab94c71e46e8ee65427c9 commit for example.
+This is because get_maintainer.pl seems to insist on *always* outputting 
+emails. I guess that was its sole original purpose, and it stuck to it? It 
+kinda makes sense to me, especially given the name of the script, but at the 
+same time, as a consequence you can't query *only* the tests (or anything but 
+emails, really).
 
-It removes a file (and recreates it in another format, but that's besides the 
-point) which belongs to four subsystems.
+Therefore we have to be able to somehow filter out the emails from the 
+get_maintainer.pl output, to get only the tests. Email addresses *have* to 
+have the '@' character (seems to be the only reliable thing about them :D), so 
+naturally I chose that as the way to distinguish them from the tests.
 
-This will work OK:
+It's ugly, but considering the get_maintainer.pl legacy, it's good enough.
 
-scripts/get_maintainer.pl 
-0001-dt-bindings-mailbox-convert-bcm2835-mbox-bindings-to.patch
+I don't mind changing get_maintainer.pl, though, to stop it from outputting 
+emails (e.g. given an option), if that works for everyone involved.
 
-But if we try to give the file being removed to get_maintainer.pl directly:
-
-scripts/get_maintainer.pl -f 
-Documentation/devicetree/bindings/mailbox/brcm,bcm2835-mbox.txt
-
-It will abort with the following message:
-
-scripts/get_maintainer.pl: file 
-'Documentation/devicetree/bindings/mailbox/brcm,bcm2835-mbox.txt' not found
-
-Even though the state of the source tree we're running this on is *exactly* 
-the same.
-
-The latter (using the -f option) is the way checkpatch.pl works to fetch the 
-maintenance status (in is_maintained_obsolete()), and the way I implemented 
-fetching the tests from MAINTAINERS (in get_file_proposed_tests()).
-
-This way seems to work better for checkpatch.pl, I suppose, because it can 
-link the error message to a specific file. But in principle, it might be 
-possible to just call get_maintainer.pl on every patch, if we really have to.
-
-However, I feel that conceptually it should be possible to query MAINTAINERS 
-without actual *source* files being present in the tree (as opposed to patch 
-files which it needs to read), or even the tree being there at all.
-
-I saw that we are printing a warning if the queried file is not there in the 
-git repo (I guess it's helpful?), and thought perhaps we can do the same 
-without the git repo too.
-
-Hope that helps!
 Nick
 
