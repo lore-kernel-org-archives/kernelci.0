@@ -1,76 +1,79 @@
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32AB17EA
-	for <kernelci@lists.linux.dev>; Sat,  9 Dec 2023 05:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E226524B27
+	for <kernelci@lists.linux.dev>; Mon, 11 Dec 2023 10:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="hIdjkkSI"
-Received: from [100.97.141.225] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jenysadadia)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 8D55A6607385
-	for <kernelci@lists.linux.dev>; Sat,  9 Dec 2023 05:47:41 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1702100862;
-	bh=ql59A+7wRpnvgJqm//5dr4kCz1MhHtzkH4oRqLVw2E4=;
-	h=Date:To:From:Subject:From;
-	b=hIdjkkSIQmuJBoriLE0F3I0KDDBb4z40k7tVoz62jiQCyLUVSWQWc0MbrJmEwNe7u
-	 tnknUgf/ii9DrUAvD/ByPNxSk5MDpXv0LFK9BC8Orhkv2ao/6KMCoc6Fz6XsYGhZ0c
-	 aWdDNPG0ZXucF/mqlPynf/l7RVtrJQC77Te77eTe8Ax1ScLcZ65x2DA2D+KymPc9Av
-	 FOBJS+d/96D3p3/HYHAXi2yfiSZksxMgy57XzFTw5XTdQh2Qg/eA60n1U+YpgKRKKz
-	 PW3l+Nrm9MWR/sFOF0ehi9YrAGc358VlOd0NNrGMfUPrUCKWXg3DMctytNanRbXkVH
-	 89UQuADv6dJfA==
-Message-ID: <9895985b-e40f-40ed-936a-a27307343f53@collabora.com>
-Date: Sat, 9 Dec 2023 11:17:31 +0530
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="pEqrtL8s"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B8859C0008;
+	Mon, 11 Dec 2023 10:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1702290448;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+/6heu20jtCcIBVW1PeAd2EU7XcCrMayd8BzvJVbKvQ=;
+	b=pEqrtL8sGh+F5Zzhdw5gJm5o0fjEbzTc1sRuBydTQ34vMtdSv+F+sNTPCCwJyLjrWQK+Oj
+	gEwDdvxt97/I8APMfZJ9Ql8KYRRZxFc7MEIWXiy8CthwUAqlwHC/4Hs5PY8EJc/ZIpdxAK
+	2H9ZKtNO55oVrDBKcajAE8ZAPa9uh46IMV5to2ARTia79r1l7trs/6kyxMh5p0trTlG6GZ
+	uM+JkWsLsfvmNt0n1E4G0zFhz7AO8y8U+FF+BknV5jTCeb/j2YSOzm0LAokNOmPnh5Q7wR
+	fGPHxp7D5yQYvBSUGFfF0eEJlF9kmbmv6mWDFPoYYMSfd+S6f8mpkFtNUd91ew==
+Message-ID: <7209686a-ce1c-49d1-bc09-3adbb0e009c0@gtucker.io>
+Date: Mon, 11 Dec 2023 11:27:27 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: kernelci@lists.linux.dev
-From: Jeny Sheth <jeny.sadadia@collabora.com>
-Subject: KernelCI API: Email Templates for User Management
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: KernelCI API: Email Templates for User Management
+Content-Language: en-GB
+To: Jeny Sheth <jeny.sadadia@collabora.com>, kernelci@lists.linux.dev
+References: <9895985b-e40f-40ed-936a-a27307343f53@collabora.com>
+Cc: kernelci-webdashboard@groups.io
+From: Guillaume Tucker <gtucker@gtucker.io>
+Organization: gtucker.io
+In-Reply-To: <9895985b-e40f-40ed-936a-a27307343f53@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
 
-Hello,
++kernelci-webdashboard
 
-We have recently integrated 'fastapi-users'[1]package for user 
-management functionalities
-in the new API.
-With the integration, we have enabled support for email verification and 
-password reset
-via email for user accounts.
+On 09/12/2023 06:47, Jeny Sheth wrote:
+> Hello,
+> 
+> We have recently integrated 'fastapi-users'[1]package for user management functionalities
+> in the new API.
+> With the integration, we have enabled support for email verification and password reset
+> via email for user accounts.
+> 
+> The API uses 'jinja2' templates for sending emails to the user for the above-mentioned
+> requests i.e. email verification and password reset. The initial email templates have been
+> added here[2]. These templates arebasic and contain only the required information for the
+> user.
+> 
+> We would love to hear from the community about how we can make these emails better and
+> how they should look from the user's pov.
+> I have initiated a Github discussion[3] to take this further. Please feel free to drop any
+> comments/suggestions you may have.
 
-The API uses 'jinja2' templates for sending emails to the user for the 
-above-mentioned
-requests i.e. email verification and password reset. The initial email 
-templates have been
-added here[2]. These templates arebasic and contain only the required 
-information for the
-user.
+Thanks for this.  I believe it's especially something for our
+newly appointed UX experts to provide some feedback on with best
+practices etc. as I would expect regular users to want this
+to "just work".  I guess one particular requirement might be that
+the emails are plain-text only and usable in a terminal client
+such as mutt.
 
-We would love to hear from the community about how we can make these 
-emails better and
-how they should look from the user's pov.
-I have initiated a Github discussion[3] to take this further. Please 
-feel free to drop any
-comments/suggestions you may have.
+Cheers,
+Guillaume
 
-
-Thank you,
-Jeny
-
-
-[1] https://pypi.org/project/fastapi-users/
-[2] https://github.com/kernelci/kernelci-api/tree/main/templates
-[3] https://github.com/kernelci/kernelci-project/discussions/275
-
+> [1] https://pypi.org/project/fastapi-users/
+> [2] https://github.com/kernelci/kernelci-api/tree/main/templates
+> [3] https://github.com/kernelci/kernelci-project/discussions/275
 
