@@ -1,28 +1,27 @@
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AA02CCDD
-	for <kernelci@lists.linux.dev>; Wed, 13 Dec 2023 13:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3442D1DA29
+	for <kernelci@lists.linux.dev>; Mon, 18 Dec 2023 20:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="aNCcX/L1"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 26F7B1C0006;
-	Wed, 13 Dec 2023 13:30:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="EfJpKrOr"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F26041C0002;
+	Mon, 18 Dec 2023 20:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1702474204;
+	t=1702931659;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HciAWFsqkTxL2YfZMqDwMzCKBXTjDgpSa3BIdLw1iBs=;
-	b=aNCcX/L1lLEUCaI+nAphi60hLG1V6H/zJUUUQdovJM0PG7ClWWHhQNHhZZE7KzdgObaL0H
-	/pxH7yGkUUrC9OSKj+xA1CuDkQlJYYcyMaIOwZqcN525TlLHDDraNR/f/QJceUlR8K6MCs
-	RZ66ckPUrqxam7KtTipV56LU4EY27KXcnmGoCvm5Fz3R9VUVOWGcr9n5xdsDCByavM/gFb
-	M7pPohCK0AM04k7LlCwwWNFRbx4Y55wzJgOkUf+NYcyDta3fks+Y2rSJijIA+Eu+JPjO3K
-	XW0nX7kv0uZ/gFgWZbnCP0M3tmKRM+K9rvriw42lFsDp4cxznN2PGQpJQ9nRjA==
-Message-ID: <92a45817-cd45-c132-a8fc-b2f057d388d9@gtucker.io>
-Date: Wed, 13 Dec 2023 14:30:03 +0100
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I8DivkZbN6ZypS+FMFxow8wP9uuJREADNY4b4Nx46AY=;
+	b=EfJpKrOrb5z1wFLmcHLo/bXM4KXdcDoqTDyZIsj8yuVVyaxGTcX2Kmzxhtq+v/96TcvhOr
+	NeDpZ1HOh37hAlXOtI6JRSdG9jhVwJTY3GwDWEIVv5HFhYG4SsJw5mVaRsUSqWzKhb/iYN
+	wK09DkkqUVR0dkhLRaBNrHnJ5keOT78aMNnIyLtS3jWRRev5fnQsEl2zdJBtQKXSFAQQgE
+	E4Y7nwsl70GSNd1qMy9PyFRHuX4dpDQPwYoQ/AhD9k82p0NxwDSj7ID2y5QOEKAdy75uTQ
+	mpnwbLVUT621CRTZiqQNzJguHyqmhopyCX7G88hVJQYAvY/lfztBsXzyJHhxew==
+Message-ID: <260bfac4-0d48-2a10-e15d-75695ae12544@gtucker.io>
+Date: Mon, 18 Dec 2023 21:34:15 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -31,97 +30,70 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: stable/LTS test report from KernelCI (2023-12-08)
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Gustavo Padovan <gustavo.padovan@collabora.com>, stable@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Shreeya Patel <shreeya.patel@collabora.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-References: <738c6c87-527e-a1c2-671f-eed6a1dbaef3@collabora.com>
- <2023120846-taste-saga-c4a9@gregkh>
- <1ca05280-a03c-66c0-cd67-87c58c8f3929@gtucker.io>
- <2023121131-delirious-roster-e729@gregkh>
 Content-Language: en-GB
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
 From: Guillaume Tucker <gtucker@gtucker.io>
+Subject: TSC votes and updates
 Organization: gtucker.io
-In-Reply-To: <2023121131-delirious-roster-e729@gregkh>
+Cc: kernelci-members <kernelci-members@groups.io>, kernelci-tsc@groups.io
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: gtucker@gtucker.io
 
-On 11/12/2023 14:07, Greg KH wrote:
-> On Mon, Dec 11, 2023 at 11:14:03AM +0100, Guillaume Tucker wrote:
->> On a related topic, it was once mentioned that since stable
->> releases occur once a week and they are used as the basis for
->> many distros and products, it would make sense to have
->> long-running tests after the release has been declared.  So we
->> could have say, 48h of testing with extended coverage from LTP,
->> fstests, benchmarks etc.  That would be a reply to the email with
->> the release tag, not the patch review.
-> 
-> What tests take longer than 48 hours?
+As per last week's TSC monthly meeting, a number of votes
+resulted in the following changes:
 
-Well, I'm not sure what you're actually asking here.  Strictly
-speaking, some benchmarks and fuzzing can run for longer than
-48h.
 
-What I meant is that testing is always open-ended, we could run
-tests literally forever on every kernel revision if we wanted to.
-For maintainer trees, it's really useful to have a short feedback
-loop and get useful results within say, 1h.  For linux-next and
-mainline, maybe more testing can be done and results could take
-up to 4h to arrive.  Then for stable releases (not stable-rc), as
-they happen basically once a week and are adopted as a base
-revision by a large group of users, it would make sense to have a
-bigger "testing budget" and allow up to maybe 48h of testing
-efforts.  As to how to make best use of this time, there are
-various ways to look at it.
+**Jeny has now joined the TSC**
 
-I would suggest to first run the tests that aren't usually run
-such as some less common fstests combinations as well as some LTP
-and kselftests suites that take more than 30 min to complete.
-Also, if there are any reproducers for the fixes that have been
-applied to the stable branch then they could be run as true
-regression testing to confirm these issues don't come back.  Then
-some additional benchmarks and tests that are known to "fail"
-occasionally could also be run to gather more stats.  This could
-potentially show trends in case of say, performance deviation
-over several months on LTS with finer granularity.
+Jeny has played a key role in bootstrapping the new API &
+Pipeline and has been a maintainer for kernelci-api and
+kernelci-pipeline for a couple of years, so joining the TSC is
+now a natural progression.  Congratulations and best of luck!
 
->> I've mentioned before the concept of finding "2nd derivatives" in
->> the rest results, basically the first delta gives you all the
->> regressions and then you do a delta of the regressions to find
->> the new ones.  Maintainer trees would be typically comparing
->> against mainline or say, the -rc2 tag where they based their
->> branch.  In the case of stable, it would be between the stable-rc
->> branch being tested and the base stable branch with the last
->> tagged release.
-> 
-> Yes, that is going to be required for this to be useful.
+You can find the updated list of TSC members on the website:
 
-OK thanks for confirming.
+  https://kernelci.org/docs/org/tsc/#members
 
->> One last thing, I see there's a change in KernelCI now to
->> actually stop sending the current (suboptimal) automated reports
->> to the stable mailing list:
->>
->>   https://github.com/kernelci/kernelci-jenkins/pull/136
->>
->> Is this actually what people here want?
-> 
-> If these reports are currently for me, I'm just deleting them as they
-> provide no value anymore.  So yes, let's stop this until we can get
-> something that actually works for us please.
 
-Right, I wasn't sure if anyone else was interested in them.  It
-sounds like Sasha doesn't really need them either, although he
-wrote on IRC that he wouldn't disable them until something better
-was in place.  I would suggest sending at least an email to the
-stable list to propose to stop these emails with a particular
-date and ideally some kind of plan about when some new emails
-would be available to replace them.  But if really nobody else
-than you needs the current emails, then effectively nobody needs
-them and we can stop now of course.
+**Denys has now gained the following access rights:**
 
-Cheers,
+  * GitHub KernelCI organization owner
+  * kernelci-project repository maintainer
+  * Docker Hub administrator
+
+Thanks Denys for being available to pick up these various roles
+which are complementary to the SysAdmin working group lead.  Best
+of luck as well!
+
+
+The detail of the motions which were voted last week can be found
+on the website:
+
+  https://kernelci.org/docs/org/tsc/votes/#2023-12-14
+
+
+**Dealing with abstentions**
+
+One thing that was discussed but failed to reach a clear outcome
+yet is about dealing with abstentions in TSC votes, see this PR:
+
+  https://github.com/kernelci/kernelci-project/pull/298
+
+So, if you have some relevant experience in other community
+projects and want to share some advice then please do.
+
+
+**Looking for a new Chair**
+
+In January, we'll be looking for a new TSC Chair.  In any case, I
+think it would be valuable to onboard one or two new members from
+the wider kernel community such as well established maintainers
+who have an interest in automated testing.  I'll still be around
+during the next couple of months to help get someone new up to
+speed if needed.  So if you're interested or know someone, please
+reach out to me or anyone from the TSC.  Thanks!
+
+Best wishes,
 Guillaume
+
