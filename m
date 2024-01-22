@@ -1,91 +1,137 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D69814276
-	for <kernelci@lists.linux.dev>; Mon,  8 Jan 2024 10:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C503EA78
+	for <kernelci@lists.linux.dev>; Mon, 22 Jan 2024 18:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705949747; cv=none; b=EMMMdDsUnMJhNi6QjUi19dcdtFGtwwiPFOKHHuQJpPk6FMrSVIvZQFBOxt2TBpmx0CYNYb1oUz+tCDt7RW5oQOkfdiLbYRi56jp/pRkaXCsxg9c5iOhsr/19DM0n+RUpESPXB+ngPtDHBjoixj2NwhIMWaBjlweNsZOTTCDF3jc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705949747; c=relaxed/simple;
+	bh=/kA5lAH45fxwuthlEiD+vf1dP3hl/faQzu+RmcAfVWk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qKynYROAgh1FJoF0yEIgPg3fyQt8v1VlqavFmSPRBZsDySTOZGRin9fbAFfvClTM/LJ5UwFU1nsaJ4A/ZlkHDpymO8wreMDKXWGnXwp2/gS0/L50PLn1SYe6DqG3n/e0E8U3Mip8Nf9BiCc/J/wdZinNL5zw+DaMJ9B4nvMRIVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=I+gkp7Ma; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XOP41iJx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704710553;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x+r2fYi5GswwOIpq/KUCbsfARWs5bIzb/5yg8FLKiuo=;
-	b=XOP41iJxNDBRT1Hc7O5oCKPkHY4cTF6Gbh2IhR8w3kemyn1t+Rc9x/s+zarCFIZo6nGtWD
-	0hXwYt1lgJReMHHvODkcp+FjL1N571i9KRlfGHaua5D4AeFNwSuaG/4gSIxrEf974UPKr5
-	LUCzaz5Wh2pO/iId107WuSuxbjWsUjU=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-xbOJDO44Nd-vQHDonRxFag-1; Mon, 08 Jan 2024 05:42:31 -0500
-X-MC-Unique: xbOJDO44Nd-vQHDonRxFag-1
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7816e45f957so317791785a.1
-        for <kernelci@lists.linux.dev>; Mon, 08 Jan 2024 02:42:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704710551; x=1705315351;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x+r2fYi5GswwOIpq/KUCbsfARWs5bIzb/5yg8FLKiuo=;
-        b=cQPZhp4E4ssCqqWsrq1z97xndowst0WtQZFRsNtQ9xzfeAC/BUjYyLJAmZSV54mNvG
-         tUnqfsmC6va9Pn8LrUBQViCnIz9sA9Md4vjIILsO6H/9eUXoDC1Cl4W2O+KTFxBl1/TB
-         dWc6pj2BNTX0qDbjOY/Jxxi6WQ7Y+sUM4el8MVWSAaLqKLbIdvurYKs/yTwswgnd9Q4b
-         hbd/8cdUBVig8JDiDAW33a4k0KV0rdNpXFxiRaOzcH7Ji+a00CSf8Q/U0naM/VTf6FZE
-         qjGXWvQBZpQqEqcvVkrZERd0kmyh/xVItJf2oyycVYcMytQi1cwPOWHnAgYq9w3H5kQ3
-         BQTQ==
-X-Gm-Message-State: AOJu0Yy6+xFqeolqb4g5QpPuVUDckPrx5ZMbsad7Ta6Ca0K6IMl95WLz
-	riV3/MFskVRMUVF9tM5xpCjLe+w+70UiZhta6U2AOOcgx5B9iQ2shHrS5XmBVBUHb0iKk9EoR9z
-	X7Y3HXu7PXea+iJZvtJ/gBzo6W3Q=
-X-Received: by 2002:a05:620a:5343:b0:781:577b:7572 with SMTP id op3-20020a05620a534300b00781577b7572mr3517193qkn.67.1704710551409;
-        Mon, 08 Jan 2024 02:42:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGkW4yie3FuTD9oNS2SS1mGtIhe2UW2QQqteBJuOJDUuID0HDhy3F+KPbsT61NUAUiMF7Q4QQ==
-X-Received: by 2002:a05:620a:5343:b0:781:577b:7572 with SMTP id op3-20020a05620a534300b00781577b7572mr3517186qkn.67.1704710551175;
-        Mon, 08 Jan 2024 02:42:31 -0800 (PST)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id g17-20020a05620a219100b0078327d52206sm146382qka.63.2024.01.08.02.42.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jan 2024 02:42:29 -0800 (PST)
-Message-ID: <d2e2c852-aa6c-42b7-aa73-1b366dd48fcf@redhat.com>
-Date: Mon, 8 Jan 2024 12:42:24 +0200
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="I+gkp7Ma"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1705949744;
+	bh=/kA5lAH45fxwuthlEiD+vf1dP3hl/faQzu+RmcAfVWk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=I+gkp7Maenr8HD2rs1ztDVK8yjY1aBUnqvwba+v3rVePuOkXCCBgKr5ceZXzGSIGQ
+	 VK78iwfUdmmmq5iFf5RSWRnrnb1V5oXq64ULDpkQemCpUOp0VSRZz8/wpkzPPD6NWm
+	 Cg2MUDnoUYiMFaW2TH7LOtKD7n2sLoLgCx2EoePyDVRbx1XfPQvUB8JQvuMGWtJI20
+	 6fBWYyartg3yYfTVEUT7285afqBuR1W3qQmgv2dszcYy9Ezrea84XuUYOm14AEDpTa
+	 8fC6TACh4Ay7GCw6E33GOUpwDohjykx98xMP2Kp6mmgbVecFttbjiez63T+aEjcuCU
+	 tNey8ii0DneSA==
+Received: from [192.168.0.47] (zone.collabora.co.uk [167.235.23.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nfraprado)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C4E5B37820A4;
+	Mon, 22 Jan 2024 18:55:38 +0000 (UTC)
+From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+Subject: [PATCH v4 0/3] Add test to verify probe of devices from
+ discoverable buses
+Date: Mon, 22 Jan 2024 15:53:20 -0300
+Message-Id: <20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 00/10] MAINTAINERS: Introduce V: entry for tests
-From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-To: workflows@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Joe Perches <joe@perches.com>, Andy Whitcroft <apw@canonical.com>,
- Theodore Ts'o <tytso@mit.edu>, David Gow <davidgow@google.com>,
- Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, "Darrick J . Wong"
- <djwong@kernel.org>
-Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
- Veronika Kabatova <vkabatov@redhat.com>, CKI <cki-project@redhat.com>,
- kernelci@lists.linux.dev
-References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
- <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAKC5rmUC/zXMQQrCMBCF4auUWRtJJomkrnTlIcRF2kyaYG0lU
+ 4pQeneD4PKD9/4NmEomhnOzQaE1c56nCnNooE9+GkjkUA0o0UiFKELmfl6p+G4kEWhl8eS4iDZ
+ YqUgrPDkH9fwuFPPnF74/qmOZX2JJhfw/V7foUFtt3PF2Vda2xtlLl2gcvGfY9y/OXpdbnAAAA
+ A==
+To: Shuah Khan <shuah@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>
+Cc: kernelci@lists.linux.dev, kernel@collabora.com, 
+ Tim Bird <Tim.Bird@sony.com>, linux-pci@vger.kernel.org, 
+ David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
+ Rob Herring <robh+dt@kernel.org>, Doug Anderson <dianders@chromium.org>, 
+ linux-usb@vger.kernel.org, Saravana Kannan <saravanak@google.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>, 
+ Guenter Roeck <groeck@chromium.org>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+X-Mailer: b4 0.12.4
 
-On 12/5/23 20:02, Nikolai Kondrashov wrote:
-> Alright, here's a second version, attempting to address as many concerns as
-> possible. It's likely I've missed something, though.
+This is part of an effort to improve detection of regressions impacting
+device probe on all platforms. The recently merged DT kselftest [3]
+detects probe issues for all devices described statically in the DT.
+That leaves out devices discovered at run-time from discoverable buses.
 
-Happy New Year, everyone! Hope your holidays went smoothly and peacefully.
+This is where this test comes in. All of the devices that are connected
+through discoverable buses (ie USB and PCI), and which are internal and
+therefore always present, can be described based on their position in
+the system topology in a per-platform YAML file so they can be checked
+for. The test will check that the device has been instantiated and bound
+to a driver.
 
-Is anyone still interested in this effort? Any more feedback you have in mind?
-Something to change?
+Patch 1 introduces the test. Patch 2 and 3 add the device definitions
+for the google,spherion machine (Acer Chromebook 514) and XPS 13 as
+examples.
 
-Thanks!
-Nick
+This is the output from the test running on Spherion:
+
+TAP version 13
+Using board file: boards/google,spherion.yaml
+1..8
+ok 1 /usb2-controller@11200000/1.4.1/camera.device
+ok 2 /usb2-controller@11200000/1.4.1/camera.0.driver
+ok 3 /usb2-controller@11200000/1.4.1/camera.1.driver
+ok 4 /usb2-controller@11200000/1.4.2/bluetooth.device
+ok 5 /usb2-controller@11200000/1.4.2/bluetooth.0.driver
+ok 6 /usb2-controller@11200000/1.4.2/bluetooth.1.driver
+ok 7 /pci-controller@11230000/0.0/0.0/wifi.device
+ok 8 /pci-controller@11230000/0.0/0.0/wifi.driver
+Totals: pass:8 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+[3] https://lore.kernel.org/all/20230828211424.2964562-1-nfraprado@collabora.com/
+
+Changes in v4:
+- Dropped RFC tag
+- Fixed 'busses' misspelling
+- Link to v3: https://lore.kernel.org/all/20231227123643.52348-1-nfraprado@collabora.com
+
+Changes in v3:
+- Reverted approach of encoding stable device reference in test file
+from device match fields (from modalias) back to HW topology (from v1)
+- Changed board file description to YAML
+- Rewrote test script in python to handle YAML and support x86 platforms
+- Link to v2: https://lore.kernel.org/all/20231127233558.868365-1-nfraprado@collabora.com
+
+Changes in v2:
+- Changed approach of encoding stable device reference in test file from
+HW topology to device match fields (the ones from modalias)
+- Better documented test format
+- Link to v1: https://lore.kernel.org/all/20231024211818.365844-1-nfraprado@collabora.com
+
+---
+Nícolas F. R. A. Prado (3):
+      kselftest: Add test to verify probe of devices from discoverable buses
+      kselftest: devices: Add sample board file for google,spherion
+      kselftest: devices: Add sample board file for XPS 13 9300
+
+ tools/testing/selftests/Makefile                   |   1 +
+ tools/testing/selftests/devices/Makefile           |   4 +
+ .../devices/boards/Dell Inc.,XPS 13 9300.yaml      |  40 +++
+ .../selftests/devices/boards/google,spherion.yaml  |  50 ++++
+ tools/testing/selftests/devices/ksft.py            |  90 ++++++
+ .../selftests/devices/test_discoverable_devices.py | 318 +++++++++++++++++++++
+ 6 files changed, 503 insertions(+)
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20240122-discoverable-devs-ksft-9d501e312688
+
+Best regards,
+-- 
+Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
