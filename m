@@ -1,152 +1,187 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E04482FF
-	for <kernelci@lists.linux.dev>; Mon, 22 Jan 2024 18:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6815F544
+	for <kernelci@lists.linux.dev>; Tue, 23 Jan 2024 11:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705949764; cv=none; b=pGqDe8wZFPT9OSz2IvipYAXD2OSrO39lFNG7LrlasDYsmBM70W+dH841GgxCuJexrt+3vpdT7YrZXWuVqysFOQNvCTW2OYi+wYZCOGJzFGJwVOwT+8DNX8Z4pjk6QKpr+CVVEjSl568V7AD9eWZh7Eu3VILh85Q04+KXXRjXbpg=
+	t=1706008107; cv=none; b=CfwV9J3eKqaEJTy+/CcR98jPQu6NA9Dvi3jpRqO05FRXDtwKHlYaEa9xy+bIO3m5zGgJmhVD/LOprkHbsrycFrLMBDn1xl1nG+5cIQnqmvVRydZvnrRp/RBQdPCUiv/Mm45QlAH9QBXDRPm7h1dJBqFuWSC9+8vp/unoGT01mvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705949764; c=relaxed/simple;
-	bh=bK4Q2EbBc/nuHHjpU5lTiNRDOBSyU7sMPKPNpqyyg8s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jLsiQbgH1jKwA/JXeE/8j/Jz5qRA8Pzmu9tsdPVnjwc+9WqnokRgEVUc6DBP4PL1Rq3coJki0vZ1iE3mqBT3bKZvXo8TE5vwkhVEhu0qINXh6yteCgs92fdWfhkPYhQf5t596vgfPAz7w9mNJzFNWCNYPhhSA7s4BG2FkM55u/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=H/fJHhNA; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1706008107; c=relaxed/simple;
+	bh=ePXcq+3ZYklh/Ja9ctOyMj+QSXTswOpfPk1EoxnOuU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tPpLDiJ33ejcNjYNRr0DMq+9fkMY1YvvvgUFBSGBIiUJohaM7Rt1ervdWo35FKyATT9YVhxaYMBSdYPJRVCL4VDwOTLaajDUhJwpd9KPTnhKg2XzjN/ymkJ+2OWtD15bhGXcRifriQLmOZxHxqMwwWZxjiLEL7zP4xtWg82gQ7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WHSJGS+3; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="H/fJHhNA"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WHSJGS+3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1705949762;
-	bh=bK4Q2EbBc/nuHHjpU5lTiNRDOBSyU7sMPKPNpqyyg8s=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=H/fJHhNArVz1m4aahhjDKDMbAHLrTGImjOS6d8WXBOLSU3QHcj+lcol49NLXYXp5b
-	 CyopSGhNUGpL/R8gv7kXjsa0Xkttk21qkISVdly8gShz9gCHWphNffpyXjvg5NzOSp
-	 pimw3bG0TzWrZBgnwnz+wV6Dn9k/DIMajrJzwZNbd6+XO+S+/+n9MQNKSokYut0L9w
-	 T9VZGNDVzZT/4etPJ+tplbSG+zV3lASWBsLH2XNiMMYveIkx6Q94iMCX7NMMK6oW7L
-	 6ns751E6MT+BrpAOUZdB/boLgB+n0qPNEv/JEET95uctoMchB9SEVusByxVqizI4UJ
-	 /cBQJy86FAO9Q==
-Received: from [192.168.0.47] (zone.collabora.co.uk [167.235.23.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	s=mail; t=1706008104;
+	bh=ePXcq+3ZYklh/Ja9ctOyMj+QSXTswOpfPk1EoxnOuU4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WHSJGS+3u3ESf596ATW3fy0qn2TXktoZ06Uz5ewlpPDDesf2vkDWRY4ohIN1UQU2G
+	 5B520CKex7b/cjHF4YzApi0HsCnwDLfu0N+MKHaV46OWWbL7gXjFGzyr5AI4fmGfWh
+	 LX18pgHn3sZeYDx4HtAsZEdZYMYxgp4QcMBqWqUqFOknwhl961AP9qy1cAJVtjJc0X
+	 Vcu4x/GdUBD21iP3eOWCTWDpw6UxTaUYmGGDLVjM39+ofyez/vvdu3roY7Rm3Q/Jax
+	 jyYby5c7HcVd0z+yH2F21B1DAQqEPuLaVEEaDHmvwzwUcnTt7BEr1sxywPg17uY8mG
+	 rUE1GE3yzdgSw==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id AABFF37820A7;
-	Mon, 22 Jan 2024 18:55:56 +0000 (UTC)
-From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Date: Mon, 22 Jan 2024 15:53:23 -0300
-Subject: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS
- 13 9300
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 0FEB437820AA;
+	Tue, 23 Jan 2024 11:08:23 +0000 (UTC)
+Message-ID: <7aa0df3d-ae9d-414d-ad7f-ed7588e70f3e@collabora.com>
+Date: Tue, 23 Jan 2024 12:08:22 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
-References: <20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
-In-Reply-To: <20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
-To: Shuah Khan <shuah@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS
+ 13 9300
+Content-Language: en-US
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ Shuah Khan <shuah@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Bjorn Helgaas <bhelgaas@google.com>
-Cc: kernelci@lists.linux.dev, kernel@collabora.com, 
- Tim Bird <Tim.Bird@sony.com>, linux-pci@vger.kernel.org, 
- David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
- Rob Herring <robh+dt@kernel.org>, Doug Anderson <dianders@chromium.org>, 
- linux-usb@vger.kernel.org, Saravana Kannan <saravanak@google.com>, 
- Dan Carpenter <dan.carpenter@linaro.org>, 
- Guenter Roeck <groeck@chromium.org>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-X-Mailer: b4 0.12.4
+Cc: kernelci@lists.linux.dev, kernel@collabora.com,
+ Tim Bird <Tim.Bird@sony.com>, linux-pci@vger.kernel.org,
+ David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Doug Anderson <dianders@chromium.org>,
+ linux-usb@vger.kernel.org, Saravana Kannan <saravanak@google.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>, Guenter Roeck
+ <groeck@chromium.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
+ <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add a sample board file describing the file's format and with the list
-of devices expected to be probed on the XPS 13 9300 machine as an
-example x86 platform.
+Il 22/01/24 19:53, Nícolas F. R. A. Prado ha scritto:
+> Add a sample board file describing the file's format and with the list
+> of devices expected to be probed on the XPS 13 9300 machine as an
+> example x86 platform.
+> 
+> Test output:
+> 
+> TAP version 13
+> Using board file: boards/Dell Inc.,XPS 13 9300.yaml
+> 1..22
+> ok 1 /pci-controller/14.0/usb2-controller/9/camera.device
+> ok 2 /pci-controller/14.0/usb2-controller/9/camera.0.driver
+> ok 3 /pci-controller/14.0/usb2-controller/9/camera.1.driver
+> ok 4 /pci-controller/14.0/usb2-controller/9/camera.2.driver
+> ok 5 /pci-controller/14.0/usb2-controller/9/camera.3.driver
+> ok 6 /pci-controller/14.0/usb2-controller/10/bluetooth.device
+> ok 7 /pci-controller/14.0/usb2-controller/10/bluetooth.0.driver
+> ok 8 /pci-controller/14.0/usb2-controller/10/bluetooth.1.driver
+> ok 9 /pci-controller/2.0/gpu.device
+> ok 10 /pci-controller/2.0/gpu.driver
+> ok 11 /pci-controller/4.0/thermal.device
+> ok 12 /pci-controller/4.0/thermal.driver
+> ok 13 /pci-controller/12.0/sensors.device
+> ok 14 /pci-controller/12.0/sensors.driver
+> ok 15 /pci-controller/14.3/wifi.device
+> ok 16 /pci-controller/14.3/wifi.driver
+> ok 17 /pci-controller/1d.0/0.0/ssd.device
+> ok 18 /pci-controller/1d.0/0.0/ssd.driver
+> ok 19 /pci-controller/1d.7/0.0/sdcard-reader.device
+> ok 20 /pci-controller/1d.7/0.0/sdcard-reader.driver
+> ok 21 /pci-controller/1f.3/audio.device
+> ok 22 /pci-controller/1f.3/audio.driver
+> Totals: pass:22 fail:0 xfail:0 xpass:0 skip:0 error:0
+> 
+> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> ---
+>   .../devices/boards/Dell Inc.,XPS 13 9300.yaml      | 40 ++++++++++++++++++++++
+>   1 file changed, 40 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml
+> new file mode 100644
+> index 000000000000..ff932eb19f0b
+> --- /dev/null
+> +++ b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml	
+> @@ -0,0 +1,40 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# This is the device definition for the XPS 13 9300.
+> +# The filename "Dell Inc.,XPS 13 9300" was chosen following the format
+> +# "Vendor,Product", where Vendor comes from
+> +# /sys/devices/virtual/dmi/id/sys_vendor, and Product comes from
+> +# /sys/devices/virtual/dmi/id/product_name.
+> +#
+> +# See google,spherion.yaml for more information.
 
-Test output:
+What if - instead of taking google,spherion.yaml as an example - you create a new
+file named something like
 
-TAP version 13
-Using board file: boards/Dell Inc.,XPS 13 9300.yaml
-1..22
-ok 1 /pci-controller/14.0/usb2-controller/9/camera.device
-ok 2 /pci-controller/14.0/usb2-controller/9/camera.0.driver
-ok 3 /pci-controller/14.0/usb2-controller/9/camera.1.driver
-ok 4 /pci-controller/14.0/usb2-controller/9/camera.2.driver
-ok 5 /pci-controller/14.0/usb2-controller/9/camera.3.driver
-ok 6 /pci-controller/14.0/usb2-controller/10/bluetooth.device
-ok 7 /pci-controller/14.0/usb2-controller/10/bluetooth.0.driver
-ok 8 /pci-controller/14.0/usb2-controller/10/bluetooth.1.driver
-ok 9 /pci-controller/2.0/gpu.device
-ok 10 /pci-controller/2.0/gpu.driver
-ok 11 /pci-controller/4.0/thermal.device
-ok 12 /pci-controller/4.0/thermal.driver
-ok 13 /pci-controller/12.0/sensors.device
-ok 14 /pci-controller/12.0/sensors.driver
-ok 15 /pci-controller/14.3/wifi.device
-ok 16 /pci-controller/14.3/wifi.driver
-ok 17 /pci-controller/1d.0/0.0/ssd.device
-ok 18 /pci-controller/1d.0/0.0/ssd.driver
-ok 19 /pci-controller/1d.7/0.0/sdcard-reader.device
-ok 20 /pci-controller/1d.7/0.0/sdcard-reader.driver
-ok 21 /pci-controller/1f.3/audio.device
-ok 22 /pci-controller/1f.3/audio.driver
-Totals: pass:22 fail:0 xfail:0 xpass:0 skip:0 error:0
+"example,device.yaml"
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
----
- .../devices/boards/Dell Inc.,XPS 13 9300.yaml      | 40 ++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+that would be a fantasy device, bringing examples for all .. or most of .. the
+currently supported types/devices?
 
-diff --git a/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml
-new file mode 100644
-index 000000000000..ff932eb19f0b
---- /dev/null
-+++ b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml	
-@@ -0,0 +1,40 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# This is the device definition for the XPS 13 9300.
-+# The filename "Dell Inc.,XPS 13 9300" was chosen following the format
-+# "Vendor,Product", where Vendor comes from
-+# /sys/devices/virtual/dmi/id/sys_vendor, and Product comes from
-+# /sys/devices/virtual/dmi/id/product_name.
-+#
-+# See google,spherion.yaml for more information.
-+#
-+- type: pci-controller
-+  # This machine has a single PCI host controller so it's valid to not have any
-+  # key to identify the controller. If it had more than one controller, the UID
-+  # of the controller from ACPI could be used to distinguish as follows:
-+  #acpi-uid: 0
-+  devices:
-+    - path: 14.0
-+      type: usb-controller
-+      usb-version: 2
-+      devices:
-+        - path: 9
-+          name: camera
-+          interfaces: [0, 1, 2, 3]
-+        - path: 10
-+          name: bluetooth
-+          interfaces: [0, 1]
-+    - path: 2.0
-+      name: gpu
-+    - path: 4.0
-+      name: thermal
-+    - path: 12.0
-+      name: sensors
-+    - path: 14.3
-+      name: wifi
-+    - path: 1d.0/0.0
-+      name: ssd
-+    - path: 1d.7/0.0
-+      name: sdcard-reader
-+    - path: 1f.3
-+      name: audio
+You would also move the nice documentation that you wrote in spherion.yaml to the
+new example,device.yaml and ask to refer to that instead in all of the real device
+specific definitions.
 
--- 
-2.43.0
+# SPDX-License-Identifier: GPL-2.0 <--- (GPL-2.0 OR MIT) like device trees perhaps?
+#
+# This is the device definition for the Example Device
+# The filename "Example Device" was chosen following the format
+# "Vendor,Product", where:
+#  - Vendor is "Example" and comes from /sys/devices/virtual/dmi/id/sys_vendor
+#  - Product is "Device" and comes from /sys/devices/virtual/dmi/id/product_name
+#
+# ....the rest of the blurb goes here
+#
+
+- type : .... this that the other
+   devices:
+     - the least amount of device descriptions that you can use for documenting how
+       to write this stuff :-)
+
+Anything against that?
+
+Cheers,
+Angelo
+
+> +#
+> +- type: pci-controller
+> +  # This machine has a single PCI host controller so it's valid to not have any
+> +  # key to identify the controller. If it had more than one controller, the UID
+> +  # of the controller from ACPI could be used to distinguish as follows:
+> +  #acpi-uid: 0
+> +  devices:
+> +    - path: 14.0
+> +      type: usb-controller
+> +      usb-version: 2
+> +      devices:
+> +        - path: 9
+> +          name: camera
+> +          interfaces: [0, 1, 2, 3]
+> +        - path: 10
+> +          name: bluetooth
+> +          interfaces: [0, 1]
+> +    - path: 2.0
+> +      name: gpu
+> +    - path: 4.0
+> +      name: thermal
+> +    - path: 12.0
+> +      name: sensors
+> +    - path: 14.3
+> +      name: wifi
+> +    - path: 1d.0/0.0
+> +      name: ssd
+> +    - path: 1d.7/0.0
+> +      name: sdcard-reader
+> +    - path: 1f.3
+> +      name: audio
+> 
 
