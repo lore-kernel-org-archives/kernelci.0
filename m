@@ -1,187 +1,168 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6815F544
-	for <kernelci@lists.linux.dev>; Tue, 23 Jan 2024 11:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0841550A64
+	for <kernelci@lists.linux.dev>; Tue, 23 Jan 2024 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706008107; cv=none; b=CfwV9J3eKqaEJTy+/CcR98jPQu6NA9Dvi3jpRqO05FRXDtwKHlYaEa9xy+bIO3m5zGgJmhVD/LOprkHbsrycFrLMBDn1xl1nG+5cIQnqmvVRydZvnrRp/RBQdPCUiv/Mm45QlAH9QBXDRPm7h1dJBqFuWSC9+8vp/unoGT01mvg=
+	t=1706021491; cv=none; b=qCeauURHj2vThVdQB3+f5v4FMVfY/MV4VUkI94c9rR0Efeg1LFh4m22e7GQevcvjEtLsoAqCcZ45C4BU+PazwAcP3xGhLoNFH46o25FgYpkER0G4Xf4BE5ZCZ/Fbw1c4ZTfXTcOgfjNCmvXBEWVakJrgDXrfnJ7JStGFxrGXHAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706008107; c=relaxed/simple;
-	bh=ePXcq+3ZYklh/Ja9ctOyMj+QSXTswOpfPk1EoxnOuU4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tPpLDiJ33ejcNjYNRr0DMq+9fkMY1YvvvgUFBSGBIiUJohaM7Rt1ervdWo35FKyATT9YVhxaYMBSdYPJRVCL4VDwOTLaajDUhJwpd9KPTnhKg2XzjN/ymkJ+2OWtD15bhGXcRifriQLmOZxHxqMwwWZxjiLEL7zP4xtWg82gQ7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WHSJGS+3; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1706021491; c=relaxed/simple;
+	bh=wEw+KYIsI+l2yNlbx9fd4O3Ky0EddoloG2ibdw/iJBA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NjwuMq75vv89ntxpLojS1gKRX5lVZihS8181ZYf7EdPY14XDgEEE6/QoOXBvpl6SnB9w4IYw4J5NIazQOALVveCicuhy8HbgNlvVDPI9G1VooUSURccPBUZ0oNrYRCSjEWrT2HwMHjPrfoO+l9LU/BTRAVvs63fiO1IYB0EgDcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=4I66temL; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WHSJGS+3"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="4I66temL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1706008104;
-	bh=ePXcq+3ZYklh/Ja9ctOyMj+QSXTswOpfPk1EoxnOuU4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WHSJGS+3u3ESf596ATW3fy0qn2TXktoZ06Uz5ewlpPDDesf2vkDWRY4ohIN1UQU2G
-	 5B520CKex7b/cjHF4YzApi0HsCnwDLfu0N+MKHaV46OWWbL7gXjFGzyr5AI4fmGfWh
-	 LX18pgHn3sZeYDx4HtAsZEdZYMYxgp4QcMBqWqUqFOknwhl961AP9qy1cAJVtjJc0X
-	 Vcu4x/GdUBD21iP3eOWCTWDpw6UxTaUYmGGDLVjM39+ofyez/vvdu3roY7Rm3Q/Jax
-	 jyYby5c7HcVd0z+yH2F21B1DAQqEPuLaVEEaDHmvwzwUcnTt7BEr1sxywPg17uY8mG
-	 rUE1GE3yzdgSw==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	s=mail; t=1706021488;
+	bh=wEw+KYIsI+l2yNlbx9fd4O3Ky0EddoloG2ibdw/iJBA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=4I66temLW7YZ/eOjiSK0m5zzsPhHoocpYfI5SF81LwSYVevO1XceIsj6e4G1UfiJZ
+	 5TqbcaXxf49DgUjaBqJPD5IxKgYkp+2lIUgRUkPx5P2qEudzs/Um4tuAVcxKeEv7nV
+	 CK6sA2J/ieXPk+ufcNaplofq5PW3T6FM6k8vNvFS+6Ej+HUErWAQ9CA9ybCAnu+5Jq
+	 LwS2fzBbOE7o6rl70wV+/3Avr16hg3XuSt8v9xaRuVjOuf7kQhEYwl4c6niegPyh4B
+	 CvrHlDBMMbxi3sz9XFsLOLQ+46Y/PXa++OOFpc2RFJ5gUYCligNHza2A1lNVJUjbEN
+	 uFYyCs25J4qyA==
+Received: from notapiano (zone.collabora.co.uk [167.235.23.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 0FEB437820AA;
-	Tue, 23 Jan 2024 11:08:23 +0000 (UTC)
-Message-ID: <7aa0df3d-ae9d-414d-ad7f-ed7588e70f3e@collabora.com>
-Date: Tue, 23 Jan 2024 12:08:22 +0100
+	(Authenticated sender: nfraprado)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 4370337820AD;
+	Tue, 23 Jan 2024 14:51:21 +0000 (UTC)
+Date: Tue, 23 Jan 2024 11:50:49 -0300
+From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, kernelci@lists.linux.dev,
+	kernel@collabora.com, Tim Bird <Tim.Bird@sony.com>,
+	linux-pci@vger.kernel.org, David Gow <davidgow@google.com>,
+	linux-kselftest@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+	Doug Anderson <dianders@chromium.org>, linux-usb@vger.kernel.org,
+	Saravana Kannan <saravanak@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Guenter Roeck <groeck@chromium.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS
+ 13 9300
+Message-ID: <2ea14eb2-d5b3-40b2-af4b-d14fe398886f@notapiano>
+References: <20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
+ <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
+ <7aa0df3d-ae9d-414d-ad7f-ed7588e70f3e@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS
- 13 9300
-Content-Language: en-US
-To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
- Shuah Khan <shuah@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>
-Cc: kernelci@lists.linux.dev, kernel@collabora.com,
- Tim Bird <Tim.Bird@sony.com>, linux-pci@vger.kernel.org,
- David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org,
- Rob Herring <robh+dt@kernel.org>, Doug Anderson <dianders@chromium.org>,
- linux-usb@vger.kernel.org, Saravana Kannan <saravanak@google.com>,
- Dan Carpenter <dan.carpenter@linaro.org>, Guenter Roeck
- <groeck@chromium.org>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
- <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <7aa0df3d-ae9d-414d-ad7f-ed7588e70f3e@collabora.com>
 
-Il 22/01/24 19:53, NÃ­colas F. R. A. Prado ha scritto:
-> Add a sample board file describing the file's format and with the list
-> of devices expected to be probed on the XPS 13 9300 machine as an
-> example x86 platform.
+On Tue, Jan 23, 2024 at 12:08:22PM +0100, AngeloGioacchino Del Regno wrote:
+> Il 22/01/24 19:53, Nícolas F. R. A. Prado ha scritto:
+> > Add a sample board file describing the file's format and with the list
+> > of devices expected to be probed on the XPS 13 9300 machine as an
+> > example x86 platform.
+> > 
+> > Test output:
+> > 
+> > TAP version 13
+> > Using board file: boards/Dell Inc.,XPS 13 9300.yaml
+> > 1..22
+> > ok 1 /pci-controller/14.0/usb2-controller/9/camera.device
+> > ok 2 /pci-controller/14.0/usb2-controller/9/camera.0.driver
+> > ok 3 /pci-controller/14.0/usb2-controller/9/camera.1.driver
+> > ok 4 /pci-controller/14.0/usb2-controller/9/camera.2.driver
+> > ok 5 /pci-controller/14.0/usb2-controller/9/camera.3.driver
+> > ok 6 /pci-controller/14.0/usb2-controller/10/bluetooth.device
+> > ok 7 /pci-controller/14.0/usb2-controller/10/bluetooth.0.driver
+> > ok 8 /pci-controller/14.0/usb2-controller/10/bluetooth.1.driver
+> > ok 9 /pci-controller/2.0/gpu.device
+> > ok 10 /pci-controller/2.0/gpu.driver
+> > ok 11 /pci-controller/4.0/thermal.device
+> > ok 12 /pci-controller/4.0/thermal.driver
+> > ok 13 /pci-controller/12.0/sensors.device
+> > ok 14 /pci-controller/12.0/sensors.driver
+> > ok 15 /pci-controller/14.3/wifi.device
+> > ok 16 /pci-controller/14.3/wifi.driver
+> > ok 17 /pci-controller/1d.0/0.0/ssd.device
+> > ok 18 /pci-controller/1d.0/0.0/ssd.driver
+> > ok 19 /pci-controller/1d.7/0.0/sdcard-reader.device
+> > ok 20 /pci-controller/1d.7/0.0/sdcard-reader.driver
+> > ok 21 /pci-controller/1f.3/audio.device
+> > ok 22 /pci-controller/1f.3/audio.driver
+> > Totals: pass:22 fail:0 xfail:0 xpass:0 skip:0 error:0
+> > 
+> > Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> > ---
+> >   .../devices/boards/Dell Inc.,XPS 13 9300.yaml      | 40 ++++++++++++++++++++++
+> >   1 file changed, 40 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml
+> > new file mode 100644
+> > index 000000000000..ff932eb19f0b
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml	
+> > @@ -0,0 +1,40 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +#
+> > +# This is the device definition for the XPS 13 9300.
+> > +# The filename "Dell Inc.,XPS 13 9300" was chosen following the format
+> > +# "Vendor,Product", where Vendor comes from
+> > +# /sys/devices/virtual/dmi/id/sys_vendor, and Product comes from
+> > +# /sys/devices/virtual/dmi/id/product_name.
+> > +#
+> > +# See google,spherion.yaml for more information.
 > 
-> Test output:
+> What if - instead of taking google,spherion.yaml as an example - you create a new
+> file named something like
 > 
-> TAP version 13
-> Using board file: boards/Dell Inc.,XPS 13 9300.yaml
-> 1..22
-> ok 1 /pci-controller/14.0/usb2-controller/9/camera.device
-> ok 2 /pci-controller/14.0/usb2-controller/9/camera.0.driver
-> ok 3 /pci-controller/14.0/usb2-controller/9/camera.1.driver
-> ok 4 /pci-controller/14.0/usb2-controller/9/camera.2.driver
-> ok 5 /pci-controller/14.0/usb2-controller/9/camera.3.driver
-> ok 6 /pci-controller/14.0/usb2-controller/10/bluetooth.device
-> ok 7 /pci-controller/14.0/usb2-controller/10/bluetooth.0.driver
-> ok 8 /pci-controller/14.0/usb2-controller/10/bluetooth.1.driver
-> ok 9 /pci-controller/2.0/gpu.device
-> ok 10 /pci-controller/2.0/gpu.driver
-> ok 11 /pci-controller/4.0/thermal.device
-> ok 12 /pci-controller/4.0/thermal.driver
-> ok 13 /pci-controller/12.0/sensors.device
-> ok 14 /pci-controller/12.0/sensors.driver
-> ok 15 /pci-controller/14.3/wifi.device
-> ok 16 /pci-controller/14.3/wifi.driver
-> ok 17 /pci-controller/1d.0/0.0/ssd.device
-> ok 18 /pci-controller/1d.0/0.0/ssd.driver
-> ok 19 /pci-controller/1d.7/0.0/sdcard-reader.device
-> ok 20 /pci-controller/1d.7/0.0/sdcard-reader.driver
-> ok 21 /pci-controller/1f.3/audio.device
-> ok 22 /pci-controller/1f.3/audio.driver
-> Totals: pass:22 fail:0 xfail:0 xpass:0 skip:0 error:0
+> "example,device.yaml"
 > 
-> Signed-off-by: NÃ­colas F. R. A. Prado <nfraprado@collabora.com>
-> ---
->   .../devices/boards/Dell Inc.,XPS 13 9300.yaml      | 40 ++++++++++++++++++++++
->   1 file changed, 40 insertions(+)
+> that would be a fantasy device, bringing examples for all .. or most of .. the
+> currently supported types/devices?
 > 
-> diff --git a/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml
-> new file mode 100644
-> index 000000000000..ff932eb19f0b
-> --- /dev/null
-> +++ b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml	
-> @@ -0,0 +1,40 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# This is the device definition for the XPS 13 9300.
-> +# The filename "Dell Inc.,XPS 13 9300" was chosen following the format
-> +# "Vendor,Product", where Vendor comes from
-> +# /sys/devices/virtual/dmi/id/sys_vendor, and Product comes from
-> +# /sys/devices/virtual/dmi/id/product_name.
-> +#
-> +# See google,spherion.yaml for more information.
-
-What if - instead of taking google,spherion.yaml as an example - you create a new
-file named something like
-
-"example,device.yaml"
-
-that would be a fantasy device, bringing examples for all .. or most of .. the
-currently supported types/devices?
-
-You would also move the nice documentation that you wrote in spherion.yaml to the
-new example,device.yaml and ask to refer to that instead in all of the real device
-specific definitions.
-
-# SPDX-License-Identifier: GPL-2.0 <--- (GPL-2.0 OR MIT) like device trees perhaps?
-#
-# This is the device definition for the Example Device
-# The filename "Example Device" was chosen following the format
-# "Vendor,Product", where:
-#  - Vendor is "Example" and comes from /sys/devices/virtual/dmi/id/sys_vendor
-#  - Product is "Device" and comes from /sys/devices/virtual/dmi/id/product_name
-#
-# ....the rest of the blurb goes here
-#
-
-- type : .... this that the other
-   devices:
-     - the least amount of device descriptions that you can use for documenting how
-       to write this stuff :-)
-
-Anything against that?
-
-Cheers,
-Angelo
-
-> +#
-> +- type: pci-controller
-> +  # This machine has a single PCI host controller so it's valid to not have any
-> +  # key to identify the controller. If it had more than one controller, the UID
-> +  # of the controller from ACPI could be used to distinguish as follows:
-> +  #acpi-uid: 0
-> +  devices:
-> +    - path: 14.0
-> +      type: usb-controller
-> +      usb-version: 2
-> +      devices:
-> +        - path: 9
-> +          name: camera
-> +          interfaces: [0, 1, 2, 3]
-> +        - path: 10
-> +          name: bluetooth
-> +          interfaces: [0, 1]
-> +    - path: 2.0
-> +      name: gpu
-> +    - path: 4.0
-> +      name: thermal
-> +    - path: 12.0
-> +      name: sensors
-> +    - path: 14.3
-> +      name: wifi
-> +    - path: 1d.0/0.0
-> +      name: ssd
-> +    - path: 1d.7/0.0
-> +      name: sdcard-reader
-> +    - path: 1f.3
-> +      name: audio
+> You would also move the nice documentation that you wrote in spherion.yaml to the
+> new example,device.yaml and ask to refer to that instead in all of the real device
+> specific definitions.
 > 
+> # SPDX-License-Identifier: GPL-2.0 <--- (GPL-2.0 OR MIT) like device trees perhaps?
+> #
+> # This is the device definition for the Example Device
+> # The filename "Example Device" was chosen following the format
+> # "Vendor,Product", where:
+> #  - Vendor is "Example" and comes from /sys/devices/virtual/dmi/id/sys_vendor
+> #  - Product is "Device" and comes from /sys/devices/virtual/dmi/id/product_name
+> #
+> # ....the rest of the blurb goes here
+> #
+> 
+> - type : .... this that the other
+>   devices:
+>     - the least amount of device descriptions that you can use for documenting how
+>       to write this stuff :-)
+> 
+> Anything against that?
 
+That'd also work. Though I feel like a single example file for both a DT-based
+and an ACPI-based platform might get unnecessarily confusing (given the
+different way for identifying the machine - DMI vs DT compatible - and for
+identifying the root level controller - ACPI UID vs DT MMIO).
+
+I also feel like a real machine example is helpful to have.
+
+In my opinion, your suggestion would make much more sense - and be needed even -
+if we had several machine files in this directory, so that the documentation
+stands out among them. However the feedback that I got from Shuah during
+Plumbers was that maintaining per-machine files in-tree wasn't going to happen.
+So these two files serve as the documentation, with real-life examples, that
+other machines could build upon in a separate repository.
+
+Thanks,
+Nícolas
