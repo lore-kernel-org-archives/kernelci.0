@@ -1,168 +1,347 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0841550A64
-	for <kernelci@lists.linux.dev>; Tue, 23 Jan 2024 14:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797C3250EE
+	for <kernelci@lists.linux.dev>; Fri, 26 Jan 2024 22:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706021491; cv=none; b=qCeauURHj2vThVdQB3+f5v4FMVfY/MV4VUkI94c9rR0Efeg1LFh4m22e7GQevcvjEtLsoAqCcZ45C4BU+PazwAcP3xGhLoNFH46o25FgYpkER0G4Xf4BE5ZCZ/Fbw1c4ZTfXTcOgfjNCmvXBEWVakJrgDXrfnJ7JStGFxrGXHAU=
+	t=1706307339; cv=none; b=aTpDoRc1Wny2SBNpl331htg4l1+lliZmvLKfdJps5dZh8IsaChFy1djLuX3WOsSAthHjCP+iAAnhzXuK3JvHpQmnlYE1QckADCfMk+2+Dj0l8ceewrDKft132nfv/jqfYGA0l3szp3LjNUFq4yiX8EJfb98gXTPezbZ7OP9J8BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706021491; c=relaxed/simple;
-	bh=wEw+KYIsI+l2yNlbx9fd4O3Ky0EddoloG2ibdw/iJBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NjwuMq75vv89ntxpLojS1gKRX5lVZihS8181ZYf7EdPY14XDgEEE6/QoOXBvpl6SnB9w4IYw4J5NIazQOALVveCicuhy8HbgNlvVDPI9G1VooUSURccPBUZ0oNrYRCSjEWrT2HwMHjPrfoO+l9LU/BTRAVvs63fiO1IYB0EgDcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=4I66temL; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1706307339; c=relaxed/simple;
+	bh=T02XmBJDADvKcZTilAObNi55rEWmd0jbEWH/a/5XHYo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BWs3a7n1LrO2vVuVP7Qagkjmhojy3wGjpPXWGaGfjqeCfonKOqUPNl2VaeFnWqI0FOV0YfLyCENVsvpa/BB/zb7heUWlcwUBfOtUwSUmHt83Hl4WeB2bTv2dDufohSjzOx0BS+pD9rZZDKWN4e5dAi4603OW63Pw/pkq+91tv8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rmoar.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C4e2JLIr; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rmoar.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="4I66temL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1706021488;
-	bh=wEw+KYIsI+l2yNlbx9fd4O3Ky0EddoloG2ibdw/iJBA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=4I66temLW7YZ/eOjiSK0m5zzsPhHoocpYfI5SF81LwSYVevO1XceIsj6e4G1UfiJZ
-	 5TqbcaXxf49DgUjaBqJPD5IxKgYkp+2lIUgRUkPx5P2qEudzs/Um4tuAVcxKeEv7nV
-	 CK6sA2J/ieXPk+ufcNaplofq5PW3T6FM6k8vNvFS+6Ej+HUErWAQ9CA9ybCAnu+5Jq
-	 LwS2fzBbOE7o6rl70wV+/3Avr16hg3XuSt8v9xaRuVjOuf7kQhEYwl4c6niegPyh4B
-	 CvrHlDBMMbxi3sz9XFsLOLQ+46Y/PXa++OOFpc2RFJ5gUYCligNHza2A1lNVJUjbEN
-	 uFYyCs25J4qyA==
-Received: from notapiano (zone.collabora.co.uk [167.235.23.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 4370337820AD;
-	Tue, 23 Jan 2024 14:51:21 +0000 (UTC)
-Date: Tue, 23 Jan 2024 11:50:49 -0300
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, kernelci@lists.linux.dev,
-	kernel@collabora.com, Tim Bird <Tim.Bird@sony.com>,
-	linux-pci@vger.kernel.org, David Gow <davidgow@google.com>,
-	linux-kselftest@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-	Doug Anderson <dianders@chromium.org>, linux-usb@vger.kernel.org,
-	Saravana Kannan <saravanak@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Guenter Roeck <groeck@chromium.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS
- 13 9300
-Message-ID: <2ea14eb2-d5b3-40b2-af4b-d14fe398886f@notapiano>
-References: <20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
- <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
- <7aa0df3d-ae9d-414d-ad7f-ed7588e70f3e@collabora.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C4e2JLIr"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-602dae507caso7156487b3.0
+        for <kernelci@lists.linux.dev>; Fri, 26 Jan 2024 14:15:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706307336; x=1706912136; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wfOq9kvoZ78MTfE+CrR6Nj3VpN/I/l27htej84EdWP4=;
+        b=C4e2JLIrnT6DHqMApAVxMcHbHGa+VkC4qJz109CjjPfOYK01X1Fg6+N9kSdCpvGMrr
+         El9WkUWWalVyI6OgYRyb1mIrsoPoXXCYDOxr4Lx51zdq5ntmqTylHBNYEW7Q1amqe4uO
+         1xDx19BTQHnPhxSnUB/03EFDi8LdSMi8CO0Oky/4uZyDUGm1f3l+4S/2Lt1aXeKyx+wg
+         Vh4hXigVEOek1FEvMUuz4yjrsl5RjqxoALJtx9sEPwFf0edT5gGGxlB6Xl1ug+HrtsVz
+         XZhtrBfCH0socnPyIXjTEm/gaqsR0kJqvRUbU/Yv21O10T+Aoz3dZ+WE69GctiU2RvbD
+         xkuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706307336; x=1706912136;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wfOq9kvoZ78MTfE+CrR6Nj3VpN/I/l27htej84EdWP4=;
+        b=g5RozvgF4dI9TboI4Yfa3Bcj94eUF1coCH0/KfVsANKPDUt0eJQujrGJRdBXMwoWhC
+         a54lI8PbACG6cDZdvRiK/nHAZQ5nGhAUugqq+y3aWh2EjR7hbbo6i6FSQ7v9P0JNk7UY
+         c331wCdTZIR60Gg51SwrjiYsa5pTTdZQYHQNXYtpJCzVbuyFErCQU1i41EtYZvO7VaK3
+         PfPHx5LZfkgSqoMpU1G+EnC5UId9+6c8deACRgryjhFR30BOTWErCH+LJ9pyRxG2MGCZ
+         ESmV84w6pn7B71J9YuXzAy/BBOiCFFbrNyUUWfcQ92s4/37KqfgstdANQzC27y6zQmMi
+         czvQ==
+X-Gm-Message-State: AOJu0Yy03IrV3kvkN0biq3aoYewsqD5T7WidR6Fqm4ircmq2P2+qMJW5
+	xm3eXEDUIxMmNzbCyUM+zgt1xDL4xveLcHlFPP62VgnjBFvcosyY34CztHfZhU+AYH2TdtU1Tg=
+	=
+X-Google-Smtp-Source: AGHT+IE6htndHGdPTl+G+lmUHLoJ75Z4eKrFu6nBmvxCp4uHri9nfyOa4lYFJnuF5baBpwP0Uw21cH4rVA==
+X-Received: from rmoar-specialist.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:45d3])
+ (user=rmoar job=sendgmr) by 2002:a81:9a16:0:b0:600:2501:19b8 with SMTP id
+ r22-20020a819a16000000b00600250119b8mr211259ywg.2.1706307336515; Fri, 26 Jan
+ 2024 14:15:36 -0800 (PST)
+Date: Fri, 26 Jan 2024 22:14:26 +0000
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7aa0df3d-ae9d-414d-ad7f-ed7588e70f3e@collabora.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240126221426.4173112-1-rmoar@google.com>
+Subject: [KTAP V2 PATCH v2] ktap_v2: add test metadata
+From: Rae Moar <rmoar@google.com>
+To: frowand.list@gmail.com, davidgow@google.com, keescook@chromium.org, 
+	Tim.Bird@sony.com, shuah@kernel.org, brendanhiggins@google.com, 
+	dlatypov@google.com
+Cc: tytso@google.com, gustavo.padovan@collabora.com, 
+	ricardo.canuelo@collabora.com, guillaume.tucker@collabora.com, corbet@lwn.net, 
+	kernelci@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Rae Moar <rmoar@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jan 23, 2024 at 12:08:22PM +0100, AngeloGioacchino Del Regno wrote:
-> Il 22/01/24 19:53, Nícolas F. R. A. Prado ha scritto:
-> > Add a sample board file describing the file's format and with the list
-> > of devices expected to be probed on the XPS 13 9300 machine as an
-> > example x86 platform.
-> > 
-> > Test output:
-> > 
-> > TAP version 13
-> > Using board file: boards/Dell Inc.,XPS 13 9300.yaml
-> > 1..22
-> > ok 1 /pci-controller/14.0/usb2-controller/9/camera.device
-> > ok 2 /pci-controller/14.0/usb2-controller/9/camera.0.driver
-> > ok 3 /pci-controller/14.0/usb2-controller/9/camera.1.driver
-> > ok 4 /pci-controller/14.0/usb2-controller/9/camera.2.driver
-> > ok 5 /pci-controller/14.0/usb2-controller/9/camera.3.driver
-> > ok 6 /pci-controller/14.0/usb2-controller/10/bluetooth.device
-> > ok 7 /pci-controller/14.0/usb2-controller/10/bluetooth.0.driver
-> > ok 8 /pci-controller/14.0/usb2-controller/10/bluetooth.1.driver
-> > ok 9 /pci-controller/2.0/gpu.device
-> > ok 10 /pci-controller/2.0/gpu.driver
-> > ok 11 /pci-controller/4.0/thermal.device
-> > ok 12 /pci-controller/4.0/thermal.driver
-> > ok 13 /pci-controller/12.0/sensors.device
-> > ok 14 /pci-controller/12.0/sensors.driver
-> > ok 15 /pci-controller/14.3/wifi.device
-> > ok 16 /pci-controller/14.3/wifi.driver
-> > ok 17 /pci-controller/1d.0/0.0/ssd.device
-> > ok 18 /pci-controller/1d.0/0.0/ssd.driver
-> > ok 19 /pci-controller/1d.7/0.0/sdcard-reader.device
-> > ok 20 /pci-controller/1d.7/0.0/sdcard-reader.driver
-> > ok 21 /pci-controller/1f.3/audio.device
-> > ok 22 /pci-controller/1f.3/audio.driver
-> > Totals: pass:22 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> > Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> > ---
-> >   .../devices/boards/Dell Inc.,XPS 13 9300.yaml      | 40 ++++++++++++++++++++++
-> >   1 file changed, 40 insertions(+)
-> > 
-> > diff --git a/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml
-> > new file mode 100644
-> > index 000000000000..ff932eb19f0b
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/devices/boards/Dell Inc.,XPS 13 9300.yaml	
-> > @@ -0,0 +1,40 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +#
-> > +# This is the device definition for the XPS 13 9300.
-> > +# The filename "Dell Inc.,XPS 13 9300" was chosen following the format
-> > +# "Vendor,Product", where Vendor comes from
-> > +# /sys/devices/virtual/dmi/id/sys_vendor, and Product comes from
-> > +# /sys/devices/virtual/dmi/id/product_name.
-> > +#
-> > +# See google,spherion.yaml for more information.
-> 
-> What if - instead of taking google,spherion.yaml as an example - you create a new
-> file named something like
-> 
-> "example,device.yaml"
-> 
-> that would be a fantasy device, bringing examples for all .. or most of .. the
-> currently supported types/devices?
-> 
-> You would also move the nice documentation that you wrote in spherion.yaml to the
-> new example,device.yaml and ask to refer to that instead in all of the real device
-> specific definitions.
-> 
-> # SPDX-License-Identifier: GPL-2.0 <--- (GPL-2.0 OR MIT) like device trees perhaps?
-> #
-> # This is the device definition for the Example Device
-> # The filename "Example Device" was chosen following the format
-> # "Vendor,Product", where:
-> #  - Vendor is "Example" and comes from /sys/devices/virtual/dmi/id/sys_vendor
-> #  - Product is "Device" and comes from /sys/devices/virtual/dmi/id/product_name
-> #
-> # ....the rest of the blurb goes here
-> #
-> 
-> - type : .... this that the other
->   devices:
->     - the least amount of device descriptions that you can use for documenting how
->       to write this stuff :-)
-> 
-> Anything against that?
+Add specification for test metadata to the KTAP v2 spec.
 
-That'd also work. Though I feel like a single example file for both a DT-based
-and an ACPI-based platform might get unnecessarily confusing (given the
-different way for identifying the machine - DMI vs DT compatible - and for
-identifying the root level controller - ACPI UID vs DT MMIO).
+KTAP v1 only specifies the output format of very basic test information:
+test result and test name. Any additional test information either gets
+added to general diagnostic data or is not included in the output at all.
 
-I also feel like a real machine example is helpful to have.
+The purpose of KTAP metadata is to create a framework to include and
+easily identify additional important test information in KTAP.
 
-In my opinion, your suggestion would make much more sense - and be needed even -
-if we had several machine files in this directory, so that the documentation
-stands out among them. However the feedback that I got from Shuah during
-Plumbers was that maintaining per-machine files in-tree wasn't going to happen.
-So these two files serve as the documentation, with real-life examples, that
-other machines could build upon in a separate repository.
+KTAP metadata could include any test information that is pertinent for
+user interaction before or after the running of the test. For example,
+the test file path or the test speed.
 
-Thanks,
-Nícolas
+Since this includes a large variety of information, this specification
+will recognize notable types of KTAP metadata to ensure consistent format
+across test frameworks. See the full list of types in the specification.
+
+Example of KTAP Metadata:
+
+ KTAP version 2
+ # ktap_test: main
+ # ktap_arch: uml
+ 1..1
+     KTAP version 2
+     # ktap_test: suite_1
+     # ktap_subsystem: example
+     # ktap_test_file: lib/test.c
+     1..2
+     ok 1 test_1
+     # ktap_test: test_2
+     # ktap_speed: very_slow
+     # custom_is_flaky: true
+     ok 2 test_2
+ ok 1 test_suite
+
+The changes to the KTAP specification outline the format, location, and
+different types of metadata.
+
+Here is a link to a version of the KUnit parser that is able to parse test
+metadata lines for KTAP version 2. Note this includes test metadata
+lines for the main level of KTAP.
+
+Link: https://kunit-review.googlesource.com/c/linux/+/5889
+
+Signed-off-by: Rae Moar <rmoar@google.com>
+---
+ Documentation/dev-tools/ktap.rst | 163 ++++++++++++++++++++++++++++++-
+ 1 file changed, 159 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
+index ff77f4aaa6ef..4480eaf5bbc3 100644
+--- a/Documentation/dev-tools/ktap.rst
++++ b/Documentation/dev-tools/ktap.rst
+@@ -17,19 +17,20 @@ KTAP test results describe a series of tests (which may be nested: i.e., test
+ can have subtests), each of which can contain both diagnostic data -- e.g., log
+ lines -- and a final result. The test structure and results are
+ machine-readable, whereas the diagnostic data is unstructured and is there to
+-aid human debugging.
++aid human debugging. One exception to this is test metadata lines - a type
++of diagnostic lines. Test metadata is used to identify important supplemental
++test information and can be machine-readable.
+ 
+ KTAP output is built from four different types of lines:
+ - Version lines
+ - Plan lines
+ - Test case result lines
+-- Diagnostic lines
++- Diagnostic lines (including test metadata)
+ 
+ In general, valid KTAP output should also form valid TAP output, but some
+ information, in particular nested test results, may be lost. Also note that
+ there is a stagnant draft specification for TAP14, KTAP diverges from this in
+-a couple of places (notably the "Subtest" header), which are described where
+-relevant later in this document.
++a couple of places, which are described where relevant later in this document.
+ 
+ Version lines
+ -------------
+@@ -166,6 +167,154 @@ even if they do not start with a "#": this is to capture any other useful
+ kernel output which may help debug the test. It is nevertheless recommended
+ that tests always prefix any diagnostic output they have with a "#" character.
+ 
++KTAP metadata lines
++-------------------
++
++KTAP metadata lines are a subset of diagnostic lines that are used to include
++and easily identify important supplemental test information in KTAP.
++
++.. code-block:: none
++
++	# <prefix>_<metadata type>: <metadata value>
++
++The <prefix> indicates where to find the specification for the type of
++metadata. The metadata types listed below use the prefix "ktap" (See Types of
++KTAP Metadata).
++
++Types that are instead specified by an individual test framework use the
++framework name as the prefix. For example, a metadata type documented by the
++kselftest specification would use the prefix "kselftest". Any metadata type
++that is not listed in a specification must use the prefix "custom". Note the
++prefix must not include spaces or the characters ":" or "_".
++
++The format of <metadata type> and <value> varies based on the type. See the
++individual specification. For "custom" types the <metadata type> can be any
++string excluding ":", spaces, or newline characters and the <value> can be any
++string.
++
++**Location:**
++
++The first KTAP metadata entry for a test must be "# ktap_test: <test name>",
++which acts as a header to associate metadata with the correct test.
++
++For test cases, the location of the metadata is between the prior test result
++line and the current test result line. For test suites, the location of the
++metadata is between the suite's version line and test plan line. See the
++example below.
++
++KTAP metadata for a test does not need to be contiguous. For example, a kernel
++warning or other diagnostic output could interrupt metadata lines. However, it
++is recommended to keep a test's metadata lines together when possible, as this
++improves readability.
++
++**Here is an example of using KTAP metadata:**
++
++::
++
++        KTAP version 2
++        # ktap_test: main
++        # ktap_arch: uml
++        1..1
++          KTAP version 2
++          # ktap_test: suite_1
++          # ktap_subsystem: example
++          # ktap_test_file: lib/test.c
++          1..2
++          ok 1 test_1
++          # ktap_test: test_2
++          # ktap_speed: very_slow
++          # custom_is_flaky: true
++          ok 2 test_2
++        # suite_1 passed
++        ok 1 suite_1
++
++In this example, the tests are running on UML. The test suite "suite_1" is part
++of the subsystem "example" and belongs to the file "lib/example_test.c". It has
++two subtests, "test_1" and "test_2". The subtest "test_2" has a speed of
++"very_slow" and has been marked with a custom KTAP metadata type called
++"custom_is_flaky" with the value of "true".
++
++**Types of KTAP Metadata:**
++
++This is the current list of KTAP metadata types recognized in this
++specification. Note that all of these metadata types are optional (except for
++ktap_test as the KTAP metadata header).
++
++- ``ktap_test``: Name of test (used as header of KTAP metadata). This should
++  match the test name printed in the test result line: "ok 1 [test_name]".
++
++- ``ktap_module``: Name of the module containing the test
++
++- ``ktap_subsystem``: Name of the subsystem being tested
++
++- ``ktap_start_time``: Time tests started in ISO8601 format
++
++  - Example: "# ktap_start_time: 2024-01-09T13:09:01.990000+00:00"
++
++- ``ktap_duration``: Time taken (in seconds) to execute the test
++
++  - Example: "ktap_duration: 10.154s"
++
++- ``ktap_speed``: Category of how fast test runs: "normal", "slow", or
++  "very_slow"
++
++- ``ktap_test_file``: Path to source file containing the test. This metadata
++  line can be repeated if the test is spread across multiple files.
++
++  - Example: "# ktap_test_file: lib/test.c"
++
++- ``ktap_generated_file``: Description of and path to file generated during
++  test execution. This could be a core dump, generated filesystem image, some
++  form of visual output (for graphics drivers), etc. This metadata line can be
++  repeated to attach multiple files to the test.
++
++  - Example: "# ktap_generated_file: Core dump: /var/lib/systemd/coredump/hello.core"
++
++- ``ktap_log_file``: Path to file containing kernel log test output
++
++  - Example: "# ktap_log_file: /sys/kernel/debugfs/kunit/example/results"
++
++- ``ktap_error_file``: Path to file containing context for test failure or
++  error. This could include the difference between optimal test output and
++  actual test output.
++
++  - Example: "# ktap_error_file: fs/results/example.out.bad"
++
++- ``ktap_results_url``: Link to webpage describing this test run and its
++  results
++
++  - Example: "# ktap_results_url: https://kcidb.kernelci.org/hello"
++
++- ``ktap_arch``: Architecture used during test run
++
++  - Example: "# ktap_arch: x86_64"
++
++- ``ktap_compiler``: Compiler used during test run
++
++  - Example: "# ktap_compiler: gcc (GCC) 10.1.1 20200507 (Red Hat 10.1.1-1)"
++
++- ``ktap_respository_url``: Link to git repository of the checked out code.
++
++  - Example: "# ktap_respository_url: https://github.com/torvalds/linux.git"
++
++- ``ktap_git_branch``: Name of git branch of checked out code
++
++  - Example: "# ktap_git_branch: kselftest/kunit"
++
++- ``ktap_kernel_version``: Version of Linux Kernel being used during test run
++
++  - Example: "# ktap_kernel_version: 6.7-rc1"
++
++- ``ktap_commit_hash``: The full git commit hash of the checked out base code.
++
++  - Example: "# ktap_commit_hash: 064725faf8ec2e6e36d51e22d3b86d2707f0f47f"
++
++**Other Metadata Types:**
++
++There can also be KTAP metadata that is not included in the recognized list
++above. This metadata must be prefixed with the test framework, ie. "kselftest",
++or with the prefix "custom". For example, "# custom_batch: 20".
++
+ Unknown lines
+ -------------
+ 
+@@ -206,6 +355,7 @@ An example of a test with two nested subtests:
+ 	KTAP version 2
+ 	1..1
+ 	  KTAP version 2
++	  # ktap_test: example
+ 	  1..2
+ 	  ok 1 test_1
+ 	  not ok 2 test_2
+@@ -219,6 +369,7 @@ An example format with multiple levels of nested testing:
+ 	KTAP version 2
+ 	1..2
+ 	  KTAP version 2
++	  # ktap_test: example_test_1
+ 	  1..2
+ 	    KTAP version 2
+ 	    1..2
+@@ -254,6 +405,7 @@ Example KTAP output
+ 	KTAP version 2
+ 	1..1
+ 	  KTAP version 2
++	  # ktap_test: main_test
+ 	  1..3
+ 	    KTAP version 2
+ 	    1..1
+@@ -261,11 +413,14 @@ Example KTAP output
+ 	    ok 1 test_1
+ 	  ok 1 example_test_1
+ 	    KTAP version 2
++        # ktap_test: example_test_2
++        # ktap_speed: slow
+ 	    1..2
+ 	    ok 1 test_1 # SKIP test_1 skipped
+ 	    ok 2 test_2
+ 	  ok 2 example_test_2
+ 	    KTAP version 2
++	    # ktap_test: example_test_3
+ 	    1..3
+ 	    ok 1 test_1
+ 	    # test_2: FAIL
+
+base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
+-- 
+2.43.0.429.g432eaa2c6b-goog
+
