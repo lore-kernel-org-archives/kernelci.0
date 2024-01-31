@@ -1,347 +1,110 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797C3250EE
-	for <kernelci@lists.linux.dev>; Fri, 26 Jan 2024 22:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFC380BF3
+	for <kernelci@lists.linux.dev>; Wed, 31 Jan 2024 13:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706307339; cv=none; b=aTpDoRc1Wny2SBNpl331htg4l1+lliZmvLKfdJps5dZh8IsaChFy1djLuX3WOsSAthHjCP+iAAnhzXuK3JvHpQmnlYE1QckADCfMk+2+Dj0l8ceewrDKft132nfv/jqfYGA0l3szp3LjNUFq4yiX8EJfb98gXTPezbZ7OP9J8BM=
+	t=1706709308; cv=none; b=i1epeVG2wDL/hCZHH9gK6EjSjYAgqs1/2M/ANwRWVQtjoAWUGdL2HsQGk0NBnfmmdM6dXBHzvICWpoZQgqUvIFmCiiDvNxE+4yGHuUGw4d0a+Oh2tkiZTQ7yjV2wpxe7Dy/eck1rwmsleLomdneL5U5DPjMsnAw1y2cpwrSpAdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706307339; c=relaxed/simple;
-	bh=T02XmBJDADvKcZTilAObNi55rEWmd0jbEWH/a/5XHYo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BWs3a7n1LrO2vVuVP7Qagkjmhojy3wGjpPXWGaGfjqeCfonKOqUPNl2VaeFnWqI0FOV0YfLyCENVsvpa/BB/zb7heUWlcwUBfOtUwSUmHt83Hl4WeB2bTv2dDufohSjzOx0BS+pD9rZZDKWN4e5dAi4603OW63Pw/pkq+91tv8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rmoar.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C4e2JLIr; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rmoar.bounces.google.com
+	s=arc-20240116; t=1706709308; c=relaxed/simple;
+	bh=2yaCnDKq0712Qh8a06J2vzYCV+H6rMFpxYGO33ZtKik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mg9JzeqpHj+lZyCrlv4SNA8A9K+ilCwzm44ecyuiTPqhBkJ+aVE85RrSLB4xyei1DrS3kbrRTc63jzvXUII77ck66FtmRsh3O/TAib1W4ePWDqFdj1QygcXDtuVRF4Kbysd3Y2BtiQikOhTJgrUgCQAsnpq3BNNCVbVlLkdjIi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fsf909Wi; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C4e2JLIr"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-602dae507caso7156487b3.0
-        for <kernelci@lists.linux.dev>; Fri, 26 Jan 2024 14:15:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706307336; x=1706912136; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wfOq9kvoZ78MTfE+CrR6Nj3VpN/I/l27htej84EdWP4=;
-        b=C4e2JLIrnT6DHqMApAVxMcHbHGa+VkC4qJz109CjjPfOYK01X1Fg6+N9kSdCpvGMrr
-         El9WkUWWalVyI6OgYRyb1mIrsoPoXXCYDOxr4Lx51zdq5ntmqTylHBNYEW7Q1amqe4uO
-         1xDx19BTQHnPhxSnUB/03EFDi8LdSMi8CO0Oky/4uZyDUGm1f3l+4S/2Lt1aXeKyx+wg
-         Vh4hXigVEOek1FEvMUuz4yjrsl5RjqxoALJtx9sEPwFf0edT5gGGxlB6Xl1ug+HrtsVz
-         XZhtrBfCH0socnPyIXjTEm/gaqsR0kJqvRUbU/Yv21O10T+Aoz3dZ+WE69GctiU2RvbD
-         xkuQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fsf909Wi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706709306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ui8Ga7Cs9sNQw1EgI7uvDxrW0t4sq0StM9hyxQjQuMo=;
+	b=Fsf909WiWxExnBmF13jO64kE/QQ3Rna1lDdJAVsHvpPntLjKn5gXzvv+fp3aFcZ+n4LX7W
+	732rYDjrI45vteGKUMPOzCWu0ziJWEcfxyRFHBgxoX5T4gnWkDRQ4V4v6jCPmENY2dHP7a
+	pbU+/bvqqCaPxuu4ejw6l/JxQ8N706k=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-NxL80GL1MJSLUPLdeMgwnQ-1; Wed, 31 Jan 2024 08:55:04 -0500
+X-MC-Unique: NxL80GL1MJSLUPLdeMgwnQ-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-33afc40d4c7so742888f8f.3
+        for <kernelci@lists.linux.dev>; Wed, 31 Jan 2024 05:55:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706307336; x=1706912136;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wfOq9kvoZ78MTfE+CrR6Nj3VpN/I/l27htej84EdWP4=;
-        b=g5RozvgF4dI9TboI4Yfa3Bcj94eUF1coCH0/KfVsANKPDUt0eJQujrGJRdBXMwoWhC
-         a54lI8PbACG6cDZdvRiK/nHAZQ5nGhAUugqq+y3aWh2EjR7hbbo6i6FSQ7v9P0JNk7UY
-         c331wCdTZIR60Gg51SwrjiYsa5pTTdZQYHQNXYtpJCzVbuyFErCQU1i41EtYZvO7VaK3
-         PfPHx5LZfkgSqoMpU1G+EnC5UId9+6c8deACRgryjhFR30BOTWErCH+LJ9pyRxG2MGCZ
-         ESmV84w6pn7B71J9YuXzAy/BBOiCFFbrNyUUWfcQ92s4/37KqfgstdANQzC27y6zQmMi
-         czvQ==
-X-Gm-Message-State: AOJu0Yy03IrV3kvkN0biq3aoYewsqD5T7WidR6Fqm4ircmq2P2+qMJW5
-	xm3eXEDUIxMmNzbCyUM+zgt1xDL4xveLcHlFPP62VgnjBFvcosyY34CztHfZhU+AYH2TdtU1Tg=
-	=
-X-Google-Smtp-Source: AGHT+IE6htndHGdPTl+G+lmUHLoJ75Z4eKrFu6nBmvxCp4uHri9nfyOa4lYFJnuF5baBpwP0Uw21cH4rVA==
-X-Received: from rmoar-specialist.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:45d3])
- (user=rmoar job=sendgmr) by 2002:a81:9a16:0:b0:600:2501:19b8 with SMTP id
- r22-20020a819a16000000b00600250119b8mr211259ywg.2.1706307336515; Fri, 26 Jan
- 2024 14:15:36 -0800 (PST)
-Date: Fri, 26 Jan 2024 22:14:26 +0000
+        d=1e100.net; s=20230601; t=1706709303; x=1707314103;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ui8Ga7Cs9sNQw1EgI7uvDxrW0t4sq0StM9hyxQjQuMo=;
+        b=aGH24ZjBUAFld7Ng+lJ+NgyJez+2jtJuxf3UC9BOPmkR4MHzQNpMfHw4xboDdggK2A
+         b80jyRfkwy5OjRvbCOi5tbRrKK66ePEvOTxMP1QwQa31iHRwNrxVQljXJt89Dad/IX2s
+         pu3f+EN++KUpLu0URbRWkJ3VzgD10POPhwlVwFeTIljiUc/ww90RQEg8q7SicETOYth/
+         dv0csCAs/RHWVJSHBluUpiCmyc5Gc9ApxwQqAK4SZmUiN8GFIJAq6z38IbXW+50Rk0UI
+         pYS0opbw9dk9xNVQlD95kiY75SrIG54jnzIgcbuEavLetE4pkUg63uGZ8EKv5wUbbtK8
+         uvtQ==
+X-Gm-Message-State: AOJu0YyZpNEyfeZIxbdGX4PnBJYpOPbRPUciJSoiEqjLMjta1EYbvfVt
+	Q+GaRMDZimRIhU+Nu4wwK34GaSLkGHzuC1fceBED4C2JYGTFcEIUa+pmcBZr5thZTOwiGSkQPVw
+	Px9FaIL8K/3EcAKecYy6hPpK2XsKWtj4G9Vu+OE8KB7fvgCB7AjCxuxa2
+X-Received: by 2002:a5d:6204:0:b0:33a:e72c:c252 with SMTP id y4-20020a5d6204000000b0033ae72cc252mr1248159wru.52.1706709303337;
+        Wed, 31 Jan 2024 05:55:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGF0ZaZ2+VFi5PGhj8WaiXpjUefSFNS3ytagKmk1koTDenh/6Ywn8HmCZ4+95coNSTRyHqxog==
+X-Received: by 2002:a5d:6204:0:b0:33a:e72c:c252 with SMTP id y4-20020a5d6204000000b0033ae72cc252mr1248138wru.52.1706709303015;
+        Wed, 31 Jan 2024 05:55:03 -0800 (PST)
+Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
+        by smtp.gmail.com with ESMTPSA id i16-20020a5d4390000000b0033af37102ddsm6858131wrq.1.2024.01.31.05.55.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jan 2024 05:55:02 -0800 (PST)
+Message-ID: <f7774c3a-792b-457c-acd3-11f8aa368d6c@redhat.com>
+Date: Wed, 31 Jan 2024 15:55:00 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240126221426.4173112-1-rmoar@google.com>
-Subject: [KTAP V2 PATCH v2] ktap_v2: add test metadata
-From: Rae Moar <rmoar@google.com>
-To: frowand.list@gmail.com, davidgow@google.com, keescook@chromium.org, 
-	Tim.Bird@sony.com, shuah@kernel.org, brendanhiggins@google.com, 
-	dlatypov@google.com
-Cc: tytso@google.com, gustavo.padovan@collabora.com, 
-	ricardo.canuelo@collabora.com, guillaume.tucker@collabora.com, corbet@lwn.net, 
-	kernelci@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Rae Moar <rmoar@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 01/10] get_maintainer: Survive querying missing
+ files
+To: Joe Perches <joe@perches.com>, workflows@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, Andy Whitcroft <apw@canonical.com>,
+ Theodore Ts'o <tytso@mit.edu>, David Gow <davidgow@google.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Mark Brown <broonie@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, "Darrick J . Wong"
+ <djwong@kernel.org>
+Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
+ Veronika Kabatova <vkabatov@redhat.com>, CKI <cki-project@redhat.com>,
+ kernelci@lists.linux.dev
+References: <20231115175146.9848-1-Nikolai.Kondrashov@redhat.com>
+ <20231205184503.79769-1-Nikolai.Kondrashov@redhat.com>
+ <20231205184503.79769-2-Nikolai.Kondrashov@redhat.com>
+ <9fe310a9d4486ecf57669bf7b44a49c1788452c1.camel@perches.com>
+From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+In-Reply-To: <9fe310a9d4486ecf57669bf7b44a49c1788452c1.camel@perches.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add specification for test metadata to the KTAP v2 spec.
+On 12/5/23 20:55, Joe Perches wrote:
+> On Tue, 2023-12-05 at 20:02 +0200, Nikolai Kondrashov wrote:
+>> Do not die, but only warn when scripts/get_maintainer.pl is asked to
+>> retrieve information about a missing file.
+>>
+>> This allows scripts/checkpatch.pl to query MAINTAINERS while processing
+>> patches which are removing files.
+> 
+> Why is this useful?
+> 
+> Give a for-instance example please.
 
-KTAP v1 only specifies the output format of very basic test information:
-test result and test name. Any additional test information either gets
-added to general diagnostic data or is not included in the output at all.
+Does the example I provided make sense, Joe?
 
-The purpose of KTAP metadata is to create a framework to include and
-easily identify additional important test information in KTAP.
+Would my solution be adequate, or would you like to have another?
 
-KTAP metadata could include any test information that is pertinent for
-user interaction before or after the running of the test. For example,
-the test file path or the test speed.
-
-Since this includes a large variety of information, this specification
-will recognize notable types of KTAP metadata to ensure consistent format
-across test frameworks. See the full list of types in the specification.
-
-Example of KTAP Metadata:
-
- KTAP version 2
- # ktap_test: main
- # ktap_arch: uml
- 1..1
-     KTAP version 2
-     # ktap_test: suite_1
-     # ktap_subsystem: example
-     # ktap_test_file: lib/test.c
-     1..2
-     ok 1 test_1
-     # ktap_test: test_2
-     # ktap_speed: very_slow
-     # custom_is_flaky: true
-     ok 2 test_2
- ok 1 test_suite
-
-The changes to the KTAP specification outline the format, location, and
-different types of metadata.
-
-Here is a link to a version of the KUnit parser that is able to parse test
-metadata lines for KTAP version 2. Note this includes test metadata
-lines for the main level of KTAP.
-
-Link: https://kunit-review.googlesource.com/c/linux/+/5889
-
-Signed-off-by: Rae Moar <rmoar@google.com>
----
- Documentation/dev-tools/ktap.rst | 163 ++++++++++++++++++++++++++++++-
- 1 file changed, 159 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-index ff77f4aaa6ef..4480eaf5bbc3 100644
---- a/Documentation/dev-tools/ktap.rst
-+++ b/Documentation/dev-tools/ktap.rst
-@@ -17,19 +17,20 @@ KTAP test results describe a series of tests (which may be nested: i.e., test
- can have subtests), each of which can contain both diagnostic data -- e.g., log
- lines -- and a final result. The test structure and results are
- machine-readable, whereas the diagnostic data is unstructured and is there to
--aid human debugging.
-+aid human debugging. One exception to this is test metadata lines - a type
-+of diagnostic lines. Test metadata is used to identify important supplemental
-+test information and can be machine-readable.
- 
- KTAP output is built from four different types of lines:
- - Version lines
- - Plan lines
- - Test case result lines
--- Diagnostic lines
-+- Diagnostic lines (including test metadata)
- 
- In general, valid KTAP output should also form valid TAP output, but some
- information, in particular nested test results, may be lost. Also note that
- there is a stagnant draft specification for TAP14, KTAP diverges from this in
--a couple of places (notably the "Subtest" header), which are described where
--relevant later in this document.
-+a couple of places, which are described where relevant later in this document.
- 
- Version lines
- -------------
-@@ -166,6 +167,154 @@ even if they do not start with a "#": this is to capture any other useful
- kernel output which may help debug the test. It is nevertheless recommended
- that tests always prefix any diagnostic output they have with a "#" character.
- 
-+KTAP metadata lines
-+-------------------
-+
-+KTAP metadata lines are a subset of diagnostic lines that are used to include
-+and easily identify important supplemental test information in KTAP.
-+
-+.. code-block:: none
-+
-+	# <prefix>_<metadata type>: <metadata value>
-+
-+The <prefix> indicates where to find the specification for the type of
-+metadata. The metadata types listed below use the prefix "ktap" (See Types of
-+KTAP Metadata).
-+
-+Types that are instead specified by an individual test framework use the
-+framework name as the prefix. For example, a metadata type documented by the
-+kselftest specification would use the prefix "kselftest". Any metadata type
-+that is not listed in a specification must use the prefix "custom". Note the
-+prefix must not include spaces or the characters ":" or "_".
-+
-+The format of <metadata type> and <value> varies based on the type. See the
-+individual specification. For "custom" types the <metadata type> can be any
-+string excluding ":", spaces, or newline characters and the <value> can be any
-+string.
-+
-+**Location:**
-+
-+The first KTAP metadata entry for a test must be "# ktap_test: <test name>",
-+which acts as a header to associate metadata with the correct test.
-+
-+For test cases, the location of the metadata is between the prior test result
-+line and the current test result line. For test suites, the location of the
-+metadata is between the suite's version line and test plan line. See the
-+example below.
-+
-+KTAP metadata for a test does not need to be contiguous. For example, a kernel
-+warning or other diagnostic output could interrupt metadata lines. However, it
-+is recommended to keep a test's metadata lines together when possible, as this
-+improves readability.
-+
-+**Here is an example of using KTAP metadata:**
-+
-+::
-+
-+        KTAP version 2
-+        # ktap_test: main
-+        # ktap_arch: uml
-+        1..1
-+          KTAP version 2
-+          # ktap_test: suite_1
-+          # ktap_subsystem: example
-+          # ktap_test_file: lib/test.c
-+          1..2
-+          ok 1 test_1
-+          # ktap_test: test_2
-+          # ktap_speed: very_slow
-+          # custom_is_flaky: true
-+          ok 2 test_2
-+        # suite_1 passed
-+        ok 1 suite_1
-+
-+In this example, the tests are running on UML. The test suite "suite_1" is part
-+of the subsystem "example" and belongs to the file "lib/example_test.c". It has
-+two subtests, "test_1" and "test_2". The subtest "test_2" has a speed of
-+"very_slow" and has been marked with a custom KTAP metadata type called
-+"custom_is_flaky" with the value of "true".
-+
-+**Types of KTAP Metadata:**
-+
-+This is the current list of KTAP metadata types recognized in this
-+specification. Note that all of these metadata types are optional (except for
-+ktap_test as the KTAP metadata header).
-+
-+- ``ktap_test``: Name of test (used as header of KTAP metadata). This should
-+  match the test name printed in the test result line: "ok 1 [test_name]".
-+
-+- ``ktap_module``: Name of the module containing the test
-+
-+- ``ktap_subsystem``: Name of the subsystem being tested
-+
-+- ``ktap_start_time``: Time tests started in ISO8601 format
-+
-+  - Example: "# ktap_start_time: 2024-01-09T13:09:01.990000+00:00"
-+
-+- ``ktap_duration``: Time taken (in seconds) to execute the test
-+
-+  - Example: "ktap_duration: 10.154s"
-+
-+- ``ktap_speed``: Category of how fast test runs: "normal", "slow", or
-+  "very_slow"
-+
-+- ``ktap_test_file``: Path to source file containing the test. This metadata
-+  line can be repeated if the test is spread across multiple files.
-+
-+  - Example: "# ktap_test_file: lib/test.c"
-+
-+- ``ktap_generated_file``: Description of and path to file generated during
-+  test execution. This could be a core dump, generated filesystem image, some
-+  form of visual output (for graphics drivers), etc. This metadata line can be
-+  repeated to attach multiple files to the test.
-+
-+  - Example: "# ktap_generated_file: Core dump: /var/lib/systemd/coredump/hello.core"
-+
-+- ``ktap_log_file``: Path to file containing kernel log test output
-+
-+  - Example: "# ktap_log_file: /sys/kernel/debugfs/kunit/example/results"
-+
-+- ``ktap_error_file``: Path to file containing context for test failure or
-+  error. This could include the difference between optimal test output and
-+  actual test output.
-+
-+  - Example: "# ktap_error_file: fs/results/example.out.bad"
-+
-+- ``ktap_results_url``: Link to webpage describing this test run and its
-+  results
-+
-+  - Example: "# ktap_results_url: https://kcidb.kernelci.org/hello"
-+
-+- ``ktap_arch``: Architecture used during test run
-+
-+  - Example: "# ktap_arch: x86_64"
-+
-+- ``ktap_compiler``: Compiler used during test run
-+
-+  - Example: "# ktap_compiler: gcc (GCC) 10.1.1 20200507 (Red Hat 10.1.1-1)"
-+
-+- ``ktap_respository_url``: Link to git repository of the checked out code.
-+
-+  - Example: "# ktap_respository_url: https://github.com/torvalds/linux.git"
-+
-+- ``ktap_git_branch``: Name of git branch of checked out code
-+
-+  - Example: "# ktap_git_branch: kselftest/kunit"
-+
-+- ``ktap_kernel_version``: Version of Linux Kernel being used during test run
-+
-+  - Example: "# ktap_kernel_version: 6.7-rc1"
-+
-+- ``ktap_commit_hash``: The full git commit hash of the checked out base code.
-+
-+  - Example: "# ktap_commit_hash: 064725faf8ec2e6e36d51e22d3b86d2707f0f47f"
-+
-+**Other Metadata Types:**
-+
-+There can also be KTAP metadata that is not included in the recognized list
-+above. This metadata must be prefixed with the test framework, ie. "kselftest",
-+or with the prefix "custom". For example, "# custom_batch: 20".
-+
- Unknown lines
- -------------
- 
-@@ -206,6 +355,7 @@ An example of a test with two nested subtests:
- 	KTAP version 2
- 	1..1
- 	  KTAP version 2
-+	  # ktap_test: example
- 	  1..2
- 	  ok 1 test_1
- 	  not ok 2 test_2
-@@ -219,6 +369,7 @@ An example format with multiple levels of nested testing:
- 	KTAP version 2
- 	1..2
- 	  KTAP version 2
-+	  # ktap_test: example_test_1
- 	  1..2
- 	    KTAP version 2
- 	    1..2
-@@ -254,6 +405,7 @@ Example KTAP output
- 	KTAP version 2
- 	1..1
- 	  KTAP version 2
-+	  # ktap_test: main_test
- 	  1..3
- 	    KTAP version 2
- 	    1..1
-@@ -261,11 +413,14 @@ Example KTAP output
- 	    ok 1 test_1
- 	  ok 1 example_test_1
- 	    KTAP version 2
-+        # ktap_test: example_test_2
-+        # ktap_speed: slow
- 	    1..2
- 	    ok 1 test_1 # SKIP test_1 skipped
- 	    ok 2 test_2
- 	  ok 2 example_test_2
- 	    KTAP version 2
-+	    # ktap_test: example_test_3
- 	    1..3
- 	    ok 1 test_1
- 	    # test_2: FAIL
-
-base-commit: 906f02e42adfbd5ae70d328ee71656ecb602aaf5
--- 
-2.43.0.429.g432eaa2c6b-goog
+Thank you.
+Nick
 
