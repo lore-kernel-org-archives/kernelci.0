@@ -1,90 +1,119 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9D25F862
-	for <kernelci@lists.linux.dev>; Sat,  3 Feb 2024 18:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193E524B24;
+	Sun,  4 Feb 2024 13:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706985814; cv=none; b=uzRjbpCHfadaF8NF88d4xX0UYpvEt9pVFBN8W8NoCZJZ+iG5+onbIvzkkTl+Zjk7sP/IPV0AUbDsNMaxC4X+zKs56eaHLvkh0gMuQ/8TshPd+sGsEx9OJJoZgO8rnc8BpzWkwmr5J9mSBsrrCi7Kq7Fwexw5s3jvQtVXgZJDG3s=
+	t=1707051833; cv=none; b=mZLCzOlOZumLCnh21nlrWKHv35x6D8csePPu25SB6EAyQMOEs12qo+TN2Ic7mcY79juKnfAff1hYUh00T38NA3mct83OFAlXKL0s/91AovaAAZqu6dXf0WciWMWjABbhBiU5325E5+MmlI0PYgsJu1nC6xP/+zw2b98ztptfQDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706985814; c=relaxed/simple;
-	bh=85eCxnQGygtDsBKWNKOY5wUCDnbCES+NLIF+/MvX6GM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=pfvRW6sPQI0FeX1S0o1Kmb+EPGniRBSSqRykBTzddtB32nC4Hhqe2cRyVazobgyBEjkTDgz/WyP3j8v1NWJcjpEE+xmiVMO41LK32cwesbsuHRta/cTP5kqC5W24iXOExTWwva7eTZJnpKxnJXGtRfwlEocoq/G7wP4qg3D/+rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uWobC+Gg; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1707051833; c=relaxed/simple;
+	bh=33qb0lTFCLf4rU2I1xs5+TJ0LIK/mHIS088j2jXFTQs=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=J/uVJ4f7o/RwDWwxl3tAAmtJ6qj9CjH0TKKrV17L790mdoaE5GWbKLzRYXYK4FIrzDFGJWnGdxAkmbm3NVkSmc1y7CTJkxThvfq3BG4x5jVSJJ7PnFJqjqK3UcVw6VuibonqnLxhVXAYKRMpby9kPfnGlZj8qPPzsHlxQoUaV80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzpXdjjk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uWobC+Gg"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-428405a0205so179231cf.1
-        for <kernelci@lists.linux.dev>; Sat, 03 Feb 2024 10:43:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706985812; x=1707590612; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=85eCxnQGygtDsBKWNKOY5wUCDnbCES+NLIF+/MvX6GM=;
-        b=uWobC+Gg9Ms2adsxbI9D+1ElHjXYcEuESpyPGOBQX6KmIgIlUcostN1ATELxqSbLtb
-         F4XHSDAzjgZGXwbRxYwEuAoXeTGusaXb4JyJ4AKvhrdK3n7cui13iW8tpPDV2ca2j+0E
-         mvynTy1wukb5kGBPonWOpBNSXa8xyxzUC20exd3sd+CKssRfzA/y6jjyYLQdk7derCQG
-         DGfZyB7FCEXnG820MNjG37bgbcgi0cHQ7MhnzkNrj60hA7m7qNTK55LJx+Ds+vCHoXQD
-         suyEioSfeWDvXE9JdPZDbFlVUS1IpKp4hNAehz2AiBXU48xbLFEsgs9YrmY7TtY/+NLS
-         LmEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706985812; x=1707590612;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=85eCxnQGygtDsBKWNKOY5wUCDnbCES+NLIF+/MvX6GM=;
-        b=inqaTEh71TOeRANLmD7/yB9yHLphXntyEt+OF8mhZWW+1lKdmHzc4nmxPXCL0ZK9PY
-         qMFw/2GeOi2blW6FVqEO9JzARX+u0ScikPDQLYfIFoMWbOjJC4/btqOje6OJ/cB+Huz7
-         n+64w3rSo7FH/uKdCCI+ynRtwf44cCgc9V2xtZ5XZ5f8asEBgMKBiZBLpavnRSvKATXU
-         FCNL9FtS0mauZOdq3WsmmcycSeyvQ6NEqL/5GL9OMOweCucFQX6O3Sk+KnbJ1/x6at04
-         gyOrsBm29MzOR/65p+3MuArp4wy0wR/2J8Uf1H8gKOsqy3geP/7Wf+pB8oPwRZOjYnkf
-         Yjkw==
-X-Gm-Message-State: AOJu0YzhPYfSdISaiA12rJXToIEG8ShDe03YV8f6TjU+/ligNwlfaxqn
-	QvyTL2XU4GQ2fFfKbKewwa+omoL7cf59Gex00nCyWbNuJeVkx5vM51tVUuiLjNGi0SE8Q3dRG8D
-	QZrMRl60BN4T5eyEqgV9kxP0GD1DL8WoVhf1M121M/6mpbN4+YtHt
-X-Google-Smtp-Source: AGHT+IF7mZl9IAWVymuEfi7BFJs9MMLan50uLm4gXRz/C9Ra01v/8MKcqcJiCX1eSArzfpSJYxsQV26Q2ilI9PU8KTc=
-X-Received: by 2002:ac8:5cca:0:b0:42c:1874:7d42 with SMTP id
- s10-20020ac85cca000000b0042c18747d42mr36496qta.15.1706985811722; Sat, 03 Feb
- 2024 10:43:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzpXdjjk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB75C433C7;
+	Sun,  4 Feb 2024 13:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707051832;
+	bh=33qb0lTFCLf4rU2I1xs5+TJ0LIK/mHIS088j2jXFTQs=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=pzpXdjjk7o1gSecRwrYV0VNSFQfoFsjJfXsczJaRmLQHs2J97J8JS40VYzB80LTt7
+	 hpzvZf3ZqEyF5GWUI37cFm9qbKuvk8VA64GLku+lZGQs3XztYjK2WvVd/6cBpubZKe
+	 Sv7QW4ryDF7n7hKaQEa80K4b1ASfAKxn+zj7rOVrXBSi2N7pwtTVeRl7V8xuoQikM1
+	 sNUeCqmtoXGkW6D2/j/6PQ6rEd0DKZBfH0WtTgCcN7kUpqMfRlHVebvjbeb1l0RPUq
+	 vKS6ruR7vBLBKXVUN3gLl4MOgqO1XAqXcEfXzqeylYW5vrLppT1uUGDmCWR9R3Ozdt
+	 idjYd/GaggK8A==
+Date: Sun, 04 Feb 2024 14:03:51 +0100
+From: Kees Cook <kees@kernel.org>
+To: Rae Moar <rmoar@google.com>, frowand.list@gmail.com, davidgow@google.com,
+ keescook@chromium.org, Tim.Bird@sony.com, shuah@kernel.org,
+ brendanhiggins@google.com, dlatypov@google.com
+CC: tytso@google.com, gustavo.padovan@collabora.com,
+ ricardo.canuelo@collabora.com, guillaume.tucker@collabora.com,
+ corbet@lwn.net, kernelci@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ kunit-dev@googlegroups.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [KTAP V2 PATCH v2] ktap_v2: add test metadata
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20240126221426.4173112-1-rmoar@google.com>
+References: <20240126221426.4173112-1-rmoar@google.com>
+Message-ID: <6CCB5F6D-EC6C-452A-9D25-0D7B3F9739AB@kernel.org>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
-In-Reply-To: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Sat, 3 Feb 2024 10:43:17 -0800
-Message-ID: <CAHRSSEyev9rcYpbe2VtALc9-4zR_Bz6=24yitFTa4U5X8N+S0A@mail.gmail.com>
-Subject: Re: Please add new Android branches
-To: kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Please add the following new Android branch to kernelci testing.
 
-repo: https://android.googlesource.com/kernel/common
-branch:
-- android15-6.6
 
-Thanks,
+On January 26, 2024 11:14:26 PM GMT+01:00, Rae Moar <rmoar@google=2Ecom> w=
+rote:
+> KTAP version 2
+> # ktap_test: main
+> # ktap_arch: uml
+> 1=2E=2E1
+>     KTAP version 2
+>     # ktap_test: suite_1
+>     # ktap_subsystem: example
+>     # ktap_test_file: lib/test=2Ec
 
--Todd
+I think it's a mistake to mix "diagnostics" lines with semantic lines=2E S=
+ince the diagnostic prefix is [# ] (hash space) how about make the test met=
+adata lines be [#:] (hash colon)=2E For example:
 
-On Mon, Jul 10, 2023 at 3:41=E2=80=AFPM Todd Kjos <tkjos@google.com> wrote:
+
+     1=2E=2E2
+     ok 1 test_1
+     #:ktap_test: test_2
+     #:ktap_speed: very_slow
+     #:custom_is_flaky: true
+     # format-free stuff goes here
+     ok 2 test_2
+=2E=2E=2E
+
+> ok 1 test_suite
 >
-> Please add the following new Android branches to kernelci testing.
+>The changes to the KTAP specification outline the format, location, and
+>different types of metadata=2E
 >
-> repo: https://android.googlesource.com/kernel/common
-> branches:
-> - android15-6.1
-> - android14-6.1-lts
-> - android14-5.15-lts
+>Here is a link to a version of the KUnit parser that is able to parse tes=
+t
+>metadata lines for KTAP version 2=2E Note this includes test metadata
+>lines for the main level of KTAP=2E
 >
-> Thanks,
+>Link: https://kunit-review=2Egooglesource=2Ecom/c/linux/+/5889
 >
-> -Todd
+>Signed-off-by: Rae Moar <rmoar@google=2Ecom>
+>---
+> Documentation/dev-tools/ktap=2Erst | 163 ++++++++++++++++++++++++++++++-
+> 1 file changed, 159 insertions(+), 4 deletions(-)
+>
+>diff --git a/Documentation/dev-tools/ktap=2Erst b/Documentation/dev-tools=
+/ktap=2Erst
+>index ff77f4aaa6ef=2E=2E4480eaf5bbc3 100644
+>--- a/Documentation/dev-tools/ktap=2Erst
+>+++ b/Documentation/dev-tools/ktap=2Erst
+>@@ -17,19 +17,20 @@ KTAP test results describe a series of tests (which m=
+ay be nested: i=2Ee=2E, test
+> can have subtests), each of which can contain both diagnostic data -- e=
+=2Eg=2E, log
+> lines -- and a final result=2E The test structure and results are
+> machine-readable, whereas the diagnostic data is unstructured and is the=
+re to
+
+We even say it's unstructured=2E=2E=2E :)
+
+
+>+prefix must not include spaces or the characters ":" or "_"=2E
+
+Why not _?
+
+--=20
+Kees Cook
