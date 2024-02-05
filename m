@@ -1,119 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193E524B24;
-	Sun,  4 Feb 2024 13:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65C310A01
+	for <kernelci@lists.linux.dev>; Mon,  5 Feb 2024 06:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707051833; cv=none; b=mZLCzOlOZumLCnh21nlrWKHv35x6D8csePPu25SB6EAyQMOEs12qo+TN2Ic7mcY79juKnfAff1hYUh00T38NA3mct83OFAlXKL0s/91AovaAAZqu6dXf0WciWMWjABbhBiU5325E5+MmlI0PYgsJu1nC6xP/+zw2b98ztptfQDY=
+	t=1707113035; cv=none; b=p0aMfAO9aeZAnN9iSLbrwns/pTmSDbheWmhjJSi4HHh+G0B9LRe86B/ofagDz+MKPx9KyY62+HSIiL6ygvodzTtCUkrO17Yc0RZXMeBf16WtY6JBRXDGueg+wk/tzvPV6SL6G3EP0bsy57Z9Jt+qLaXETJWS9faFsf0N6OoIlC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707051833; c=relaxed/simple;
-	bh=33qb0lTFCLf4rU2I1xs5+TJ0LIK/mHIS088j2jXFTQs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=J/uVJ4f7o/RwDWwxl3tAAmtJ6qj9CjH0TKKrV17L790mdoaE5GWbKLzRYXYK4FIrzDFGJWnGdxAkmbm3NVkSmc1y7CTJkxThvfq3BG4x5jVSJJ7PnFJqjqK3UcVw6VuibonqnLxhVXAYKRMpby9kPfnGlZj8qPPzsHlxQoUaV80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzpXdjjk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1707113035; c=relaxed/simple;
+	bh=CEaizMW8sKDX3T35FO2P23jjweW4DpXKNulUTVoNi/w=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LXdKmU9WktVWQXZIvYu4A8pyrgRV5dtCfRPUC81XIalifwy6lQfP8DVlYUimrUZihrYYuxg0FgzQnMLoBihyn2UdfmPmkX2Lj9S+PMLoPNo1z4ZPw5pIRZkJOkWVW2ICNrJzsJtA6fqRb0Mj5n3OcHwvOAYAwN0I2gn+6/fzThI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=hDHYP+ju; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzpXdjjk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB75C433C7;
-	Sun,  4 Feb 2024 13:03:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707051832;
-	bh=33qb0lTFCLf4rU2I1xs5+TJ0LIK/mHIS088j2jXFTQs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=pzpXdjjk7o1gSecRwrYV0VNSFQfoFsjJfXsczJaRmLQHs2J97J8JS40VYzB80LTt7
-	 hpzvZf3ZqEyF5GWUI37cFm9qbKuvk8VA64GLku+lZGQs3XztYjK2WvVd/6cBpubZKe
-	 Sv7QW4ryDF7n7hKaQEa80K4b1ASfAKxn+zj7rOVrXBSi2N7pwtTVeRl7V8xuoQikM1
-	 sNUeCqmtoXGkW6D2/j/6PQ6rEd0DKZBfH0WtTgCcN7kUpqMfRlHVebvjbeb1l0RPUq
-	 vKS6ruR7vBLBKXVUN3gLl4MOgqO1XAqXcEfXzqeylYW5vrLppT1uUGDmCWR9R3Ozdt
-	 idjYd/GaggK8A==
-Date: Sun, 04 Feb 2024 14:03:51 +0100
-From: Kees Cook <kees@kernel.org>
-To: Rae Moar <rmoar@google.com>, frowand.list@gmail.com, davidgow@google.com,
- keescook@chromium.org, Tim.Bird@sony.com, shuah@kernel.org,
- brendanhiggins@google.com, dlatypov@google.com
-CC: tytso@google.com, gustavo.padovan@collabora.com,
- ricardo.canuelo@collabora.com, guillaume.tucker@collabora.com,
- corbet@lwn.net, kernelci@lists.linux.dev, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [KTAP V2 PATCH v2] ktap_v2: add test metadata
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20240126221426.4173112-1-rmoar@google.com>
-References: <20240126221426.4173112-1-rmoar@google.com>
-Message-ID: <6CCB5F6D-EC6C-452A-9D25-0D7B3F9739AB@kernel.org>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="hDHYP+ju"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1707113026;
+	bh=CEaizMW8sKDX3T35FO2P23jjweW4DpXKNulUTVoNi/w=;
+	h=Subject:From:To:Date:In-Reply-To:References:From;
+	b=hDHYP+juZnEk/X85a03o8gvGin/URQzooDoblxsBfkaJK+Le/cEkwmYy22CQ7Aozf
+	 XikqxwC+svKtRHYBbRVeH3wLRrDb/APNbKHvQUMAFt/3kDkiKicuOWZMFmIjlLHQ82
+	 KVs/BFCee60gf2/bohvIyiihJOB81O8zsTt9VlBw17wbmrtzxADVaKC2/+9smpmyNA
+	 DSleCl6gKzraz6/MfSjuX0hkTNg9jYVnysFADuLdFjNw7GbEQiQCs34gV07EfqKpMr
+	 EsnUEBD9UJUYjXRi7kjir4w0OeNxaobSTzEFl1evep4niY3974G6zkQnSjA1NDuELy
+	 EnwdPW7RJvP2g==
+Received: from [100.113.176.132] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nuclearcat)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C65203781360;
+	Mon,  5 Feb 2024 06:03:45 +0000 (UTC)
+Message-ID: <9f58d16701b61a5fd05db7839f21cb8f0bf15013.camel@collabora.com>
+Subject: Re: Please add new Android branches
+From: Denys Fedoryshchenko <denys.f@collabora.com>
+To: Todd Kjos <tkjos@google.com>, kernelci@lists.linux.dev
+Date: Mon, 05 Feb 2024 08:03:44 +0200
+In-Reply-To: <CAHRSSEyev9rcYpbe2VtALc9-4zR_Bz6=24yitFTa4U5X8N+S0A@mail.gmail.com>
+References: 
+	<CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+	 <CAHRSSEyev9rcYpbe2VtALc9-4zR_Bz6=24yitFTa4U5X8N+S0A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1+deb11u2 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+
+Hello Todd,
+
+PR created https://github.com/kernelci/kernelci-core/pull/2345
+It will be merged and included in today's production release.
+
+Thanks!
+
+On Sat, 2024-02-03 at 10:43 -0800, Todd Kjos wrote:
+> Please add the following new Android branch to kernelci testing.
+> 
+> repo: https://android.googlesource.com/kernel/common
+> branch:
+> - android15-6.6
+> 
+> Thanks,
+> 
+> -Todd
+> 
+> On Mon, Jul 10, 2023 at 3:41 PM Todd Kjos <tkjos@google.com> wrote:
+> > 
+> > Please add the following new Android branches to kernelci testing.
+> > 
+> > repo: https://android.googlesource.com/kernel/common
+> > branches:
+> > - android15-6.1
+> > - android14-6.1-lts
+> > - android14-5.15-lts
+> > 
+> > Thanks,
+> > 
+> > -Todd
+> 
 
 
-
-On January 26, 2024 11:14:26 PM GMT+01:00, Rae Moar <rmoar@google=2Ecom> w=
-rote:
-> KTAP version 2
-> # ktap_test: main
-> # ktap_arch: uml
-> 1=2E=2E1
->     KTAP version 2
->     # ktap_test: suite_1
->     # ktap_subsystem: example
->     # ktap_test_file: lib/test=2Ec
-
-I think it's a mistake to mix "diagnostics" lines with semantic lines=2E S=
-ince the diagnostic prefix is [# ] (hash space) how about make the test met=
-adata lines be [#:] (hash colon)=2E For example:
-
-
-     1=2E=2E2
-     ok 1 test_1
-     #:ktap_test: test_2
-     #:ktap_speed: very_slow
-     #:custom_is_flaky: true
-     # format-free stuff goes here
-     ok 2 test_2
-=2E=2E=2E
-
-> ok 1 test_suite
->
->The changes to the KTAP specification outline the format, location, and
->different types of metadata=2E
->
->Here is a link to a version of the KUnit parser that is able to parse tes=
-t
->metadata lines for KTAP version 2=2E Note this includes test metadata
->lines for the main level of KTAP=2E
->
->Link: https://kunit-review=2Egooglesource=2Ecom/c/linux/+/5889
->
->Signed-off-by: Rae Moar <rmoar@google=2Ecom>
->---
-> Documentation/dev-tools/ktap=2Erst | 163 ++++++++++++++++++++++++++++++-
-> 1 file changed, 159 insertions(+), 4 deletions(-)
->
->diff --git a/Documentation/dev-tools/ktap=2Erst b/Documentation/dev-tools=
-/ktap=2Erst
->index ff77f4aaa6ef=2E=2E4480eaf5bbc3 100644
->--- a/Documentation/dev-tools/ktap=2Erst
->+++ b/Documentation/dev-tools/ktap=2Erst
->@@ -17,19 +17,20 @@ KTAP test results describe a series of tests (which m=
-ay be nested: i=2Ee=2E, test
-> can have subtests), each of which can contain both diagnostic data -- e=
-=2Eg=2E, log
-> lines -- and a final result=2E The test structure and results are
-> machine-readable, whereas the diagnostic data is unstructured and is the=
-re to
-
-We even say it's unstructured=2E=2E=2E :)
-
-
->+prefix must not include spaces or the characters ":" or "_"=2E
-
-Why not _?
-
---=20
-Kees Cook
