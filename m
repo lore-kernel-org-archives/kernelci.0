@@ -1,110 +1,109 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F4769E16
-	for <kernelci@lists.linux.dev>; Fri,  9 Feb 2024 16:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CD3381C4
+	for <kernelci@lists.linux.dev>; Fri,  9 Feb 2024 19:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707494547; cv=none; b=eGKTsNkC0doWCqwD7oMzK7cG6aGidAx9SxAAGO7d4zlXnpAW9m/6b6DgxG8QDBA6TIjZNSp+Pq6j8y2d1WZdRX2LHP9R/7PVskOf7+DSCXChYfc4WSZEp52aUxp1UF4dtSeegAhf7xMnqwz4GQutZpGQDiEnHQEmXlilHXvpuPA=
+	t=1707507534; cv=none; b=CKdCW0yD6bQ/skPP7c0kJASA/939POla3w19MG5LEYkvo6YohGi9jbhTpTx8K7jm1USmpksXpyBN11LKAKp4iuUQEcUAvbfl6n+Hl5IN9BogE01Bq9ujVurTHtDRdaJaCpwK8CCUA9IICNp3BzaaWFZlUCVlMBvSp4NoF4Xb17w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707494547; c=relaxed/simple;
-	bh=hoQKyNs6mbHbus+3x4s8ZkD2OSWR89g+UCGz1vrJIMw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=AaX1o2/KCZ89q/yJ07l1K7S8z8UmV2MKYY2kMqNJwaTPYTFiPX59Rg0yvTPKxGs81PPPVus/3rYz+yOob2rbU3dIUcE8BREc8mNrQyCcUFZ7ZSwt83uC6L7Vn3TTL+9DLj29OwA+d0n1oW2Yan1ODKBT9dFUDZlKiaPuzOeNWM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=DKmuhLA9; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1707507534; c=relaxed/simple;
+	bh=/QT2qTeGJUUomRSSb09gThXaMOV/2DdZ5X4Gs2hiCYU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nDHHNww7KCJsSmfMkcqGxQmtJN9fnJhTzLvxaTTzBlS87LQ91EqNLEKTQqbIwnitFHI3gkz0EubgIUmcVXrV8nasscbQtx4w4MmHIrBGZqprI/jJPz69CGCeHpFdVoRQIXbPaDW/ZPnzvIFFT0epPDn9LLqE8r3mGwkFQdFWHe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=36UT0f5o; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="DKmuhLA9"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 81F24C0002;
-	Fri,  9 Feb 2024 16:02:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1707494541;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HyftZ/aeKQ5sEFLcUjxwHRzOEmFoBniulRHmOL9Qrts=;
-	b=DKmuhLA9uxTQPppSE1924zlGKu83QgGLZa2xuGQaTUV1NoKzd9oZ1+D465EUYvvVii/73R
-	8k4iy6A30pQsTTAaSb3VQSMGXT3JtWbs0tOCkemKmgb+2xXW9dJH5RvTpmvkuhGhW3dkkI
-	CV3ndnHK6YSQiblavPetFhYcxd7zTYYPaZOY3wu4MXfCy99aWFQOVre2tmSNikXkhG6IvB
-	4kcldfeZLwFGGwDgn0r0pd5i0vfgT0H3XdViAdQUGV1mkouhF5vQwB7hYk0rL/Ecmx24a/
-	TiClVLgZUwIsjnV9QptNxPWLZnujOxDRcH5D3nY/McV/+ynjIfwNPMn0wljmdw==
-Message-ID: <7e83f05e-3d99-446e-8364-15273124c414@gtucker.io>
-Date: Fri, 9 Feb 2024 17:02:20 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="36UT0f5o"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-42a7765511bso25161cf.1
+        for <kernelci@lists.linux.dev>; Fri, 09 Feb 2024 11:38:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707507532; x=1708112332; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/QT2qTeGJUUomRSSb09gThXaMOV/2DdZ5X4Gs2hiCYU=;
+        b=36UT0f5oJbd924ML+UCqxRP9Wd3cRgLFjmhtR7TtZ3s0qUdZEjbNurH1hhcc5V2/Q7
+         XWO759cSiKys8LWAy5Aj3wYkl4aDSQAg2BPfBkSz3XEhG7/IUAjCCtCh8ROjiu9UwwcN
+         7VkA80gZNEBEJEv9LnMe2/f5A52FE5MX+lJkNmRAxLhnAxP0FA9OXKQmSJlV6CZDR44V
+         HgFdfOA+gTxWnfR4hbJDpR+8GITYQ0lQYAjRXRoGH08OFrMJGomaz+NtEMQD6gTFAOxL
+         pfUKwaA0UNZmWBS1CZ+ZtJM0l2ib5h/A7ausgOBzdZp8ona9U61oxdv2gbZx99FftosL
+         pUQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707507532; x=1708112332;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/QT2qTeGJUUomRSSb09gThXaMOV/2DdZ5X4Gs2hiCYU=;
+        b=WS8tFj2NfezFrYIaZcKl9rka7Fmt5jmZy/4Nz3Yk/J/Y3XhRj/wYEgCMKiOcgUu/qF
+         ebFiedQTXN7SSG6j/RX+ZF5dhaqy3n0B3sWu19QpawPy6nA9Rormb9QnFrG8qVCODM6k
+         ICkjAlfIsexRGdA/e8hK2VPdxooMO38bGZ2HKtX+/hgyydZityJn73GfPvVytEri30Dn
+         LRDDCzYmYjIsog3wq8m2NehwvVTLjk11UzUjqfqdGKY7zNXhQnMmmbPQIng8ehFPsrId
+         fERxlCfh5WBp5WDd+7YvM3bOg1WG/0woXiSsyrG/13h2MHaTtadMscMWNMIXietuAWz/
+         ZfRQ==
+X-Gm-Message-State: AOJu0YxIY5dIcIGzS1ZHXuiEz1HAk/aQXOnr5cHX+qT23sdgm9blcEcQ
+	YusaAOHkPOz15cfeuhFlR9u7e/wnnIpvoBF5mvpq1M2xM1mH3A8EvVY0O3oPtuBjTW5HsFnw4Bs
+	pUtdvHv2RB16uQjLVgclCiy+POBmpfxT5Lk3g
+X-Google-Smtp-Source: AGHT+IHU3c1rup/ERN9a4kNMsqW35sJUbJdOQFsb7DbzU77MCbHQzc7LNDoBqLVEWz0boeECKLGN8/41YUuWgXJj1ic=
+X-Received: by 2002:ac8:1185:0:b0:42c:56ce:1702 with SMTP id
+ d5-20020ac81185000000b0042c56ce1702mr237627qtj.10.1707507531703; Fri, 09 Feb
+ 2024 11:38:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-GB
-To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-Cc: "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>,
- kernelci-members <kernelci-members@groups.io>
-From: Guillaume Tucker <gtucker@gtucker.io>
-Subject: TSC update - 2024-02-08
-Organization: gtucker.io
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: gtucker@gtucker.io
+References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+ <CAHRSSEyev9rcYpbe2VtALc9-4zR_Bz6=24yitFTa4U5X8N+S0A@mail.gmail.com> <9f58d16701b61a5fd05db7839f21cb8f0bf15013.camel@collabora.com>
+In-Reply-To: <9f58d16701b61a5fd05db7839f21cb8f0bf15013.camel@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 9 Feb 2024 11:38:39 -0800
+Message-ID: <CAHRSSEw7T2LMGan3EzwjHTx8hkVLmbZmgByB9c5rgNNXDtSPuQ@mail.gmail.com>
+Subject: Re: Please add new Android branches
+To: Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Please find below a summary of yesterday's TSC monthly meeting:
+I see android15-6.6 on our dashboards now. Thanks!
 
-*Paweł Wieczorek is joining the TSC*
-
-Following Denys' proposal, the TSC voted yesterday in favour of
-Paweł Wieczorek getting onboard.  In spite of his relatively
-recent direct contributions to KernelCI, he has been following
-the project for a longer period of time and his on-going work on
-LAVA as well as his Kubernetes experience will be very valuable
-to the team.  Congratulations Paweł and best of luck!
-
-Note: I'm in the process of making a PR to update the docs
-etc. so all the formalities and admin should come into effect
-early next week.
-
-*Rotating TSC representatives*
-
-As we're still looking for a new TSC chair, we've agreed to opt
-for the alternative solution offered by the Linux Foundation
-Technical Charter[1] and have a TSC representative to attend
-Advisory Board meetings and take part in votes on behalf of the
-TSC instead of an elected Chair person.  However, as there also
-isn't anyone really available to do this continuously, we've
-agreed to have a pool of representatives and rotate between them.
-Call it musical TSC chairs if you wish...  So far we have Nikolai
-and Denys in the pool, in fact this is a nice way of bringing the
-Board and TSC closer together so I would encourage all TSC
-members to take part within practical limits - the timezone for
-the biweekly meetings[2] isn't very APAC-friendly unfortunately.
-
-The original timeline for the TSC Chair handover process was
-meant to complete on 19th Feb so I shall stick to the plan and
-step down on that date.
-
-*groups.io owners*
-
-The TSC also voted in favour to give full ownership to the
-designated groups.io maintainers[3], namely Kevin, Gustavo and
-Mark.  While we're now using this regular kernel mailing list as
-the main public discussion forum, groups.io is still needed for
-private KernelCI topics among the TSC, Board, and working groups
-such as Sysadmin and Web Dashboard.  The
-kernelci-members@groups.io address is also the one for potential
-new project members to get in touch as advertised on
-https://kernelci.org so it's very important to make sure there's
-always someone available to respond.  We've had suboptimal
-moderation mechanisms in place recently, hopefully this will
-help.
-
-
-Please feel free to reply and ask for any additional information,
-as always.
-
-Best wishes,
-Guillaume
-
-
-[1] https://kernelci.org/docs/org/#technical-charter
-[2] https://kernelci.org/docs/org/#advisory-board
-[3] https://kernelci.org/docs/org/maintainers/#groupsio
+On Sun, Feb 4, 2024 at 10:03=E2=80=AFPM Denys Fedoryshchenko
+<denys.f@collabora.com> wrote:
+>
+> Hello Todd,
+>
+> PR created https://github.com/kernelci/kernelci-core/pull/2345
+> It will be merged and included in today's production release.
+>
+> Thanks!
+>
+> On Sat, 2024-02-03 at 10:43 -0800, Todd Kjos wrote:
+> > Please add the following new Android branch to kernelci testing.
+> >
+> > repo: https://android.googlesource.com/kernel/common
+> > branch:
+> > - android15-6.6
+> >
+> > Thanks,
+> >
+> > -Todd
+> >
+> > On Mon, Jul 10, 2023 at 3:41=E2=80=AFPM Todd Kjos <tkjos@google.com> wr=
+ote:
+> > >
+> > > Please add the following new Android branches to kernelci testing.
+> > >
+> > > repo: https://android.googlesource.com/kernel/common
+> > > branches:
+> > > - android15-6.1
+> > > - android14-6.1-lts
+> > > - android14-5.15-lts
+> > >
+> > > Thanks,
+> > >
+> > > -Todd
+> >
+>
+>
