@@ -1,125 +1,155 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD4B16FF56
-	for <kernelci@lists.linux.dev>; Fri,  1 Mar 2024 14:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65D78825
+	for <kernelci@lists.linux.dev>; Fri,  1 Mar 2024 18:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709302881; cv=none; b=dZbQw1MUXwrWKpGNW3ybc0954NWRXlA101qmCzYrK7cBU8aobtzVTMPmEltcQBBx78bbe4por6E2O5aoInBu9AFQQNSY3vGPsnjTOx063FyIoqSP+Gd/NCJttokz/a0mJhjWjrWRbYszf1rxGWK6QzSYgXbMbkBKky9GAPYgVrc=
+	t=1709316919; cv=none; b=S2qhag+m0/P9cBt1bgoma86ohjdHrmoHQk0rr3JEGot8JZ+mqvfwf3f+ofbmSWjf7yZ/mhl39bfA3QISnyCQAA2YbDyyAJD/GCtI/lqXmvHeMQcw+7DNp+DlQK6/WgTiiAPWUSGjrS2AOP5Rj55XKF1wa4pZgOlQLLtFaBSrtOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709302881; c=relaxed/simple;
-	bh=udLEyhFlle918jMDpugSYsT1ztgbuuWE8/UQvqTOgvU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AcqnpAtYGWNqM38FdQ8fAje+R9jiDuIzpp8PwGi0q68Lnea34gyB1N/UcnWCv8SnoimAPVoItcOdZSQKrfuDqnDOAjM4o6cx6WsBwESOMs+1MnfQYj/ES5318MT64Xg7xhwTQJ9BwR/Khp4xu9pmLjGg+nlMdwx/bck9HrhUQI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hdI4SOS1; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1709316919; c=relaxed/simple;
+	bh=ilD63mxz6Db+bQXMG5bdGNIi+lIsJcR3XDP61N4g+Q8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jyUGCZQ6zf8o+4/a9J57HPESHfHQqqQ4VCs6fmNwGRf9s4Y2KDkjrgc2JRA9P9D7S3NboCuTeiYPkHjQumwHo+xksA/J1MsFcRjO+HkD0t5pAF24LakU4RGtPKgQqLZjonzNJ2+jlgiITNCKm0bAXO2cRqxNP5N1cjAT7bESHuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M375jIKw; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hdI4SOS1"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-68fb71fc886so8780976d6.3
-        for <kernelci@lists.linux.dev>; Fri, 01 Mar 2024 06:21:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M375jIKw"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-42e6939d34fso424101cf.0
+        for <kernelci@lists.linux.dev>; Fri, 01 Mar 2024 10:15:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709302879; x=1709907679; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DoAmmdskcDEXNaQow37B4LW3k1Xhhw94dVezbr43csY=;
-        b=hdI4SOS1B+bV4pgTIY2sX9THWz5Kb103bZNcjKUIlkV5U4rnUByH4OTGSLAJ9d39SF
-         dDvFMXfL3RDDuUPk6n7HGrfO+JHOE7qKpUxKs67tp1yjgKm7lET+8spNkhCTVMZanQ9d
-         d19oAX7ViL2StzrxbcamYVOp7YAAUKw4BrttWrpe3H0C0b/Uy3tyUlFKSMDsb6tHAHa+
-         CZ2gMcXTDyXRQwPLRY3AorjmQVq7AOjTChhhe64MzI5ws74DMcVyPp5if/5t5UYpoXMS
-         DEcqkgTZFgtgmZcdqYrk2su2lyEkc654b20XxHZYL6WB+0vKvBkTQWehvsU8swNPthCq
-         aslw==
+        d=google.com; s=20230601; t=1709316916; x=1709921716; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ok/k6bG5z61hgRXgZ+F2/73YwYCA40OogdC0RM8E7XY=;
+        b=M375jIKwh7i4s2XBciPGKCc4Oyr3lvZBfpvtR5l8qOTjQnEGwCMR0uRGA7V8wuIbiC
+         0+nH69So9J4XW4UhK7x7B+tOgdejxhHnFS9JHPJAU+G707pBLbUTrIPgai14tQFLOXoq
+         ToxWjmXzneEf4f5N3ID4smjJL0yD+P9eQzsl0DRKwyCSAXbtzAApqzxftiFhBWm6Wo7y
+         3eq+TRbyWzO3PH028E2x6dFmCwBe6uyD3i/QgaiM1xphFm8YeSfyvzIGUh6nwEXOdDVv
+         hgBe394sIBuKg7Kx183fNrorgGnKqGpshdzB9qaZqm+9C8pokYTu1xg/C1/zCcFu0Mkd
+         IwbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709302879; x=1709907679;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DoAmmdskcDEXNaQow37B4LW3k1Xhhw94dVezbr43csY=;
-        b=knoYaT71cgZvOMf5kyc8Dc36KER9JA9HR3tAQSIIbEJslkA7197d0uy3TAyo0Zq6tm
-         Vfj2c2gAXeBFLoeKtJKgiNfuReNfIbALmP744xRfq/qSnCkUmFBi4M8NNitE0TXDi6IC
-         u8Qh5FNuUolxS2cWq4KATbmKefbw8s5+RvDxj1oVC6TFlTy4Eh2Zclae5QD8/cKXoemN
-         R1QPx6GcVhgjTok7V+CyfeSZ9FxEBTLtqyE82wXKgfSPNDcW9RLJ0hXlqGTEHYTtTG5U
-         9UN+FiOYelXsJoG7jOVrgJTD0ZCLp7zw23j4DNxRxcKwRea58qy//51SEZ/PziV4PeXl
-         XnXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0xTlgSaoTwaeYTe/zCGyJR87mB4I3Pp8fx0Ev2jjZa+bbOGEyFcfXcb7Ly6sH8enTGcXodWPYACtyaHJqc8cnLl7l4uOhab0=
-X-Gm-Message-State: AOJu0YxwljyZExF67nh6w8vzY1oCSOFbHHf+iUuxeR3O5HKDozZzURbE
-	/vv6WaX5mOZ102C3p1/mUb56ZAHxfxQAFroL/UBqpVwcpCc0ui90
-X-Google-Smtp-Source: AGHT+IGUka20RbGSTdt31weLyZD5CrTDkIoL5pB4A7Y1ldsaQGmBLLgCExV8/nV3WHdz4i56V+bA9Q==
-X-Received: by 2002:ad4:44a7:0:b0:68f:3dbd:466f with SMTP id n7-20020ad444a7000000b0068f3dbd466fmr1814520qvt.39.1709302879223;
-        Fri, 01 Mar 2024 06:21:19 -0800 (PST)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id em19-20020ad44f93000000b0068fdb03a3a3sm1900825qvb.95.2024.03.01.06.21.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Mar 2024 06:21:18 -0800 (PST)
-Message-ID: <f8d45e8f-81ca-432f-9494-441e9a44b390@gmail.com>
-Date: Fri, 1 Mar 2024 16:21:13 +0200
+        d=1e100.net; s=20230601; t=1709316916; x=1709921716;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ok/k6bG5z61hgRXgZ+F2/73YwYCA40OogdC0RM8E7XY=;
+        b=fo+/iWeOeYHJPtA9Irf2hPUQNmAFZJf5cZGWu10BUZ081dRM4JhxYrer8rb6NzfhSk
+         rv7ax1VX1Q3s8ibBwjH936XUczm2MuOQLovLgaqAmnE8rnw+pzYNtREILW9oi7nLU+SJ
+         6hGGIoJa/oV728aZjbdh5fS6F+YxlDwrAiQLXNY0ORuormUhcvLxfd+qBW519R6OfXYb
+         7a8C9abe9vOZYSFYhsyiVQuH3ooxYzL9w7TRaeA1mKfxPWxiiVxPbDAThM+vXl/0Qsr8
+         X6DxfyuPYUt6fgkhC1hX+dcW2TZlvMYLom6BWRHZWcx3rNt9HZabBGmzsuew57WSQXCS
+         VWYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIL2QhVLZsJYwluNpy2dnx2c1Vm2FD2NqZzTFlxS9nFId1/4Bb8GnLPZUeds+XN77vFZ6rCONOcoEhxIbE/dmnvPNdtz8swf8=
+X-Gm-Message-State: AOJu0Yx40FnOY1XtuKtdNIjO5rWoBsmj0JqERgA0sA2Xj57wzq4i6Zie
+	sk7vWYhTQskm9/xdBBlZX8reZBnLTteb/ocymug3lvCFwvBrJ5HdON9hh/ErT4q/P2nr2tgrZNA
+	jdZad/et4oWqCfLgRxGdqMNMDlWODDTtq6JUUtLXEB9jotrrPDQ==
+X-Google-Smtp-Source: AGHT+IGct0hlkK6sxXiVKuPIMLnUxPde8rCvr53Ix4Z8lSZeQYQS4TMOyHI+5TS4JZiCyB7QVeeqbBvVResUBp2aWzo=
+X-Received: by 2002:ac8:542:0:b0:42e:b6c4:f33a with SMTP id
+ c2-20020ac80542000000b0042eb6c4f33amr159553qth.19.1709316916306; Fri, 01 Mar
+ 2024 10:15:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] kci-gitlab: Introducing GitLab-CI Pipeline for Kernel
- Testing
-Content-Language: en-US
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>,
- Maxime Ripard <mripard@kernel.org>, Helen Koike <helen.koike@collabora.com>,
- linuxtv-ci@linuxtv.org, dave.pigott@collabora.com,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kselftest@vger.kernel.org, gustavo.padovan@collabora.com,
- pawiecz@collabora.com, tales.aparecida@gmail.com, workflows@vger.kernel.org,
- kernelci@lists.linux.dev, skhan@linuxfoundation.org,
- kunit-dev@googlegroups.com, nfraprado@collabora.com, davidgow@google.com,
- cocci@inria.fr, Julia.Lawall@inria.fr, laura.nao@collabora.com,
- ricardo.canuelo@collabora.com, kernel@collabora.com,
- gregkh@linuxfoundation.org
-References: <20240228225527.1052240-1-helen.koike@collabora.com>
- <20240228225527.1052240-2-helen.koike@collabora.com>
- <20240229-dancing-laughing-groundhog-d85161@houat>
- <5d7ed81b-37f9-48e9-ab7e-484b74ca886c@gmail.com>
- <CAHk-=wixVy3WYvjbt43ZSrCqPDsS76QJQSkXFbbPsAOs1MCSAQ@mail.gmail.com>
- <44ae0339-daf1-4bb9-a12d-e3d2e79b889e@gmail.com>
- <9183479f-eea8-493e-9a56-9f3f778e3034@sirena.org.uk>
-From: Nikolai Kondrashov <spbnick@gmail.com>
-In-Reply-To: <9183479f-eea8-493e-9a56-9f3f778e3034@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <131709e8-f804-5623-448d-7c3607be00e0@quicinc.com>
+ <CAHRSSExm0P0kBF00R9Ft7-GVMcf0A9190mjeOWU4umKA3PL93A@mail.gmail.com>
+ <CAHRSSEy20Zc80XufjYN4XjXbba6BTMHd_9kFaNOnhiuj9yEDsQ@mail.gmail.com>
+ <YxCtqsY55Lwaj34H@sirena.org.uk> <CAHRSSEw9KqQFKZND1fmMa67btkozg0yA_0NjF8C=UiLnvfwHGA@mail.gmail.com>
+ <YxXkuTdnt4IbPMDC@sirena.org.uk> <CAHRSSEzgEyPDxZ64SUdJNZRU3YAxS+mJcfVgG4-cSjjuTsH0Xg@mail.gmail.com>
+ <9b4773cc-f68c-4e34-4688-92c968bfb66c@collabora.com> <CAHRSSEyrJeru4YKoAFUo2Ai1dmxQAxRTJ1gnAuY1OmxohF=5Gw@mail.gmail.com>
+ <CAHRSSEztTzwRThMc1OfpP33r-V8=bNNP3fc_LD9_6eY9Ztj6sA@mail.gmail.com> <ff846cc6-f5f6-c886-4309-cd1b815bbeb8@collabora.com>
+In-Reply-To: <ff846cc6-f5f6-c886-4309-cd1b815bbeb8@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 1 Mar 2024 10:15:02 -0800
+Message-ID: <CAHRSSEyEqyedEGsOfpPHso=ytHFTYHLbVGn601wDgb2LWGS7Gw@mail.gmail.com>
+Subject: Re: UM-Linux compilation on Android Common Kernels
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Mark Brown <broonie@kernel.org>, Elliot Berman <quic_eberman@quicinc.com>, 
+	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/1/24 4:07 PM, Mark Brown wrote:
-> On Fri, Mar 01, 2024 at 12:27:13PM +0200, Nikolai Kondrashov wrote:
->> On 2/29/24 10:21 PM, Linus Torvalds wrote:
->>> I would suggest the CI project be separate from the kernel.
-> 
->> It is possible to have a GitLab CI setup with the YAML files in a separate
->> repository. And we can start with that. However, ultimately I think it's
->> better to have it in the same repo with the code being tested. This way you
->> could submit code changes together with the required tweaks to the CI to keep
->> it passing, making development smoother and faster.
-> 
->> With that in mind, and if you agree, where else would you say we could put it?
->> Under "scripts"? Or "Documentation"? And where it would be best for the
->> various subsystems to put theirs? Or could we have the top-level "ci" dir and
->> pile all the different setups there? Or would you like to wait and see how
->> adoption goes, and then decide?
-> 
-> If we were going to put bits of this in tree how about something like
-> tools/testing/forges?  I'd hope that things could be shared by multiple
-> services, if not we could always have subdirs I guess.  We could put
-> glue bits like defining how to run kunit, checkpatch or whatever with
-> these systems in there so people can share figuring that bit out.
-> Individual trees or CI systems using these forge based systems could
-> then reference these files when defining what specific tests they want
-> to run when which seems more like where the differences will be.
-> 
-> I'm not super familiar with this stuff, the above is based on it looking
-> like there's an OK degree of separation between the "what to run" and
-> "how to run" bits.  I might be misreading things, and it's not clear to
-> me how often it'll be useful to be able to update things in tree.
+On Thu, Jul 13, 2023 at 12:08=E2=80=AFAM Guillaume Tucker
+<guillaume.tucker@collabora.com> wrote:
+>
+> On 06/07/2023 19:00, Todd Kjos wrote:
+> > Any progress on this? (at least doing the um builds?)
+> >
+> > On Thu, Mar 16, 2023 at 3:46=E2=80=AFPM Todd Kjos <tkjos@google.com <ma=
+ilto:tkjos@google.com>> wrote:
+> >
+> >     On Thu, Sep 15, 2022 at 9:23=E2=80=AFAM Guillaume Tucker
+> >     <guillaume.tucker@collabora.com <mailto:guillaume.tucker@collabora.=
+com>> wrote:
+> >     >
+> >     > Hi Todd,
+> >     >
+> >     > On 14/09/2022 22:36, Todd Kjos via groups.io <http://groups.io> w=
+rote:
+> >     > > Is there an ETA for at least doing the builds?
+> >     >
+> >     > I don't think anyone else is asking for user-mode builds, and
+> >     > adding this new architecture with a new sub-architecture
+> >     > parameter is not as trivial as adding a few lines of YAML config.
+> >     > So unless someone on this list is interested, or someone wants to
+> >     > run an internship topic around that, I think you'll have to go
+> >     > and find someone to do the work.
+> >     >
+> >     > KernelCI is starting to run KUnit which does involve UM-Linux
+> >     > builds but that's all done "under the hood" by the KUnit
+> >     > framework.  Still, I guess it would catch some build errors as a
+> >     > side-effect.  So an alternative is to wait for that to be fully
+> >     > in production (first half 2023) and we can consider enabling it
+> >     > on some Android kernel trees.
+> >
+> >     Is this in production now?
+>
+> No, the timeline for making the new API & Pipeline as the new
+> production system is basically bumped to 2024.  However, KUnit
+> jobs are now being run every day on our staging instance and
+> we're planning to have an "early access" stable instance online
+> in the next couple of months.  I think we'll get back to you at
+> that point.
 
-Yes, facilitating reuse and collaboration between CI setups, even if they're 
-largely different, is another good reason to have it inside the kernel repo.
+Any update on the schedule for the new API/Pipeline or the "early access"?
 
-Nick
+>
+> Thank you for your understanding.
+>
+> Best wishes,
+> Guillaume
+>
+> >     > > On Mon, Sep 5, 2022 at 4:59 AM Mark Brown <broonie@kernel.org <=
+mailto:broonie@kernel.org>> wrote:
+> >     > >
+> >     > >> On Thu, Sep 01, 2022 at 08:44:25AM -0700, Todd Kjos wrote:
+> >     > >>> Could we start by building but not testing? That at least pre=
+vents build
+> >     > >>> breakage (which is the case that motivated this).
+> >     > >>
+> >     > >> Yes, that's definitely an easier first step.
+> >     > >>
+> >     > >
+> >     > >
+> >     > > -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> >     > > Groups.io Links: You receive all messages sent to this group.
+> >     > > View/Reply Online (#1593): https://groups.io/g/kernelci/message=
+/1593 <https://groups.io/g/kernelci/message/1593>
+> >     > > Mute This Topic: https://groups.io/mt/93087607/924702 <https://=
+groups.io/mt/93087607/924702>
+> >     > > Group Owner: kernelci+owner@groups.io <mailto:kernelci%2Bowner@=
+groups.io>
+> >     > > Unsubscribe: https://groups.io/g/kernelci/unsub <https://groups=
+.io/g/kernelci/unsub> [guillaume.tucker@collabora.com <mailto:guillaume.tuc=
+ker@collabora.com>]
+> >     > > -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> >     > >
+> >     > >
+> >     >
+> >
+>
