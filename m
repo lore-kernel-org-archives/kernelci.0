@@ -1,55 +1,55 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3E718EC0
-	for <kernelci@lists.linux.dev>; Fri,  1 Mar 2024 18:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7587925632
+	for <kernelci@lists.linux.dev>; Fri,  1 Mar 2024 18:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709317858; cv=none; b=udiDnCtQ6X+WdDwsnwZCqMtTo0JbxCZpPJkoFOZkJkhex7At8JRlC1th+ALdsqY6inLvZ6qlbDfTU3w03YRFzLUCnxiKr/sWM9Xh3ZoagKVQD1uaQ7Ni9RgFhe0FVaL4vxzxMbJcUzUGoJJWc91rJlAsZGfjKEvU87ZQwbBrrT0=
+	t=1709318285; cv=none; b=KmPypnAmhxJ1K328sDKJwpoFzY77AOMIvXXHbeRXeT6fQa7YqhuPjLrQ7YrwQ3XkmohmbIni5ekJ5wMAr14IoBtYb9dZE7XFkxdL0HUm3AIvqdjzHhy0ol5H7oA98g6Apq/LD71mbYA6MBEIK5oIx9VVkq0LYVBaLbCQtvAF2tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709317858; c=relaxed/simple;
-	bh=19cV+Owps2tnKODTEXAZBrF82UVEnrdWY1L+i13PJfM=;
+	s=arc-20240116; t=1709318285; c=relaxed/simple;
+	bh=jfs0m8RXx1GstJu8SymCTC0WqJj1vB6ZBUhtzcL2hp4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=leXkvMgT2uhwo5lUqWjlCsS53zrOIZoeNCphA2qfbbzEJArnyTnSnsyGSffhx03yQo90Jv5VDTrwNJLiOoIIaoAgzhXFIiP49ltoJrn2Fbp9GUEyp64DS1naMeFA2YHWfDYaSvUdxxAsCbXD3noDRTU3MD+FeomcrppK6xSTg9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IePsz2rv; arc=none smtp.client-ip=209.85.160.172
+	 To:Cc:Content-Type; b=XgfODFuFn0qXvhNaUSXovKRqOQg4+iMsf+egCLYRZ8Gto/7k5jE7YlLhJyB4KjKHRBWwxU4ogo15pu3TCfsbyyVb7XZWhBuHyCwJDjcbm3q1HN1ak2503n+JOcO3ZmHujp3ZNuCdWCeJwt8a3uOSapjcl7Mp1F2ff0XjkDmU6hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HuzjSmfz; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IePsz2rv"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-42e6939d34fso428041cf.0
-        for <kernelci@lists.linux.dev>; Fri, 01 Mar 2024 10:30:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HuzjSmfz"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-42ecb40dc07so135521cf.1
+        for <kernelci@lists.linux.dev>; Fri, 01 Mar 2024 10:38:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709317855; x=1709922655; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1709318282; x=1709923082; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hdRpB0n8NFdfFwYKqNSu6d6SI+w35XhBQivcS8YUh7Y=;
-        b=IePsz2rvd1B6Txh4H1+9SDgNK6JCPazWuj0zDjgBmzYJ7XTRRPBoQioHTzsVHzyRk+
-         nniw9b8Irb5sbru9oXA6g23JH/uBJBA7FAR8uXJXUu+rhb/OGim7mqrXqxNkwZnTpqTe
-         BjWgYZuGQ4ANttc2RW3si0ritcPEtxZTIURmCekpljCQ3Na57nni37+r/ydOyvS2OmTb
-         1ZhquOWb2IIm12e26uf8tW+xRCHveLG9IqNPbDT3HksYV4Vvi1mapjMDOcNAk0RcDfLm
-         TEDGKyoG302y8dy93oW03DYHOB1YgQEHMql2HlWo12cPEhVy5iZG59rWXkveKSMpCqTm
-         yatw==
+        bh=chsHsf/001dfP7w1ucZ9E5LxTPZwcEzE1WAej2v8Yyw=;
+        b=HuzjSmfz0DoDnCKvg6SW39H+yZfmuZfgPVucGowtyyPE/OFnM5yoUUktdXr2iuXOCK
+         kWQCUwEEYXIK8GCUgz92NtjNUBAd4gWWg1rWjsvUb9Q1Xha/Qo3WccEhQptyXzSLM+5P
+         0sO0FITSccg6zoyeklj6YoBRP0nzFl1nYE8ZHqS/9zTlktNYG6dHIoHimt2xJLAu3RhH
+         2RnwMERafB3PIZZRo2Oo6Fovy3VGRuBIFcvQV516ATtTe2iTy2zgTzU0K2L0dEu10G/I
+         pXFqgyHVfOuzxvAY6TS3cm7W42j9sc6A5QmmGYT9TKHCRl9Fl2jUb2D0zEjVDwmmkB0N
+         T0Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709317855; x=1709922655;
+        d=1e100.net; s=20230601; t=1709318282; x=1709923082;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hdRpB0n8NFdfFwYKqNSu6d6SI+w35XhBQivcS8YUh7Y=;
-        b=vfeeVetSybCJZ5MwFBAAOVHYqvv/qt3GwpH25C0IvdSinJ7Oln+rbseLbfm15mXJ/4
-         ZvwIEQc5s0Gi+RX9cWJfq+JdFPMpSzbUFLp57Ws8aTSsXl0witRQ6J2FkSdi3DbIyMG1
-         RN7jawdy37K4ExlEC8zLi8t6oCf9lSWs9z6WnqFL/NDLp39dOQMilLjeQdwwIZyWhRJB
-         a9St0MyszyuWHJ0de3xXDW2L8AAndB5alswERTie06aJp9XjlU65kHjpNjAhs3q6p6w8
-         VotG2KirLqgupnhkSyp0bO85TEWfYsPX0Anv2PYJTU3x6wHM47/VdDVUrKMKvZIF2FUz
-         jTfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHWmnd4bQkukVxU3tRtCWSysX5cB6JaoF9M/SA6uZugpJJ7uE0faTytSeO6s//yhpvo7mpzQubehPFlOmJnZ9vFje9pvut49U=
-X-Gm-Message-State: AOJu0YzPpSpkHIObHMlfGc2wbCdynqh+OCkvxy06MbnBHsZnUdcixbbY
-	u5bK5GV0v5Uyu8VFR2G4dWC/UsrpKUfGL+J1ld7u0bdtGwDwS9hZ4bw5SlK4+4E6ZcoADljwK8D
-	V4GM7ZCar6b6nd2YT8PPd4UBLZeGI9lBSWGvj
-X-Google-Smtp-Source: AGHT+IEm2OIGv1J4LE7R2zFzoXbvlRR9H0DSF850zuo93ASom8bf9GHCxMEa/KCFq+cVzDo6ehX9vK+FOOzGRRp8kjs=
-X-Received: by 2002:ac8:4d5d:0:b0:42e:7ea1:30c4 with SMTP id
- x29-20020ac84d5d000000b0042e7ea130c4mr225205qtv.14.1709317855189; Fri, 01 Mar
- 2024 10:30:55 -0800 (PST)
+        bh=chsHsf/001dfP7w1ucZ9E5LxTPZwcEzE1WAej2v8Yyw=;
+        b=BKeWIkVtNr6xIAVVj2/xUrLGaIs579kVnktHMZa7xwuDqLdQDJkiU2x7MJSFO6af7q
+         XMLwBmSm07ngBFZWFrn+I7Ua/d6Gp9o9d8H2DcJi5XQl2eqXcmrUWXwfYfR6dMhZQTj8
+         4HEFMfYrN4ON58PDeKuxLkDEAjzRuQTHMxUDl+swJM/ENpE7kWO2w/3yuW611PPVhx5J
+         Md+mT8l+gOXXTVkC5jl+nGmPXPSqmG6wBJVLX5XPgevdxjRUrr+HjPimTxkKD01qmx14
+         SBdvwrxCgyJCPfD2uyndO95LgRS56JXeB//dYU6Mqd44J7h9RWj4gVYqx45DFBIXlYcI
+         9mrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkYBs0vZLalMZMN6diqRpUBlxb01mrMCyod49PmvpOVbKTMCHNOPm31N9SjgSViRjCtXcYZDFpAMnX1bKY9rN36jNl9ADwJWc=
+X-Gm-Message-State: AOJu0YzJxdrSbjI6l1TRgqkxXeUMUIdTRCt2m3s2SBBaprqqpOvYsfD5
+	pr8Rv1+PCsX26i2D3sfXoFLOovo9T+rp5+XMXPj7Y0tvY02s8wMSUHi789vXH84okRaZlDKlY7q
+	xz2VHmcpeuIP9gWYYEP7P2mfMpGo7JWNP5kLa
+X-Google-Smtp-Source: AGHT+IFxAh+xFvG1uSJUl4GSIAKFbfcv2cbSHk9Z9g2Afx9twae1gika3Lqishbdz/6GCPpKXBu88AZid71zUW1D/W4=
+X-Received: by 2002:ac8:5ecb:0:b0:42e:3233:4924 with SMTP id
+ s11-20020ac85ecb000000b0042e32334924mr197297qtx.26.1709318282250; Fri, 01 Mar
+ 2024 10:38:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -64,11 +64,12 @@ References: <131709e8-f804-5623-448d-7c3607be00e0@quicinc.com>
  <9b4773cc-f68c-4e34-4688-92c968bfb66c@collabora.com> <CAHRSSEyrJeru4YKoAFUo2Ai1dmxQAxRTJ1gnAuY1OmxohF=5Gw@mail.gmail.com>
  <CAHRSSEztTzwRThMc1OfpP33r-V8=bNNP3fc_LD9_6eY9Ztj6sA@mail.gmail.com>
  <ff846cc6-f5f6-c886-4309-cd1b815bbeb8@collabora.com> <CAHRSSEyEqyedEGsOfpPHso=ytHFTYHLbVGn601wDgb2LWGS7Gw@mail.gmail.com>
- <16a0b25c-c550-351d-8f76-4a31c9f509ec@collabora.com>
-In-Reply-To: <16a0b25c-c550-351d-8f76-4a31c9f509ec@collabora.com>
+ <16a0b25c-c550-351d-8f76-4a31c9f509ec@collabora.com> <CAHRSSEzqZjeRc7N-r=htAVogP9-rfO_CbzmoANE+MCfGxeyitA@mail.gmail.com>
+ <4c840d3a-65d4-8df3-9ef7-a9bb24dccabf@collabora.com>
+In-Reply-To: <4c840d3a-65d4-8df3-9ef7-a9bb24dccabf@collabora.com>
 From: Todd Kjos <tkjos@google.com>
-Date: Fri, 1 Mar 2024 10:30:43 -0800
-Message-ID: <CAHRSSEzqZjeRc7N-r=htAVogP9-rfO_CbzmoANE+MCfGxeyitA@mail.gmail.com>
+Date: Fri, 1 Mar 2024 10:37:46 -0800
+Message-ID: <CAHRSSEwe1z7pajTmLNJRHbBv1Ghnz-siAyw4CU5kraN3_hLqpg@mail.gmail.com>
 Subject: Re: UM-Linux compilation on Android Common Kernels
 To: Gustavo Padovan <gustavo.padovan@collabora.com>
 Cc: Mark Brown <broonie@kernel.org>, Elliot Berman <quic_eberman@quicinc.com>, 
@@ -76,8 +77,15 @@ Cc: Mark Brown <broonie@kernel.org>, Elliot Berman <quic_eberman@quicinc.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 1, 2024 at 10:22=E2=80=AFAM Gustavo Padovan
+On Fri, Mar 1, 2024 at 10:34=E2=80=AFAM Gustavo Padovan
 <gustavo.padovan@collabora.com> wrote:
+>
+>
+>
+> On 3/1/24 15:30, Todd Kjos wrote:
+>
+> On Fri, Mar 1, 2024 at 10:22=E2=80=AFAM Gustavo Padovan
+> <gustavo.padovan@collabora.com> wrote:
 >
 > Hi Todd,
 >
@@ -138,17 +146,39 @@ orting out ways for to share the results, since the new system won't have a=
 > I am getting to this thread just now, but it seems that for your need, in=
  a first step, would be adding user-mode builds. Is that correct? What woul=
 d be in your scope after that?
+>
+> Currently no expectations beyond UM builds. Right now the point is to
+> catch cases where we might inadvertently break UM since it isn't part
+> of our workflow, but might be part of the workflow for downstream
+> users of ACK kernels. We'll make a separate request if we need more
+> than builds.
+>
+>
+> Okay. Let me see if we add yours soon in the new system. (it is really pa=
+inful to add new things to the legacy system).
+>
+> Would you be a recipient of the build breakages? I also want to figure ou=
+t the regression reporting structure.
 
-Currently no expectations beyond UM builds. Right now the point is to
-catch cases where we might inadvertently break UM since it isn't part
-of our workflow, but might be part of the workflow for downstream
-users of ACK kernels. We'll make a separate request if we need more
-than builds.
+Yes, several of us on the Android kernel team are closely monitoring
+kernelci breakages. These can be reported to us in the same way as
+other breakages (visible as build breaks at
+https://linux.kernelci.org/job/android/)
 
 >
 > Best regards,
 >
 > Gustavo
+>
+> --
+> Gustavo Padovan
+> Kernel Lead
+>
+> Collabora Ltd.
+> Platinum Building, St John's Innovation Park
+> Cambridge CB4 0DS, UK
+> Registered in England & Wales, no. 5513718
+>
 >
 > --
 > Gustavo Padovan
