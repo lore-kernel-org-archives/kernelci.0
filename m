@@ -1,140 +1,144 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82BC7AE5F
-	for <kernelci@lists.linux.dev>; Sun,  3 Mar 2024 22:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB22F171AF
+	for <kernelci@lists.linux.dev>; Mon,  4 Mar 2024 08:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709505330; cv=none; b=GQg0xstFQgQXE1/Ng2CDWrskSllgCxBCMYgL3SplIs8bAZCDkfDG8jbymVHe66urPpy2P0m61UGEkqMRIJzrgCgC4m/tX9hbG43rpVX3R67vdIfZPcoYxC2OspuID70X5aL7XY4b/89SxQzYtMxyACWftjjO3FUc1cNI0j2CANU=
+	t=1709539976; cv=none; b=lCLcZMCn513WoAi3vxuPHBOo/yVFmVA2bGSdZz7Ru4aQPYKy/QoX4nclf7dgBx9jHo22+I49MC74XsxGPB1H0GoPKGd47H9p9+MFwUCXoX5MI3N5Sk4InsZEw6hCFsMMeLiRvVjxgZZInrILsGsLIexmVRuD0uYLqUXpT5jQQ58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709505330; c=relaxed/simple;
-	bh=57dcsP0mKRmzvMH9skbShUDlKdNdzM0IGL+0YP5cmLg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=tich56D/sKsrYRK2pWUznoU+81feyRN9NeOPlh4IVhfBdPnVgb1+D2pLE4EniZIlBps0WTMJNX/CRR1hj28M8fudvD2bUV+JPLI5qD7D7jvyWyK6tVvoI5kL+KllX7Sk2NBPY9Z0kfdgUZUMLGFjWD0xFlCmkFh01srIxwQXXY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=MVLBYsJo; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="MVLBYsJo"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D3D760002;
-	Sun,  3 Mar 2024 22:35:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1709505319;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5CdqRGtG3irErhVMT/I81U99VRvlaTPQzWCtVYciBAk=;
-	b=MVLBYsJoDO41liKhEUcSEcOpX1pf9uyzGsaV8r1Fpn6gKzHP5H0Ru32Ly2wIVu/bBopnUX
-	iXgBMaDi1XyZqUK65r5LhGjf0wSe7Hsyj8D0JJz7zOL0K07XyDlF2RCUINZeAUHme+eDra
-	NIlqY3wWN4vSzwPRKYRVuAt3EJy9pX0StBLV78MfsD0oCR/3+IJUl+x7DhRryruyqCVIC1
-	Gxauxz1jMaj2l5kF+q7bquruxHPCVweqHjZwFQGhxAdcKgUqC1fJjzGgTuZg7YAG77bWsy
-	Phu9xVJuKwNk1eyNnwJ+5/z7K12GyyXFie5PWc4NM1G7SWuZheI9aSkyUeHr0w==
-Message-ID: <71f59a56-aef3-4bae-867b-769a0cdd1c1b@gtucker.io>
-Date: Sun, 3 Mar 2024 23:35:17 +0100
+	s=arc-20240116; t=1709539976; c=relaxed/simple;
+	bh=dSPakM85splPyrahmvvAIpbuGYBrhOcpQ6LPsHcXsTo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DwQ94yChZEYihe+VBWHMFSmaKTIiE/NE++5belmCc6hyhmdLuh0UHB0Zh32b4wphfxAZjaLnJ6IYMpXei6NuWYLcJU1zRbK1fMorepYx2LZ0nCfGMp14b0HqylY9aa7q72n8cEgXaiLgRTyLqhe2fS4tmHltRH9/zrFH8yVEHK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6098bf69909so18938177b3.1
+        for <kernelci@lists.linux.dev>; Mon, 04 Mar 2024 00:12:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709539972; x=1710144772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2J1p7SXZtqr3McfoeaXd0vJRTrL26m9P2IwKT4zVhdI=;
+        b=hHJMwNlemftM6gvp5WvDycZFCr+fJyg6BEUKIcEv3SmRKzZEI0BNyTXsSeNXbxJKnp
+         y1cWcCACWi5aRSoLI6oiMDjElK/LzD5e8HcP3K481LsxfbXim7sJJz5Rmjw0FJ6zN8kX
+         9Q3fHRXi5GrNTYvSOnnEE0QCDiQTbZRhowrdAzlcNAPgCX7ZtRs+1YUkq+MVzSuSKzo8
+         241eMelA6x3lZZETSbqpK0hyLGDxZjUVMulY3VIOAoQI+pwkZhds9T17Ij3wkvwBuVgn
+         S5bjwwphpGluO9THQ/VllqCGJgROCTrGkZhmDIPCge/b5rroLmz/OdvShrQhtHH+dmN2
+         UXyw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/0TQinqS+BjNHCigDUqTPCa4tWcxJKnuE0d7YgCrMdP4Etz70YSIpzOCLoODmknegg1toHynmkNb/JCKCTFwuIa2Jwe6g4rw=
+X-Gm-Message-State: AOJu0Ywjt7y0Rn1PjyJMSQz0L/ozE6qYfLhqwHgXTl7ajvg0NsU26yDG
+	H8fwjCS2zaLDdUTtOpOF79e0BfZMn1VFDzH8Hr/jhkq6kX/GzZvIm/UqMzjwXSo=
+X-Google-Smtp-Source: AGHT+IE97lNIj3Iag450AvmftrLCWf7EaSowzV6yLSNsjvOeg38KlkfUjvK94FhXP8nSFvcIxsQWsg==
+X-Received: by 2002:a0d:ce42:0:b0:609:a1ed:5558 with SMTP id q63-20020a0dce42000000b00609a1ed5558mr1961548ywd.11.1709539972279;
+        Mon, 04 Mar 2024 00:12:52 -0800 (PST)
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com. [209.85.128.173])
+        by smtp.gmail.com with ESMTPSA id u189-20020a0dd2c6000000b00608dc99cdaasm2499865ywd.76.2024.03.04.00.12.50
+        for <kernelci@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Mar 2024 00:12:50 -0800 (PST)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6087396e405so41597217b3.0
+        for <kernelci@lists.linux.dev>; Mon, 04 Mar 2024 00:12:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUHi5wjXRlwjiL1gE/TZo3K0/+E0w8fnDebhgrkLZQOFx1zJUwm4fUcCArLKg6qrMVMHIIBemlCVgroohvX7NXEyARPqS+h4Y4=
+X-Received: by 2002:a81:451c:0:b0:609:7699:dc63 with SMTP id
+ s28-20020a81451c000000b006097699dc63mr5362566ywa.9.1709539970555; Mon, 04 Mar
+ 2024 00:12:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: kernelci@lists.linux.dev, automated-testing@lists.yoctoproject.org
-Cc: kernelci-tsc@groups.io, kernelci-members@groups.io,
- Shuah Khan <skhan@linuxfoundation.org>
-From: Guillaume Tucker <gtucker@gtucker.io>
-Subject: [RFC] KernelCI Travel Guide 2024 LF webinar - 21st March
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
+References: <20240228225527.1052240-1-helen.koike@collabora.com>
+ <20240228225527.1052240-2-helen.koike@collabora.com> <20240229-dancing-laughing-groundhog-d85161@houat>
+ <5d7ed81b-37f9-48e9-ab7e-484b74ca886c@gmail.com> <CAHk-=wixVy3WYvjbt43ZSrCqPDsS76QJQSkXFbbPsAOs1MCSAQ@mail.gmail.com>
+ <CABXOdTeT2ip1uS2EG2w8pW7254Tnd=ZDNz-KC61-G-yqDTVgJA@mail.gmail.com>
+ <269232e6-41c9-4aa1-9320-662beabcd69b@infradead.org> <CAMuHMdXuXV9WV3aANFTteuP8Q3JY6R5OWsVBedGOP7e_JguxqA@mail.gmail.com>
+In-Reply-To: <CAMuHMdXuXV9WV3aANFTteuP8Q3JY6R5OWsVBedGOP7e_JguxqA@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 4 Mar 2024 09:12:38 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWi069YAvOoXe7sHJ_o702tY4tDQgL3sfApPR3aCnZboQ@mail.gmail.com>
+Message-ID: <CAMuHMdWi069YAvOoXe7sHJ_o702tY4tDQgL3sfApPR3aCnZboQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] kci-gitlab: Introducing GitLab-CI Pipeline for Kernel Testing
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Guenter Roeck <groeck@google.com>, Linus Torvalds <torvalds@linuxfoundation.org>, 
+	Nikolai Kondrashov <spbnick@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Helen Koike <helen.koike@collabora.com>, linuxtv-ci@linuxtv.org, 
+	dave.pigott@collabora.com, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-kselftest@vger.kernel.org, 
+	gustavo.padovan@collabora.com, pawiecz@collabora.com, 
+	tales.aparecida@gmail.com, workflows@vger.kernel.org, 
+	kernelci@lists.linux.dev, skhan@linuxfoundation.org, 
+	kunit-dev@googlegroups.com, nfraprado@collabora.com, davidgow@google.com, 
+	cocci@inria.fr, Julia.Lawall@inria.fr, laura.nao@collabora.com, 
+	ricardo.canuelo@collabora.com, kernel@collabora.com, 
+	gregkh@linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Sun, Mar 3, 2024 at 10:30=E2=80=AFAM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
+> On Sun, Mar 3, 2024 at 3:30=E2=80=AFAM Randy Dunlap <rdunlap@infradead.or=
+g> wrote:
+> > On 3/2/24 14:10, Guenter Roeck wrote:
+> > > While checkpatch is indeed of arguable value, I think it would help a
+> > > lot not having to bother about the persistent _build_ failures on
+> > > 32-bit systems. You mentioned the fancy drm CI system above, but they
+> > > don't run tests and not even test builds on 32-bit targets, which has
+> > > repeatedly caused (and currently does cause) build failures in drm
+> > > code when trying to build, say, arm:allmodconfig in linux-next. Most
+> > > trivial build failures in linux-next (and, yes, sometimes mainline)
+> > > could be prevented with a simple generic CI.
+> >
+> > Yes, definitely. Thanks for bringing that up.
+>
+> +1
 
-On 21st March I'll be giving an online talk about KernelCI as
-part of the LF Live Mentorship series of webinars:
+> Kisskb can send out email when builds get broken, and when they get
+> fixed again.  I receive such emails for the m68k builds.
 
-   https://www.linuxfoundation.org/webinars/kernelci-travel-guide-2024
+Like this (yes, one more in DRM; sometimes I wonder if DRM is meant only
+for 64-bit little-endian platforms with +200 GiB/s memory bandwidth):
 
-While this is not something I'm doing on behalf of the KernelCI
-project itself but as an individual, it seemed appropriate to me
-to bring it up here and collect any potential feedback from the
-community.  Is there anything in particular you think should be
-covered?  Please see the current outline below, it's not set in
-stone and there's still some room for additional topics.
+---8<-------------------------------------------------------------------
+Subject: kisskb: FAILED linux-next/m68k-allmodconfig/m68k-gcc8 Mon Mar 04, =
+06:35
+To: geert@linux-m68k.org
+Date: Mon, 04 Mar 2024 08:05:14 -0000
 
-In particular, I was wondering whether there was an update on the
-new API roadmap which was meant to reach its main milestone
-today (4th March) with the production switchover.  On a related
-topic, the UX Analysis work is currently on-going but I haven't
-seen any public update on this either.  Generally speaking, if
-there's anything that seems important to add regarding all the
-recent developments then please let me know.  This is more about
-the last part with the 2024 horizon.
+FAILED linux-next/m68k-allmodconfig/m68k-gcc8 Mon Mar 04, 06:35
 
-Thanks,
-Guillaume
+http://kisskb.ellerman.id.au/kisskb/buildresult/15135537/
 
+Commit:   Add linux-next specific files for 20240304
+          67908bf6954b7635d33760ff6dfc189fc26ccc89
+Compiler: m68k-linux-gcc (GCC) 8.5.0 / GNU ld (GNU Binutils) 2.36.1
 
-----------------------------------------------------------------
+Possible errors
+---------------
 
+ERROR: modpost: "__udivdi3" [drivers/gpu/drm/sun4i/sun4i-drm-hdmi.ko] undef=
+ined!
+make[3]: *** [scripts/Makefile.modpost:145: Module.symvers] Error 1
+make[2]: *** [Makefile:1871: modpost] Error 2
+make[1]: *** [Makefile:240: __sub-make] Error 2
+make: *** [Makefile:240: __sub-make] Error 2
 
-Outline for "KernelCI: Travel Guide 2024"
+No warnings found in log.
+------------------------------------------------------------------->8---
 
-* Part 1: History
-   (10 years in 10 minutes)
-   * 2014-2015: Initial version
-     * Started at Linaro
-     * Dedicated to building upstream kernels for ARM
-   * 2016-2018: Emergence
-     * Boot testing in LAVA labs
-     * More build capacity with VMs, more labs
-     * Automated bisections
-   * 2019: Linux Foundation
-     * Launched with founding members
-     * Still more-or-less the same member companies today
-     * Drastic change of scope for the project, whole upstream kernel
-   * 2020-2021: Ramping up
-     * Kubernetes clusters for builds
-     * Functional testing
-     * ChromeOS
-     * KCIDB
-     * Community survey and new design PoC as a result
-   * 2022-2023: New API
-     * Updating the overall design to better serve the community
-     * Modular API PoC
-     * Preparation for new web dashboard
-     * Unifying use-cases with a single KernelCI tool set
+Gr{oetje,eeting}s,
 
-* Part 2: Guided Tour
-   (main part)
-   * Current build capacity
-   * Current functional testing capacity
-   * KCIDB stats
-   * New API roadmap and current status
-   * New web dashboard efforts
-   * Overall impact
-     * Cherry-picked stories about bugs reported and fixed
-   * Growing community
-     * Pre-merge testing with BPF CI (Meta)
-     * Collaborations with Pengutronix, TI, ARM
-     * Rust support
-   * Side topics
-     * regzbot
-     * GitLab CI
-     * Manual kernel bug reports
-   * End users
-     * How to engage with KernelCI
-     * kci command line tool
-     * Web dashboard requirements and user stories
-     * Empowering users: from manual custom tests to full automation
+                        Geert
 
-* Part 3: Horizon for 2024
-   (discussion)
-   * Challenges
-     * New API roadmap delayed
-     * New web dashboard progress gated by new API
-     * Transition period with new team members (TSC, board)
-   * Advanced features to be unlocked
-     * Performance testing (measurements, stats)
-     * Advanced bisection based on stats (Scalpel PoC)
-     * Dynamic scheduling to run jobs based on results and available hw
-     * Post-regression checks beyond bisections
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
