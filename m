@@ -1,52 +1,53 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EC37992E
-	for <kernelci@lists.linux.dev>; Mon,  4 Mar 2024 21:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AEE58231
+	for <kernelci@lists.linux.dev>; Tue,  5 Mar 2024 11:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588747; cv=none; b=Dw73M9T2tmpNyMw+2Q515gDmCLaATGYdQOix1q7+pZpA3yk5q4kxI4a0f06JvUU5hLAHHt1ScMfq3hye6buEwOGsXd+sIYYwHiHNlf4aBSTOSv2kvzsR9lenHNC1v3/ygGIUxj24KLPeYJloXHueXaYHorsgj9JWkmyMf+MIXP0=
+	t=1709639661; cv=none; b=qTnaJUzkJwBoltoUbWrraDwkqmse9n1cWO+MND0VcvShD5WjClVe6i/5z2fEIeHpB8NJeFqSbSO+aDZqBjG0N/ICm+Qd9YF+Tp508U+YEqa0K/HDShywLqact+TrRnsOA8o3HKM0EV2RilVX9TH63OFXW2OhzilOIqIPkiJkKLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588747; c=relaxed/simple;
-	bh=XV95ADWCt9SlcZ8u/EFGMeLeOk3IcW2jLKJtlEt3LvQ=;
+	s=arc-20240116; t=1709639661; c=relaxed/simple;
+	bh=x67k3bXd+uwmOFJJWOm3lRnqdPiR3GAdvjQmyD9Eock=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tdJdt5GtR+FojRxD6C9pjEMGXWdgaJlJd3b/FSRcsPSoAakSfQn/pVw1fb/qU3/qlV0E40rgFxeMTHRPaIni8ocF/VkFD2sryyvLUueycWurSO3hetG4tKUsdS8DFQYTFlET9vLdTosoL18GdM+lTAFxEB6SRK8wdCFtRyOz75k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=aChUylf9; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	 In-Reply-To:Content-Type; b=IMHeSuszuuH0N2nzYmrNAoi/atZHiTCvalXDtqtX7S/3n+gSjriET9d4IJvaFqeIZ0eP2/qHnS41blgjK4aDhuBYjBN1g1A5/UX+A7DgM+rjaBIyTDXQy+M3hrsMNgagwM9jXeCboj8YHshTZfQ+oN02uN7ZbzKGEZ3EsEcfYyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=lCbW5Fku; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="aChUylf9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709588743;
-	bh=XV95ADWCt9SlcZ8u/EFGMeLeOk3IcW2jLKJtlEt3LvQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aChUylf9pqH0pRyxupBsIGBiyQfFvaj6tZQyP/+Oov+ZRgIXTK6RwvtLPZJeLwDhq
-	 Vm35JuhECN/Bp9GC/be7hxNZwGrq6HCROApsnWxBYuw87dVk0NRDBT6AMkri5Ub/yx
-	 0f+mwrxnJFeEQ66y3KlDiQpi57UIBa6WfuewCzyly9by+dWGgUqqZkhS6KWZHSqTv9
-	 EOmXy3qqVdE+HaJAZj389eCSgrYm5l2HNn169EEA//oOlFsInxE1JeRKn+zLmK4aCY
-	 zTVXd6wPDUjVsf5RQqckMK0KFXbd/yRhU+U6gsLUDS+c05v0TSJ0QfBvulj8dZc+Cn
-	 JB/Y/knJ89dLw==
-Received: from [100.95.196.25] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="lCbW5Fku"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: koike)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id BB00C3780627;
-	Mon,  4 Mar 2024 21:45:36 +0000 (UTC)
-Message-ID: <17341b96-5050-4528-867a-9f628434e4e6@collabora.com>
-Date: Mon, 4 Mar 2024 18:45:33 -0300
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Tpv9Y2RPSz9sdN;
+	Tue,  5 Mar 2024 12:54:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1709639649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HiRlMg6h832yaauOUM6BWIgl8Xd8q3pgd4fABlp2sNE=;
+	b=lCbW5Fkub4izG2Oae+U/G280FBsPwV8XxqT1+OYlgVxXYXzDihADmuze4xgdqFMYUvK8rW
+	oJyybsoihkw07bNiavbIs7msvfck72PWOOWrJpj3uur04l60nNW4XiNT2MazDIG2W2VARa
+	+a8hijWBWxiv34doewuhy6xQPcrV4jS9lUt20cdGct+RgK5pnbrx7WDxxZ0dr6/q9A1yh4
+	UgG1XdhWaaoGRB/8J1rihDNeV2+oRpWWFVIc/Nt6eGR+1qHXm5ZO4ZvRGinB7ysS0kj2pb
+	UBuAw51IIfos4Ml37c6FKtD7AeZDaY9K5+q/oTSvnBtn6WL4wk/D5xFyZVwu6A==
+Message-ID: <2c828aa1-d9bb-4b27-844b-a098e206318f@mailbox.org>
+Date: Tue, 5 Mar 2024 12:54:01 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/3] kci-gitlab: Introducing GitLab-CI Pipeline for Kernel
  Testing
 To: Linus Torvalds <torvalds@linuxfoundation.org>,
  Nikolai Kondrashov <spbnick@gmail.com>
-Cc: Maxime Ripard <mripard@kernel.org>, linuxtv-ci@linuxtv.org,
+Cc: Maxime Ripard <mripard@kernel.org>,
+ Helen Koike <helen.koike@collabora.com>, linuxtv-ci@linuxtv.org,
  dave.pigott@collabora.com, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linux-kselftest@vger.kernel.org,
  gustavo.padovan@collabora.com, pawiecz@collabora.com,
@@ -61,58 +62,43 @@ References: <20240228225527.1052240-1-helen.koike@collabora.com>
  <20240229-dancing-laughing-groundhog-d85161@houat>
  <5d7ed81b-37f9-48e9-ab7e-484b74ca886c@gmail.com>
  <CAHk-=wixVy3WYvjbt43ZSrCqPDsS76QJQSkXFbbPsAOs1MCSAQ@mail.gmail.com>
- <44ae0339-daf1-4bb9-a12d-e3d2e79b889e@gmail.com>
- <CAHk-=wiccniE=iZDC_e7T+J8iPVQbh1Wi5BaVee9COfy+ZaYKg@mail.gmail.com>
-Content-Language: en-US
-From: Helen Koike <helen.koike@collabora.com>
-In-Reply-To: <CAHk-=wiccniE=iZDC_e7T+J8iPVQbh1Wi5BaVee9COfy+ZaYKg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Language: en-CA
+From: =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
+In-Reply-To: <CAHk-=wixVy3WYvjbt43ZSrCqPDsS76QJQSkXFbbPsAOs1MCSAQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: iuhiedtbyd865d5er91f663bapgj73ny
+X-MBO-RS-ID: 76dfc0d5d612d7f2266
 
-Hi Linus,
-
-Thank you for your reply and valuable inputs.
-
-On 01/03/2024 17:10, Linus Torvalds wrote:
-> On Fri, 1 Mar 2024 at 02:27, Nikolai Kondrashov <spbnick@gmail.com> wrote:
+On 2024-02-29 21:21, Linus Torvalds wrote:
+> On Thu, 29 Feb 2024 at 01:23, Nikolai Kondrashov <spbnick@gmail.com> wrote:
 >>
->> I agree, it's hard to imagine even a simple majority agreeing on how GitLab CI
->> should be done. Still, we would like to help people, who are interested in
->> this kind of thing, to set it up. How about we reframe this contribution as a
->> sort of template, or a reference for people to start their setup with,
->> assuming that most maintainers would want to tweak it? We would also be glad
->> to stand by for questions and help, as people try to use it.
+>> However, I think a better approach would be *not* to add the .gitlab-ci.yaml
+>> file in the root of the source tree, but instead change the very same repo
+>> setting to point to a particular entry YAML, *inside* the repo (somewhere
+>> under "ci" directory) instead.
 > 
-> Ack. I think seeing it as a library for various gitlab CI models would
-> be a lot more palatable. Particularly if you can then show that yes,
-> it is also relevant to our currently existing drm case.
-
-Having it as a library would certainly make my work as the DRM-CI 
-maintainer easier and  also simplify the process whenever we consider 
-integrating tests into other subsystems.
-
+> I really don't want some kind of top-level CI for the base kernel project.
 > 
-> So I'm not objecting to having (for example) some kind of CI helper
-> templates - I think a logical place would be in tools/ci/ which is
-> kind of alongside our tools/testing subdirectory.
-
-Works for me.
-
-We  can skip having a default .gitlab-ci.yml in the root directory and 
-instead include clear instructions in our documentation for using these 
-templates.
-
-Thanks,
-Helen Koike
-
+> We already have the situation that the drm people have their own ci
+> model. II'm ok with that, partly because then at least the maintainers
+> of that subsystem can agree on the rules for that one subsystem.
 > 
-> (And then perhaps have a 'gitlab' directory under that. I'm not sure
-> whether - and how much - commonality there might be between the
-> different CI models of different hosts).
+> I'm not at all interested in having something that people will then
+> either fight about, or - more likely - ignore, at the top level
+> because there isn't some global agreement about what the rules are.
 > 
-> Just to clarify: when I say "a logical place", I very much want to
-> emphasize the "a" - maybe there are better places, and I'm not saying
-> that is the only possible place. But it sounds more logical to me than
-> some.
+> For example, even just running checkpatch is often a stylistic thing,
+> and not everybody agrees about all the checkpatch warnings.
 > 
->              Linus
+> I would suggest the CI project be separate from the kernel.
+
+That would be missing a lot of the point / benefit of CI.
+
+A CI system which is separate from the kernel will tend to be out of sync, so it can't gate the merging of changes and thus can't prevent regressions from propagating.
+
+
+-- 
+Earthling Michel Dänzer            |                  https://redhat.com
+Libre software enthusiast          |         Mesa and Xwayland developer
+
