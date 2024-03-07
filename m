@@ -1,66 +1,90 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FAF13172E
-	for <kernelci@lists.linux.dev>; Thu,  7 Mar 2024 18:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9105381A1
+	for <kernelci@lists.linux.dev>; Thu,  7 Mar 2024 22:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709834724; cv=none; b=nHy9A+wV+uOoXp4zCY1dLsC+ChCLimasPIMtpoGi05uO4Zix4Jc1dBgb59ycJ8tLXBFFAPUSKxMff0TmmtZ1u+lZCcDB/x3xo/7KkFstHWMvjU6E7oakxEV+oyiLT/jyU0g4UkkinmWLGkcnUxiBeBYmSJi4deGZfT9Wv5TSkv0=
+	t=1709851398; cv=none; b=bEePzONz6duqkuLqBYqqe2Kg3crg7sx8gNzmecFk3vYNKsynJ31bqw6ImCSU2+/eCQXXZBPeKmv7Es9kcjwh0ybkuhzEe6d/WDpvXMTys4iJ3AQURGZDStdSsIWdK2SILeuj7JQchW7jvfkTnVy8jMCyhv/llomCfzWJqkTRrwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709834724; c=relaxed/simple;
-	bh=6PdhETDwSB9x/LARJancAnLAUQJ5EbrpK/EH1ojZ3Mc=;
+	s=arc-20240116; t=1709851398; c=relaxed/simple;
+	bh=6QK4W1NufyM+scYXoml0RdEgGXJVv/Tf0aCSLp9EfLY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FumbZRX22aZumlrlCsgsL8C0AYofdEbuGUO86c74LY4kB3gF0uvLbzuFG6g6Z4riLhAyQ/EeI2qp74GE+yHw2kYiUXNhUsI9t/MIfNUsOVZrS6rlwc7VTXa82PKdequdJyPFfb+9nHyebJL/wlFoP6TmgrEkhe4VJZ8Z1154iqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=OU0fE8FN; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	 Content-Type:MIME-Version; b=kqOjwSwem9Xy6WKrCyBWbEn0NYxWB/pS87jzUEd99c+1oPJ9T6GWrQ5epW7d62j00HD5U1Z2VwjSLdrAq8vJqKif1GkeI/MoPrddmw1Q7DCiV3rF4hoYgReqIZ3hyBi1rEgkFN1RtBtxNWpRmyZ4GyGaABlrqV90ACVW4wafmvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ahlWRx9o; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="OU0fE8FN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709834719;
-	bh=6PdhETDwSB9x/LARJancAnLAUQJ5EbrpK/EH1ojZ3Mc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=OU0fE8FNWeNCdyMVaBI+4zAWM0y2JrwciNVCgXFIk5Qctuiac9EcJSIQWKn8GLdzL
-	 gTAxVJhidM9b0q5MCeaePZ7UfOi7iTQl+GDy25E8GwfzLhm2EZbuM7ZX5bdQlbSakU
-	 W4D0VZxomztXYGrHt7Bq2604MnjnKHvYJXfNqvuDbMvD4PELUTQDKC6NNd65GJWs5o
-	 8XgGro4CnGW93oz1/rOknU6b0cERoQtqPMi+NPzgZtMuDwftt0avBWCu1W72EIjcSV
-	 H/B1QVCYi1lbljlJPuaG92wNbtiFCWyXvgp9pxF13OCGia3NHbCOCIXo4WiDqm8YOl
-	 4nSNokRv8JaKw==
-Received: from nicolas-tpx395.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 53FE037820ED;
-	Thu,  7 Mar 2024 18:05:16 +0000 (UTC)
-Message-ID: <d417daa2a8e3951da44bf2d555e04d98c83a3c5c.camel@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ahlWRx9o"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6e46dcd8feaso1026832b3a.2
+        for <kernelci@lists.linux.dev>; Thu, 07 Mar 2024 14:43:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709851396; x=1710456196; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TfbS9E4Z674Rghf4uG1aBze02oodSRDBbrR7JY0TaRQ=;
+        b=ahlWRx9o+5gQyQ5MXezDnrZtmogJaoy0uOLi2feva9BWhDujrDClz0eekp4s/0OK5v
+         BGJSQrn+wZBVo5DKAPSm233mpZDpO9bk6YfZs4fgSBIKyC9l963KaS9H0oewH4pJwN6P
+         WCqhATxTbksGSQdsvdyt/eMNSxDFlZrGhEYFqspmB5jHmtC4CdkrmMgG+03tiWPLFILN
+         Tgu3IRa/vm5L7UZkqRKVDQ2g6UgGEdnkKMyXTIT+LUtoLD8S5z6YIHDyd2B5igWZVFoY
+         N1svkPfiDUcvftDIGQUY6UN+/S8d61Ht+6RXf6MXR9i5Ppumv9MkGZ1ZGYVC/B7RJfVI
+         SdCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709851396; x=1710456196;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TfbS9E4Z674Rghf4uG1aBze02oodSRDBbrR7JY0TaRQ=;
+        b=KwjiFrwDjxkVvscJIOaLDnn1NPLilImAyLj1qkEUQ++BddSs7Ypc1osgeXF5ZiVL97
+         Y1BExXN+co2PBomT0PjCNp+jlcDwtOs0RivEYg6E9J2KL2GhqybmdkhytHKMQBP/vMJ6
+         2cv+PsLgaEo4V6JiZYPCR4JAmRFRjdh3j+9Rnloj1AGnshorjknOGI2hEHELSv68nRl1
+         vxoplPeCzzgVxGWczj0DkIcCoGccWAIBExewxIQQ5eMA+u5xhyPi+XXG97+5GcL9mjW/
+         4+PpaHJuk88hUeyXewZZ9uMT6HPy0vfql0ARjl0Q3wu2/uuSAOj8sgzhw2w+Bwmi/wBv
+         i3Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvG4aqN7psuSxGhVYXYallIOMbIQtWOKXyfJM6sifncx1nSinNGmJnO9uU4kNGrp4j8wfJqEu5k2usi4FJV/+mABSO6p6JZdw=
+X-Gm-Message-State: AOJu0YxDmf3zXnqcGkbU1h1vkHarf0QuuXytW7kUkBACqKBloyyRea3r
+	fLrZQFfM8AG7+EqGLPFE+WmbVCszi/HB1peExhm7vEoXihAxZZMy
+X-Google-Smtp-Source: AGHT+IHtTE1JX4FWkJmXISxOpLlBlT4E93v3RIPvarcuDzGIbaoE7RwplZ6pR6YPOiYfZGA2Q6GFwQ==
+X-Received: by 2002:a05:6a20:9f03:b0:1a1:56aa:bf66 with SMTP id mk3-20020a056a209f0300b001a156aabf66mr13285633pzb.13.1709851396096;
+        Thu, 07 Mar 2024 14:43:16 -0800 (PST)
+Received: from ?IPv6:2804:1b3:a801:2ba7:2726:579:e699:a435? ([2804:1b3:a801:2ba7:2726:579:e699:a435])
+        by smtp.gmail.com with ESMTPSA id ei30-20020a056a0080de00b006e5359e621csm13053181pfb.182.2024.03.07.14.43.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Mar 2024 14:43:15 -0800 (PST)
+Message-ID: <673ec9f4899cd1380d02bebe92d9a3d6dd7cda55.camel@gmail.com>
 Subject: Re: [PATCH 1/3] kci-gitlab: Introducing GitLab-CI Pipeline for
  Kernel Testing
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Maxime Ripard <mripard@kernel.org>, Helen Koike
- <helen.koike@collabora.com>
-Cc: linuxtv-ci@linuxtv.org, dave.pigott@collabora.com, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-kselftest@vger.kernel.org, gustavo.padovan@collabora.com, 
- pawiecz@collabora.com, spbnick@gmail.com, tales.aparecida@gmail.com, 
- workflows@vger.kernel.org, kernelci@lists.linux.dev,
- skhan@linuxfoundation.org,  kunit-dev@googlegroups.com,
- nfraprado@collabora.com, davidgow@google.com,  cocci@inria.fr,
- Julia.Lawall@inria.fr, laura.nao@collabora.com, 
- ricardo.canuelo@collabora.com, kernel@collabora.com, 
- torvalds@linuxfoundation.org, gregkh@linuxfoundation.org
-Date: Thu, 07 Mar 2024 13:05:12 -0500
-In-Reply-To: <20240229-dancing-laughing-groundhog-d85161@houat>
+From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
+To: Helen Koike <helen.koike@collabora.com>, Linus Torvalds
+	 <torvalds@linuxfoundation.org>, Nikolai Kondrashov <spbnick@gmail.com>
+Cc: Maxime Ripard <mripard@kernel.org>, linuxtv-ci@linuxtv.org, 
+ dave.pigott@collabora.com, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-kselftest@vger.kernel.org, 
+ gustavo.padovan@collabora.com, pawiecz@collabora.com,
+ tales.aparecida@gmail.com,  workflows@vger.kernel.org,
+ kernelci@lists.linux.dev, skhan@linuxfoundation.org, 
+ kunit-dev@googlegroups.com, nfraprado@collabora.com, davidgow@google.com, 
+ cocci@inria.fr, Julia.Lawall@inria.fr, laura.nao@collabora.com, 
+ ricardo.canuelo@collabora.com, kernel@collabora.com,
+ gregkh@linuxfoundation.org
+Date: Thu, 07 Mar 2024 19:43:04 -0300
+In-Reply-To: <17341b96-5050-4528-867a-9f628434e4e6@collabora.com>
 References: <20240228225527.1052240-1-helen.koike@collabora.com>
 	 <20240228225527.1052240-2-helen.koike@collabora.com>
 	 <20240229-dancing-laughing-groundhog-d85161@houat>
-Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
- keydata=mQGiBEUQN0MRBACQYceNSezSdMjx7sx6gwKkMghrrODgl3B0eXBTgNp6c431IfOOEsdvkoOh1kwoYcQgbg4MXw6beOltysX4e8fFWsiRkc2nvvRW9ir9kHDm49MkBLqaDjTqOkYKNMiurFW+gozpr/lUW15QqT6v68RYe0zRdtwGZqeLzX2LVuukGwCg4AISzswrrYHNV7vQLcbaUhPgIl0D+gILYT9TJgAEK4YHW+bFRcY+cgUFoLQqQayECMlctKoLOE69nIYOc/hDr9uih1wxrQ/yL0NJvQCohSPyoyLF9b2EuIGhQVp05XP7FzlTxhYvGO/DtO08ec85+bTfVBMV6eeY4MS3ZU+1z7ObD7Pf29YjyTehN2Dan6w1g2rBk5MoA/9nDocSlk4pbFpsYSFmVHsDiAOFje3+iY4ftVDKunKYWMhwRVBjAREOByBagmRau0cLEcElpf4hX5f978GoxSGIsiKoDAlXX+ICDOWC1/EXhEEmBR1gL0QJgiVviNyLfGJlZWnPjw6xhhmtHYWTDxBOP5peztyc2PqeKsLsLWzAr7RDTmljb2xhcyBEdWZyZXNuZSAoQi4gU2MuIEluZm9ybWF0aXF1ZSkgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPohgBBMRAgAgBQJFlCyOAhsDBgsJCAcDAgQVAggDBBYCAwECHgECF4AACgkQcVMCLawGqBwhLQCgzYlrLBj6KIAZ4gmsfjXD6ZtddT8AoIeGDicVq5WvMHNWign6ApQcZUihtElOaWNvbGFzIER1ZnJlc25lIChCLiBTYy4gSW5mb3JtYXRpcXVlKSA8bmljb2xhcy5kdWZyZXNuZUBjb2xsYWJvcmEuY28udWs+iGIEExECACIFAkuzca8CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFTAi2sBqgcQX8An2By6LDEeMxi4B9hUbpvRnzaaeNqA
-	J9Rox8rfqHZnSErw9bCHiBwvwJZ77QxTmljb2xhcyBEdWZyZXNuZSA8bmljb2xhcy5kdWZyZXNuZUBjb2xsYWJvcmEuY29tPohiBBMRAgAiBQJNzZzPAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRBxUwItrAaoHLlxAKCYAGf4JL7DYDLs/188CPMGuwLypwCfWKc9DorA9f5pyYlD5pQo6SgSoiC0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPohiBBMRAgAiBQJVwNwgAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRBxUwItrAaoHCZ4AJ0QwU6/G4c7h9CkMBT9ZxGLX4KSnQCgq0P7CX7hv/M7HeyfMFZe8t3vAEW0RE5pY29sYXMgRHVmcmVzbmUgKEIuIFNjLiBJbmZvcm1hdGlxdWUpIDxuaWNvbGFzZEBibHVlc3RyZWFrdGVjaC5jb20+iGAEExECACAFAkZjGzoCGwMGCwkIBwMCBBUCCAMEFgIDAQIeAQIXgAAKCRBxUwItrAaoHBl7AJ0d2lrzshMmJaik/EaDEakzEwqgxQCg0JVZMZm9gRfEou1FvinuZxwf/mu0R05pY29sYXMgRHVmcmVzbmUgKEIgU2MuIEluZm9ybWF0aXF1ZSkgPG5pY29sYXMuZHVmcmVzbmVAdXNoZXJicm9va2UuY2E+iGAEExECACAFAkUQN0MCGwMGCwkIBwMCBBUCCAMEFgIDAQIeAQIXgAAKCRBxUwItrAaoHPTnAJ0WGgJJVspoctAvEcI00mtp5WAFGgCgr+E7ItOqZEHAs+xabBgknYZIFPW5Ag0ERRA3UhAIAJ0rxl2HsVg/nSOAUt7U/T/W+RKzVAlD9orCB0pRVvyWNxSr8MHcHmWCxykLuB34ouM4GuDVRKfGnqLzJRBfjs7Ax9K2FI3Odund9xpviLCt1jFC0K
-	XL04RebrFT7xjDfocDaSLFvgxMVs/Jr2/ckKPId1oKvgYgt/o+MzUabKyFB8wIvq4GMtj3LoBKLCie2nCaSt7uVUt6q2t5bNWrd3lO6/mWn7YMc5Hsn33H9pS0+9szw6m3dG08eMKNueDlt72QxiYl2rhjzkT4ltKEkFgYBdyrtIj1UO6eX+YXb4E1rCMJrdjBSgqDPK1sWHC7gliy+izr+XTHuFwlfy8gBpsAAwUIAJJNus64gri4HAL632eqVpza83EphX1IuHzLi1LlMnQ9Tm7XKag46NhmJbOByMG33LwBsBdLjjHQSVkYZFWUifq+NWSFC/kqlb72vW8rBAv64+i3QdfxK9FWbweiRsPpvuHjJQuecbPDJpubLaxKbu2aqLCN5LuHXvdQr6KiXwabT+OJ9AJAqHG7q4IEzg4RNUVn9AS6L8bxqMSocjqpWNBCY2efCVd/c6k4Acv6jXu+wDAZEbWXK+71uaUHExhigBYBpiHGrobe32YlTVE/XEIzKKywhm/Hkn5YKWzumLte6xiD9JhKabmD7uqIvLt2twUpz4BdPzj0dvGlSmvFcaaISQQYEQIACQUCRRA3UgIbDAAKCRBxUwItrAaoHJLyAKDeS3AFowM3f1Y3OFU6XRCTKK2ZhwCfT/7P9WDjkkmiq5AfeOiwVlpuHtM=
+	 <5d7ed81b-37f9-48e9-ab7e-484b74ca886c@gmail.com>
+	 <CAHk-=wixVy3WYvjbt43ZSrCqPDsS76QJQSkXFbbPsAOs1MCSAQ@mail.gmail.com>
+	 <44ae0339-daf1-4bb9-a12d-e3d2e79b889e@gmail.com>
+	 <CAHk-=wiccniE=iZDC_e7T+J8iPVQbh1Wi5BaVee9COfy+ZaYKg@mail.gmail.com>
+	 <17341b96-5050-4528-867a-9f628434e4e6@collabora.com>
+Autocrypt: addr=leobras.c@gmail.com; prefer-encrypt=mutual; keydata=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
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+User-Agent: Evolution 3.50.4 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -68,94 +92,78 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
-Le jeudi 29 f=C3=A9vrier 2024 =C3=A0 10:02 +0100, Maxime Ripard a =C3=A9cri=
-t=C2=A0:
-> Hi Helen,
+On Mon, 2024-03-04 at 18:45 -0300, Helen Koike wrote:
+> Hi Linus,
 >=20
-> Thanks for working on this
+> Thank you for your reply and valuable inputs.
 >=20
-> On Wed, Feb 28, 2024 at 07:55:25PM -0300, Helen Koike wrote:
-> > This patch introduces a `.gitlab-ci` file along with a `ci/` folder,
-> > defininga basic test pipeline triggered by code pushes to a GitLab-CI
-> > instance. This initial version includes static checks (checkpatch and
-> > smatch for now) and build tests across various architectures and
-> > configurations. It leverages an integrated cache for efficient build
-> > times and introduces a flexible 'scenarios' mechanism for
-> > subsystem-specific extensions.
+> On 01/03/2024 17:10, Linus Torvalds wrote:
+> > On Fri, 1 Mar 2024 at 02:27, Nikolai Kondrashov <spbnick@gmail.com> wro=
+te:
+> > >=20
+> > > I agree, it's hard to imagine even a simple majority agreeing on how =
+GitLab CI
+> > > should be done. Still, we would like to help people, who are interest=
+ed in
+> > > this kind of thing, to set it up. How about we reframe this contribut=
+ion as a
+> > > sort of template, or a reference for people to start their setup with=
+,
+> > > assuming that most maintainers would want to tweak it? We would also =
+be glad
+> > > to stand by for questions and help, as people try to use it.
 > >=20
-> > [ci: add prerequisites to run check-patch on MRs]
-> > Co-developed-by: Tales Aparecida <tales.aparecida@redhat.com>
-> > Signed-off-by: Tales Aparecida <tales.aparecida@redhat.com>
-> > Signed-off-by: Helen Koike <helen.koike@collabora.com>
-> >=20
-> > ---
-> >=20
-> > Hey all,
-> >=20
-> > You can check the validation of this patchset on:
-> >         https://gitlab.collabora.com/koike/linux/-/pipelines/87035
-> >=20
-> > I would appreciate your feedback on this work, what do you think?
-> >=20
-> > If you would rate from 0 to 5, where:
-> >=20
-> > [ ] 0. I don't think this is useful at all, and I doubt it will ever be=
-. It doesn't seem worthwhile.
-> > [ ] 1. I don't find it useful in its current form.
-> > [ ] 2. It might be useful to others, but not for me.
-> > [ ] 3. It has potential, but it's not yet something I can incorporate i=
-nto my workflow.
-> > [ ] 4. This is useful, but it needs some adjustments before I can inclu=
-de it in my workflow.
-> > [ ] 5. This is really useful! I'm eager to start using it right away. W=
-hy didn't you send this earlier? :)
-> >=20
-> > Which rating would you select?
+> > Ack. I think seeing it as a library for various gitlab CI models would
+> > be a lot more palatable. Particularly if you can then show that yes,
+> > it is also relevant to our currently existing drm case.
 >=20
-> 4.5 :)
+> Having it as a library would certainly make my work as the DRM-CI=20
+> maintainer easier and  also simplify the process whenever we consider=20
+> integrating tests into other subsystems.
 >=20
-> One thing I'm wondering here is how we're going to cope with the
-> different requirements each user / framework has.
+> >=20
+> > So I'm not objecting to having (for example) some kind of CI helper
+> > templates - I think a logical place would be in tools/ci/ which is
+> > kind of alongside our tools/testing subdirectory.
 >=20
-> Like, Linus probably want to have a different set of CI before merging a
-> PR than (say) linux-next does, or stable, or before doing an actual
-> release.
+> Works for me.
 >=20
-> Similarly, DRM probably has a different set of requirements than
-> drm-misc, drm-amd or nouveau.
->=20
-> I don't see how the current architecture could accomodate for that. I
-> know that Gitlab allows to store issues template in a separate repo,
-> maybe we could ask them to provide a feature where the actions would be
-> separate from the main repo? That way, any gitlab project could provide
-> its own set of tests, without conflicting with each others (and we could
-> still share them if we wanted to)
->=20
-> I know some of use had good relationship with Gitlab, so maybe it would
-> be worth asking?
+> We  can skip having a default .gitlab-ci.yml in the root directory and=
+=20
+> instead include clear instructions in our documentation for using these=
+=20
+> templates.
 
-As agreed, the .gitlab-ci.yaml file at the list will go away. Its a default
-location, but not a required location. This way, each sub-system can have t=
-heir
-own (or not have one). The different sub-system forks will have to be confi=
-gured
-to point to their respective CI main configuration.
+From previous experience[1], I recommend this approach.
 
-Of course nothing prevents having common set of configuration for jobs and =
-jobs
-template. As an example, we could have a job template common for checkpatch=
-, and
-allow each subsystem adding their own sauce on top. It can save the duplica=
-te
-effort of parsing the tool results and reporting it in a format gitlab
-understand.
+This way it does not bother current Gitlab mirrors / personal repos, while
+allowing anyone to setup the CI from Gitlab menus just by changing:
 
-This also allow subsystems to offer different coverage, e.g. a fast vs a fu=
-ll
-coverage. Or perhaps a configuration to focus on specific devices. But in
-general, just not having a central config is enough to support the idea. Wh=
-at we
-have now could be entirely drm specific and "commonized" later when other
-subsystem wanting to use gitlab joins (Linux Media is among those).
+Repo -> Settings -> CI/CD -> General Pipelines -> CI/CD configuration file
 
-Nicolas
+Thanks!
+Leo
+
+[1] Last year I implemented Gitlab-CI for the perfbook repo, and I came acr=
+oss
+some issues, including the disruption of .gitlab-ci.yml in the root of a re=
+po.
+https://lore.kernel.org/perfbook/20230201201529.901316-1-leobras.c@gmail.co=
+m/
+
+>=20
+> Thanks,
+> Helen Koike
+>=20
+> >=20
+> > (And then perhaps have a 'gitlab' directory under that. I'm not sure
+> > whether - and how much - commonality there might be between the
+> > different CI models of different hosts).
+> >=20
+> > Just to clarify: when I say "a logical place", I very much want to
+> > emphasize the "a" - maybe there are better places, and I'm not saying
+> > that is the only possible place. But it sounds more logical to me than
+> > some.
+> >=20
+> >              Linus
+
