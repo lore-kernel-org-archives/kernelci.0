@@ -1,169 +1,189 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9105381A1
-	for <kernelci@lists.linux.dev>; Thu,  7 Mar 2024 22:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6341D68C
+	for <kernelci@lists.linux.dev>; Fri,  8 Mar 2024 14:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709851398; cv=none; b=bEePzONz6duqkuLqBYqqe2Kg3crg7sx8gNzmecFk3vYNKsynJ31bqw6ImCSU2+/eCQXXZBPeKmv7Es9kcjwh0ybkuhzEe6d/WDpvXMTys4iJ3AQURGZDStdSsIWdK2SILeuj7JQchW7jvfkTnVy8jMCyhv/llomCfzWJqkTRrwU=
+	t=1709909386; cv=none; b=BWRHkVf+g+ZlHRC+noW4X0zquJ2uhnBFo+wCOa+JcpqchJrh10WgVVEijow4FXS4wkJoFVpNO7TbOWaL+a8ZPZpSh8a5tn3o+q8n8GvML2bx2MRiKEQk4SIdQq4RJVCANHCJZcBSTBz1XwhmrJY2xhYDW8ZCjAsPJ0Kq1KJ0j6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709851398; c=relaxed/simple;
-	bh=6QK4W1NufyM+scYXoml0RdEgGXJVv/Tf0aCSLp9EfLY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kqOjwSwem9Xy6WKrCyBWbEn0NYxWB/pS87jzUEd99c+1oPJ9T6GWrQ5epW7d62j00HD5U1Z2VwjSLdrAq8vJqKif1GkeI/MoPrddmw1Q7DCiV3rF4hoYgReqIZ3hyBi1rEgkFN1RtBtxNWpRmyZ4GyGaABlrqV90ACVW4wafmvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ahlWRx9o; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1709909386; c=relaxed/simple;
+	bh=YLwNG4ks4uquD6ezqQSUc9idKRgCGv1a6DYhg9Loufc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZMuy9+SRpXDhkmC/i42tE0GFMBh0Q7hCI0eeOyNXm4yZrUMAiQ7sItNkXHILD+sETmyZkwW7T+baNm4WFkvsO6vgyaWjwAmDWluzr/qzCrp+5TVNQG8AiBFM0x0Zmq/8xh7mWRc2PgtSG6o77lNsxyJvp/S/4z4CeLPBSSeONZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=JqOY7WHs; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ahlWRx9o"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6e46dcd8feaso1026832b3a.2
-        for <kernelci@lists.linux.dev>; Thu, 07 Mar 2024 14:43:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709851396; x=1710456196; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TfbS9E4Z674Rghf4uG1aBze02oodSRDBbrR7JY0TaRQ=;
-        b=ahlWRx9o+5gQyQ5MXezDnrZtmogJaoy0uOLi2feva9BWhDujrDClz0eekp4s/0OK5v
-         BGJSQrn+wZBVo5DKAPSm233mpZDpO9bk6YfZs4fgSBIKyC9l963KaS9H0oewH4pJwN6P
-         WCqhATxTbksGSQdsvdyt/eMNSxDFlZrGhEYFqspmB5jHmtC4CdkrmMgG+03tiWPLFILN
-         Tgu3IRa/vm5L7UZkqRKVDQ2g6UgGEdnkKMyXTIT+LUtoLD8S5z6YIHDyd2B5igWZVFoY
-         N1svkPfiDUcvftDIGQUY6UN+/S8d61Ht+6RXf6MXR9i5Ppumv9MkGZ1ZGYVC/B7RJfVI
-         SdCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709851396; x=1710456196;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TfbS9E4Z674Rghf4uG1aBze02oodSRDBbrR7JY0TaRQ=;
-        b=KwjiFrwDjxkVvscJIOaLDnn1NPLilImAyLj1qkEUQ++BddSs7Ypc1osgeXF5ZiVL97
-         Y1BExXN+co2PBomT0PjCNp+jlcDwtOs0RivEYg6E9J2KL2GhqybmdkhytHKMQBP/vMJ6
-         2cv+PsLgaEo4V6JiZYPCR4JAmRFRjdh3j+9Rnloj1AGnshorjknOGI2hEHELSv68nRl1
-         vxoplPeCzzgVxGWczj0DkIcCoGccWAIBExewxIQQ5eMA+u5xhyPi+XXG97+5GcL9mjW/
-         4+PpaHJuk88hUeyXewZZ9uMT6HPy0vfql0ARjl0Q3wu2/uuSAOj8sgzhw2w+Bwmi/wBv
-         i3Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvG4aqN7psuSxGhVYXYallIOMbIQtWOKXyfJM6sifncx1nSinNGmJnO9uU4kNGrp4j8wfJqEu5k2usi4FJV/+mABSO6p6JZdw=
-X-Gm-Message-State: AOJu0YxDmf3zXnqcGkbU1h1vkHarf0QuuXytW7kUkBACqKBloyyRea3r
-	fLrZQFfM8AG7+EqGLPFE+WmbVCszi/HB1peExhm7vEoXihAxZZMy
-X-Google-Smtp-Source: AGHT+IHtTE1JX4FWkJmXISxOpLlBlT4E93v3RIPvarcuDzGIbaoE7RwplZ6pR6YPOiYfZGA2Q6GFwQ==
-X-Received: by 2002:a05:6a20:9f03:b0:1a1:56aa:bf66 with SMTP id mk3-20020a056a209f0300b001a156aabf66mr13285633pzb.13.1709851396096;
-        Thu, 07 Mar 2024 14:43:16 -0800 (PST)
-Received: from ?IPv6:2804:1b3:a801:2ba7:2726:579:e699:a435? ([2804:1b3:a801:2ba7:2726:579:e699:a435])
-        by smtp.gmail.com with ESMTPSA id ei30-20020a056a0080de00b006e5359e621csm13053181pfb.182.2024.03.07.14.43.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 14:43:15 -0800 (PST)
-Message-ID: <673ec9f4899cd1380d02bebe92d9a3d6dd7cda55.camel@gmail.com>
-Subject: Re: [PATCH 1/3] kci-gitlab: Introducing GitLab-CI Pipeline for
- Kernel Testing
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
-To: Helen Koike <helen.koike@collabora.com>, Linus Torvalds
-	 <torvalds@linuxfoundation.org>, Nikolai Kondrashov <spbnick@gmail.com>
-Cc: Maxime Ripard <mripard@kernel.org>, linuxtv-ci@linuxtv.org, 
- dave.pigott@collabora.com, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-kselftest@vger.kernel.org, 
- gustavo.padovan@collabora.com, pawiecz@collabora.com,
- tales.aparecida@gmail.com,  workflows@vger.kernel.org,
- kernelci@lists.linux.dev, skhan@linuxfoundation.org, 
- kunit-dev@googlegroups.com, nfraprado@collabora.com, davidgow@google.com, 
- cocci@inria.fr, Julia.Lawall@inria.fr, laura.nao@collabora.com, 
- ricardo.canuelo@collabora.com, kernel@collabora.com,
- gregkh@linuxfoundation.org
-Date: Thu, 07 Mar 2024 19:43:04 -0300
-In-Reply-To: <17341b96-5050-4528-867a-9f628434e4e6@collabora.com>
-References: <20240228225527.1052240-1-helen.koike@collabora.com>
-	 <20240228225527.1052240-2-helen.koike@collabora.com>
-	 <20240229-dancing-laughing-groundhog-d85161@houat>
-	 <5d7ed81b-37f9-48e9-ab7e-484b74ca886c@gmail.com>
-	 <CAHk-=wixVy3WYvjbt43ZSrCqPDsS76QJQSkXFbbPsAOs1MCSAQ@mail.gmail.com>
-	 <44ae0339-daf1-4bb9-a12d-e3d2e79b889e@gmail.com>
-	 <CAHk-=wiccniE=iZDC_e7T+J8iPVQbh1Wi5BaVee9COfy+ZaYKg@mail.gmail.com>
-	 <17341b96-5050-4528-867a-9f628434e4e6@collabora.com>
-Autocrypt: addr=leobras.c@gmail.com; prefer-encrypt=mutual; keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="JqOY7WHs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1709909382;
+	bh=YLwNG4ks4uquD6ezqQSUc9idKRgCGv1a6DYhg9Loufc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JqOY7WHsabCwCSD7TWrek2H9lotzYfofsA5Ea0lIfThtMCbMdXr5NwtzLSE6qQwuH
+	 kWePg8cGL2acGgta6kFvgiBy4MlbKbLSR8tRUZocpDC2TYyeJV5GgBIna51AQX3U8q
+	 91uP/mvP15KGWNPRMZyCey86Y9McRxsPmOch4Sd5Ob+kyVGBSvwHpcz77vz2q5g1cI
+	 3Y8e4WBBmpd6krpJDnDitA/isQaU93O8LBD5u1wyAEMKsJs+aH2Uv3DsUj2syhODRv
+	 gLHgbSlbT8BTcWsn7ZCSkqJP+x5Tj5PCKLZMc9PNF7bQZScq3sJ59vHi8XfhLh1fCP
+	 3pxaO07AluZWg==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 6D0FE37820F2;
+	Fri,  8 Mar 2024 14:49:41 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	shuah@kernel.org
+Cc: dan.carpenter@linaro.org,
+	broonie@kernel.org,
+	groeck@chromium.org,
+	kernel@collabora.com,
+	kernelci@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	robh+dt@kernel.org,
+	saravanak@google.com,
+	davidgow@google.com,
+	Tim.Bird@sony.com,
+	dianders@chromium.org,
+	Laura Nao <laura.nao@collabora.com>
+Subject: [RFC PATCH v2 0/2] Add a test to verify device probing on ACPI platforms
+Date: Fri,  8 Mar 2024 15:49:31 +0100
+Message-Id: <20240308144933.337107-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-03-04 at 18:45 -0300, Helen Koike wrote:
-> Hi Linus,
->=20
-> Thank you for your reply and valuable inputs.
->=20
-> On 01/03/2024 17:10, Linus Torvalds wrote:
-> > On Fri, 1 Mar 2024 at 02:27, Nikolai Kondrashov <spbnick@gmail.com> wro=
-te:
-> > >=20
-> > > I agree, it's hard to imagine even a simple majority agreeing on how =
-GitLab CI
-> > > should be done. Still, we would like to help people, who are interest=
-ed in
-> > > this kind of thing, to set it up. How about we reframe this contribut=
-ion as a
-> > > sort of template, or a reference for people to start their setup with=
-,
-> > > assuming that most maintainers would want to tweak it? We would also =
-be glad
-> > > to stand by for questions and help, as people try to use it.
-> >=20
-> > Ack. I think seeing it as a library for various gitlab CI models would
-> > be a lot more palatable. Particularly if you can then show that yes,
-> > it is also relevant to our currently existing drm case.
->=20
-> Having it as a library would certainly make my work as the DRM-CI=20
-> maintainer easier and  also simplify the process whenever we consider=20
-> integrating tests into other subsystems.
->=20
-> >=20
-> > So I'm not objecting to having (for example) some kind of CI helper
-> > templates - I think a logical place would be in tools/ci/ which is
-> > kind of alongside our tools/testing subdirectory.
->=20
-> Works for me.
->=20
-> We  can skip having a default .gitlab-ci.yml in the root directory and=
-=20
-> instead include clear instructions in our documentation for using these=
-=20
-> templates.
+Hello,
 
-From previous experience[1], I recommend this approach.
+This v2 addresses some issues observed when running the ACPI probe
+kselftest proposed in v1[1] across various devices and improves the overall
+reliability of the test.
 
-This way it does not bother current Gitlab mirrors / personal repos, while
-allowing anyone to setup the CI from Gitlab menus just by changing:
+The acpi-extract-ids script has been improved to:
+- Parse both .c and .h files
+- Add an option to print only IDs matched by a driver (i.e. defined in an
+ACPI match tables or in lists of IDs provided by the drivers)
 
-Repo -> Settings -> CI/CD -> General Pipelines -> CI/CD configuration file
+The test_unprobed_devices.sh script relies on sysfs information to
+determine if a device was successfully bound to a driver. Not all devices
+listed in /sys/devices are expected to have a driver folder, so the script
+has been adjusted to handle these cases and avoid generating false
+negatives.
 
-Thanks!
-Leo
+The test_unprobed_devices.sh test script logic has been modified to:
+- Check the status attribute (when available) to exclusively test hardware
+  devices that are physically present, enabled and operational
+- Traverse only ACPI objects with a physical_node* link, to ensure testing
+  of correctly enumerated devices
+- Skip devices whose HID or CID are not matched by any driver, as
+  determined by the list generated through the acpi-extract-ids script
+- Skip devices with HID or CID listed in the ignored IDs list. This list
+  has been added to contain IDs of devices that don't require a driver or
+  cannot be represented as platform devices (e.g. ACPI container and module
+  devices).
+- Skip devices that are natively enumerated and don't need a driver, such
+  as certain PCI bridges
+- Skip devices unassigned to any subsystem, devices linked to other devices
+  and class devices
 
-[1] Last year I implemented Gitlab-CI for the perfbook repo, and I came acr=
-oss
-some issues, including the disruption of .gitlab-ci.yml in the root of a re=
-po.
-https://lore.kernel.org/perfbook/20230201201529.901316-1-leobras.c@gmail.co=
-m/
+Some of the heuristics used by the script are suboptimal and might require
+adjustments over time. This kind of tests would greatly benefit from a
+dedicated interface that exposes information about devices expected to be
+matched by drivers and their probe status. Discussion regarding this matter
+was initiated in v1.
 
->=20
-> Thanks,
-> Helen Koike
->=20
-> >=20
-> > (And then perhaps have a 'gitlab' directory under that. I'm not sure
-> > whether - and how much - commonality there might be between the
-> > different CI models of different hosts).
-> >=20
-> > Just to clarify: when I say "a logical place", I very much want to
-> > emphasize the "a" - maybe there are better places, and I'm not saying
-> > that is the only possible place. But it sounds more logical to me than
-> > some.
-> >=20
-> >              Linus
+As of now, I have not identified a suitable method for exposing this
+information; I plan on submitting a separate RFC to propose some options
+and engage in discussion. Meanwhile, this v2 focuses on utilizing already
+available information to provide an ACPI equivalent of the existing DT
+kselftest [2].
+
+Adding in CC the people involved in the discussion at Plumbers [3], feel
+free to add anyone that might be interested in this.
+
+This series depends on:
+- https://lore.kernel.org/all/20240102141528.169947-1-laura.nao@collabora.com/T/#u
+- https://lore.kernel.org/all/20240131-ktap-sh-helpers-extend-v1-0-98ffb468712c@collabora.com/
+
+Thanks,
+
+Laura
+
+[1] https://lore.kernel.org/all/20230925155806.1812249-2-laura.nao@collabora.com/T/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/dt
+[3] https://www.youtube.com/watch?v=oE73eVSyFXQ&t=9377s
+
+Original cover letter:
+
+Regressions that prevent a driver from probing a device can significantly
+affect the functionality of a platform.
+
+A kselftest to verify if devices on a DT-based platform are probed
+correctly was recently introduced [4], but no such generic test is
+available for ACPI platforms yet. bootrr [5]  provides device probe
+testing, but relies on a pre-defined list of the peripherals present on
+each DUT.
+
+On ACPI based hardware, a complete description of the platform is
+provided to the OS by the system firmware. ACPI namespace objects are
+mapped by the Linux ACPI subsystem into a device tree in
+/sys/devices/LNXSYSTEM:00; the information in this subtree can be parsed
+to build a list of the hw peripherals present on the DUT dynamically.
+
+This series adds a test to verify if the devices declared in the ACPI
+namespace and supported by the kernel are probed correctly.
+
+This work follows a similar approach to [4], adapted for the ACPI use
+case.
+
+The first patch introduces a script that builds a list of all ACPI device
+IDs supported by the kernel, by inspecting the acpi_device_id structs in
+the sources. This list can be used to avoid testing ACPI-enumerated
+devices that don't have a matching driver in the kernel. This script was
+highly inspired by the dt-extract-compatibles script [6].
+
+In the second patch, a new kselftest is added. It parses the
+/sys/devices/LNXSYSTEM:00 tree to obtain a list of all platform
+peripherals and verifies which of those, if supported, are correctly
+bound to a driver.
+
+Feedback is much appreciated,
+
+Thank you,
+
+Laura
+
+[4] https://lore.kernel.org/all/20230828211424.2964562-1-nfraprado@collabora.com/
+[5] https://github.com/kernelci/bootr
+[6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/dtc/dt-extract-compatibles
+
+Laura Nao (2):
+  acpi: Add script to extract ACPI device ids in the kernel
+  kselftest: Add test to detect unprobed devices on ACPI platforms
+
+ MAINTAINERS                                   |   2 +
+ scripts/acpi/acpi-extract-ids                 |  99 +++++++++++++
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/acpi/.gitignore       |   1 +
+ tools/testing/selftests/acpi/Makefile         |  21 +++
+ tools/testing/selftests/acpi/id_ignore_list   |   3 +
+ .../selftests/acpi/test_unprobed_devices.sh   | 138 ++++++++++++++++++
+ 7 files changed, 265 insertions(+)
+ create mode 100755 scripts/acpi/acpi-extract-ids
+ create mode 100644 tools/testing/selftests/acpi/.gitignore
+ create mode 100644 tools/testing/selftests/acpi/Makefile
+ create mode 100644 tools/testing/selftests/acpi/id_ignore_list
+ create mode 100755 tools/testing/selftests/acpi/test_unprobed_devices.sh
+
+-- 
+2.30.2
 
