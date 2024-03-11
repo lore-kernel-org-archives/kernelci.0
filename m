@@ -1,160 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A66D11725;
-	Mon, 11 Mar 2024 08:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8858540847;
+	Mon, 11 Mar 2024 19:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710146405; cv=none; b=I3iz4/3wLAjHYhTB4LqSrfHutxawojpIeX4gPiPN5EF45YMBf/rTF5KxRdpvMY0TXkfxvcYJbmd2Ea8mL5pFNRolcRJY+Z1FV+zuNjevJMkGIsaj0xo/Y22JIGUMP2HpEgaoygcgCZ55hElefmQRnWlnZh/EOXR36R2aLteJmhs=
+	t=1710184238; cv=none; b=Lq6+fIesyV6G/jbKNotbZgyGUVULkZfrLkQTz9VMXhKuqSRBusdL9xlmIAWKWkGlSAB5LZ9Zlkt4tOZcblyvx57OPwro+1zmvvEqgla6IqFHoVocz89W4eeEE5Z0ONn8j3U9b2ajUmYvLXd+Sm0UKn/MbsfqsDJp+jmVcFEVy0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710146405; c=relaxed/simple;
-	bh=u/HzVfHPDgGvIAyVqL6vd1wQwhGAYlAumZCp5eqbyZk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VEaqKnBJ8aoJYvDc7zrrtHTs1sHVnELl4Ze0MPI3Ik0HkhGPi80XdsGeyIOSKVBYVFAySZMAFTBMQ4ilFO0DUV4UuUHpazGUqH5K1CKGiH1gDSg05mD/vAKEGwHNoTljqkV6rjUmod3v2JicPlSzAy/jNGCVCspQU94mE9VUVf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPs1yrMD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1710184238; c=relaxed/simple;
+	bh=VsEHveQZFFBF7KGgLhMD1cwewwydOONh0arOy0629Eo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F9V24GSG5WblfyUm/6Eb+La3ViHP+sJRDY4tcO+R6m91ugLDYRdGX30jOdF6692CidnyXfXDVMQcvv+3uq89F7r+cPBStDMGrsmWJIxKmSPG0J0QL5t6QGFowM5VK8ClTU+zlkSrfiS74y+Jdr7XkhaDXtIiKc0TlMPRsFjpk38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=d3qp6/WZ; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPs1yrMD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79ECC433F1;
-	Mon, 11 Mar 2024 08:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710146405;
-	bh=u/HzVfHPDgGvIAyVqL6vd1wQwhGAYlAumZCp5eqbyZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mPs1yrMDOT4qu17gVzoFqHfD4/PcM1EpPKdEPlw3EefZynzxlRt6TBYS3+2x0CI4R
-	 9ff17zB0FfByX522iSHZlUvLdYAJ5nllg8UXRfswuqzd5gjQyhTSG0oFQVVmTEntlB
-	 hvicqBKOTNktm1zDi4GeTX4dN/b6WbQVLwO9l0oI5wRPTtKh1bQ4Q32CZlXuUnI2ZI
-	 2utVOpkbR6jcDVWmcszNaCCXbMaftHFTu+jSW5LLcoqczwPxiLWpC/+5oXZF9nR+qj
-	 Xo05gL0o8n4cgAWxXIq/96y9SlCc2s3lRdOkoCXiMJ+Yl3+AHEYQl2OFLyaVVoo12l
-	 3hydjp0gbZyAQ==
-Date: Mon, 11 Mar 2024 09:40:02 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Cc: Helen Koike <helen.koike@collabora.com>, linuxtv-ci@linuxtv.org, 
-	dave.pigott@collabora.com, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-kselftest@vger.kernel.org, gustavo.padovan@collabora.com, pawiecz@collabora.com, 
-	spbnick@gmail.com, tales.aparecida@gmail.com, workflows@vger.kernel.org, 
-	kernelci@lists.linux.dev, skhan@linuxfoundation.org, kunit-dev@googlegroups.com, 
-	nfraprado@collabora.com, davidgow@google.com, cocci@inria.fr, Julia.Lawall@inria.fr, 
-	laura.nao@collabora.com, ricardo.canuelo@collabora.com, kernel@collabora.com, 
-	torvalds@linuxfoundation.org, gregkh@linuxfoundation.org
-Subject: Re: [PATCH 1/3] kci-gitlab: Introducing GitLab-CI Pipeline for
- Kernel Testing
-Message-ID: <20240311-electric-cream-hippo-20eada@houat>
-References: <20240228225527.1052240-1-helen.koike@collabora.com>
- <20240228225527.1052240-2-helen.koike@collabora.com>
- <20240229-dancing-laughing-groundhog-d85161@houat>
- <d417daa2a8e3951da44bf2d555e04d98c83a3c5c.camel@collabora.com>
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="d3qp6/WZ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 218B8FF803;
+	Mon, 11 Mar 2024 19:10:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1710184232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E31McDAacylKlEbTy3S6AVH7WHxyqIAf3sUm0he+cT4=;
+	b=d3qp6/WZGVBJqQdRusTqvxoxDZFtxU/VTqX1ThxN/HmLpFMzmFFEefkuk+MuUX9IFVbVoc
+	bIfbC0MMrljHJi8tDCChpwGBXmUT8bE3tNPjoF0JnNBf0+qFoP7YipwS46PD4MM5CBG/SL
+	T74vKXOKTEkF6joFVlwOlRC6/2pdW8k+T+QNzsXyLkMf0mqe9MmcNTFHazhNeK1/PqykRG
+	DiuIybZBLrW5OzL3L+oYPAvOgJNLupOxQ+jMwo9MdTowwQ0D34g9jeiRCulHucn43W0x3w
+	wQaEs8GE9gn7Ze7g/BeXcksXzuZ0aoXvjeimm20I3BTU9VmY80v5VocNdb8Jdw==
+Message-ID: <64395770-84d4-4b6d-a7ff-d5623564daf3@gtucker.io>
+Date: Mon, 11 Mar 2024 20:10:31 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="w77ek3n4gomubfzs"
-Content-Disposition: inline
-In-Reply-To: <d417daa2a8e3951da44bf2d555e04d98c83a3c5c.camel@collabora.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Migration to Debian Bookworm and compiler updates for KernelCI
+Content-Language: en-US
+To: Nathan Chancellor <nathan@kernel.org>,
+ Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: kernelci@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
+ clang-built-linux <llvm@lists.linux.dev>, Miguel Ojeda <ojeda@kernel.org>
+References: <42c7f5a3e07c274c2a9d2e45a973c6306b2ba74f.camel@collabora.com>
+ <20240307170516.GA1780841@dev-arch.thelio-3990X>
+From: Guillaume Tucker <gtucker@gtucker.io>
+In-Reply-To: <20240307170516.GA1780841@dev-arch.thelio-3990X>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
 
+Hello,
 
---w77ek3n4gomubfzs
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 07/03/2024 6:05 pm, Nathan Chancellor wrote:
+> Hi Denys,
+> 
+> On Thu, Mar 07, 2024 at 01:02:26PM +0200, Denys Fedoryshchenko wrote:
+>> Hello,
+>>
+>> I'm reaching out on behalf of the KernelCI project team to discuss our
+>> current compiler setup and planned migration to Debian Bookworm.
+>>
+>> As you may know, our compiler images are currently based on Debian
+>> Bullseye, which is approaching its end of life in July 2024. We have
+>> been testing using gcc-10, which has presented us with some recent
+>> challenges, notably a significant bug that results in false positive
+>> compilation errors (specifically, the -Werror memcpy issue in
+>> security.c). This situation has prompted us to consider an urgent
+>> migration to Debian Bookworm. Additionally, the migration is
+>> necessitated by our requirement to upgrade to a newer Python version to
+>> support KernelCI v2 development efforts.
+>>
+>> However, before we proceed, we have a couple of pending questions that
+>> we hope to get clarity on:
+>>
+>> 1) We've noticed that the minimal available version of clang on
+>> https://apt.llvm.org/bookworm/dists/ is 15, whereas our current minimal
+>> requirement for the Linux kernel compilation is clang-13.0.1
+>> (https://www.kernel.org/doc/html/next/process/changes.html). How
+>> critical is it to continue providing compile tests for clang-13 (and
+>> potentially clang-14)? This information would be vital for us in
+>> planning our compiler support strategy moving forward.
+> 
+> Coverage of the minimum version of a particular toolchain for building
+> the kernel is important but I would not describe it as critical.
+> 
+> While apt.llvm.org's Bookworm distribution does not have clang-13 and
+> clang-14, the Bullseye distribution of clang-13 and clang-14 does work
+> on Bookworm, I personally do that for my Debian development containers:
+> 
+> https://github.com/nathanchance/env/blob/12927502f12ec63f50a460f842c9d0a70a82c629/podman/dev/debian/setup-env.sh#L54-L64
+> 
+> Have you explored using the kernel.org GCC and LLVM toolchains instead
+> of the ones in Debian?
+> 
+> https://mirrors.edge.kernel.org/pub/tools/crosstool/
+> https://mirrors.edge.kernel.org/pub/tools/llvm/
+> 
+> That would potentially give you more flexibility with distribution
+> upgrades and stable/deterministic compiler versions around that. I
+> maintain the LLVM ones, which are optimized at build time to be quicker
+> than the Debian one's, so that would save you build minutes over time.
 
-Hi Nicolas,
+Ah nice, Arnd suggested a while ago that we used his GCC
+cross-compiler toolchains in KernelCI but it got stuck at a
+slightly lower priority than everything else for core developers.
+It has always been considered a nice thing to do one day, and I
+guess there may be additional reasons to pick it up now with the
+need for a wider GCC version coverage and LLVM/Clang too.
 
-On Thu, Mar 07, 2024 at 01:05:12PM -0500, Nicolas Dufresne wrote:
-> Le jeudi 29 f=E9vrier 2024 =E0 10:02 +0100, Maxime Ripard a =E9crit=A0:
-> > On Wed, Feb 28, 2024 at 07:55:25PM -0300, Helen Koike wrote:
-> > > This patch introduces a `.gitlab-ci` file along with a `ci/` folder,
-> > > defininga basic test pipeline triggered by code pushes to a GitLab-CI
-> > > instance. This initial version includes static checks (checkpatch and
-> > > smatch for now) and build tests across various architectures and
-> > > configurations. It leverages an integrated cache for efficient build
-> > > times and introduces a flexible 'scenarios' mechanism for
-> > > subsystem-specific extensions.
-> > >=20
-> > > [ci: add prerequisites to run check-patch on MRs]
-> > > Co-developed-by: Tales Aparecida <tales.aparecida@redhat.com>
-> > > Signed-off-by: Tales Aparecida <tales.aparecida@redhat.com>
-> > > Signed-off-by: Helen Koike <helen.koike@collabora.com>
-> > >=20
-> > > ---
-> > >=20
-> > > Hey all,
-> > >=20
-> > > You can check the validation of this patchset on:
-> > >         https://gitlab.collabora.com/koike/linux/-/pipelines/87035
-> > >=20
-> > > I would appreciate your feedback on this work, what do you think?
-> > >=20
-> > > If you would rate from 0 to 5, where:
-> > >=20
-> > > [ ] 0. I don't think this is useful at all, and I doubt it will ever =
-be. It doesn't seem worthwhile.
-> > > [ ] 1. I don't find it useful in its current form.
-> > > [ ] 2. It might be useful to others, but not for me.
-> > > [ ] 3. It has potential, but it's not yet something I can incorporate=
- into my workflow.
-> > > [ ] 4. This is useful, but it needs some adjustments before I can inc=
-lude it in my workflow.
-> > > [ ] 5. This is really useful! I'm eager to start using it right away.=
- Why didn't you send this earlier? :)
-> > >=20
-> > > Which rating would you select?
-> >=20
-> > 4.5 :)
-> >=20
-> > One thing I'm wondering here is how we're going to cope with the
-> > different requirements each user / framework has.
-> >=20
-> > Like, Linus probably want to have a different set of CI before merging a
-> > PR than (say) linux-next does, or stable, or before doing an actual
-> > release.
-> >=20
-> > Similarly, DRM probably has a different set of requirements than
-> > drm-misc, drm-amd or nouveau.
-> >=20
-> > I don't see how the current architecture could accomodate for that. I
-> > know that Gitlab allows to store issues template in a separate repo,
-> > maybe we could ask them to provide a feature where the actions would be
-> > separate from the main repo? That way, any gitlab project could provide
-> > its own set of tests, without conflicting with each others (and we could
-> > still share them if we wanted to)
-> >=20
-> > I know some of use had good relationship with Gitlab, so maybe it would
-> > be worth asking?
->=20
-> As agreed, the .gitlab-ci.yaml file at the list will go away. Its a defau=
-lt
-> location, but not a required location. This way, each sub-system can have=
- their
-> own (or not have one). The different sub-system forks will have to be con=
-figured
-> to point to their respective CI main configuration.
->=20
-> Of course nothing prevents having common set of configuration for jobs an=
-d jobs
-> template. As an example, we could have a job template common for checkpat=
-ch, and
-> allow each subsystem adding their own sauce on top. It can save the dupli=
-cate
-> effort of parsing the tool results and reporting it in a format gitlab
-> understand.
+Out of interest, is there going to be some Rust toolchains there
+as well?  Having all the reference toolchains to build the kernel
+in a single location would be great I think.  Of course Rust
+support is still a moving target, so maybe it's still a bit too
+early right now - just wondering.
 
-That makes total sense to me and would be incredibly useful indeed.
+Then in addition to the tarballs, one thing that was discussed
+with Linaro in the very early days of tuxmake was to have a
+reference set of Docker image with the toolchains already
+installed - to save everyone creating their own like in Nathan's
+GitHub link.  Has anyone done that already?
 
-Maxime
+I started looking into it while I was writing my tutorial to
+build a kernel last month but didn't find anything, so it's kind
+of going up on my TODO list now.  It would greatly help unify
+kernel builds across CI systems in particular and improve
+reproducibility.  The TuxBuild / tuxmake Docker images were
+forked from the KernelCI ones so that's already something that
+could be reunited at some point.
 
---w77ek3n4gomubfzs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZe7DYQAKCRDj7w1vZxhR
-xV1bAP9SznauRTHmk6BDIF8VURG655ttC42MmrZ8cF89TuL8fgEAr49BYmklqUpK
-gyHR4Xi8NBxGUOVUbAeJr+Ys4vmCPA8=
-=ZXTU
------END PGP SIGNATURE-----
-
---w77ek3n4gomubfzs--
+Cheers,
+Guillaume
