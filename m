@@ -1,189 +1,146 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2055.outbound.protection.outlook.com [40.107.8.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40787E58A;
-	Tue, 12 Mar 2024 16:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710261859; cv=fail; b=eN6sfYsibz1ZCmNU91fhQgs6y3WrgVcnsK9X3zMDpsa3P0p+Ke6KPu/D7ULgxvnMdHosaiwU3OaN5erGs1kPcpHdgkFroAmgY35lz7utj6uul4uQNji1Z69oE+Vmn3u9iTiDB+BVCJODEgxrV1A0wluMVe4HsiPV0sQkP8BcxyQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710261859; c=relaxed/simple;
-	bh=fdCYEQ/qak1jITBUH6W04N8tkUe7l1zWRL+gj0ipfz0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UaUnhmBsfPhy5vH5V64wWVwPWhRPLSWDPCIDiWMFK1lDuDAgjk6E29m34pPDrzo+Ra278pH+aeFK6FrFV7IaMJfb4m+WY2KUeAxmqdFhG6GLep6f6LH2r2bsAHQJOI5Q/ZzyrQx6YKg/Mzb6800EUa1bZ7FmdVgpmiH1+vtslbY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b=PCZExCsa; arc=fail smtp.client-ip=40.107.8.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siemens.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D381448E9;
+	Wed, 13 Mar 2024 17:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710352585; cv=none; b=pp1Bn0u9ayovq9+DIxld7MlUqeiiPLM4Qn/30TpaeCMpLjsajsk23kMwB05aeYmV3+1h4ZnF4EPhXPosxEvScWBARbk7n7MxCuAIuMOyivy5TtaL+kumVsmwxYSFEBMSMsFM2QqkiGTE/+SGyKAXvu84EX6AaKnt2Tui5N824iA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710352585; c=relaxed/simple;
+	bh=GclcN5yJ/san/KwDM/BTLBHQQTbcAlYxCJf6t3MGcu8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oKdJxa6SvkDDVWjDMmD6TgRJ39/Q5oKXLYM4+0iC4faILdxJ3nJMl0x82sYMM0qMIOkRpHI1RIvt47pZuafHJn4auLbPXB0SzVvgjseP27NlwSISIXSPTGFLmYiYEIZWgO1aExqQJrkBZNgmaT+lnssat5uKc8bwYgE+1gRZ7Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1qHGv6O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b="PCZExCsa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=P8gGw6FodY39HAV43twXqqvh6Tq8J4AE9+P1D3ulgyiHn0tkMNMZxssv2w6tF11yn7aTmzxIAfbDhledt3wuKf1hwdqlTO+/TWSHPQl4RBYAs1CxQ13rxWlxQ1hgfW4ICyP6FutEosidIrACSJ1Pjjj7mNkZwg1PY+Bp+D31VTR4ckIGqKEWP6nRAP9rtA3xMC0N5t0U+GYWylkpwn4KmredTO5RrW5h4E6mU4PltmQ11EgC5pw1zYGpulCJFdpLKyMUnUlxwG/87SbhjI+/nZcGZilVtv8hq/tNzAw4LE70nyC/R0Z6GHbjQbZ/8RaspN/KPkoEBGKxhK/2IB29Sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2ctfdcvbs/vSl1z/UjHtToVphqFUjzald75UOxdKEqc=;
- b=NqSGZa/9t+/fZnZVhAlC8R30kGORihYggTOFl1K8ReNKHVh2eX0Oaf0xjm7EotvQRPq42H3lysX7Mk7T4eop8JfSo2sDttsIWH9R1n1SDyhrFhT0PyUR0JnSvLcmHDs496L5dDaS8/hVEWSNOPBHTebmTaKibFDECROR6btODNgxYqVXmquR0m2rm0zRU8WhNLVzKk/vD1atJimRXZmv12VPXCf9XxVp4ggO//1G/N0dRkum3hzOOiKUqanElubqQS/QWrH74Ak2vIfnlW9Xyef/Wlysxz20pUPfYJbpYU7zOLeHmEG6p9gtjnpo4PLY8DJQqI82cGfGYWkkOBJnuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
- dkim=pass header.d=siemens.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2ctfdcvbs/vSl1z/UjHtToVphqFUjzald75UOxdKEqc=;
- b=PCZExCsaJWkKH11CPtNdmO4NPmEpP9u5Fg+2Vihnap5UF9DPSLws+IW/QcYCJAaswJPPZqhb7MUi/3VH+3XKXKZUEUh02FdvGRDt8gAiDRBojixqwnistp9pKAhzAFx6QCe/oCG6ESxBzvq+uN8sksMtezGQunRMs/X/7VjLUhYH+TRlQ0MbgNnfiQV7C30iVYnWEAMkjkFh45GFPLVo/UvXtP9A/+PACarRSEpqCLHshu4YvR+EtYw91aMj3DpN2fYTMT2GvkUUTtXrOtHu/eLBdU63HaGmrcp3ZAzrgPuzQQJVFScSo57Tf1kekFGykjz0OyBX2nsiuzBWWbHYeQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siemens.com;
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:588::19)
- by AS8PR10MB6891.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:5b3::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.36; Tue, 12 Mar
- 2024 16:44:13 +0000
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::8d16:7fbb:4964:94fe]) by AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::8d16:7fbb:4964:94fe%3]) with mapi id 15.20.7362.035; Tue, 12 Mar 2024
- 16:44:13 +0000
-Message-ID: <7208ae2f-04bc-4571-bd7c-f75d7cb82816@siemens.com>
-Date: Tue, 12 Mar 2024 17:44:11 +0100
-User-Agent: Mozilla Thunderbird
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1qHGv6O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCF3C433F1;
+	Wed, 13 Mar 2024 17:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710352584;
+	bh=GclcN5yJ/san/KwDM/BTLBHQQTbcAlYxCJf6t3MGcu8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p1qHGv6OdpaTj01cnKKkQ2LKv6ymGHD/Wb518B1ZS5PAQJCUgjTybV+B+Ko1Kz2Za
+	 q+8nAY6nVpUHiWXAQGdwYHu364Gf95nohMiulEu8pvIYJ8I0Hul75wZSi25ORRncVZ
+	 Qs3QEtNnsBTYZKfUG8HY5XSDdWOJgfCjQteGC2ub3nzlxMVJUz65p37ZV6Bm1UVaiT
+	 b1DuR9C/6hEeFCBAeJqWj3nbyq7g9CENxsP1giD56bIh5ilfoSu8T6YOOGpNU/Mrf4
+	 j75JfzVgNGx0/n5USaFLKnbkzyuPz0wsLUfqtYITg9FB1b8qQ2LAyZ7YT1OwH6RnMB
+	 VADWYtJVdh0wQ==
+Date: Wed, 13 Mar 2024 10:56:22 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Denys Fedoryshchenko <denys.f@collabora.com>, kernelci@lists.linux.dev,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	clang-built-linux <llvm@lists.linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>
 Subject: Re: Migration to Debian Bookworm and compiler updates for KernelCI
-Content-Language: en-US
-To: Chris Paterson <Chris.Paterson2@renesas.com>,
- Denys Fedoryshchenko <denys.f@collabora.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
- Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>,
- clang-built-linux <llvm@lists.linux.dev>,
- "cip-dev@lists.cip-project.org" <cip-dev@lists.cip-project.org>
+Message-ID: <20240313175622.GA3091999@dev-arch.thelio-3990X>
 References: <42c7f5a3e07c274c2a9d2e45a973c6306b2ba74f.camel@collabora.com>
- <TYWPR01MB11862CF20936D7CD75B2BDF87B72B2@TYWPR01MB11862.jpnprd01.prod.outlook.com>
-From: Jan Kiszka <jan.kiszka@siemens.com>
-In-Reply-To: <TYWPR01MB11862CF20936D7CD75B2BDF87B72B2@TYWPR01MB11862.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0099.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a9::17) To AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:588::19)
+ <20240307170516.GA1780841@dev-arch.thelio-3990X>
+ <64395770-84d4-4b6d-a7ff-d5623564daf3@gtucker.io>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR10MB6181:EE_|AS8PR10MB6891:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57100ffb-6ac3-4e46-3048-08dc42b3a609
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	r3xp0KH9y8O2nQbxtBfg4QbqPjKbkBln1lE8UeiSAHDCjcx70t3rKfe2FzizK1GR3uqc5wxB26kQ9HcJLhgFmun4n5ftqz42H8kJPfe2qxEo+uR4qqOavw3CJWUXb9rgcO/A2XxU6a9PUW7lzWMuSs8MmKttezcXbb8gogWg0fXxRytyrJw9dw/NRvlCkTneMNawlq08ohlaLgfHYQncN40Xnj16bGK5MnrhEeuNtX9JG4ZAyxH0sITFtMlydRhwDARaprhIaWSWXnesY6QFSN1XxPoBs+KlF8PdHqw1HYItV089ebs3gPAfnX/pe5NyilLSgth+zg/Jp7c4I6uWVhO0uaObqoUAxDsi8jsf/Xrmx/KuTR6WHs4QSBmpCMcmZmkm5QhRc69L4ONyjBHbCZzppEwkLhX7bJwgXXfEKD58IX/SQEO0vP4Ot/3hPWF0Us4SflKk5vbHqU5Bp2xSfjmYytOOh3W+OpKtEb32Uh/JQw1gbHjElg46qSEoXkMtVpBFddHuyMqjcqptGvJ1A23WA+9dJo7ojI98KTEOBV+bTpDp0dKxj4U9hnhAwPh9jmXnCrF04w4xkjf1jo6PmvWrMRkesTAwR/eIQyF5BpY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MElXUEs5Vm5Kb2VOdzNXQStDOWg5VXV6QW9RWTRHTFYrRWgvV3N4TkVzZTBH?=
- =?utf-8?B?Q2l3dmx3Kzg3bmxlTSszVXkxL0dRa3NyRmJvOHVFMzBLRC9Gd1QwaFVNc0tl?=
- =?utf-8?B?U3RvNFJlcnNxQkRiUGRUYlgzMWhyY1dHYkF6SXAzaStyZ3NXaFdqbXJlNmRm?=
- =?utf-8?B?UkUvSGYvdm41M1hqZisxTlRGOXIzM0FIRHpHdFJhQjJsQnJMOUhjSE0zR3VX?=
- =?utf-8?B?aUtWRWlyWDRralBzK0U2Nk1JSDVJazZZb3FmMi9Ic2RYN3JXSHlaMjBvSktj?=
- =?utf-8?B?QXpMNnErdWVXVDBPeHFLNUdKbVdlaWxseURKNkZTR0dMSjhZSjgzVVJLV25M?=
- =?utf-8?B?MGw1SVNDcWYxNkxMVWJWMEVkblNYUk5jMjFUTEgreWRMWkpUOEhmTWFINmY2?=
- =?utf-8?B?QXEzODVHMmoxUzlWVTJ0c2pkWjBQWkJaOFdlUUxkMDBQOFNzaTY0d2xZZGtu?=
- =?utf-8?B?SDlEV3Rwc3A5NktCOVdESFZ6RVlseHBpUy94Z3lwRE9sZ2UzbmNRUGpPaEo0?=
- =?utf-8?B?RnQ2S0UyYVg5YUxjQW5ZeVRwVjJVWi8yZzVyd0dWdWdTaklZUEJUbFpDSXRy?=
- =?utf-8?B?YUk0dXRtRUNQQzFlSmdndlFNUjlLbG44ZTZTdWxEbzBCZEdzMkRTNjVQR2ha?=
- =?utf-8?B?S0NmQ3dnOCtlL1ZoNlQvOUxHWlZRWkludUJ4M2pObWhoTThYUTNRajNaeTJs?=
- =?utf-8?B?bTFHcFBxRVdaKzRndFhQSDdGNGNLaUM3dVYxT1RJanRWWS9BYnRrZXRzYWMr?=
- =?utf-8?B?MXN4R0pCQldDcURrcTRmWThFN0hkR2VJQ09jb2F1UElsNkpOR0p5ajlhdDZF?=
- =?utf-8?B?ZjJuS3E1cG5naUFRNnFjaGdFbyt2K08xTXI2VGUyMHN2Z3RHa1RidE9BN0J5?=
- =?utf-8?B?QTB4blRXRVFXeHN1dkMzTDQ3NVJmK0cyaWUycHJlSzQ2bmV0L3E1TWJ3Z2FF?=
- =?utf-8?B?ZzY4cUl1S2U1aGFVYmF2czhtOVJEK3dUdngwZldPcThzNXE5SVdTVlcvMWpJ?=
- =?utf-8?B?M2pjTDNrVWlycUVjRDBJRE1RV3pwemRXN0JhS3EyaUIzSTRCWDBhK2orU3FV?=
- =?utf-8?B?bUkvLzBpR1ZNbDNvYklnWVd1UzVKL1A4N0RFU1NNMmJ2S3dNQTVlWUNoK2pU?=
- =?utf-8?B?SVNhbDRaVDJCMGoyWUxVbVd0WlpIK0dGSXgzSGdWeHlySjZFU2VxTzdqMEM2?=
- =?utf-8?B?WFNtd2NLRzg3NXE4N2QxNVV5L3JnS0twYlZxRExCMzRWSUk5NWxESXRuMlI2?=
- =?utf-8?B?Z0NrSXdndEFta0t5dnNmQ1NuSXA2K0kvRllzSFBzN3VWd2x5akpVSkxtY2Mx?=
- =?utf-8?B?dHlTRHdwYWZYUXBjN1pYQk45RDVPMXMrdllXWEpuVlJGWHFnUVZGVzhOR001?=
- =?utf-8?B?U3R0Nmo5dFp5VUpMTVpYKytVTDVTL3Vjc3Y4emhVbHFIc0hOSGV2VW1ZMmFk?=
- =?utf-8?B?eTlMQml2TUk5eDB1a2x1ckh1Z29VcnNaZDlMTXNQQjFmeWdGR2VLTGVhbXN6?=
- =?utf-8?B?NWZqMnFyWG42VVRNekEzWU85ZjNIOWJlWVNhZUFaTnlncjJZZXd2eUhmendX?=
- =?utf-8?B?TzJjWGtyODFyMFgyRVZwTEdmUWpXUnBqYkl4cldlWGtrdXpUYWhVYVh5RXZn?=
- =?utf-8?B?Z1BWN3h1eHJuN2hGM2ppWnpVQ1E1RkhIMEQwelZCT0FGMHVyTEhsVHUzKzZu?=
- =?utf-8?B?dXlPVitzeVhqdHoxTDFQb2c2V2Q3bmJlbW1LOFhZNllWb0RZWFk4cDhKL1hn?=
- =?utf-8?B?d0NFTjl6VkZmMXZKekF3aVJKRjVSUGZrT1AyRkRDZmRWSlVwbWxrS1A5QnhV?=
- =?utf-8?B?OGcyM2paNVdmNlI4MVB0SS9YNWFqc1NGNU1XeTVVUDVlWG5tUHRQOUhBbW1M?=
- =?utf-8?B?dUwxeGZOTVphTEw0OTE1dEJyb2h2dzFtM0JVZEtYQWEyT0p3NTY4OGk5QUwr?=
- =?utf-8?B?cEtVS2RnMThwWkN2Q2FpN3pQR1lJU1pWS0hpVHNiekhuY0VUVjdXM3p4QXE4?=
- =?utf-8?B?QzB5VEdtUWxUV3lhU3VYZTN3Zy9GLzRqOXV3UjJWVHhhaDRlbnJrU0U2SXpq?=
- =?utf-8?B?QW1qWkUwREtzVDNieGRWNjdWcGhFcmZFWmdpNDBxN2V1bUNxc0IvOUYxM0pr?=
- =?utf-8?B?YVpweU5ZbExuZWg5OU5WNE0yclJaVUFvR0xOelBVWjRoaUZFOEE4QTNBLzhF?=
- =?utf-8?B?S0E9PQ==?=
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57100ffb-6ac3-4e46-3048-08dc42b3a609
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 16:44:13.2783
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FUiKiVon6B0b/XRsC9Y1kFUPi2+pjff+f1hLEb+9jlkxfy576J8RQ75RNskE/LclkPqadnwQZGUEGMIjxRlmUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB6891
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <64395770-84d4-4b6d-a7ff-d5623564daf3@gtucker.io>
 
-On 12.03.24 17:13, Chris Paterson wrote:
-> + CIP people 
-> (sorry for the delay)
+On Mon, Mar 11, 2024 at 08:10:31PM +0100, Guillaume Tucker wrote:
+> Hello,
 > 
->> From: Denys Fedoryshchenko <denys.f@collabora.com>
->> Sent: Thursday, March 7, 2024 11:02 AM
->>
->> Hello,
->>
->> I'm reaching out on behalf of the KernelCI project team to discuss our
->> current compiler setup and planned migration to Debian Bookworm.
->>
->> As you may know, our compiler images are currently based on Debian
->> Bullseye, which is approaching its end of life in July 2024. We have
->> been testing using gcc-10, which has presented us with some recent
->> challenges, notably a significant bug that results in false positive
->> compilation errors (specifically, the -Werror memcpy issue in
->> security.c). This situation has prompted us to consider an urgent
->> migration to Debian Bookworm. Additionally, the migration is
->> necessitated by our requirement to upgrade to a newer Python version to
->> support KernelCI v2 development efforts.
->>
->> However, before we proceed, we have a couple of pending questions that
->> we hope to get clarity on:
->>
->> 1) We've noticed that the minimal available version of clang on
->> https://apt.llvm.org/bookworm/dists/ is 15, whereas our current minimal
->> requirement for the Linux kernel compilation is clang-13.0.1
->> (https://www.kernel.org/doc/html/next/process/changes.html). How
->> critical is it to continue providing compile tests for clang-13 (and
->> potentially clang-14)? This information would be vital for us in
->> planning our compiler support strategy moving forward.
->>
->> 2) We are also considering migrating to gcc-12 and would like to
->> inquire if the CIP (Civil Infrastructure Platform) could provide their
->> endorsement for this move. Should there be any reservations about
->> transitioning to gcc-12, we would greatly appreciate development
->> support in building gcc-10 for Bookworm. In the interim, we would like
->> to inquire if it's acceptable to continue using our current gcc-10
->> images based on Bullseye until such a migration is feasible.
+> On 07/03/2024 6:05 pm, Nathan Chancellor wrote:
+> > Hi Denys,
+> > 
+> > On Thu, Mar 07, 2024 at 01:02:26PM +0200, Denys Fedoryshchenko wrote:
+> > > Hello,
+> > > 
+> > > I'm reaching out on behalf of the KernelCI project team to discuss our
+> > > current compiler setup and planned migration to Debian Bookworm.
+> > > 
+> > > As you may know, our compiler images are currently based on Debian
+> > > Bullseye, which is approaching its end of life in July 2024. We have
+> > > been testing using gcc-10, which has presented us with some recent
+> > > challenges, notably a significant bug that results in false positive
+> > > compilation errors (specifically, the -Werror memcpy issue in
+> > > security.c). This situation has prompted us to consider an urgent
+> > > migration to Debian Bookworm. Additionally, the migration is
+> > > necessitated by our requirement to upgrade to a newer Python version to
+> > > support KernelCI v2 development efforts.
+> > > 
+> > > However, before we proceed, we have a couple of pending questions that
+> > > we hope to get clarity on:
+> > > 
+> > > 1) We've noticed that the minimal available version of clang on
+> > > https://apt.llvm.org/bookworm/dists/ is 15, whereas our current minimal
+> > > requirement for the Linux kernel compilation is clang-13.0.1
+> > > (https://www.kernel.org/doc/html/next/process/changes.html). How
+> > > critical is it to continue providing compile tests for clang-13 (and
+> > > potentially clang-14)? This information would be vital for us in
+> > > planning our compiler support strategy moving forward.
+> > 
+> > Coverage of the minimum version of a particular toolchain for building
+> > the kernel is important but I would not describe it as critical.
+> > 
+> > While apt.llvm.org's Bookworm distribution does not have clang-13 and
+> > clang-14, the Bullseye distribution of clang-13 and clang-14 does work
+> > on Bookworm, I personally do that for my Debian development containers:
+> > 
+> > https://github.com/nathanchance/env/blob/12927502f12ec63f50a460f842c9d0a70a82c629/podman/dev/debian/setup-env.sh#L54-L64
+> > 
+> > Have you explored using the kernel.org GCC and LLVM toolchains instead
+> > of the ones in Debian?
+> > 
+> > https://mirrors.edge.kernel.org/pub/tools/crosstool/
+> > https://mirrors.edge.kernel.org/pub/tools/llvm/
+> > 
+> > That would potentially give you more flexibility with distribution
+> > upgrades and stable/deterministic compiler versions around that. I
+> > maintain the LLVM ones, which are optimized at build time to be quicker
+> > than the Debian one's, so that would save you build minutes over time.
 > 
-> Jan, Iwamatsu-san, Arisu-san,
-> Do you have any comments here?
+> Ah nice, Arnd suggested a while ago that we used his GCC
+> cross-compiler toolchains in KernelCI but it got stuck at a
+> slightly lower priority than everything else for core developers.
+> It has always been considered a nice thing to do one day, and I
+
+Heh, story of my life :)
+
+> guess there may be additional reasons to pick it up now with the
+> need for a wider GCC version coverage and LLVM/Clang too.
 > 
+> Out of interest, is there going to be some Rust toolchains there
+> as well?  Having all the reference toolchains to build the kernel
+> in a single location would be great I think.  Of course Rust
+> support is still a moving target, so maybe it's still a bit too
+> early right now - just wondering.
 
-My 2 cents: I'm not aware of compilation issues of our 4.4..6.1-cip
-kernels with gcc-12 from bookworm. In different projects than CIP (e.g.
-xenomai-images), we are also using bookworm as basis to build down to
-4.4-cip, and that was not causing problems so far.
+As Miguel mentioned, we are talking about providing a combo LLVM + Rust
+tarball to help make it more accessible to more people.
 
-Jan
+> Then in addition to the tarballs, one thing that was discussed
+> with Linaro in the very early days of tuxmake was to have a
+> reference set of Docker image with the toolchains already
+> installed - to save everyone creating their own like in Nathan's
+> GitHub link.  Has anyone done that already?
+> 
+> I started looking into it while I was writing my tutorial to
+> build a kernel last month but didn't find anything, so it's kind
+> of going up on my TODO list now.  It would greatly help unify
+> kernel builds across CI systems in particular and improve
+> reproducibility.  The TuxBuild / tuxmake Docker images were
+> forked from the KernelCI ones so that's already something that
+> could be reunited at some point.
 
--- 
-Siemens AG, Technology
-Linux Expert Center
+I am not aware of that. As far as I can tell, the TuxMake images are
+only lightly customized for TuxMake itself, so it is possible they are
+already usable by other entities (I maintain my own containers for other
+reasons). They recently added images for my kernel.org LLVM builds as
+well:
 
+https://gitlab.com/Linaro/tuxmake/-/commit/dca69b3e2f007cc31ab08200ad59593b7eaa5f40
+
+Cheers,
+Nathan
