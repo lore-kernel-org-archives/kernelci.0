@@ -1,56 +1,58 @@
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E898D12CD9C
-	for <kernelci@lists.linux.dev>; Thu,  4 Apr 2024 16:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A39713E41D
+	for <kernelci@lists.linux.dev>; Mon,  8 Apr 2024 14:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712248697; cv=none; b=I90crPJX3Efh0/rM3zXFA1Jpq11hv0AcWsH0kqYtSxeDr/fqzkigPKzfYJMsFOePRQKEoPcMhde8PwbX0guzMADto2/35xk9kQrvjnDNUA2daXTJLiEkANhEba6yFTq2uzP7nHfx/5s9kMJ7TOuP+a6gSeXzOkkYrLIbwq4EDsM=
+	t=1712587106; cv=none; b=AwLKWOJ0tISCAqlTUPl8rOpHpD7Np6Jz5UnFOlSiXkOWhEvNMkUquTnh1Sw4Q/Rg4abBlo+Wrtu+AvqIZohSIYYd9gr+AIMp4aVi13KluX067+4G3sC+CPMiXlO/en5/wLdAytvttJ6fDZU6wFgj5AbShs7OlmgzEHwv9Xq+Iis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712248697; c=relaxed/simple;
-	bh=YBwK7BNdkJWP3oyNHpQfdPDIsnxbAs2+1nrrXIvCyGk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GL3Ssq8BPWemYJPkqa/mxOvr41gbLcG7VDD4tWyy2mtWV4gcwaq07tRkzfGcpIHVmy7zxc+cWiRGET+Jcn03BT9ORpdNOXWy4Tohsjo2Gh94cjfmkhoRu6QKw+pkO2cmegkK8dHYhF8dnwIBVIKYKfhPiOd7DuJUXSDfwMZf43w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGxrAT32; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1712587106; c=relaxed/simple;
+	bh=3J8FKeevsu5cXmgcrDLbA6aJb0xCxt49VTYxcTHeN+g=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=Sz+kI1leWhB7186mPF5OMl08NpDaD3TDWfrmYKW7nz54TNs8559COqfoQFtJ9IN378wByaxnuzAiCTAVdvCZNXgx0govEE00dNYKdh8LbdFf6BPP8pq0UiTDP4hdlioZCo3DRurX3+p5kMjat30SROhG5jUyjWpVfDCRwzx6rkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fcyD9RhO; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGxrAT32"
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7cc0e831e11so22710939f.1
-        for <kernelci@lists.linux.dev>; Thu, 04 Apr 2024 09:38:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fcyD9RhO"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-78d5f0440d3so130439285a.2
+        for <kernelci@lists.linux.dev>; Mon, 08 Apr 2024 07:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1712248695; x=1712853495; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O1lHp+OkDVz4M/u4JQhfwxqw91sDKLwvBIfOpOSX1Dg=;
-        b=XGxrAT32JFxT/GnSMteP/2JtobbaLx15waW32feVwKg0yuDYFhGN2lNpz9sSoLr5wV
-         c2Qk1HZvYCqA6TQ9fPEpzJGUsGfFpUi93I15btrveOcoxJdM6JlhF1pqmA4CeS/EK4y5
-         3T8Ps4y/vPAIB+QiYeANhiRTTlTuyhD5lyjVM=
+        d=gmail.com; s=20230601; t=1712587104; x=1713191904; darn=lists.linux.dev;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3J8FKeevsu5cXmgcrDLbA6aJb0xCxt49VTYxcTHeN+g=;
+        b=fcyD9RhOZyIAwy4oa3Od72nCKBq2o4Lwtq/8v/4Q+QUDi7Xuyd4Tp/9dlEuSumPj0z
+         4mA4z1M0zo4NVfdstQDuHn/lTDIkmsFjdzhYSK12mlrtxsKlWFPDZtIHwd65LlUDcOCY
+         zDKqKkcrPb/QZBZcjXk6C02/GK/OUeqNy+3CElDiWQ6D1DkYT8LGLgNax6qSu8RHy8bc
+         QvEd3ZrlyJ+eQq3EWJ/7Nw8JbEhD1IykwjTuy+WR/A/Ji5sgo8Y1r+i5hzfDU82drLNj
+         tiveEo7a4voSWPPMfkLCxSNEUslA2rkvEh51q8zjy84Ugvp1a0dr+myZd4/ckMp8/cay
+         vHNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712248695; x=1712853495;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O1lHp+OkDVz4M/u4JQhfwxqw91sDKLwvBIfOpOSX1Dg=;
-        b=HYUCjHWc471qMSCw0o4Pko9U9xCK+5GFWVPWQ58+zLNsEJlhzqzT7Y/jxE1GihyqZ/
-         ZMRtQp8g1dTjg5KFIY23Ip1dfvD0/ZR2R4G54AO5sTYUqfSKl6ywLxLXsjR3TgJTrden
-         S1cUYQ5h4j8ZguwKWLplOKbz+Ua+9bvHKNYGq6ltQ/SN+N6IQfB5shBdY6WHpfYr5xFD
-         eLei9AqcpEhCE7R5HiBBDzyCbz+U2eq2H07EHqcsgBq7Bm1mU+MoMWON1Odc03BYlK9+
-         kA8GxpJdHRk1M1lGp4eu0tR+a98hpnSPgryIuD1gagtPR1xaY7nX0/lr009GPrK7YksS
-         sDqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEKIvePTTHNRy3qKxwnTKdzzT7TD/1HcR5Qb8k46uEUYOZE0Uch8qcR1LLUQuFUtBPKYCb8hBUGRjdAiritpkRyqUfXpBCAHg=
-X-Gm-Message-State: AOJu0YzPnR+0vD8oYAjULMrHGqQKb8lVPAgR5jMecWTfn8PVtrypENat
-	oP3fKXx5PNYRu9Q7gUQWsAbY7WfxZb1Rig+QY/mq4zdNliGvdnfGSQnaVCQRoSY=
-X-Google-Smtp-Source: AGHT+IEA8Ot5VjOmH74kiKn6+rvyxZEZ0N/0e2VKSGgMgVavV4DwpFIgcNyVzFCXgCqx/llLPTQifw==
-X-Received: by 2002:a5e:8b45:0:b0:7d0:c0e7:b577 with SMTP id z5-20020a5e8b45000000b007d0c0e7b577mr3031325iom.2.1712248695143;
-        Thu, 04 Apr 2024 09:38:15 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id r22-20020a056638131600b0047ed8c3e578sm4146726jad.134.2024.04.04.09.38.14
+        d=1e100.net; s=20230601; t=1712587104; x=1713191904;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3J8FKeevsu5cXmgcrDLbA6aJb0xCxt49VTYxcTHeN+g=;
+        b=tXSYgd1AiJc/W7E9tSq+e277qThyP/vD8JKOunJnucIHFBMS8E+5fCVyu+oESAuind
+         rT5JGHXgQqWychNC7WijIRFdCP9XuSoAgQ6gMIqioAdtdcjJ+U3HkfasJVfcAXpRT14r
+         bjpUtOPeGN+SqQPDBNG+jDJoNmo9BGnwl556VAl+TQ+jJOOgLEqD9EjP4l9EpLrDj9eh
+         Y43ywxQIfSdRo7jdgpm8JMs+fF0L+yPP5aJoiCa1kILCv9aql0+d8s6ILBDmtItSAF9f
+         H2NOXwFkVW/YmiwxJ4KaKtlZyStOzWhOJLathyI5uXTVdR3TMvkXy7GDhobqBEVWpgMY
+         LowQ==
+X-Gm-Message-State: AOJu0Ywmy+Oypld2ubAdyMnr5xzgY9lJBbZGf58hqzdRENZMGfqojYTi
+	AEvNGDUALziUdmihtibt79CW5WLUUlDvUcJKkwSJ/rVTRm7gb5A9609Xom+1
+X-Google-Smtp-Source: AGHT+IGRH+b4+dNEFwoZpAGmR3V8P/brC9atQlDwSETojouuNDUnddmf/gtJSjgbLieuMLUm37/m/g==
+X-Received: by 2002:a05:620a:91d:b0:78b:e922:c38 with SMTP id v29-20020a05620a091d00b0078be9220c38mr9006748qkv.64.1712587103261;
+        Mon, 08 Apr 2024 07:38:23 -0700 (PDT)
+Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
+        by smtp.gmail.com with ESMTPSA id i4-20020a05620a0a0400b0078bdbba4993sm3261912qka.47.2024.04.08.07.38.22
+        for <kernelci@lists.linux.dev>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Apr 2024 09:38:14 -0700 (PDT)
-Message-ID: <d84a8714-89e0-4ac0-b42c-02e8c4920e32@linuxfoundation.org>
-Date: Thu, 4 Apr 2024 10:38:14 -0600
+        Mon, 08 Apr 2024 07:38:22 -0700 (PDT)
+Message-ID: <bf81be70-61ec-4169-b66a-5c3136869107@gmail.com>
+Date: Mon, 8 Apr 2024 17:38:20 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -58,72 +60,35 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Bug Report] selftests: Clang: kselftests build errors in
- KernelCI
-To: Nick Desaulniers <ndesaulniers@google.com>,
- Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Gustavo Padovan <gus@collabora.com>, llvm@lists.linux.dev,
- kernelci@lists.linux.dev, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@collabora.com,
- Mark Brown <broonie@kernel.org>, Justin Stitt <justinstitt@google.com>,
- Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>,
- Bill Wendling <morbo@google.com>, Shuah Khan <skhan@linuxfoundation.org>
-References: <0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com>
- <CAKwvOd=ueTmUThCOkBGUjhMGr6mKDtbTt-d7tHKe7A2nrchWMw@mail.gmail.com>
 Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <CAKwvOd=ueTmUThCOkBGUjhMGr6mKDtbTt-d7tHKe7A2nrchWMw@mail.gmail.com>
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+From: Nikolai Kondrashov <spbnick@gmail.com>
+Subject: Announcing Community Engagement Working Group
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 4/4/24 10:34, Nick Desaulniers wrote:
-> Thanks for the report.  We've been tracking getting this working for a
-> while: https://github.com/ClangBuiltLinux/linux/issues/1698.  Other
-> fires have continued to take priority.
-> 
-> On Thu, Apr 4, 2024 at 9:30 AM Muhammad Usama Anjum
-> <usama.anjum@collabora.com> wrote:
->>
->> Hi,
->>
->> We have caught bugs in kselftest suites on linux-next and on stable-RCs etc
->> when using clang. There are two types of bugs (logs with clang-17 are
->> attached.):
->> As usually people use GCC, there are GCC-specific flags added to the
->> Makefiles that clang doesn't recognize. For example:
->> * clang: error: argument unused during compilation: '-pie'
->> [-Werror,-Wunused-command-line-argument]
->> * clang: error: unknown argument '-static-libasan'; did you mean
->> '-static-libsan'?
->> * clang: error: cannot specify -o when generating multiple output files
->>
->> Clang has best static analysis tools. It is reporting static errors. For
->> example:
->> * test_execve.c:121:13: warning: variable 'have_outer_privilege' is used
->> uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
->> * test_execve.c:121:9: note: remove the 'if' if its condition is always true
->> * test_memcontrol.c:727:6: warning: variable 'fd' is used uninitialized
->> whenever 'if' condition is true [-Wsometimes-uninitialized]
->>
->> We have found these issues through our new KernelCI system when enabling
->> kselftest and clang there. The new system dashboard is a WIP, so It is not
->> the web dashboard you are used-to with in KernelCI. We can show you ways of
->> pulling the data if you are interest into.
->>
->> Unless the above is some sort of false-positive or misconfiguration, it
->> would be great to support clang for kselftests. What we can do from our
->> side is that clang kselftests builds should be enabled on KernelCI to find
->> and fix the errors. What is your stance about this?
-> 
-> As with anything kernel related; help send patches for obvious fixes.
-> Or provide steps to reproduce in
-> https://github.com/ClangBuiltLinux/linux/issues/1698.
-> 
+Hello,
 
-+1 on this. Please send patches to fixes as you find them. We have
-been taking fixes found by clang and -Wformat-security, -Werror
-checks.
+The KernelCI project is happy to announce the creation of a Community
+Engagement Working Group (WG). The purpose of the WG is to connect with kernel
+maintainers, discuss and improve test quality for their subsystems, help
+onboard new users to the project's systems and services, address their
+requirements, and act on feedback from existing users, fixing bugs, and
+implementing new features. As well as following up on regressions detected by
+KernelCI systems, to deliver clear, high quality reports to maintainers.
 
-thanks,
--- Shuah
+The Working Group will be led by Shuah Khan, a Kernel Maintainer & Linux
+Fellow at The Linux Foundation, a maintainer of Kselftest, KUnit, USBIP, vimc
+drivers, and cpupower tool, and an administrative co-maintainer for nolibc.
 
+Collabora has already been working on this for a while, and so the first
+members will be several of Collabora's engineers: Helen Koike, Shreeya
+Patel, Nícolas F. R. A. Prado, Laura Nao, and Muhammad Usama Anjum.
+
+They will potentially be joined by LXF Mentorships interns, and of course, we
+would welcome any kind of contribution from everyone.
+
+The WG communication will be looped into this maillist.
+
+Nick
+KernelCI TSC chair
