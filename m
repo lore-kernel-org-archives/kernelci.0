@@ -1,87 +1,92 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9F31487EB
-	for <kernelci@lists.linux.dev>; Fri, 12 Apr 2024 15:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E241373
+	for <kernelci@lists.linux.dev>; Fri, 12 Apr 2024 18:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712937029; cv=none; b=bP0v8ZDJF0AiJmuMvVy6HlGI5q+YIYUuAR23kSKO+qlcwW+AlPk4S0pN0VFQy+Ds8exHY2G5dgVSWuWelZf5SawfOBVRBPaCcmSz6rHS1OJYwN61IXVjapXWbeDgmsqljCqMpCfdRc6ENUT8BgiS41gNdJGpHc4T1XgLxlCQV+4=
+	t=1712948006; cv=none; b=c/FHd3ukDkNkmXygBjoQJoqu75OTl1vTOTBtvYT9bBa2e7GKsZ8HrE9+dc95VC32RNP5dWeOwmdZQd5QI7vFknM+gQLGljb6Kb/RF3dkDGX76ZEhzoJwhd6e3xF54UyMStSGP7FHEcNqlrYgNXWB7nNzdd+dhA1HtVMV1wDU7yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712937029; c=relaxed/simple;
-	bh=tXrgN2DXbsA3Yyl6Vc88yu8uPUqCVYLCCYbwq8+REaA=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=Kxt4aB51LZ/gcRWWYPbezU/XQqNekqDSHPhL8OMjmhLPsqO2zwcVVFxGB8d/UjL7jcFZOJPy1YlnXBXiSiA+nD0HPO/xDhlFUzateRBvSV3NVk8fMihxcpYH7tDfgM8wGfaMIuJYa6iOh0f9nN6Y0TKUGjf99qo6nC62Cm2ofjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1712948006; c=relaxed/simple;
+	bh=Zmy8/faSRG7OiZ90StL+gfbVBS1D+L4Vyl6AwOvWua8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=qNHaGJeamSVHy1S9fgyn/msLZFV9YheqPKo9yfD+slj8iyI6z9M5wp7plA9/6OL5CzTDlv8eSX8ly3vf6eJRj9TOBD1+KaEsdL4vQxUTyLZeBB4L+c4/C+dpdqJngOaiu/T9YRJKdlqFAjbgF2PyfdQeL/0ALQZ4+rEiqPCyDhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WvYwRaGf; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
-	by madrid.collaboradmins.com (Postfix) with ESMTP id 0CDC03782117;
-	Fri, 12 Apr 2024 15:50:24 +0000 (UTC)
-From: "Gustavo Padovan" <gus@collabora.com>
-In-Reply-To: <9cce38df-de93-486c-bee6-1a866f8ac696@canonical.com>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 127.0.0.1
-References: <9cce38df-de93-486c-bee6-1a866f8ac696@canonical.com>
-Date: Fri, 12 Apr 2024 16:50:24 +0100
-Cc: kernelci@lists.linux.dev, lgoncalv@redhat.com, "Helen Mae Koike Fornazier" <helen.koike@collabora.com>
-To: "Joseph Salisbury" <joseph.salisbury@canonical.com>
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WvYwRaGf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1712948002;
+	bh=Zmy8/faSRG7OiZ90StL+gfbVBS1D+L4Vyl6AwOvWua8=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=WvYwRaGfN5yVkcUL0LNgjXA5Ej96q4JpxKPgxUbiecvRMqm/oPXGZvX874vBGvKha
+	 gfOzJlGs3H19xFFzb0GQrDrApfSzlRr/64ftH93aBc9/QIf3FHevbO+WoXjhBjNfIt
+	 CC9Hlnobc6POFwWTJ3vAXL2ZeVH4DER6+VJCze1jdDc6SsC0Gl1+L0DkS806wcDJgV
+	 6+XaV53tWFHFG46JeqIscmMY8NlhEhxfSSoG8dX1MK6o+Xur6awpFEwSVWuGBqzHlG
+	 l/KmRpV2t8VqWRx7jSIuO8t6GSyN7/SOxyQroFIaGSsHEbKKmyf9AE/59os6lI8pRG
+	 AIt0v/6E6yCMw==
+Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: padovan)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D1CF63782133
+	for <kernelci@lists.linux.dev>; Fri, 12 Apr 2024 18:53:21 +0000 (UTC)
+Message-ID: <2df803a1-aa81-0762-183a-0aefa527c587@collabora.com>
+Date: Fri, 12 Apr 2024 14:53:20 -0400
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-ID: <3deb2b-66195880-7f-7ed64100@24373438>
-Subject: =?utf-8?q?Re=3A?= Kernelci Job Start Delays
-User-Agent: SOGoMail 5.10.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: KernelCI evening gathering at Open Source Summit @ Seattle
+Content-Language: en-US
+From: Gustavo Padovan <gus@collabora.com>
+To: kernelci@lists.linux.dev
+References: <3c0c9c-66170480-315-194ac52@36759582>
+In-Reply-To: <3c0c9c-66170480-315-194ac52@36759582>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Joseph,
+Hello,
 
-I am glad that you reached out. It seems you are pointing out yet anoth=
-er aging sign of our legacy system. For broad context on that, check ou=
-r recent blog post[1].
+We confirmed a location today. We will meeting on Tuesday 16th, 7pm at
 
-The best way of solving your issues would be to move your testing to th=
-e new system. The best plan for the legacy system right now is to shut =
-it down in the coming months. As we said in the blog post, we are start=
-ing small in number of tests and scaling it step by step, but always wi=
-th community engagement to evaluate the results. If you want to come on=
- board with the rt testing, we would be happy to start a plan to make t=
-hat happen.
+Elysian Capitol Hill Brewery
+1221 E Pike St
+https://maps.app.goo.gl/K6G2XMVpHHzKjvV79
 
-Let me know if that is an avenue you would like to explore. If yes, I'd=
- be interested in knowing which tests you are running.
-
-Best,
+Which is a 25 min walk from the OSS venue or a short uber trip to the 
+nice Capitol Hill area.
 
 - Gus
 
-[1] https://kernelci.org/blog/posts/2024/strategic-updates/
+On 4/10/24 17:27, Gustavo Padovan wrote:
+> Hello everyone,
+>
+> If you are attending Open Source Summit or Embedded Open Source Summit next week in Seattle, we want to invite you to hang out to chat about all things KernelCI, kernel testing, solar eclipse, etc.
+>
+> We will meet on Tuesday starting at 7pm. The place is still TBD and I am trying to pencil this down asap. I'll update in this thread once we have location confirmed.
+>
+> Please send me a note if you are planning to come so I can plan the space properly.
+>
+> Looking forward to meet you! :)
+>
+> Best,
+>
+> - Gus
+>
 
---=20
+-- 
 Gustavo Padovan
 Kernel Lead
+
 Collabora Ltd.
-
-On Friday, April 12, 2024 11:30 EDT, Joseph Salisbury <joseph.salisbury=
-@canonical.com> wrote:
-
-> Hello,
->=20
-> I've been seeing some long delays with the start of kernelci tests,=20
-> after uploading v5.15-rt based kernels.=C2=A0 I think Luis Goncalves =
-is=20
-> seeing similar delays with other branches, so he is cc'd.
->=20
-> For example, I uploaded v5.15.153-rt75 on April 1st, but kernelci is=20
-> still not showing it.=C2=A0 That last kernel showing as tested is=20
-> v5.15.148-rt74.
->=20
-> Is there a known issue that may be causing these delays?
->=20
-> Thanks,
->=20
-> Joe
->
+Platinum Building, St John's Innovation Park
+Cambridge CB4 0DS, UK
+Registered in England & Wales, no. 5513718
 
