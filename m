@@ -1,99 +1,91 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE00213B7A3
-	for <kernelci@lists.linux.dev>; Tue, 23 Apr 2024 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F297313AA5D
+	for <kernelci@lists.linux.dev>; Mon, 29 Apr 2024 21:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713885418; cv=none; b=Niz4XSU0rbzHyYYD4rzfDT6g/ytAO+XlxjriMPpTuXcZp5X+z2QOzCKbY9ZmKDeozZLsuapERrRBNpU1u0mL0kxVUf3c6iOS+cCIXdwQfg9rYLcnqiSyF9oTErRtedfZ9I+gGDsIsaMBU6s01bmu+kxhB8eeWW5VYxUmW18x1jo=
+	t=1714424991; cv=none; b=XIovul+5mKhDY0RA2IOnh2Fx3VezgEfVpcmwF2Jj7721OfR4dWOhvjbxkRljHvX/6TcL3kwzq152OmwcrU8WUgWx8AMyqZZ70CUbZNKTlCTiKm04y4sbgPFrzUXFlLAYJ0Apyfzp2Wo2egGPr0zA2qN9nNwSNxaVnKQ9nYlO/As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713885418; c=relaxed/simple;
-	bh=h4yQKZsodwASQ8BaWwplG73xDGyXx08Io8ws3yHb43k=;
-	h=Message-ID:Date:MIME-Version:Cc:To:From:Subject:Content-Type; b=IHk2xpZGR5VkFiGcU0bAKXH3pZM5x9tBy/0uB8yZ7/33Tz0b+3E68/MGguCBxB6WEAFhlgH6siUoyfVR9sJmq6EJPsAsMZXrcuy/60ABrh7DMGFs8fskSstitKlzt4sln6X05w2qaOukpms2i4+OOcxVcO3T1Nyys5pQ/yD/q+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ZyvvSgpz; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1714424991; c=relaxed/simple;
+	bh=dZK/GB2KkqiU8PGfFUCPSXUeXyridVYoFAsjXdPOWwc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=uur+dnbtafHeFyw2MdXtnbHZLz42q+AZLxMFaM2LBHqlRzuUOL+HdnAGaLuhKWzWZ9JnLWdvpQLGIQvNjf70VPMtWHnfLaWuoWfywoCO3VqUF7pcj13J6yHiA7/ETdItsZB7tLVzA5djj+3Y+buO05HyzsZD4WCTLDCP15eVkoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=GkhvPvck; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ZyvvSgpz"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="GkhvPvck"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1713885413;
-	bh=h4yQKZsodwASQ8BaWwplG73xDGyXx08Io8ws3yHb43k=;
-	h=Date:Cc:To:From:Subject:From;
-	b=ZyvvSgpzomYyJOPD5OJaqVcG/9zmB0NKqRCIboLLNkHkNpvggR7JbbJMXNckipZci
-	 wJg66TIZOOBf+DFQ9fOkSala8QAu0vnDDKlI+IGG8+iwNTpan0OSMC76ZsHHfotZkF
-	 X9IyhcCfyfXjoadBS+Pzr3s/V1iE1A54TUaG+EfzhyJycL6uDyKcq69uC6l+VQL0e1
-	 faMnqXVkHCQrWhvlruBdwDeELAuM0FcBju/dnNu7iNYP9YGh74D9IFh+5CEeJIC9re
-	 aUU37CgTkP3pOw0Hv8QfPxl9S2ge/Yku/kbMw/MgGs0FNPaOHj06t8NKmAtLAzyHe7
-	 JNDeqd9nzAbUw==
-Received: from [10.193.1.1] (broslavsky.collaboradmins.com [68.183.210.73])
+	s=mail; t=1714424988;
+	bh=dZK/GB2KkqiU8PGfFUCPSXUeXyridVYoFAsjXdPOWwc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=GkhvPvckrzDEpnFJWPbx1PvqwLK4hU5lZezsEXZoAw/kl7qx3kpTQi7NaFH7oPfe0
+	 p4u3dnQe6mkZvvLxlj53hNqA0fv3NDYFcIwFtSumVRHmYIpa6ISqzLY+KMSkA5xFCA
+	 XmNPIZQ9JkW0fHsKheJH/Yp5AHX+0gY5XrLVf5lCZBFtEmu2+ThlxCtfsyjpOkBfvB
+	 3pkNzFLz3uuR3PM83SZkLR17ubgz6BeepCTrG8UDfjvilwhZYo1Fx7+NThAB0kaNLg
+	 tP8ergvKtx0mV6Xso9wjrwygRPcw6zK440mNKKi2DWnZpTSRyyFQTj5BXQV4paJgHk
+	 mF0rrBTwbvMSA==
+Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 6B7CE37811D1;
-	Tue, 23 Apr 2024 15:16:49 +0000 (UTC)
-Message-ID: <02c3926c-84fe-4526-a746-6964f5290c14@collabora.com>
-Date: Tue, 23 Apr 2024 20:17:18 +0500
+	(Authenticated sender: padovan)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 5C1E937821DF;
+	Mon, 29 Apr 2024 21:09:47 +0000 (UTC)
+Message-ID: <d46595e5-a701-5896-0137-0ec8197bcaf6@collabora.com>
+Date: Mon, 29 Apr 2024 17:09:46 -0400
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- automated-testing@lists.yoctoproject.org,
- "kernel@collabora.com" <kernel@collabora.com>, kernelci@lists.linux.dev,
- open list <linux-kernel@vger.kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: Kernelci Job Start Delays
 Content-Language: en-US
-To: Shuah Khan <shuah@kernel.org>, gustavo.padovan@collabora.com,
- "open list : KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Laura Nao <laura.nao@collabora.com>,
- Shreeya Patel <shreeya.patel@collabora.com>,
- =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+From: Gustavo Padovan <gus@collabora.com>
+To: Joseph Salisbury <joseph.salisbury@canonical.com>
+Cc: kernelci@lists.linux.dev, lgoncalv@redhat.com,
  Helen Mae Koike Fornazier <helen.koike@collabora.com>
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Subject: Improving the testing quality of the kernel
-Content-Type: text/plain; charset=UTF-8
+References: <9cce38df-de93-486c-bee6-1a866f8ac696@canonical.com>
+ <3deb2b-66195880-7f-7ed64100@24373438>
+In-Reply-To: <3deb2b-66195880-7f-7ed64100@24373438>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Joseph,
 
-I've been working with colleagues at Collabora to improve the testing
-quality overall for kselftests since several months. We had identified
-following key points to improve:
-* Make non-TAP conformant tests, TAP conformant to catch the bugs/failures
-in the CI and non-CI environment. Without clear success or failure message,
-it is difficult and at times impossible to notice the bugs and which part
-of the test or sub-test has failed.
-* Add config fragment if it is already isn't present.
-* Improve ancient tests to be robust. KernelCI helps a lot in finding
-flakiness or non-robust pieces of code by building it in range of
-configurations and running it on range of hardware.
+Just following up on this to check if you want to initiate the 
+transition of rt tests to our new system. Let us know.
 
-As new KernelCI is in works, we are identifying which kselftest suites
-could be most suitable to be enabled in the start to keep the noise to a
-minimum. The criteria to enable a suite on KernelCI is:
-* The test suite is TAP compliant
-* The test suite passes in preliminary testing on x86_64 and ARM64 platforms
-* The test suite builds fine with Clang in-addition to gcc
+Regards,
 
-To facilitate transparency and track our progress, I am diligently
-maintaining a spreadsheet [1] with detailed information about each suite's
-status and requirements.
+Gustavo
 
-Furthermore, I have commenced exploration into KUnit testing, and initial
-results are promising. I plan to delve deeper into KUnit testing and will
-provide further updates in the coming days.
-
-Your feedback, insights and collaboration on any aspect of these
-initiatives would be highly valuable. We greatly appreciate your
-collaboration and support as we continue to enhance the testing quality of
-kselftests.
-
-[1]
-https://docs.google.com/spreadsheets/d/1XRCgxlY1b74aIOIXQ7qDR-62KTJmuV1ow9st4fpeVhA/edit?usp=sharing
+On 4/12/24 11:50, Gustavo Padovan wrote:
+> Hi Joseph,
+>
+> I am glad that you reached out. It seems you are pointing out yet another aging sign of our legacy system. For broad context on that, check our recent blog post[1].
+>
+> The best way of solving your issues would be to move your testing to the new system. The best plan for the legacy system right now is to shut it down in the coming months. As we said in the blog post, we are starting small in number of tests and scaling it step by step, but always with community engagement to evaluate the results. If you want to come on board with the rt testing, we would be happy to start a plan to make that happen.
+>
+> Let me know if that is an avenue you would like to explore. If yes, I'd be interested in knowing which tests you are running.
+>
+> Best,
+>
+> - Gus
+>
+> [1] https://kernelci.org/blog/posts/2024/strategic-updates/
+>
 
 -- 
-BR,
-Muhammad Usama Anjum
+Gustavo Padovan
+Kernel Lead
+
+Collabora Ltd.
+Platinum Building, St John's Innovation Park
+Cambridge CB4 0DS, UK
+Registered in England & Wales, no. 5513718
+
