@@ -1,40 +1,40 @@
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBB11779AB
-	for <kernelci@lists.linux.dev>; Mon, 29 Apr 2024 21:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B8B158873
+	for <kernelci@lists.linux.dev>; Fri,  3 May 2024 18:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714425121; cv=none; b=XUnlbR2qgPotvQr7RfP/xkAQdCIblFG1lFtLb+0HqXLzzWxjWM8W3X7mLYL5Ifkb/GyUY8C9yy7XraA4SGmzFvEJ7RcdAXjByibKbU+tIIvRyw29wHPfWHr7WI3e/VF+V7BiplBcNWY3HRwYm/6keQSvFR7+IpMX5jYJm77We5Y=
+	t=1714760268; cv=none; b=R/5KgUlYJ6nc7By+7/Ju9n1YT9BG15Pj5kcEupYKCdzh+d/jr2o3N2vcSJyR58nPuHXXJVK//MgMXAorI+84OFkLFBYELQHuyb43y0dviOIfuBenlb4weANhx7bbK1YhsjcBFtqkkWMiHArsobpgWsMSMFBY0Fs+KHmZAvoX72M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714425121; c=relaxed/simple;
-	bh=ioPfQwk+3FE/eD4rFGlyXoOsTP//6N2WOAFpXweZ134=;
+	s=arc-20240116; t=1714760268; c=relaxed/simple;
+	bh=lS9TDlC4LO/l7e3EvfwNT7mKTyhBATBAS/v1TL65TgA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K4XAe+UWLrrKulbm4hEvlQIGcW/R6YRVlhtwzjFEGd90x1jt6YuCKaQRN05lehbEc0dAc0060H0ErG1Gg9kJVtnvFajL3uZDxS42STYDsKyybX6MbguopI4/AyOLwqQSUc/xzFpZrtnK5Myg21/9Q9D6TCjlg4ij0+GeilYqMOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=u35ui0RX; arc=none smtp.client-ip=185.125.188.120
+	 In-Reply-To:Content-Type; b=Zlop9cy3Ai3vWB+u8ydhfuodOe2qQ29nOCCFxeabIC2wCds2oXxa/812I0NWCtKNxSK3kzDnD5jHXjWx3P7hwuEuinc+fXsRKcvmcjB0F59fyYz6upzV/lg+9BD4H9IFA69tMVNgjbdXS0nsFXC9kI5EseXCCys86YoloiJS59w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=lE2mkcjE; arc=none smtp.client-ip=185.125.188.121
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="u35ui0RX"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="lE2mkcjE"
 Received: from [10.172.66.188] (1.general.jsalisbury.us.vpn [10.172.66.188])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id A93833F527;
-	Mon, 29 Apr 2024 21:11:50 +0000 (UTC)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id BA84F3F103;
+	Fri,  3 May 2024 18:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1714425111;
-	bh=fppJkGqmpT2R88jtzvI4W+wE6M/dxW0WENhTmO8Yk1Q=;
+	s=20210705; t=1714760265;
+	bh=9ShRLGbQ0qoQk4imwnWZ1apdNCzRxciSgor42XCMiqg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
 	 In-Reply-To:Content-Type;
-	b=u35ui0RXp7p7k1C2tmmu2WsF7u77B/k2rsDw4VjsADZlS8CG40oBTUkRbIw2/y/pu
-	 3b4+p8iTkRv7z9qFjnTUN2nt7bnN3UkBf/MkHGv1QqQWyHUkAFSp1OyeH26qsoXgXY
-	 nlldK+VmOSSlm1hM+Mn7mDeuF/OPrFHGWn0BLkV6MuoInOa4WSBn1yJrcBRVYzJYhq
-	 /fwkbc6moX+yiQ/iIoZD/DqLaPrBdmdA6Z2VvRXAuNoBGaskN9P2/8TdcwaUEWCLGt
-	 dtWSxvTrUoo3T7/ZL1xAYbGpo1vNnw/BK0LiEK1OJ5QV1mMm3XX+pm40YS0Wkm2/Bv
-	 Y9BmJrAg5IS1w==
-Message-ID: <4aabc5ac-7bd6-493c-98f5-87d31da74b5b@canonical.com>
-Date: Mon, 29 Apr 2024 17:11:49 -0400
+	b=lE2mkcjE03xNRlya6VwkevluMcarcOPC89VJyOPhV5kuM8evGhUVEO5msigaFmKG0
+	 XxZBKYOZKHHNHDFF+Lik8NQQobhMzrcfTzthizWo3i8WhFcbteRtwMO7SF+ZXvTqFV
+	 +ZWgHrvggzZXdEvVZcWIaRyeoOpcHSWtwU5q+LUV2PjCqgW4MBdbPZoXkHc8/C381H
+	 u7chCUi/aRePNsaDmqWOfU7p/6diDNDXNtni8of7qLPCUNWeHAZXhi1iMlhpUt60oj
+	 WiquR5G2DxJR3TnwCLCRU25eZtayZlu7j/78lufWhwmLY8UU2QIhLC1nJBMGSHslb8
+	 CjzvsjUY1HSNA==
+Message-ID: <1ed9e9d7-d927-4277-9399-16ab952e6ea2@canonical.com>
+Date: Fri, 3 May 2024 14:17:43 -0400
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -96,14 +96,16 @@ Autocrypt: addr=joseph.salisbury@canonical.com; keydata=
  p24lPxLL08SuCEzuBw==
 In-Reply-To: <d46595e5-a701-5896-0137-0ec8197bcaf6@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi GUstavo,
+Hi Gustavo,
 
-Yes, it would be great to try the new system.  I will be generating a 
-new 5.15 version this week.  I'll let you know when I'm ready.
+I just uploaded a new version:
+https://lkml.org/lkml/2024/5/3/811
 
-Thanks again!
+Is there something I need to do initiate the transition to your new system?
+
+Thanks,
 
 Joe
 
