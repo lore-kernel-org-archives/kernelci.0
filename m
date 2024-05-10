@@ -1,40 +1,38 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E671F5027F
-	for <kernelci@lists.linux.dev>; Fri, 10 May 2024 13:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752E8446DB
+	for <kernelci@lists.linux.dev>; Fri, 10 May 2024 18:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715349400; cv=none; b=XBeMgg9RayIFmpErTVWAq/AHvbGgs81x9bAp4G4OFZG/SdjDVh0+Gy8UbRyEb7NKIpA2I+DSTr6t1CTZbn4eFZgqBJ5ZVkZEh1Gmc74Sx4LGuy4Wd1LHrXFVB/ZsJi9jcBvEZkVJ+YmQNiow9+s2JMBEyzhAPT/qqtfUafhxGSU=
+	t=1715366622; cv=none; b=FV7NC1t+OuKsvBmkw9m1ejm/vdVWNTyMJXGWyYFK2YCpF+DjBLrwMKO6rndmCvIvdecz6imXcC7rwLPEUTg3HbleMuX6ABvd5w2G7OetA/BLUW/I+lOB+FJphGpR1zu1FHHYfekP1IZeFGkLF+yqolFPA8lXZIQNcdYo8OIlRyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715349400; c=relaxed/simple;
-	bh=/pfPYtSa3b1f36+IWXHoGdeZdxYk4J1srGRsBMXBPfQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZW3ttcWzcvyC7Vg89YFOd7bmtnldP3AuPfuFUMGvB+4PSF+h88PpyFjOPwzReRJLExV/hGl9f1dBKzPB9XPl1246kVlGSqxQFSiQWQ7zcCN0h1msfjk30f+2Tu6ChYI7HIVvKNOKNj8LqkjFT+wSJ5dDIRQ+tSUr+Zm0+EU5Vjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=T9PMZ5bA; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1715366622; c=relaxed/simple;
+	bh=i8Y+CF0/msLe+CrT7MBQOBx8WllRoivm74sS5P5A44o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=X5RJ7At/2Hw9VMKeCU5zR6xdaJeO56tw80tVl+FrskhzGfhZPs024vhMAaco/G5+fGSK1q9CWALpTw3Jv+scgolrPbgqSnW4kIz5ldOg3aWzNys/2NLDxOqGQULqAH23xZrIcc7FSQ2ZQAsAjHwBnrunBGJn9WuT53+JLENpS74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=NVpkUZ1D; arc=none smtp.client-ip=217.70.178.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="T9PMZ5bA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1715349397;
-	bh=/pfPYtSa3b1f36+IWXHoGdeZdxYk4J1srGRsBMXBPfQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T9PMZ5bAeiKDR3oun+V6N0vqvU/HSBzJIVQDl1TNllU8InWRzr66li/mx4uZR4Cyn
-	 eq7CyhW96vv6mLabcU0aoAql9TeDA8/5zJEZ2AaJaFsrmHDq2/cb+a7qP9hnWO8jqd
-	 U7JIzzPmHV+xa/SZZnJSCIoxgm2Rus3+z5ZpSAsnN9GZbf7MonKZFo38gmQga9qMUj
-	 4mscg/5Gvesws5S6VgrZRWs2hcIBDkkJv7fLxkWS0AeIMbQSzX0FO5gZ9APc7jHUXl
-	 39jyIVQI7M00hN076o7Z3NdUxJjcbLJiWcIEcJ4L2KKNEsQlnNgfXk7BDHuuQiPb3U
-	 m0G2qU47qbPow==
-Received: from [100.95.196.25] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: koike)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 8878B3781183;
-	Fri, 10 May 2024 13:56:35 +0000 (UTC)
-Message-ID: <1dda36fe-4af4-4c57-b5ba-19e9e67ea3c3@collabora.com>
-Date: Fri, 10 May 2024 10:56:33 -0300
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="NVpkUZ1D"
+Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 79C71C22D6
+	for <kernelci@lists.linux.dev>; Fri, 10 May 2024 18:43:33 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5FBE9C0003;
+	Fri, 10 May 2024 18:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1715366606;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zTCULRYllt+dMGIqGygx1xMSb3Ax/XJV4B6sfUxpVsg=;
+	b=NVpkUZ1DWirf0zfndgu1mtPACxiCq1wmzE/fGaaIWIbTMlfVZauqP7pV5ywIzcAhYd7mKe
+	i6z7OCiQioyVZ9lyO05j/9qwKFT+DgntbHYmFIJqHQdJdTFxqFoASXBJHB5wG6YnFEHOg8
+	niCTEmmO1eAsWn+dNOUDe5b9P+mmCCq28SbAnM/B6ncsoIAb87JWz/pQXObnsiAj8e7PMx
+	dIUMGS+SnY2ZgfivD7nokta74tT/0XcXDt6vDjRq0owLYu0nBX6EXtsrlmblN/sNfjQL/K
+	Sx71HupuYly4sS0bxFU8h5vJYCcF41w4crA9c4BXWroC2G3/nXW0AygtWAZPOg==
+Message-ID: <aba2b2c0-ebb9-45e3-b14a-2321b7770e03@gtucker.io>
+Date: Fri, 10 May 2024 20:43:24 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -42,84 +40,38 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Kernelci Job Start Delays
-To: Joseph Salisbury <joseph.salisbury@canonical.com>,
- Gustavo Padovan <gus@collabora.com>
-Cc: kernelci@lists.linux.dev, lgoncalv@redhat.com
-References: <9cce38df-de93-486c-bee6-1a866f8ac696@canonical.com>
- <3deb2b-66195880-7f-7ed64100@24373438>
- <d46595e5-a701-5896-0137-0ec8197bcaf6@collabora.com>
- <1ed9e9d7-d927-4277-9399-16ab952e6ea2@canonical.com>
-Content-Language: en-US
-From: Helen Koike <helen.koike@collabora.com>
-In-Reply-To: <1ed9e9d7-d927-4277-9399-16ab952e6ea2@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-GB
+To: automated-testing@lists.yoctoproject.org, kernelci@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kunit-dev@googlegroups.com
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+From: Guillaume Tucker <gtucker@gtucker.io>
+Subject: Kernel Testing & Dependability Micro-Conference at LPC 2024
+Organization: gtucker.io
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
 
-Hi Joseph,
+Hello,
 
-On 03/05/2024 15:17, Joseph Salisbury wrote:
-> Hi Gustavo,
-> 
-> I just uploaded a new version:
-> https://lkml.org/lkml/2024/5/3/811
-> 
-> Is there something I need to do initiate the transition to your new system?
+We're pleased to announce the return of the Kernel Testing &
+Dependability Micro-Conference at Linux Plumbers 2024:
 
-We need to first enable build tests on your tree.
+  https://lpc.events/event/18/contributions/1665/
 
-You can follow this example: 
-https://github.com/kernelci/kernelci-pipeline/pull/502
+You can already submit proposals by selecting the micro-conf in
+the Track drop-down list:
 
-Basically you need to add your tree under `trees:`, so kernelci knows 
-which trees to monitor. You need to add a `kbuild-...` job under `jobs:` 
-and an entry under `platforms:` so kernelci knows where to run.
+  https://lpc.events/login/?next=/event/18/abstracts/%23submit-abstract
 
-Let me know if you have any questions regarding that.
+Please note that the deadline for submissions is *Sunday 16th June*
 
-Thanks
-Helen
+The event description contains a list of suggested topics
+inherited from past editions.  Is there anything in particular
+you would like to see discussed this year?
 
-> 
-> Thanks,
-> 
-> Joe
-> 
-> 
-> On 4/29/24 17:09, Gustavo Padovan wrote:
->> Hi Joseph,
->>
->> Just following up on this to check if you want to initiate the 
->> transition of rt tests to our new system. Let us know.
->>
->> Regards,
->>
->> Gustavo
->>
->> On 4/12/24 11:50, Gustavo Padovan wrote:
->>> Hi Joseph,
->>>
->>> I am glad that you reached out. It seems you are pointing out yet 
->>> another aging sign of our legacy system. For broad context on that, 
->>> check our recent blog post[1].
->>>
->>> The best way of solving your issues would be to move your testing to 
->>> the new system. The best plan for the legacy system right now is to 
->>> shut it down in the coming months. As we said in the blog post, we 
->>> are starting small in number of tests and scaling it step by step, 
->>> but always with community engagement to evaluate the results. If you 
->>> want to come on board with the rt testing, we would be happy to start 
->>> a plan to make that happen.
->>>
->>> Let me know if that is an avenue you would like to explore. If yes, 
->>> I'd be interested in knowing which tests you are running.
->>>
->>> Best,
->>>
->>> - Gus
->>>
->>> [1] https://kernelci.org/blog/posts/2024/strategic-updates/
->>>
->>
-> 
-> 
+Knowing people's interests helps with triaging proposals and
+making the micro-conf as relevant as possible.  See you there!
+
+Thanks,
+Guillaume & Shuah & Sasha
