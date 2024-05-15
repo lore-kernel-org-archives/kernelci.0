@@ -1,77 +1,84 @@
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752E8446DB
-	for <kernelci@lists.linux.dev>; Fri, 10 May 2024 18:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B18636AF2
+	for <kernelci@lists.linux.dev>; Wed, 15 May 2024 17:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715366622; cv=none; b=FV7NC1t+OuKsvBmkw9m1ejm/vdVWNTyMJXGWyYFK2YCpF+DjBLrwMKO6rndmCvIvdecz6imXcC7rwLPEUTg3HbleMuX6ABvd5w2G7OetA/BLUW/I+lOB+FJphGpR1zu1FHHYfekP1IZeFGkLF+yqolFPA8lXZIQNcdYo8OIlRyQ=
+	t=1715792988; cv=none; b=Grgm/X5Mn0LZ/rjk5z7CmQKyOSCzjICvNV2DiKPZ47ZdMTxJmAQUCFDIhyWzp4vUx1A3oQo3AMOl+F+v/8iXKWHeKQXNPp59pUGxkvcvOqr29DvIj6mht9nVKQ4PtCJXz3aB5+oD7ObZDxXdoWOKhS/OuyixewkqkHKqwiABGUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715366622; c=relaxed/simple;
-	bh=i8Y+CF0/msLe+CrT7MBQOBx8WllRoivm74sS5P5A44o=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=X5RJ7At/2Hw9VMKeCU5zR6xdaJeO56tw80tVl+FrskhzGfhZPs024vhMAaco/G5+fGSK1q9CWALpTw3Jv+scgolrPbgqSnW4kIz5ldOg3aWzNys/2NLDxOqGQULqAH23xZrIcc7FSQ2ZQAsAjHwBnrunBGJn9WuT53+JLENpS74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=NVpkUZ1D; arc=none smtp.client-ip=217.70.178.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1715792988; c=relaxed/simple;
+	bh=WKeh4HW0IH1wYgoMAGQHaSNB9H+/wFKPVoi5btifs+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BNrEsIyOC1QJkfDwdYIGY/R1aKessE07upRFFQEq/wV6gMTaSUSKIijr9U4PFVjdXmDxXAv0DkATmKaC/tY6fV2wKW5jgGFZ7hE3KGx9UAYMJgOkgbfJCgaZgx1Ih4j2+b8MGDzjeVVIXgZXL2JRVm2Pos88d1VQ9c7xh5TGXOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVn4zeDl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="NVpkUZ1D"
-Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 79C71C22D6
-	for <kernelci@lists.linux.dev>; Fri, 10 May 2024 18:43:33 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5FBE9C0003;
-	Fri, 10 May 2024 18:43:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1715366606;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zTCULRYllt+dMGIqGygx1xMSb3Ax/XJV4B6sfUxpVsg=;
-	b=NVpkUZ1DWirf0zfndgu1mtPACxiCq1wmzE/fGaaIWIbTMlfVZauqP7pV5ywIzcAhYd7mKe
-	i6z7OCiQioyVZ9lyO05j/9qwKFT+DgntbHYmFIJqHQdJdTFxqFoASXBJHB5wG6YnFEHOg8
-	niCTEmmO1eAsWn+dNOUDe5b9P+mmCCq28SbAnM/B6ncsoIAb87JWz/pQXObnsiAj8e7PMx
-	dIUMGS+SnY2ZgfivD7nokta74tT/0XcXDt6vDjRq0owLYu0nBX6EXtsrlmblN/sNfjQL/K
-	Sx71HupuYly4sS0bxFU8h5vJYCcF41w4crA9c4BXWroC2G3/nXW0AygtWAZPOg==
-Message-ID: <aba2b2c0-ebb9-45e3-b14a-2321b7770e03@gtucker.io>
-Date: Fri, 10 May 2024 20:43:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVn4zeDl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6756C116B1;
+	Wed, 15 May 2024 17:09:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715792988;
+	bh=WKeh4HW0IH1wYgoMAGQHaSNB9H+/wFKPVoi5btifs+4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cVn4zeDlQFMDfqcfKzaTFpdBUD8bT3uq+dVlmvjxhHdKxpx63n2HLZoJ9D+vkA/Sl
+	 oe3g7Par2GUz3Zf/lYISvYm4ycsWJcr1u+pF0UKAFoS13YARn5LQ6YLMmM2bQaSe2E
+	 7Su9F8oTto781s7q/Faws+AQw2MBjQw3V7YumhP31CEYUJsTtUCq85u+Rqp2lzzBHh
+	 sr085AaBpLHllCNs4eSV1eOaA6oncFqxPhZwzql9qsNd0eewGxzrDodABkE4pPzzV6
+	 aUyDWmmGNkSB266xReS/OYzLHwRrYQfITuYH6hPismg0DSvhA5curKOY9BdCJaf26e
+	 wmz9kqgxuuJ/A==
+Date: Wed, 15 May 2024 18:09:44 +0100
+From: Mark Brown <broonie@kernel.org>
+To: kernelci-results@groups.io, bot@kernelci.org
+Cc: kernel-build-reports@lists.linaro.org, kernelci@lists.linux.dev
+Subject: Re: next/master build: 174 builds: 12 failed, 162 passed, 13 errors,
+ 11657 warnings (next-20240515)
+Message-ID: <59c655f0-1077-481c-b5b2-ec830990c138@sirena.org.uk>
+References: <6644e7e2.170a0220.e1869.edb7@mx.google.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-GB
-To: automated-testing@lists.yoctoproject.org, kernelci@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kunit-dev@googlegroups.com
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-From: Guillaume Tucker <gtucker@gtucker.io>
-Subject: Kernel Testing & Dependability Micro-Conference at LPC 2024
-Organization: gtucker.io
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Ntdr80yw2aStC9cx"
+Content-Disposition: inline
+In-Reply-To: <6644e7e2.170a0220.e1869.edb7@mx.google.com>
+X-Cookie: When in doubt, lead trump.
 
-Hello,
 
-We're pleased to announce the return of the Kernel Testing &
-Dependability Micro-Conference at Linux Plumbers 2024:
+--Ntdr80yw2aStC9cx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  https://lpc.events/event/18/contributions/1665/
+On Wed, May 15, 2024 at 09:50:42AM -0700, KernelCI bot wrote:
+> next/master build: 174 builds: 12 failed, 162 passed, 13 errors, 11657 wa=
+rnings (next-20240515)
+>=20
+> This legacy KernelCI providing this report will shutdown sometime
+> soon in favor of our new KernelCI infra. Not all tests are being
+> migrated.
+> If you are still using this report and want us to prioritize your
+> usecase in the new system, please let us know at
+> kernelci@lists.linux.dev
 
-You can already submit proposals by selecting the micro-conf in
-the Track drop-down list:
+I'm not specifically using these emails so much, but I do use the web
+dashboard version of the same thing a fair bit.
 
-  https://lpc.events/login/?next=/event/18/abstracts/%23submit-abstract
+--Ntdr80yw2aStC9cx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please note that the deadline for submissions is *Sunday 16th June*
+-----BEGIN PGP SIGNATURE-----
 
-The event description contains a list of suggested topics
-inherited from past editions.  Is there anything in particular
-you would like to see discussed this year?
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZE7FcACgkQJNaLcl1U
+h9C7kgf/RNrAa+59dJZER9mi3GM0309QXAtpY9VEs7w0CJ6f062mi7eheJNIQdmT
+gh6zCfieZYB8fmtdQE9BpFp94COoIJsUG1YQmSkeAe/0Mcg5I17gsklbHJ5w9R6Q
+vi160PP7zFo32nsuv/tiYaLXgtRTFAuxQCSAbnveDFbRFTDBLNDxgRr4vEv6y3Pp
+sWcPGYX0X5Od0re6LAmiaIlCuttCVrRQd68hZlAJckVKr5qDPAFcLeVN0IrNpZkQ
+WoYLbOb68zDJm8zHuS5w5cJAmyJllNqh7w/+75yDepgBp2QG2fY9c84ZnSjmVqLw
+SZQbhLkfW6wg6FfUYEEjSEoRhK3cRA==
+=e60A
+-----END PGP SIGNATURE-----
 
-Knowing people's interests helps with triaging proposals and
-making the micro-conf as relevant as possible.  See you there!
-
-Thanks,
-Guillaume & Shuah & Sasha
+--Ntdr80yw2aStC9cx--
