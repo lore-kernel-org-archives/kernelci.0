@@ -1,84 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B18636AF2
-	for <kernelci@lists.linux.dev>; Wed, 15 May 2024 17:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34903629E6
+	for <kernelci@lists.linux.dev>; Fri, 17 May 2024 13:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715792988; cv=none; b=Grgm/X5Mn0LZ/rjk5z7CmQKyOSCzjICvNV2DiKPZ47ZdMTxJmAQUCFDIhyWzp4vUx1A3oQo3AMOl+F+v/8iXKWHeKQXNPp59pUGxkvcvOqr29DvIj6mht9nVKQ4PtCJXz3aB5+oD7ObZDxXdoWOKhS/OuyixewkqkHKqwiABGUM=
+	t=1715953269; cv=none; b=OopbCs2kBL4yqvSajbHSPxp1iJaDP9Wh1hv+PtJKtISKRb0mf20n09ZBEFArkNGMTucJokdqz8FyrZZlVaD5Tt33StkZwBKkQLzay4BVGPstfq32/EO0NPaKwHBjo0nBPieZusVDXm5IdmOR27itkF3/1lgJx21R+b7HMF8AO1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715792988; c=relaxed/simple;
-	bh=WKeh4HW0IH1wYgoMAGQHaSNB9H+/wFKPVoi5btifs+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BNrEsIyOC1QJkfDwdYIGY/R1aKessE07upRFFQEq/wV6gMTaSUSKIijr9U4PFVjdXmDxXAv0DkATmKaC/tY6fV2wKW5jgGFZ7hE3KGx9UAYMJgOkgbfJCgaZgx1Ih4j2+b8MGDzjeVVIXgZXL2JRVm2Pos88d1VQ9c7xh5TGXOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVn4zeDl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1715953269; c=relaxed/simple;
+	bh=+jxDhrDV06nBBbuYu08nUZ7TChAPAufZsUInOK5IJCQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=a9WhXgOPDLJobm8FN4oIKr0yUKVqmyI5ZzaZ6bUaGEJmvWMw/Lv8GuxlusCZa2w2Ibuqs74Oh0RKcKX/UoDnGvB4GseX7TfE2XZVxk23dA3+wJUWKjmiVIu5CgH3Rs07PbOx8aOIfVxNYv3qLWSSgpQ5nl1s/Sk2OPlrRpBoK1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=LUu9vZSE; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVn4zeDl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6756C116B1;
-	Wed, 15 May 2024 17:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715792988;
-	bh=WKeh4HW0IH1wYgoMAGQHaSNB9H+/wFKPVoi5btifs+4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cVn4zeDlQFMDfqcfKzaTFpdBUD8bT3uq+dVlmvjxhHdKxpx63n2HLZoJ9D+vkA/Sl
-	 oe3g7Par2GUz3Zf/lYISvYm4ycsWJcr1u+pF0UKAFoS13YARn5LQ6YLMmM2bQaSe2E
-	 7Su9F8oTto781s7q/Faws+AQw2MBjQw3V7YumhP31CEYUJsTtUCq85u+Rqp2lzzBHh
-	 sr085AaBpLHllCNs4eSV1eOaA6oncFqxPhZwzql9qsNd0eewGxzrDodABkE4pPzzV6
-	 aUyDWmmGNkSB266xReS/OYzLHwRrYQfITuYH6hPismg0DSvhA5curKOY9BdCJaf26e
-	 wmz9kqgxuuJ/A==
-Date: Wed, 15 May 2024 18:09:44 +0100
-From: Mark Brown <broonie@kernel.org>
-To: kernelci-results@groups.io, bot@kernelci.org
-Cc: kernel-build-reports@lists.linaro.org, kernelci@lists.linux.dev
-Subject: Re: next/master build: 174 builds: 12 failed, 162 passed, 13 errors,
- 11657 warnings (next-20240515)
-Message-ID: <59c655f0-1077-481c-b5b2-ec830990c138@sirena.org.uk>
-References: <6644e7e2.170a0220.e1869.edb7@mx.google.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="LUu9vZSE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1715953266;
+	bh=+jxDhrDV06nBBbuYu08nUZ7TChAPAufZsUInOK5IJCQ=;
+	h=Date:To:Cc:From:Subject:From;
+	b=LUu9vZSEtRQ1sNc03jps+fPI2C9ZQ32DWY55SmjLWz+f/fkPXnWJQjEu3XtLEBEFA
+	 /Qrm/Um19or+rCUYIagq3G+zQXEw7vjzfWieVnmps8/RG8NphhjiXJHo6A3P0JVEOZ
+	 l9nHAyYLt19OP29GSnmR3nI7zAx1lXoqRdJWXv9ziYzApx82qOwQE+oUfb6Xa/D/Kf
+	 ggyL6eNK6nitRUWW8tnUNqhu1ljP49goD5UWybEU539OJy/S2lC7uJpWwkHWvfZTFG
+	 di1Ha+0xiRrV9FtIsIKr6U+YxBOo9UPlTCEO/TCjDkJeuobpfufmBHK0bzNs4jOuYK
+	 W/5/cPLc5pwYQ==
+Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: padovan)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C8BC737821BF;
+	Fri, 17 May 2024 13:41:05 +0000 (UTC)
+Message-ID: <2b1ca3bb-c49a-ce2d-2d86-821dfa6854a4@collabora.com>
+Date: Fri, 17 May 2024 09:41:04 -0400
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Ntdr80yw2aStC9cx"
-Content-Disposition: inline
-In-Reply-To: <6644e7e2.170a0220.e1869.edb7@mx.google.com>
-X-Cookie: When in doubt, lead trump.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+To: linuxtv-ci@linuxtv.org
+Content-Language: en-US
+Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ Denys Fedoryshchenko <denys.f@collabora.com>
+From: Gustavo Padovan <gus@collabora.com>
+Subject: linux-media checkout failing for KernelCI
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
---Ntdr80yw2aStC9cx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Media maintainers,
 
-On Wed, May 15, 2024 at 09:50:42AM -0700, KernelCI bot wrote:
-> next/master build: 174 builds: 12 failed, 162 passed, 13 errors, 11657 wa=
-rnings (next-20240515)
->=20
-> This legacy KernelCI providing this report will shutdown sometime
-> soon in favor of our new KernelCI infra. Not all tests are being
-> migrated.
-> If you are still using this report and want us to prioritize your
-> usecase in the new system, please let us know at
-> kernelci@lists.linux.dev
+We are struggling to use the media tree, in the same way we usually 
+virtually all other trees in KernelCI. The following commands gives 
+KernelCI a fatal error.
 
-I'm not specifically using these emails so much, but I do use the web
-dashboard version of the same thing a fair bit.
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+cd linux
+git remote add media https://git.linuxtv.org/media_tree.git
+git remote update media
+git fetch --tags https://git.linuxtv.org/media_tree.git
+fatal: Couldn't find remote ref HEAD
 
---Ntdr80yw2aStC9cx
-Content-Type: application/pgp-signature; name="signature.asc"
+We are in the process of enabling a lot of testing for media using 
+fluster/gst and the ChromeOS Tast PlatformDecoder tests. I am not a git 
+behavior expert, so we want to start this thread to discuss possible 
+solutions as the media tree is for some reason deviating from some tacit 
+standard.
 
------BEGIN PGP SIGNATURE-----
+Thoughts?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZE7FcACgkQJNaLcl1U
-h9C7kgf/RNrAa+59dJZER9mi3GM0309QXAtpY9VEs7w0CJ6f062mi7eheJNIQdmT
-gh6zCfieZYB8fmtdQE9BpFp94COoIJsUG1YQmSkeAe/0Mcg5I17gsklbHJ5w9R6Q
-vi160PP7zFo32nsuv/tiYaLXgtRTFAuxQCSAbnveDFbRFTDBLNDxgRr4vEv6y3Pp
-sWcPGYX0X5Od0re6LAmiaIlCuttCVrRQd68hZlAJckVKr5qDPAFcLeVN0IrNpZkQ
-WoYLbOb68zDJm8zHuS5w5cJAmyJllNqh7w/+75yDepgBp2QG2fY9c84ZnSjmVqLw
-SZQbhLkfW6wg6FfUYEEjSEoRhK3cRA==
-=e60A
------END PGP SIGNATURE-----
+Best,
 
---Ntdr80yw2aStC9cx--
+- Gus
+
+-- 
+Gustavo Padovan
+Kernel Lead
+
+Collabora Ltd.
+Platinum Building, St John's Innovation Park
+Cambridge CB4 0DS, UK
+Registered in England & Wales, no. 5513718
+
