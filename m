@@ -1,92 +1,197 @@
-Received: from mailgw.nuclearcat.com (mailgw.nuclearcat.com [78.47.178.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BD11A2C20
-	for <kernelci@lists.linux.dev>; Fri, 17 May 2024 21:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.47.178.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82385478B;
+	Tue, 21 May 2024 09:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715982517; cv=none; b=SqqQq0mu+DNnuyQxTe1HfDgpIYNW6mx8bwzeqnqlvypf0hsZGZ/g262GmFl2MvHS1OwmEYdMhUrKi0YWW5VbMB2IL/nwdV0aSRzu3hhDVh5kRlmu9Cz5ih+ilYe7OXZC00vrJIhZMtBgpoflxskQXk2RkZTU3EhNnoNqbC1hTGI=
+	t=1716283709; cv=none; b=YTu23V+IXHYS2JTORSrlSL0D8IXoMwi2KNrwcg/jnZ+2oKrkxh76HtC42jFE/Yy/Yp3RNOMxAT9fYYP5Ucq+EffSxgj0JJlKwMHHdGq6yjFdYE68DMWGa6EvzBgqXbHuudPfznu7T3wmABbqhfY+OtbG6Ih2MGAUBf8nR67WVuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715982517; c=relaxed/simple;
-	bh=icF4a1LikVZbtIkqcGc6l1s5cfrO4tXyVIilJT8tBGc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HDjBqU8Udc5Jmuf645deDfUF/qw7t2AACldjqQruL2KJ6WQx3wMXdTpKTVv//4pXmyB7wGNgRftqnbd8pb7T6uIZ9XWP5TC6VoJa7+j6d0n7HOwkjtz0xiGT3GpNWQIFOjrPstuapihmCOnKqGCFLvp+ZM+Tgyw81IP4/JuQjm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nuclearcat.com; spf=pass smtp.mailfrom=nuclearcat.com; dkim=pass (2048-bit key) header.d=nuclearcat.com header.i=@nuclearcat.com header.b=vNB0Elad; arc=none smtp.client-ip=78.47.178.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nuclearcat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuclearcat.com
+	s=arc-20240116; t=1716283709; c=relaxed/simple;
+	bh=vu4Fr4NnQHtFu5eBOffzT74hbPy+G9MfIqvA0bqoLfU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=b3pKvs+o/bm53gG89RtvzcplkyYW1v156/+GRXD7vNmAby1QRyZSnMRqV/jKWwx7lB5eZrQZHNXzRvzAsdPok5VA3oVIYpR6aLP1xocAfrCkx9fsKdF4lbGdjih+mjRvSNRLRUJ8pW9lNt5VD3g+L6jxt0tUps6k1GZfENCL3GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omHaxv8U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nuclearcat.com header.i=@nuclearcat.com header.b="vNB0Elad"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3E58607EB;
-	Sat, 18 May 2024 00:40:10 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nuclearcat.com;
-	s=dkim; t=1715982011;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:autocrypt;
-	bh=icF4a1LikVZbtIkqcGc6l1s5cfrO4tXyVIilJT8tBGc=;
-	b=vNB0EladQQ2dVkZHYG7FJPnUyOxosgdds2TJOkPbQyRkExa9uQ7Qpxi4Ewk2Cp4fL07LlF
-	xQo7Aul312yuQrMV1htG9+JUAYNrQjAllyUALcSSudk3NevwwAbhr+dOL6LRoNZuAtPnKn
-	hYpxy+Aas59NhUpif00moo4CSmYQMQkGrBmq3NMBHUr1BTPhUg2IvupJ50GvOvAcZLhu9C
-	fsW0Om4gkCxWCPbuOXEIKSl+vI8v2PX+2k9yS8DyXwgoA7ng3kSq+KUh++xyOWzen63CAw
-	87jMnHE12bM4XQQlcQ9d689a9RNHaUhke9BXn9RTrxDf9Sb00CONMvUYQPExdw==
-Message-ID: <78fd3f63760c0670cee4a8a4ac99a91a2b62706f.camel@nuclearcat.com>
-Subject: Re: linux-media checkout failing for KernelCI
-From: Denys Fedoryshchenko <nuclearcat@nuclearcat.com>
-To: Gustavo Padovan <gus@collabora.com>
-Cc: linuxtv-ci@linuxtv.org, "kernelci@lists.linux.dev"
-	 <kernelci@lists.linux.dev>, Denys Fedoryshchenko <denys.f@collabora.com>
-Date: Sat, 18 May 2024 00:40:03 +0300
-In-Reply-To: <8edccc0b-d71a-b6ec-392f-3946f768db05@collabora.com>
-References: <2b1ca3bb-c49a-ce2d-2d86-821dfa6854a4@collabora.com>
-	 <CABXOdTdhkEADZO2YXM_RPdLooo7Lo9=WqsWS1euXxKqFLE6g9A@mail.gmail.com>
-	 <8edccc0b-d71a-b6ec-392f-3946f768db05@collabora.com>
-Autocrypt: addr=nuclearcat@nuclearcat.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0-1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omHaxv8U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6333FC4AF07;
+	Tue, 21 May 2024 09:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716283709;
+	bh=vu4Fr4NnQHtFu5eBOffzT74hbPy+G9MfIqvA0bqoLfU=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=omHaxv8UqD3LFxWqgzUNsyO6tACio0yOaRVMzFye9QZ/qJNp6cNQr0UvJVp/4Avid
+	 6U1H6sZaemnnsr40Pg4Ht3rmux9P4Mzx5l1XI3uLUDAL2jcf8lvdCzgKyaE+vFIf80
+	 qcF4N2wlwKiJzaxB3ZeuolKbTQS4kn3AUXZK7NB+yWRxojT0HV4N/nU0/hYEU7AiNM
+	 ofhCMO74eWNQTnLzekiPXedVkuKXwVRJJboiD3zYbxaxpQAeqi3Hu8Pz6D/6PH4GeR
+	 soTOpWI1wnyHRYvBisDBNRlfq23AHV0FGPmixl5LiKCmfqTHS8O/EMYwf7Q3nGfdPC
+	 Tw7uecJM7mxEg==
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 May 2024 12:28:22 +0300
+Message-Id: <D1F7SODNAG8W.1OR5BWUWSM4EA@kernel.org>
+Subject: Re: [PATCH 0/3] kci-gitlab: Introducing GitLab-CI Pipeline for
+ Kernel Testing
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Helen Koike" <helen.koike@collabora.com>, <linuxtv-ci@linuxtv.org>,
+ <dave.pigott@collabora.com>, <mripard@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kselftest@vger.kernel.org>, <gustavo.padovan@collabora.com>,
+ <pawiecz@collabora.com>, <spbnick@gmail.com>, <tales.aparecida@gmail.com>,
+ <workflows@vger.kernel.org>, <kernelci@lists.linux.dev>,
+ <skhan@linuxfoundation.org>, <kunit-dev@googlegroups.com>,
+ <nfraprado@collabora.com>, <davidgow@google.com>, <cocci@inria.fr>,
+ <Julia.Lawall@inria.fr>, <laura.nao@collabora.com>,
+ <ricardo.canuelo@collabora.com>, <kernel@collabora.com>,
+ <torvalds@linuxfoundation.org>, <gregkh@linuxfoundation.org>
+X-Mailer: aerc 0.17.0
+References: <20240228225527.1052240-1-helen.koike@collabora.com>
+In-Reply-To: <20240228225527.1052240-1-helen.koike@collabora.com>
 
-On Fri, 2024-05-17 at 12:57 -0400, Gustavo Padovan wrote:
->=20
->=20
-> On 5/17/24 11:29, Guenter Roeck wrote:
-> > On Fri, May 17, 2024 at 6:41=E2=80=AFAM Gustavo Padovan <gus@collabora.=
-com>
-> > wrote:
-> > >=20
-> > > Hi Media maintainers,
-> > >=20
-> > > We are struggling to use the media tree, in the same way we
-> > > usually
-> > > virtually all other trees in KernelCI. The following commands
-> > > gives
-> > > KernelCI a fatal error.
-> > >=20
-> > > git clone
-> > > git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> > > cd linux
-> > > git remote add media https://git.linuxtv.org/media_tree.git
-> > > git remote update media
-> > > git fetch --tags https://git.linuxtv.org/media_tree.git
-> > Why not "git fetch --tags media" instead of the last two commands ?
-> > That is working for me, and it is what I always use when fetching
-> > remote repositories.
->=20
-> Hmm. Maybe we were just being newbies with the way KernelCI does it.
-> :)
-Actually, the problem is that this "magical sequence" in the legacy
-code was written years ago, and git blame gives incorrect results, so i
-can't ask author "why?".=C2=A0
-It=E2=80=99s a sort of "Chesterton's Fence" in the legacy library.
+On Thu Feb 29, 2024 at 12:55 AM EET, Helen Koike wrote:
+> Dear Kernel Community,
+>
+> This patch introduces a `.gitlab-ci` file along with a `ci/` folder, defi=
+ning a
+> basic test pipeline triggered by code pushes to a GitLab-CI instance. Thi=
+s
+> initial version includes static checks (checkpatch and smatch for now) an=
+d build
+> tests across various architectures and configurations. It leverages an
+> integrated cache for efficient build times and introduces a flexible 'sce=
+narios'
+> mechanism for subsystem-specific extensions.
+>
+> tl;dr: check this video to see a quick demo: https://youtu.be/TWiTjhjOuzg=
+,
+> but don't forget to check the "Motivation for this work" below. Your feed=
+back,
+> whether a simple thumbs up or down, is crucial to determine if it is wort=
+hwhile
+> to pursue this initiative.
+>
+> GitLab is an Open Source platform that includes integrated CI/CD. The pip=
+eline
+> provided in this patch is designed to work out-of-the-box with any GitLab
+> instance, including the gitlab.com Free Tier. If you reach the limits of =
+the
+> Free Tier, consider using community instances like https://gitlab.freedes=
+ktop.org/.
+> Alternatively, you can set up a local runner for more flexibility. The
+> bootstrap-gitlab-runner.sh script included with this patch simplifies thi=
+s
+> process, enabling you to run tests on your preferred infrastructure, incl=
+uding
+> your own machine.
+>
+> For detailed information, please refer to the documentation included in t=
+he
+> patch, or check the rendered version here: https://koike.pages.collabora.=
+com/-/linux/-/jobs/298498/artifacts/artifacts/Documentation-output/ci/gitla=
+b-ci/gitlab-ci.html .
+>
+>
+> Motivation for this Work
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> We all know tests are a major topic in the community, so let's mention th=
+e
+> specificities of this approach:
+>
+> 1. **Built-in User Interface:** GitLab CI/CD is growing in popularity and=
+ has an
+> user-friendly interface. Our experience with the upstream DRM-CI in the k=
+ernel
+> tree (see this blog post [https://www.collabora.com/news-and-blog/blog/20=
+24/02/08/drm-ci-a-gitlab-ci-pipeline-for-linux-kernel-testing/] )
+> has provided insights into how such a system can benefit the wider commun=
+ity.
+>
+> 2. **Distributed Infrastructure:**
+> The proposed GitLab-CI pipeline is designed with a distributed infrastruc=
+ture
+> model, being possible to run in any gitlab instance.=20
+>
+> 3. **Reduce regressions:** Fostering a culture where people habitually ru=
+n
+> validated tests and post their results can prevent many issues in post-me=
+rge
+> tests.
+>
+> 4. **Collaborative Testing Environment:** The kernel community is already
+> engaged in numerous testing efforts, including various GitLab-CI pipeline=
+s such
+> as DRM-CI, which I maintain, along with other solutions like KernelCI and
+> BPF-CI. This proposal is designed to further stimulate contributions to t=
+he
+> evolving testing landscape. Our goal is to establish a comprehensive suit=
+e of
+> common tools and files.
+>
+> 5. **Ownership of QA:**=20
+> Discrepancies between kernel code and outdated tests often lead to misatt=
+ributed
+> failures, complicating regression tracking. This issue, often arising fro=
+m
+> neglected or deprioritized test updates, creates uncertainty about the so=
+urce of
+> failures. Adopting an "always green pipeline" approach, as detailed in th=
+is
+> patch's documentation, encourages timely maintenance and validation of te=
+sts.
+> This ensures that testing accurately reflects the current state of the ke=
+rnel,
+> thereby improving the effectiveness of our QA processes.
+>
+> Additionally, if we discover that this method isn't working for us, we ca=
+n
+> easily remove it from the codebase, as it is primarily contained within t=
+he ci/
+> folder.
 
+Not to criticize but I can do  tests I ever want with either Github
+or Gitlab simply by bootstrapping BuildRoot on top of whatever the CI
+runner has. So I essentially need just enough deps to make a BR build,
+and that's it. And e.g. could run x86 tests on ARM ISA runner with zero
+issues. And can even have emulated TPM chip in the QEMU VM by building
+swtpm.
 
+I had this for some time running actually Gitlab runner. It does not
+currently build QEMU but then it also did that:
+
+https://gitlab.com/jarkkojs/linux-tpmdd-test
+
+Essentially just executing this sequence:
+
+git clone https://gitlab.com/jarkkojs/linux-tpmdd-test.git
+cd linux-tpmdd-test
+cmake -Bbuild && make -Cbuild buildroot-prepare
+make -Cbuild/buildroot/build
+build/buildroot/build/images/run-tests.sh
+
+I use TCL's "expect" to make conclusions from the output :-)
+
+I'm assuming that this has a bigger point that I can understand right
+now but makes me a bit puzzled given that it is quite trivial problem
+to my understanding (if you want to pursue to it). Like one work=20
+week maybe but not more than that...
+
+Especially it feels weird that it needs kernel to be patched at all and
+when I did read the motivation but it has sort of whitepaperish stuff
+that does not really explain me the edge of this compared to e.g. to my
+ad-hoc but still very usable solution (which is agnostic to runner's CPU
+architecture, can emulated hardware and works in any possible hosting
+with CI).
+
+So maybe my review comment it this: do not assume that this would be
+entirely new thing. It is not, and I'm sure some other people have
+done this too in the past rather than just me. Instead this should
+explain why this is so great that even kernel tree needs to be patched?
+
+BR, Jarkko
