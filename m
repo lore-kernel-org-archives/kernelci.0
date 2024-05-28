@@ -1,98 +1,66 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177D83CDA
-	for <kernelci@lists.linux.dev>; Thu, 23 May 2024 19:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2A939FFB
+	for <kernelci@lists.linux.dev>; Tue, 28 May 2024 18:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716494270; cv=none; b=euq6iK+zjiLrEr8GyKgUYGKfJ4KZZYRt5Ky088OBeku8eTgJCcN4TNbAdEFaW/t7XhfMWVyLbeu7UMS41lh1bmJnpF6M6GA/iR3qYs6KNadKhZoRbPBs2Yba41EhuhyIrVLN0eVXd21uGBBTkBsTVyT46Cf/8cCYjAk090EizpI=
+	t=1716922562; cv=none; b=OHI5O7YeEzgl0fa+agz9JL6/GZd1BKepSHbA//NhYeWS2D3G1RuzBtqRExlqxldPUsshnMHFNil1c7qR4i64ajLNmtwQ64bYiVn6D+9TlQunyuvWnkCH9lJwpaFKx86rB6pUGoj0Sz+WVWfkS2MoyiQLbsfZJ9EjDyIQ6LHxxAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716494270; c=relaxed/simple;
-	bh=8AeLV7XT4lTSJ7P3DpGUITLHfRw2+rYg+Nj1LIbPq40=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=Qs+A9DRd2aKLSQBJwFUZ7Chgn4yKrjU5IbNDFN+8NXmatkcSPg/nQBbObn8uMAPu1gN7Dj5DZCdDAVytKVHEKrIyRtAfJakNjqIRSjmOppMU1C+tcmLhPwNOvg4bJcOEj9ACi58BByA1I31JsDpG5G2jm1hTvuDVS/RcwokkDFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
-	by madrid.collaboradmins.com (Postfix) with ESMTP id EA4363782112;
-	Thu, 23 May 2024 19:57:46 +0000 (UTC)
-From: "Gustavo Padovan" <gus@collabora.com>
-In-Reply-To:  <BY5PR02MB67543462B27CBA2C56BE5249B0F42@BY5PR02MB6754.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 127.0.0.1
-References: <b51eab8a-41cd-4439-8434-076d09b60ed4@gmail.com>  <BY5PR02MB67543462B27CBA2C56BE5249B0F42@BY5PR02MB6754.namprd02.prod.outlook.com>
-Date: Thu, 23 May 2024 20:57:46 +0100
-Cc: "Nikolai Kondrashov" <spbnick@gmail.com>, =?utf-8?q?kernelci=40lists=2Elinux=2Edev?= <kernelci@lists.linux.dev>, =?utf-8?q?kernelci-tsc=40groups=2Eio?= <kernelci-tsc@groups.io>
-To: "Trilok Soni" <tsoni@quicinc.com>
+	s=arc-20240116; t=1716922562; c=relaxed/simple;
+	bh=4iV6UzxXWrmUOvthmfb6MoOnqWr7/pxFTEFGwYlpiO8=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=uhoLK9e3Y+tjpnxY0hkhzDn3r4FQHtUYmyrjAnz5pdp0f+palZyRQp5+O76lnVZIKBNtyJJK25MLZwEJmfzkoFgJj7SRlCpjqpl41mmhVEp8jnvEItK1J4UUNExsRN/FtJOvEQ82Xnc4IjAr/TQ4sf5L3DR6Pu/Ef3l7PdYj650=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-68187c5534cso774400a12.0
+        for <kernelci@lists.linux.dev>; Tue, 28 May 2024 11:56:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716922559; x=1717527359;
+        h=mime-version:message-id:date:references:in-reply-to:subject:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4iV6UzxXWrmUOvthmfb6MoOnqWr7/pxFTEFGwYlpiO8=;
+        b=fSDcNprCSXyhhAwtuNqCrdOyF/2urRXyy4+N+obuDRY6h243di2GJj2JIONRYUWiHu
+         GYaUEa9XdsNynvcbIH/OVv0uo9kjskfO5At+bzsT20+2nIFIDec05BiXeqaGNcNIzI9+
+         j15aBnAoD4tnd0aAzcsOoBjtw702ac1NitXT6UE0G+W1dZcE/yFQBYcZcgJfY4NoLMmx
+         Ppt4XspQHzfevKZb8rFZprAN3XKRWRxDPe8bvYkhe0Fzyrd0J9NmczT8Pf64iksAjyr4
+         x35bAFYBGvI6bbmNn23E/yBIG+jnq4THeIBL+biKXU5K2G+PHYptbtHv8Xbdszpejny5
+         OG4g==
+X-Forwarded-Encrypted: i=1; AJvYcCXuv0FyP2XuzfRCeNcWcwUJAsSJSi/1pIyAYWr6I/H805FnV6iK9GtrjeQc7qEh5gGiBac9q4h4EOGYGPzoMRrPM5NAvpwPq7A=
+X-Gm-Message-State: AOJu0YyvnttWunRN6GYtf7GvpNSlqgwG7FyMGCLxRLC4hS85MnE6qIR7
+	62c2VjSGvgupB9cS1a7hSdu8lONItbNAb3q8np9bl+RQX0aVP6o1DWZ7zftQYKY=
+X-Google-Smtp-Source: AGHT+IFeqWW6ut+ijqsH7tZPBhmmVVrCyHdvFo4XbvrgdmXda4ELYywRZTiDRswRZz2mkd5n7VfaEg==
+X-Received: by 2002:a17:902:db0d:b0:1f4:8a69:dab8 with SMTP id d9443c01a7336-1f48a69e464mr75976085ad.56.1716922559585;
+        Tue, 28 May 2024 11:55:59 -0700 (PDT)
+Received: from localhost (75-172-111-169.tukw.qwest.net. [75.172.111.169])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f44c7d1b46sm83870365ad.110.2024.05.28.11.55.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 May 2024 11:55:59 -0700 (PDT)
+From: Kevin Hilman <khilman@kernel.org>
+To: Nikolai Kondrashov <spbnick@gmail.com>, "kernelci@lists.linux.dev"
+ <kernelci@lists.linux.dev>, "kernelci-tsc@groups.io"
+ <kernelci-tsc@groups.io>
+Subject: Re: New name for new "KernelCI"
+In-Reply-To: <b51eab8a-41cd-4439-8434-076d09b60ed4@gmail.com>
+References: <b51eab8a-41cd-4439-8434-076d09b60ed4@gmail.com>
+Date: Tue, 28 May 2024 11:55:58 -0700
+Message-ID: <7hed9l3gw1.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-ID: <195626-664f9f80-23-758bf280@3007099>
-Subject: =?utf-8?q?RE=3A?= New name for new =?utf-8?q?=22KernelCI=22?=
-User-Agent: SOGoMail 5.10.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thursday, May 23, 2024 13:10 EDT, Trilok Soni <tsoni@quicinc.com> wr=
-ote:
+Nikolai Kondrashov <spbnick@gmail.com> writes:
 
-> Nikolai,
->=20
-> How about Yuga? It means following.=20
->=20
-> Yuga:
-> Meaning: =E2=80=9CEra=E2=80=9D or =E2=80=9CAge.=E2=80=9D
-> Attributes: Experienced (through time), powerful, and open.
-> Context: Yuga represents cycles of time and evolution.
+[...]
 
-That's interesting. One thing that I have been saying a lot lately is t=
-hat we have a kernel that is 33 years old already, so the KernelCI arch=
-itecture we have been putting in place lately is to be a foundation of =
-something that will last generations.
-
-The thing we need to name sits at the center of that coordinating tests=
- specs, triggers, running tests and facilitating the job for multiple C=
-I systems to join the party.
-
-Best
-
-- Gus
-
->=20
-> ---Trilok Soni
->=20
-> -----Original Message-----
-> From: Nikolai Kondrashov <spbnick@gmail.com>=20
-> Sent: Thursday, May 23, 2024 8:55 AM
-> To: kernelci@lists.linux.dev; kernelci-tsc@groups.io
-> Subject: New name for new "KernelCI"
->=20
-> WARNING: This email originated from outside of Qualcomm. Please be wa=
-ry of any links or attachments, and do not enable macros.
->=20
-> Hi everyone,
->=20
-> As you know, we've been developing the new KernelCI API [1], and the =
-kernelci-pipeline [2] based on it, for quite a while.
->=20
-> However, by now it seems that too many things are being called "Kerne=
-lCI": the project, pieces of the old system, pieces of the new system. =
-We would also like to give the name of KernelCI the project a wider sco=
-pe than just a particular CI system, and accommodate more packages/proj=
-ects under its name.
->=20
-> So we would like to propose to call the new system "KernelCI <Somethi=
-ng>".
->=20
-> And this message is about that "<Something>".
->=20
-> I think it would be good to have the new name associate with one or m=
-ore of the below qualities/functions (but feel free to dispute and exte=
-nd this):
->=20
+> I think it would be good to have the new name associate with one or more of
+> the below qualities/functions (but feel free to dispute and extend this):
+>
 > * focused
 > * simple
 > * powerful
@@ -102,48 +70,20 @@ nd this):
 > * commanding (a fleet)
 > * kernel-related
 > * bug-related
->=20
-> One of the current working names, that Gustavo Padovan has proposed, =
-is "Maestro". As in "KernelCI Maestro". It hits the following associati=
-ons:
-> focused, powerful, experienced, commanding.
->=20
-> As a joke and to come up with an example, I suggested "Kraken", that =
-is "KernelCI Kraken", which hits these: powerful, experienced (it's old=
-), simple (minded), focused (on sinking ships), distributed (it has ten=
-tacles),
->=20
-> Keeping things short, here are all the ideas so far, in alphabetic or=
-der:
->=20
-> * KernelCI Anthill - bug-related, distributed, commanding, focused
-> * KernelCI Arrow - focused, simple, powerful
-> * KernelCI Kraken - powerful, experienced, simple, focused, distribut=
-ed
-> * KernelCI Lens - focused, powerful, simple
-> * KernelCI Lighthouse - focused, simple, powerful, commanding, experi=
-enced
-> * KernelCI Maestro - focused, powerful, experienced, commanding
-> * KernelCI Needle (in a haystack) - focused, simple, powerful, experi=
-enced
-> * KernelCI Nucleus - kernel-related, simple, powerful (when split)
-> * KernelCI PristineCI - simple, open
-> * KernelCI Pulse - focused, simple, powerful, experienced
-> * KernelCI Tamandu=C3=A1 (anteater in Spanish) - bug-related, simple,=
- focused
-> * KernelCI Trails - focused, experienced, distributed
-> * KernelCI Warden - focused, powerful, experienced, commanding
->=20
-> I would appreciate any arguments and ideas about this. Once we have a=
-ll the names we can think of, and strike out ones we definitely don't l=
-ike, I'll create and post a poll here to pick one.
->=20
-> Thank you!
->=20
-> Nick
-> TSC Chair
->=20
-> [1] https://github.com/kernelci/kernelci-api
-> [2] https://github.com/kernelci/kernelci-pipeline
 >
+> One of the current working names, that Gustavo Padovan has proposed, is
+> "Maestro". As in "KernelCI Maestro". It hits the following associations:
+> focused, powerful, experienced, commanding.
 
+For these central software building blocks that coordinate much of what
+happens, the image of the orchestra conductor definitely comes to mind,
+so I think Maestro is perfect.
+
+> As a joke and to come up with an example, I suggested "Kraken", that is
+> "KernelCI Kraken", which hits these: powerful, experienced (it's old), simple
+> (minded), focused (on sinking ships), distributed (it has tentacles),
+
+Also the name of my local (Seattle) pro hockey team, so I like that one
+too. :)
+
+Kevin
