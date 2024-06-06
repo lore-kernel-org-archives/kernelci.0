@@ -1,99 +1,154 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2F0192B6B
-	for <kernelci@lists.linux.dev>; Wed,  5 Jun 2024 11:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788B4198E9E
+	for <kernelci@lists.linux.dev>; Thu,  6 Jun 2024 18:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717585521; cv=none; b=LC83xLw6i3iiFnLux7i7rva8skmE7MAvAuVR74oJfaU9NlmFAzVnwLSOzaYLho8GtrUxzraXfazJKjLkvxd29f2kvuE5NF7uXeUUunPfMeacmRXjgKGG1o7EcB9cK33frFd4OxS2meZPqxkqXKt6LQhRbAgXc7AfCscPneL3XV0=
+	t=1717698290; cv=none; b=QKb6kF715iZfoyKMzbir4MNn2K91at82Vbde3+X+1GAT4gYyLWGTpDZ6PudOmw9i6kqtWTxCz4rWNnJjwLULeP50g9UR6Iyh7XWUli2Ej1iqCYH2su9LzbtxR0WgeECnBRrbtWYCmJe5buf/DkSz7M9wB6ybbph3aJx5FzxfLoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717585521; c=relaxed/simple;
-	bh=pX4glVwkda4XhRdV/kQehsla7SyzhNyaSd2fgYoRl/c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=k0HJ5/2eKuuGYJsBbPi2CoTXQ4shJ+v1kVP6WIoLPcAmIqJmOCNEOSF2QQqUhkoqFtuPhxYyOIV5kEx2gFSSfAI6eycv8zlbpaFjsImoSDOlXS8JAoeOiS21POlHPcLjgId7Lyv8LmV9K2wJY4dXHvnHaQIqaZKXAXeecgf6sE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D/KbtmGC; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717698290; c=relaxed/simple;
+	bh=nFNwZjwWrvyOyNkS5EL5RDmYDz9n7HpbU1l2B+KUFYE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=AlO/uZLJIAnPI1nzKorVH6IcMeEAw7mPzTbxd8c7E0G1uGeA/IgiuQZ6sN/IfF+dyPHF2gO8+smbzgZ5JmPLvev0VT7ZUfeD41mRQTjaRQbXm5UrrrMPXRlAI3CkqZeBNAl4qGLBCZDEhprITTpwEjdst98VRAVzhDtid1bv3KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WTb7nrrf; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D/KbtmGC"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2eaafda3b90so40867081fa.0
-        for <kernelci@lists.linux.dev>; Wed, 05 Jun 2024 04:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717585518; x=1718190318; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pX4glVwkda4XhRdV/kQehsla7SyzhNyaSd2fgYoRl/c=;
-        b=D/KbtmGCzpuLTBFca2ZPqJ7Vi9TaNwkidU0wOVCzPLp8mzmWqL3VKrm76Nbh0o21Iz
-         BPsuX+WjVEanZJH7ytu4cC3s/q4/LpCotbPbbx65VTiQCwcgDiPf7zWW+S/6ABmpE4nH
-         /PHP+i/THWqfi+z7vWW8DZwkSNUSNTJFEGAdh5+B1tsmhNzZoz3L+tXqdZgHupCoNZPh
-         3/t4IykoOjlWzQEdEmXDPyLecBebntDXAnNibnJcav0970Qdd6JZtx4zeTsAuo3kbtKE
-         oY/OiysZ47jZm1inaYhltdxOxIX71Y1DCHHJAN+4BD3xdDovypCFZNgY0kqPLEy/jVtM
-         FQYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717585518; x=1718190318;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pX4glVwkda4XhRdV/kQehsla7SyzhNyaSd2fgYoRl/c=;
-        b=EPXSEo8nBd5WCv0XyPNhGJ9Ft9Hu7CGGjagm3hgGpb8RHRsbWJEWdq9GlDsiNe1Ocg
-         WxYf4cg/js4eYavZki+94wB0qZk+olC4MyloD19ZLo9Hjdtj2iX9436jyLAZciuEYX7w
-         PEmyof0U+V/yZ3hJ/hG1QTwMe/tzVcBFfcJFhoIk3BKkbtgUeZVZ88J1icvHJZSWufEP
-         PlXWxO4vR2EhL8EEpHTouNmpJGq5jbKP/qdn34jq+1bUzA05FS5iuyol2F8qAg7M+sAf
-         mDmkZ+GuqXPgXT+vrP7yxAiAV4MG8fujc1ompbglyt/IDlEc091MntPnq9R/+2ddMShI
-         CBHg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3MbpHiXI/nUXOf4u0VnaK883J0D1jsf+c1LzeZvMXNTWwvMQa07vMhCxzYUK3vQcGhbdU3svUH4OtXH5W1LrJollki2HZJHY=
-X-Gm-Message-State: AOJu0YxqRM5HtKAhDuuMdyBXnsPYpLXJdIzJawWf8PvmIsKsWjpTHlO2
-	L0MPv7F3ZdmSQqJKKLxe/OfVIsIazVwb/cBQox+DN6YXO4zSYzTlr+gf0xvV
-X-Google-Smtp-Source: AGHT+IFUB5RIjBKzv1vvaJRQRXCXoFjyYW4XCVaOHt/R1ansMmqgEDV56/RN+e7ldntuMAgtT1J2jQ==
-X-Received: by 2002:a2e:9993:0:b0:2e9:69ec:f690 with SMTP id 38308e7fff4ca-2eac7a12687mr12045481fa.30.1717585518179;
-        Wed, 05 Jun 2024 04:05:18 -0700 (PDT)
-Received: from [192.168.0.118] (88-113-27-52.elisa-laajakaista.fi. [88.113.27.52])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ea91cc9da9sm17425111fa.99.2024.06.05.04.05.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Jun 2024 04:05:17 -0700 (PDT)
-Message-ID: <78abc55c-c847-4dff-988a-feb829765eba@gmail.com>
-Date: Wed, 5 Jun 2024 14:05:16 +0300
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WTb7nrrf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1717698281;
+	bh=nFNwZjwWrvyOyNkS5EL5RDmYDz9n7HpbU1l2B+KUFYE=;
+	h=Date:To:Cc:From:Subject:From;
+	b=WTb7nrrfCwV39z+ie8e6bJ+jHuahgNpiGfFJiABJr4+k7uCTqsju2A4GBf9J686TS
+	 0J88eez0lCP8rGdK6tjumsFlEIaQvXUH/Tn7C92Ja+oI455n7/LNP9RlxrvMRdFqJW
+	 UmCosevWz8dZ+PImqOgeNnwGRCR/LaQ2D4MJYBtpHov81FBsPbh6CGvY6BBXQak4S+
+	 myHeGSyuSc7BuJTLL6c+YVLtJINNLpaIDtCI4klUQhJJmBJX3YoUSrN893fwiFZmff
+	 ZUssZNl9Hf2FSOjzRsrsVidnrhkTI4fdCCV8nI3OIxv5vPqQMgc0Nnb9QotfGw+SAt
+	 VOdrrR/oGtuWg==
+Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: padovan)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 5B2CA37820A9;
+	Thu,  6 Jun 2024 18:24:40 +0000 (UTC)
+Message-ID: <5b603b8f-c9b2-4148-7212-dd69a3fdf506@collabora.com>
+Date: Thu, 6 Jun 2024 15:24:38 -0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: New name for new "KernelCI"
-To: Guillaume Tucker <gtucker@gtucker.io>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- "kernelci-tsc@groups.io" <kernelci-tsc@groups.io>
-References: <b51eab8a-41cd-4439-8434-076d09b60ed4@gmail.com>
- <20f8a3d0-2246-4762-a981-4690bf6afcf7@gmail.com>
- <8db63860-38a5-482e-8ef9-02acdf13c467@gtucker.io>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
 Content-Language: en-US
-From: Nikolai Kondrashov <spbnick@gmail.com>
-In-Reply-To: <8db63860-38a5-482e-8ef9-02acdf13c467@gtucker.io>
-Content-Type: text/plain; charset=UTF-8
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Cc: "automated-testing@lists.yoctoproject.org"
+ <automated-testing@lists.yoctoproject.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From: Gustavo Padovan <gus@collabora.com>
+Subject: KernelCI switch to new testing architecture - plan
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Guillaume!
+Hello everyone,
 
-On 6/5/24 1:08 PM, Guillaume Tucker wrote:
-> On 05/06/2024 12:00, Nikolai Kondrashov wrote:
->> On 5/23/24 6:54 PM, Nikolai Kondrashov wrote:
->>> As you know, we've been developing the new KernelCI API [1], and the
->>> kernelci-pipeline [2] based on it, for quite a while.
->>>
->>> However, by now it seems that too many things are being called "KernelCI": the
->>> project, pieces of the old system, pieces of the new system. We would also
->>> like to give the name of KernelCI the project a wider scope than just a
->>> particular CI system, and accommodate more packages/projects under its name.
->>>
->>> So we would like to propose to call the new system "KernelCI <Something>".
->>>
->>> And this message is about that "<Something>".
->>
-> Would this encompass KCIDB or would it remain a separate project?
+As most of you know, the KernelCI community developed a new testing 
+architecture.
+It is now time to move over to it. In this message, we want to share 
+some details about
+the upcoming movements, especially about the shutdown of the existing 
+legacy system.
 
-This would be just the KernelCI API/pipeline. I.e. there will be "KernelCI"
-the project, then "KernelCI <Something>" the CI system, and "KernelCI KCIDB".
+In our latest blog post[1], we shared an update about what's coming. 
+ From a strategic
+point of view, not much has changed since that blog post. We made 
+progress on the
+implementations, making the systems more stable, adding more tests and 
+labs and
+refining the data connection with KCIDB.
 
-Nick
+As shared at that time, the primary focus in the new testing 
+architecture is on quality
+rather than quantity. We want high quality test results that will reduce 
+the community's
+workload, and not waste their time with low-quality test results. **As a 
+direct
+consequence of our focus on quality, we will not port all tests from 
+legacy KernelCI
+to the new system**. Reach out to us at kernelci@lists.linux.dev, if you 
+want to see
+specific tests ported and we will give you instructions and support on 
+how to do it.
+
+Current status:
+* ready to receive new trees and tests
+* moving existing labs over
+* developing the new Web Dashboard
+
+The new Web Dashboard should be ready in the coming months for basic 
+visualization.
+In the meantime, we have the grafana instance to build boards to 
+visualize test results
+and also some interim tooling that pulls the data from the API and 
+generates reports.
+If you want to bring your tree and tests over and use our tooling to 
+analyze the results,
+we can onboard you while also benefiting from your feedback to evolve 
+our regression
+tracking intelligence.
+
+We will share more information about the transition as the work evolves 
+in the
+coming months. Don't worry!
+
+The target is to shutdown the legacy system around the end of August[2]. 
+Some labs
+will probably disconnect themselves from legacy KernelCI before that. We 
+can not delay
+the shutdown date much as the amount of cloud resources and engineering 
+is a high
+toll to the project.
+
+**If you are depending on legacy KernelCI, please speak up, so we can 
+help you move
+your stuff over to the new system.**
+
+To be clear, the KernelCI project will not maintain 100% compatibility 
+with what was
+provided by its legacy system. As we create a better future for 
+KernelCI, some hard decisions
+had to be taken; not porting all tests and usecases was one of them.
+
+As we leave our legacy behind, a vibrant community has been gathering 
+around KernelCI in
+the past few months, corroborating the new strategic directions we are 
+putting in place for
+the project. Bear with us during this transition and the future will be 
+brighter!
+
+We are happy to hear thoughts and questions from everyone about the 
+transition. We are
+probably forgetting some important details in this message.
+
+Thank you for your continued support and your patience as the KernelCI 
+project goes
+through its biggest change since its inception.
+
+Best Regards,
+
+- Gus
+
+[1] https://kernelci.org/blog/posts/2024/strategic-updates/
+[2] https://github.com/kernelci/kernelci-project/issues/337
+
+-- 
+Gustavo Padovan
+Kernel Lead
+
+Collabora Ltd.
+Platinum Building, St John's Innovation Park
+Cambridge CB4 0DS, UK
+Registered in England & Wales, no. 5513718
+
