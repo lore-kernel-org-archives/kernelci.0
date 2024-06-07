@@ -1,154 +1,92 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788B4198E9E
-	for <kernelci@lists.linux.dev>; Thu,  6 Jun 2024 18:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C218734E
+	for <kernelci@lists.linux.dev>; Fri,  7 Jun 2024 11:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717698290; cv=none; b=QKb6kF715iZfoyKMzbir4MNn2K91at82Vbde3+X+1GAT4gYyLWGTpDZ6PudOmw9i6kqtWTxCz4rWNnJjwLULeP50g9UR6Iyh7XWUli2Ej1iqCYH2su9LzbtxR0WgeECnBRrbtWYCmJe5buf/DkSz7M9wB6ybbph3aJx5FzxfLoY=
+	t=1717758478; cv=none; b=sIyrFhsBLK3IgjWJZK2PmYW5Ppdty+ZmWJw965NfOVfWbesLyMlgWi43os6QiYZVYmGVP9RIBUYKElB/vkPX0t30I7EaAZi9BYPCrSOVTsDsgbJNW12ZZyTbWbOrJBKmviSzt0BoNq6uOtw9ixB3lcuU3mOnmrD6+zn4x8YEHM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717698290; c=relaxed/simple;
-	bh=nFNwZjwWrvyOyNkS5EL5RDmYDz9n7HpbU1l2B+KUFYE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=AlO/uZLJIAnPI1nzKorVH6IcMeEAw7mPzTbxd8c7E0G1uGeA/IgiuQZ6sN/IfF+dyPHF2gO8+smbzgZ5JmPLvev0VT7ZUfeD41mRQTjaRQbXm5UrrrMPXRlAI3CkqZeBNAl4qGLBCZDEhprITTpwEjdst98VRAVzhDtid1bv3KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WTb7nrrf; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1717758478; c=relaxed/simple;
+	bh=n0Kvyk+T+RtB/i+4T/qp6gEW7032T5bG4AfcmuA3ORA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=qhlNmmYrX/4o1wUfT3f+JlnLrPiMZiGtqdKIbeUNBKE3KBKVpnT8Ome0GrewcGjsTvyd7hNCsup/Fnu79JYYD+RZDV8e7xqio5jdUySCXooXAd1X3OuiHTgFmJjr5IyDY4SNTp7lzBRWBEaDeYJMCsGvZyGaWUNJ+4RbyzdTCh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=XitJNlei; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WTb7nrrf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1717698281;
-	bh=nFNwZjwWrvyOyNkS5EL5RDmYDz9n7HpbU1l2B+KUFYE=;
-	h=Date:To:Cc:From:Subject:From;
-	b=WTb7nrrfCwV39z+ie8e6bJ+jHuahgNpiGfFJiABJr4+k7uCTqsju2A4GBf9J686TS
-	 0J88eez0lCP8rGdK6tjumsFlEIaQvXUH/Tn7C92Ja+oI455n7/LNP9RlxrvMRdFqJW
-	 UmCosevWz8dZ+PImqOgeNnwGRCR/LaQ2D4MJYBtpHov81FBsPbh6CGvY6BBXQak4S+
-	 myHeGSyuSc7BuJTLL6c+YVLtJINNLpaIDtCI4klUQhJJmBJX3YoUSrN893fwiFZmff
-	 ZUssZNl9Hf2FSOjzRsrsVidnrhkTI4fdCCV8nI3OIxv5vPqQMgc0Nnb9QotfGw+SAt
-	 VOdrrR/oGtuWg==
-Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: padovan)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 5B2CA37820A9;
-	Thu,  6 Jun 2024 18:24:40 +0000 (UTC)
-Message-ID: <5b603b8f-c9b2-4148-7212-dd69a3fdf506@collabora.com>
-Date: Thu, 6 Jun 2024 15:24:38 -0300
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="XitJNlei"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2C1BC1BF204;
+	Fri,  7 Jun 2024 11:07:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1717758468;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CJUCbM546q0LNVWlhbxcY9aawRMHmngLwnBnq4OdBYc=;
+	b=XitJNlei8F6drUPTvnCYDL/f93y60prNCd9OHDeWV92QxHGeTgQTsd6f9bCuk9DLPWMbSq
+	26ziB2MEtIT20BO8XyGai8wQ/nV67nEMAC8Uj+DHPO309VXac1msGXy7Dg/SXSvE7WFrXW
+	Aupejt5cq9TCsgf39zkzzzwfhYrpq7/Iove7FNg2sikueRw8aplSP0GRNYwdVNFHrmLAhF
+	+5KjvYE0TWkAcsOVmb8xfDfmLuRb5xg9d/9nFZrrNuT1eDz4Ky2iHY5JF0ga1mphGl66GQ
+	gz7iU9aDQg88jwBw2ngoXr1RwK/iD2FgPrg72sDPPiOBpJrk5b5y4Lwi6aPJSw==
+Message-ID: <e7ca4831-4e4a-4a7a-a310-459f102154e5@gtucker.io>
+Date: Fri, 7 Jun 2024 13:07:47 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-Cc: "automated-testing@lists.yoctoproject.org"
- <automated-testing@lists.yoctoproject.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-From: Gustavo Padovan <gus@collabora.com>
-Subject: KernelCI switch to new testing architecture - plan
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: Kernel Testing & Dependability Micro-Conference at LPC 2024
+From: Guillaume Tucker <gtucker@gtucker.io>
+To: automated-testing@lists.yoctoproject.org, kernelci@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kunit-dev@googlegroups.com
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+References: <aba2b2c0-ebb9-45e3-b14a-2321b7770e03@gtucker.io>
+Content-Language: en-GB
+Organization: gtucker.io
+In-Reply-To: <aba2b2c0-ebb9-45e3-b14a-2321b7770e03@gtucker.io>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
 
-Hello everyone,
+On 10/05/2024 20:43, Guillaume Tucker wrote:
+> Hello,
+> 
+> We're pleased to announce the return of the Kernel Testing &
+> Dependability Micro-Conference at Linux Plumbers 2024:
+> 
+>   https://lpc.events/event/18/contributions/1665/
+> 
+> You can already submit proposals by selecting the micro-conf in
+> the Track drop-down list:
+> 
+>   https://lpc.events/login/?next=/event/18/abstracts/%23submit-abstract
+> 
+> Please note that the deadline for submissions is *Sunday 16th June*
 
-As most of you know, the KernelCI community developed a new testing 
-architecture.
-It is now time to move over to it. In this message, we want to share 
-some details about
-the upcoming movements, especially about the shutdown of the existing 
-legacy system.
+The deadline has now been extended to *Sunday 14th July*
 
-In our latest blog post[1], we shared an update about what's coming. 
- From a strategic
-point of view, not much has changed since that blog post. We made 
-progress on the
-implementations, making the systems more stable, adding more tests and 
-labs and
-refining the data connection with KCIDB.
+This is to be better aligned with other MCs and to give more time
+to submit topics.  The reason for having a rather early deadline
+was based on the feedback that it helps to have a response early,
+especially for those who need approval to book their trip.
 
-As shared at that time, the primary focus in the new testing 
-architecture is on quality
-rather than quantity. We want high quality test results that will reduce 
-the community's
-workload, and not waste their time with low-quality test results. **As a 
-direct
-consequence of our focus on quality, we will not port all tests from 
-legacy KernelCI
-to the new system**. Reach out to us at kernelci@lists.linux.dev, if you 
-want to see
-specific tests ported and we will give you instructions and support on 
-how to do it.
+So the new deadline is when we'll start finalising the schedule
+to submit to the LPC organisers (Steven).  If you do require any
+earlier feedback then please let us know when sending your
+proposal and we'll take a look on a case-by-case basis.
 
-Current status:
-* ready to receive new trees and tests
-* moving existing labs over
-* developing the new Web Dashboard
+> The event description contains a list of suggested topics
+> inherited from past editions.  Is there anything in particular
+> you would like to see discussed this year?
+> 
+> Knowing people's interests helps with triaging proposals and
+> making the micro-conf as relevant as possible.  See you there!
 
-The new Web Dashboard should be ready in the coming months for basic 
-visualization.
-In the meantime, we have the grafana instance to build boards to 
-visualize test results
-and also some interim tooling that pulls the data from the API and 
-generates reports.
-If you want to bring your tree and tests over and use our tooling to 
-analyze the results,
-we can onboard you while also benefiting from your feedback to evolve 
-our regression
-tracking intelligence.
-
-We will share more information about the transition as the work evolves 
-in the
-coming months. Don't worry!
-
-The target is to shutdown the legacy system around the end of August[2]. 
-Some labs
-will probably disconnect themselves from legacy KernelCI before that. We 
-can not delay
-the shutdown date much as the amount of cloud resources and engineering 
-is a high
-toll to the project.
-
-**If you are depending on legacy KernelCI, please speak up, so we can 
-help you move
-your stuff over to the new system.**
-
-To be clear, the KernelCI project will not maintain 100% compatibility 
-with what was
-provided by its legacy system. As we create a better future for 
-KernelCI, some hard decisions
-had to be taken; not porting all tests and usecases was one of them.
-
-As we leave our legacy behind, a vibrant community has been gathering 
-around KernelCI in
-the past few months, corroborating the new strategic directions we are 
-putting in place for
-the project. Bear with us during this transition and the future will be 
-brighter!
-
-We are happy to hear thoughts and questions from everyone about the 
-transition. We are
-probably forgetting some important details in this message.
-
-Thank you for your continued support and your patience as the KernelCI 
-project goes
-through its biggest change since its inception.
-
-Best Regards,
-
-- Gus
-
-[1] https://kernelci.org/blog/posts/2024/strategic-updates/
-[2] https://github.com/kernelci/kernelci-project/issues/337
-
--- 
-Gustavo Padovan
-Kernel Lead
-
-Collabora Ltd.
-Platinum Building, St John's Innovation Park
-Cambridge CB4 0DS, UK
-Registered in England & Wales, no. 5513718
+Thanks,
+Guillaume
 
