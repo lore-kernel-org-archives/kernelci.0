@@ -1,92 +1,142 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C218734E
-	for <kernelci@lists.linux.dev>; Fri,  7 Jun 2024 11:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962EB16DEDD
+	for <kernelci@lists.linux.dev>; Wed, 12 Jun 2024 10:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717758478; cv=none; b=sIyrFhsBLK3IgjWJZK2PmYW5Ppdty+ZmWJw965NfOVfWbesLyMlgWi43os6QiYZVYmGVP9RIBUYKElB/vkPX0t30I7EaAZi9BYPCrSOVTsDsgbJNW12ZZyTbWbOrJBKmviSzt0BoNq6uOtw9ixB3lcuU3mOnmrD6+zn4x8YEHM0=
+	t=1718186828; cv=none; b=NyF06AeWu9nRxRwLirfwxa3eC0Oazjga21g12hXs9jZtCbhtzdLpuFXqIOcjJUFI4KJwQCdAuhjGFylIPxO+kLCyxh9iALvi1xOiwfSum4eHjJkpKh67ygX8OZv4r0C1orcp4Dx66kLKFrGNI+GM/k6wib1AOKTFwJEhbHgHFG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717758478; c=relaxed/simple;
-	bh=n0Kvyk+T+RtB/i+4T/qp6gEW7032T5bG4AfcmuA3ORA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=qhlNmmYrX/4o1wUfT3f+JlnLrPiMZiGtqdKIbeUNBKE3KBKVpnT8Ome0GrewcGjsTvyd7hNCsup/Fnu79JYYD+RZDV8e7xqio5jdUySCXooXAd1X3OuiHTgFmJjr5IyDY4SNTp7lzBRWBEaDeYJMCsGvZyGaWUNJ+4RbyzdTCh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=XitJNlei; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1718186828; c=relaxed/simple;
+	bh=X/C2WqCcPHscguVgaI/7U9QXjrr1tO8TEK9q3Vlnxgk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=V7Yk76nLmnwxCAznjJzwq2fjxwnzzoByDd/4OmBWB5GULMdLW3xPGZeBn4sc+HeO3WeFryKRMJXN61TDwjZEgaTE/jAhh0+90+kSnHxcQv16YKz0arSF9F+F3zFuR/gd6O+0+xEcwFN8aFQA98IvQaL8/luNi0/4pztnNyZVYcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=OFvsLr87; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="XitJNlei"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2C1BC1BF204;
-	Fri,  7 Jun 2024 11:07:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1717758468;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CJUCbM546q0LNVWlhbxcY9aawRMHmngLwnBnq4OdBYc=;
-	b=XitJNlei8F6drUPTvnCYDL/f93y60prNCd9OHDeWV92QxHGeTgQTsd6f9bCuk9DLPWMbSq
-	26ziB2MEtIT20BO8XyGai8wQ/nV67nEMAC8Uj+DHPO309VXac1msGXy7Dg/SXSvE7WFrXW
-	Aupejt5cq9TCsgf39zkzzzwfhYrpq7/Iove7FNg2sikueRw8aplSP0GRNYwdVNFHrmLAhF
-	+5KjvYE0TWkAcsOVmb8xfDfmLuRb5xg9d/9nFZrrNuT1eDz4Ky2iHY5JF0ga1mphGl66GQ
-	gz7iU9aDQg88jwBw2ngoXr1RwK/iD2FgPrg72sDPPiOBpJrk5b5y4Lwi6aPJSw==
-Message-ID: <e7ca4831-4e4a-4a7a-a310-459f102154e5@gtucker.io>
-Date: Fri, 7 Jun 2024 13:07:47 +0200
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="OFvsLr87"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1718186823;
+	bh=X/C2WqCcPHscguVgaI/7U9QXjrr1tO8TEK9q3Vlnxgk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OFvsLr874lYy7M8r62tSRG1Phh9L6X6TPJKovdXuTYTTftf9fwUfAl5xEHIDgh204
+	 dthWmaxjrjAmvr+msJD45LdFRp4x3cZQgK864ZLtFvXBO/aeK70LXLBH2N0HVHTMQ9
+	 s+lvkMqCW934EUS10Bpo5KQVkjixQh/qfKoFLMUUUxWrhUd//bxi32DMx2KPJS3v/v
+	 uVKTpEDxjLP4FcUBtPRDesSnpakZ8zWNyPbWlcAHVocJLzTySDqs6/UwLPoWND6sZp
+	 3lwvqCFJ0JrlGDMcyTZxJenxRflqEbis+ySEqpaFFDHbmBxQ1tHraMfARiw0XNTvX6
+	 LOCNs9JQ/C+Uw==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D5F8E3780EC6;
+	Wed, 12 Jun 2024 10:07:02 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: laura.nao@collabora.com
+Cc: Tim.Bird@sony.com,
+	broonie@kernel.org,
+	dan.carpenter@linaro.org,
+	davidgow@google.com,
+	dianders@chromium.org,
+	groeck@chromium.org,
+	kernel@collabora.com,
+	kernelci@lists.linux.dev,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	rafael@kernel.org,
+	robh+dt@kernel.org,
+	saravanak@google.com,
+	shuah@kernel.org
+Subject: Re: [RFC PATCH v2 0/2] Add a test to verify device probing on ACPI platforms
+Date: Wed, 12 Jun 2024 12:07:36 +0200
+Message-Id: <20240612100736.149752-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20240308144933.337107-1-laura.nao@collabora.com>
+References: <20240308144933.337107-1-laura.nao@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel Testing & Dependability Micro-Conference at LPC 2024
-From: Guillaume Tucker <gtucker@gtucker.io>
-To: automated-testing@lists.yoctoproject.org, kernelci@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kunit-dev@googlegroups.com
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-References: <aba2b2c0-ebb9-45e3-b14a-2321b7770e03@gtucker.io>
-Content-Language: en-GB
-Organization: gtucker.io
-In-Reply-To: <aba2b2c0-ebb9-45e3-b14a-2321b7770e03@gtucker.io>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
+Content-Transfer-Encoding: 8bit
 
-On 10/05/2024 20:43, Guillaume Tucker wrote:
+Hi Shuah and Rafael,
+
+On 3/8/24 15:49, Laura Nao wrote:
 > Hello,
 > 
-> We're pleased to announce the return of the Kernel Testing &
-> Dependability Micro-Conference at Linux Plumbers 2024:
+> This v2 addresses some issues observed when running the ACPI probe
+> kselftest proposed in v1[1] across various devices and improves the overall
+> reliability of the test.
 > 
->   https://lpc.events/event/18/contributions/1665/
+> The acpi-extract-ids script has been improved to:
+> - Parse both .c and .h files
+> - Add an option to print only IDs matched by a driver (i.e. defined in an
+> ACPI match tables or in lists of IDs provided by the drivers)
 > 
-> You can already submit proposals by selecting the micro-conf in
-> the Track drop-down list:
+> The test_unprobed_devices.sh script relies on sysfs information to
+> determine if a device was successfully bound to a driver. Not all devices
+> listed in /sys/devices are expected to have a driver folder, so the script
+> has been adjusted to handle these cases and avoid generating false
+> negatives.
 > 
->   https://lpc.events/login/?next=/event/18/abstracts/%23submit-abstract
+> The test_unprobed_devices.sh test script logic has been modified to:
+> - Check the status attribute (when available) to exclusively test hardware
+>    devices that are physically present, enabled and operational
+> - Traverse only ACPI objects with a physical_node* link, to ensure testing
+>    of correctly enumerated devices
+> - Skip devices whose HID or CID are not matched by any driver, as
+>    determined by the list generated through the acpi-extract-ids script
+> - Skip devices with HID or CID listed in the ignored IDs list. This list
+>    has been added to contain IDs of devices that don't require a driver or
+>    cannot be represented as platform devices (e.g. ACPI container and module
+>    devices).
+> - Skip devices that are natively enumerated and don't need a driver, such
+>    as certain PCI bridges
+> - Skip devices unassigned to any subsystem, devices linked to other devices
+>    and class devices
 > 
-> Please note that the deadline for submissions is *Sunday 16th June*
-
-The deadline has now been extended to *Sunday 14th July*
-
-This is to be better aligned with other MCs and to give more time
-to submit topics.  The reason for having a rather early deadline
-was based on the feedback that it helps to have a response early,
-especially for those who need approval to book their trip.
-
-So the new deadline is when we'll start finalising the schedule
-to submit to the LPC organisers (Steven).  If you do require any
-earlier feedback then please let us know when sending your
-proposal and we'll take a look on a case-by-case basis.
-
-> The event description contains a list of suggested topics
-> inherited from past editions.  Is there anything in particular
-> you would like to see discussed this year?
+> Some of the heuristics used by the script are suboptimal and might require
+> adjustments over time. This kind of tests would greatly benefit from a
+> dedicated interface that exposes information about devices expected to be
+> matched by drivers and their probe status. Discussion regarding this matter
+> was initiated in v1.
 > 
-> Knowing people's interests helps with triaging proposals and
-> making the micro-conf as relevant as possible.  See you there!
+> As of now, I have not identified a suitable method for exposing this
+> information; I plan on submitting a separate RFC to propose some options
+> and engage in discussion. Meanwhile, this v2 focuses on utilizing already
+> available information to provide an ACPI equivalent of the existing DT
+> kselftest [2].
+> 
+> Adding in CC the people involved in the discussion at Plumbers [3], feel
+> free to add anyone that might be interested in this.
+> 
+> This series depends on:
+> - https://lore.kernel.org/all/20240102141528.169947-1-laura.nao@collabora.com/T/#u
+> - https://lore.kernel.org/all/20240131-ktap-sh-helpers-extend-v1-0-98ffb468712c@collabora.com/
+> 
+> Thanks,
+> 
+> Laura
+> 
+> [1] https://lore.kernel.org/all/20230925155806.1812249-2-laura.nao@collabora.com/T/
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/dt
+> [3] https://www.youtube.com/watch?v=oE73eVSyFXQ&t=9377s
 
-Thanks,
-Guillaume
+Just wanted to gently check in on your thoughts regarding this series. 
+We've conducted some initial testing with it in KernelCI and it's proven 
+its worth by catching a driver probe regression [1] on some x86_64 
+platforms.
+Your feedback would be greatly appreciated.
+
+Thanks!
+
+Laura
+
+[1] https://lore.kernel.org/all/20240530153727.843378-1-laura.nao@collabora.com/
 
