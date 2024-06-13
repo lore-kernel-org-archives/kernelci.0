@@ -1,244 +1,150 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D86F13D24A
-	for <kernelci@lists.linux.dev>; Thu, 13 Jun 2024 08:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DE32F55
+	for <kernelci@lists.linux.dev>; Thu, 13 Jun 2024 12:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718266318; cv=none; b=oC7Aaoc/6yBTVEG3LUyunR9YLBh9AQXSOgkr0SOyBdZNOtESYFgmr5tsvxjE5LnicWff2M+PoZnSQ77AMR+EX2UzI4+OwnG7G42NJ5snkm+SY20gy3mkiHmlsoug8MpVIJRKAZ3Z4/RPK7EeIFNMJ3ZaLYURlHH3L3CySmoTMoI=
+	t=1718283250; cv=none; b=fwWATz1R5VLNwwUSERQ3Ow7+wIsp7jebu3V4ERd+q/4q2h+MGpfaOQRqCZr3sQfmWKvN6MJYpVL6aMntOM/03waoHyDjWU0aqel6ythTlms/LUKmvgHXQV2myEX6OF0OFFJYhU0CSWVDfe775hb67DGnTOlipPl7c2e76BKOgyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718266318; c=relaxed/simple;
-	bh=kWLuwI4a92tgXNijnowLpBOuaduk15AW+cX4WUfeang=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PmS1dvuW/bh9SGt2gNsGwv8eLJ7WsUFhV4O4GLkHaFiuBtXRhgDP4DzDRzratPbe0oeeyDnT1HB2WKYiu1+l5BOmyRh+weU2FYfiUc0VcBGtqsF0FJVV2Drlmjwr94jjZjxOAdFWvyCjFaQsToTNomw1UZw8GV0R1Dcr23KfzL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=XkOjrEUt; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1718283250; c=relaxed/simple;
+	bh=wVGPvjTW4CIbBul2WZxjVlkQLsyBpV1+dM/5fBlGQXg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=cn49nyWXl5H7zyqAiArnx1X59jZu+I7fuUw+oZ3nojyOquLhjTwK+UdVKZGz5CQm23YHH6hmfWKFckJ18SB2vxMvuJ/luEheurpoJGYmAkhH3XKBXh2/Oyn5BXd2GvoIcRBf4vtTU/KiCOZemXXE3+KpSyPFXxj+DtlhsKuVbFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=1fx/TOVI; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="XkOjrEUt"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="1fx/TOVI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1718266315;
-	bh=kWLuwI4a92tgXNijnowLpBOuaduk15AW+cX4WUfeang=;
-	h=From:To:Subject:Date:From;
-	b=XkOjrEUtiEDRLbYkLfXYjDKy7Stk0FQpq4WvPtkk8+T30Rr0xzVQrWs/y2HWORRne
-	 FAx9nbzQQZ7oJQ3fVzVl5cJ2k6TYIAOe9GYiQID0zauSpivoy/tEAHJdNKxXrgVBOf
-	 IPvXhGNF+ri4qaiunK7TcdH2/+QEoRZYUVkvuiFqG4jpdxGA1q0fluz0k0xGZTmh38
-	 fOPnlqfJKr9UXFDMV9sH/5Sj/x7yHsaTbiCf61YcOF2vjF2qeFKyqCdRvmD8Jzq+JR
-	 rYGStuesGv6el2OLvNg/bsrP+Y2L1+X+fix8r73C+TPoqwnVOpIda71i2SFnuatRq1
-	 ksKs7MWtS17og==
-Received: from localhost (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	s=mail; t=1718283246;
+	bh=wVGPvjTW4CIbBul2WZxjVlkQLsyBpV1+dM/5fBlGQXg=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=1fx/TOVI3A1QCEv9d134gj+RBWgPsXHHipiipV7jWFevGesdGwd6nnr5Xpo28yNz2
+	 Ik0mwRxE4/75e46xVDEAfrLteR/MpC3wpJ4HHIt6RnlJixNPKOf2huVjI7+RbVkAjq
+	 3Rt/v+Hiz9W3LqtpBrvr580+pCVqpo/kBHCA8/x8zixG7JfIO20Db7xeDNlwdayMUB
+	 8o3jJY+ThnWDbx+lDnUxT65xxkXWgGYOX49PwyZcJzn7N8sC5ZjnTg2ixALGAGmfdc
+	 5nXCU+U/6fHZgohUcBvpaKyU1WUJcy8ZQpujrR9qpbOQXHmcf8DytYGOdhaFKNkRVO
+	 h1DoYnHfvP5LQ==
+Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
-	(Authenticated sender: rcn)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 503C9378107C
-	for <kernelci@lists.linux.dev>; Thu, 13 Jun 2024 08:11:55 +0000 (UTC)
-From: =?utf-8?Q?Ricardo_Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
-To: kernelci@lists.linux.dev
-Subject: On error identification, classification and related tooling
-Date: Thu, 13 Jun 2024 10:11:53 +0200
-Message-ID: <877cet8do6.fsf@collabora.com>
+	(Authenticated sender: padovan)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7118237820A7;
+	Thu, 13 Jun 2024 12:54:05 +0000 (UTC)
+Message-ID: <188b5668-45ec-ed35-0bf9-89c885a7cb05@collabora.com>
+Date: Thu, 13 Jun 2024 09:54:03 -0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [kernelci-tsc] New name for new "KernelCI"
+Content-Language: en-US
+To: kernelci-tsc@groups.io, Nikolai Kondrashov <spbnick@gmail.com>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+References: <b51eab8a-41cd-4439-8434-076d09b60ed4@gmail.com>
+ <17D6135FD5E0FC8F.2477@groups.io>
+ <7f9eca2b-e2e5-4288-a9c4-bd8be09f33fa@gmail.com>
+ <aba91233-6a98-a69c-0f27-955954e9e33d@collabora.com>
+ <7f692ecd0f55ab29baf68826114ec088376cda56.camel@collabora.com>
+From: Gustavo Padovan <gus@collabora.com>
+In-Reply-To: <7f692ecd0f55ab29baf68826114ec088376cda56.camel@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi all,
 
-In the past weeks a few discussions were held in multiple meetings and
-online threads[1] about the problem of modeling errors found in test
-runs in a way that they can be then profiled and classified (or tagged).
 
-Some of us feel like this is a missing piece in the current state of the
-art of many CI systems, with minor exceptions (eg. Syzbot), and that
-introducing some means to operate with errors as "data types" may
-greatly extend the usefulness of the data these systems are collecting.
+On 6/13/24 03:05, Denys Fedoryshchenko via groups.io wrote:
+> On Wed, 2024-06-12 at 14:27 -0300, Gustavo Padovan wrote:
+>> Hello,
+>>
+>> On 6/12/24 11:56, Nikolai Kondrashov wrote:
+>>> On 6/5/24 12:00 PM, Nikolai Kondrashov via groups.io wrote:
+>>>> On 5/23/24 6:54 PM, Nikolai Kondrashov wrote:
+>>>>> As you know, we've been developing the new KernelCI API [1],
+>>>>> and the
+>>>>> kernelci-pipeline [2] based on it, for quite a while.
+>>>>>
+>>>>> However, by now it seems that too many things are being called
+>>>>> "KernelCI": the
+>>>>> project, pieces of the old system, pieces of the new system. We
+>>>>> would also
+>>>>> like to give the name of KernelCI the project a wider scope
+>>>>> than just a
+>>>>> particular CI system, and accommodate more packages/projects
+>>>>> under its name.
+>>>>>
+>>>>> So we would like to propose to call the new system "KernelCI
+>>>>> <Something>".
+>>>>>
+>>>>> And this message is about that "<Something>".
+>>>> Almost two weeks have passed from my original message, and we
+>>>> have collected a
+>>>> number of opinions and potential names. So I went ahead and
+>>>> created a poll to
+>>>> help us pick the new name:
+>>>>
+>>>> https://forms.gle/GY2uWw3yGLA6u5EbA
+>>>>
+>>>> The poll requires authenticating to Google to limit the number of
+>>>> votes, but
+>>>> if anyone has a problem with that, just post your response here
+>>>> (pick all the
+>>>> options you like), and I'll add it myself. We'll close the poll
+>>>> in a week.
+>>> The week has passed, and the poll is now closed. We've collected
+>>> ten
+>>> responses. An the clear winner is:
+>>>
+>>>       "Maestro"
+>> Nice. So here comes Maestro!  This is a great step to clarify the new
+>> architecture.
+>> We should first patch that in the documentation together with the
+>> overdue update
+>> on the overall KernelCI architecture. I can look into a patch for
+>> that
+>> next week.
+>>
+>> Now, when it comes to actually renaming the git repos and other
+>> things
+>> we want
+>> to evaluate a proposal to bring kernelci-core, kernelci-api and
+>> kernelci-pipeline into
+>> a monorepo kci-maestro. But that would be post Plumbers possibly as
+>> our
+>> focus is
+>> super sharper on showing the new KernelCI there.
+> I believe renaming anything at this current moment would significantly
+> set us back. Additionally, until we eliminate the legacy systems,
+> renaming is technically unfeasible.
+>
+> However, I would like to propose creating a new repository called kci-
+> maestro. This repository would consolidate various scattered components
+> of the project, such as new deployment scripts, maintenance tools, and
+> local development install scripts (currently residing in kernelci-
+> deploy and mixed with legacy items).
+>
+> Rather than attempting to merge elements that cannot be easily
+> integrated, this new repository could serve as a true orchestrator for
+> all other components.
 
-IMHO, having massive databases of test results is useful for detecting
-issues, reporting and browsing them, but there's much more that could be
-done with that data if we provided additional layers of processing to
-extract and model higher-level data from them. This has been discussed
-as a long-term plan for KernelCI and CI in general for some time.
+That seems a great start! Thank you, Denys.
 
-Error modeling and profiling is one of the areas that we'd like to
-explore first.
+Best,
 
-Some individual contributors that go through test results and
-regressions already do this kind of work manually by themselves by
-inspecting the test logs, identifying the error causes and classifying
-them, although there's no provisioning in Maestro or KCIDB yet to allow
-users to provide this kind of curated information.
+- Gus
 
-Personally, I'm exploring the possibility of having an automatic process
-to analyze and profile the errors found in a test log in a standard
-way. The goal I'm aiming for is to have a low-cost and system-agnostic
-way to automatically digest a test log into a schema-based structured
-data that we can store in a DB and can then use as first-class data to
-perform comparisons and classifications. Some of the problems we could
-address with this are:
+-- 
+Gustavo Padovan
+Kernel Lead
 
-- Automatically tell if an error happened in another test run
-- Group test failures together depending on the errors they triggered
-- Automatic classification of errors / test results / regressions
-  depending on certain error parameters or contents
+Collabora Ltd.
+Platinum Building, St John's Innovation Park
+Cambridge CB4 0DS, UK
+Registered in England & Wales, no. 5513718
 
-Some of these features are good end goals by themselves, some others are
-important stepping stones towards other goals such as automatic triaging
-of regressions or enhanced reports.
-
-As a proof of concept and to evaluate the viability of this as an
-automatic process, I started hacking a tool called logspec [2], which is
-basically an extensible context-sensitive parser. It's in a very
-experimental early stage and at this point is little more than a
-springboard for ideas on this area.
-
-In its current form, it can parse a number of different types of kernel
-build errors (as provided by Maestro):
-
-    ./logspec.py tests/logs/kbuild/kbuild_001.log kbuild
-
-    {
-        "errors": [
-            {
-                "error_type": "Compiler error",
-                "location": "1266:3",
-                "script": "scripts/Makefile.build:244",
-                "src_file": "drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c",
-                "target": "drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.o"
-            }
-        ]
-    }
-
-    ./logspec.py tests/logs/kbuild/kbuild_002.log kbuild
-    {
-        "errors": [
-            {
-                "error_type": "Kbuild/Make",
-                "script": "Makefile:1953",
-                "target": "modules"
-            }
-        ]
-    }
-
-    (full info of the same parsing):
-
-    ./logspec.py tests/logs/kbuild/kbuild_002.log kbuild --json-full
-    {
-        "_match_end": 369194,
-        "errors": [
-            {
-                "_report": "***\n*** The present kernel configuration has modules disabled.\n*** To use the module feature, please run \"make menuconfig\" etc.\n*** to enable CONFIG_MODULES.\n***\n",
-                "error_type": "Kbuild/Make",
-                "script": "Makefile:1953",
-                "target": "modules"
-            }
-        ]
-    }
-
-And detect certain types of errors during linux startup (partial output below):
-
-    ./logspec.py tests/logs/linux_boot/linux_boot_005.log generic_linux_boot
-    {
-        "bootloader_ok": true,
-        "errors": [
-            {
-                "call_trace": [
-                    "? __warn+0x98/0xda",
-                    "? apply_returns+0xc0/0x241",
-                    "? report_bug+0x96/0xda",
-                    "? handle_bug+0x3c/0x65",
-                    "? exc_invalid_op+0x14/0x65",
-                    "? asm_exc_invalid_op+0x12/0x20",
-                    "? apply_returns+0xc0/0x241",
-                    "alternative_instructions+0x7d/0x143",
-                    "arch_cpu_finalize_init+0x23/0x42",
-                    "start_kernel+0x4da/0x58c",
-                    "secondary_startup_64_no_verify+0xac/0xbb"
-                ],
-                "error_type": "WARNING: missing return thunk: 0xffffffffb6845838-0xffffffffb684583d: e9 00 00 00 00",
-                "hardware": "Google Coral/Coral, BIOS  09/29/2020",
-                "location": "arch/x86/kernel/alternative.c:730 apply_returns+0xc0/0x241",
-                "modules": []
-            },
-            {
-                "call_trace": [
-                    "? __die_body+0x1b/0x5e",
-                    "? no_context+0x36d/0x422",
-                    "? mutex_lock+0x1c/0x3b",
-                    "? exc_page_fault+0x249/0x3f0",
-                    "? asm_exc_page_fault+0x1e/0x30",
-                    "? string_nocheck+0x19/0x3d",
-                    "string+0x42/0x4b",
-                    "vsnprintf+0x21c/0x427",
-                    "devm_kvasprintf+0x4a/0x9e",
-                    "devm_kasprintf+0x4e/0x69",
-                    "? __radix_tree_lookup+0x3a/0xba",
-                    "__devm_ioremap_resource+0x7c/0x12d",
-                    "intel_pmc_get_resources+0x97/0x29c [intel_pmc_bxt]",
-                    "? devres_add+0x2f/0x40",
-                    "intel_pmc_probe+0x81/0x176 [intel_pmc_bxt]",
-                    "platform_drv_probe+0x2f/0x74",
-                    "really_probe+0x15c/0x34e",
-                    "driver_probe_device+0x9c/0xd0",
-                    "device_driver_attach+0x3c/0x59",
-                    "__driver_attach+0xa2/0xaf",
-                    "? device_driver_attach+0x59/0x59",
-                    "bus_for_each_dev+0x73/0xad",
-                    "bus_add_driver+0xd8/0x1d4",
-                    "driver_register+0x9e/0xdb",
-                    "? 0xffffffffc00b7000",
-                    "do_one_initcall+0x90/0x1ae",
-                    "? slab_pre_alloc_hook.constprop.0+0x31/0x47",
-                    "? kmem_cache_alloc_trace+0xfb/0x111",
-                    "do_init_module+0x4b/0x1fd",
-                    "__do_sys_finit_module+0x94/0xbf",
-                    "__do_fast_syscall_32+0x71/0x86",
-                    "do_fast_syscall_32+0x2f/0x6f",
-                    "entry_SYSENTER_compat_after_hwframe+0x65/0x77"
-                ],
-                "error_type": "BUG: unable to handle page fault for address: 0000000000200286",
-                "hardware": "Google Coral/Coral, BIOS  09/29/2020",
-                "modules": [
-                    "acpi_thermal_rel",
-                    "chromeos_pstore",
-                    "coreboot_table",
-                    "ecc",
-                    "ecdh_generic",
-                    "elan_i2c",
-                    "i2c_hid",
-                    "int340x_thermal_zone",
-                    "intel_pmc_bxt(+)",
-                    "pinctrl_broxton"
-                ]
-            },
-            ...
-        ],
-        "prompt_ok": true
-    }
-
-I've yet to decide on a schema for this structured data, but first I'd
-prefer to keep on adding parsers to it to catch more conditions and
-results.
-
-It's possible that this approach isn't viable or realistic, considering
-the lack of consistency even in very restricted types of errors (Linux
-kernel error reports are particularly inconsistent) and the glitches and
-other artifacts inherent to this kind of serial logs (interleaving of
-lines, etc.). Still, maybe some of these problems can be mitigated by
-applying a pre-filtering on the logs and running the parsers on
-narrowed-down segments instead of on whole logs.
-
-So I want to keep playing with this for now to see if it makes sense to
-continue. Maybe someone else has a better approach to this problem
-(ML-based, maybe?), so any feedback about the general idea and about the
-implementation is welcome.
-
-Thank you all,
-Ricardo
-
----
-
-[1] https://github.com/kernelci/kcidb-io/pull/78
-[2] https://gitlab.collabora.com/rcn/logspec
