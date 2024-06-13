@@ -1,150 +1,89 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DE32F55
-	for <kernelci@lists.linux.dev>; Thu, 13 Jun 2024 12:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11051494D1
+	for <kernelci@lists.linux.dev>; Thu, 13 Jun 2024 15:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718283250; cv=none; b=fwWATz1R5VLNwwUSERQ3Ow7+wIsp7jebu3V4ERd+q/4q2h+MGpfaOQRqCZr3sQfmWKvN6MJYpVL6aMntOM/03waoHyDjWU0aqel6ythTlms/LUKmvgHXQV2myEX6OF0OFFJYhU0CSWVDfe775hb67DGnTOlipPl7c2e76BKOgyU=
+	t=1718291712; cv=none; b=GmGhnMu/HkHZ2A+/Jy7O0jjc9K/1WajVuyePXxV8uN7BSYbX+wDJXdmky2hBPghi4rqdmLStEttmWj/a5LOyeMly3ahbIAkNyJGeNzEoopf2USCrQe9qNGl9GdIi2+hgIIZQK9hPk4BDuinlSB7TUsK3+X3mX+eReLBrBBKkl4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718283250; c=relaxed/simple;
-	bh=wVGPvjTW4CIbBul2WZxjVlkQLsyBpV1+dM/5fBlGQXg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=cn49nyWXl5H7zyqAiArnx1X59jZu+I7fuUw+oZ3nojyOquLhjTwK+UdVKZGz5CQm23YHH6hmfWKFckJ18SB2vxMvuJ/luEheurpoJGYmAkhH3XKBXh2/Oyn5BXd2GvoIcRBf4vtTU/KiCOZemXXE3+KpSyPFXxj+DtlhsKuVbFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=1fx/TOVI; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1718291712; c=relaxed/simple;
+	bh=3ozSPTlSEgTYrRu6Ije/gYJYhDxZM9wnwxZkXNIo93s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=V7Yu6dXF431Q3hsgnHbZtJPVOjv//sRizpzafA0kFjUQQJ2JLe/1kEO0/pe1yf9LLSBTUT728UWdREWYmUEH3PFLILZ/d3qDMWoF1jROcFkDabE2bpLQnZhnEpDR6YiDtyAa6dgy7MLcpgHqvL6J51W5hdDYp4umhdZA5Gj9AS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=UUCThmTd; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="1fx/TOVI"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="UUCThmTd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1718283246;
-	bh=wVGPvjTW4CIbBul2WZxjVlkQLsyBpV1+dM/5fBlGQXg=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=1fx/TOVI3A1QCEv9d134gj+RBWgPsXHHipiipV7jWFevGesdGwd6nnr5Xpo28yNz2
-	 Ik0mwRxE4/75e46xVDEAfrLteR/MpC3wpJ4HHIt6RnlJixNPKOf2huVjI7+RbVkAjq
-	 3Rt/v+Hiz9W3LqtpBrvr580+pCVqpo/kBHCA8/x8zixG7JfIO20Db7xeDNlwdayMUB
-	 8o3jJY+ThnWDbx+lDnUxT65xxkXWgGYOX49PwyZcJzn7N8sC5ZjnTg2ixALGAGmfdc
-	 5nXCU+U/6fHZgohUcBvpaKyU1WUJcy8ZQpujrR9qpbOQXHmcf8DytYGOdhaFKNkRVO
-	 h1DoYnHfvP5LQ==
-Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	s=mail; t=1718291709;
+	bh=3ozSPTlSEgTYrRu6Ije/gYJYhDxZM9wnwxZkXNIo93s=;
+	h=From:Subject:Date:To:Cc:From;
+	b=UUCThmTdzPIbMLr/IpB5mxKKfkA/O7KmzK4VF6Hv1GBu4JuUWkPHVnCmB+vnCPLub
+	 igLGRvGl0LFc3dGnqJ3TFJfVjV+dtbZr0r/xlGLQt/CeLT//209TPeN+1GONijYXW0
+	 hQja/LRZrxNHit93PdSFKJ4FqBCqp6RPQ1fMsX7qmQu8C3YtbjT3fRFpj8QYGSXPWl
+	 ekxk0LXvyI0O7zrP3hxRNrhjjG3VTY+/tf+AkNBE48rHuYLESbyDJ88FoenNOmhwgs
+	 rqX0IPGOoFzllDYwwFj+0GpnR8rIgRERrc/lDUysa9jnqKQPRxyELs+A5Q+KkqlJeR
+	 f+gH+4OVAUr5w==
+Received: from [192.168.1.250] (zone.collabora.co.uk [167.235.23.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: padovan)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7118237820A7;
-	Thu, 13 Jun 2024 12:54:05 +0000 (UTC)
-Message-ID: <188b5668-45ec-ed35-0bf9-89c885a7cb05@collabora.com>
-Date: Thu, 13 Jun 2024 09:54:03 -0300
+	(Authenticated sender: nfraprado)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 6EAC4378143B;
+	Thu, 13 Jun 2024 15:15:07 +0000 (UTC)
+From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+Subject: [PATCH 0/2] kselftest: devices: Allow running test on more
+ platforms
+Date: Thu, 13 Jun 2024 11:14:50 -0400
+Message-Id: <20240613-kselftest-discoverable-probe-mt8195-kci-v1-0-7b396a9b032d@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [kernelci-tsc] New name for new "KernelCI"
-Content-Language: en-US
-To: kernelci-tsc@groups.io, Nikolai Kondrashov <spbnick@gmail.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-References: <b51eab8a-41cd-4439-8434-076d09b60ed4@gmail.com>
- <17D6135FD5E0FC8F.2477@groups.io>
- <7f9eca2b-e2e5-4288-a9c4-bd8be09f33fa@gmail.com>
- <aba91233-6a98-a69c-0f27-955954e9e33d@collabora.com>
- <7f692ecd0f55ab29baf68826114ec088376cda56.camel@collabora.com>
-From: Gustavo Padovan <gus@collabora.com>
-In-Reply-To: <7f692ecd0f55ab29baf68826114ec088376cda56.camel@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOoMa2YC/x3NQQqDMBBA0avIrDuQDGraXqW4iMnYDlojmSAF8
+ e4NLt/m/wOUs7DCszkg8y4qaa2wtwbCx69vRonVQIZa01vCWXmZCmvBKBrSztmPC+OW08j4LXf
+ 76HAOgsGTdS0510cDtbZlnuR3nV7Def4BuUDenHkAAAA=
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: kernel@collabora.com, linux-usb@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernelci@lists.linux.dev, 
+ =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+X-Mailer: b4 0.13.0
 
+This series adds two new features required to be able to run the test on
+more platforms on KernelCI.
 
+The first patch adds a parameter to allow overriding the directory in
+which the board files will be looked for. Since the board files are
+hosted in a separate repository [1], this parameter allows overlaying
+those files on the filesystem and passing the location to the test.
 
-On 6/13/24 03:05, Denys Fedoryshchenko via groups.io wrote:
-> On Wed, 2024-06-12 at 14:27 -0300, Gustavo Padovan wrote:
->> Hello,
->>
->> On 6/12/24 11:56, Nikolai Kondrashov wrote:
->>> On 6/5/24 12:00 PM, Nikolai Kondrashov via groups.io wrote:
->>>> On 5/23/24 6:54 PM, Nikolai Kondrashov wrote:
->>>>> As you know, we've been developing the new KernelCI API [1],
->>>>> and the
->>>>> kernelci-pipeline [2] based on it, for quite a while.
->>>>>
->>>>> However, by now it seems that too many things are being called
->>>>> "KernelCI": the
->>>>> project, pieces of the old system, pieces of the new system. We
->>>>> would also
->>>>> like to give the name of KernelCI the project a wider scope
->>>>> than just a
->>>>> particular CI system, and accommodate more packages/projects
->>>>> under its name.
->>>>>
->>>>> So we would like to propose to call the new system "KernelCI
->>>>> <Something>".
->>>>>
->>>>> And this message is about that "<Something>".
->>>> Almost two weeks have passed from my original message, and we
->>>> have collected a
->>>> number of opinions and potential names. So I went ahead and
->>>> created a poll to
->>>> help us pick the new name:
->>>>
->>>> https://forms.gle/GY2uWw3yGLA6u5EbA
->>>>
->>>> The poll requires authenticating to Google to limit the number of
->>>> votes, but
->>>> if anyone has a problem with that, just post your response here
->>>> (pick all the
->>>> options you like), and I'll add it myself. We'll close the poll
->>>> in a week.
->>> The week has passed, and the poll is now closed. We've collected
->>> ten
->>> responses. An the clear winner is:
->>>
->>>       "Maestro"
->> Nice. So here comes Maestro!  This is a great step to clarify the new
->> architecture.
->> We should first patch that in the documentation together with the
->> overdue update
->> on the overall KernelCI architecture. I can look into a patch for
->> that
->> next week.
->>
->> Now, when it comes to actually renaming the git repos and other
->> things
->> we want
->> to evaluate a proposal to bring kernelci-core, kernelci-api and
->> kernelci-pipeline into
->> a monorepo kci-maestro. But that would be post Plumbers possibly as
->> our
->> focus is
->> super sharper on showing the new KernelCI there.
-> I believe renaming anything at this current moment would significantly
-> set us back. Additionally, until we eliminate the legacy systems,
-> renaming is technically unfeasible.
->
-> However, I would like to propose creating a new repository called kci-
-> maestro. This repository would consolidate various scattered components
-> of the project, such as new deployment scripts, maintenance tools, and
-> local development install scripts (currently residing in kernelci-
-> deploy and mixed with legacy items).
->
-> Rather than attempting to merge elements that cannot be easily
-> integrated, this new repository could serve as a true orchestrator for
-> all other components.
+The second is needed for one platform in particular, MT8195, in which
+the usb controllers are instanced from a two-level deep DT node that
+doesn't allow unique matching based on the existing properties.
 
-That seems a great start! Thank you, Denys.
+[1] https://github.com/kernelci/platform-test-parameters
 
-Best,
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+---
+Nícolas F. R. A. Prado (2):
+      kselftest: devices: Allow specifying boards directory through parameter
+      kselftest: devices: Add of-fullname-regex property
 
-- Gus
+ .../selftests/devices/boards/google,spherion.yaml  |  4 +++
+ .../selftests/devices/test_discoverable_devices.py | 37 +++++++++++++++++++++-
+ 2 files changed, 40 insertions(+), 1 deletion(-)
+---
+base-commit: d97496ca23a2d4ee80b7302849404859d9058bcd
+change-id: 20240612-kselftest-discoverable-probe-mt8195-kci-ca21742776d0
 
+Best regards,
 -- 
-Gustavo Padovan
-Kernel Lead
-
-Collabora Ltd.
-Platinum Building, St John's Innovation Park
-Cambridge CB4 0DS, UK
-Registered in England & Wales, no. 5513718
+Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
