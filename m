@@ -1,145 +1,78 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7596149C79
-	for <kernelci@lists.linux.dev>; Thu, 13 Jun 2024 15:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3B44C85
+	for <kernelci@lists.linux.dev>; Fri, 14 Jun 2024 14:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718291715; cv=none; b=I6k4pqn5/dnQLOyMWKruLeFSOBwjVdYSTr1f3x99KWFHFM/o5FCp66V0vm77JZddfbMvxArw8ykJz6xDy04Aau4JRhKa2agjvfS66UJ8RAFpAXXjqPWllg7zf/8T6yNyW36L8udfxZ+S88BqZoFRXJOrcRgtfYaJLtZ1CWKGyGc=
+	t=1718376528; cv=none; b=fKhfmVGb7vrk6Tq5gpDcgUaVsHwT2ZqBP4ZS+SPis7KkoCOtqgwniK68eG6AcnhSG6eeIoXAaQlOIMrVuLKQQhc8BBtr+YWIMcOYgH+wgXRGWj1KVNgLWAKjZ5OQSGWafCqmCq1flLRK7J3iaPRZuOTWgiUPjTWE/8EtsbX2+4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718291715; c=relaxed/simple;
-	bh=mt4zljf//d/ZLhry8ZIW+H+w5ZVB+RIooYCp5+PfIp8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s3wasWUNaw1lo22uj+M3oljXdvkGXm6okZTU+FrI80K5CboGeMEmCydwcQDGUf+vq27Nc72s4ypESmddPlCBmv8cvGfxQ5kGBByCQ2SP60K30dxeValU2yw/PQK/kRCufb1mJZfGKDav498t2WJ3s2lRVyTgroUCSbhMgw0av1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Ui23fgE4; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1718376528; c=relaxed/simple;
+	bh=WGedD2GovinYfiwU441Hv1bBEGuQrM+fsHVRUJVc80s=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=hhsOM2I2EcExvEEhmINMaqv6YjWanf4+b2eVHwof6QU69KGgBv3KqSEmXytlwISpqR7nyn5jjwVx2G9WMeule1kvw8knaZHuvCWwIE7XgUvETWY2fOT5Fug3Dqywgln7taZ3ZA1dQE0+/mVAEoLs5Ls4rt+iMwT4s3uh+I+SaK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=0XlGjL/2; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Ui23fgE4"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="0XlGjL/2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1718291712;
-	bh=mt4zljf//d/ZLhry8ZIW+H+w5ZVB+RIooYCp5+PfIp8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Ui23fgE4fIJb1iwXrYKnDH/yvk/z9ELcIU9rN0w3xYDk8TWLWIWjnNP3Amiw9QjU5
-	 k01zUI1l1A49/L48DV5oQ280ZYHDUa38BHzYezTi9KqmXNpafWRFhdWZC56zA+Xb0m
-	 tE98g9NtQjbdegx/sqlzAeQebnSOTOGlMakAGdBqYzHZa3SDn7u/2H8tlbeOIXv1o/
-	 NE40UymaBZ+i1GIz+XaLQ3+B2ZcMiX/3Dod2p2MLWMURvoB7o1m7TzX0O3QtZ3kHy5
-	 Ujf43TGsOGrGN1VKD6+/sxjhK0CvommnTLHOtp8f8fixdrMyAAR/kkGtQ7C8eOTRHI
-	 tjUAfkDyi2G4g==
-Received: from [192.168.1.250] (zone.collabora.co.uk [167.235.23.81])
+	s=mail; t=1718376521;
+	bh=WGedD2GovinYfiwU441Hv1bBEGuQrM+fsHVRUJVc80s=;
+	h=Subject:From:To:Cc:Date:From;
+	b=0XlGjL/2R08l8xzamNxWQ3Fh5IVETq74Xq1ZCia5a6SDpwfjDnEqJtXI0wTlmdeVP
+	 gftVIvimjv2Lrd+kZ/LmrOSKbK/EnaO1v7ZV2KeAz3D14wY+kZjMxQpwxcejEmWH0D
+	 ndgGtJNMA+6SYDCZsqBK5PnG7aTXo5fAqZOuUDkTm+EaPayIPsi7mD7E8iIiGDqcNT
+	 uI/jD8xNsirvCx2NNsQJseNeg79/FgVQOYtksSeCFviRTjST3R/yMz8lVwZSqn2Wdn
+	 f6/Ddz1elQYMUG0ZDDY/AXJmzJmmL5YbclAJ53XIPsPMhfL2s2sAMEkxVlE6GTueUl
+	 wCDgA0Jkje6IA==
+Received: from [100.113.176.132] (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 162553782198;
-	Thu, 13 Jun 2024 15:15:10 +0000 (UTC)
-From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Date: Thu, 13 Jun 2024 11:14:52 -0400
-Subject: [PATCH 2/2] kselftest: devices: Add of-fullname-regex property
+	(Authenticated sender: nuclearcat)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 9D1123782198;
+	Fri, 14 Jun 2024 14:48:40 +0000 (UTC)
+Message-ID: <317c51c9c0dfd8b37ef7af6c55b89212cacad2a9.camel@collabora.com>
+Subject: DNS Misconfiguration Affecting Certain Hostnames
+From: Denys Fedoryshchenko <denys.f@collabora.com>
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Date: Fri, 14 Jun 2024 17:48:34 +0300
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240613-kselftest-discoverable-probe-mt8195-kci-v1-2-7b396a9b032d@collabora.com>
-References: <20240613-kselftest-discoverable-probe-mt8195-kci-v1-0-7b396a9b032d@collabora.com>
-In-Reply-To: <20240613-kselftest-discoverable-probe-mt8195-kci-v1-0-7b396a9b032d@collabora.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: kernel@collabora.com, linux-usb@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernelci@lists.linux.dev, 
- =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-X-Mailer: b4 0.13.0
 
-Introduce a new 'of-fullname-regex' property that takes a regular
-expression and matches against the OF_FULLNAME property. It allows
-matching controllers that don't have a unique DT address across sibling
-controllers, and thus dt-mmio can't be used.
+Hi All,
 
-One particular example of where this is needed is on MT8195 which has
-multiple USB controllers described by two level deep nodes and using the
-ranges property:
+We are writing to inform you of a current issue affecting the
+reachability of certain hostnames due to a DNS misconfiguration. The
+affected hostnames are listed below, all within the kernelci.org
+domain:
 
-    ssusb2: usb@112a1000 {
-        reg = <0 0x112a1000 0 0x2dff>, <0 0x112a3e00 0 0x0100>;
-        ranges = <0 0 0 0x112a0000 0 0x3f00>;
-        xhci2: usb@0 {
+    api.chromeos.kernelci.org
+    api.kernelci.org
+    bot.kernelci.org
+    chromeos.kernelci.org
+    cip.kernelci.org
+    linux.kernelci.org
+    storage.chromeos.kernelci.org
+    storage.kernelci.org
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
----
- .../selftests/devices/boards/google,spherion.yaml  |  4 ++++
- .../selftests/devices/test_discoverable_devices.py | 24 ++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+Due to this misconfiguration, you may encounter warning messages
+related to invalid certificates when attempting to access these
+hostnames. Our team is actively working on resolving this issue by
+updating the DNS configuration. We are awaiting the DNS changes to
+propagate and will notify you as soon as the hostnames are fully
+operational again.
 
-diff --git a/tools/testing/selftests/devices/boards/google,spherion.yaml b/tools/testing/selftests/devices/boards/google,spherion.yaml
-index 17157ecd8c14..3ea843324797 100644
---- a/tools/testing/selftests/devices/boards/google,spherion.yaml
-+++ b/tools/testing/selftests/devices/boards/google,spherion.yaml
-@@ -11,6 +11,10 @@
- # this, several optional keys can be used:
- # - dt-mmio: identify the MMIO address of the controller as defined in the
- #   Devicetree.
-+# - of-fullname-regex: regular expression to match against the OF_FULLNAME
-+#   property. Useful when the controller's address is not unique across other
-+#   sibling controllers. In this case, dt-mmio can't be used, and this property
-+#   allows the matching to include parent nodes as well to make it unique.
- # - usb-version: for USB controllers to differentiate between USB3 and USB2
- #   buses sharing the same controller.
- # - acpi-uid: _UID property of the controller as supplied by the ACPI. Useful to
-diff --git a/tools/testing/selftests/devices/test_discoverable_devices.py b/tools/testing/selftests/devices/test_discoverable_devices.py
-index 19f28ea774f4..8f2200540a1f 100755
---- a/tools/testing/selftests/devices/test_discoverable_devices.py
-+++ b/tools/testing/selftests/devices/test_discoverable_devices.py
-@@ -64,6 +64,22 @@ def get_dt_mmio(sysfs_dev_dir):
-         sysfs_dev_dir = os.path.dirname(sysfs_dev_dir)
- 
- 
-+def get_of_fullname(sysfs_dev_dir):
-+    re_of_fullname = re.compile("OF_FULLNAME=(.*)")
-+    of_full_name = None
-+
-+    # PCI controllers' sysfs don't have an of_node, so have to read it from the
-+    # parent
-+    while not of_full_name:
-+        try:
-+            with open(os.path.join(sysfs_dev_dir, "uevent")) as f:
-+                of_fullname = re_of_fullname.search(f.read()).group(1)
-+                return of_fullname
-+        except:
-+            pass
-+        sysfs_dev_dir = os.path.dirname(sysfs_dev_dir)
-+
-+
- def get_acpi_uid(sysfs_dev_dir):
-     with open(os.path.join(sysfs_dev_dir, "firmware_node", "uid")) as f:
-         return f.read()
-@@ -97,6 +113,11 @@ def find_controller_in_sysfs(controller, parent_sysfs=None):
-             if str(controller["dt-mmio"]) != get_dt_mmio(c):
-                 continue
- 
-+        if controller.get("of-fullname-regex"):
-+            re_of_fullname = re.compile(str(controller["of-fullname-regex"]))
-+            if not re_of_fullname.match(get_of_fullname(c)):
-+                continue
-+
-         if controller.get("usb-version"):
-             if controller["usb-version"] != get_usb_version(c):
-                 continue
-@@ -195,6 +216,9 @@ def generate_pathname(device):
-     if device.get("dt-mmio"):
-         pathname += "@" + str(device["dt-mmio"])
- 
-+    if device.get("of-fullname-regex"):
-+        pathname += "-" + str(device["of-fullname-regex"])
-+
-     if device.get("name"):
-         pathname = pathname + "/" + device["name"]
- 
+We apologize for any inconvenience this may cause and appreciate your
+patience and understanding.=C2=A0
 
--- 
-2.45.0
-
+If you have any questions or need further assistance, please do not
+hesitate to contact us.
