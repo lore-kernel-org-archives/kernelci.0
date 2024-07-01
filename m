@@ -1,54 +1,54 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A89716D31E
-	for <kernelci@lists.linux.dev>; Mon,  1 Jul 2024 17:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF80F4ED
+	for <kernelci@lists.linux.dev>; Mon,  1 Jul 2024 17:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719853550; cv=none; b=U82C4gT0VnL2JroOZeCVykwhOO4zWgnT3CcxUYEDibgpKIISV0VzrS2MhngHrXeysDQzeFOqo3a/56sS1AS5qfxPMB8T1bH5qIuIKLhrrV1N+tvQxmdwNP447zIu5VyfnjqgjrNYNR0oYwqDUGQ/bztqaqxxsYFyoOrSwf7zAfE=
+	t=1719854858; cv=none; b=bU7MMtte4QrkRlEgTEVoIyH5QaK3p/IXJS5pqPq02zhAtuJZAKtgfYJGY9hkdUMMqVG3voo/w1REjj2d3D7QglHAZjR+tf6pMoFtw+h/2XplR5If4Lyu0FZ+PNxTyZO468gkd/u18FGoP7RYvxmRGNc/4ks4/8nABNJZ6dfViQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719853550; c=relaxed/simple;
-	bh=3wqzKXsDm9Ttqtarz3E2VkL442CyAEPUEouP+CYa50g=;
+	s=arc-20240116; t=1719854858; c=relaxed/simple;
+	bh=NMogTgscPPD4XEuTA+R51hNYw1+SDeLa+DMd5+FHJhc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QNfaBoLpi0OMSuZa83vBWtjVottPUDHSK6foNKLKVaG/1p/+3MrKbgpGeqafvV/8t6NOoCDOb8KkV7k1Ba/Er9whVgxxCfJ85Ownrbd0m/3h/sCl9FI7XRJHQ9Hxrq76tNlaXzu+4SsDm3It8lJJini9rslz0s9n+JuaJ8G68Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cagmamuy; arc=none smtp.client-ip=209.85.208.48
+	 To:Cc:Content-Type; b=ELs6ilQfCSPut+uLt+vfPoOsL0QfNMjkHr/uWenYH6QFHRIrpGTYwlk3w7ljB0IglR/TgmUlU1xaahuIe2G5LHNDC3wbx+xOl26+Ak3fEj5hiKs5Wy0eGut6bHIjnsGuKpC/L0FDrG32BxED9hoQWlUYORZYJ7A9BSf/ILrf2W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BeI9XaZ2; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cagmamuy"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57d16251a07so7734a12.1
-        for <kernelci@lists.linux.dev>; Mon, 01 Jul 2024 10:05:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BeI9XaZ2"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57d16251a07so8112a12.1
+        for <kernelci@lists.linux.dev>; Mon, 01 Jul 2024 10:27:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719853547; x=1720458347; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1719854855; x=1720459655; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3wqzKXsDm9Ttqtarz3E2VkL442CyAEPUEouP+CYa50g=;
-        b=Cagmamuy/e/XDh1fkVpch0HgNSW0dcOLUSlq/OF43CSJve6sCH8nApEWkj1uQjr5Mj
-         2mwbBDqos8TnmiAsXwJt3fVO3JIbK1JnSp3JmODDs8vcToQ3ytJjJLzRQ72Jqv3EeTVp
-         +mwstiO8+E9Rml2ufaSYs/zB+HBv3JSPcN9OQKuRz6gvTu8f6ihWbyk8q3T74jcG63yg
-         QxdtGT4lsHQue0lVNsqTTGURkzp3VbzVsG6HG4SM7julIC2jl4T6oHLXoW/TdNh0QaII
-         u9jSZrckg158r9xSQMSR2P6Ei1CuPXhz7Xx3CBNCTB4CaOCkwDHb6Huh/X77dnXsV/AN
-         p57w==
+        bh=NMogTgscPPD4XEuTA+R51hNYw1+SDeLa+DMd5+FHJhc=;
+        b=BeI9XaZ2vZ7Q6UFHlvqbQL+iAy5AffV48ddVUQ6DoS4UH+rmDsgAaW1NXcKIq0Hbca
+         x+kU63DlEdTsr2z+8x6nA0lgXGCJIcZ0kq/7nJCdbeNZh1XDUKJGVfl65KVCq2UyELV3
+         7OJaZf7vdlVWUKHU9hS+0UoWPdqNlDEsSLucpjbya651vRngMYrc0lCorax1EBY3nbk9
+         ec4gm6UgDBMlNEhDo9pYlShrUqU2K06HlX5xPg8+wyK1jt35Eik5Lw6zHli73woF889A
+         Fxto/CMZ9Gl/k7QQYLzL+ciVaHtzIwCUrCi3Cu5BGIQvxmLfK0YQS+imq5BO5zaa+VAl
+         pRhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719853547; x=1720458347;
+        d=1e100.net; s=20230601; t=1719854855; x=1720459655;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3wqzKXsDm9Ttqtarz3E2VkL442CyAEPUEouP+CYa50g=;
-        b=nC8RX0bF525R8A3A03aZWZeH6+Dl2lBDoykyp8wkf9ZWECH8cSp8AJbn1GNnvM1IIv
-         wSV+7ZA9NcE3Qv9rsiVqzJo+68582ZjzdniKRKEECgUf7I+QpAITe3crn4p57QAm6VwE
-         DyRAh9Y2vwMdfwjQlTmt9JSV37GLupHTUlQ+crGWAPMTeCEEKOSqVBLbiDIVv+Z8hYIX
-         8/GV1ZnLDDEMxDc3nFG4R+/jMWjwQ70XjNHnm7o9vuNwOHlkrsOfS5q8+5vCwSWWHeFa
-         wyze9x7zwXXpwuJ4p1T1aLgt2YZCy7uB7viTXQ2UgumqSZXGgGxAVHZWyz3JkAL0oY1U
-         SAMw==
-X-Gm-Message-State: AOJu0YwPYNHDNy55NZpyyINAQw7ktP1yTAylv4gQJuzVF/OZrfprqjAB
-	ILxlaoZfI6hwhFa4ZGaXPFxM8WHB/IeNYkszNjz1FxdB4W9ztpqIF/RKfmDB2DOBY47TCN4hAE7
-	3XfKdnFLT5CCMUPBbAlZwRHRpR9VlqLR7Yd9v7ChUdE1pcZ6V3lcx
-X-Google-Smtp-Source: AGHT+IHMbFy+Bk2sHlE2w+4S1lQMHR4C1ODT+y53dxsEGrJw4v4k8WbmxqY5W1GhS9PL/7yFcrN2TVQ8MLYHuCEREgU=
-X-Received: by 2002:a50:9308:0:b0:57c:b712:47b5 with SMTP id
- 4fb4d7f45d1cf-5872f77f784mr382242a12.4.1719853546507; Mon, 01 Jul 2024
- 10:05:46 -0700 (PDT)
+        bh=NMogTgscPPD4XEuTA+R51hNYw1+SDeLa+DMd5+FHJhc=;
+        b=usSGdB3LeQ7gl3G4D/nQlDAqXjD3bSh0snRBkiuxQWdOWdkEGfAcpp1xrlkk9aa3Pl
+         LqhmgurvSvJDEBWA06cKS3HVPidlziC2RmHo0ToDWoyax57x+vO7oT20Y0ruGJ+iFj5o
+         Bb36a9dB9Hz9aUtNh3mAUwNoTmsPmuulvK+mBnwwQDCKuiVvJeozpDYvNh8WJJerwK7b
+         n5o7kltfOiZlRzZtPdWftiZyudOIL1E+XWBZWgygsQW+Fh8iZgTocUW584XIU1QJoukP
+         fSJpVSD0/2uhfdL93jCzFqWbiGq9RPJQwObXmP42fff+pElWc4vRSOgVmrVRL0dM4PUV
+         7RjQ==
+X-Gm-Message-State: AOJu0Yw17OAWeStQ1at0hvwYCV2OCGCWYQM1DEO10ej7VpY+mPeHJp3j
+	y8v9HC6GnNd58qQ24ChbR1YKew10rnmS+NwplBqqmFK3Xh0ZoJ9Mw4RTu6ZHikjdAdq4ikbXlxa
+	WMLvQTJt33Qg/0ruqE5slW3OSDGTPctAqIKJP/f2ZWRhe7CMIfA==
+X-Google-Smtp-Source: AGHT+IG9WizXRq7p9NZdMrP8fq7nu4flGz0MqXxHOBMpc509sT4kPp3aQs18kgW4GHEvrtC4uMqYcusKPaFvnBXTZwA=
+X-Received: by 2002:aa7:cd04:0:b0:58b:21f2:74e6 with SMTP id
+ 4fb4d7f45d1cf-58b21f27566mr10156a12.0.1719854855317; Mon, 01 Jul 2024
+ 10:27:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -66,10 +66,11 @@ References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
  <a5fef4b96be3c80aff75eb3b20e1edc90e8bfe42.camel@collabora.com>
  <CAHRSSEzfXJU=GcyC_HfUUnNQdyjT8S68HqhN1bdaB6NE0TPGsA@mail.gmail.com>
  <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com> <CAHRSSEx+1=8N6wEDFwiXoR61q+oX-r9tGXJjJ6vtzJ4y21c1uA@mail.gmail.com>
-In-Reply-To: <CAHRSSEx+1=8N6wEDFwiXoR61q+oX-r9tGXJjJ6vtzJ4y21c1uA@mail.gmail.com>
+ <CAHRSSEwO4M0KKwdVEwjBDQ4vjMrWcHYKUVX7f4D9P9wTe2LTUQ@mail.gmail.com>
+In-Reply-To: <CAHRSSEwO4M0KKwdVEwjBDQ4vjMrWcHYKUVX7f4D9P9wTe2LTUQ@mail.gmail.com>
 From: Todd Kjos <tkjos@google.com>
-Date: Mon, 1 Jul 2024 10:05:35 -0700
-Message-ID: <CAHRSSEwO4M0KKwdVEwjBDQ4vjMrWcHYKUVX7f4D9P9wTe2LTUQ@mail.gmail.com>
+Date: Mon, 1 Jul 2024 10:27:24 -0700
+Message-ID: <CAHRSSExXLEaz9GpnBXGE383Rq_rzgxFjWqnsxX_fRGkj4848fA@mail.gmail.com>
 Subject: Re: new branch + more recent gcc?
 To: kernelci@lists.linux.dev
 Cc: Denys Fedoryshchenko <denys.f@collabora.com>, Viktor Martensson <vmartensson@google.com>, 
@@ -77,25 +78,41 @@ Cc: Denys Fedoryshchenko <denys.f@collabora.com>, Viktor Martensson <vmartensson
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 1, 2024 at 10:03=E2=80=AFAM Todd Kjos <tkjos@google.com> wrote:
+On Mon, Jul 1, 2024 at 10:05=E2=80=AFAM Todd Kjos <tkjos@google.com> wrote:
 >
-> Our kernelci builds are currently use gcc-10 and clang-17. We have 1
-> allmodconfig failure [1] that appears to be caused by the old gcc-10
-> compiler and doesn't reproduce with gcc-11 or later. Can we switch the
-> android builds to gcc-13 instead?
+> On Mon, Jul 1, 2024 at 10:03=E2=80=AFAM Todd Kjos <tkjos@google.com> wrot=
+e:
+> >
+> > Our kernelci builds are currently use gcc-10 and clang-17. We have 1
+> > allmodconfig failure [1] that appears to be caused by the old gcc-10
+> > compiler and doesn't reproduce with gcc-11 or later. Can we switch the
+> > android builds to gcc-13 instead?
+> >
+> > [1] https://linux.kernelci.org/build/android/branch/android14-6.1/kerne=
+l/android14-6.1.84_r00-129-g87fb1f2f1e795/
+> >
+> > Also, we have a new kernel branch that we'd like to add to the testing:
+> >
+> > repo: https://android.googlesource.com/kernel/common
+> > branch: android15-6.1
 >
-> [1] https://linux.kernelci.org/build/android/branch/android14-6.1/kernel/=
-android14-6.1.84_r00-129-g87fb1f2f1e795/
->
-> Also, we have a new kernel branch that we'd like to add to the testing:
->
-> repo: https://android.googlesource.com/kernel/common
-> branch: android15-6.1
+> I specified the wrong branch. Please do not add android15-6.1. The
+> branch to add is android15-6.6-lts
 
-I specified the wrong branch. Please do not add android15-6.1. The
-branch to add is android15-6.6-lts
+One more thing... can we disable the builds for gki_defconfig? Those
+always fail with no logs (probably because of pahole). We test that
+heavily internally so we don't need kernelci to build it.
+
+Recap of the asks on this thread:
+
+1) use gcc-13 instead of gcc-10 for android kernel builds
+2) add android15-6.6-lts branch to kernelci testing
+3) discontinue all gki_defconfig builds
+
+Thanks.
 
 >
-> Thanks.
->
-> -Todd
+> >
+> > Thanks.
+> >
+> > -Todd
