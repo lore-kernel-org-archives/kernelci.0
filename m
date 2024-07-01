@@ -1,129 +1,92 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB87C14EC42
-	for <kernelci@lists.linux.dev>; Fri, 28 Jun 2024 09:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57D014AD25
+	for <kernelci@lists.linux.dev>; Mon,  1 Jul 2024 17:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719566543; cv=none; b=sgkshqWTuqSTTTRNDUhINHdRd8Szyv7TxzDqmlToVXYKygPuiraRgIFSITkyH6D9NLqFQgWzsuLTqboqXwJ5OEJKgaIJPzV1L7weCHDn8ozUinKczOSDdCbsJxg45/E6YmkD+UqBKw7tjPB4StWzy2lMsiibWEDVPOCzGFLFO6Q=
+	t=1719853439; cv=none; b=NAI6W30eoEL8qp3NjgkkLTPrL3FTf37SQcMDDd8tul9FBxVELGf1rmo8UDW2VNLUL5tW2FWy/n1VxgjxOttJvccNeLrzJmCGe7YSrpGvoF0vev/52MnhaAliH2JeWPlx/Iw0KozNNolSSlgZfIo6WXRtvjHNQRLNGkz+lYleisA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719566543; c=relaxed/simple;
-	bh=No5kI0JbClGdXNXP6BWBYQzHDNI+RX4pElyDv6jIUJA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B1ml6qpsilcv+G8+vBbhSNFT7rQZHQB9o1bt1Atsyblbxt7xgoNqmV9HfHwCcu+dFKUuso5AQAhhdswa6LD37DIaQnPB9nogI95EvzVFNJI9KpTdKlNqE6nx1ugpkEN9q+ApCDmZ38DYuJnyoyWS3X+Ku2gCxyo3VJq4LHLzMJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Oi2XBDoD; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1719853439; c=relaxed/simple;
+	bh=fSvr1epRNiYp0omMjG4fEBPNvj7H7x69we1VNuPje9Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eg9vHWFmETSkAfGioFc84mFbPgPjqRADPc+qA7RuPnu2s04Ofm9O5gBR7/br9/c/rY+LErIbhH6Jx61Ks/orSAmAn99arQKIXJsDSuFjoC05Vx//S6+cx63dEHcAZOMN15qhSr0aswx9m/G5ZMsLexjW50oqgYnz4YAwzJlJwgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qXsE3w6b; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Oi2XBDoD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1719566534;
-	bh=No5kI0JbClGdXNXP6BWBYQzHDNI+RX4pElyDv6jIUJA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Oi2XBDoDzH2H+YQXkPHfnOkemXC9QZbvBVlFnBLw6Q97qvHa6qQXc7udTWCgYKmgZ
-	 jF55LXYylWhWXofaB0DsqvVer3PwsOo6fcuBUh4jIK2pGC9iL0FT0pjN8wxXbsfj6B
-	 xmaUNxGKAMPONbxrBy7kLtkilkge8Saa0mbUC7lhHSY064t77UnA+NhpYixH4xnE3Q
-	 M7SBnp8i2w/zD2t7DoZI0udFlfXU1n1vmAQbODPk8VMSJJfpQC8VFwBrE+6kYGhwIv
-	 Xg0sV1vHJGljnueAtB2wggcx5i7iKsWySqLqohIQ3ZoVBVL9aCoC7H2rgTmK5lFwif
-	 PpNr40bE2KAaA==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 0B6B837821A8;
-	Fri, 28 Jun 2024 09:22:13 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: kernelci@lists.linux.dev
-Cc: linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Testing Quality Call notes - 2024-06-27
-Date: Fri, 28 Jun 2024 11:22:49 +0200
-Message-Id: <20240628092249.26582-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qXsE3w6b"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57a16f4b8bfso8890a12.0
+        for <kernelci@lists.linux.dev>; Mon, 01 Jul 2024 10:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1719853436; x=1720458236; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fSvr1epRNiYp0omMjG4fEBPNvj7H7x69we1VNuPje9Y=;
+        b=qXsE3w6bRL9dOnUTFouCIWT5F0059BnQZgdnxVNb/7A8JWbsIIVudZCWBVMM9sxrx3
+         AlkXuc8/HbO0UXdFBVl+cCflkR2/ChwakpLB+DKinwEzfyMpRbcNtd4bDVSWM05Rlns6
+         zYeAPlH4/qJMNSGA007iP3OxXW3aEB4LaXCpPGKjUnMYpigqoy8E4Rdg+YsmMXBOV3HJ
+         ov6JG7ei3BpzLmAHfRRcIPXOiMK5dfu4RoNEmmFbCPMgV4tqmAhBkTUYVuD11mzsipQA
+         0x1gexkQajpUD/GapNnrt1zZ7IqK7MMl5ee+n/Gs0njZyA80WhK+jG/7aHnsE0/oHjH8
+         35jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719853436; x=1720458236;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fSvr1epRNiYp0omMjG4fEBPNvj7H7x69we1VNuPje9Y=;
+        b=tYoWgHUmieH4nY2LwKCRXp9Jd+7PW/0nQmvFEQKKXwUeScvTa047ZqpA52JpX5eKpa
+         Z445XjUHhN9B6P137HYZVuK4prKtynYbBLqjB9PCX3vyS/wXpNh7CmDxL0ON9TEij026
+         NhgWtUEiv5++FPl7d8wpIy6i0cD3moYF3TqT5isSQcgwQ9jjB9snV7fadm1fPTK1VqWJ
+         YNR9f1E7WPF+ymvR1jR2s9kYwguVap2bCDbujYxFbQ4Q1dVZNpe/nP+52rhdIj7ijxSa
+         8IZqHkAFnchlVmJ67y7vsRgnjY3FufhccI+iOmMN8iTbUJGjJbG+EH5+9sa1AJoOSMvF
+         kjCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsvOlit3I9XfGLCDOUVTahZXhfZo1BST42yaFjp1t+27Y4nvnv6GxN5AnM4zQ5kOqqQ5Dl9OxQBdKc7QwHaXsY8UJmOyF/m1w=
+X-Gm-Message-State: AOJu0YyOJYPUPNGquX4P7yp+7EJUsl0xRPFhLfT5kKARhmQcF0ZLO1fo
+	Wy0x1X9CMVsysFqWDAiqBwhAy1AEFo4gdwJVin0/CdqxV1WaoKDMim3WOzpROr4fe2vGIDnPf5S
+	2LPkXaMpXIooD4nI/QRQlg/BjlEcListojOtU
+X-Google-Smtp-Source: AGHT+IGeoF+mckRdFAiNy+W4C7ocIaiXEJirQGwvGTT7ppxTr8cZCUunsgmvbvYvv8IPXborhiyOx2hl30Tv38mCQ1g=
+X-Received: by 2002:a50:f68d:0:b0:57c:bb0d:5e48 with SMTP id
+ 4fb4d7f45d1cf-5872f673e4bmr410822a12.2.1719853435710; Mon, 01 Jul 2024
+ 10:03:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAHRSSEzrL6uPEvrhW692=+=17EJt+6_-p2z0K5esG4Ff57MSpw@mail.gmail.com>
+ <a94cd4e0-7092-04fb-9b89-da236bfec57f@collabora.com> <CAHRSSEzMo=-eS8KRqHjSMcBqWCsK2mU4zWg=5KFYx2XyL29Z0w@mail.gmail.com>
+ <CAHRSSEzasi7ZRSe3t_ij26cYCc_58eALNn_mMn6B5HFqEbU9EQ@mail.gmail.com>
+ <ffab5719-e6f4-4e21-1095-c129928076af@collabora.com> <CAHRSSEzo0cSQCp_zk4h2BP2EGdqVHSbZOLC-3gf7c6+uOK9R4g@mail.gmail.com>
+ <CAHRSSEw6Vv+3R0OOva8qY3pF-00TZdQku3MxN2OFSaZkN2di+Q@mail.gmail.com>
+ <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com> <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
+ <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
+ <CAHRSSEwYk1oGmJEn5xvB91GKSmaJ_ku5D7hvbS00Jb9-piUbOQ@mail.gmail.com>
+ <a5fef4b96be3c80aff75eb3b20e1edc90e8bfe42.camel@collabora.com>
+ <CAHRSSEzfXJU=GcyC_HfUUnNQdyjT8S68HqhN1bdaB6NE0TPGsA@mail.gmail.com> <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com>
+In-Reply-To: <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Mon, 1 Jul 2024 10:03:40 -0700
+Message-ID: <CAHRSSEx+1=8N6wEDFwiXoR61q+oX-r9tGXJjJ6vtzJ4y21c1uA@mail.gmail.com>
+Subject: new branch + more recent gcc?
+To: Guillaume Tucker <guillaume.tucker@collabora.com>
+Cc: Denys Fedoryshchenko <denys.f@collabora.com>, Viktor Martensson <vmartensson@google.com>, 
+	Betty Zhou <bettyzhou@google.com>, kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Our kernelci builds are currently use gcc-10 and clang-17. We have 1
+allmodconfig failure [1] that appears to be caused by the old gcc-10
+compiler and doesn't reproduce with gcc-11 or later. Can we switch the
+android builds to gcc-13 instead?
 
-KernelCI is hosting a bi-weekly call on Thursday to discuss improvements 
-to existing upstream tests, the development of new tests to increase 
-kernel testing coverage, and the enablement of these tests in KernelCI. 
-In recent months, we at Collabora have focused on various kernel areas,
-assessing the tests already available upstream and contributing patches 
-to make them easily runnable in CIs.
+[1] https://linux.kernelci.org/build/android/branch/android14-6.1/kernel/android14-6.1.84_r00-129-g87fb1f2f1e795/
 
-Below is a list of the tests we've been working on and their latest 
-status updates, as discussed in the last meeting held on 2024-06-27:
+Also, we have a new kernel branch that we'd like to add to the testing:
 
-*USB/PCI devices kselftest*
+repo: https://android.googlesource.com/kernel/common
+branch: android15-6.1
 
-- Upstream test to detect unprobed devices on discoverable buses:
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dacf1d7a78bf8a131346c47bfba7fe1f3ff44beb 
-- Kernel patches to allow running the test on more platforms on KernelCI 
-  were merged:
-  https://lore.kernel.org/all/20240613-kselftest-discoverable-probe-mt8195-kci-v1-0-7b396a9b032d@collabora.com
-- Waiting for KernelCI PRs to be merged:
-  https://github.com/kernelci/kernelci-core/pull/2577 and https://github.com/kernelci/kernelci-pipeline/pull/642
+Thanks.
 
-*Error log test*
-
-- Proposing new kselftest to report device log errors: 
-  https://lore.kernel.org/all/20240423-dev-err-log-selftest-v1-0-690c1741d68b@collabora.com/
-- Currently fixing test failures in KernelCI
-
-*Suspend/resume in cpufreq kselftest*
-
-- Enabling suspend/resume test within the cpufreq kselftest in KernelCI
-- Parameter support for running subtests in a kselftest was merged: 
-  https://github.com/Linaro/test-definitions/pull/511
-- Added rtcwake support in the test to enable automated resume, currently 
-  testing/debugging solution
-
-*Boot time test*
-
-- Investigating possibility of adding new test upstream to measure the 
-  kernel boot time and detect regressions
-- Currently looking into boot tracing with ftrace events and kprobes 
-  (see: https://www.kernel.org/doc/html/latest/trace/boottime-trace.html)
-- Idea for potential kselftest: insert explicit tracepoints in strategic 
-  places, let the user configure which times to measure. The test could 
-  provide a bootconfig file and a fragment to enable the required configs.
-  This could be an alternative to using external tools (e.g. grabserial 
-  w/ early serial port init).
-- Need a list of functions to track in order to measure key metrics 
-  (e.g. device tree overhead, probe overhead, module load overhead)
-- Identify key drivers that need to be loaded early, for potentially 
-  supporting a two-phase boot: (1) time-critical, and (2) rest of the 
-  system
-
-*Other interesting updates*
-
-- Flaky serial on sc7180 was recently fixed: 
-  https://github.com/kernelci/kernelci-project/issues/380 and https://lore.kernel.org/all/20240610222515.3023730-1-dianders@chromium.org/#t
-
-*Strategy for test enablement in KernelCI*
-
-- Guidance on test quality: KernelCI should set the standard for test 
-  quality, providing guidance on which tests to enable from various 
-  projects (e.g., kselftest, LTP). By doing so, KernelCI can serve as a 
-  model for other CI systems.
-- Develop mechanisms to automatically detect which tests should run on a
-  specific platform
-- Embed metadata in the test themselves to facilitate the test selection
-  process
-- Leverage device tree info to determine the appropriate tests for each 
-  platform
-
-Please reply to this thread if you'd like to join the call or discuss 
-any of the topics further. We look forward to collaborating with the 
-community to improve upstream tests and expand coverage to more areas 
-of interest within the kernel.
-
-Best regards,
-
-Laura Nao
+-Todd
