@@ -1,102 +1,72 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6A82207A
-	for <kernelci@lists.linux.dev>; Tue,  2 Jul 2024 15:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2558F5FDA5
+	for <kernelci@lists.linux.dev>; Wed,  3 Jul 2024 05:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719935166; cv=none; b=baks4XgxHEdiOjoufW9qeDo4wom/Wsy0GzWU2OpQKnSXgXf8tzvOkSDrBXg90j3RXczk+vmbpFKnAF+9ALrZEqrTU2GnyCGQIqGKMBVYOyr/ZTYLeIVGySVJ0O0CH2Pz8TfrCgICi1KGt3PxreXyHUmP4xPXWPPb3DlawDcmI9o=
+	t=1719985476; cv=none; b=m8AFFKQhtylP9CB094JXpfXKUftQkj68I+alHbi0gGVs2BaamYJftBaEnC/jK92N8/RXHTG6gf9h5c0vZHWj2D/NN4FbNJVqRljJreYDgahfB2/YVqQrincgM3cx6Rutcy14J1rVw4OTTxvTfDhYAI0WcCmKAGrFoJvwK5X5sy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719935166; c=relaxed/simple;
-	bh=3T9h7Iea6WSp/KQ7L1Vo67lFaDU4FC8FXxVIOnT0CRM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HzSgd975T5p0plnrBYI7tDRxDHcrnrzD9oLDpnpC2xjpfZJ7d34/V9y9ZnKIhFAUp7gBsBxgx2QVOPzGY3+PEQdN2vGVWNwzJzGakjHx9dIhodH3uZUhqIpgydDCK9Ksr8e7QPtJ0s2utqTUXwaUYw+u1jHX3qJZ7m0qAz7xvs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WdYmt8oE; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1719985476; c=relaxed/simple;
+	bh=vwJXMXWGxA8tKMXagHorEmhIOTWZfGrNhz5r+X75+jY=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=YuZOtVpK/QafgOOBg+gm6uQxXMxVlBUQgCDQWsMgYs0UnVsDS6OC0l+DzlKJS45Mdn8bUpePjeT+hVmFKFOyJbXWhkDYLt4w4Vob4FS7PPjBYS8ed63y2M5KwlZeG9oRey+dHyxTL8rl4zBKV6nkPRsrSZy73gY4geglLF0N/Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BlPczt48; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WdYmt8oE"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57d119fddd9so25356a12.1
-        for <kernelci@lists.linux.dev>; Tue, 02 Jul 2024 08:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719935163; x=1720539963; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9uYvvVT81KIIEM3A/M9BmVphQ4kkUVhqdAqYtHG4al4=;
-        b=WdYmt8oEi+XTsrXFvXjHUUBnfVsaJHtgrNoiKsIhlfq0nDFa+Jhbp8rSAZesFKRm8H
-         FMTlXbZjnECmTbih5TnFVJ7/H68QbH4YRB5Ad4fCnkJnGjoSTwnxg/fSfM/s/UihbWpx
-         mQGvOtw91LaNOSFpgYHaTXfQxW859WzEobtHg0LCFhZU3uxZvMmw49P7n8PsoTeqnNot
-         EvbRCZhXfggC58py59UiJlSm+ANyhU4C8fBdk19QU0da7tpwiW86rKyGvcjuaCRGIXYa
-         zRFIQWnch1SuzT8MxwQqS/bkfrthrn32c3Ifv4aOFkb7yznm/Ewub5XAS9GBTqi1d6KP
-         L3Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719935163; x=1720539963;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9uYvvVT81KIIEM3A/M9BmVphQ4kkUVhqdAqYtHG4al4=;
-        b=WttoMf2xKEQ7wGzYk9wn3m8KN2E2kZG8ks1awUYxkijDda+U/U/QFvQeTnfvoB0u8A
-         0WV1N/rRxTVPRo6HvX0Dc9Fe0UMtwRXpD47KDGGUaafFVFXBTUN40jxAnYYg1VwQFUKz
-         5t+tisyp4YXCHeogxOvmuxBOapV062bXhmLj2RQqVL2i1gYleavLOhVCHwzfQfmmTtA3
-         vh1WVzM1xJrcABWJunbqAg04lKS1u6jNqKsmw6JzNJq7PyKaF4qeKrxufVa8eECDjPCt
-         XAVSge9SURKNomIht1o53GwRtgQFPZ3fj5aaUWRdCVTVylVmn6MKT29i+qnhHybnTy0k
-         8irQ==
-X-Gm-Message-State: AOJu0YxxmuGKgPRg31hZR6rHwtXC8pMKN62svViIZGI6etAIhjQQ/OX5
-	5+QNuyyffQy/GfYKZkwankmem28SAqi/U9oF7IbArVFYb/xlGiLwSFP210clXaG6IxwvbHLZAhF
-	QmFQngwcyHUtVkAmhN7i2y8Ry7f4VwaSCgAX3
-X-Google-Smtp-Source: AGHT+IE8E+khrGACmUnP2+ztDYr3tW5D68/HoiH/ZsqMsw7Ds2ibNXP4FyisGC4q8ASmFYNPbXPJR42coJ56tlqWtw8=
-X-Received: by 2002:a50:ccd6:0:b0:57d:32ff:73ef with SMTP id
- 4fb4d7f45d1cf-58c66efe892mr28167a12.6.1719935160776; Tue, 02 Jul 2024
- 08:46:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BlPczt48"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 462MUfTH015390
+	for <kernelci@lists.linux.dev>; Wed, 3 Jul 2024 05:44:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=vwJXMXWGxA8tKMXagHorEm
+	hIOTWZfGrNhz5r+X75+jY=; b=BlPczt481wBErlCpfGFhBXADFd1pI/uWoSdDZy
+	eJnkwor56652s75aZ09o3qqhv1Bv8sFBm/OvqUrtc2qBU8yavB08MjBw6b2zmeFh
+	FifxA2F2oR3nxc7kJ86vxGFocV1xWyO/138nYUSYAoGYg1Tt4FztgThXxSYFqHJX
+	szHDDnjc0/Po6+kBV5rtp8R+q6eSQYh/K3B+5zKfDrVc9Yd8WDg0Rvrph8RTc24U
+	5vUelioOCZNbjiI+xOqcCFehyq/qjqfaiZ2IVFn/FMkGoszoW9FFXBMDpYU0PIYN
+	GA7eWVTma3lbhv8h/eJ6sIWBQsUlL3ehJGcjOnXHsrLfri2w==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 402bejt509-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <kernelci@lists.linux.dev>; Wed, 03 Jul 2024 05:44:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4635iXjd017072
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <kernelci@lists.linux.dev>; Wed, 3 Jul 2024 05:44:33 GMT
+Received: from [10.214.66.101] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 2 Jul 2024
+ 22:44:32 -0700
+Message-ID: <0d424743-dfab-4d14-a077-1864f642bdda@quicinc.com>
+Date: Wed, 3 Jul 2024 11:14:12 +0530
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com>
- <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
- <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
- <CAHRSSEwYk1oGmJEn5xvB91GKSmaJ_ku5D7hvbS00Jb9-piUbOQ@mail.gmail.com>
- <a5fef4b96be3c80aff75eb3b20e1edc90e8bfe42.camel@collabora.com>
- <CAHRSSEzfXJU=GcyC_HfUUnNQdyjT8S68HqhN1bdaB6NE0TPGsA@mail.gmail.com>
- <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com> <CAHRSSEx+1=8N6wEDFwiXoR61q+oX-r9tGXJjJ6vtzJ4y21c1uA@mail.gmail.com>
- <CAHRSSEwO4M0KKwdVEwjBDQ4vjMrWcHYKUVX7f4D9P9wTe2LTUQ@mail.gmail.com>
- <CAHRSSExXLEaz9GpnBXGE383Rq_rzgxFjWqnsxX_fRGkj4848fA@mail.gmail.com> <bb6b9aba-04d4-4b36-a556-d52f44b12ed6@sirena.org.uk>
-In-Reply-To: <bb6b9aba-04d4-4b36-a556-d52f44b12ed6@sirena.org.uk>
-From: Todd Kjos <tkjos@google.com>
-Date: Tue, 2 Jul 2024 08:45:45 -0700
-Message-ID: <CAHRSSEypz9tgdeaFSXvVr=KZZdg=XY32zDkWT-dYi7N3z8Hh3w@mail.gmail.com>
-Subject: Re: new branch + more recent gcc?
-To: Mark Brown <broonie@kernel.org>
-Cc: kernelci@lists.linux.dev, Denys Fedoryshchenko <denys.f@collabora.com>, 
-	Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: <kernelci@lists.linux.dev>
+From: Yogesh Lal <quic_ylal@quicinc.com>
+Subject: subscribe kernelci
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: C5QNU2wQJ1VXd3A-thQ1bqCuI-53389S
+X-Proofpoint-ORIG-GUID: C5QNU2wQJ1VXd3A-thQ1bqCuI-53389S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-03_02,2024-07-02_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=360
+ impostorscore=0 spamscore=0 clxscore=1011 mlxscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407030040
 
-On Tue, Jul 2, 2024 at 6:12=E2=80=AFAM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> On Mon, Jul 01, 2024 at 10:27:24AM -0700, Todd Kjos wrote:
->
-> > 1) use gcc-13 instead of gcc-10 for android kernel builds
->
-> It sounds like you just need an upgrade here rather than specifically
-> GCC 13?  The reason I ask is that GCC 12 is the standard compiler in
-> Debian Bookworm so might be easier to update to quickly.
-
-GCC 12 would be fine
-
->
-> > 2) add android15-6.6-lts branch to kernelci testing
->
-> https://github.com/kernelci/kernelci-core/pull/2597
->
-> > 3) discontinue all gki_defconfig builds
->
-> https://github.com/kernelci/kernelci-core/pull/2598
->
-> (not 100% sure I got that one right, have to see how it goes on staging.)
-
-Thanks!
+subscribe kernelci
