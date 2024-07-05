@@ -1,102 +1,136 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2565B1A00F8
-	for <kernelci@lists.linux.dev>; Thu,  4 Jul 2024 06:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D07F1474AF
+	for <kernelci@lists.linux.dev>; Fri,  5 Jul 2024 23:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720073390; cv=none; b=D+0+AGHaVxzLfyNSe08Rg1LnhW7kmiQ3ozOpQqP37lheI8CUMAI7yWXcJnQcvoCPR4czHz6UXwIzKtJXQNCIFgIL3NsYRvd0AvsRpgNGSSHxZn83f6+P4+yM7vk7FEDivHDdObbV00fb3Hg/nyPXMamXa7P/yyAG7fXwpT+V6Vg=
+	t=1720222211; cv=none; b=XaEZPoDM57TCj+a1zKwOTVlf0LYCuhmbWu9RYTyEwusMknkNrhRAqqKN2sCkJAcCR5iR1a/PJgKCs42W1YBEsLnrbk9PsYeqi/djj+hN27kwdMihTPJffMD86AOGoThHaz1TXMxHMgIgm8J8BlUmc8BFAw3QAM7OtFIzXW5tzn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720073390; c=relaxed/simple;
-	bh=wg6lYrefoQwLcUYT5vXGiQsBgGefDz7Hki32pzDxQtM=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=rGGCHChE+wxFRoxVY6mneiKoIvQ7TmiRpBM/zcAFMkga1DMcq6Id/UOEG2Q3GwofmJuubG4qsM/r08PrXZOaQOaRXPOfX7WvZNk5rUfjadwHVRTlQxOq7vMT/CY6yTOPi+z7dflrC2a4qilBghfm/nkQlnL0pUqMrUek7T7c2dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=aSr5eHOL; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1720222211; c=relaxed/simple;
+	bh=hEAYBzWA0a0y+dYKFS2DJxhMUVWhROyH3K3JrHLkUkE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=czdJrnI5lOm/ny8ZmuGNqKJ0XuvuUIuqLJt3vNDKQoO7XA/+fZwkiCnDx3sJXAt2XhtbhkpECoVMQKRpyby8FO5ij1aiskIoCA2iSu5G7wZ1+PQpV3HiSFD3URpRTc1X5akJfSWP2TATDBkPyjw/QTyU9Cl354RLn5P+wAXeOBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=27T/u9DY; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="aSr5eHOL"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="27T/u9DY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1720073387;
-	bh=wg6lYrefoQwLcUYT5vXGiQsBgGefDz7Hki32pzDxQtM=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=aSr5eHOLYLNe9Oa3uxUcwaTZKSa9VUacewjKQzsTd+CbO5zvfQWEb28Sd6A8ZtK5P
-	 x3+M4pytd4G28b5MTELGTcePuP7DlcSCJl4SeWpEA+8VT7E9Og7OdG9FPM2lyk7a09
-	 xDWyyfqSCSIKdGA7s+mJFxxc3g5rrQWf5OkYAfTjbbx+Dal7/QH/6bMIeI6ASgNlCj
-	 oLUIifyx0uJKBtcr2k+gbSenQ8HM0QNtdhtIWpMFYm3HaDIkb4oNwByJJQe6Bw3wGu
-	 +nkIwNEMpmgYkMDUYrZAHfs+4I453pN8r63UWhgDX3F6YEChYhdH4qxcYHrre8zwNh
-	 BaSyFbNxsZCMg==
-Received: from [100.113.15.66] (ec2-34-240-57-77.eu-west-1.compute.amazonaws.com [34.240.57.77])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	s=mail; t=1720222207;
+	bh=hEAYBzWA0a0y+dYKFS2DJxhMUVWhROyH3K3JrHLkUkE=;
+	h=From:Subject:Date:To:Cc:From;
+	b=27T/u9DYfK0YwmBN1J13WMc/2Jg0yeXBDGXeFWWf7RhQQGz+Jt5pyzAqId/xdvVb/
+	 h5rJqbOocNvgES8PO7eVKQmPNzcy0zO2gixJJu7yXNnaTSjQ70gHxbVlEuWgvqJBWX
+	 BM1SAMVtMlmH92LSEB4Dl0y5wlvm1gxXVUcqyxJh96x4WEd9q3KhnvUf3HnslmE8qd
+	 V709B9A7626OsTy/f/NWxWKj6YoiyyR3qWUkyB8plA4aGmU3yWE0ohrSjwGs6sT0nI
+	 No8Mv66AuCFXdUj8wmaACpGIdjWuaDbqRwinFjLp/xf8K/WXYwl0OmuC7ldjwdcLUX
+	 lNeRRoQ95N2Fg==
+Received: from [192.168.1.238] (tango.collaboradmins.com [167.235.144.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id AFA5E37810CD;
-	Thu,  4 Jul 2024 06:09:45 +0000 (UTC)
-Message-ID: <95e1943a-d534-4ce4-ba3b-285a52684420@collabora.com>
-Date: Thu, 4 Jul 2024 11:09:43 +0500
+	(Authenticated sender: nfraprado)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C80363780BDB;
+	Fri,  5 Jul 2024 23:30:06 +0000 (UTC)
+From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+Subject: [PATCH v2 0/3] kselftest: Add test to report device log errors
+Date: Fri, 05 Jul 2024 19:29:53 -0400
+Message-Id: <20240705-dev-err-log-selftest-v2-0-163b9cd7b3c1@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- kernelci@lists.linux.dev, Denys Fedoryshchenko <denys.f@collabora.com>,
- Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>
-Subject: Re: new branch + more recent gcc?
-To: Todd Kjos <tkjos@google.com>, Mark Brown <broonie@kernel.org>
-References: <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com>
- <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
- <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
- <CAHRSSEwYk1oGmJEn5xvB91GKSmaJ_ku5D7hvbS00Jb9-piUbOQ@mail.gmail.com>
- <a5fef4b96be3c80aff75eb3b20e1edc90e8bfe42.camel@collabora.com>
- <CAHRSSEzfXJU=GcyC_HfUUnNQdyjT8S68HqhN1bdaB6NE0TPGsA@mail.gmail.com>
- <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com>
- <CAHRSSEx+1=8N6wEDFwiXoR61q+oX-r9tGXJjJ6vtzJ4y21c1uA@mail.gmail.com>
- <CAHRSSEwO4M0KKwdVEwjBDQ4vjMrWcHYKUVX7f4D9P9wTe2LTUQ@mail.gmail.com>
- <CAHRSSExXLEaz9GpnBXGE383Rq_rzgxFjWqnsxX_fRGkj4848fA@mail.gmail.com>
- <bb6b9aba-04d4-4b36-a556-d52f44b12ed6@sirena.org.uk>
- <CAHRSSEypz9tgdeaFSXvVr=KZZdg=XY32zDkWT-dYi7N3z8Hh3w@mail.gmail.com>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <CAHRSSEypz9tgdeaFSXvVr=KZZdg=XY32zDkWT-dYi7N3z8Hh3w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPGBiGYC/22NQQ6CMBBFr0Jm7Zi2IqAr72FYQDuFJpWaKWk0p
+ He3krhz+V7y398gEjuKcK02YEouurAUUIcK9DwsE6EzhUEJVYtaSTSUkJjRhwkjebtSXFF19jx
+ 2VrfaCCjTJ5N1rz177wvPLq6B3/tLkl/7C57+B5NEgc1FaNnW0jTdeNPB+2EMPBx1eECfc/4Aw
+ ueGqrwAAAA=
+To: Shuah Khan <shuah@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernelci@lists.linux.dev, 
+ =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+X-Mailer: b4 0.14.0
 
-On 7/2/24 8:45 PM, Todd Kjos wrote:
-> On Tue, Jul 2, 2024 at 6:12 AM Mark Brown <broonie@kernel.org> wrote:
->>
->> On Mon, Jul 01, 2024 at 10:27:24AM -0700, Todd Kjos wrote:
->>
->>> 1) use gcc-13 instead of gcc-10 for android kernel builds
->>
->> It sounds like you just need an upgrade here rather than specifically
->> GCC 13?  The reason I ask is that GCC 12 is the standard compiler in
->> Debian Bookworm so might be easier to update to quickly.
-> 
-> GCC 12 would be fine
-> 
->>
->>> 2) add android15-6.6-lts branch to kernelci testing
->>
->> https://github.com/kernelci/kernelci-core/pull/2597
->>
->>> 3) discontinue all gki_defconfig builds
->>
->> https://github.com/kernelci/kernelci-core/pull/2598
->>
->> (not 100% sure I got that one right, have to see how it goes on staging.)
-> 
-> Thanks!
+Log errors are the most widely used mechanism for reporting issues in
+the kernel. When an error is logged using the device helpers, eg
+dev_err(), it gets metadata attached that identifies the subsystem and
+device where the message is coming from. This series makes use of that
+metadata in a new test to report which devices logged errors.
 
-I've opened PR to enable android builds including android15-6.6-lts in new
-kernelci:
-https://github.com/kernelci/kernelci-pipeline/pull/667
+The first two patches move a test and a helper script to keep things
+organized before this new test is added in the third patch.
 
-> 
+It is expected that there might be many false-positive error messages
+throughout the drivers code which will be reported by this test. By
+having this test in the first place and working through the results we
+can address those occurrences by adjusting the loglevel of the messages
+that turn out to not be real errors that require the user's attention.
+It will also motivate additional error messages to be introduced in the
+code to detect real errors where they turn out to be missing, since
+it will be possible to detect said issues automatically.
 
+As an example, below you can see the test result for
+mt8192-asurada-spherion. The single standing issue has been investigated
+and will be addressed in an EC firmware update [1]:
+
+TAP version 13
+1..1
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `model_name' property: -6
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `energy_full_design' property: -6
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+ power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
+not ok 1 +power_supply:sbs-8-000b
+ Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+
+[1] https://lore.kernel.org/all/cf4d8131-4b63-4c7a-9f27-5a0847c656c4@notapiano
+
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+---
+Changes in v2:
+- Rebased onto next-20240703
+- Link to v1: https://lore.kernel.org/r/20240423-dev-err-log-selftest-v1-0-690c1741d68b@collabora.com
+
+---
+Nícolas F. R. A. Prado (3):
+      kselftest: devices: Move discoverable devices test to subdirectory
+      kselftest: Move ksft helper module to common directory
+      kselftest: devices: Add test to detect device error logs
+
+ tools/testing/selftests/Makefile                   |  4 +-
+ tools/testing/selftests/devices/Makefile           |  4 -
+ .../testing/selftests/devices/error_logs/Makefile  |  3 +
+ .../devices/error_logs/test_device_error_logs.py   | 85 ++++++++++++++++++++++
+ tools/testing/selftests/devices/probe/Makefile     |  4 +
+ .../{ => probe}/boards/Dell Inc.,XPS 13 9300.yaml  |  0
+ .../{ => probe}/boards/google,spherion.yaml        |  0
+ .../{ => probe}/test_discoverable_devices.py       |  7 +-
+ .../selftests/{devices => kselftest}/ksft.py       |  0
+ 9 files changed, 101 insertions(+), 6 deletions(-)
+---
+base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+change-id: 20240421-dev-err-log-selftest-28f5b8fc7cd0
+
+Best regards,
 -- 
-BR,
-Muhammad Usama Anjum
+Nícolas F. R. A. Prado <nfraprado@collabora.com>
+
