@@ -1,187 +1,129 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37B515EFC8
-	for <kernelci@lists.linux.dev>; Fri,  5 Jul 2024 23:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E423241C6D
+	for <kernelci@lists.linux.dev>; Tue,  9 Jul 2024 17:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720222215; cv=none; b=NEY0yxVxDy9IYpm/0UMIsfpjXu31kWt1UkTplNEPsoJMrcdSO1n2aYMRH2lbOsjBOYNtcRO2bSDCSyQVadEoTQSssvtewBjscXdDFtpWHSnHlaQLtw3PsLTlGAzJkoGd6E92dnx2CFscXfe9d3h5JBBNvW0O6CJkN1bqeXBatRA=
+	t=1720544554; cv=none; b=ZRAJm8mgc+IBfCKNRP/ECOvxH7eYQQM2FyKyTJbAIe/x5VgGy8I1F4MUVd61WHfrZpp35886LLQeQekJaQa2Fbb41Hvva/LvqreiYpmCh95fHJaedJPHbJYWAoj+9Ie5UxYLZkZoEgr/N1CLu5EujjNLoaBWMVivo1RtJ6baD6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720222215; c=relaxed/simple;
-	bh=KXP1PLG22gD+T352YnjlF9j1bB/6aJs9Gs0doHGBIBs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pwpiavXhdH70n70zX/rzoKc6FD0cXjS3WBd1VIfU7wAU4LfEzSiJKfe0gLj2HplkpucvZb0d95hgNRpOox2vEAi92JPDN4OMvpScn8Z1Pk0T+7DHsjEQJbPzOkIP+Gc3JaWwwB3PC3bWcQoiztXcWNgHogbWe07S+vB0lYHBHC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=vwFNqutu; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1720544554; c=relaxed/simple;
+	bh=95GnVFM2TR7e5mh1eeAMxO0KjQbq6QZNBL0kscq3T4o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S+hFEUaOTLjS/RZDVNzF7Bks9FzOJ9e67FjfJZDkPcofc5Mz7OuIYcTsoR94Oa8k/jHsu3yGWfzf4BhoNuWLrMQa3l8/aJXF9UStGqD4ieBj372J1bML43X84xwcXmwuEY71zaWmGE1reFJ++pTF+DogU0kpb+i+gljAvH9QmXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jNWY3gLE; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="vwFNqutu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1720222212;
-	bh=KXP1PLG22gD+T352YnjlF9j1bB/6aJs9Gs0doHGBIBs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=vwFNqutux5y24gRoxK0SDzXPLfO2NV0mnnzrQ08yf9jLPyduLHJq/B8pVras50ETx
-	 zmhs8pKPYY9wE+YUbeMVQNvt43aDNnzTKGBEn6HXmUvlV08zsK10HskltkI0SU6ifN
-	 bWBSs1CabS/wJDBfUfUNq2i8projBbAMJA5kgSLpjWkOeHfuyQnPziBkapPVuDJcWA
-	 zMRsjvNQkxXI3zhkRBTkQVyhLqJpS9pwoPxNIJ5f++lp/nlY7PPKDCIbso00mg+sns
-	 kvD8awMfqFsihSqSgaeSO+8XhQu+acww1MgdDQGtEg6zJo5TUQB2BZVwK6wKH5GNQr
-	 nULjpENvksHbA==
-Received: from [192.168.1.238] (tango.collaboradmins.com [167.235.144.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 42F3137821FE;
-	Fri,  5 Jul 2024 23:30:11 +0000 (UTC)
-From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Date: Fri, 05 Jul 2024 19:29:56 -0400
-Subject: [PATCH v2 3/3] kselftest: devices: Add test to detect device error
- logs
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jNWY3gLE"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4266f796e67so2765e9.1
+        for <kernelci@lists.linux.dev>; Tue, 09 Jul 2024 10:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1720544551; x=1721149351; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xdr8jUX1IfDwk5YcmUpZxhvf7OoBjzo+B5QFyPgD4e8=;
+        b=jNWY3gLEtIKuFJz1sz4MaYXNoAQKsNDhPoY5AerPFuhfZIFRdjRkI7mRe7z7qSaSUR
+         /kQwN24CVzTxBbQOhUel4bcH3lItaZHXaYfJnj9ovQo16UK1xCppjymaBkxibh/kI8hp
+         auSf1zAyC5cLinLiEVQsCHFc6ne+VOtWGA/Vx5ZdKXHkA1tmxo/Q56zp3o+dOzZaxbLd
+         HGcAPAD0VN3/Kt13RLn5DGUug/DOXP5fk6JmrT3BLWXQDAynai+wNRWTgx9Pmxgw/zGI
+         71Yg5SbIkQFSkbtPAuHspc1IzJWR7kyPvgywyLtpuT5JGDR6d7cd+Zrud4Khe4ZWdCE4
+         Tnsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720544551; x=1721149351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xdr8jUX1IfDwk5YcmUpZxhvf7OoBjzo+B5QFyPgD4e8=;
+        b=qmsSl3LSy/ZUVue7bDrJPnXKlsqL9UiXM8+AshXvFV7jG56n2YLvgcDLyJOAISURLz
+         kxVEuDbbbiVGa2bJQc3BADd3Cvoqr3aYdga0Duzdi+ARnuBoM3fFwzCAwEgcuo65alRg
+         2m+fUAmfgFFqXYz3fiZoKsm0IS65OpFSMhlBOP5xsPREZSgEtcx9adjG1paeNFY/jGeq
+         k20Yee3/B3AQwEqW3CW1HtSIbtdfxBaP98iDMnnRZCbqIHY+50LgulnZjfuFEJ+R14v5
+         o5A9nungl6cvAwgYVHwBwcbHPGAwHI8TFka6a1FAcHNn0qWXpb5kPP4R6kgJyEiZpz83
+         Xw5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWnQwjDcOOYYwBkb2QzEanajbhFJDR+C6tFv8KS/vN/RElM0rMxqdqbnbd5f/xZfhq6cT6U3uN5NSNVfXABp/fPgD1VxoFOvlQ=
+X-Gm-Message-State: AOJu0YxZRf0SCix1e+WK74xivgE/OIn972hM158MkCjiXJHZFD/4uFSe
+	9GA4HTBHXWZ4dd2Eh6UymfYBXgJGYNMl6zuJfQY1SjkfMSvcV4Rm6Nt2Y8NQVlkeI/53GjQN/C3
+	ssQMf86GfFq/m108DJ6OYeJwTWyruG5Vhktn1
+X-Google-Smtp-Source: AGHT+IHBy3iW7l57l5LyJFmPxFFcY0mesxc7235L54+Uq5gj9cmnak64tgPjhXBrVzCwJiO+gp8F6LEUqzENSjejRkY=
+X-Received: by 2002:a05:600c:b4f:b0:426:62a2:dfc with SMTP id
+ 5b1f17b1804b1-4267318e938mr1964565e9.5.1720544551021; Tue, 09 Jul 2024
+ 10:02:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240705-dev-err-log-selftest-v2-3-163b9cd7b3c1@collabora.com>
-References: <20240705-dev-err-log-selftest-v2-0-163b9cd7b3c1@collabora.com>
-In-Reply-To: <20240705-dev-err-log-selftest-v2-0-163b9cd7b3c1@collabora.com>
-To: Shuah Khan <shuah@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernelci@lists.linux.dev, 
- =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-X-Mailer: b4 0.14.0
+References: <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com>
+ <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
+ <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
+ <CAHRSSEwYk1oGmJEn5xvB91GKSmaJ_ku5D7hvbS00Jb9-piUbOQ@mail.gmail.com>
+ <a5fef4b96be3c80aff75eb3b20e1edc90e8bfe42.camel@collabora.com>
+ <CAHRSSEzfXJU=GcyC_HfUUnNQdyjT8S68HqhN1bdaB6NE0TPGsA@mail.gmail.com>
+ <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com> <CAHRSSEx+1=8N6wEDFwiXoR61q+oX-r9tGXJjJ6vtzJ4y21c1uA@mail.gmail.com>
+ <CAHRSSEwO4M0KKwdVEwjBDQ4vjMrWcHYKUVX7f4D9P9wTe2LTUQ@mail.gmail.com>
+ <CAHRSSExXLEaz9GpnBXGE383Rq_rzgxFjWqnsxX_fRGkj4848fA@mail.gmail.com>
+ <bb6b9aba-04d4-4b36-a556-d52f44b12ed6@sirena.org.uk> <CAHRSSEypz9tgdeaFSXvVr=KZZdg=XY32zDkWT-dYi7N3z8Hh3w@mail.gmail.com>
+ <95e1943a-d534-4ce4-ba3b-285a52684420@collabora.com>
+In-Reply-To: <95e1943a-d534-4ce4-ba3b-285a52684420@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Tue, 9 Jul 2024 10:02:16 -0700
+Message-ID: <CAHRSSEzRE2ZXui+uiq=eZvDRcdkjo2cKK7qO4nUTEFOo2cz15Q@mail.gmail.com>
+Subject: Re: new branch + more recent gcc?
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Mark Brown <broonie@kernel.org>, kernelci@lists.linux.dev, 
+	Denys Fedoryshchenko <denys.f@collabora.com>, Viktor Martensson <vmartensson@google.com>, 
+	Betty Zhou <bettyzhou@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Log errors are the most widely used mechanism for reporting issues in
-the kernel. When an error is logged using the device helpers, eg
-dev_err(), it gets metadata attached that identifies the subsystem and
-device where the message is coming from. Introduce a new test that makes
-use of that metadata to report which devices logged errors (or more
-critical messages).
+Something isn't right. We've dropped from about 35 builds per android
+kernel branch down to only 1-5 builds. Can we get all those other
+builds back?
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
----
- tools/testing/selftests/Makefile                   |  1 +
- .../testing/selftests/devices/error_logs/Makefile  |  3 +
- .../devices/error_logs/test_device_error_logs.py   | 85 ++++++++++++++++++++++
- 3 files changed, 89 insertions(+)
+See https://linux.kernelci.org/job/android/
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 7bd78b9f5cdd..c4937c87df22 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -13,6 +13,7 @@ TARGETS += core
- TARGETS += cpufreq
- TARGETS += cpu-hotplug
- TARGETS += damon
-+TARGETS += devices/error_logs
- TARGETS += devices/probe
- TARGETS += dmabuf-heaps
- TARGETS += drivers/dma-buf
-diff --git a/tools/testing/selftests/devices/error_logs/Makefile b/tools/testing/selftests/devices/error_logs/Makefile
-new file mode 100644
-index 000000000000..d546c3fb0a7f
---- /dev/null
-+++ b/tools/testing/selftests/devices/error_logs/Makefile
-@@ -0,0 +1,3 @@
-+TEST_PROGS := test_device_error_logs.py
-+
-+include ../../lib.mk
-diff --git a/tools/testing/selftests/devices/error_logs/test_device_error_logs.py b/tools/testing/selftests/devices/error_logs/test_device_error_logs.py
-new file mode 100755
-index 000000000000..3dd56c8ec92c
---- /dev/null
-+++ b/tools/testing/selftests/devices/error_logs/test_device_error_logs.py
-@@ -0,0 +1,85 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2024 Collabora Ltd
-+#
-+# This test checks for the presence of error (or more critical) log messages
-+# coming from devices in the kernel log.
-+#
-+# One failed test case is reported for each device that has outputted error
-+# logs. Devices with no errors do not produce a passing test case to avoid
-+# polluting the results, therefore a successful run will list 0 tests run.
-+#
-+
-+import glob
-+import os
-+import re
-+import sys
-+
-+# Allow ksft module to be imported from different directory
-+this_dir = os.path.dirname(os.path.realpath(__file__))
-+sys.path.append(os.path.join(this_dir, "../../kselftest/"))
-+
-+import ksft
-+
-+kmsg = "/dev/kmsg"
-+
-+RE_log = re.compile(
-+    r"(?P<prefix>[0-9]+),(?P<sequence>[0-9]+),(?P<timestamp>[0-9]+),(?P<flag>[^;]*)(,[^;]*)*;(?P<message>.*)"
-+)
-+RE_tag = re.compile(r" (?P<key>[^=]+)=(?P<value>.*)")
-+
-+PREFIX_ERROR = 3
-+
-+logs = []
-+error_log_per_device = {}
-+
-+
-+def parse_kmsg():
-+    current_log = {}
-+
-+    with open(kmsg) as f:
-+        os.set_blocking(f.fileno(), False)
-+
-+        for line in f:
-+            tag_line = RE_tag.match(line)
-+            log_line = RE_log.match(line)
-+
-+            if log_line:
-+                if current_log:
-+                    logs.append(current_log)  # Save last log
-+
-+                current_log = {
-+                    "prefix": int(log_line.group("prefix")),
-+                    "sequence": int(log_line.group("sequence")),
-+                    "timestamp": int(log_line.group("timestamp")),
-+                    "flag": log_line.group("flag"),
-+                    "message": log_line.group("message"),
-+                }
-+            elif tag_line:
-+                current_log[tag_line.group("key")] = tag_line.group("value")
-+
-+
-+def generate_per_device_error_log():
-+    for log in logs:
-+        if log.get("DEVICE") and log["prefix"] <= PREFIX_ERROR:
-+            if not error_log_per_device.get(log["DEVICE"]):
-+                error_log_per_device[log["DEVICE"]] = []
-+            error_log_per_device[log["DEVICE"]].append(log)
-+
-+
-+parse_kmsg()
-+
-+generate_per_device_error_log()
-+num_tests = len(error_log_per_device)
-+
-+ksft.print_header()
-+ksft.set_plan(num_tests)
-+
-+for device in error_log_per_device:
-+    for log in error_log_per_device[device]:
-+        ksft.print_msg(log["message"])
-+    ksft.test_result_fail(device)
-+if num_tests == 0:
-+    ksft.print_msg("No device error logs found")
-+ksft.finished()
 
--- 
-2.45.2
-
+On Wed, Jul 3, 2024 at 11:09=E2=80=AFPM Muhammad Usama Anjum
+<usama.anjum@collabora.com> wrote:
+>
+> On 7/2/24 8:45 PM, Todd Kjos wrote:
+> > On Tue, Jul 2, 2024 at 6:12=E2=80=AFAM Mark Brown <broonie@kernel.org> =
+wrote:
+> >>
+> >> On Mon, Jul 01, 2024 at 10:27:24AM -0700, Todd Kjos wrote:
+> >>
+> >>> 1) use gcc-13 instead of gcc-10 for android kernel builds
+> >>
+> >> It sounds like you just need an upgrade here rather than specifically
+> >> GCC 13?  The reason I ask is that GCC 12 is the standard compiler in
+> >> Debian Bookworm so might be easier to update to quickly.
+> >
+> > GCC 12 would be fine
+> >
+> >>
+> >>> 2) add android15-6.6-lts branch to kernelci testing
+> >>
+> >> https://github.com/kernelci/kernelci-core/pull/2597
+> >>
+> >>> 3) discontinue all gki_defconfig builds
+> >>
+> >> https://github.com/kernelci/kernelci-core/pull/2598
+> >>
+> >> (not 100% sure I got that one right, have to see how it goes on stagin=
+g.)
+> >
+> > Thanks!
+>
+> I've opened PR to enable android builds including android15-6.6-lts in ne=
+w
+> kernelci:
+> https://github.com/kernelci/kernelci-pipeline/pull/667
+>
+> >
+>
+> --
+> BR,
+> Muhammad Usama Anjum
