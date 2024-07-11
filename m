@@ -1,136 +1,147 @@
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5288E13D509
-	for <kernelci@lists.linux.dev>; Wed, 10 Jul 2024 21:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C812167265
+	for <kernelci@lists.linux.dev>; Thu, 11 Jul 2024 17:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720648160; cv=none; b=psAPu0e9/7JExaGV7oo+5ZObhX2/kYgjMMvpMyM+a2IkYLMb79AqLn8wC5SBtFqzAAMwKmoCMRBGKsInUHuGu9V2eEsUqGODy3jAr2HZJR55DgPBrOQ43DBGo3pXNSIBrasO48beMV48/8Ts6XogLQv44uu8q9bQfk3uut1rkZc=
+	t=1720718455; cv=none; b=P9rVgdfLxR/k5l0P04/ZpQ46xG9a9sAdWFuOwvBbF3Ms1Km0Z0SNQ+kylgd4jg5tKA1SegEs7aIvzEGdQGUdUwX3yH3ihuaeMe840gpk/t4d2BSQh2QCyezR3iZ+0JrUngS0BSl+U5j8OaqBf4EaNFzwsK2VqY2u7SRUoB30LIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720648160; c=relaxed/simple;
-	bh=brE4XTSJWhbb88xBaNooE0Ex2C70boV3laaSm4tuuVA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a4yZZtsTBU0kPb4LSCwgf2FuCoX8jWHWUL0as7QZlijXeeE7wSYMP0KXc2AjPyIB5YutJUxat5o1TPgdxUg1Uzg0YRsrdD6wsfbV3wi7MYHNql+g+KqVDkjY5fTgXITvqdm0TpYBLwxnHfh7m1KfvKWcTS2u1yyW9luIXyIQsBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtOQJYn9; arc=none smtp.client-ip=209.85.166.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1720718455; c=relaxed/simple;
+	bh=bQCFHTqUDEGJtrm0PRlAo1VL30xPoARJ7mL9pgncbts=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ghdwJbrllolrXlxL/p1AZXjI6Qa9CIJBBHzJwNmFyBHs+adY5S3L73pL9bjew+KsIgf5/ysoHNPHp1FJ8fjN0Du3MeOdgW1q6j9B7AM35R9BIMZtrXwNDm+OR0Fwh68uskb033xoGNEBl+Ldz7aw2pKMt+x69x0Ue2y/lzLEPYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F5c5TLiW; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtOQJYn9"
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-38252b3a90eso170485ab.0
-        for <kernelci@lists.linux.dev>; Wed, 10 Jul 2024 14:49:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F5c5TLiW"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-58c92e77ac7so449a12.1
+        for <kernelci@lists.linux.dev>; Thu, 11 Jul 2024 10:20:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1720648157; x=1721252957; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TtSBaQwe1ySQPE3Nxg4vQj+bxphEtyrHawYS7S+O8iQ=;
-        b=NtOQJYn9pH6Q12T9wDGcsBTSnHcs0IZOFQRvD6TfqpLiPcC0lgDe7ztRlPLGsPD93D
-         B7p7kUFhAT4ECkez9RA8a9vZCxwrXYSVpMk0gE6Q6F4njGVslw58snZcKn/KEXAEBtLb
-         KvPMsHEaNiTtaElbd8HQbBYRP6rotiUzB1w1w=
+        d=google.com; s=20230601; t=1720718452; x=1721323252; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8rc8P6/Gkox8hWpcJ8ejJ4CAMX+Fj2WEWkiOfST4VQI=;
+        b=F5c5TLiW721FXzB7arhxiZUEJvhmX3UamVnRE6byZTSI4vBk1omYktO8uDFu6o5b4W
+         yi8oNyqfH1fRJr9FVggS42+LmKjAAOKA4Ly8ha/t24jsRQUZU5ML427heRDxNTtIGt2A
+         BziCrPJk40LEIjYH2n42Um3yBwkyJMrRHwQHOlDKBo3OLxMStDeKlpXYYDJZUcMgLP1s
+         0tY3O0pEXnZGH9kk4zuUt0jC3xIkU4v+703lldbfv15Y2kPeIsKKfBsFD+t6dL8zWC4S
+         B/0d/Ve62fVBkuW+geKhEqpMmHt2aFkNzmJ1yUZJtGTbynIf943Yh/YhnYLHXb4iQYOR
+         jLcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720648157; x=1721252957;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TtSBaQwe1ySQPE3Nxg4vQj+bxphEtyrHawYS7S+O8iQ=;
-        b=ISgydmaxvTsaAb2e7wj/8M+207Z0pW9wecn77SKbFdnXw4dLw99va7YtwkL0T12PFd
-         kI3rtKFQ9Y4HZlw7OSIxV3QRD/4UNDD5lbMSA63k4ggJtUV/xj6k9YDvr/bItCacaqzl
-         57XE/s9gHv4y/uylOSDpbu0oGmdw1PNvl6uo5X2x+5wY560Lrri6+ecX15MuLrNPcdK3
-         Ipu/z80sZdc+nszkgbCjyypNG8vxK0v05lekGZ9LRa4BomOynGfLfdbeoLWvbPjtyeop
-         TbNAl4bTI3uBG2jl9PEnHfXJZySQer/IS4geG8FdtZAeEjvc4eC6zy3yEnfzjG+3J93N
-         k9fw==
-X-Forwarded-Encrypted: i=1; AJvYcCUS5MGNR1yjHvqMTQb/z+O1G/ZYE6a/PHbm8YuoCbUcob8CecTkBvc9uOSTdHQDZchEZiZnnMm0vKOqlrKvkBSA1CCKOIBD9kk=
-X-Gm-Message-State: AOJu0Yyp/qe7p20Zqv6wLkAZetGzAaaV4+MQs/kMTMYwX8pwuDf89oKN
-	wPLABE5VW6/9NOuDeZqghXlQ7Jv1eFRTCrI6b8OeJOuSywxEzqXa1JcbEFNl0hs=
-X-Google-Smtp-Source: AGHT+IEFRDfD1vEXZq26Y1M1yoffjEsK1KsWIIpjMxCah/7ryd/I5EyLoysc8wgc41iMeh+sQYyfyA==
-X-Received: by 2002:a05:6e02:eea:b0:378:cf86:357b with SMTP id e9e14a558f8ab-38d19c2c612mr7398515ab.3.1720648157443;
-        Wed, 10 Jul 2024 14:49:17 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-38a4907578bsm11992935ab.11.2024.07.10.14.49.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jul 2024 14:49:16 -0700 (PDT)
-Message-ID: <71c479fb-cd25-45ec-8dd3-0521ef951f58@linuxfoundation.org>
-Date: Wed, 10 Jul 2024 15:49:15 -0600
+        d=1e100.net; s=20230601; t=1720718452; x=1721323252;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8rc8P6/Gkox8hWpcJ8ejJ4CAMX+Fj2WEWkiOfST4VQI=;
+        b=bBJt2bPAoAMGT5Gb50aTZNuIy4KhXhU73nJ7a4/tJL4hgIYey2wxSbuOjYp5NAegm9
+         rKXf1DSdP3AMWSp8Pkym2LZb5rkKXlDQhmDdahY3dtNVNsmGzjgYEoLRLqYdLm3c3C3K
+         5tdDMsOdm61ywPJGnA1qoXmaQRJAdr8XQQd6r5aRE11Dt5iN5GLkixpE6boKxdkothC/
+         5P4rViNP+mkeI40j09kn5mFkhJQtpTgiwjgvaZ/zoEULMf3fT5aC1VS0pOdy6zDHBQmt
+         dnGlMhu1c5OS7v3tx3nBOmpkptD8TsMLsLzSnyWqdiOdWQ3wjp+c5NzZ0RWrgUIRwpZv
+         oGnw==
+X-Forwarded-Encrypted: i=1; AJvYcCW265yeUDl7JC+DamqCHQCRdjYAgeCmkHODbvm/TeFAhbt+iAgGeEUrMniChfZcjuFdI1lWptCteMjloAaIgcwh3gtIhY+y3qU=
+X-Gm-Message-State: AOJu0YysUJorrMB9Tw2wUEVDNGbd91tz16yhHza6yZOrLBdIXqc9IY8U
+	ghbWUc3tXsT5tIj97RmipiIHWKkiHqvnjzn1kSXGDfrcVcHSx2Y+CIE2bPCX9O909dXYG5KkTXF
+	PJ6adSkNFQPTp9UGqQvK+GtyBLvQNocvs9oOw
+X-Google-Smtp-Source: AGHT+IFWLaipy7GnGeORQOfTcwRRASu+UDP3ykjau7jsMZQKPyOfyJuVg5F1gOkRed/BOjqwINTB99o7lTgXqjk7iGA=
+X-Received: by 2002:a50:cd5b:0:b0:57d:436b:68d6 with SMTP id
+ 4fb4d7f45d1cf-5984e60d8acmr209035a12.7.1720718451469; Thu, 11 Jul 2024
+ 10:20:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] kselftest: Add test to report device log errors
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>, kernel@collabora.com,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernelci@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-References: <20240705-dev-err-log-selftest-v2-0-163b9cd7b3c1@collabora.com>
- <2024071003-islamist-expediter-a22c@gregkh>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <2024071003-islamist-expediter-a22c@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <962098da-8dfe-8a77-169d-ac1b2902b8b8@collabora.com>
+ <CAHRSSEzH+PF92DrbPXKPwpaoqEPhh1hWKL8vio9Ou_-ejcb0Bg@mail.gmail.com>
+ <CAHRSSEyp35+k4v-ak1qp0vvUOWJjTnJkWhOtCO5MCS++zL2u6w@mail.gmail.com>
+ <CAHRSSEwYk1oGmJEn5xvB91GKSmaJ_ku5D7hvbS00Jb9-piUbOQ@mail.gmail.com>
+ <a5fef4b96be3c80aff75eb3b20e1edc90e8bfe42.camel@collabora.com>
+ <CAHRSSEzfXJU=GcyC_HfUUnNQdyjT8S68HqhN1bdaB6NE0TPGsA@mail.gmail.com>
+ <961641f4-e0ed-48da-8336-186e3b8d23ea@collabora.com> <CAHRSSEx+1=8N6wEDFwiXoR61q+oX-r9tGXJjJ6vtzJ4y21c1uA@mail.gmail.com>
+ <CAHRSSEwO4M0KKwdVEwjBDQ4vjMrWcHYKUVX7f4D9P9wTe2LTUQ@mail.gmail.com>
+ <CAHRSSExXLEaz9GpnBXGE383Rq_rzgxFjWqnsxX_fRGkj4848fA@mail.gmail.com>
+ <bb6b9aba-04d4-4b36-a556-d52f44b12ed6@sirena.org.uk> <CAHRSSEypz9tgdeaFSXvVr=KZZdg=XY32zDkWT-dYi7N3z8Hh3w@mail.gmail.com>
+ <95e1943a-d534-4ce4-ba3b-285a52684420@collabora.com> <CAHRSSEzRE2ZXui+uiq=eZvDRcdkjo2cKK7qO4nUTEFOo2cz15Q@mail.gmail.com>
+ <01c856716324fd101de893554683c10db35db47e.camel@collabora.com>
+In-Reply-To: <01c856716324fd101de893554683c10db35db47e.camel@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Thu, 11 Jul 2024 10:20:37 -0700
+Message-ID: <CAHRSSEz_=hs_p=u4XCuGx2xpd36rkycOof7sOh0e1cXtnRXODA@mail.gmail.com>
+Subject: Re: new branch + more recent gcc?
+To: Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, Mark Brown <broonie@kernel.org>, 
+	kernelci@lists.linux.dev, Viktor Martensson <vmartensson@google.com>, 
+	Betty Zhou <bettyzhou@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/10/24 07:11, Greg Kroah-Hartman wrote:
-> On Fri, Jul 05, 2024 at 07:29:53PM -0400, Nícolas F. R. A. Prado wrote:
->> Log errors are the most widely used mechanism for reporting issues in
->> the kernel. When an error is logged using the device helpers, eg
->> dev_err(), it gets metadata attached that identifies the subsystem and
->> device where the message is coming from. This series makes use of that
->> metadata in a new test to report which devices logged errors.
->>
->> The first two patches move a test and a helper script to keep things
->> organized before this new test is added in the third patch.
->>
->> It is expected that there might be many false-positive error messages
->> throughout the drivers code which will be reported by this test. By
->> having this test in the first place and working through the results we
->> can address those occurrences by adjusting the loglevel of the messages
->> that turn out to not be real errors that require the user's attention.
->> It will also motivate additional error messages to be introduced in the
->> code to detect real errors where they turn out to be missing, since
->> it will be possible to detect said issues automatically.
->>
->> As an example, below you can see the test result for
->> mt8192-asurada-spherion. The single standing issue has been investigated
->> and will be addressed in an EC firmware update [1]:
->>
->> TAP version 13
->> 1..1
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `model_name' property: -6
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `energy_full_design' property: -6
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->>   power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
->> not ok 1 +power_supply:sbs-8-000b
->>   Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
->>
->> [1] https://lore.kernel.org/all/cf4d8131-4b63-4c7a-9f27-5a0847c656c4@notapiano
->>
->> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> 
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Denys, it looks like you fixed it. Thanks!
 
-Is this dependent on a linux-next?
-
-Didn't apply to linux-kselftest next.
-
-thanks,
--- Shuah
-
+On Tue, Jul 9, 2024 at 10:38=E2=80=AFAM Denys Fedoryshchenko
+<denys.f@collabora.com> wrote:
+>
+> I am investigating cause, likely one of cross-compiler images is broken
+> and blocking k8s queue. It is likely will be fixed within few hours and
+> few more needed to clean the queue.
+>
+> Sorry for the hiccup.
+>
+> On Tue, 2024-07-09 at 10:02 -0700, Todd Kjos wrote:
+> > Something isn't right. We've dropped from about 35 builds per android
+> > kernel branch down to only 1-5 builds. Can we get all those other
+> > builds back?
+> >
+> > See https://linux.kernelci.org/job/android/
+> >
+> >
+> > On Wed, Jul 3, 2024 at 11:09=E2=80=AFPM Muhammad Usama Anjum
+> > <usama.anjum@collabora.com> wrote:
+> > >
+> > > On 7/2/24 8:45 PM, Todd Kjos wrote:
+> > > > On Tue, Jul 2, 2024 at 6:12=E2=80=AFAM Mark Brown <broonie@kernel.o=
+rg>
+> > > > wrote:
+> > > > >
+> > > > > On Mon, Jul 01, 2024 at 10:27:24AM -0700, Todd Kjos wrote:
+> > > > >
+> > > > > > 1) use gcc-13 instead of gcc-10 for android kernel builds
+> > > > >
+> > > > > It sounds like you just need an upgrade here rather than
+> > > > > specifically
+> > > > > GCC 13?  The reason I ask is that GCC 12 is the standard
+> > > > > compiler in
+> > > > > Debian Bookworm so might be easier to update to quickly.
+> > > >
+> > > > GCC 12 would be fine
+> > > >
+> > > > >
+> > > > > > 2) add android15-6.6-lts branch to kernelci testing
+> > > > >
+> > > > > https://github.com/kernelci/kernelci-core/pull/2597
+> > > > >
+> > > > > > 3) discontinue all gki_defconfig builds
+> > > > >
+> > > > > https://github.com/kernelci/kernelci-core/pull/2598
+> > > > >
+> > > > > (not 100% sure I got that one right, have to see how it goes on
+> > > > > staging.)
+> > > >
+> > > > Thanks!
+> > >
+> > > I've opened PR to enable android builds including android15-6.6-lts
+> > > in new
+> > > kernelci:
+> > > https://github.com/kernelci/kernelci-pipeline/pull/667
+> > >
+> > > >
+> > >
+> > > --
+> > > BR,
+> > > Muhammad Usama Anjum
+> >
+>
