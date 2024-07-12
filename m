@@ -1,140 +1,211 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00099D528
-	for <kernelci@lists.linux.dev>; Fri, 12 Jul 2024 09:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E54516F0EC
+	for <kernelci@lists.linux.dev>; Fri, 12 Jul 2024 12:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720775456; cv=none; b=tYjmxk9B0en6fp2etGNEjZ39MRyPzbXPK2YeHEhRy++n6Nv+42mJcc1bF2EqWPFEWj2sQp/aVUUj64NoVj1TNqMAMFBHouhyRsZm9DWgDb+Hv9SpsFDVBPx8Pkj65sjTEe0UYk69dYupL6eqUkJu/4y8ZmjLx3iLwmPLadPfiAM=
+	t=1720787761; cv=none; b=m/Yac/wvAfgNXodbeswEXNLM5GsVAH8eeRcpBQgPS1SPH2TI1pBRtrXsmU+S1e0vySJ9LMaEnk6OvNsUiqUpepYN+CeW44fCpHPOIDMiPrMljcwXWofaw+HkRhXrLoGBCQUDOPOrqo+XWHxTUctyUNjfMPduQfN6/1P59PItOnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720775456; c=relaxed/simple;
-	bh=RqrDhr4mKdHOIlBs1nQe1pWETVXoN5c5DZn2yZP90V8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SwmGQdExmr61UapBOpTaA0YP6DnM9JtY4Tqj3ahkKQvhMnWjj3H+eUvpvV0HQQWYGLRF8PEekmy0nqZrTJbGhzUS0nJHhyt3vpKANFQhHxorRL8SeyX86PnSK4j+a0V81/biS4zC85Q0sfcVUuPx6y3M1b8BzsDM4CMzQtJZsqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=RIdtfsdn; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1720787761; c=relaxed/simple;
+	bh=tnPP2l5eO7teiE76XxRKobWJamT+z1EWUXt+zDbhjCc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=P3bQeddSFCEgBPkwJth/r6zVC3U9dVc5byt3Ff/Jy70QokZ4Do24eTbb/Q39C0HLMohnMTiz9ws0B0Ry/cc7UlWGFXyouQW8cCh8n0k2WTIXjcS+Azp3wnr/GC/3qG1etJENq8qL6T2WSTpt9rXibVuvYi23YWNhnnxzn5cdFTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=2tq6xZsJ; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="RIdtfsdn"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="2tq6xZsJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1720775452;
-	bh=RqrDhr4mKdHOIlBs1nQe1pWETVXoN5c5DZn2yZP90V8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RIdtfsdnYXpnFid3qwfKgEuFSBviD1hq9vmC7ckpVQNWVz1XULbbBo4PB8vKIT3GU
-	 +7ooljJpIhTEre1z9Et0ihFEorobz865JKit4HBF/Q+DumvD7sba6Kd2PuXpLs4TaI
-	 gm47Q0Y4UTzFrOlBaoFU/KztCjjSZ3MbwwVQcme9ZqVkXs9m6xRhZos+r5i8Tl/m5o
-	 xleLUt1p8A7Bux3Dr5d5YJONaBIGZSRfaBrG5nCp7IFvHJR2DX0mgtLbguaRr4G8ne
-	 2Fu4Ll5ToP/88sKARx/qTOY5GwVyn/zsyoVtIn3brxlv0zrP/bUWzRT+XVIPYxtjKf
-	 LFLuFwrwM5HDw==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	s=mail; t=1720787757;
+	bh=tnPP2l5eO7teiE76XxRKobWJamT+z1EWUXt+zDbhjCc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=2tq6xZsJ/1XLchHKiiMWSB5wAd2Rxmls2p/bYznO71y5njk1L7WxTL9u98agk5y8E
+	 CPxwwr5gzB5J8bIkTj9i/PpKinfv+oYXwVOmnkt9AYyow9oVuMzFon2/hDVWOt9CrQ
+	 K5G2xvEI5t2yB/jEfjDB3L0SfkKOrmfX7qEyW64UM2stBZfe8bbiZYTpSSsTa6SgBO
+	 y+SF0t+upCpeCYvJvOFrnhZYIQPOu95U3HPK3ofxHv41hPf+Ey3dVU3mdao636Nx0y
+	 de9gZkezwETFSMDDdCy3kX/mn+0QrJvmBUz0TLCyz+2RwmSdnOP9S/prmLDCHN//n2
+	 BGsdUpRIsps2Q==
+Received: from [100.118.151.62] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 11E1137821DB;
-	Fri, 12 Jul 2024 09:10:52 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: kernelci@lists.linux.dev
-Cc: linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Testing Quality Call notes - 2024-07-11
-Date: Fri, 12 Jul 2024 11:11:21 +0200
-Message-Id: <20240712091121.19116-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	(Authenticated sender: padovan)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id CE13B3781480;
+	Fri, 12 Jul 2024 12:35:56 +0000 (UTC)
+Message-ID: <c9c9ce5c-a571-48db-94e8-396d96e4f6ce@collabora.com>
+Date: Fri, 12 Jul 2024 09:35:48 -0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: KernelCI switch to new testing architecture - plan
+From: Gustavo Padovan <gus@collabora.com>
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Cc: "automated-testing@lists.yoctoproject.org"
+ <automated-testing@lists.yoctoproject.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <5b603b8f-c9b2-4148-7212-dd69a3fdf506@collabora.com>
+Content-Language: en-US
+In-Reply-To: <5b603b8f-c9b2-4148-7212-dd69a3fdf506@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hello,
+Hello everyone,
 
-KernelCI is hosting a bi-weekly call on Thursday to discuss improvements to
-existing upstream tests, the development of new tests to increase kernel
-testing coverage, and the enablement of these tests in KernelCI. In recent
-months, we at Collabora have focused on various kernel areas, assessing the
-tests already available upstream and contributing patches to make them
-easily runnable in CIs.
+It is for another update on the switch to the new testing architecture. 
+As already highlighted in the previous
+  email,we keep enabling new trees and tests, and enabling labs in the 
+system. The new Web Dashboard is
+  also under fast development, through a specialized supplier company 
+hired by the KernelCI Foundation
+  and a first beta version is expected by LPC.
 
-Below is a list of the tests we've been working on and their latest status
-updates, as discussed in the last meeting held on 2024-07-11:
+We are also going through a major overhaul of the KernelCI project 
+documentation to highlight the
+  different ways different users can engage with KernelCI. For example: 
+upstream kernel maintainers
+  are interested in adding tests, Lab owners are interested in adding 
+the labs, CI systems across the
+  Linux community are interested in sending their data to KCIDB. It will 
+take some time for all
+  documentation changes to land, so hold tight and send an email to us 
+at kernelci@lists.linux.dev
+  if you have any questions.
 
-*USB/PCI devices kselftest*
+As for shutting down our legacy system, in the coming days both the 
+BayLibre and Collabora
+  will be disconnected from the legacy system, removing a significant 
+amount of devices. The
+  message is pretty clear: no one should be using legacy KernelCI anymore.
 
-- Upstream test to detect unprobed devices on discoverable buses:
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dacf1d7a78bf8a131346c47bfba7fe1f3ff44beb
-- Updated KernelCI PRs according to feedback, now waiting for the first
-  test results: https://github.com/kernelci/kernelci-core/pull/2577 and
-  https://github.com/kernelci/kernelci-pipeline/pull/642
+**If you are depending on legacy KernelCI, please speak up, so we can 
+help you move your
+  stuff over to the new system.**
 
-*Error log test*
+## What is legacy KernelCI?
 
-- Proposing new kselftest to report device log errors:
-  https://lore.kernel.org/all/20240423-dev-err-log-selftest-v1-0-690c1741d68b@collabora.com/
-- Series got Acked-By from Greg, going to be picked up by Shuah soon
-- Feedback from Tim Bird: this series follows an unusual model where
-  tests can only fail but never pass, as no test case is generated unless
-  there is an error. It takes an unusual approach to detect regressions and
-  fixes. The autogenerated test case names are not very descriptive.
+It is the old Jenkins based system with results showing up at 
+linux.kernelci.org - if you are still
+  using it you are using legacy KernelCI
 
-*Suspend/resume in cpufreq kselftest*
 
-- Enabling suspend/resume test within the cpufreq kselftest in KernelCI -
-- Sent patch upstream for adding RTC wakeup alarm in the cpufreq
-  kselftest:
-  https://lore.kernel.org/all/2e667d-668ff800-1-22d70300@133606496/
-- Received a review from Rafael J. Wysocki, who suggested using the
-  rtcwake utility instead of the sysfs entry
+## Where is the dashboard for the new KernelCI?
 
-*Boot time test*
+As highlighted in the beginning of this message, the new dashboard is 
+under fast development
+  after a good phase of UX research. In the meantime, we created a 
+grafana dashboard that we
+  will deploy in the coming days and share the link here.
 
-- Drafted initial implementation with two scripts, a config fragment and
-  a bootconfig file
-- One script generates a YAML file containing initial timestamps for
-  relevant boot events, parsed from the trace file (run once)
-- The other script is the actual test, which takes the generated YAML
-  file and a delta in seconds as arguments. The script then parses the
-  current trace file and checks if any timestamp deviates from the
-  reference timestamps in the YAML file by more than the specified delta.
-- Tracking only a few functions at the moment (populate_rootfs,
-  unpack_to_rootfs, run_init_process). Next steps: refine bootconfig file
-  to include more tracepoints (potentially initcalls too?). Useful
-  tracepoints should be discussed upstream.
-- Will present this at LPC 2024 (embedded and IoT MC)
-
-*Support for benchmark data in KTAP*
-
-- Tim Bird is working on adding performance data to KTAP output, which
-  can be used in tests to detect slowdowns
-- The idea is to keep reference values and criteria separate from the
-  test itself
-- There is a need to store per-platform files with previous times for
-  comparison
-- Will need to figure out where these files can be stored so they can be
-  shared and used by different people and systems. Potential options: KCIDB
-  or https://github.com/kernelci/platform-test-parameters
-- Submitted a proposal for LPC 2024 
-- Other related topics for discussion at LPC 2024 include: how to avoid
-  device tree overhead in the boot process and boot phases (time-critical
-  vs non-critical)
-
-*TAP conformance in kselftests*
-
-- Focusing on standardizing the way kernel's testing modules report
-  results
-- Discussion ongoing upstream over patches converting tests to TAP:
-  https://lore.kernel.org/all/fb305513-580a-4bac-a078-fe0170a6ffa2@linuxfoundation.org
-  and
-  https://lore.kernel.org/all/6d82fa16-ed2e-41f1-a466-c752032b6f68@linuxfoundation.org
-
-Please reply to this thread if you'd like to join the call or discuss any
-of the topics further. We look forward to collaborating with the community
-to improve upstream tests and expand coverage to more areas of interest
-within the kernel.
+Let me know any other questions you have. We'd be happy to answer them.
 
 Best regards,
 
-Laura Nao
+- Gus
 
+On 6/6/24 3:24 PM, Gustavo Padovan wrote:
+> Hello everyone,
+>
+> As most of you know, the KernelCI community developed a new testing 
+> architecture.
+> It is now time to move over to it. In this message, we want to share 
+> some details about
+> the upcoming movements, especially about the shutdown of the existing 
+> legacy system.
+>
+> In our latest blog post[1], we shared an update about what's coming. 
+> From a strategic
+> point of view, not much has changed since that blog post. We made 
+> progress on the
+> implementations, making the systems more stable, adding more tests and 
+> labs and
+> refining the data connection with KCIDB.
+>
+> As shared at that time, the primary focus in the new testing 
+> architecture is on quality
+> rather than quantity. We want high quality test results that will 
+> reduce the community's
+> workload, and not waste their time with low-quality test results. **As 
+> a direct
+> consequence of our focus on quality, we will not port all tests from 
+> legacy KernelCI
+> to the new system**. Reach out to us at kernelci@lists.linux.dev, if 
+> you want to see
+> specific tests ported and we will give you instructions and support on 
+> how to do it.
+>
+> Current status:
+> * ready to receive new trees and tests
+> * moving existing labs over
+> * developing the new Web Dashboard
+>
+> The new Web Dashboard should be ready in the coming months for basic 
+> visualization.
+> In the meantime, we have the grafana instance to build boards to 
+> visualize test results
+> and also some interim tooling that pulls the data from the API and 
+> generates reports.
+> If you want to bring your tree and tests over and use our tooling to 
+> analyze the results,
+> we can onboard you while also benefiting from your feedback to evolve 
+> our regression
+> tracking intelligence.
+>
+> We will share more information about the transition as the work 
+> evolves in the
+> coming months. Don't worry!
+>
+> The target is to shutdown the legacy system around the end of 
+> August[2]. Some labs
+> will probably disconnect themselves from legacy KernelCI before that. 
+> We can not delay
+> the shutdown date much as the amount of cloud resources and 
+> engineering is a high
+> toll to the project.
+>
+> **If you are depending on legacy KernelCI, please speak up, so we can 
+> help you move
+> your stuff over to the new system.**
+>
+> To be clear, the KernelCI project will not maintain 100% compatibility 
+> with what was
+> provided by its legacy system. As we create a better future for 
+> KernelCI, some hard decisions
+> had to be taken; not porting all tests and usecases was one of them.
+>
+> As we leave our legacy behind, a vibrant community has been gathering 
+> around KernelCI in
+> the past few months, corroborating the new strategic directions we are 
+> putting in place for
+> the project. Bear with us during this transition and the future will 
+> be brighter!
+>
+> We are happy to hear thoughts and questions from everyone about the 
+> transition. We are
+> probably forgetting some important details in this message.
+>
+> Thank you for your continued support and your patience as the KernelCI 
+> project goes
+> through its biggest change since its inception.
+>
+> Best Regards,
+>
+> - Gus
+>
+> [1] https://kernelci.org/blog/posts/2024/strategic-updates/
+> [2] https://github.com/kernelci/kernelci-project/issues/337
+>
+
+-- 
+Gustavo Padovan
+Kernel Lead
+
+Collabora Ltd.
+Platinum Building, St John's Innovation Park
+Cambridge CB4 0DS, UK
+Registered in England & Wales, no. 5513718
 
