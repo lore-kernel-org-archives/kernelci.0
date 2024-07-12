@@ -1,146 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF2D13D8A4;
-	Fri, 12 Jul 2024 08:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00099D528
+	for <kernelci@lists.linux.dev>; Fri, 12 Jul 2024 09:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720774785; cv=none; b=sVsdxjc7sP0YfxNtP69w9dB3JD/7DHkR/BR2L6oi9wCtJpl3zhhp8enoOb9+KQdOQZtbuKQImLFTzCP3WZ60AYsZLljJaAQExa1WjXjxo7q0wdfnSmYY6i1SKQthp+INp7+tKh+m9BHqgvUsXnHDIPihjD4Va6YakpqdcuSILWc=
+	t=1720775456; cv=none; b=tYjmxk9B0en6fp2etGNEjZ39MRyPzbXPK2YeHEhRy++n6Nv+42mJcc1bF2EqWPFEWj2sQp/aVUUj64NoVj1TNqMAMFBHouhyRsZm9DWgDb+Hv9SpsFDVBPx8Pkj65sjTEe0UYk69dYupL6eqUkJu/4y8ZmjLx3iLwmPLadPfiAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720774785; c=relaxed/simple;
-	bh=0V/UzY4npvWb0NaKofMtzEIjIcMV1S6JXCcxXoOhmAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XxyEb+bfRk3lM0zWs7i+dyUm2duGmkodnfC7ZV0TnBAJeMo5hRtK9G7FOSKhKVXfcLHsLf2MFT7bgee5iTOZITpRMgAvhIjP2GC1MFVkhiDi6eiXVGyh3Tc8yZ552CpKaHug+fDT67If+8R4gvNOAqNw5/4XobzmOmgzHTDwOXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uZRHqb8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720775456; c=relaxed/simple;
+	bh=RqrDhr4mKdHOIlBs1nQe1pWETVXoN5c5DZn2yZP90V8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SwmGQdExmr61UapBOpTaA0YP6DnM9JtY4Tqj3ahkKQvhMnWjj3H+eUvpvV0HQQWYGLRF8PEekmy0nqZrTJbGhzUS0nJHhyt3vpKANFQhHxorRL8SeyX86PnSK4j+a0V81/biS4zC85Q0sfcVUuPx6y3M1b8BzsDM4CMzQtJZsqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=RIdtfsdn; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uZRHqb8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6C7C4AF09;
-	Fri, 12 Jul 2024 08:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720774785;
-	bh=0V/UzY4npvWb0NaKofMtzEIjIcMV1S6JXCcxXoOhmAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0uZRHqb8dHBx8mMiPKcNvtKUcyAm7Cy16eIBzT5By5WMu5eeZLy4g4qdQ0mhxReyV
-	 cGziAOHNRlcp/CnP2wrGfkC5aOWUDFQwHuVMrBEwrleD1tiBRN2fdLZhXNPG8tl+W2
-	 XS4IOOrGjFuLkiBnkLIAreFUdyQ5WGruOvpxWyog=
-Date: Fri, 12 Jul 2024 10:59:37 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>,
-	Shuah Khan <shuah@kernel.org>, kernel@collabora.com,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernelci@lists.linux.dev
-Subject: Re: [PATCH v2 0/3] kselftest: Add test to report device log errors
-Message-ID: <2024071229-mule-statistic-dc17@gregkh>
-References: <20240705-dev-err-log-selftest-v2-0-163b9cd7b3c1@collabora.com>
- <2024071003-islamist-expediter-a22c@gregkh>
- <71c479fb-cd25-45ec-8dd3-0521ef951f58@linuxfoundation.org>
- <e1e32c72-6bd3-4c15-b301-c5670690ba99@linuxfoundation.org>
- <1417b57a-ac0b-4e8c-b157-bbe9ebb14e57@notapiano>
- <e73c745a-5e2f-46f3-806a-739cfde72e8d@linuxfoundation.org>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="RIdtfsdn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1720775452;
+	bh=RqrDhr4mKdHOIlBs1nQe1pWETVXoN5c5DZn2yZP90V8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RIdtfsdnYXpnFid3qwfKgEuFSBviD1hq9vmC7ckpVQNWVz1XULbbBo4PB8vKIT3GU
+	 +7ooljJpIhTEre1z9Et0ihFEorobz865JKit4HBF/Q+DumvD7sba6Kd2PuXpLs4TaI
+	 gm47Q0Y4UTzFrOlBaoFU/KztCjjSZ3MbwwVQcme9ZqVkXs9m6xRhZos+r5i8Tl/m5o
+	 xleLUt1p8A7Bux3Dr5d5YJONaBIGZSRfaBrG5nCp7IFvHJR2DX0mgtLbguaRr4G8ne
+	 2Fu4Ll5ToP/88sKARx/qTOY5GwVyn/zsyoVtIn3brxlv0zrP/bUWzRT+XVIPYxtjKf
+	 LFLuFwrwM5HDw==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 11E1137821DB;
+	Fri, 12 Jul 2024 09:10:52 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: kernelci@lists.linux.dev
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Testing Quality Call notes - 2024-07-11
+Date: Fri, 12 Jul 2024 11:11:21 +0200
+Message-Id: <20240712091121.19116-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e73c745a-5e2f-46f3-806a-739cfde72e8d@linuxfoundation.org>
 
-On Thu, Jul 11, 2024 at 03:56:25PM -0600, Shuah Khan wrote:
-> On 7/11/24 15:44, Nícolas F. R. A. Prado wrote:
-> > On Thu, Jul 11, 2024 at 01:53:37PM -0600, Shuah Khan wrote:
-> > > On 7/10/24 15:49, Shuah Khan wrote:
-> > > > On 7/10/24 07:11, Greg Kroah-Hartman wrote:
-> > > > > On Fri, Jul 05, 2024 at 07:29:53PM -0400, Nícolas F. R. A. Prado wrote:
-> > > > > > Log errors are the most widely used mechanism for reporting issues in
-> > > > > > the kernel. When an error is logged using the device helpers, eg
-> > > > > > dev_err(), it gets metadata attached that identifies the subsystem and
-> > > > > > device where the message is coming from. This series makes use of that
-> > > > > > metadata in a new test to report which devices logged errors.
-> > > > > > 
-> > > > > > The first two patches move a test and a helper script to keep things
-> > > > > > organized before this new test is added in the third patch.
-> > > > > > 
-> > > > > > It is expected that there might be many false-positive error messages
-> > > > > > throughout the drivers code which will be reported by this test. By
-> > > > > > having this test in the first place and working through the results we
-> > > > > > can address those occurrences by adjusting the loglevel of the messages
-> > > > > > that turn out to not be real errors that require the user's attention.
-> > > > > > It will also motivate additional error messages to be introduced in the
-> > > > > > code to detect real errors where they turn out to be missing, since
-> > > > > > it will be possible to detect said issues automatically.
-> > > > > > 
-> > > > > > As an example, below you can see the test result for
-> > > > > > mt8192-asurada-spherion. The single standing issue has been investigated
-> > > > > > and will be addressed in an EC firmware update [1]:
-> > > > > > 
-> > > > > > TAP version 13
-> > > > > > 1..1
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `model_name' property: -6
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `energy_full_design' property: -6
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > >    power_supply sbs-8-000b: driver failed to report `time_to_empty_now' property: -5
-> > > > > > not ok 1 +power_supply:sbs-8-000b
-> > > > > >    Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
-> > > > > > 
-> > > > > > [1] https://lore.kernel.org/all/cf4d8131-4b63-4c7a-9f27-5a0847c656c4@notapiano
-> > > > > > 
-> > > > > > Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> > > > > 
-> > > > > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > 
-> > > > Is this dependent on a linux-next?
-> > > > 
-> > > > Didn't apply to linux-kselftest next.
-> > > > 
-> > > 
-> > > I tried applying these on top of linux-kselftest next which is at
-> > > Linux 6.10-rc7 + other patches.
-> > > 
-> > > I am not sure what is wrong - first patch applies and the second
-> > > and third don't.
-> > > 
-> > > git am fails and manual patch application worked for 2/3, same thing
-> > > with 3.3 - these should apply cleanly since they don't have obvious
-> > > conflicts.
-> > > 
-> > > Please clean this up and send me updated series adding Greg's ack.
-> > 
-> > Oh, now I see what happened. I recently sent another series that touches the
-> > same file (tools/testing/selftests/devices/test_discoverable_devices.py):
-> > "kselftest: devices: Allow running test on more platforms"
-> > https://lore.kernel.org/all/20240613-kselftest-discoverable-probe-mt8195-kci-v1-1-7b396a9b032d@collabora.com/
-> > 
-> > That was already merged through the usb tree, and is present on next (on which I
-> > based this series).
-> > 
-> > In this case I imagine it's best if this series gets picked through the usb
-> > tree, right? Even if I rebase on kselftest's next, there will be conflicts.
-> > 
-> 
-> I see. No problem. It can go through usb tree
-> 
-> Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Hello,
 
-Ok, taken through the usb tree now, thanks.
+KernelCI is hosting a bi-weekly call on Thursday to discuss improvements to
+existing upstream tests, the development of new tests to increase kernel
+testing coverage, and the enablement of these tests in KernelCI. In recent
+months, we at Collabora have focused on various kernel areas, assessing the
+tests already available upstream and contributing patches to make them
+easily runnable in CIs.
 
-greg k-h
+Below is a list of the tests we've been working on and their latest status
+updates, as discussed in the last meeting held on 2024-07-11:
+
+*USB/PCI devices kselftest*
+
+- Upstream test to detect unprobed devices on discoverable buses:
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dacf1d7a78bf8a131346c47bfba7fe1f3ff44beb
+- Updated KernelCI PRs according to feedback, now waiting for the first
+  test results: https://github.com/kernelci/kernelci-core/pull/2577 and
+  https://github.com/kernelci/kernelci-pipeline/pull/642
+
+*Error log test*
+
+- Proposing new kselftest to report device log errors:
+  https://lore.kernel.org/all/20240423-dev-err-log-selftest-v1-0-690c1741d68b@collabora.com/
+- Series got Acked-By from Greg, going to be picked up by Shuah soon
+- Feedback from Tim Bird: this series follows an unusual model where
+  tests can only fail but never pass, as no test case is generated unless
+  there is an error. It takes an unusual approach to detect regressions and
+  fixes. The autogenerated test case names are not very descriptive.
+
+*Suspend/resume in cpufreq kselftest*
+
+- Enabling suspend/resume test within the cpufreq kselftest in KernelCI -
+- Sent patch upstream for adding RTC wakeup alarm in the cpufreq
+  kselftest:
+  https://lore.kernel.org/all/2e667d-668ff800-1-22d70300@133606496/
+- Received a review from Rafael J. Wysocki, who suggested using the
+  rtcwake utility instead of the sysfs entry
+
+*Boot time test*
+
+- Drafted initial implementation with two scripts, a config fragment and
+  a bootconfig file
+- One script generates a YAML file containing initial timestamps for
+  relevant boot events, parsed from the trace file (run once)
+- The other script is the actual test, which takes the generated YAML
+  file and a delta in seconds as arguments. The script then parses the
+  current trace file and checks if any timestamp deviates from the
+  reference timestamps in the YAML file by more than the specified delta.
+- Tracking only a few functions at the moment (populate_rootfs,
+  unpack_to_rootfs, run_init_process). Next steps: refine bootconfig file
+  to include more tracepoints (potentially initcalls too?). Useful
+  tracepoints should be discussed upstream.
+- Will present this at LPC 2024 (embedded and IoT MC)
+
+*Support for benchmark data in KTAP*
+
+- Tim Bird is working on adding performance data to KTAP output, which
+  can be used in tests to detect slowdowns
+- The idea is to keep reference values and criteria separate from the
+  test itself
+- There is a need to store per-platform files with previous times for
+  comparison
+- Will need to figure out where these files can be stored so they can be
+  shared and used by different people and systems. Potential options: KCIDB
+  or https://github.com/kernelci/platform-test-parameters
+- Submitted a proposal for LPC 2024 
+- Other related topics for discussion at LPC 2024 include: how to avoid
+  device tree overhead in the boot process and boot phases (time-critical
+  vs non-critical)
+
+*TAP conformance in kselftests*
+
+- Focusing on standardizing the way kernel's testing modules report
+  results
+- Discussion ongoing upstream over patches converting tests to TAP:
+  https://lore.kernel.org/all/fb305513-580a-4bac-a078-fe0170a6ffa2@linuxfoundation.org
+  and
+  https://lore.kernel.org/all/6d82fa16-ed2e-41f1-a466-c752032b6f68@linuxfoundation.org
+
+Please reply to this thread if you'd like to join the call or discuss any
+of the topics further. We look forward to collaborating with the community
+to improve upstream tests and expand coverage to more areas of interest
+within the kernel.
+
+Best regards,
+
+Laura Nao
+
+
