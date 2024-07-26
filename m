@@ -1,112 +1,120 @@
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2008219CD05
-	for <kernelci@lists.linux.dev>; Thu, 25 Jul 2024 15:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8851E517
+	for <kernelci@lists.linux.dev>; Fri, 26 Jul 2024 13:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721922645; cv=none; b=vCg6ka4UbAHX24AF1c+ni3LmgSZ5utej1KTbBr3oL38ZOUQyp2ZaTm5+vDpmsgKvqbtj3F4KSxvd/G/VKplc/rfsvBDR9HL+jBv1xId/Q7Ppv+aFu4ehM/76tfutGTmb+a5pMkSsvrprY9SfSAfrMtLLYiVyBL2QB9kRTP1uXrQ=
+	t=1722001840; cv=none; b=b8xfNHlpTo6Ex527NKV9eFQh1M+OUmZsgg4UJ724vw5183IkHY+bCLcqPqKjfu/E6tqdXoR5t1mbGPzQLmHNPTUxxPos7Gv2IXxFFqRqXpoDu1gmqee+feTe/+vmQof3zEeC//+9xJ9+awGh8oLKV9nf1h1xjE8WX5h5MVtWQhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721922645; c=relaxed/simple;
-	bh=6m3+FHyJ+AmEj6vS4AHygVqkSGsQfYiClcdMM+4uSyQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IcFhDE/fASEz8l3gqOP83Mx6TeJnR/EvneAhC98qWXi6brE8Kurh02x4GLS8vp+cBjZvbTuoqJy3ZBtoO1vwSVbrA9tbR0aukXXHFHN+75tFlNhtPJpPR85s7Hhw7HbjtGxFda2JR1mq9nmTgzcyKQ9iqhWZkrKDEKXm1Zqvq1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/x8z/ky; arc=none smtp.client-ip=209.85.166.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1722001840; c=relaxed/simple;
+	bh=Iyax8yzW+8JlNwyoV0RroXKbzsmNZ93yFf8MATkzhX0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nFlZUE7dqyUDtrJhUybEvQhO8ESA0QCXNex+ViDne8j6vRk7JxeuJCcCGXkC0vaqf3dJf5/EwAmlNVXEsCJghHTTVZGpZWuUMAWReQYgLIUmB0IdGWa45DU0ROpbSPidE4AtAs9LPScj4WVy6ZHRH3osCgbYQ3U8drnOQ1ew2r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=nlOsVcbG; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/x8z/ky"
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-8075313cc7aso2198339f.0
-        for <kernelci@lists.linux.dev>; Thu, 25 Jul 2024 08:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1721922642; x=1722527442; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Aggvme3xKg7i4TrOmjlKCfE2kTRYsrbbuWQJNB9R3qE=;
-        b=P/x8z/kyNeXK/T+amyP62usVINJtyCrh/Rt+o87/ds//FDATVV7oo8BtLvee4kntRZ
-         Xy4LJ1t/p3Uh84FHABscaDu6R5Vh0u8Ffhze5CqNhy1sQvrZoTvo+xLaYoI6cddVP6/b
-         j6EFgzu1rMoGRWZ+kLsnrDNDjvFkhvsYesz48=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721922642; x=1722527442;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Aggvme3xKg7i4TrOmjlKCfE2kTRYsrbbuWQJNB9R3qE=;
-        b=FqhHkhpn7eX27iYK8K0PKEmHhVyJjDcd2Jremnpm62cUXORb5TVz16PebX6jyRVs7v
-         dY/QYAh/Ak4NMsVbt0Eh4FnomWK5bbJGDHl/5XRT6a9GuuTXhW4JD1E2I1Q9RmR4xUhs
-         gU0/Yl4juH3smq+gIuzb12tquQZXjHEH32/Skny9tdAnJjUOCwCTSsOWKoVzjLB1wjqs
-         mrk8x3r08yGJ85s3vqv5Rn6EgkCIm+uFAVumf2biY7sjmpMK4MdJ4TC9HW64nOatBfFE
-         Qmv5Q9OS5qK4s+/9oHA05xtFnL4LhvpmfI2GPDLci9UazEd8ykpwnhRntUIO3nyVGtxu
-         BFoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUA86Y1TyEW8n2UlxOtXGWxl0zpbXgqAHq+PgZwxp/pFMyFt1xROBe24gjhMc7QiJD4d0Y+K9+x7hC94o2Un9koF7qWg7L7i4A=
-X-Gm-Message-State: AOJu0Yxycczs6lF4xXGeM0T8GcO0dP9+cuYCm6FYQd/tUmpj6a8X8L6S
-	53DQTN6HrnAKWZ0meZ1ThaB1VGgbIzW8eed08QxTFKbt2YQLx1sOPrONa6BaFOk=
-X-Google-Smtp-Source: AGHT+IFEHsFN0I8fUwEQhH9FG5DtAKwnOj8OaKgLxrdAaSfCNz0gvGEdpltGEFJdn8E7GWzFxI4Qyw==
-X-Received: by 2002:a6b:e810:0:b0:7eb:2c45:4688 with SMTP id ca18e2360f4ac-81f7d016818mr216157639f.2.1721922642214;
-        Thu, 25 Jul 2024 08:50:42 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4c29fbd9b8asm382241173.108.2024.07.25.08.50.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jul 2024 08:50:41 -0700 (PDT)
-Message-ID: <65c59f75-3810-4490-991e-62b5aafe1f5a@linuxfoundation.org>
-Date: Thu, 25 Jul 2024 09:50:40 -0600
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="nlOsVcbG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1722001837;
+	bh=Iyax8yzW+8JlNwyoV0RroXKbzsmNZ93yFf8MATkzhX0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nlOsVcbG+Hg7At42isUuQKbEt1q8tAyo+u2TyBkCjkh3zucN+INueuJ/TS70VRUrW
+	 lL0w7t8Akb56vv6Y7uQI1pNamPwiXa4V0Jdf1CpmljKgtf61pnzl+UOq412+/JJ8Bx
+	 NhXhSITZorALMfJgzmKpBiVoesezRH4MZ2pFQbjyeQ6Be/VsPMRWaFA05rWYtWAyCH
+	 IONr+S1s0/4V56gqF7k5c0d+7LvGaDzZEavnmtiVDX2CsHtFRf75RzoS3W3HBPTrNO
+	 GAtCQRckfWwnHxWV+Lph59hTgP1Oxy5dZHe+4JCmaHEqB53d96S8JrOJDEbo4cpHmb
+	 jwfXeUlFcZS3A==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C754B37804CE;
+	Fri, 26 Jul 2024 13:50:36 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: kernelci@lists.linux.dev
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Testing Quality Call notes - 2024-07-25
+Date: Fri, 26 Jul 2024 15:51:01 +0200
+Message-Id: <20240726135101.45018-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/1] kselftests: Add test to detect boot event
- slowdowns
-To: Laura Nao <laura.nao@collabora.com>, shuah@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kernel@collabora.com, kernelci@lists.linux.dev, tim.bird@sony.com,
- mhiramat@kernel.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20240725110622.96301-1-laura.nao@collabora.com>
- <20240725110622.96301-2-laura.nao@collabora.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240725110622.96301-2-laura.nao@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/25/24 05:06, Laura Nao wrote:
-> Introduce a new kselftest to identify slowdowns in key boot events.
-> The test uses ftrace to track timings for specific boot events.
-> The kprobe_timestamps_to_yaml.py script can be run once to generate a
-> YAML file with the initial reference timestamps for these events.
-> The test_boot_time.py script can then be run on subsequent boots to
-> compare current timings against the reference values and check for
-> significant slowdowns over time.
-> The test ships with a bootconfig file for ftrace setup and a config
-> fragment for the necessary kernel configurations.
-> 
-> Signed-off-by: Laura Nao <laura.nao@collabora.com>
+Hello,
 
-I am repeating the same comments I made on the cover letter here as
-well.
+KernelCI is hosting a bi-weekly call on Thursday to discuss improvements 
+to existing upstream tests, the development of new tests to increase 
+kernel testing coverage, and the enablement of these tests in KernelCI. 
+In recent months, we at Collabora have focused on various kernel areas,
+assessing the tests already available upstream and contributing patches 
+to make them easily runnable in CIs.
 
-What are the dependencies if any for this new test to work?
-Please do remember that tests in default run needs to have
-minimal dependencies so they can run on systems that have
-minimal support.
+Below is a list of the tests we've been working on and their latest 
+status updates, as discussed in the last meeting held on 2024-07-25:
 
-As mentioned earlier take a look at the tools/power/pm-graph
-bootgraph.py and sleepgraph.py to see if you can leverage
-them - bootgraph detects slowdowns during boot.
+*USB/PCI devices kselftest*
 
-We don't want to add duplicate scripts if the other one
-serves the needs. Those can be moved to selftests if it
-make sense.
+- Upstream test to detect unprobed devices on discoverable buses: 
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dacf1d7a78bf8a131346c47bfba7fe1f3ff44beb 
+- Test location changed 
+  (https://lore.kernel.org/all/20240705-dev-err-log-selftest-v2-1-163b9cd7b3c1@collabora.com/), 
+  updated KernelCI PRs accordingly: 
+  https://github.com/kernelci/kernelci-core/pull/2577 and https://github.com/kernelci/kernelci-pipeline/pull/642
+- Will need to figure out how to structure the files to ensure 
+  scalability. A YAML schema would be useful too.
 
-I will review this once we figure out if bootgraph serves
-the needs and I understand the dependencies for this test
-to work.
+*Error log test*
 
-thanks,
--- Shuah
+- Proposing new kselftest to report device log errors: 
+  https://lore.kernel.org/all/20240423-dev-err-log-selftest-v1-0-690c1741d68b@collabora.com/
+- Now merged upstream
 
+*Missing devices kselftest*
 
+- Proposing new kselftest to report devices that go missing in the system: 
+  https://lore.kernel.org/all/20240724-kselftest-dev-exist-v1-1-9bc21aa761b5@collabora.com/#r
+- The test checks the number of devices present against a reference file, 
+  generated by the program at a previous point on a known-good kernel, 
+  and reports any missing device.
+- Helps identifying missing kernel configs or broken driver features
 
+*Suspend/resume in cpufreq kselftest*
+
+- Enabling suspend/resume test within the cpufreq kselftest in KernelCI
+- Sent v2 for patch adding RTC wakeup alarm in the cpufreq kselftest: 
+  https://lore.kernel.org/lkml/20240715192634.19272-1-shreeya.patel@collabora.com/
+- The test now uses rtcwake, as suggested by Rafael J. Wysocki in the 
+  first review. There's no easy way to declare the dependency in the 
+  kselftest itself.
+- Patch got acked by the cpufreq kselftest author Viresh Kumar
+
+*Boot time test*
+
+- Sent first RFC:
+  https://lore.kernel.org/all/20240725110622.96301-1-laura.nao@collabora.com/T/#ma568382acdc81af65c30fe3823a7be3e49f98108
+
+*TAP conformance in kselftests*
+
+- Ongoing discussion upstream on TAP headers: 
+  https://lore.kernel.org/all/87fbfba4-8d4d-44ff-9fe5-e101cce3d6cb@collabora.com
+- Working to convert test modules used by kselftests into kunit. Cleanup 
+  patches sent:
+  https://lore.kernel.org/all/20240725110817.659099-1-usama.anjum@collabora.com 
+  and https://lore.kernel.org/all/20240725121212.808206-1-usama.anjum@collabora.com
+
+Please reply to this thread if you'd like to join the call or discuss 
+any of the topics further. We look forward to collaborating with the 
+community to improve upstream tests and expand coverage to more areas 
+of interest within the kernel.
+
+Best regards,
+
+Laura Nao
