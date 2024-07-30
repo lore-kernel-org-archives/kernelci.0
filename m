@@ -1,120 +1,90 @@
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8851E517
-	for <kernelci@lists.linux.dev>; Fri, 26 Jul 2024 13:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE0618A92F;
+	Tue, 30 Jul 2024 15:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722001840; cv=none; b=b8xfNHlpTo6Ex527NKV9eFQh1M+OUmZsgg4UJ724vw5183IkHY+bCLcqPqKjfu/E6tqdXoR5t1mbGPzQLmHNPTUxxPos7Gv2IXxFFqRqXpoDu1gmqee+feTe/+vmQof3zEeC//+9xJ9+awGh8oLKV9nf1h1xjE8WX5h5MVtWQhk=
+	t=1722353896; cv=none; b=Py2JnWjq7ph7NQ0fa3lGZ1phHVqMxdUiIfyMAwzvdtZenIUVm9NIf4fBAlcQ1ix0ASM3tMmQJrTkGfR0YZWkz7ghDpAnlsJcQA4HIL5hxUPoace7dfOsAxKrZZu3SakxGL8HzZCJUflhH6J8TlTIWBEgfXQS/3T1zXpPkcqo+kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722001840; c=relaxed/simple;
-	bh=Iyax8yzW+8JlNwyoV0RroXKbzsmNZ93yFf8MATkzhX0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nFlZUE7dqyUDtrJhUybEvQhO8ESA0QCXNex+ViDne8j6vRk7JxeuJCcCGXkC0vaqf3dJf5/EwAmlNVXEsCJghHTTVZGpZWuUMAWReQYgLIUmB0IdGWa45DU0ROpbSPidE4AtAs9LPScj4WVy6ZHRH3osCgbYQ3U8drnOQ1ew2r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=nlOsVcbG; arc=none smtp.client-ip=46.235.227.194
+	s=arc-20240116; t=1722353896; c=relaxed/simple;
+	bh=xXFjtGCvB3jw9r5d2Ci29zrADIaI+wUIH9WGTHNxLwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T/sXIAvyUfljP2GFHgHDwtojx/1YtmgkcZCqd89jyWRP71Ah1JwO847XG6xgvkt/QDk6B86qN83T9TGqGn3cLiJZ4se1FdGQsgPwRqXFw3y9S6q894iMK5UGo7knNdqGqf6hQgfYOWIxqBaXxJgM7Wp4cb0f287gtYT15HrHncI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=pdqh2AOE; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="nlOsVcbG"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="pdqh2AOE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1722001837;
-	bh=Iyax8yzW+8JlNwyoV0RroXKbzsmNZ93yFf8MATkzhX0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nlOsVcbG+Hg7At42isUuQKbEt1q8tAyo+u2TyBkCjkh3zucN+INueuJ/TS70VRUrW
-	 lL0w7t8Akb56vv6Y7uQI1pNamPwiXa4V0Jdf1CpmljKgtf61pnzl+UOq412+/JJ8Bx
-	 NhXhSITZorALMfJgzmKpBiVoesezRH4MZ2pFQbjyeQ6Be/VsPMRWaFA05rWYtWAyCH
-	 IONr+S1s0/4V56gqF7k5c0d+7LvGaDzZEavnmtiVDX2CsHtFRf75RzoS3W3HBPTrNO
-	 GAtCQRckfWwnHxWV+Lph59hTgP1Oxy5dZHe+4JCmaHEqB53d96S8JrOJDEbo4cpHmb
-	 jwfXeUlFcZS3A==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+	s=mail; t=1722353893;
+	bh=xXFjtGCvB3jw9r5d2Ci29zrADIaI+wUIH9WGTHNxLwo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pdqh2AOE/X6L98VB19J/mS17tNPr+cEov9didJwrYLmS/Y7E3unbnze2RoDtDXREt
+	 GsVd+kQuqQDDr2FAigtkXCKtlD4N/LuWYgWnjyZ3Uy3rG66UCCIuo0Sk+ykzMrUNb4
+	 mQIMdkRetXXolEEiQMpuJwGk4IxumSxwqyJFtliPF+F+2f9b4eZZd2aoKh/XzEg99l
+	 QYTwst8mcKGTmNsjliv8vB3Fk8+isihNxfxRZjrttpnD3MarVzdFdm80QRt88ka+0E
+	 NMj3Ia7XabkVWCvIHuYTRa7CQcMXKOQvPi83EFonyMePAXqPCMzccQfGY//919UEOh
+	 hLtclEDo0lDnw==
+Received: from notapiano (zone.collabora.co.uk [167.235.23.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C754B37804CE;
-	Fri, 26 Jul 2024 13:50:36 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: kernelci@lists.linux.dev
-Cc: linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Testing Quality Call notes - 2024-07-25
-Date: Fri, 26 Jul 2024 15:51:01 +0200
-Message-Id: <20240726135101.45018-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	(Authenticated sender: nfraprado)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id E6CBB37809CE;
+	Tue, 30 Jul 2024 15:38:09 +0000 (UTC)
+Date: Tue, 30 Jul 2024 11:38:07 -0400
+From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
+To: Chris Lu =?utf-8?B?KOmZuOeomuazkyk=?= <Chris.Lu@mediatek.com>
+Cc: "luiz.dentz@gmail.com" <luiz.dentz@gmail.com>,
+	"marcel@holtmann.org" <marcel@holtmann.org>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+	"linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"johan.hedberg@gmail.com" <johan.hedberg@gmail.com>,
+	Steve Lee =?utf-8?B?KOadjuimluiqoCk=?= <steve.lee@mediatek.com>,
+	"kernel@collabora.com" <kernel@collabora.com>,
+	Sean Wang <Sean.Wang@mediatek.com>,
+	Aaron Hou =?utf-8?B?KOS+r+S/iuS7sCk=?= <Aaron.Hou@mediatek.com>
+Subject: Re: [PATCH v7 8/8] Bluetooth: btusb: mediatek: add ISO data
+ transmission functions
+Message-ID: <9a1697ef-27d9-452c-89ea-159ec3d028d7@notapiano>
+References: <20240704060116.16600-1-chris.lu@mediatek.com>
+ <20240704060116.16600-9-chris.lu@mediatek.com>
+ <7851401b-e884-4ed4-998d-7651f427ad37@notapiano>
+ <6a6dc0b081e8caa99172666c71b0826c1cb17a1c.camel@mediatek.com>
+ <e9bdcf44-e20a-4824-a0d4-8c6c52ed1e9b@notapiano>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <e9bdcf44-e20a-4824-a0d4-8c6c52ed1e9b@notapiano>
 
-Hello,
+On Tue, Jul 16, 2024 at 08:20:46AM -0400, Nícolas F. R. A. Prado wrote:
+> On Tue, Jul 16, 2024 at 07:59:53AM +0000, Chris Lu (陸稚泓) wrote:
+> > Hi Nicolas,
+> > 
+> > Thanks for reporting the crash issue, I've sent another patc to avoid
+> > this crash issue happened. kill anchor function wasn't protect well if
+> > MediaTek Bluetooth failed to setup. Add a flag check when running into
+> > btmtk_usb_suspend function.
+> 
+> Hi Chris,
+> 
+> thanks for the quick follow up! I see the patch at
+> https://lore.kernel.org/all/20240716074947.23073-1-chris.lu@mediatek.com/
 
-KernelCI is hosting a bi-weekly call on Thursday to discuss improvements 
-to existing upstream tests, the development of new tests to increase 
-kernel testing coverage, and the enablement of these tests in KernelCI. 
-In recent months, we at Collabora have focused on various kernel areas,
-assessing the tests already available upstream and contributing patches 
-to make them easily runnable in CIs.
+That patch was merged without the Closes tag, so manually closing the
+regression:
 
-Below is a list of the tests we've been working on and their latest 
-status updates, as discussed in the last meeting held on 2024-07-25:
+#regzbot fix: 'Bluetooth: btmtk: Fix kernel crash when entering btmtk_usb_suspend'
 
-*USB/PCI devices kselftest*
-
-- Upstream test to detect unprobed devices on discoverable buses: 
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dacf1d7a78bf8a131346c47bfba7fe1f3ff44beb 
-- Test location changed 
-  (https://lore.kernel.org/all/20240705-dev-err-log-selftest-v2-1-163b9cd7b3c1@collabora.com/), 
-  updated KernelCI PRs accordingly: 
-  https://github.com/kernelci/kernelci-core/pull/2577 and https://github.com/kernelci/kernelci-pipeline/pull/642
-- Will need to figure out how to structure the files to ensure 
-  scalability. A YAML schema would be useful too.
-
-*Error log test*
-
-- Proposing new kselftest to report device log errors: 
-  https://lore.kernel.org/all/20240423-dev-err-log-selftest-v1-0-690c1741d68b@collabora.com/
-- Now merged upstream
-
-*Missing devices kselftest*
-
-- Proposing new kselftest to report devices that go missing in the system: 
-  https://lore.kernel.org/all/20240724-kselftest-dev-exist-v1-1-9bc21aa761b5@collabora.com/#r
-- The test checks the number of devices present against a reference file, 
-  generated by the program at a previous point on a known-good kernel, 
-  and reports any missing device.
-- Helps identifying missing kernel configs or broken driver features
-
-*Suspend/resume in cpufreq kselftest*
-
-- Enabling suspend/resume test within the cpufreq kselftest in KernelCI
-- Sent v2 for patch adding RTC wakeup alarm in the cpufreq kselftest: 
-  https://lore.kernel.org/lkml/20240715192634.19272-1-shreeya.patel@collabora.com/
-- The test now uses rtcwake, as suggested by Rafael J. Wysocki in the 
-  first review. There's no easy way to declare the dependency in the 
-  kselftest itself.
-- Patch got acked by the cpufreq kselftest author Viresh Kumar
-
-*Boot time test*
-
-- Sent first RFC:
-  https://lore.kernel.org/all/20240725110622.96301-1-laura.nao@collabora.com/T/#ma568382acdc81af65c30fe3823a7be3e49f98108
-
-*TAP conformance in kselftests*
-
-- Ongoing discussion upstream on TAP headers: 
-  https://lore.kernel.org/all/87fbfba4-8d4d-44ff-9fe5-e101cce3d6cb@collabora.com
-- Working to convert test modules used by kselftests into kunit. Cleanup 
-  patches sent:
-  https://lore.kernel.org/all/20240725110817.659099-1-usama.anjum@collabora.com 
-  and https://lore.kernel.org/all/20240725121212.808206-1-usama.anjum@collabora.com
-
-Please reply to this thread if you'd like to join the call or discuss 
-any of the topics further. We look forward to collaborating with the 
-community to improve upstream tests and expand coverage to more areas 
-of interest within the kernel.
-
-Best regards,
-
-Laura Nao
+Thanks,
+Nícolas
