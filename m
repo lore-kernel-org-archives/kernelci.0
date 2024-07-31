@@ -1,120 +1,141 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3649343169
-	for <kernelci@lists.linux.dev>; Wed, 31 Jul 2024 09:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0785116D31F
+	for <kernelci@lists.linux.dev>; Wed, 31 Jul 2024 23:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722417931; cv=none; b=s6qK8DN+a1cGebCvrqjZeKrP3NTHgrq/v2l/UmXLKmPfYcI+lK0ftShE7YAAng1LT73IkafJ+bGGfuR5B3xgK6jUH0jG61ZpyVu6/HzrQ6CnjJ+ykOeRpLHrt1n8mq27vsqFyfEJIv6JKAfq+bxQ1oCq/ctKDXPz24Vrmwuk6C4=
+	t=1722467990; cv=none; b=a3najxrTOpw5zj+s+Y7btstWSiAypS+ywPNSV24e/vJ3D2/PL08fYnsjkvJ+rYsJSZasgh9TK92JIAaBOsvBnQ9DxP6CJjmTJ53aLjNun7DdZW8cQ/RKpiOFk8SRoEZQGBZ0HGRH7+ezaMQIrUL6/OM1XAE8vx6EUOYgQzj+pAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722417931; c=relaxed/simple;
-	bh=ue/PB64cckoJitZCyfeYBtG43Mc4aZphadG5eqHJ2u8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KSyD715HF233YxtJ4szF/2Z1lhwAA5aKmOLTohbKbzAdlmqjoYNF8MkiDSX6YlNjfQSHNAa85QPEZdYqAl1jOuoqGXXOPHvhHZ8bpQyeLreEstJp43uuZRzDg7HWOdbBmS7P41vHjg4XcNZ58pku5ZaB6tjfX1H5UolHEp0rBXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=G+BStfY4; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1722467990; c=relaxed/simple;
+	bh=4GwoRzclfzlo85zAvolfapd+CWdm9DU8Te+Ql1cnl+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PyLHqzjGW1n3sAJyxoUWms6NbWFeajWWqOK9Um/9dYik3MWgSFqQbwg+TaBDkyItKL5j7ysHYi9SEu2CLFgqPCTvvPOEB0/cucSJuQZPaJlfg71NNt952qABO6dWyql9lLkSdmIKfHV5+AHj6W+Wm0LcrW/h4XyIdzW6mJjifb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL1q1IKJ; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="G+BStfY4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1722417927;
-	bh=ue/PB64cckoJitZCyfeYBtG43Mc4aZphadG5eqHJ2u8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+BStfY4MQo2fXoR2J2o9uN5ExfVzyOxhzIFoGzxg+gZEZuEjLNTg2aoTQcecst6d
-	 UQthcp2UWUHHdxkv9yd4gnyhWjreuNklZ6ePx3O3rvQ8HIPEgnh+0cqQLYK4XyvUDC
-	 RoPbpUFp49kBCChKyKu9UnahoP66wF4lfJb5ClwAkC1Yu5jW4aYQOQmUxCNBb6CUUW
-	 zL+15vjkIcIVZiq1UD42JbpAYUXSLKYiIZ3SZbHh/IAOsZraJFrfTW7MaNKLz/SuCM
-	 lXRYraR197mchH2gPHntYIp65pZNneeCvluGNgIs2UGCa7tdeFC1BvkH8giwqOh5o0
-	 DqHnG+kIkCR4Q==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 474E73780BC9;
-	Wed, 31 Jul 2024 09:25:26 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: skhan@linuxfoundation.org
-Cc: kernel@collabora.com,
-	kernelci@lists.linux.dev,
-	laura.nao@collabora.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	mhiramat@kernel.org,
-	shuah@kernel.org,
-	tim.bird@sony.com
-Subject: Re: [RFC PATCH 1/1] kselftests: Add test to detect boot event slowdowns
-Date: Wed, 31 Jul 2024 11:25:34 +0200
-Message-Id: <20240731092534.16213-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <65c59f75-3810-4490-991e-62b5aafe1f5a@linuxfoundation.org>
-References: <65c59f75-3810-4490-991e-62b5aafe1f5a@linuxfoundation.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL1q1IKJ"
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2644f7d0fb2so936536fac.0
+        for <kernelci@lists.linux.dev>; Wed, 31 Jul 2024 16:19:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1722467987; x=1723072787; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=etMvppMi7evDPjhbMsnAWhZBTxb0fCzMenZG1uh9MDE=;
+        b=FL1q1IKJFx+uAD/0l0iLfk/zG9sgqBYynVzLIDwoOkMqIt6W4shDE5yowEqvGgdMd8
+         3M4NMkattd6qt9wgREmu6A8tlY158A3GhjX15EaaH1L2E78+NluBJDik1ChLUHDS93D3
+         GdI62N5VG2/0XQCJECGXYzFSSYd0ApTc22aIo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722467987; x=1723072787;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=etMvppMi7evDPjhbMsnAWhZBTxb0fCzMenZG1uh9MDE=;
+        b=NHELS7N3U7UgeutaHH5jrS8UeABosZUrP4zO2b4BAqc2w6Omusk8vhckLinBZ5KojY
+         di4sI/TpamzH5tV/XGgyFoqmf/7g5VC0aqboI6/Fqf2JI6VTIPD+owXpGAGHo468/xx7
+         kVon21R8crVFk8h5erKMw9B2DoHyEbF+k81VII0gIa8fGPUqyjMwzDAOMplq7UWJewfQ
+         0/AgJaWpIj4yAty/wkR9Z6gbglH2rIULu2x+7Tw+4M+KQ+4Hyblc8Dj7GjkmAoZFFRs+
+         2evcu4oNqu4Ve+0oY8AsBoP4EXONgE/EuJ3RYC9EnvmaulKuCNrzoMN4LIJMaQGE9MkA
+         VYGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXODFZrGbOAIT4D/DnCPPiaWt3SdxjiAg0G31lAy0WqeX8rxgayIBc0CL4AoPOdGKCbRnynUeYmAQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxGHyUUFhIqwzbnTfcJSJ1aVGEn3MKg6bGKhmkWAoHu+ZqW2H4R
+	X5C61xmh6ANYDsYatYQa+XjJk3gGgmlwGLqXOV+qORLKPu6yT5SQy3yloWgK3gw=
+X-Google-Smtp-Source: AGHT+IGrdIeXgyWgztwjLDx8NrHnJ/zPFKpv/zS8lGiCJLsiszTxwKrySbmn38HXtASjPox9Bk+Ljw==
+X-Received: by 2002:a05:6808:2205:b0:3db:42d0:7387 with SMTP id 5614622812f47-3db5122ed5cmr360052b6e.5.1722467986996;
+        Wed, 31 Jul 2024 16:19:46 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3db417ee4a9sm878004b6e.10.2024.07.31.16.19.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jul 2024 16:19:46 -0700 (PDT)
+Message-ID: <9d0b73ce-704c-4633-bb11-06ca4cb7a9a1@linuxfoundation.org>
+Date: Wed, 31 Jul 2024 17:19:45 -0600
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] kselftest: devices: Add test to detect missing
+ devices
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ Shuah Khan <shuah@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Bird, Tim" <Tim.Bird@sony.com>, Laura Nao <laura.nao@collabora.com>,
+ Saravana Kannan <saravanak@google.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ kernel@collabora.com, kernelci@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240724-kselftest-dev-exist-v1-1-9bc21aa761b5@collabora.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240724-kselftest-dev-exist-v1-1-9bc21aa761b5@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Shuah,
-
-On 7/25/24 17:50, Shuah Khan wrote:
-> On 7/25/24 05:06, Laura Nao wrote:
->> Introduce a new kselftest to identify slowdowns in key boot events.
->> The test uses ftrace to track timings for specific boot events.
->> The kprobe_timestamps_to_yaml.py script can be run once to generate a
->> YAML file with the initial reference timestamps for these events.
->> The test_boot_time.py script can then be run on subsequent boots to
->> compare current timings against the reference values and check for
->> significant slowdowns over time.
->> The test ships with a bootconfig file for ftrace setup and a config
->> fragment for the necessary kernel configurations.
->>
->> Signed-off-by: Laura Nao <laura.nao@collabora.com>
+On 7/24/24 15:40, Nícolas F. R. A. Prado wrote:
+> Introduce a new test to identify regressions causing devices to go
+> missing on the system.
 > 
-> I am repeating the same comments I made on the cover letter here as
-> well.
+> For each bus and class on the system the test checks the number of
+> devices present against a reference file, which needs to have been
+> generated by the program at a previous point on a known-good kernel, and
+> if there are missing devices they are reported.
+
+Can you elaborate on how to generate reference file? It isn't clear.
+
 > 
-> What are the dependencies if any for this new test to work?
-> Please do remember that tests in default run needs to have
-> minimal dependencies so they can run on systems that have
-> minimal support.
->
-
-In order to run this test the kernel needs to be compiled with the
-provided config fragment, which enables tracing and embeds the provided
-bootconfig file in the kernel. Additionally, a YAML file with reference 
-timestamps must be supplied as input to the test.
- 
-> As mentioned earlier take a look at the tools/power/pm-graph
-> bootgraph.py and sleepgraph.py to see if you can leverage
-> them - bootgraph detects slowdowns during boot.
+> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> ---
+> Hi,
 > 
-> We don't want to add duplicate scripts if the other one
-> serves the needs. Those can be moved to selftests if it
-> make sense.
+> Key points about this test:
+> * Goal: Identify regressions causing devices to go missing on the system
+> * Focus:
+>    * Ease of maintenance: the reference file is generated programatically
+>    * Minimum of false-positives: the script makes as few assumptions as possible
+>      about the stability of device identifiers to ensure renames/refactors don't
+>      trigger false-positives
+> * How it works: For each bus and class on the system the test checks the number
+>    of devices present against a reference file, which needs to have been
+>    generated by the program at a previous point on a known-good kernel, and if
+>    there are missing devices they are reported.
+> * Comparison to other tests: It might be possible(*) to replace the discoverable
+>    devices test [1] with this. The benefits of this test is that it's easier
+>    to setup and maintain and has wider coverage of devices.
 > 
-> I will review this once we figure out if bootgraph serves
-> the needs and I understand the dependencies for this test
-> to work.
-> 
+> Additional detail:
+> * Having more devices on the running system than the reference does not cause a
+>    failure, but a warning is printed in that case to suggest that the reference
+>    be updated.
+> * Missing devices are detected per bus/class based on the number of devices.
+>    When the test fails, the known metadata for each of the expected and detected
+>    devices is printed and some simple similitarity comparison is done to suggest
+>    the devices that are the most likely to be missing.
+> * The proposed place to store the generated reference files is the
+>    'platform-test-parameters' repository in KernelCI [2].
 
-Thanks for the pointers! 
+How would a user run this on their systems - do they need to access
+this repository in KernelCI?
 
-It looks like sleepgraph.py is more focused on analyzing suspend/resume 
-timings, while bootgraph.py measures boot time using the kernel log and 
-ftrace. The latter might indeed come in handy.
-As far as I can see, the script doesn't support automatic detection of 
-boot slowdowns, and the output is in HTML format, which is meant for 
-human analysis. However, I can look into adding support for a more 
-machine-readable output format too. The test proposed in this patch could 
-then use bootgraph.py to generate the reference file and measure current 
-boot timings.
+This is what I see when I run the test on my system:
 
-I'll look into this and report back.
+make -C tools/testing/selftests/devices/exist/ run_tests
+make: Entering directory '/linux/linux_6.11/tools/testing/selftests/devices/exist'
+TAP version 13
+1..1
+# timeout set to 45
+# selftests: devices/exist: exist.py
+# TAP version 13
+# # No matching reference file found (tried './LENOVO,20XH005JUS.yaml')
+# # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+not ok 1 selftests: devices/exist: exist.py # exit=1
+make: Leaving directory '/linux/linux_6.11/tools/testing/selftests/devices/exist'
 
-Thanks,
-
-Laura
+thanks,
+-- Shuah
 
