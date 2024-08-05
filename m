@@ -1,59 +1,59 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0BF18026
-	for <kernelci@lists.linux.dev>; Mon,  5 Aug 2024 12:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9583EA64
+	for <kernelci@lists.linux.dev>; Mon,  5 Aug 2024 14:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722861252; cv=none; b=dfGkNbYqeyr0gffXjKM2954C/X9OVDXq2Bb+z7Sh+Gk6WaUpb+sCVlzyQNSvyp2+mjrFgJktu32m4Wl49tafy9KGWPs+I/KVWmmy1xCfRX523YSEKSKS0bWAI6BznzPR35hNJhusdVv+KrXh52GlhHePK13YmqnDTQAD63i+oBs=
+	t=1722868018; cv=none; b=ZWSORz4YsqvzgIJmAKWR2wXnzmG7uMXwnGGZxN4QyvPvRkerhdcSG5HxKPocDrYa1YxoKeUMg+oBJoJQYYezmIitfwlY2qOVAbeoPBN7KASu/KHW8eFDv6b7lplIX3qzpgJ1A8DZ921XkYWLNpI165XiOSin4xLwBiLLFy4lOio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722861252; c=relaxed/simple;
-	bh=GM1zLz5+x8031ael3PwRtMwHtDtwirjtnF77wAVz5vc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=F0i2tjKkQTSTKSEEEMJHquMhq1rckcijR3kSbmz5nYVdVwJagrjyjy3X1BYPk+XnsBzSR/1A/AKyVOKnnN08iQcKv48hWQBEBJxJ/CZSGfXK405CnQOOL38oFa020d5aFiDgAYyoEtBsEzR5EkbLc/gvNhIR3KJb+lK/97JHTaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmcwLVnK; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1722868018; c=relaxed/simple;
+	bh=NWxG7xSUhsn76UE2aNRSo4gGU3mtPjffa5XfI78Z9AY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ef052FMeDwmyFwWQQ60DuejhHa6SI5HVXvshLBYWj57KwqMXm6UPwPu2zG2IjrSFkxBakshliQLvm3upY3wdHeXTwoMdd+x00LeyIIfP5Q5NYkNn1wcX+6CQI55B+vp0O6B0lg3vRl+eeBRV1ftea/7AuFKRspxGtf6nuhe20y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LmNwG9Dc; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmcwLVnK"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4280bbdad3dso70854035e9.0
-        for <kernelci@lists.linux.dev>; Mon, 05 Aug 2024 05:34:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LmNwG9Dc"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42808071810so72242065e9.1
+        for <kernelci@lists.linux.dev>; Mon, 05 Aug 2024 07:26:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722861249; x=1723466049; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TCk3UXqMYvgSqugXZCczdPN/MI6++teABx/udteiMzE=;
-        b=cmcwLVnKr9lLcDh7W7JVEPKgImfrP+VghS+6fh2qC4eRULwjDLlM5XY8JLCKJWAn7+
-         W9w74EFXogEy3TArOUhPdN9pzWJdXSRToV1+qxg398UqXnGK9eipqWaiguXnkQHkSl3x
-         K0xtFvvtdUmI2BozKcs+jVLm2GG7u+5RXdvTQf5tdNIgYf3FzzreLws+AtSsWPGm/7fO
-         iBswE2Imhs7FDbBtZCyMGVoGT++EJmTEECtg8cShMRDFA9tAIXtfQFuzvWjQOaf30Cll
-         CCEBdgcJdw/JE9TWXimB2/lyc5Qoc2YnKs7P+EUbAF7KQVzg6zf6510NLQ+i0NlhCs4U
-         uDfw==
+        d=gmail.com; s=20230601; t=1722868015; x=1723472815; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=su/FsHD0ceqTsgM6YDe8zZfz+p7m4T05VbwpoaYLND8=;
+        b=LmNwG9DcrYgzi7Qb+JOryjpiMbNZV9kkuqd85miG4DTpchOjcJhoOVE0ZjMemHkGtW
+         qAxo7bRnGwOk3JLClis2Iv2dgpGVn7dFRt/Y4hg4yTC6tkLeIZfRrfQkZ4zH4qd7aKAP
+         9lkKo9HXPvLMdCFf+ro9QExyGBx2/04wbVdXJuMDR3Mc8QJ1HZ6r2w8Kkn7iDlNgf/pv
+         m6iOKvMIRBGzsOvmVpw1rzB0JLjhE4G8ZMoco+2C2w0mXL3NzSBsAc9KpK26+WdntFPM
+         SAxRqIJvJdCCVgTyGIHc3YZ6ZRx0gcbnZpI9r8viYux5Mfy/mkH/+ZF17i5tJ9qtY188
+         jlmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722861249; x=1723466049;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1722868015; x=1723472815;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TCk3UXqMYvgSqugXZCczdPN/MI6++teABx/udteiMzE=;
-        b=QoQiWYDvjXU3iRYQBE3nZWNh4sKyVkj+8giU6QA3IxacUthAA6gyqnJZbGjZYi6dl/
-         avlYoZ/dmNRDXAuKA/TnKMZ0dTigNOBv8jUJv6Y0ty7qXxe9tdrTHbh46veQCDIg8naM
-         esbl2Sp0OVcoYd7kXc4NQ+UAaNDqRU7jP72B3uOgdDz6PL+lQ/ReKxWBkucEY15XwvnL
-         w2yFDxk+iDvl1NVHIPtXWGePGSdgHhQ8l+l0Nk/U2+6OgFmRGPuTC2HVJ2Y+Dcjo9o2i
-         QuN57+AFLQpeBthP0rKTfBnkBrsXlWbesy5qkh5fXApTiyJR1h/pTAF71o+zMDE6uwPR
-         G0og==
-X-Forwarded-Encrypted: i=1; AJvYcCXMUr6tWL1qOpZ3EFaUx51UHQUdsopDxmNIoT9Pvi5BJfOHusVptqDGvBSWFm6/ibqAGuokAPWdWO4myO8/wRsKYZr8Pu7KXns=
-X-Gm-Message-State: AOJu0Yx3FFUgIDUemzFCSK3rIHhYuSKMsKwg+Mu/Mm6Kym4g3+gWzppD
-	C9e+cXrYhJKqa6XEgUFrSzPx0aSxGaIPHU5jRvJKOyQqSLDeb8eV
-X-Google-Smtp-Source: AGHT+IFzD9itsH+yTTXGEm/E6d+nfXq00Y2Ge/+nWX9R2ZL6UlGOYPWWqTCA7dCQniAzpqU7FjohMA==
-X-Received: by 2002:a5d:64a1:0:b0:367:43ce:9c91 with SMTP id ffacd0b85a97d-36bbc0f9fb6mr8816065f8f.27.1722861249257;
-        Mon, 05 Aug 2024 05:34:09 -0700 (PDT)
+        bh=su/FsHD0ceqTsgM6YDe8zZfz+p7m4T05VbwpoaYLND8=;
+        b=Xp8NwvJoI80XYMgXQCpT5LNXgGs0zFFybQQEfeXIgf6pnwL5fyCg9RAKsMQc9qMyas
+         RxI5JX+ZmwSaup4VzbbdKd4Z9jV2mT9PVxFzsQHjJymg7xhZ2b2sSlpvnMQ1fIZYIG3h
+         BT5eX1sBkeUqH5bwNqZIp8urkCLNpxYrGRYHdC1dnairDWsIr8nvb6W69/ifHBFG0a1a
+         anXCoAsdIJbgdQq71hn1Fet2fTVUJ5a440JvHaQEgVZOuZnovHoXE2jC/bZ+3VgmF1kj
+         BkL6h1jNmxmb8STCA5PghPcfZK35TFJ1e+/1JmrOWbO0V2ZctC6+W6O/izu1KH1nP1Kq
+         gtXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUj9i5cNmGEYGqfojwSrVLvNV0Vby2R2UP/bI6rmLiaZoxu++YbGaQKo1LQfxgkc3V24xpziWJAmTtbYyogSGpXgCDVEEYpkN8=
+X-Gm-Message-State: AOJu0YwL1Czhcf7BiapOccbvVnt0zPx7bE3AoptpfIh1XgKpDxVihe2A
+	VGTzacQkRYPTr5rJCH5G0+YSzJoiz4Hjewvtxlwa1SffjB3RgcIr
+X-Google-Smtp-Source: AGHT+IER1MqDkLZgCvmZplQ3ImFXljjmeq3+nmb2sdFDMGCmyOgmEXkXcoy8pxEnvIqTG09hYcMYUA==
+X-Received: by 2002:a05:600c:3b0d:b0:428:387:79ac with SMTP id 5b1f17b1804b1-428e6aea8femr84934935e9.6.1722868015039;
+        Mon, 05 Aug 2024 07:26:55 -0700 (PDT)
 Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd059885sm9772320f8f.84.2024.08.05.05.34.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb9d786sm201495235e9.44.2024.08.05.07.26.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Aug 2024 05:34:08 -0700 (PDT)
-Message-ID: <5cbd8d76-3231-4f32-a28a-922a77fdeb3f@gmail.com>
-Date: Mon, 5 Aug 2024 15:34:07 +0300
+        Mon, 05 Aug 2024 07:26:54 -0700 (PDT)
+Message-ID: <e0d90418-5de7-41ed-8aae-872a717c10dd@gmail.com>
+Date: Mon, 5 Aug 2024 17:26:52 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -61,9 +61,9 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: KCIDB: Test schema enhancements
-From: Nikolai Kondrashov <spbnick@gmail.com>
-To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
+Subject: Re: KCIDB: Support non-binary test outputs
+To: Mark Brown <broonie@kernel.org>
+Cc: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
  <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
  Alice Ferrazzi <alicef@gentoo.org>,
  automated-testing@lists.yoctoproject.org,
@@ -72,48 +72,63 @@ To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
  Veronika Kabatova <vkabatov@redhat.com>,
  Guillaume Tucker <guillaume.tucker@collabora.com>,
  "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- Don Zickus <dzickus@redhat.com>, Mark Brown <broonie@kernel.org>,
- Philip Li <philip.li@intel.com>, Denys Fedoryshchenko
- <denys.f@collabora.com>, Michael Hofmann <mhofmann@redhat.com>,
+ Don Zickus <dzickus@redhat.com>, Philip Li <philip.li@intel.com>,
+ Denys Fedoryshchenko <denys.f@collabora.com>,
+ Michael Hofmann <mhofmann@redhat.com>,
  Tales da Aparecida <tdaapare@redhat.com>,
  Aditya Nagesh <adityanagesh@microsoft.com>,
  Jeny Dhruvit Sheth <jeny.sadadia@collabora.com>,
  Sachin Sant <sachinp@linux.ibm.com>, "Hambardzumyan, Minas" <minas@ti.com>
 References: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
+ <bf0befaa-e23e-43f0-996b-d095b7390122@gmail.com>
+ <41f4f4df-7587-42c4-b7c4-9e69bbf7d74d@sirena.org.uk>
 Content-Language: en-US
-In-Reply-To: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
+From: Nikolai Kondrashov <spbnick@gmail.com>
+In-Reply-To: <41f4f4df-7587-42c4-b7c4-9e69bbf7d74d@sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/5/24 12:56 PM, Nikolai Kondrashov wrote:
-> Hello everyone (potentially) involved with sending data to KCIDB,
+On 8/5/24 3:33 PM, Mark Brown wrote:
+> On Mon, Aug 05, 2024 at 02:28:24PM +0300, Nikolai Kondrashov wrote:
 > 
-> We've been working hard at KernelCI to bring you a bunch of exciting changes,
-> to be presented at LPC in September, and in our news channels.
+>> Here is the (abbreviated) schema for the new field:
 > 
-> Meanwhile I'd like to propose two small, but potentially very useful changes
-> to the I/O schema for tests:
+>>     "value": {
+>>         "type": "object",
+>>         "properties": {
+>>             "integer": {"type": "integer"},
+>>             "number": {"type": "number"},
+>>             "string": {"type": "string"},
+>>             "boolean": {"type": "boolean"},
+>>         },
+>>         "minProperties": 1,
+>>         "additionalProperties": False
+>>     },
 > 
-> * Supporting non-binary outputs beyond PASS/FAIL -
->   integers/floats/booleans/strings/etc. - useful for performance tests.
+>> The meaning of the value itself depends on the particular test, that is the
+>> "path" field value. Each property inside the value corresponds to a data type.
 > 
-> * Supporting recording `compatible` values from the top of the device tree
->   inside the test environment, for machines which use them - useful for
->   correlating test results by hardware.
-> 
-> Here's the corresponding schema PR:
-> 
->     https://github.com/kernelci/kcidb-io/pull/85
-> 
-> I'll follow up with a separate message for each of the changes, going over the
-> details and the rationale.
-> 
-> Feel free to reply to this or the other messages and leave comments in the PR!
+> Might it be useful to directly specify units for use with "number" to
+> help with normalising data between different CI systems or hardware -
+> for example with boot times both seconds and miliseconds seem like
+> reasonable units to use?  It might also be useful for UIs, though we
+> could also do that with a separate table for the tests that they can
+> query.  Perhaps I'm just worrying too much about specialist cases where
+> it's likely that CI systems won't just be picking up an off the shelf
+> suite that has standard units.
+This is a totally valid concern. We could add a "units" field, e.g. beside
+"value". However, I'm not sure how we could use it. Sure, we can put them next
+to the value in the dashboard, which would look nice, but then we can also put
+them into the "comment", as my examples do, and I'm not sure if we would be
+able to do much with them in the database.
 
-If there are no objections by that time, I would like to merge this next
-Monday, Aug 12, and start working on the rest of the support for these
-enhancements.
+Even if we have the exponent separate, I'm not sure we can make use of it
+(converting units on the fly won't work well with indices). I mean, we can
+(and should) compare only values with the same unit, but which one, if we have
+multiple? Both separately?
 
-Don't hesitate to object to *that*, if you feel it's too fast!
+On the one hand I like having the explicit unit, on the other hand we can get
+a similar result with simply using different test names for different units,
+and have them specified in the comments, for humans 🤔
 
 Nick
