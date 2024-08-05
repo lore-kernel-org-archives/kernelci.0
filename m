@@ -1,115 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727FD1E485
-	for <kernelci@lists.linux.dev>; Mon,  5 Aug 2024 12:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0BF18026
+	for <kernelci@lists.linux.dev>; Mon,  5 Aug 2024 12:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722861207; cv=none; b=NsxrxxskenAQ6XC00XjDQhSmjHlZZYdUbRYNvRCJlAW/ObICJqONhM/uX1UkHoVZyDrt8l8UVO2jdhWZ207gB1QoZbpEQHfSDaYq2p3wEF8o3rdHO3H3zyQShFtcBVrLZ/EiXKovOaGIYy3fCiMdBovMfvBje2M1qJEqQ8KDqSY=
+	t=1722861252; cv=none; b=dfGkNbYqeyr0gffXjKM2954C/X9OVDXq2Bb+z7Sh+Gk6WaUpb+sCVlzyQNSvyp2+mjrFgJktu32m4Wl49tafy9KGWPs+I/KVWmmy1xCfRX523YSEKSKS0bWAI6BznzPR35hNJhusdVv+KrXh52GlhHePK13YmqnDTQAD63i+oBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722861207; c=relaxed/simple;
-	bh=C+zB7HdHk4TulfFjKwVbr3eKev7gzIWsUkK4vZvUTC8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qTp5rYA9DIuBKwYyBLb6GN0vCqQDFlykxQ0sXha/cD/znLfUIAuT7M0liXQiCDDG4X32eddunSJKb9J30kb1cucMx5goHUsX5CiGyzp0vT2Oz4d1P3ZMz4ECNi7kRZ0PdReFfHUau4PtYgR+pKZSnE15TEz8Fv8vDzCwzMJnP2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOThcb3b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722861252; c=relaxed/simple;
+	bh=GM1zLz5+x8031ael3PwRtMwHtDtwirjtnF77wAVz5vc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=F0i2tjKkQTSTKSEEEMJHquMhq1rckcijR3kSbmz5nYVdVwJagrjyjy3X1BYPk+XnsBzSR/1A/AKyVOKnnN08iQcKv48hWQBEBJxJ/CZSGfXK405CnQOOL38oFa020d5aFiDgAYyoEtBsEzR5EkbLc/gvNhIR3KJb+lK/97JHTaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmcwLVnK; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOThcb3b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041CBC32782;
-	Mon,  5 Aug 2024 12:33:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722861207;
-	bh=C+zB7HdHk4TulfFjKwVbr3eKev7gzIWsUkK4vZvUTC8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LOThcb3breVe1AF+l15yPP1f9+PqozhM7BfjQ/LX1fFuATcWklaPrRu7JgPCxeQ0f
-	 J1a6UHp/SLR8nb/wfvd+59KwhOcXOsP5jySCVhmxQCPUMd21HSPMuvZsuAMHr7ZXWW
-	 fleAhyngHYtDmhO1al1jbU1GFrDJ9ekW8HdfNcvyO/Wf2Gp9/lAyxfHfJWzgF8JxKm
-	 5owOEvpd5RgQxqeSuHZawI8iEVD8v6XPxYZyYgSOk4mIzgL1VuTT8W0mTS4k26iNj/
-	 MCCxrSbp0/JGUi/NiLOXrPCa+3K4tgHUzTlto8cNlbbjoPhTRiRQnw2Oo8xndgSznz
-	 uhzvdVqOBVOwA==
-Date: Mon, 5 Aug 2024 13:33:19 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Nikolai Kondrashov <spbnick@gmail.com>
-Cc: syzkaller <syzkaller@googlegroups.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vishal Bhoj <vishal.bhoj@linaro.org>,
-	Alice Ferrazzi <alicef@gentoo.org>,
-	automated-testing@lists.yoctoproject.org,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Tim Bird <Tim.Bird@sony.com>,
-	Johnson George <Johnson.George@microsoft.com>,
-	Veronika Kabatova <vkabatov@redhat.com>,
-	Guillaume Tucker <guillaume.tucker@collabora.com>,
-	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
-	Don Zickus <dzickus@redhat.com>, Philip Li <philip.li@intel.com>,
-	Denys Fedoryshchenko <denys.f@collabora.com>,
-	Michael Hofmann <mhofmann@redhat.com>,
-	Tales da Aparecida <tdaapare@redhat.com>,
-	Aditya Nagesh <adityanagesh@microsoft.com>,
-	Jeny Dhruvit Sheth <jeny.sadadia@collabora.com>,
-	Sachin Sant <sachinp@linux.ibm.com>,
-	"Hambardzumyan, Minas" <minas@ti.com>
-Subject: Re: KCIDB: Support non-binary test outputs
-Message-ID: <41f4f4df-7587-42c4-b7c4-9e69bbf7d74d@sirena.org.uk>
-References: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
- <bf0befaa-e23e-43f0-996b-d095b7390122@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmcwLVnK"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4280bbdad3dso70854035e9.0
+        for <kernelci@lists.linux.dev>; Mon, 05 Aug 2024 05:34:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722861249; x=1723466049; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TCk3UXqMYvgSqugXZCczdPN/MI6++teABx/udteiMzE=;
+        b=cmcwLVnKr9lLcDh7W7JVEPKgImfrP+VghS+6fh2qC4eRULwjDLlM5XY8JLCKJWAn7+
+         W9w74EFXogEy3TArOUhPdN9pzWJdXSRToV1+qxg398UqXnGK9eipqWaiguXnkQHkSl3x
+         K0xtFvvtdUmI2BozKcs+jVLm2GG7u+5RXdvTQf5tdNIgYf3FzzreLws+AtSsWPGm/7fO
+         iBswE2Imhs7FDbBtZCyMGVoGT++EJmTEECtg8cShMRDFA9tAIXtfQFuzvWjQOaf30Cll
+         CCEBdgcJdw/JE9TWXimB2/lyc5Qoc2YnKs7P+EUbAF7KQVzg6zf6510NLQ+i0NlhCs4U
+         uDfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722861249; x=1723466049;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TCk3UXqMYvgSqugXZCczdPN/MI6++teABx/udteiMzE=;
+        b=QoQiWYDvjXU3iRYQBE3nZWNh4sKyVkj+8giU6QA3IxacUthAA6gyqnJZbGjZYi6dl/
+         avlYoZ/dmNRDXAuKA/TnKMZ0dTigNOBv8jUJv6Y0ty7qXxe9tdrTHbh46veQCDIg8naM
+         esbl2Sp0OVcoYd7kXc4NQ+UAaNDqRU7jP72B3uOgdDz6PL+lQ/ReKxWBkucEY15XwvnL
+         w2yFDxk+iDvl1NVHIPtXWGePGSdgHhQ8l+l0Nk/U2+6OgFmRGPuTC2HVJ2Y+Dcjo9o2i
+         QuN57+AFLQpeBthP0rKTfBnkBrsXlWbesy5qkh5fXApTiyJR1h/pTAF71o+zMDE6uwPR
+         G0og==
+X-Forwarded-Encrypted: i=1; AJvYcCXMUr6tWL1qOpZ3EFaUx51UHQUdsopDxmNIoT9Pvi5BJfOHusVptqDGvBSWFm6/ibqAGuokAPWdWO4myO8/wRsKYZr8Pu7KXns=
+X-Gm-Message-State: AOJu0Yx3FFUgIDUemzFCSK3rIHhYuSKMsKwg+Mu/Mm6Kym4g3+gWzppD
+	C9e+cXrYhJKqa6XEgUFrSzPx0aSxGaIPHU5jRvJKOyQqSLDeb8eV
+X-Google-Smtp-Source: AGHT+IFzD9itsH+yTTXGEm/E6d+nfXq00Y2Ge/+nWX9R2ZL6UlGOYPWWqTCA7dCQniAzpqU7FjohMA==
+X-Received: by 2002:a5d:64a1:0:b0:367:43ce:9c91 with SMTP id ffacd0b85a97d-36bbc0f9fb6mr8816065f8f.27.1722861249257;
+        Mon, 05 Aug 2024 05:34:09 -0700 (PDT)
+Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd059885sm9772320f8f.84.2024.08.05.05.34.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Aug 2024 05:34:08 -0700 (PDT)
+Message-ID: <5cbd8d76-3231-4f32-a28a-922a77fdeb3f@gmail.com>
+Date: Mon, 5 Aug 2024 15:34:07 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LABG2NPcpm9MsAkI"
-Content-Disposition: inline
-In-Reply-To: <bf0befaa-e23e-43f0-996b-d095b7390122@gmail.com>
-X-Cookie: Goodbye, cool world.
+User-Agent: Mozilla Thunderbird
+Subject: Re: KCIDB: Test schema enhancements
+From: Nikolai Kondrashov <spbnick@gmail.com>
+To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
+ <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
+ Alice Ferrazzi <alicef@gentoo.org>,
+ automated-testing@lists.yoctoproject.org,
+ Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>,
+ Johnson George <Johnson.George@microsoft.com>,
+ Veronika Kabatova <vkabatov@redhat.com>,
+ Guillaume Tucker <guillaume.tucker@collabora.com>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ Don Zickus <dzickus@redhat.com>, Mark Brown <broonie@kernel.org>,
+ Philip Li <philip.li@intel.com>, Denys Fedoryshchenko
+ <denys.f@collabora.com>, Michael Hofmann <mhofmann@redhat.com>,
+ Tales da Aparecida <tdaapare@redhat.com>,
+ Aditya Nagesh <adityanagesh@microsoft.com>,
+ Jeny Dhruvit Sheth <jeny.sadadia@collabora.com>,
+ Sachin Sant <sachinp@linux.ibm.com>, "Hambardzumyan, Minas" <minas@ti.com>
+References: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
+Content-Language: en-US
+In-Reply-To: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 8/5/24 12:56 PM, Nikolai Kondrashov wrote:
+> Hello everyone (potentially) involved with sending data to KCIDB,
+> 
+> We've been working hard at KernelCI to bring you a bunch of exciting changes,
+> to be presented at LPC in September, and in our news channels.
+> 
+> Meanwhile I'd like to propose two small, but potentially very useful changes
+> to the I/O schema for tests:
+> 
+> * Supporting non-binary outputs beyond PASS/FAIL -
+>   integers/floats/booleans/strings/etc. - useful for performance tests.
+> 
+> * Supporting recording `compatible` values from the top of the device tree
+>   inside the test environment, for machines which use them - useful for
+>   correlating test results by hardware.
+> 
+> Here's the corresponding schema PR:
+> 
+>     https://github.com/kernelci/kcidb-io/pull/85
+> 
+> I'll follow up with a separate message for each of the changes, going over the
+> details and the rationale.
+> 
+> Feel free to reply to this or the other messages and leave comments in the PR!
 
---LABG2NPcpm9MsAkI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+If there are no objections by that time, I would like to merge this next
+Monday, Aug 12, and start working on the rest of the support for these
+enhancements.
 
-On Mon, Aug 05, 2024 at 02:28:24PM +0300, Nikolai Kondrashov wrote:
+Don't hesitate to object to *that*, if you feel it's too fast!
 
-> Here is the (abbreviated) schema for the new field:
-
->     "value": {
->         "type": "object",
->         "properties": {
->             "integer": {"type": "integer"},
->             "number": {"type": "number"},
->             "string": {"type": "string"},
->             "boolean": {"type": "boolean"},
->         },
->         "minProperties": 1,
->         "additionalProperties": False
->     },
-
-> The meaning of the value itself depends on the particular test, that is the
-> "path" field value. Each property inside the value corresponds to a data type.
-
-Might it be useful to directly specify units for use with "number" to
-help with normalising data between different CI systems or hardware -
-for example with boot times both seconds and miliseconds seem like
-reasonable units to use?  It might also be useful for UIs, though we
-could also do that with a separate table for the tests that they can
-query.  Perhaps I'm just worrying too much about specialist cases where
-it's likely that CI systems won't just be picking up an off the shelf
-suite that has standard units.
-
---LABG2NPcpm9MsAkI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmawxo8ACgkQJNaLcl1U
-h9Da4Qf8CRPTeq88Q3MFdGXr1LaUxD0exje6U9HA3UOFB+CRtSfxn0yk0zDw5HQu
-25JnCUl6ZhZ83nHOSfZ82amz1UI5PBer4iXUcXXzU+88W9V1ul9eel6F30J9HCNC
-VduzUSYkMobBxKLPnqFrSu0ux3fIZeJ0fBdmKiMfaUAjdnn4jWdfrnWsKpdZ1sLi
-K199JutioCb0YtPGTKe7wE6OXPk7rCXzf9Yc7kBGlmMSrh7EW1ZRaemN5o87VXe5
-DCcW+I2ToVPtMwzRi4d58cXvG/mTKWk5nHo4wc2ZF1/LA6amTwn7PXedUzWcZvu8
-RCv47Np3fe7QAbiRsoErXCgccMlnWw==
-=JZpm
------END PGP SIGNATURE-----
-
---LABG2NPcpm9MsAkI--
+Nick
