@@ -1,65 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69144205D
-	for <kernelci@lists.linux.dev>; Tue,  6 Aug 2024 17:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0CD52F9B
+	for <kernelci@lists.linux.dev>; Tue,  6 Aug 2024 17:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722963790; cv=none; b=FMOp+BgtQFOdd54/zsdXpOSrPDGY2aNp3vzs7PzUnUoKd+CU3U0wkDGqOhIk/zWLTHD2tPGmfty6kRXn3eJ3/JDKxAjlndxe94FG5tzis3jVrNTOwU4Qov5jllIsBCt2NoCuONZab5uGP3I5ke5wz+zLO3Z+ZE1hhwjKI0Dzb9Y=
+	t=1722964721; cv=none; b=jIdn6tX8o+053sCnjg6jLisLwLkQDRkmUW0kvzy7Gs5l4dsW1E+K1y3U9KKPHouGaknagMJOaYibhbXBBx7+jRTHzDZg3wsUSsp70S7A2TU21Lo1FoP1N76pY/gKIfOTNR8YJZB4eXSbwt3JXMcNIMcovIhI6L1Rj4Moa/SLpWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722963790; c=relaxed/simple;
-	bh=3K+4mwb2rA4RW1Xcb/LIA7kOHkDcnVRfgEKHsPYnIQc=;
+	s=arc-20240116; t=1722964721; c=relaxed/simple;
+	bh=lDmyYDQTwt8iXDykpqqWbmp337OvXVH2Doh47JwZSH4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JiwI342YUgpYdYnj2zmmE5M2uHJuZUlpqcQN8KxgXLqIQ9wpIaXl+r0Fx0IdM++f4bC1LwIrVwyinCxVtYuandpl+afTPtJ5GBsR6WHvYCCNb9A1E+McVAxL5xfeouTvpoAeSAgApou+FbjbPEP6Y83bsSGyZ6dOToz2QMfzfyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RkOMPGEW; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=oUkximpQm56C9q1PUB4JjYPVyYwCnD1Q9njUl12gWpp6JZ1c7oxQ3qGB2T/d5hxf49EXvdgYefK1J4MtRtyZT5/8u7OFZSM7mfnrzSkDFOV4MmT3Z8zuFuLBQgkKLTAWlwobSvYvOVG6voy6D57NhNt36xuhl9JWnHz5VMOIXl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HqJpTYh9; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RkOMPGEW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HqJpTYh9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722963787;
+	s=mimecast20190719; t=1722964719;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JrCiAggvm1RiuNtUyChYQ6iKRT1+eA0SNx+Ex0sNyss=;
-	b=RkOMPGEW4ROxZPwuMybWmLbrwBV+DSAmrkDhH7sj+mfTTChpLn13r6ohl6BUw338dylATF
-	xMrJG9kFTDnoJWj/38IlfoiN+31Q2D+PtxgwTgDOXWy52syb2rlVtBTcw8Jj3TLlbV6yp+
-	wi537c5+UrxAzbEx6n3FT80GFcqPvKQ=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ORy6UU0oMut93e/Jk05sbWrNVIKWlQ5m5sr0U1vmiYQ=;
+	b=HqJpTYh9U89eVDtO9eunfOaayi8YeKw6C4F2yQBSo3flb1YNgKGKXuQ/tUwnhMrn7qTMhq
+	T/E81V7MXr3oVDKESDYES/XM4w0aobzIHHPb0c0uo57+9PUnQgH1xgXh3tTNAKpKzYZzRf
+	2NgtL55Q+naYNVPxO+er73xOowebTbg=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-iPDpHTfvOb2G6MacH3_mdQ-1; Tue, 06 Aug 2024 13:03:04 -0400
-X-MC-Unique: iPDpHTfvOb2G6MacH3_mdQ-1
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-52f00c27b9cso972820e87.1
-        for <kernelci@lists.linux.dev>; Tue, 06 Aug 2024 10:03:04 -0700 (PDT)
+ us-mta-218-MwwgbuaIPc2vzM7lBdeuIQ-1; Tue, 06 Aug 2024 13:18:36 -0400
+X-MC-Unique: MwwgbuaIPc2vzM7lBdeuIQ-1
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-52efcb739adso1022069e87.2
+        for <kernelci@lists.linux.dev>; Tue, 06 Aug 2024 10:18:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722963783; x=1723568583;
+        d=1e100.net; s=20230601; t=1722964715; x=1723569515;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JrCiAggvm1RiuNtUyChYQ6iKRT1+eA0SNx+Ex0sNyss=;
-        b=MGS5pwV5c5qqgwNTxw1ifHeILW1YaXzrSwwVLcZd/vZGpJs/TLqlj+jsOByTt3nDMc
-         WL41dSD2JLlhbM+wefTu3k1OTTxQPqtGmXubhhmmHDwqle4OYFTcL2ACrx3kSzksMMfN
-         3qQWW1MM8rTGHoww9vfXGpRSWDCFbgUeAm0n6rdLfd7rl/GPrifXY3zIZ2Q7VTUS1IrC
-         rI3i65wR5h5rYCPg1xDW/0NYjreyA4ya3Lhy38G8+A/vkySVYFYEdHH3Hf/AZfOfqxGT
-         aAsWSyDb9JgQovFIuRC+SZIvh+73ZgmgHVtGRBhAgzM1S4gAq0UdNlbiR0TNVLbHzq/H
-         ZidQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbZNFBzZhlsFNI1lxkQ3SmagQP5fZBjKmxa8H6L6KZSb/kJdeMw15YEWzJkNiUENLSGO1BTWwMIvyNw1ZEGJ3hfUbzzOb6I2A=
-X-Gm-Message-State: AOJu0YzRQvcmWuiOs7z+Hj8huvtPZFGLhj4ZywaWuEnXqbfNED/j9Skm
-	0FhNqMdIKLUC90SfW6EtHMnWS/q3HyyH1F4HqC7ZN+KapgQWRLTzRx9Kk3wctlQz6tytxZU9ZSe
-	XRIvXnrb2ckBsIQb0IEXVlejYRHJXf1jNpyRGBnz4fvMDQ7n72IhTI0SY
-X-Received: by 2002:a05:6512:3b8c:b0:52d:b150:b9b3 with SMTP id 2adb3069b0e04-530bb3b6fb7mr10201203e87.32.1722963782620;
-        Tue, 06 Aug 2024 10:03:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYCBthisXHhr4MrKCQZwQ42+yTNXDKbIL4RE237iM2AA2N6b/S4ouIBaMRwJ3SgFQwqp5k0g==
-X-Received: by 2002:a05:6512:3b8c:b0:52d:b150:b9b3 with SMTP id 2adb3069b0e04-530bb3b6fb7mr10201160e87.32.1722963781666;
-        Tue, 06 Aug 2024 10:03:01 -0700 (PDT)
+        bh=ORy6UU0oMut93e/Jk05sbWrNVIKWlQ5m5sr0U1vmiYQ=;
+        b=iABasKjtYy9CFuj9wpGvshzZtS+KPfmS1N+/oAHt23sqyVcaNBEx9Nw6RLoQIrenfT
+         YmOhZjr31IsOcRCtMBBFsIqKk8KMuFLF/1JOamVGUhHsNF2xVLIHuMr9VD3o81//H5YY
+         dy0Iudz77qQvBrGDJTaB3z3cTMMqQUM5swALDFdnb27nI16GltKZXu6xAcvoCPUMbyfP
+         22lBWnaecUQIBJfTQm2kcCOiN9+F94kAmA4iE+cK89eoS17yXpXKE6cmjv3WS/+W2Plp
+         uZB7tfhNVzXyIsmV+ODJvwCu7JELZTG1C1Hh+Fp2SRojmNIkxZ6bKgHM5VAHrJ8ijxbA
+         W7dA==
+X-Forwarded-Encrypted: i=1; AJvYcCXiVdyzuQMttIb5MNVqwV5Ho1MZIEmaHdW4pO5XfyhTbaqMm9IXhd6fMPlrgjPQSVDFnuFmxWUcbNAm2JGi7+RK5mRryAR6ySY=
+X-Gm-Message-State: AOJu0YyZRHoCeJRePaqCffupXcudYd6JZLuzABMqNIfnjJuI99O+yGRz
+	axzZmYfp9/HjFYmYDTlQ6k64oDbWVjTnrTvaMqAip+Nxuxkq8DX1SkZt1UDfvbgcYjRT7cHKACX
+	GTUhMeB+PEy6wIGF0/yUJvMUJnTZtI5XZ7g0yJCGoU1LSyh5jeskBC0hw
+X-Received: by 2002:a05:6512:3403:b0:52c:8979:9627 with SMTP id 2adb3069b0e04-530bb39d224mr10413624e87.3.1722964714752;
+        Tue, 06 Aug 2024 10:18:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBt6tov/hZ3mrrepDPl2W4vOmsWRLUI3A1Rx0qR3Lkf1bRKJK7TTRQ9HrbZgYISDmETVqCNA==
+X-Received: by 2002:a05:6512:3403:b0:52c:8979:9627 with SMTP id 2adb3069b0e04-530bb39d224mr10413584e87.3.1722964713797;
+        Tue, 06 Aug 2024 10:18:33 -0700 (PDT)
 Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-530bba355d4sm1538107e87.215.2024.08.06.10.03.00
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-530bba111ccsm1561147e87.108.2024.08.06.10.18.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 10:03:00 -0700 (PDT)
-Message-ID: <813ff1ba-7d87-4afd-9852-c7ed598869c8@redhat.com>
-Date: Tue, 6 Aug 2024 20:03:00 +0300
+        Tue, 06 Aug 2024 10:18:33 -0700 (PDT)
+Message-ID: <9d4a252b-ad58-4d38-bd4e-35e8edd1f704@redhat.com>
+Date: Tue, 6 Aug 2024 20:18:32 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -67,13 +67,15 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: KCIDB: Support non-binary test outputs
-To: Mark Brown <broonie@kernel.org>, Nikolai Kondrashov <spbnick@gmail.com>
+Subject: Re: [Automated-testing] KCIDB: Support non-binary test outputs
+To: Tim Bird <tim.bird@sony.com>, Mark Brown <broonie@kernel.org>,
+ Nikolai Kondrashov <spbnick@gmail.com>
 Cc: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
  <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
  Alice Ferrazzi <alicef@gentoo.org>,
- automated-testing@lists.yoctoproject.org,
- Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>,
+ "automated-testing@lists.yoctoproject.org"
+ <automated-testing@lists.yoctoproject.org>,
+ Cristian Marussi <cristian.marussi@arm.com>,
  Johnson George <Johnson.George@microsoft.com>,
  Veronika Kabatova <vkabatov@redhat.com>,
  Guillaume Tucker <guillaume.tucker@collabora.com>,
@@ -88,111 +90,62 @@ Cc: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
 References: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
  <bf0befaa-e23e-43f0-996b-d095b7390122@gmail.com>
  <41f4f4df-7587-42c4-b7c4-9e69bbf7d74d@sirena.org.uk>
- <e0d90418-5de7-41ed-8aae-872a717c10dd@gmail.com>
- <8c9b63b0-453d-4f2c-8777-66871ad7923d@sirena.org.uk>
+ <BN6PR13MB3041EF1CCE58C02289F9AE6FFDBE2@BN6PR13MB3041.namprd13.prod.outlook.com>
 From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <8c9b63b0-453d-4f2c-8777-66871ad7923d@sirena.org.uk>
+In-Reply-To: <BN6PR13MB3041EF1CCE58C02289F9AE6FFDBE2@BN6PR13MB3041.namprd13.prod.outlook.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 8/5/24 7:32 PM, Mark Brown wrote:
-> On Mon, Aug 05, 2024 at 05:26:52PM +0300, Nikolai Kondrashov wrote:
->> On 8/5/24 3:33 PM, Mark Brown wrote:
->>> On Mon, Aug 05, 2024 at 02:28:24PM +0300, Nikolai Kondrashov wrote:
-> 
->>> Might it be useful to directly specify units for use with "number" to
->>> help with normalising data between different CI systems or hardware -
-> 
->> This is a totally valid concern. We could add a "units" field, e.g. beside
->> "value". However, I'm not sure how we could use it. Sure, we can put them next
->> to the value in the dashboard, which would look nice, but then we can also put
->> them into the "comment", as my examples do, and I'm not sure if we would be
->> able to do much with them in the database.
-> 
->> Even if we have the exponent separate, I'm not sure we can make use of it
->> (converting units on the fly won't work well with indices). I mean, we can
->> (and should) compare only values with the same unit, but which one, if we have
->> multiple? Both separately?
-> 
->> On the one hand I like having the explicit unit, on the other hand we can get
->> a similar result with simply using different test names for different units,
->> and have them specified in the comments, for humans 🤔
-> 
-> Just thinking out loud here but perhaps what we want is something in the
-> ingestion path which either validates a schema that says "Test X must
-> have unit Y" or normalises the units on the way in.  I think my concern
-> is more on the write side than on the read side (modulo the display
-> stuff), or rather making sure that what's available to the read side can
-> be joined up.
+(Sorry, re-sending, as I lost all recipients accidentally on the last try)
 
-So far, one of the major principles of KCIDB was "what you send is what you
-get back", that is, it doesn't ever modify the data submitted by CI systems
-(well, except perhaps some corner cases like floating point or timestamp
-precision differences). I'm not saying we should *always* keep to this
-principle in the future, but it *does* simplify a lot of reasoning about how
-data is processed and queried. Also, the need to preprocess submitted data is
-a good sign that your schema needs improving.
+Hi Tim,
 
-In that light, I think validation is the right way here. And validating
-submitter-provided units could be the right way. This is actually similar to
-the situation with test "paths". Currently we're accepting everything, but our
-target is to tighten that down to help correlation. Perhaps by sending
-(aggregated) warnings about unknown test paths to submitters.
+Thank you for your responses!
 
-This looser approach allows us to admit new data to the database faster, as it
-doesn't need to undergo cataloguing first. We certainly don't want to spend
-time arbitrating *every* test name or a measurement unit at this point, and we
-don't want to slow down adoption from CI systems, and introduction of new
-tests. But I think letting them know about deviations could work. After all,
-it's in the CI system interest to comply, as that improves result quality, and
-raises the chance of reaching maintainers, which they're here for.
+On 8/5/24 8:11 PM, Tim Bird wrote:
+>> -----Original Message-----
+>> From: Mark Brown <broonie@kernel.org>
+>> Sent: Monday, August 5, 2024 6:33 AM
+>> To: Nikolai Kondrashov <spbnick@gmail.com>
+>> On Mon, Aug 05, 2024 at 02:28:24PM +0300, Nikolai Kondrashov wrote:
+>>
+>>> The meaning of the value itself depends on the particular test, that is the
+>>> "path" field value. Each property inside the value corresponds to a data type.
+>>
+>> Might it be useful to directly specify units for use with "number" to
+>> help with normalising data between different CI systems or hardware -
+>> for example with boot times both seconds and miliseconds seem like
+>> reasonable units to use?  It might also be useful for UIs, though we
+>> could also do that with a separate table for the tests that they can
+>> query.  Perhaps I'm just worrying too much about specialist cases where
+>> it's likely that CI systems won't just be picking up an off the shelf
+>> suite that has standard units.
+>
+> I'll second this.  A number of benchmarks output their values in different
+> units, depending on the performance of the system, and it's valuable
+> to be able to detect that different units are being used, in order to
+> compare results effectively.  For example, some IO tests will report KB/s
+> on a slow machine and MB/s on a fast machine, for the same measurement.
+>
+> Tests sometimes need a policy for which unit to be the canonical one for the
+> test (and to express reference values  in that canonical unit format).  This
+> might require a test results parser to do units conversion, before comparison
+> with reference values in order to detect testcase results.
 
-And then we need to consider how many different test paths there could be. In
-the past six months the database has seen 88122 unique test paths. Yep, eighty
-eight thousands. Of course, tests reporting a value would be a tiny fraction
-of those, but even if it's just 1%, that's still almost nine hundred paths,
-seen in six months. Most likely we can do quite well with regular expressions,
-as many of those are only a bit different.
+JSON doesn't really have an integer or floating-point size, so I would prefer
+that the submitting CI system stuck to a single exponent / metric prefix in
+their reports, and scaled the values itself, to help us avoid (complicated)
+pre-processing, and help the database indexes improve query performance. And,
+after all, they know their tests best to pick the right unit/scale.
 
-So, we can have such a catalog, and for example only validate the matching
-entries, instead of requiring an entry to be there before accepting the data.
-That would keep it easy to send new data, but with the catalog you would have
-tighter control for stuff you care about.
+If we agree on prefix-less units, for example, then the dashboards would be
+able to scale the data and apply their own prefix, as needed, automatically.
 
-However, I would leave it to the submitter to observe the correct exponent
-(e.g. KB vs. MB vs. GB). We can perhaps standardize on units *without* the
-metric prefix, and rely on either floating-point exponent, or larger integer
-representations (like 8-byte bigints in PostgreSQL, JSON integers have no size
-themselves) to handle the required ranges. This way the dashboard would be
-able to display the units, *and* apply the prefix as necessary, automatically.
-Or perhaps specify the prefix (or exponent) separately from the unit, so the
-usual range would fit, but the dashboard could still scale the numbers on
-display. OTOH, indices would be no use for separate value/exponent
-representation.
+Please also see my response to Mark, for more considerations.
 
-So, we could start with adding a string field for the unit, and e.g. an
-integer field for the exponent (10^E), both stored in the database, and
-combined for display. And we could add the validation later.
-
-Or we can bake in the exponent into the unit, and make use of indexes, but
-require people to pay more attention to them.
-
-Oooorr, we could implement as is for the start, and add units later, when we
-see the situation better, based on what's actually coming in. This would help
-us implement the dashboard support and regression tracking easier. As we would
-only need to correlate across test paths (and other parameters, of course),
-without the need to add the units to all the queries and considerations. The
-submitters would be able to clarify the units in the test paths and the
-comments.
-
-And the final question we need to consider is how many people would actually
-bother finding out what the units exactly are in their tests, and specifying
-them?
-
-Sorry for the wall of text :D
-Thanks for reading!
+Thanks!
 Nick
 
