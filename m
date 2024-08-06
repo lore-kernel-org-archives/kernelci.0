@@ -1,108 +1,118 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFC5165F06
-	for <kernelci@lists.linux.dev>; Tue,  6 Aug 2024 10:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722938765; cv=none; b=CDXuDUOER/zZ1WFdhOYiBAo9FQkEMBiG+/KZvbf4AN0Dn/BXQTrU+aLKKBdSPk9xUQnjH1Bpxo9W5t/QT/BxpATZvFpOlxbsIICBldlcgzelMyCWpZpLdMYucpwCdjVdMnT3b/SZFPs2XGjBdlsV2f30TVdZkaTZ7FBQCOCwNTA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722938765; c=relaxed/simple;
-	bh=6wLdPdjVTnE5BKeuvTnFzDV/ahWhP+i4BLUzs43RQP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XDZuVp9cwCGHdtzWG5w8oQkR4EWflUwrYud56G936/liw+gWfRYFzMNEKQsEOhk0DNGAt2V2YKQkIE+hL5QIOraei2Au02vGpU0pndYhM71uuvJvNHqiuKw5ZEiy0pbHUyS6IbpZOwjOgWetShehG0iwJFsIasMmyhydY2YpsGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8vvUKJT; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DCF3A8CB
+	for <kernelci@lists.linux.dev>; Tue,  6 Aug 2024 16:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722960228; cv=pass; b=q7pB2cPZ2SststO+IkgTReyLH9VMbJ76csqgSLIuH8vvoc5wNB5n8UNRdrmrfoiV3V0IJ7TMmTvWiCQ80ziutOlrUR1Bdu3UXQYK4q66LBfh0WBjN++5E3snNuMuy5t+IEd+TRQUj3qgDF0SPynjQnJ12OU9xyTmJgThMWZenII=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722960228; c=relaxed/simple;
+	bh=TBNTPY3VjiW47UZ02LRpebSb9A2uFtdaxpUX2DEAF7k=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=RQ+oAdmwt7Cc37ryJWsliIsx/3qa/YvKLt7F+HBTeuPprfLcuf5em/xmdNFX5qZvWdHJuOUMRyOGalbZYHA4FXWPRcjfVq8kO8eWhWuB495MLOldJzSNOTxwFIcg6KdQEKJdK2lMsnKV4BEYKDS888A1pM7fc6XNHlplsw6jI/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=A4V/ptJ5; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8vvUKJT"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52f04b3cb33so1056224e87.0
-        for <kernelci@lists.linux.dev>; Tue, 06 Aug 2024 03:06:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722938761; x=1723543561; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5QNaDAXG0g2qLbnDUsvzvA1vGS/rRXAAPv81Ro4R3Dc=;
-        b=O8vvUKJT1rKJojvGCI6CudAYU8oaZQpd8/tmS0EMkP8NRvWcJCuBtaHFEVQT8/NxAy
-         l9xYKHeSXBBSBpZEN0mw3GdDo7qWdyZjR9ViZtVy+GAqvZAe32xU/BEl3jGokkDMPXde
-         9/UV5drAkhZh0aE7FujNMGktrSbRcpsK7iW06i0G8kLlRBOKME4G8RtfSH6lTlbhU3oX
-         Gw/qT5AEabxaR2U/qba+t904nslqlkSVMHlefZT/3T79H4x3hGrBNmm+sKmn13A9aKn7
-         RWppgvSw2hzerD0XV7qcBDBuoJd1PtmhGx/5sqbvH5a29biUpHKcg3+tuqBCJj3JfVyT
-         NQFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722938761; x=1723543561;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5QNaDAXG0g2qLbnDUsvzvA1vGS/rRXAAPv81Ro4R3Dc=;
-        b=FgN1QqY7r04u6YRlSN7MnTxzoDKsIi/TDZFgLEzv+MzhqUhQjChwPzxFPJjdwrFjKf
-         7Kx93/2T52j1Jk9ZEq+oOilGi9cSrYoU5j0xiAbz5uWZ93R1eEOwrnKH66k4W6+/J+et
-         fXmTIajWmpI7d0QoohkdbGKqrqg6BHpqIppoECfGka047AnKypvOfEbxgxD8YrRnbePe
-         KDZE/W2tvkER6LN7veCcx1ZCOxMwkj4zxMcT3cDc7pqIhIbPaA0DHnw0Y4PM15Vi4Nsn
-         gmuiUyeQOfoAslBGvx8ntVQifbQivT9rmjXqahkQnJ8JUd77zKXHhCzUnDjNHXA/F/AC
-         QCgA==
-X-Forwarded-Encrypted: i=1; AJvYcCV01HFilCk3uDnQgWGVaGjDEjxguJfgBlfhIQunDOE04qXHEwkzS9LZV94G2H82+OMJkpPkwFZyFxA8HtB74+ZUq4lFCY3m+to=
-X-Gm-Message-State: AOJu0Yxz2NW4ohfr/jjEpW6/Aot39DXXyBQDcB1GSTK97rCrRhVvUDRE
-	8Cg/YsHhO3HjqqRwVYArZMtkASoKRODBuaq8QfTQteznQpoaGe9K
-X-Google-Smtp-Source: AGHT+IGfejmziZpBCuW4KQwq3ih0/W5wmzkDzFKoLoo44K8CaIkp2dDHw/gfefD0uzrEkUayyiLNFw==
-X-Received: by 2002:a05:6512:3d08:b0:52c:dcdc:f186 with SMTP id 2adb3069b0e04-530bb38cab6mr11091916e87.27.1722938761198;
-        Tue, 06 Aug 2024 03:06:01 -0700 (PDT)
-Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-530ce72a2bbsm736926e87.282.2024.08.06.03.06.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 03:06:00 -0700 (PDT)
-Message-ID: <e3f0fbd1-34f2-4b0b-b1f1-6158b6773dab@gmail.com>
-Date: Tue, 6 Aug 2024 13:06:00 +0300
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="A4V/ptJ5"
+ARC-Seal: i=1; a=rsa-sha256; t=1722960224; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=nxQhLGSfQ50+Bcr7OGMe+seMBVQ40FGixN6G0vj9ki6JTKt4SCvw6WmTF9c26rq2K820abVFhbUBGDVciFpqj+CYLeoPux3hSzelKqmqyA4obvRGYNWAkt57XIx8gqY0c5tTAcPRx+t/5XeWqtOTnjS/DHGLrD1lMYqdO8SlcPo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1722960224; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1JM+29xBqicdLLOyfDHDfpzMbBdP+ZI1SXEiIHoC6Mg=; 
+	b=d7Xse2V2ECz68K7mnV8BBP4mPYi4DqV1+3hhin+XXPnbrJPaP4koX+/WgnjqJtOlFme26M3j0mtQQfnnHSD16eiIBmXem9Z7v5FbE+Dwd4hRRd2UP59oc6lgsOJa7wsf5ilF2sgmH8E3WR8MuLYIBSdVX6rBPkoYJW8WKg/4Bgw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1722960224;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=1JM+29xBqicdLLOyfDHDfpzMbBdP+ZI1SXEiIHoC6Mg=;
+	b=A4V/ptJ55mAjsLvlmVjT19QP22yhzgh6LySqJGEEH1kIBQo4D1h7BJwAoh8x6jGW
+	V/LoTYs1AEixPafj6KVme1tC+AKwtgIY28vA21vGWUk241BBH3/7fYnJ00Ck22+86AP
+	gjhsAbxGZ1EWkkhOBea09NNPblKEirP974iGcu6s=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 172296022300956.568660208461324; Tue, 6 Aug 2024 09:03:43 -0700 (PDT)
+Date: Tue, 06 Aug 2024 13:03:42 -0300
+From: Gustavo Padovan <gus@collabora.com>
+To: "Nikolai Kondrashov" <spbnick@gmail.com>
+Cc: "kernelci-results-staging" <kernelci-results-staging@groups.io>,
+	"Jeny Sheth" <jeny.sadadia@collabora.com>, "bot" <bot@kernelci.org>,
+	"shreeya.patel" <shreeya.patel@collabora.com>,
+	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Message-ID: <191286e9b09.f4f1c6a4526882.2185642814129237428@collabora.com>
+In-Reply-To: <e3f0fbd1-34f2-4b0b-b1f1-6158b6773dab@gmail.com>
+References: <66ae1e21.050a0220.1c5959.0148@mx.google.com>
+ <1911838cd2e.ddb71f5356531.3914011082698955929@collabora.com>
+ <19122d7a43d.dde9a53983019.6953377593724593632@collabora.com>
+ <19122fc3d66.11f5a856693778.1637642610124539898@collabora.com>
+ <17E91B8D1664855A.28314@groups.io> <e3f0fbd1-34f2-4b0b-b1f1-6158b6773dab@gmail.com>
+Subject: Re: KernelCI report for stable-rc: v5.15.164
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KernelCI report for stable-rc: v5.15.164
-To: kernelci-results-staging@groups.io,
- Jeny Sheth <jeny.sadadia@collabora.com>
-Cc: bot <bot@kernelci.org>, "shreeya.patel" <shreeya.patel@collabora.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-References: <66ae1e21.050a0220.1c5959.0148@mx.google.com>
- <1911838cd2e.ddb71f5356531.3914011082698955929@collabora.com>
- <19122d7a43d.dde9a53983019.6953377593724593632@collabora.com>
- <19122fc3d66.11f5a856693778.1637642610124539898@collabora.com>
- <17E91B8D1664855A.28314@groups.io>
-Content-Language: en-US
-From: Nikolai Kondrashov <spbnick@gmail.com>
-In-Reply-To: <17E91B8D1664855A.28314@groups.io>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-On 8/6/24 1:03 PM, Nikolai Kondrashov via groups.io wrote:
-> On 8/5/24 5:40 PM, Gustavo Padovan via groups.io wrote:
->>  > > Why does this have kernelci, syzbot and tuxsuite. Let's remove it for now.
->>  >
->>  > It lists all the CI systems the report has been aggregated with. Although
-> only maestro and broonie reported failures, we included
->>  > builds and test stats from all the 5 CI systems.
->>
->> I see.  Although, we can't really guarantee the quality of data coming from
->> the other origins, hence my request to use only maestro and broonie for the
->> time being. We need a high quality report, not a report with as much results
->> as possible.
->
-> This is alright for a PoC. However, I'd like you guys to mention to Greg that
-> we have more data from other origins, when you engage him with this, and that
-> they're available on the dashboards. Or perhaps better just put that into the
-> notification message itself.
->
-> Finally, as we've discussed before, if a maintainer has requirements for
-> particular result quality, it's best to directly apply them to data, where
-> possible (e.g. check that log_excerpt is there), instead of simply selecting
-> origins. That could be the next step, once we define what "good quality"
-> means exactly.
 
-This is what all the CI systems signed up for, after all: reaching out to
-maintainers. And we would be breaking our promise, if we make these decisions
-for them, or discriminate by origin.
 
-Nick
+---- On Tue, 06 Aug 2024 07:06:00 -0300 Nikolai Kondrashov  wrote ---
+
+ > On 8/6/24 1:03 PM, Nikolai Kondrashov via groups.io wrote: 
+ > > On 8/5/24 5:40 PM, Gustavo Padovan via groups.io wrote: 
+ > >>  > > Why does this have kernelci, syzbot and tuxsuite. Let's remove it for now. 
+ > >>  > 
+ > >>  > It lists all the CI systems the report has been aggregated with. Although 
+ > > only maestro and broonie reported failures, we included 
+ > >>  > builds and test stats from all the 5 CI systems. 
+ > >> 
+ > >> I see.  Although, we can't really guarantee the quality of data coming from 
+ > >> the other origins, hence my request to use only maestro and broonie for the 
+ > >> time being. We need a high quality report, not a report with as much results 
+ > >> as possible. 
+ > > 
+ > > This is alright for a PoC. However, I'd like you guys to mention to Greg that 
+ > > we have more data from other origins, when you engage him with this, and that 
+ > > they're available on the dashboards. Or perhaps better just put that into the 
+ > > notification message itself. 
+ > > 
+ > > Finally, as we've discussed before, if a maintainer has requirements for 
+ > > particular result quality, it's best to directly apply them to data, where 
+ > > possible (e.g. check that log_excerpt is there), instead of simply selecting 
+ > > origins. That could be the next step, once we define what "good quality" 
+ > > means exactly. 
+ >  
+ > This is what all the CI systems signed up for, after all: reaching out to 
+ > maintainers. And we would be breaking our promise, if we make these decisions 
+ > for them, or discriminate by origin. 
+
+Not exactly. That would be the perfectionist take.  We are investing a lot in the test
+and results data quality so we can be sure we can be sure we are showing good,
+high quality data to maintainers we are engaging actively. 
+
+That's exactly the case of the stable-rc report. Greg has said to us already that just
+throwing data at him wouldn't help much. We have to make sure that data can actually 
+help him. This has been our goal since we started the current stable-rc report process
+since LPC. The Collabora team has invested dozens and dozens of ours into evaluating
+and improving the quality of the data.
+
+In summary, we are not breaking any promises. We can really throw any data we have into
+maintainers and expect that would be helping them.
+
+Best,
+
+- Gus
+
+
+
+
+
