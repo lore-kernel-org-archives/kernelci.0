@@ -1,65 +1,59 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C78381C4
-	for <kernelci@lists.linux.dev>; Tue,  6 Aug 2024 17:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502A04C62E
+	for <kernelci@lists.linux.dev>; Tue,  6 Aug 2024 17:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722965557; cv=none; b=PUSDwqiAA55WR3xnV4/QfLUXwTlYDBXAVTlYcAoU/Rpd/EgK3d2R5o6rk9PtBiNGgXmthJ0rQhmrWtF72Y9mt+KCDOeJmAd/lQiyC0IUT14EOvrNoOS0OOy3DmMwrBmUERwLMGPQM0fCSzdq+JaRWpsLRjfANZxuDSt4qhWio3s=
+	t=1722965958; cv=none; b=lNiyyyxAhfCAncHkKjdwLisLbzUBo0YAozpKYd633dd8y4lNT+qhR4gnCrGSn0/MgPUZCtdHZpOY5nXSQUfnKA69Hplhu7qMYQ9WvSl1n11EOLee2VQOiXaEUcMjCbsQKtI9PIOgXQ8xE3h5S74121F6iF6GWqKe561e9uU7buY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722965557; c=relaxed/simple;
-	bh=3oEXCvzGsQnpNJkp0b2prIjGxmyqyB8o4xql+8Eh8o8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=e6X5w6YOJZ1nQH43H0bioV7EhSCqgLtS5ZYFT3bNxFW1ifEtif00gFI36ms/kQEEIgsUy6ABZtS1cjPcym0OPH9rbL4QH2tCN64GcEogZNb+pp32qHK3aB6JCl9x9b+Mw+49iGj6tbI+jYYea6vTbB5A2Rx7q8Qy4e8qlKNaB5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BVvRRWRP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1722965958; c=relaxed/simple;
+	bh=rI0DtsycBEpCB55fqDf7afGlJl7lzp5U2HUkuzlvZUI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=O+nRBkjFPVwRIjCkY87kZf28wcKRlJbDCj6kkiD1JE7ra9++3908Dt2CD3uC+E2RmSOugGHh4ukwvH2fK8E9hvqn3D7aMpYWwBCs6mSICjm+xigdpX/v84DA4zb9SSPsyrjDOckPzRQKjVkYzVDXSzkJcFeEeYxmcPdcf8WiIC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l7INaHwM; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BVvRRWRP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722965555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4DPG/xBV2pK2C0gZ2NVQD+a/ZF0cmjwbf3bDUu07Cck=;
-	b=BVvRRWRPpS3R3icPkYfp9uDST0HLGeEYeNIAU1BR3KHEluWY+fnj6meLAco4FKetjxNF/a
-	PW0w/GEmgDrotDbgd+xeiMHkiZ6dZdM8KJeFDEZf2VfuKJIEAteYjDsOuitFO4ddSx1fyF
-	lrobFMfsEtwNe1kJWnnV2BbJxFwDC0A=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-mR4-kRvUOUiM2JzSP4x9Pg-1; Tue, 06 Aug 2024 13:32:33 -0400
-X-MC-Unique: mR4-kRvUOUiM2JzSP4x9Pg-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2ef244cdd30so10736411fa.0
-        for <kernelci@lists.linux.dev>; Tue, 06 Aug 2024 10:32:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l7INaHwM"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2f029e9c9cfso13940711fa.2
+        for <kernelci@lists.linux.dev>; Tue, 06 Aug 2024 10:39:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722965955; x=1723570755; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hx+2wvcmNCIPaEe1UHXSFtNPc3KF+R1O+D+ujGC6Xe4=;
+        b=l7INaHwMOdDXWc/5DKmLmSLnGLOaHdjHCMYkSMFYOAomVtkkdqbrlVl+tEGTO8ePdD
+         /ewBCYVPHFCMQo7efj7jL3SMYFJbq/JqnBmphLb/BqtkUeQMRm0YLlBpU0nnzVPAoFBm
+         ORhOZ3/EdTgR8+TU0K5P+oXkrdFsKEWsiZ9+REu34y1fjSdx1vKPoCN3hQ0BMA1jcZoE
+         25eYEivNzFklmwCZAyQ15Mmw2/08oU4gewQBFApu88GjDltjQiJpDkIidASBlGSP5+h0
+         ItFByBYt4brJSObFMQNMdzefWymu/uZdpSqlqVqKlS8SGDnFsIaCS3aHfxZ+/OOxi2k/
+         DOLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722965552; x=1723570352;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1722965955; x=1723570755;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4DPG/xBV2pK2C0gZ2NVQD+a/ZF0cmjwbf3bDUu07Cck=;
-        b=NZHMUX1c/mD6dJ9hnO7/ey8LMDpNaWD94CF4ul0UEE/reC212mDj96p0kjbvo44Bfz
-         QbnvbuOCudrjn9tkkFHyqH8i6Rwa1ccUktgDVMSDxFz3FGwWgJp4Mfjc1sO1chZZljIy
-         GDcYv3yNGFTBFLo8zPuhbgJ4GV9uuQ5cq8gEV7kLz2DeFIj/d4w7GBvYnMpC0KZYxg9u
-         Oj/PCpCKC+rBqkTuwRwqh9lsdQF79HtafA0TDEK8/ABbJzahLFTzcn0InXzi8fFT3VpX
-         Nb/UJg9dSw063XBkNqs98CkamP5q1qIY9oiGSWhr6+9hR5pjLyLrdzvtH02QGW9IoXZv
-         uwtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHx1F4zHeWZ27I1iMKRfWj0BdHPRgPSLUSCS+OV0oWvTkq9tJ3x+LyciNqXlyWw14fjf7rTsgpX8nymbHofqXWE6cHAgKuGoc=
-X-Gm-Message-State: AOJu0YyHGFWJvABTkBEyWl80cb+JBDIVPILOZ1nylvdo67w42y0IlaA1
-	37TEMKZGuRh2M9wvDADbCu+cb62tSG5+IVXJNOayr259U+qBc3hwf6zPfKgZNCKcp17Ma39ZpwH
-	bMDX3s981wv/NvE4iQcCJ+W9qaxLIznhgtc574ZG2JT2g2/PXSHX0kZxX
-X-Received: by 2002:a2e:8456:0:b0:2ef:286e:ca68 with SMTP id 38308e7fff4ca-2f15aac2b49mr98506321fa.23.1722965552177;
-        Tue, 06 Aug 2024 10:32:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFfilMSw032Pgr4xy9RThqsClEWcHC2kMjUb2ZZsD5b2iy4vmmK7WeJVtMVMcZuCWf8vYQuPQ==
-X-Received: by 2002:a2e:8456:0:b0:2ef:286e:ca68 with SMTP id 38308e7fff4ca-2f15aac2b49mr98505681fa.23.1722965550711;
-        Tue, 06 Aug 2024 10:32:30 -0700 (PDT)
+        bh=Hx+2wvcmNCIPaEe1UHXSFtNPc3KF+R1O+D+ujGC6Xe4=;
+        b=aawbMtxdgYegFTWQiaZKJHKJQ3WPv63Rc+dq7sJsZ4r2/gIDmRMK2E2JMRUBaqpnCE
+         KTYR9kAV5N/dc3e9/NrPbY7mLYkBtZLUFwA7IWM5HLgDsQUu5/K7fYnh9kUPe6q/o2UL
+         LmlOZM3QrcVKpdWzRR3jQ7v6avrODBhEInk+eOjJ+e8o9/h9CwS3DkzhuFeyEVjnDWIv
+         /26XCUlkximzK7F1vv3DEsoDq1tDLzYFtK3tBy1aPDB4wleIeSe49g088bp40t/1gwxO
+         emYxcPtTd2OU+adsFQgBq5CgtfztYMS3AKt6qORkC5AM901P3NQqzS+SSFL00mloepuZ
+         L22Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXIGjYs0dUgLfbRspa36zdPM35iouzekqgt0Qq2YeLibmPgkjsYvBmywRcjUkLSPc7AmtbMtk1icc8odSJofLm2P8sdztsNosI=
+X-Gm-Message-State: AOJu0YwsU8vZFlPGpL0J2yHYm5Mp3QWOZy7LZXMagS6AfRtkF8mLhifY
+	lBeQpXDbmMny1QNKhDZ3km83PFU5x+mllQcxXiMpU35b8XQN7UZd
+X-Google-Smtp-Source: AGHT+IFT6pXpgyYc10ruPcf4qXEPUCEDJoPPbj/XajTnpzARk9CtoO81Wub8qsVADkmIoJMmlc97gQ==
+X-Received: by 2002:a2e:8549:0:b0:2ef:26f2:d3ec with SMTP id 38308e7fff4ca-2f15aaaac72mr125829251fa.12.1722965954900;
+        Tue, 06 Aug 2024 10:39:14 -0700 (PDT)
 Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f15e27429dsm15552021fa.137.2024.08.06.10.32.29
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f15e25092bsm15227011fa.77.2024.08.06.10.39.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 10:32:30 -0700 (PDT)
-Message-ID: <8c91339c-4150-493c-ab73-318ad4f5f238@redhat.com>
-Date: Tue, 6 Aug 2024 20:32:29 +0300
+        Tue, 06 Aug 2024 10:39:14 -0700 (PDT)
+Message-ID: <49484f50-3506-4856-99a8-591b7ae29a44@gmail.com>
+Date: Tue, 6 Aug 2024 20:39:13 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -67,16 +61,15 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Automated-testing] KCIDB: Support non-binary test outputs
-To: Tim Bird <tim.bird@sony.com>, Nikolai Kondrashov <spbnick@gmail.com>,
- syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vishal Bhoj <vishal.bhoj@linaro.org>, Alice Ferrazzi <alicef@gentoo.org>,
- "automated-testing@lists.yoctoproject.org"
- <automated-testing@lists.yoctoproject.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
+Subject: Re: [Automated-testing] KCIDB: Test schema enhancements
+From: Nikolai Kondrashov <spbnick@gmail.com>
+To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
+ <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
+ Alice Ferrazzi <alicef@gentoo.org>,
+ automated-testing@lists.yoctoproject.org,
+ Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>,
  Johnson George <Johnson.George@microsoft.com>,
  Veronika Kabatova <vkabatov@redhat.com>,
- Guillaume Tucker <guillaume.tucker@collabora.com>,
  "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
  Don Zickus <dzickus@redhat.com>, Mark Brown <broonie@kernel.org>,
  Philip Li <philip.li@intel.com>, Denys Fedoryshchenko
@@ -86,81 +79,40 @@ To: Tim Bird <tim.bird@sony.com>, Nikolai Kondrashov <spbnick@gmail.com>,
  Jeny Dhruvit Sheth <jeny.sadadia@collabora.com>,
  Sachin Sant <sachinp@linux.ibm.com>, "Hambardzumyan, Minas" <minas@ti.com>
 References: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
- <bf0befaa-e23e-43f0-996b-d095b7390122@gmail.com>
- <BN6PR13MB3041F310826A4245F2B04DA9FDBE2@BN6PR13MB3041.namprd13.prod.outlook.com>
-From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <BN6PR13MB3041F310826A4245F2B04DA9FDBE2@BN6PR13MB3041.namprd13.prod.outlook.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+ <738dcd74-fe4d-4e49-900e-b7c1635bb798@gmail.com>
 Content-Language: en-US
+In-Reply-To: <738dcd74-fe4d-4e49-900e-b7c1635bb798@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/5/24 8:02 PM, Tim Bird wrote:
->> -----Original Message-----
->> From: Nikolai Kondrashov <spbnick@gmail.com>
->> On 8/5/24 12:56 PM, Nikolai Kondrashov wrote:
->> The support for non-binary test outputs introduces a new field to the "test"
->> objects called "value", being an "object" itself. It (and its abstract
->> meaning) are supposed to work together with the "status" field. That is, it
->> should only be considered when the test has actually executed. I.e. with a
->> "FAIL", "ERROR", "PASS", or "DONE" status only. Normally "DONE" should be
->> used, when the value is the test's output, and not an auxiliary value.
->
-> I'm not sure I'm reading this correctly, but as I understand it, this
-pre-supposes
-> that the value and the testcase are synonymous.  Is that right?
+On 8/5/24 3:28 PM, Nikolai Kondrashov wrote:
+> On 8/5/24 12:56 PM, Nikolai Kondrashov wrote:
+>> Meanwhile I'd like to propose two small, but potentially very useful changes
+>> to the I/O schema for tests:
+>>
+>> * Supporting non-binary outputs beyond PASS/FAIL -
+>>   integers/floats/booleans/strings/etc. - useful for performance tests.
+>>
+>> * Supporting recording `compatible` values from the top of the device tree
+>>   inside the test environment, for machines which use them - useful for
+>>   correlating test results by hardware.
+>>
+>> Here's the corresponding schema PR:
+>>
+>>     https://github.com/kernelci/kcidb-io/pull/85
+>>
+>> I'll follow up with a separate message for each of the changes, going over the
+>> details and the rationale.
+> 
+> The "compatible" property in the root of a device tree specifies the device
+> vendor, the device (board) model, as well as often the device SoC and family.
+> These are generally encoded as several strings, ordered from most to least
+> specific, each potentially containing multiple parts separated by commas.
+> E.g.:
+> 
+>     "ti,omap3-beagleboard", "ti,omap3450", "ti,omap3"
 
-Yep. But don't take the meaning of "testcase" too literally. You can report as
-many "synthetic" cases as you need, to report your data. They don't actually
-have to correspond to actual "testcases". View them as a tool to express your
-results. Just make sure you get the agreement of anyone else reporting the
-same data on how you're going to do it.
-
-> Are there values that are not assigned to a testcase?
-
-I don't know? I haven't seen the gamut of the data we need. However, we can
-always make up a "testcase" and assign them there, if needed, as I say above.
-
-> In my experience, many tests (particularly IO performance tests) produce
-> a whole lot of values (basically a matrix for combinations of different IO
-sizes,
-> IO direction (read/write), patterns (sequential vs random), and scheduling
-> classes).  It's quite common to have a tester select only a few values to
-> convert into testcases (that is, items that would cause a test to pass or fail).
-
-Sure. To decide which values you want reported explicitly, consider which ones
-you want KCIDB to be able to track, graph, and report deviations on
-(eventually). You can put the the complete data into our free-form "misc"
-field, if you'd still like to be able to get to it (but not query or analyze
-it within KCIDB).
-
->> The meaning of the value itself depends on the particular test, that is the
->> "path" field value. Each property inside the value corresponds to a data type.
->> At least one must be specified, but if more than one type property is set,
->> each is considered a different representation of the *same* value, and not a
->> different value. E.g. these can be specified at the same time: "integer": 1,
->> "number": 1, "boolean": true, "string": "true".
->
-> I'm not sure what the intended use is for these different type properties.
-> Almost universally, benchmark data is expressed as numeric values (that is,
-> numbers).  Are these other types used to hold intermediate formats?
-> If so, for what reason?  I would suggest dropping the type field, and just
-> making them all numbers.
-
-We don't really have a type field, we just have separate fields for different
-types. I don't really know what types we would want. I just showed some types
-there, mostly as an illustration. But I think we might need the floating-point
-and the integers separately, so different precision requirements could be
-satisfied. That alone is enough to require us to support different types.
-
-Regarding the strings, I suppose some tests (perhaps not performance ones)
-could produce some discrete categorical outputs, and then we would be able to
-graph and track them. But again, I haven't actually seen any.
-
-The boolean was added just to completely cover the atomic types, although I
-could probably think of a usecase, we can easily drop it, as well as the
-strings, and add them when necessary, no problem.
+Just wanted to highlight, that we also need feedback on this. Thank you!
 
 Nick
 
