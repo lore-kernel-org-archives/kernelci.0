@@ -1,59 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BC2328B6
-	for <kernelci@lists.linux.dev>; Wed,  7 Aug 2024 15:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723045772; cv=none; b=ZzqK8g66JxkQwgk5yaMy0QfgL+qQYWmYulSYP/ElvUn59ZR849rivFeSnzWoMhVW3k05cijIWuQ/ddNFnuIPuZzJy1+N7vNZ0XTWZ97r2Lzyu/50j/gpiWJ3KVh/MRYM13AAH6jtv3YLYcZ8ACi6iUqWwyO2SolG1hQo0PFm4a8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723045772; c=relaxed/simple;
-	bh=0oOPyl0bbhfWYWeTcnzu4S3irPUCUxex5jBn7DDPFXk=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=GvJi9oarAPNqvb6ckTJ0HhpE+AyYYKDQUoI12kKBDg5waToWO6uqk0gubCyure3fdtNSUvNAJSrkS4cNVBWPiQlJkHO9AReGI/7IHemiXOT5SnnTzC+6BTRWM54wtuXb/DOlkZ2mhIS8UH3+ArgEBmx+B+9/GdDv7BbfR3L6kGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXVyohuu; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF02C7489
+	for <kernelci@lists.linux.dev>; Thu,  8 Aug 2024 10:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723113923; cv=pass; b=vGIm7LykKkfNS9bhtNM31TOmcIGqu5tL/Wnrw4V321mdCoDpTRQ9yTGOFCrq84TymbJHYmLPNREHoQXjBpfY4TwygAdX5eFL/pw+b1lEo7FA46df8Lpud+UJLILNKFpNoFegY59eY0ddWiBYA8cduz0OcfSbgpqtHlbIoEcX2IM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723113923; c=relaxed/simple;
+	bh=tzJh6V8U7ktztmiZcXG8TGGcEmA14cBAyKDC7eoUwF0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JVaPkL9Zu1KQKQVHOYXt8NvIhYlX+3ggUPfE9zSCM0QzXBtdMNGMZWXXl/zoji4c4GDneplUz5jP91IjVt+VQJgvfSUH08IZqxR50TXwU0oepVOOC0Pkfcou3bfm2Xztvzmr7qLuKMt8/8DDVcoK9b/TrpwGVXdadAkxl4GnIv0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=bsYr7oDx; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXVyohuu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D58C32781
-	for <kernelci@lists.linux.dev>; Wed,  7 Aug 2024 15:49:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723045771;
-	bh=0oOPyl0bbhfWYWeTcnzu4S3irPUCUxex5jBn7DDPFXk=;
-	h=Date:From:To:Subject:From;
-	b=XXVyohuuPA0jZVckwUJo0H76M2fDJg70mZMnlSchuWZswB66p7etZ1Bn8dYSigcWU
-	 86AHwtP686Kf9khjy35IvTLg2ibHpv7KcsgLaoWo2/S6w+rqBnPMGeJArOSai0HfPK
-	 uCSyUv94WdOGDNn+aa8AsHFG67kOHFCiTyePGZkIDhFdBKCn5jtMXZhW7DlAu4ErBM
-	 XdAvgznTHSQEibDNB9mP7RnYy4v0KCsGajizwZfINOCJUifV/8FM+cvyBQTJMY6tXU
-	 XRpAAIDr/b2yTwNEV8iywNSCinuq+KI8/mMw+hxLL8OfLcQb7S/omgN0mqD+UadP2R
-	 IL044+jEGCtxA==
-Date: Wed, 7 Aug 2024 10:49:29 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: kernelci@lists.linux.dev
-Subject: Kcidb access request
-Message-ID: <66qpsiapmqcpnbajfi34oxympjqk7svtygkdtdcby3yirijbvp@pesxnvj6qhhb>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="bsYr7oDx"
+ARC-Seal: i=1; a=rsa-sha256; t=1723113914; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZX1Z0U/wKaZUi7Y9bO5bcYwzwqlhDF+96UwSRew6a9QsWL3HdrpzoudPDqRnVB0iTXjW5egvkzudmiEhHreDSksTblurcOSxfKrIgdGWdym6/g3VJCZkx/ZSUtBNIIgXqQfyCnb6MKGej7FviVNnsbkOc+2TzK6c0shxp3qIyR0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1723113914; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ImzYMPWJt3gp3X9eDVJ3gAtm0zj1XfKecGOdA3mAkyU=; 
+	b=UoB4saxU8ZctYOkVaCKqR1TWv37NvtfMudWx+B3RHLTR573cdtGYEu3027XfmIjy0NilVTaXdIcE6pe0HrKLKzHFU//gqpHVH8tn66FxSi9cV70/o8DnIefOGLp76HGYCXxIN2cCFBtv2GOyl/KkB75wa7T0n9xBh+QXNru8UN4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
+	dmarc=pass header.from=<laura.nao@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723113914;
+	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=ImzYMPWJt3gp3X9eDVJ3gAtm0zj1XfKecGOdA3mAkyU=;
+	b=bsYr7oDxQwjcpF2H7RWcGpq6vtXStk3iZq8FhnaxtUY5YHKVINr4CvvBMTjJw5C4
+	LNBJkP11kU6BLp5NDhex0lCtLDlr+dgHWuRvtMCiFEdB6+NJdiXyBYeaUGd1yMaOUVG
+	QhRjpir1jEF+mml+8y4CQL1webh64uBT1zjFj1+E=
+Received: by mx.zohomail.com with SMTPS id 172311391141613.748118648028026;
+	Thu, 8 Aug 2024 03:45:11 -0700 (PDT)
+From: Laura Nao <laura.nao@collabora.com>
+To: laura.nao@collabora.com
+Cc: kernel@collabora.com,
+	kernelci@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	mhiramat@kernel.org,
+	shuah@kernel.org,
+	skhan@linuxfoundation.org,
+	tim.bird@sony.com,
+	todd.e.brandt@linux.intel.com
+Subject: Re: [RFC PATCH 1/1] kselftests: Add test to detect boot event slowdowns
+Date: Thu,  8 Aug 2024 12:45:34 +0200
+Message-Id: <20240808104534.17994-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20240731092534.16213-1-laura.nao@collabora.com>
+References: <20240731092534.16213-1-laura.nao@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Hi,
+On 7/31/24 11:25, Laura Nao wrote:
+> 
+> It looks like sleepgraph.py is more focused on analyzing suspend/resume
+> timings, while bootgraph.py measures boot time using the kernel log and
+> ftrace. The latter might indeed come in handy.
+> As far as I can see, the script doesn't support automatic detection of
+> boot slowdowns, and the output is in HTML format, which is meant for
+> human analysis. However, I can look into adding support for a more
+> machine-readable output format too. The test proposed in this patch could
+> then use bootgraph.py to generate the reference file and measure current
+> boot timings.
+> 
+> I'll look into this and report back.
+> 
 
-I'm using api.kernelci.org for reporting test results from my kernelci
-lab, as well as scraping test reports for Qualcomm boards for local
-aggregation and presentation.
+After examining the bootgraph.py script, it seems feasible to add
+support for generating the output in a machine-readable format 
+(e.g., JSON) for automated analysis. Todd, I've CC'd you on this 
+discussion in case you have feedback on possibly using bootgraph.py in 
+an automated test to detect slowdowns.
 
-As part of the transition to the new KernelCI APIs, I would like access
-to KCIDB.
+Some points to consider:
 
+- The bootgraph.py script supports ftrace through the -fstat and -ftrace
+  options, and it parses the kernel log to get initcall timings. To use
+  this in an automated test, we need a way to provide the necessary 
+  command line options. One approach is to include these options in a 
+  bootconfig file embedded in the kernel image (as per proposal in this 
+  RFC). Shuah, do you think this is acceptable? I haven't seen other 
+  tests doing this, so I'm unsure if this is a proper way to handle 
+  required command line options in a selftest.
 
-My (custom) test reporting tool today uses the LAVA callback interface,
-and thereby follows this schema for the report, groups and cases. I can
-continue to follow this schema, or change the schema as you prefer.
-Please let me know.
+- The bootgraph.py script tracks timings for all init calls, which might
+  be excessive and generate too much output when integrated in an 
+  automated test. We might need to limit the test output to report only 
+  significant slowdowns to make it manageable.
 
-Regards,
-Bjorn
+- I'd like to get some feedback on which key boot process events are
+  more relevant to track; depending on this, we could use the 
+  bootgraph.py script to monitor initcalls and possibly other events 
+  tracked via ftrace. The script currently uses the function_graph 
+  tracer, and its parser is designed for this tracer's output. If we need 
+  to track other events (e.g., kprobe events), the parser might need some 
+  adjustments.
+
+I'll be discussing this at LPC in September
+(https://lpc.events/event/18/contributions/1700/) and look forward to
+exploring more details and alternative approaches for an automated boot
+time test.
+
+Best,
+
+Laura
