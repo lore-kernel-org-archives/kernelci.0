@@ -1,110 +1,122 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13665190693
-	for <kernelci@lists.linux.dev>; Fri,  9 Aug 2024 09:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A788C19580F
+	for <kernelci@lists.linux.dev>; Fri,  9 Aug 2024 16:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723197259; cv=pass; b=KQhfQOXhW6nFjuebqFKb5Gs2u+2Ra8DhfqdrQLiU805tTC6SY5iDQQUW2aHvoeFH4ixLVBXyNBxzDvL8pKLChGtT+nDkwjqvNwBXxHQ7vPAWLUgoYbM3qBMuXDRCAPdsHQeDJe0Twn/96lM4PLs9/GOsFT1Q0x136tnDxmSCVOU=
+	t=1723220732; cv=pass; b=JALyxjJridweeyMV+6v8HsKeFnRubPOQFQeCspRxHY8kc4bc4HezstMui/rzyCBsKXCmn/BwjCoFy03fMfSzvZapSmFVuNPw4DAiDcMhWBuHk74MTOGo8B55GBoeVr3EBwu1IPvWOvOeWBtkO2aGXVo1up0KOYKXepL31doDFRM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723197259; c=relaxed/simple;
-	bh=oH7zGf9BsTrCOQ1kT3MgJlQheo+P8Zb1VfmCZUdM2+4=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=XQrkwYCSndks5J3rYUAOPWeuNsI64isLTYjzbjse8mRTIUvF54d/BLkZTLExJ3rFBZoMM6+oxXgqWaCG5IXOxU5oWw+Ez8NonVJXMKQSDQ3lcjeMHRK/H6KIuZZIQ0QlJ0NDQjvEFy7dhqmaCvRPj3g89G5FxPmw/DzaaP07Jao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=W7TSfmcS; arc=pass smtp.client-ip=136.143.188.12
+	s=arc-20240116; t=1723220732; c=relaxed/simple;
+	bh=uQCqtJkUdQ1jKlpa4vxcmvCmXb2EPakE0nbZcoRVk+4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E5RYbNK1qUrMSc84Pu+yp50mAptSUbXHq8Y/4OZhrQvj2y9sS0+tNG1ZUMVlpxqc+aVctZKchh+Kxcav3wuvCwdmWmiOEfzR0cPRqYDNDSrtPOZ1g6q0auIkQUVlSS20/BIOTPoN6pOKorHDxDlJESqL5ssxGT2+Mve0U8qFSdo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=Su4Kf1Ya; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="W7TSfmcS"
-ARC-Seal: i=1; a=rsa-sha256; t=1723197254; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="Su4Kf1Ya"
+ARC-Seal: i=1; a=rsa-sha256; t=1723220729; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=hmPGWNtx3mVZcPGc7QBeFh89X4/6xfECyPl3kBqcyLKPbtmBA1HbTAnYao0rvVjbtTdtJpynurGR5jiH0jSc7Q5/KpNJyOzDO7O9u/qyMOA27RLAyA2mirseH8cPqTrdwkpEdQE842dEsOxb1Aqnkq7WZE7baYi8u9eYNk51pQI=
+	b=EIDtJXUCDbX29JPomatD90bSCrNxdIVkdBaPP9/cD2MWkRu3d4NGZnYS6W0wvsEN1uqLGtDF527Pkl+4hygRaL4aa3R/R86vdRRnj+0rxsAggemV/PD607eKps4NR38m/lbRPkWeAMikfdVNNllRcTJxEEWkiYBf0US5YB+7otw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1723197254; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=5VGo5f4pMIp1JLRInvDVVLVPUsolNCWMVVD4hIrh/XY=; 
-	b=HD1bM7RKS48Tc0HRYnliLm7pjWL6qquFo2w/4F5KrruiXtBHMXIxafbvWOvCdXbyZtYdzjaZhokQuubvzLaSMNwH/Z5VhVeOGYsSVJjQskZj9CDHl6zp0ZNj9mPCG3ih8x4aM3KONuK5fDTQKgqvAjSESefX7nAi/I1s8WzELs0=
+	t=1723220729; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ytJAQtlx2zxWIOsp5xVT7X9vrgTIf3+4EEF+s5oG3xM=; 
+	b=U1PdTVstt+MKWipGBfNYwnrvyZgUqG/MO8pf3poECfPq9D63lCA5mrqis2aZUZsuvu2AOpP+7qsen6qDyjLC/jOeFphoPWjpexp4EGoVvZb7XLbk/EhjUhAiy/20JtWu1gESMiVuX86F2SBqOWjxbw3qQheEiDvbx0Uq12YgTYI=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723197254;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=5VGo5f4pMIp1JLRInvDVVLVPUsolNCWMVVD4hIrh/XY=;
-	b=W7TSfmcSvWu/LY6zWKtZyIanppRwV86HG2lKuZRBlCUOoCPVOpmitmn8RbPXJadB
-	BCVRjZBBXXiSR5xm1/ingNZQMIJnfsPnjSY4A9ErrAkUVcJ6f/F+QcCgfoj/IMA83ms
-	NBBRkXJ7EaE4ZpGRvWv5oj02biV0eDN7LKlPAAqQ=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1723197252928188.79104567471097; Fri, 9 Aug 2024 02:54:12 -0700 (PDT)
-Date: Fri, 09 Aug 2024 06:54:12 -0300
-From: Gustavo Padovan <gus@collabora.com>
-To: "Nikolai Kondrashov" <nikolai.kondrashov@redhat.com>
-Cc: "Bjorn Andersson" <andersson@kernel.org>,
-	"kernelci" <kernelci@lists.linux.dev>
-Message-ID: <191368f6519.1255159db1531582.6052135423553525786@collabora.com>
-In-Reply-To: <3351c08b-7594-43ea-80f1-e0f35271115f@redhat.com>
-References: <66qpsiapmqcpnbajfi34oxympjqk7svtygkdtdcby3yirijbvp@pesxnvj6qhhb> <3351c08b-7594-43ea-80f1-e0f35271115f@redhat.com>
-Subject: Re: Kcidb access request
+	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
+	dmarc=pass header.from=<laura.nao@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723220729;
+	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=ytJAQtlx2zxWIOsp5xVT7X9vrgTIf3+4EEF+s5oG3xM=;
+	b=Su4Kf1YacWydOybbEwwCwA1x20BrALC0eA/s8/dgu/k0TudhbKxb+ph0x4GTd9OT
+	Q1+IL88aPMmpnGRCLkX4RfeDbAVkUhQ0rt/1+PRmUdXw4F32NlkYhbU7n585kPlW7fc
+	CcpPEoSwCIXd/ibrUbFDnEPlvpDYhJ6MBFP3VFLE=
+Received: by mx.zohomail.com with SMTPS id 1723220728607163.70555237743986;
+	Fri, 9 Aug 2024 09:25:28 -0700 (PDT)
+From: Laura Nao <laura.nao@collabora.com>
+To: kernelci@lists.linux.dev
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Testing Quality Call notes - 2024-08-08
+Date: Fri,  9 Aug 2024 18:25:57 +0200
+Message-Id: <20240809162557.32300-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
+Hello,
 
+KernelCI is hosting a bi-weekly call on Thursday to discuss improvements
+to existing upstream tests, the development of new tests to increase 
+kernel testing coverage, and the enablement of these tests in KernelCI. 
 
----- On Thu, 08 Aug 2024 14:56:12 -0300 Nikolai Kondrashov  wrote ---
+Below is a list of the tests the community has been working on and their 
+latest status updates, as discussed in the last meeting held on 
+2024-08-08:
 
- > Hi Bjorn, 
- >  
- > On 8/7/24 6:49 PM, Bjorn Andersson wrote: 
- > > I'm using api.kernelci.org for reporting test results from my kernelci 
- > > lab, as well as scraping test reports for Qualcomm boards for local 
- > > aggregation and presentation. 
- > > 
- > > As part of the transition to the new KernelCI APIs, I would like access 
- > > to KCIDB. 
- > > 
- > > 
- > > My (custom) test reporting tool today uses the LAVA callback interface, 
- > > and thereby follows this schema for the report, groups and cases. I can 
- > > continue to follow this schema, or change the schema as you prefer. 
- > > Please let me know. 
- >  
- > Sorry for the delay with the answer! 
- >  
- > Sure, you can get the access to the KCIDB database. 
- >  
- > However, we don't have APIs, just the direct access to PostgreSQL, which keeps 
- > six months of data. See the attached (abbreviated) schema dump. It largely 
- > mirrors the JSON I/O schema, which you can see here: 
- >  
- > https://github.com/kernelci/kcidb-io/blob/main/kcidb_io/schema/v04_03.py 
- >  
- > Here's some more human-oriented introductory docs: 
- >  
- > https://kernelci.org/docs/kcidb/submitter_guide/ 
+*KTAP performance counters*
 
-This link is from before our recent domain switch...so it gives a 404.
+- Upcoming presentation @LPC2024 by Tim Bird on adding benchmark results 
+  to KTAP: https://lpc.events/event/18/contributions/1791/
+- Proposing new system to handle benchmark data, composed of 3 parts:
+  adding syntax to KTAP to support benchmark values, using a set of
+  external criteria for interpreting benchmark results, an automated tool
+  to determine and set the reference values used in these criteria.
+- One related topic for discussion is where to store the reference files
+  and the test configuration, including all details that might impact the
+  results.
 
-See this content at https://docs.kernelci.org/kcidb/submitter_guide/
+*Missing devices kselftest*
 
- >  
- > Note, that at the moment we have no way to query for "Qualcomm boards", but we 
- > have a schema change proposal being discussed to address that. 
- >  
- > Also, when fetching your data you will need to be considerate of traffic and load. 
- >  
- > You can explore the data on the dashboard (to be improved soon): 
- > https://kcidb.kernelci.org/ 
- >  
- > If none of the above stops you, I can give you credentials and permissions for 
- > querying. 
- >  
- > Nick
+- Proposing new kselftest to report devices that go missing in the system:
+  https://lore.kernel.org/all/20240724-kselftest-dev-exist-v1-1-9bc21aa761b5@collabora.com/#r
+- Received feedback on the usability of the test and main unknowns about
+  management of reference files in tests
+
+*Boot time test*
+
+- RFC:
+  https://lore.kernel.org/all/20240725110622.96301-1-laura.nao@collabora.com/T/#ma568382acdc81af65c30fe3823a7be3e49f98108
+- Got feedback on the potential use of scripts from pm-graph. The
+  bootgraph.py script could be adapted for the test with some
+  modifications, such as adding support for machine-readable output and
+  different ftrace configurations.
+
+*Suspend/resume in cpufreq kselftest*
+
+- Sent v2 for patch adding RTC wakeup alarm in the cpufreq kselftest:
+  https://lore.kernel.org/lkml/20240715192634.19272-1-shreeya.patel@collabora.com/
+- Looking into using the sleepgraph.py script from pm-graph to calculate
+  suspend/hibernation and resume time:
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/power/pm-graph/sleepgraph.py?h=v6.11-rc1
+- Would require additional configs to be enabled in an automated
+  environment
+
+*TAP conformance in kselftests and other fixes*
+
+- Some dead selftests were removed:
+  https://lore.kernel.org/all/20240725110817.659099-1-usama.anjum@collabora.com
+  and
+  https://lore.kernel.org/all/20240725121212.808206-1-usama.anjum@collabora.com
+- Bitmap test module conversion to KUnit was not accepted:
+  https://lore.kernel.org/lkml/49108735-c776-4b6f-8264-62a827dd7b26@collabora.com/T/
+- Fixing error when kvm suite is built for unsupported architecure:
+  https://lore.kernel.org/kvm/c2aaa06e-e86d-4af9-bce4-6067e53cdf39@collabora.com/T/
+
+Please reply to this thread if you'd like to join the call or discuss any
+of the topics further. We look forward to collaborating with the community
+to improve upstream tests and expand coverage to more areas of interest
+within the kernel.
+
+Best regards,
+
+Laura Nao
+
