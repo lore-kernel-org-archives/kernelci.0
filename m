@@ -1,59 +1,59 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572C719644B
-	for <kernelci@lists.linux.dev>; Fri, 16 Aug 2024 12:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ADB1BD015
+	for <kernelci@lists.linux.dev>; Fri, 16 Aug 2024 14:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723813122; cv=none; b=fzvikZDe2ZpvVRAAERg7Eze2XmuUGlVEVPGm2Ce3+VGTfsIb4bGHqRWUkRuMoUtMr/luYlcpjHbj1Ye3HmtBfKwb0VqKqfiHphdj4nSoUnuOEKRHC+TohBcQMrA9sxAdJAZZfKKwJ0mQ/6gqIb0zu7MxF3c2o68Ec8Z66vp9z+k=
+	t=1723817142; cv=none; b=o6S2F/dO8W42XjpCEmXlIQhlxO6BZZdFmQdZHOFgXtIfXa2FnPZBpRaDCbFNRXv1fvwjsdKB++L602WvA7LwOzwHXVhbImJY931YMvHgXiRF+AF0jVKfOH+dZapou0XwZj8fOQY17GXo7roKWq8IqO1w1VP8FbR68TRU9P8Z+BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723813122; c=relaxed/simple;
-	bh=Eu9ydjnb0dKAKEN4yvBWMlSfYNXZJRYmYJBuZCOel/I=;
+	s=arc-20240116; t=1723817142; c=relaxed/simple;
+	bh=zDTx6MGqJXqA3G5lS4oI6CUe8Hs9Q+LMnbKECRPCKM8=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=Lf8aqIrhws7tOmbSJDPsgeBL6lQaw9Yrxk3VJshYBj+PlbbWzmZdasMBgtU7KNvn6MjGvsFilcktUuIfUECPfIIrbeKN6sUW3p5dERx+TRmXacYm8+RIllAUUm0xYUH5Pj0A8UoGntdoEtc/nqHsDcQflyySLdKTE5B87ae13do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fBw7EDOu; arc=none smtp.client-ip=209.85.128.46
+	 In-Reply-To:Content-Type; b=kWn85JTxir8vQqz3O688H7CLiBuDe8XP4/24HSLyjQSphDdpWgNneEtjncQOofHDaBg3nn6GmutBHwxQ3YRzEEJ5SOG90HAR0dfZvV+axCQSPhwQwIU+LCTi8hWPJwKqykmtjRcbiCQD8zKUDENkvSZhAI+klxMQH4cva9thWAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WuW24rXL; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fBw7EDOu"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4280bbdad3dso13570485e9.0
-        for <kernelci@lists.linux.dev>; Fri, 16 Aug 2024 05:58:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WuW24rXL"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42819654737so14103205e9.1
+        for <kernelci@lists.linux.dev>; Fri, 16 Aug 2024 07:05:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723813119; x=1724417919; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1723817139; x=1724421939; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tRhOo+KJgqjs/NbIumrnCDJMYzEu4v29HFQU9Cy19Kc=;
-        b=fBw7EDOuqHSjM8c4YZs7gd9PNldX59NI7ZN0pWK0ywocc7l8uJw+ms3j2WSWZOC5Lo
-         GoA6aFlLEptSQbwi5jwgCcZK2mLTxnvtn2/9Cw8oTkbMjvswSvx+KIIL9+LyQWs6eczO
-         VPiJzoYWOHLPRJJN8pew3NIvxeeJ/LmznKf1kecRXUyVdtnqu2uR1Hb0QDSDK99ocrKD
-         2umK4FEtI/LtoszLA6VY3WSDnNBLjHInB7ZUDDvaawWVvDBGiqTex9y45LZHY3jUUOCv
-         Qnlpw0MIUL/dwV+E2TG5i7S2LPbqxv11wPltBzZRSAz2sdwqxsZOId0HOL33BVHmbkDy
-         RfPw==
+        bh=LdBOIrzl9sQfk/jIK6NRshh+8bju8iOmTMbvpoMEflk=;
+        b=WuW24rXLNEvflYgEJmFzKbxiaSYjwXeLU/NEfm6wsFnvD3gik3KDywiepIm9yfAroB
+         XTxtkF42zOdmQveB3zd7aOBEZaQwI63vwYt/OKB5V7IL2cZisTtoFOL+Ld5FvLpSiyNf
+         i8hDqZL5HvJFPcZ09JrbKe+pK9TK4sAr2Bmk+Dg6lPXTit5dCrdMLq/d5uvV4A1GT4oe
+         Yy1sOqt4GDOcUhZ7l89rKS9pt5W0YUynm3p2ayB8gIn8PpcBEjyGqyKiqfYetYlFGvH7
+         4asSr7Jtj4NM0ce7pEGMMbBu+c1aJdAMZRUe09M7psqvX/kLnekJQYtqZ1V3IXIGmU3J
+         t/lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723813119; x=1724417919;
+        d=1e100.net; s=20230601; t=1723817139; x=1724421939;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tRhOo+KJgqjs/NbIumrnCDJMYzEu4v29HFQU9Cy19Kc=;
-        b=Ba251L0lqw+qSwqvXvE+4v27x6AxgghPtDkRIBOGVBN/BUrIaUL0pUEzEzCSUyEehn
-         D8r8q+BsrrKrwSaszDZ4IIDqq8X2ELUf3cJbb/f5d4WQTShBgo//rnKs6WMYdGSoPc0L
-         iR5QhXKKKB9TtZVcKBPrksTnN7Xg3Ng3K6c+IlnYF6eYrg9ylwLdJu8WiXIUebP6pxol
-         pAI/OAS3KgXt14Hl9fgcgsKxZwaR0NHn+wobS3uWNi8rC6PvIXna+gXAHsnd2BBSB5Er
-         MJ81YE5YmnXRkzybeuCnmGODRmlisE3/LTPRAYAR1Y3pvgX9HSVG8KwPUnhmAnVYJVxi
-         y0cg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSEuVa2Bu7PUedrQ5yTK3W0gMQwaVoEb7ndhHNNJlNIn/2QCpxqsN8GctRWjCw6BiMZgotvcqfIaznzSK1mDuLrG92rdkpbHE=
-X-Gm-Message-State: AOJu0YwggjMWLJYeykg4BHeQdRQuNJVbFHB6zkgffU5GFWFW9i4FBX/n
-	pGadlJ0J6vGL6dVrj/CAeja6ZXqBU9CSZtUU9jsh0BLELjdY5TVX
-X-Google-Smtp-Source: AGHT+IFivzlCkWJGAuDDrbZOByBTmZl7FS5FhgLOZvN/I7E4uHWQt8o3gf1du90nTyeALDrrAVhfHA==
-X-Received: by 2002:a05:600c:3587:b0:426:51dc:f6cd with SMTP id 5b1f17b1804b1-429ed7b8883mr20519635e9.18.1723813119185;
-        Fri, 16 Aug 2024 05:58:39 -0700 (PDT)
+        bh=LdBOIrzl9sQfk/jIK6NRshh+8bju8iOmTMbvpoMEflk=;
+        b=jYnEed03uO3zfGqQ1f5tZ46SF6xtRepdviUM2JAJJZTcC4pKUMi1X5KTgjpuqKHqgK
+         /kZRywdT3vmC5R0qDYUo+Zzq8nXHbTwRAQMWq0SJ21IuJBaIPTGXHKi7wMFBY4qSc48X
+         kbaeqAxa+7laI4rrVNBSFw/I/XUZrI4Q1C+MHuYkVCSjTNE9DeL8/rnNdHX9lTNjjLbN
+         YTSzQqo8i2A7Vf5CtdduHHldWPvcxb5rVWhN4Zmtr1V4cx6QvL6e3dEZmab5KGhJ8IAh
+         F/5gA5bO6UaQ3prdzF0wzAyjE//sXOdL0XoV6wFY1jYzBQPxgJ2g1XXcLtXCo4BbBT6Z
+         JcKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKGCehQX7CsrTpv3OXuIYqASNibq9EyXwJ8gvuis4QB7Id7EA2EcfxjUTfWS9UUX+S9pHtoCtMEw/c/cVDu373fNewLa6b3CI=
+X-Gm-Message-State: AOJu0YyBqK53XoYhNxbiec8tQuyzelsVj+B8//t0gj9Lvg55Z8kNeuIO
+	ueRLAVjDDo934JqaoyibGdS/y38x710UhZu8beAUzldtuF1H2gqrxAgPZcQ5mng=
+X-Google-Smtp-Source: AGHT+IEiJFqUGasqs1gLjFocRVJY6LhvOQ7Ug2K4DVsCvXX1XpoM89crpsfa8bPRNIzg80FPMrT6/Q==
+X-Received: by 2002:a05:600c:1988:b0:426:616e:db8d with SMTP id 5b1f17b1804b1-429ed79e773mr17775235e9.15.1723817138583;
+        Fri, 16 Aug 2024 07:05:38 -0700 (PDT)
 Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-371898ac79esm3612873f8f.110.2024.08.16.05.58.37
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ed650e41sm23406165e9.19.2024.08.16.07.05.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Aug 2024 05:58:38 -0700 (PDT)
-Message-ID: <45dc0536-f0a6-4c8f-a953-5424c9920aa7@gmail.com>
-Date: Fri, 16 Aug 2024 15:58:37 +0300
+        Fri, 16 Aug 2024 07:05:38 -0700 (PDT)
+Message-ID: <944bf5c2-6914-4c28-86d9-6dbbab450363@gmail.com>
+Date: Fri, 16 Aug 2024 17:05:36 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -61,7 +61,7 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Automated-testing] KCIDB: Support non-binary test outputs V2
+Subject: Re: [Automated-testing] KCIDB: Support non-binary test outputs V3
 From: Nikolai Kondrashov <spbnick@gmail.com>
 To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
  <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
@@ -103,8 +103,62 @@ On 8/16/24 1:03 PM, Nikolai Kondrashov wrote:
 > 
 > https://github.com/kernelci/kcidb-io/pull/85/commits/040a20db407f2592c28c3797cec9e4118221af9c
 
-Ah, hold it. I think I have a better idea.
-Stand by for a new version!
+Aaand, redone again:
 
+https://github.com/kernelci/kcidb-io/pull/85/commits/86b75f6bf6e4f74e594a301382f2b77cfe4cbbd9
+
+I switched the value from integer to floating-point, as that allows us to get
+rid of the exponent field, at the cost of a small accuracy loss. The storage
+requirements are still 64 bits.
+
+These values are intended for analysis and tracking first of all, and small
+inaccuracy would have little effect on them. If you want to store the exact
+measured value, you can put it into the "misc" field.
+
+OTOH, this makes it much easier and faster to run queries on the values.
+
+Here's the new (abbreviated schema):
+
+    "number": {
+        "type": "object",
+        "properties": {
+            "value": {"type": "number"},
+            "unit": {"type": "string"},
+            "prefix": {
+                "type": "string",
+                "enum": ["metric", "binary"],
+            },
+        },
+        "required": ["value"],
+        "additionalProperties": False,
+    }
+
+And the rewritten examples:
+
+    "value": 42,
+    # Display: 42
+
+    "value": 3.14159,
+    # Display: 3.14159
+
+    "value": 720,
+    "unit": "KB",
+    # Display: 720 KB
+
+    "value": 145000,
+    "prefix": "metric"
+    # Display: 145 K
+
+    "value": 1.6e-7,
+    "unit": "s",
+    "prefix": "metric",
+    # Display: 160 ns
+
+    "value": 5.12e5,
+    "unit": "B",
+    "prefix": "binary",
+    # Display: 500 KiB
+
+Send comments!
+Thank you.
 Nick
-
