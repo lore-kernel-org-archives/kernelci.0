@@ -1,59 +1,59 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03016146017
-	for <kernelci@lists.linux.dev>; Mon, 26 Aug 2024 10:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DA61494CA
+	for <kernelci@lists.linux.dev>; Mon, 26 Aug 2024 10:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724668679; cv=none; b=tpqDUahwxQSURs+GVa8tdD1L7N9u9WTpfbQ1n7F+n4QrseUttgasH1U9KxaWDLWK1Lt4fH2j+YZTm30SVk4+z19g7uheBl9CXAV1HjZPjCMLrdIOphiNIQRxlJ/neXR5fq+WeMII4iksKpcsMdQZd+DO3fBvi7grLLPXZ+w4GVc=
+	t=1724668759; cv=none; b=fnC93NFOOJFTSRGvJBnWSE8VyCy4c8wW+K4xZbkxzoqHckNqJEZPv4KfVVRw86DJswOnQqT5cUBVQaXhHLgeccTM1Vi59HGpu1aqvZw3mm31WSe2FjNQ/VCTUQ9jTkRhlHTxmxRSlGbiB3SrobIUnvHW50JFiuX0GS2q4gRFN9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724668679; c=relaxed/simple;
-	bh=jy5oW+bm5fGFj4uLkUiH2N1gu5A64bTbhf6qNJ7rumc=;
+	s=arc-20240116; t=1724668759; c=relaxed/simple;
+	bh=NGb09nu8bcX4JOdC9OAH5QhOcGf/v64KPeasTu1AQFc=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=pmXkRkmErSyvWjmHaix2MQrAhzflyqRZPx7jPjeLuZxLM1u54vXQCR8yKZq8+Oog51GaaN6HGnJIXb41Ri079ANltk+KpwI/SH2M69rUnVZq4N0v3UfxWU7VG4SN4TKBAZEy+qeRyeaxVkUJ/ahdqiBFfmSI3JNWDRb3sLAQnss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N+geNeR9; arc=none smtp.client-ip=209.85.221.44
+	 In-Reply-To:Content-Type; b=bUuaImAgHvcp7xqR1e7iMEWZ76gEvXVMS8G/HF35nf3U8XWhpjYVvZUs9d/4oXKkiEexVZ8W01Qswz3ZBiLwLyqMUGLeqw3jAeSEsQt9wGJtYYUhXI/8kUFlsMc0KcZt+QeGD7C+C+KyBZ9OgCEeI5V0zWOkFoFyNJqdL2I7C2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VEkb/zad; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N+geNeR9"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37182eee02dso2182980f8f.1
-        for <kernelci@lists.linux.dev>; Mon, 26 Aug 2024 03:37:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VEkb/zad"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-371b97cfd6fso2603145f8f.2
+        for <kernelci@lists.linux.dev>; Mon, 26 Aug 2024 03:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724668676; x=1725273476; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1724668756; x=1725273556; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XYmlqxOrrap/I/HisUdXDZ/pHp/pkt+LPC8OanFiHMg=;
-        b=N+geNeR9msojmpAyT+B9O9ub2NoFB02HDg7rH0D2VnRnKZJgIrRza7iYvybCYzJiYa
-         XyGDemrVu66qws+//q1J+Mw0RC0njGoeIOOTRqsIdFiOkzWWsdX6GXNXZS+4C4wM0Cw4
-         kdBwV0xFscAK89YjzTe3gtknMEbCpXt6UTD4/Pg0gSU8cvKNYPo+PJI/D0gzDHt3yyHH
-         higmYz1AD7xlJXLNvDBOsv4OictUUjvAWDzft3YtE0TQM5mT+axOQ6ZGowAXa6+cHO1R
-         AQhnaqR84I0Q5l5izZkYi5u8XxtdUjX6+nCTvet/v7DbKcqnlCYLOA9CrL2CgTwGpft/
-         DQCw==
+        bh=csHRzmSLB8cubIMRhSCaTM9J00EK37rAKP910ub2xKQ=;
+        b=VEkb/zad+2Oaa3vRtA312/deRq70dDt4AM/lFJ83hu7FOUPmuZy1Ew2ZPDQh3d6SqI
+         IoFNmiZvr8GRezkk5EPguVV/cnMDbyPWzRy7BSqGDsXIX+y47tqqk5bCdxb/Prur0dEg
+         DEafA4C09ZUZ6lYrDbLrIXTyRv2odUIqZKCrGUohH/g+kRyEjO36AoGB+fNZ5/ooov3o
+         FMx2GkQ2VxCgxRxEbFIuJaHWWIKfvaIuMHfqdxyMbU182ySSAsEv28CRU/jarD7+v3V/
+         iDguU+KSPFXF1aC78ywQ4/GQqzKewSr5HmKOOZI1AkGMq053HxBchSRKhhBqdMfJBjFw
+         rkwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724668676; x=1725273476;
+        d=1e100.net; s=20230601; t=1724668756; x=1725273556;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XYmlqxOrrap/I/HisUdXDZ/pHp/pkt+LPC8OanFiHMg=;
-        b=JMaSUTGvPr0wXp4Xqd8rRWFbXvaJLhBL5pKmgckLCtL5h2wA00Vpk9Be4VnG+y8+l9
-         COzkvOzSM3Bap124F0v0EPLDCczgUdoziJw6PsFIszexu9c59Pc2/h3wrzErh8T18AZV
-         HVIAbMfsJS49Nic162lLclSPTI2hX57oUuKfukHINm/KQvGOH/INJyfVPKCdgRNkQllM
-         JkNtrcng/vYiqiDYJXYmtrXIYoxYTwiGlIyRsRNKP1FmpA1eN9KypoYdrFCliUnuUAv5
-         1FjrZK5n1gxYd/pZfAACBfMkqzi8efs1C6lnMgaEcdMy2iOsLi3hJWL9E2LGgqUn+erq
-         sIuw==
-X-Forwarded-Encrypted: i=1; AJvYcCVYFUzj9xs9D4yNv+Zx7WjoW/gsq/mMVM2RGAGIxSyj/WgpTRioaPXg8vOXhlwh6RcD2VuJy/6vYA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyNm2VEb0VIaUtPMmatA2irI2LamQC3dlMTVixOpvUDVBJiwrfs
-	Fe6ryOmi3PmuY4P67hqbDP2majw7b54/SDLP+AtBE0iSYmpEQWQi
-X-Google-Smtp-Source: AGHT+IFzAHDtCv8or5UNZ2SiPaAZC/Qx1E6XPmthvpqorBeDRdZbK/GiXQuneNsu3Fk3MO7lz2L0Ig==
-X-Received: by 2002:adf:fc01:0:b0:360:70e3:ef2b with SMTP id ffacd0b85a97d-37310ff3cdamr4783258f8f.26.1724668675736;
-        Mon, 26 Aug 2024 03:37:55 -0700 (PDT)
+        bh=csHRzmSLB8cubIMRhSCaTM9J00EK37rAKP910ub2xKQ=;
+        b=P+IJ/dS+BuBAuai8Y+JwWycngJAFkkTv7tLEgP3OBIJMtfrEHFcsVJ8aKBVnF6wpmn
+         I+jG2apP2BxTTA/VB2GgGL9RoXVvYHE3Hnc85WfiW1nmdXqR6Fk/lzynJDGkgd9qO+02
+         /UMdczpv3jAIhaNcK5rCJaHIeusXgvwUsAFXxXWi/Rr1HsjzqQOp+HVuZhm1STBn9mR0
+         u5silCXv5vC3YZ2Jq3R4e1Mn8nRH3DnXmGW8cjNsed/P0ZdCkshD2OhybJTBoVYiE1kA
+         gHxFZC3NiMEo2aYzMLSKfrQN/UEqdbjNT1ogtNuzPo5Ocl8b5ZhkTuNzjUUReZjuAxCg
+         4nVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwYEy0PifqaWW5baItpKMdqaFGOpVGRjNrwPL/I85rwP2jmGvRjKonEbVA7crcfDNVCQ7/AFKpdQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywv4rME/+ptGYp3TUWpegpLOqbgaazf97zootQ5GBmGjEFc0jrE
+	0vcGVRB/xAOcRpZhe/n4I/4oz719+blLCWKWy2rGExvZpsxuTEOI8+toJNpaUIE=
+X-Google-Smtp-Source: AGHT+IEJ73jDZPmEW6oRN/MJW/naPWGDv1fbvprd6QSgC/R2Bmc/VX5ES6jHTpO2OB2M5biVqYKBOA==
+X-Received: by 2002:a5d:5409:0:b0:368:460a:961d with SMTP id ffacd0b85a97d-373118522afmr5822618f8f.3.1724668755491;
+        Mon, 26 Aug 2024 03:39:15 -0700 (PDT)
 Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-373081ffb71sm10447748f8f.83.2024.08.26.03.37.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abed8b86bsm185488925e9.4.2024.08.26.03.39.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2024 03:37:55 -0700 (PDT)
-Message-ID: <83325732-1607-48ba-bd71-e21c696f6912@gmail.com>
-Date: Mon, 26 Aug 2024 13:37:53 +0300
+        Mon, 26 Aug 2024 03:39:15 -0700 (PDT)
+Message-ID: <a600ef28-67f8-40a7-87bb-886aa63f2f1a@gmail.com>
+Date: Mon, 26 Aug 2024 13:39:13 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -61,7 +61,7 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Automated-testing] KCIDB: Support non-binary test outputs V3
+Subject: Re: KCIDB: Support more checkout data
 From: Nikolai Kondrashov <spbnick@gmail.com>
 To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
  <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
@@ -78,32 +78,61 @@ To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
  Aditya Nagesh <adityanagesh@microsoft.com>,
  Jeny Dhruvit Sheth <jeny.sadadia@collabora.com>,
  Sachin Sant <sachinp@linux.ibm.com>, "Hambardzumyan, Minas" <minas@ti.com>
-References: <5188d6fe-bd01-402b-a6e6-0fe57ef4d336@gmail.com>
- <bf0befaa-e23e-43f0-996b-d095b7390122@gmail.com>
- <c66e960b-0a43-45fd-8220-82a91b0b8523@gmail.com>
- <944bf5c2-6914-4c28-86d9-6dbbab450363@gmail.com>
- <3adfebc0-75df-40a3-9a8f-6b8bd12bb725@gmail.com>
+References: <9ea96b8e-6490-4541-81eb-8bab011c8918@gmail.com>
 Content-Language: en-US
-In-Reply-To: <3adfebc0-75df-40a3-9a8f-6b8bd12bb725@gmail.com>
+In-Reply-To: <9ea96b8e-6490-4541-81eb-8bab011c8918@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/19/24 12:50 PM, Nikolai Kondrashov wrote:
-> On 8/16/24 5:05 PM, Nikolai Kondrashov wrote:
->> Aaand, redone again:
->>
->> https://github.com/kernelci/kcidb-io/pull/85/commits/86b75f6bf6e4f74e594a301382f2b77cfe4cbbd9
->>
->> I switched the value from integer to floating-point, as that allows us to get
->> rid of the exponent field, at the cost of a small accuracy loss. The storage
->> requirements are still 64 bits.
+On 8/21/24 8:02 PM, Nikolai Kondrashov wrote:
+> Hello again, everyone (potentially) involved with sending data to KCIDB,
 > 
-> If there are no more objections, I'm going to merge this on Wednesday, Aug 21.
+> The previous schema update (v4.4, test data enhancements) is already being
+> deployed, but I have prepared more backwards-compatible changes to go out with
+> v4.5.
+> 
+> This time I rolled everything into a single commit, but I'll split it up, if
+> we have disagreements, or need to work more on the changes.
+> 
+> The PR is at https://github.com/kernelci/kcidb-io/pull/87
+> 
+> But I'll repeat the commit message here:
+> 
+> Add support for three more checkout fields: `git_commit_tags`,
+> `git_commit_message`, and `git_repository_branch_tip`.
+> 
+> The `git_commit_tags` is an array of strings representing annotated tags
+> pointing directly at the commit being checked out, as seen in the source
+> repository. I.e. the output of `git tag --points-at <commit>`. Set to an empty
+> array, if the commit has no tags.
+> 
+> The `git_commit_message` is intended to hold the complete message of the
+> commit being checked out, *both* subject and body. I.e. the output of `git
+> show -s --format=%B`. We're putting the subject and the body together, as it's
+> quite easy to extract the subject in SQL, while full-text search is easier and
+> more efficient to do over a single column.
+> 
+> Finally, the `git_repository_branch_tip` is a boolean flag, which should be
+> set to `true`, when the commit being checked out is at the tip of the branch
+> at the moment of the checkout (as specified in `start_time`). Essentially, if
+> you're always testing only the tip of the branch, you can set this to `true`
+> unconditionally. This flag would let us extract the checkouts which
+> represented the branch state over time, and produce a rough history of branch
+> changes, which we can then use for (regression) analysis and graphs, in lieu
+> of actual commit graph walking.
+> 
+> The (abbreviated) schema for all three fields is below and is very simple:
+> 
+>     "git_commit_tags": {
+>         "type": "array",
+>         "items": {"type": "string"},
+>     },
+>     "git_commit_message": {"type": "string"},
+>     "git_repository_branch_tip": {"type": "boolean"}
+> 
+> The PR has the complete schema, with inline docs.
 
-Support for this (and the "compatible" field) has been merged and deployed
-last week. The sooner you send us your data, the sooner we'll figure out how
-to process it!
+I'm going to merge this and start work on the support on Wednesday, Aug 28, if
+there are no objections by that time.
 
-Thank you everyone for the comments!
 Nick
-
