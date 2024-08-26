@@ -1,138 +1,110 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DA61494CA
-	for <kernelci@lists.linux.dev>; Mon, 26 Aug 2024 10:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4CC1940BC
+	for <kernelci@lists.linux.dev>; Mon, 26 Aug 2024 16:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724668759; cv=none; b=fnC93NFOOJFTSRGvJBnWSE8VyCy4c8wW+K4xZbkxzoqHckNqJEZPv4KfVVRw86DJswOnQqT5cUBVQaXhHLgeccTM1Vi59HGpu1aqvZw3mm31WSe2FjNQ/VCTUQ9jTkRhlHTxmxRSlGbiB3SrobIUnvHW50JFiuX0GS2q4gRFN9I=
+	t=1724688107; cv=none; b=lJ0RXUwRiJGrcNO4wQpQsM5VWuYHR3qZ6xlQ7hWdbGMcDCMET32YkCCxSOR5Dl5lno0pgfO5JPr6Y8MP3xTsqzsUmdjQoujLXtkkXzJqyttqWqP/RjMq6748ykd8CWdLaO3sserAZtoYIQin3FrVnTfFUMtgK7rtTEXCkXRYSnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724668759; c=relaxed/simple;
-	bh=NGb09nu8bcX4JOdC9OAH5QhOcGf/v64KPeasTu1AQFc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=bUuaImAgHvcp7xqR1e7iMEWZ76gEvXVMS8G/HF35nf3U8XWhpjYVvZUs9d/4oXKkiEexVZ8W01Qswz3ZBiLwLyqMUGLeqw3jAeSEsQt9wGJtYYUhXI/8kUFlsMc0KcZt+QeGD7C+C+KyBZ9OgCEeI5V0zWOkFoFyNJqdL2I7C2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VEkb/zad; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724688107; c=relaxed/simple;
+	bh=6E7KeRV5hzgAg7lLx+s84+mu3cSeg2VpU1iXplNP1jE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ph7mlzuaKo2d29FGQHvIRlr1RT0V80NgLq3WfmvE2OE1pcnz35ze6RT+SLafqHDdgAE46hBuWkWnbznqdLx0GcmzTXt+nngcYeNdJRm9kCOiASWL5PsQZd/6hPkuP71W0IINQCa2abvUUyd0FknqIblrSY77MVwppg+jUKr4XH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXOHqmF5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VEkb/zad"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-371b97cfd6fso2603145f8f.2
-        for <kernelci@lists.linux.dev>; Mon, 26 Aug 2024 03:39:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724668756; x=1725273556; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=csHRzmSLB8cubIMRhSCaTM9J00EK37rAKP910ub2xKQ=;
-        b=VEkb/zad+2Oaa3vRtA312/deRq70dDt4AM/lFJ83hu7FOUPmuZy1Ew2ZPDQh3d6SqI
-         IoFNmiZvr8GRezkk5EPguVV/cnMDbyPWzRy7BSqGDsXIX+y47tqqk5bCdxb/Prur0dEg
-         DEafA4C09ZUZ6lYrDbLrIXTyRv2odUIqZKCrGUohH/g+kRyEjO36AoGB+fNZ5/ooov3o
-         FMx2GkQ2VxCgxRxEbFIuJaHWWIKfvaIuMHfqdxyMbU182ySSAsEv28CRU/jarD7+v3V/
-         iDguU+KSPFXF1aC78ywQ4/GQqzKewSr5HmKOOZI1AkGMq053HxBchSRKhhBqdMfJBjFw
-         rkwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724668756; x=1725273556;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=csHRzmSLB8cubIMRhSCaTM9J00EK37rAKP910ub2xKQ=;
-        b=P+IJ/dS+BuBAuai8Y+JwWycngJAFkkTv7tLEgP3OBIJMtfrEHFcsVJ8aKBVnF6wpmn
-         I+jG2apP2BxTTA/VB2GgGL9RoXVvYHE3Hnc85WfiW1nmdXqR6Fk/lzynJDGkgd9qO+02
-         /UMdczpv3jAIhaNcK5rCJaHIeusXgvwUsAFXxXWi/Rr1HsjzqQOp+HVuZhm1STBn9mR0
-         u5silCXv5vC3YZ2Jq3R4e1Mn8nRH3DnXmGW8cjNsed/P0ZdCkshD2OhybJTBoVYiE1kA
-         gHxFZC3NiMEo2aYzMLSKfrQN/UEqdbjNT1ogtNuzPo5Ocl8b5ZhkTuNzjUUReZjuAxCg
-         4nVw==
-X-Forwarded-Encrypted: i=1; AJvYcCWwYEy0PifqaWW5baItpKMdqaFGOpVGRjNrwPL/I85rwP2jmGvRjKonEbVA7crcfDNVCQ7/AFKpdQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywv4rME/+ptGYp3TUWpegpLOqbgaazf97zootQ5GBmGjEFc0jrE
-	0vcGVRB/xAOcRpZhe/n4I/4oz719+blLCWKWy2rGExvZpsxuTEOI8+toJNpaUIE=
-X-Google-Smtp-Source: AGHT+IEJ73jDZPmEW6oRN/MJW/naPWGDv1fbvprd6QSgC/R2Bmc/VX5ES6jHTpO2OB2M5biVqYKBOA==
-X-Received: by 2002:a5d:5409:0:b0:368:460a:961d with SMTP id ffacd0b85a97d-373118522afmr5822618f8f.3.1724668755491;
-        Mon, 26 Aug 2024 03:39:15 -0700 (PDT)
-Received: from [192.168.0.118] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abed8b86bsm185488925e9.4.2024.08.26.03.39.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2024 03:39:15 -0700 (PDT)
-Message-ID: <a600ef28-67f8-40a7-87bb-886aa63f2f1a@gmail.com>
-Date: Mon, 26 Aug 2024 13:39:13 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXOHqmF5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95355C4E68F;
+	Mon, 26 Aug 2024 16:01:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724688106;
+	bh=6E7KeRV5hzgAg7lLx+s84+mu3cSeg2VpU1iXplNP1jE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OXOHqmF5buula/wVU+bROWXnhYbyjKQkEsxYqFpFIWf3WLOGtgwdDD4CTiSb1M/DR
+	 uc3IxQWttsk3QBF4XB5gtErFC9zqsrLKWOj1hi+5yinIdg6WtyovTN+dZtxP117HJ9
+	 3dVGmXAAX7XaDSrDd363z0MvDMDnY6x9r6SukNdhdkQEwpcl3NOp/bpj68CKU5xYSd
+	 DMe/5Ry9FIJTlW+Md66goasv+Wh6AoCzeDcoufI6UtcU5Sg/WzDiLrRbF/9jYCPrAf
+	 0iInL6B1FXz69A7EtRLLrB85qmpXr7L6URIlmhJEIPyFO/4d3yNCkCCGNUt1dxSMb2
+	 Slht0tqL2eVmA==
+Date: Mon, 26 Aug 2024 11:01:44 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+Cc: kernelci@lists.linux.dev
+Subject: Re: Kcidb access request
+Message-ID: <4fqub2pii3v6lwasvuzbyyviqgv76aycwhbfcgvxbgjk5h6qdc@25jqm7ubkqyg>
+References: <66qpsiapmqcpnbajfi34oxympjqk7svtygkdtdcby3yirijbvp@pesxnvj6qhhb>
+ <3351c08b-7594-43ea-80f1-e0f35271115f@redhat.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KCIDB: Support more checkout data
-From: Nikolai Kondrashov <spbnick@gmail.com>
-To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
- <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
- Alice Ferrazzi <alicef@gentoo.org>,
- automated-testing@lists.yoctoproject.org,
- Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>,
- Johnson George <Johnson.George@microsoft.com>,
- Veronika Kabatova <vkabatov@redhat.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- Don Zickus <dzickus@redhat.com>, Mark Brown <broonie@kernel.org>,
- Philip Li <philip.li@intel.com>, Denys Fedoryshchenko
- <denys.f@collabora.com>, Michael Hofmann <mhofmann@redhat.com>,
- Tales da Aparecida <tdaapare@redhat.com>,
- Aditya Nagesh <adityanagesh@microsoft.com>,
- Jeny Dhruvit Sheth <jeny.sadadia@collabora.com>,
- Sachin Sant <sachinp@linux.ibm.com>, "Hambardzumyan, Minas" <minas@ti.com>
-References: <9ea96b8e-6490-4541-81eb-8bab011c8918@gmail.com>
-Content-Language: en-US
-In-Reply-To: <9ea96b8e-6490-4541-81eb-8bab011c8918@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3351c08b-7594-43ea-80f1-e0f35271115f@redhat.com>
 
-On 8/21/24 8:02 PM, Nikolai Kondrashov wrote:
-> Hello again, everyone (potentially) involved with sending data to KCIDB,
+On Thu, Aug 08, 2024 at 08:56:12PM GMT, Nikolai Kondrashov wrote:
+> Hi Bjorn,
 > 
-> The previous schema update (v4.4, test data enhancements) is already being
-> deployed, but I have prepared more backwards-compatible changes to go out with
-> v4.5.
+> On 8/7/24 6:49 PM, Bjorn Andersson wrote:
+> > I'm using api.kernelci.org for reporting test results from my kernelci
+> > lab, as well as scraping test reports for Qualcomm boards for local
+> > aggregation and presentation.
+> > 
+> > As part of the transition to the new KernelCI APIs, I would like access
+> > to KCIDB.
+> > 
+> > 
+> > My (custom) test reporting tool today uses the LAVA callback interface,
+> > and thereby follows this schema for the report, groups and cases. I can
+> > continue to follow this schema, or change the schema as you prefer.
+> > Please let me know.
 > 
-> This time I rolled everything into a single commit, but I'll split it up, if
-> we have disagreements, or need to work more on the changes.
+> Sorry for the delay with the answer!
 > 
-> The PR is at https://github.com/kernelci/kcidb-io/pull/87
+> Sure, you can get the access to the KCIDB database.
 > 
-> But I'll repeat the commit message here:
+> However, we don't have APIs, just the direct access to PostgreSQL, which keeps
+> six months of data. See the attached (abbreviated) schema dump. It largely
+> mirrors the JSON I/O schema, which you can see here:
 > 
-> Add support for three more checkout fields: `git_commit_tags`,
-> `git_commit_message`, and `git_repository_branch_tip`.
+> https://github.com/kernelci/kcidb-io/blob/main/kcidb_io/schema/v04_03.py
 > 
-> The `git_commit_tags` is an array of strings representing annotated tags
-> pointing directly at the commit being checked out, as seen in the source
-> repository. I.e. the output of `git tag --points-at <commit>`. Set to an empty
-> array, if the commit has no tags.
-> 
-> The `git_commit_message` is intended to hold the complete message of the
-> commit being checked out, *both* subject and body. I.e. the output of `git
-> show -s --format=%B`. We're putting the subject and the body together, as it's
-> quite easy to extract the subject in SQL, while full-text search is easier and
-> more efficient to do over a single column.
-> 
-> Finally, the `git_repository_branch_tip` is a boolean flag, which should be
-> set to `true`, when the commit being checked out is at the tip of the branch
-> at the moment of the checkout (as specified in `start_time`). Essentially, if
-> you're always testing only the tip of the branch, you can set this to `true`
-> unconditionally. This flag would let us extract the checkouts which
-> represented the branch state over time, and produce a rough history of branch
-> changes, which we can then use for (regression) analysis and graphs, in lieu
-> of actual commit graph walking.
-> 
-> The (abbreviated) schema for all three fields is below and is very simple:
-> 
->     "git_commit_tags": {
->         "type": "array",
->         "items": {"type": "string"},
->     },
->     "git_commit_message": {"type": "string"},
->     "git_repository_branch_tip": {"type": "boolean"}
-> 
-> The PR has the complete schema, with inline docs.
 
-I'm going to merge this and start work on the support on Wednesday, Aug 28, if
-there are no objections by that time.
+The guide talks about PubSub interface, perhaps I'm misunderstanding
+this portion?
 
-Nick
+No real concern with the direct SQL interface.
+
+> Here's some more human-oriented introductory docs:
+> 
+> https://kernelci.org/docs/kcidb/submitter_guide/
+> 
+
+Thank you (and thanks Gustavo for the updated link).
+
+> Note, that at the moment we have no way to query for "Qualcomm boards", but we
+> have a schema change proposal being discussed to address that.
+> 
+
+How do you associate device-specific tests (or any test that pass/fail
+due to device-specific regressions) with a particular device then?
+
+> Also, when fetching your data you will need to be considerate of traffic and load.
+> 
+
+Understood. No concerns here.
+
+> You can explore the data on the dashboard (to be improved soon):
+> https://kcidb.kernelci.org/
+> 
+> If none of the above stops you, I can give you credentials and permissions for
+> querying.
+> 
+
+That would be great, and would allow me to make an attempt to tie this
+into my local dashboard...
+
+Regards,
+Bjorn
