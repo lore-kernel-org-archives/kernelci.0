@@ -1,104 +1,149 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4992D1C9ECF
-	for <kernelci@lists.linux.dev>; Fri,  6 Sep 2024 16:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725639265; cv=pass; b=saqJisUgkwdOJq5zOeS7vLcBiTR6TYYUkeUP8rt6t2dq5pss7xPwBhsQpBFmbWTuvqjSQr6MVOyIMmYvP9yQfgVCiCm6iz4saROeMwkstfF7EDgSToEwp3GWXrP7WgSGitXUCag2HBGO4YUfCEtXerXwLMKzrSolRotF5fGCKKg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725639265; c=relaxed/simple;
-	bh=8+6svQXnO3tcX/KAM02RtXUZjeTMRU9brCDTjBWda4A=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:Subject:MIME-Version:
-	 Content-Type; b=XnrMDoFh8WXaj2KJMs9vjPt5gVuJ7w6kNA0zdcOvpUgu01H9P7R0H86M3+VTUUWGwl6FNnID4GqXjkV653LXGFuWXM7WCoCWrHRDwGzzNyue5pXSn5/j9j5FCGCz2I4t66VoYd+Q907RJq3cP7QVD/VxKQV+JJjRjmn73Uq6bEc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=helen.koike@collabora.com header.b=VhmT7MYN; arc=pass smtp.client-ip=136.143.188.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6217118950C
+	for <kernelci@lists.linux.dev>; Mon,  9 Sep 2024 18:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725907097; cv=none; b=ZQHIgBjK6/YYNdqXU4J4FPiGjf8zm5SrIJiHjl1tHLxoc+AnS3bVsbuK+IAbB83tJ6pa+1BTWY8UN2KwKnKpMQ99BerENBLZV4+Tw0LFT0nqmHCBgDr/Iws7S4F0+Txxv9UWzVw8cSEzsoIjFgQjwWqQWBY7paOmLN5T5xWB7yg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725907097; c=relaxed/simple;
+	bh=QvSdxTDvn8AaYy6kGpwsljEiMhfwzV+X7Yjh0q69b1g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dTrO7D9iXNw9HeYpA3Bh0hNuEopXkLZHmIUM7WuuWDuTfa/kxr+j9R44EArhSMniFxzYoBEiNFO9yufRzgZxdqYMzKHoFiWWkJq/cu5H8oE/Z5GhXaYaKQ9zYxQAQG4MCjhUBBYy5m6+IqXFHO3Jz47Gnu5R2/ZgHTjUKGrMD4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=b5OE9DTd; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=helen.koike@collabora.com header.b="VhmT7MYN"
-ARC-Seal: i=1; a=rsa-sha256; t=1725639258; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=JQAglgStHwyBgxGBzIiAML1PHfwsbRhab1F9+JjKIqs6k7Ish1U7ou/ERcCTaUOCx4Ck8oqb4c1eadqiTOW130czoY9UpprWnWOOPU91I/UCRHpf8VgGxAGC0Zmk2vGbZwpvbkGNUPrIbjkTMfcqYLLKbB4U87/7QRMjih6tjNI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1725639258; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8+6svQXnO3tcX/KAM02RtXUZjeTMRU9brCDTjBWda4A=; 
-	b=EQbyjdf7kz8NdDK/ogy0r4q7iibRxXhtErozUDo16Cw4XZjH/SozQxqFyywSV6e9oCwHL0INU4XquoZLCmKjWtPM+FNWTWqugehd3q69hHhr15BvrL3AkB2Lw9Eo4F4LU/9drFavFllDfsNSDvwNHm24ziAZ9dByHO+z6u9z0PI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=helen.koike@collabora.com;
-	dmarc=pass header.from=<helen.koike@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1725639258;
-	s=zohomail; d=collabora.com; i=helen.koike@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=8+6svQXnO3tcX/KAM02RtXUZjeTMRU9brCDTjBWda4A=;
-	b=VhmT7MYN3gQ4BcHmrcZ0HdL8S0hlb2iWXRk4+pXXzN8njrmCeBM8YuNN9H4vgRRF
-	+VYa22gO1QRx+MRv2X7IfS2mk2QHFYe6upY3E/a4OJ+EXc7QyeriqMTVs9DFj0WoI0F
-	4+ImrW1VzA2Lpw4AibevUAdWawpJ2wcgALsrZGVw=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1725639255810957.1130957053573; Fri, 6 Sep 2024 09:14:15 -0700 (PDT)
-Date: Fri, 06 Sep 2024 13:14:15 -0300
-From: Helen Mae Koike Fornazier <helen.koike@collabora.com>
-To: "kernelci" <kernelci@lists.linux.dev>
-Cc: "Linux kernel" <linux-kernel@vger.kernel.org>
-Message-ID: <191c81d66b1.12123afbb102574.8672827374237136458@collabora.com>
-In-Reply-To: 
-Subject: Bring your tree to the new KernelCI
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="b5OE9DTd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1725907093;
+	bh=QvSdxTDvn8AaYy6kGpwsljEiMhfwzV+X7Yjh0q69b1g=;
+	h=From:Subject:Date:To:Cc:From;
+	b=b5OE9DTdhoalVXxxeEAxJs4KvmlVPW5zCkFstuELc2cLUW/NE0RqPnFPm7z1ebPof
+	 qldjWVxBgavSO3WPNll69gLZLM36jEABuWO4sRRSwtH6Y7gKH4TpK9LN1ZaJJWtjTD
+	 M5eO3wwC9V6126wbdoFtMdRg4mQZVfotachXYMl4qqVvuhiY218LIojdijtOy877L8
+	 jn1yompLUoI+9TeJ5Y0L3m6UTsHeZV/tlgwu2uLWg6U60p1/GxtNIGi4jgvK/MHUZs
+	 6FyljcO5m99Ko+EgN1ZDirIqhnqIR3g4AXv3aHmqd6O5al+L1cOhZVYpO1p6EVzygw
+	 CR3jFj0T+Q4AQ==
+Received: from [192.168.1.95] (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nfraprado)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id A441217E35FB;
+	Mon,  9 Sep 2024 20:38:11 +0200 (CEST)
+From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+Subject: [PATCH RFC 0/3] Verify bias functionality for pinctrl_paris driver
+ through new gpio test
+Date: Mon, 09 Sep 2024 14:37:31 -0400
+Message-Id: <20240909-kselftest-gpio-set-get-config-v1-0-16a065afc3c1@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGtA32YC/x2MwQrCMBAFf6Xs2YW0tBG9Cn6AV/HQxpe4KEnJl
+ iKU/ruLh4GZy2ykqAKlc7NRxSoqJVu0h4bCa8wJLE9r6lzXu5Pz/FZ84gJdOM1SWGFihJKjJPY
+ YpskfXWjHgewxV0T5/v93ul0v9Nj3H+YIlT10AAAA
+To: Sean Wang <sean.wang@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Bamvor Jian Zhang <bamv2005@gmail.com>, Shuah Khan <shuah@kernel.org>
+Cc: kernel@collabora.com, linux-mediatek@lists.infradead.org, 
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+ kernelci@lists.linux.dev, 
+ =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+X-Mailer: b4 0.14.1
 
-Hello everyone,
+This series was motivated by the regression fixed by 166bf8af9122
+("pinctrl: mediatek: common-v2: Fix broken bias-disable for
+PULL_PU_PD_RSEL_TYPE"). A bug was introduced in the pinctrl_paris driver
+which prevented certain pins from having their bias configured.
 
-KernelCI[1]=C2=A0is entering an exciting new phase, and we=E2=80=99re invit=
-ing kernel maintainers to register their trees with us.
+Running this test on the mt8195-tomato platform with the test plan
+included below[1] shows the test passing with the fix applied, but failing
+without the fix:
 
-We now support over=C2=A0220=C2=A0build configurations, run=C2=A0boot tests=
- on=C2=A045 different hardware platforms (totaling over 300 machines in all=
- labs),=C2=A07=C2=A0CI systems contributing tests results=C2=A0and have=C2=
-=A0test suites=C2=A0like kselftest, kunit and LTP already=C2=A0enabled, ens=
-uring comprehensive coverage for your kernel trees across diverse platforms=
-.
+With fix:
+  $ ./gpio-setget-config.py
+  TAP version 13
+  # Using test plan file: ./google,tomato.yaml
+  1..3
+  ok 1 pinctrl_paris.34.pull-up
+  ok 2 pinctrl_paris.34.pull-down
+  ok 3 pinctrl_paris.34.disabled
+  # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-At the upcoming Linux Plumbers Conference[2], we=E2=80=99ll be unveiling ou=
-r new=C2=A0Web=C2=A0Dashboard, which allows you to easily track your test r=
-esults.=C2=A0Also, our team is ready to support you with=C2=A0custom Grafan=
-a dashboards=C2=A0tailored to your needs and=C2=A0optional email notificati=
-ons. We can also enable your preferred test suites.
+Without fix:
+  $ ./gpio-setget-config.py
+  TAP version 13
+  # Using test plan file: ./google,tomato.yaml
+  1..3
+  # Bias doesn't match: Expected pull-up, read pull-down.
+  not ok 1 pinctrl_paris.34.pull-up
+  ok 2 pinctrl_paris.34.pull-down
+  # Bias doesn't match: Expected disabled, read pull-down.
+  not ok 3 pinctrl_paris.34.disabled
+  # Totals: pass:1 fail:2 xfail:0 xpass:0 skip:0 error:0
 
-We=E2=80=99re committed to delivering real value and working closely with m=
-aintainers, developers, hardware vendors and product makers=C2=A0to provide=
- specific solutions. We understand that each subsystem and maintainer has u=
-nique needs, and we=E2=80=99re adapting our approach accordingly. We can bu=
-ild=C2=A0custom views=C2=A0and configure=C2=A0personalized notifications=C2=
-=A0to help you focus on the results that matter most,=C2=A0minimizing unnec=
-essary noise.
+In order to achieve this, the first patch exposes bias configuration
+through the GPIO API in the pinctrl_paris driver, patch 2 extends the
+gpio-mockup-cdev utility for use by patch 3, and patch 3 introduces a
+new GPIO kselftest that takes a test plan in YAML, which can be tailored
+per-platform to specify the configurations to test, and sets and gets
+back each pin configuration to verify that they match and thus that the
+driver is behaving as expected.
 
-We encourage all maintainers to register their trees and take advantage of =
-these new features. To get started,=C2=A0submit your request=C2=A0via our G=
-itHub project[3]=C2=A0or contact us directly at=C2=A0kernelci@lists.linux.d=
-ev .
+Since the GPIO uAPI only allows setting the pin configuration, getting
+it back is done through pinconf-pins in the pinctrl debugfs folder.
 
-During the Linux Plumbers Conference, we=E2=80=99ll have a hallway booth=E2=
-=80=94please stop by to discuss your needs and share your feedback.=C2=A0Ke=
-rnelCI is committed=C2=A0to deliver solutions that matter to you.
+The test currently only verifies bias but it would be easy to extend to
+verify other pin configurations.
 
-Learn more about KernelCI in our documentation[4]
+The test plan YAML file can be customized for each use-case and is
+platform-dependant. For that reason, only an example is included in
+patch 3 and the user is supposed to provide their test plan. That said,
+the aim is to collect test plans for ease of use at [2].
 
-[1]=C2=A0https://kernelci.org
-[2]=C2=A0https://lpc.events/event/18/contributions/1739/
-[3]=C2=A0https://github.com/kernelci/kernelci-core/issues/new?assignees=3D&=
-labels=3D&projects=3D&template=3Dnew-kernel-branch.md&title=3DAdd+branch+BR=
-ANCH+from+TREE
-[4]=C2=A0https://docs.kernelci.org
+[1] This is the test plan used for mt8195-tomato:
 
+- label: "pinctrl_paris"
+  tests:
+  # Pin 34 has type MTK_PULL_PU_PD_RSEL_TYPE and is unused.
+  # Setting bias to MTK_PULL_PU_PD_RSEL_TYPE pins was fixed by
+  # 166bf8af9122 ("pinctrl: mediatek: common-v2: Fix broken bias-disable for PULL_PU_PD_RSEL_TYPE")
+  - pin: 34
+    bias: "pull-up"
+  - pin: 34
+    bias: "pull-down"
+  - pin: 34
+    bias: "disabled"
 
-Regards,
-Helen Koike
+[2] https://github.com/kernelci/platform-test-parameters
+
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+---
+Nícolas F. R. A. Prado (3):
+      pinctrl: mediatek: paris: Expose more configurations to GPIO set_config
+      selftest: gpio: Add wait flag to gpio-mockup-cdev
+      selftest: gpio: Add a new set-get config test
+
+ drivers/pinctrl/mediatek/pinctrl-paris.c           |  20 +--
+ tools/testing/selftests/gpio/Makefile              |   2 +-
+ tools/testing/selftests/gpio/gpio-mockup-cdev.c    |  14 +-
+ .../gpio-set-get-config-example-test-plan.yaml     |  15 ++
+ .../testing/selftests/gpio/gpio-set-get-config.py  | 183 +++++++++++++++++++++
+ 5 files changed, 220 insertions(+), 14 deletions(-)
+---
+base-commit: 6a7917c89f219f09b1d88d09f376000914a52763
+change-id: 20240906-kselftest-gpio-set-get-config-6e5bb670c1a5
+
+Best regards,
+-- 
+Nícolas F. R. A. Prado <nfraprado@collabora.com>
+
