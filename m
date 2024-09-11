@@ -1,110 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a7-43.smtp-out.eu-west-1.amazonses.com (a7-43.smtp-out.eu-west-1.amazonses.com [54.240.7.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75562AF1D;
-	Wed, 11 Sep 2024 09:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C63D153820
+	for <kernelci@lists.linux.dev>; Wed, 11 Sep 2024 10:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.7.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726045513; cv=none; b=U5Pe7kx8kyNEWi1Xvfm66QjHdn45JiyGGJUIC3Fkx4MeXOfHKqnvmu7SipWugD78L+GpKIstVyqrmL3iZ6JKlP5Fmn8Vbxt5N00G+w6hWFnjFa02T6jDAE+Ru4jx5CZDa0RhSvBnszx4Ds2feyocG/2jDPDIK9jGF9bkODqdSL4=
+	t=1726049430; cv=none; b=gCSmdHVqyh6M2mZuOQxQ2IEnih/1iUyKTxv2nDItN3Yn/dvzq92PHpoc2jwZFUBrLC6RkUyT0YPylnvWIbLGXufumEQjzX3z1MQRPyvkEoHCskp1NTfLkD57Z7xs34bQTurwYDzPyICUv7EXpwmQekF5ArwAIyEBH/X1Y3MgCSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726045513; c=relaxed/simple;
-	bh=K48R2AqNc1vFJQtIxz9U5zj+7HE5QnbwjJNno4GynFo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AvVvJNWJ0BuEGSJzriGvUzi9/6jV2Tug5UFd18OTX0TdiSu/1YEZsAmn7Ht97+us7khRG3RDTyZYh8wxn4dq28FDqHAa5Duy+YnXAaETFVDV2pDMIlt/nXN4BLgcsLXAEV1bzINmdXTApRd1ydzMYbqlCZmxNhQleKppGFjQbnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AekrqQzH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726049430; c=relaxed/simple;
+	bh=XXNXRYbmz3Zes9xyUsSvTiVqxoySTWzbF2/5l+DV+OQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AH7C0LZyepaH1cQ1ODlvfVmN0+8UcPKJ9PiFuhQ3X+dYw716/BGBFYHEqa4MjOltQK96PO3DfxhvFZSiWlU1GujcBXtc2mM6xn2GE8J4mUrgygc7FuQjNN5t3Z4jyUmIOOJm+BoBPkW9L8F9wIA+2hFjrASGEatz3JBeUQ++UH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=amazonses.collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ThHWqJwG; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=ArS1iDDN; arc=none smtp.client-ip=54.240.7.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AekrqQzH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F102C4CEC5;
-	Wed, 11 Sep 2024 09:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726045513;
-	bh=K48R2AqNc1vFJQtIxz9U5zj+7HE5QnbwjJNno4GynFo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AekrqQzHiZY5vPZa6yk0wFld8leztOXpq9L/aM2A+Sp9NSQm+vSzafXIbL4MDJWa5
-	 Tw6usR9VNpoM3iWiNMyAq6TeKDpgPs/GMs1KWkS3qel1zbKFZinSLASAoVk6oYXujn
-	 A8wyCQY0KFJVBrsxjC7AZnsJjnQoptkwjbytpFZbUWwIby/HhxpGwhQwg8zlcAgt+f
-	 h9L+ar4kIxtarjEIyobFW6n5TEY7VCtKphqLowsb79NII+wWeZk65hBiB9dbG55cyQ
-	 pbmzep3VZk1p1/wr/+l2e9Ca/lfFhCHJIxNGmDBFa4UVqSku+m1v/c7yeeAHkFrwxw
-	 fzBVKnm25+idg==
-Date: Wed, 11 Sep 2024 12:05:08 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado <nfraprado@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	regressions@lists.linux.dev, kernelci@lists.linux.dev,
-	kernel@collabora.com
-Subject: Re: [PATCH v4 2/2] dma: add IOMMU static calls with clear default ops
-Message-ID: <20240911090508.GE4026@unreal>
-References: <cover.1721818168.git.leon@kernel.org>
- <c3179690b16d790d5bfd7d0afabac9b90922ec28.1721818168.git.leon@kernel.org>
- <181e06ff-35a3-434f-b505-672f430bd1cb@notapiano>
- <20240911064305.GD4026@unreal>
- <20240911080445.GA5950@lst.de>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ThHWqJwG";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="ArS1iDDN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=4232tfv5ebdrjdwkr5zzm7kytdkokgug; d=collabora.com; t=1726049426;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=XXNXRYbmz3Zes9xyUsSvTiVqxoySTWzbF2/5l+DV+OQ=;
+	b=ThHWqJwGW2d6SgyvZM1kISkV9MQ6nVMsxL2KWE26xxtlCQW80zdB8yiAjabscpRC
+	bOD5jsyr6s6bIs+TsbuckZZy9MCboXfkHh3+EfKMyqpFvexSvcX4tH9TmvyXZ4XgAY1
+	DCQvrz0JopgyhvSCWaxUZoQssBn6lRGB4pIYbUulCGEdYF4dOayl4E4yrZOy+n5xq9l
+	E8lJSWDxwOcxts64gHTg+u+M2OKdjZtODLeqriAgAca0QHngJXQ83ctzJ5wZuhJpjbh
+	iz9B3czYJqmuW3Bbcavw9lOClse881/vi7YSVtKwrYP8jXHPZWCSL84RTFcJEn89Z6i
+	/lVBbmpB0Q==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=uku4taia5b5tsbglxyj6zym32efj7xqv; d=amazonses.com; t=1726049426;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+	bh=XXNXRYbmz3Zes9xyUsSvTiVqxoySTWzbF2/5l+DV+OQ=;
+	b=ArS1iDDNHqlmkcm+u7EYSSuksf2KcUGgBpJVPaEqYStCHYkvoCscsGkyFNEnPMe6
+	FWFNuCqLUXDnoF+UcRe5Aet6oNeeq32j1AnnALjkKdEz18fFM8JLGeFieNcuqhGlp4A
+	cpM9tBN8dtWu0P/MpggzN6H1KH81iPpOisHflY/Y=
+Message-ID: <01020191e0901d10-d427a5dd-af4e-4ecf-99e1-4bb051ad1475-000000@eu-west-1.amazonses.com>
+Date: Wed, 11 Sep 2024 10:10:26 +0000
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240911080445.GA5950@lst.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 1/3] pinctrl: mediatek: paris: Expose more
+ configurations to GPIO set_config
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Sean Wang <sean.wang@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	Bamvor Jian Zhang <bamv2005@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>
+Cc: kernel@collabora.com, linux-mediatek@lists.infradead.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, 
+	linux-kselftest@vger.kernel.org, kernelci@lists.linux.dev
+References: <20240909-kselftest-gpio-set-get-config-v1-0-16a065afc3c1@collabora.com>
+ <20240909-kselftest-gpio-set-get-config-v1-1-16a065afc3c1@collabora.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20240909-kselftest-gpio-set-get-config-v1-1-16a065afc3c1@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Feedback-ID: ::1.eu-west-1.YpP9ZbxnARFfy3Cb5pfsLd/pdsXBCNK0KEM7HforL4k=:AmazonSES
+X-SES-Outgoing: 2024.09.11-54.240.7.43
 
-On Wed, Sep 11, 2024 at 10:04:45AM +0200, Christoph Hellwig wrote:
-> On Wed, Sep 11, 2024 at 09:43:05AM +0300, Leon Romanovsky wrote:
-> > Thanks for the report, I'm looking into it. However, it is unclear to me
-> > why my patch is causing this issue. The change in dma_supported() should
-> > produce WARN_ON [1] if new path is taken, otherwise, we return to
-> > previous behavior.
+Il 09/09/24 20:37, Nícolas F. R. A. Prado ha scritto:
+> Currently the set_config callback in the gpio_chip registered by the
+> pinctrl_paris driver only supports PIN_CONFIG_INPUT_DEBOUNCE, despite
+
+[...] only supports operations configuring the input debounce parameter
+of the EINT controller and denies configuring params on the other AP GPIOs [...]
+
+(reword as needed)
+
+> many other configurations already being implemented and available
+> through the pinctrl API for configuration of pins by the Devicetree and
+> other drivers.
 > 
-> dma-iommu never implemented .dma_supported and thus claims to support
-> all dma masks.  To restore that behavior we'd need something like the
-> patch below:
+> Expose all configurations currently implemented through the GPIO API so
+> they can also be set from userspace, which is particularly useful to
+> allow testing them from userspace.
 > 
-> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-> index 7550b5dc5e55df..d23a4d5a6b31a1 100644
-> --- a/kernel/dma/mapping.c
-> +++ b/kernel/dma/mapping.c
-> @@ -841,17 +841,19 @@ static int dma_supported(struct device *dev, u64 mask)
->  {
->  	const struct dma_map_ops *ops = get_dma_ops(dev);
->  
-> -	if (WARN_ON(ops && use_dma_iommu(dev)))
-> -		return false;
+> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> ---
+>   drivers/pinctrl/mediatek/pinctrl-paris.c | 20 ++++++++++----------
 
-The below code still has merit. It is an error to have ops and take
-dma-iommu path.
+You can do the same for pinctrl-moore too, it's trivial.
 
->  	/*
->  	 * ->dma_supported sets the bypass flag, so we must always call
->  	 * into the method here unless the device is truly direct mapped.
->  	 */
-> -	if (!ops)
-> -		return dma_direct_supported(dev, mask);
-> -	if (!ops->dma_supported)
-> -		return 1;
-> -	return ops->dma_supported(dev, mask);
-> +	if (ops) {
-> +		if (!ops->dma_supported)
-> +			return 1;
-> +		return ops->dma_supported(dev, mask);
+Other than that, I agree about performing this change, as this may be useful
+for more than just testing.
+
+Cheers,
+Angelo
+
+>   1 file changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
+> index e12316c42698..668f8055a544 100644
+> --- a/drivers/pinctrl/mediatek/pinctrl-paris.c
+> +++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
+> @@ -255,10 +255,9 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
+>   	return err;
+>   }
+>   
+> -static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+> +static int mtk_pinconf_set(struct mtk_pinctrl *hw, unsigned int pin,
+>   			   enum pin_config_param param, u32 arg)
+>   {
+> -	struct mtk_pinctrl *hw = pinctrl_dev_get_drvdata(pctldev);
+>   	const struct mtk_pin_desc *desc;
+>   	int err = -ENOTSUPP;
+>   	u32 reg;
+> @@ -795,7 +794,7 @@ static int mtk_pconf_group_set(struct pinctrl_dev *pctldev, unsigned group,
+>   	int i, ret;
+>   
+>   	for (i = 0; i < num_configs; i++) {
+> -		ret = mtk_pinconf_set(pctldev, grp->pin,
+> +		ret = mtk_pinconf_set(hw, grp->pin,
+>   				      pinconf_to_config_param(configs[i]),
+>   				      pinconf_to_config_argument(configs[i]));
+>   		if (ret < 0)
+> @@ -937,18 +936,19 @@ static int mtk_gpio_set_config(struct gpio_chip *chip, unsigned int offset,
+>   {
+>   	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
+>   	const struct mtk_pin_desc *desc;
+> -	u32 debounce;
+> +	enum pin_config_param param = pinconf_to_config_param(config);
+> +	u32 arg = pinconf_to_config_argument(config);
+>   
+>   	desc = (const struct mtk_pin_desc *)&hw->soc->pins[offset];
+>   
+> -	if (!hw->eint ||
+> -	    pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE ||
+> -	    desc->eint.eint_n == EINT_NA)
+> -		return -ENOTSUPP;
+> +	if (param == PIN_CONFIG_INPUT_DEBOUNCE) {
+> +		if (!hw->eint || desc->eint.eint_n == EINT_NA)
+> +			return -ENOTSUPP;
+>   
+> -	debounce = pinconf_to_config_argument(config);
+> +		return mtk_eint_set_debounce(hw->eint, desc->eint.eint_n, arg);
 > +	}
-> +
-> +	if (use_dma_iommu(dev))
-> +		return true;
+>   
+> -	return mtk_eint_set_debounce(hw->eint, desc->eint.eint_n, debounce);
+> +	return mtk_pinconf_set(hw, offset, param, arg);
+>   }
+>   
+>   static int mtk_build_gpiochip(struct mtk_pinctrl *hw)
+> 
 
-I would simply put this hunk below if (WARN_ON ...) without any other
-changes. Should I send a patch?
 
-Thanks
 
-> +	return dma_direct_supported(dev, mask);
->  }
->  
->  bool dma_pci_p2pdma_supported(struct device *dev)
