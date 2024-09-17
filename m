@@ -1,59 +1,43 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883691465AB
-	for <kernelci@lists.linux.dev>; Mon, 16 Sep 2024 11:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726486991; cv=none; b=UMZF/SRROwmUVUh4vLn60QKi9YKS7h8KJ1DaOmi3W7Anu0h2sre+1mNHoOa/Lq65KGC4AcdG2Trz8vAMqEw8g3Gsrfwe4OktYsAeigcuZvTWy8I3lYveK8APXZ+xjdc34nEPFRql9bRFhN4Yz6O0RNCkPq/DxNTw3AGueChzHR4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726486991; c=relaxed/simple;
-	bh=7UMz5cQL3FWSDCicUrSaQrE/2CqTHVRSJo1//9PpV5Y=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=KjCFT2J/mv6AFXwKMvMNZowgmY+YIi6NbJq5jOGfT5kV/2TUyYZxwreb1cGpPHL4+5Fy8lXJLlLoq8BzcFMKFO+gU61DkVF7x1FWHrgUDiDgxKCLfhk9KTcx0mS3QM0iJF1WYcUlZJDoXq1RJUVMvhRJA6shdRc7Da/Hy4l4Hkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jYUnswb2; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEF320323
+	for <kernelci@lists.linux.dev>; Tue, 17 Sep 2024 10:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726568090; cv=pass; b=uUnJs7Pnh/z7vEzWy6o+iYDnD2Mjrikuz02mpvZye2bGLUsgJJ4glbcoZgmYedDoFXEnBVfaM9pq5Idu+xPZeVrn09amZARuIB/ECX7R/ZlAz/zkamFnAmszwT5VEQGnf4OBc0nSBYqPZcWYtV4eeNj4Fjr3akpY9jy0LjZJ6lE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726568090; c=relaxed/simple;
+	bh=vFVQYurx2tNOVl0UrnGT75ROcxXcyPDMD4L8GONLdZc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uVhgaRjT63P9AdkhCEDZ+oNxzIaV4qwU3eXe/nFsj4sD0/MTipZlRL/B0678qrjzewsZoFiXSAooN6DczX/011jWLsSVTkC4997NKlf1UN7D/QOLFdT4zyxUDH/R9LAyZVXbHSAExovZ9+DS/gBnNURu3x06Aaqs/BDJRc7rIJk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=TEhkVw6n; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jYUnswb2"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42cb58d810eso33515175e9.0
-        for <kernelci@lists.linux.dev>; Mon, 16 Sep 2024 04:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726486988; x=1727091788; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XNq1m8uYP5q5xF3l3xY7VI/ZrVWOlvx02Sb6GJ3b+jg=;
-        b=jYUnswb2RE1rhCsctzhT9A/v+/yUjCCpmUPsL2mftAMkGp/iDdbsN+i94r67hKKi2A
-         kw2XF0dDPDSn2zjZ5M0XXPqQa6z4cGHeTlRKIaajRDoBBdCgJwPY6B8zS2j/PG4+G/Ap
-         jifIdfYJydLsGkNFbz8EtxdzZLxUe4YQgGMQirN8RvdUub+wdLyk4NLuK80QHhleBXA+
-         bb8XfK+6IEMI4IAHA5iXx+Zt1iZFL0igc8cdYbe49NmoumzWR1fHh4Ib0TInBEb9kL6O
-         B9XdPZIIP1RWvzYgDX5vK7dJJND5dffJeRynEQubjtuswP3YLnD08D+ndpZHTr593TI3
-         0/fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726486988; x=1727091788;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XNq1m8uYP5q5xF3l3xY7VI/ZrVWOlvx02Sb6GJ3b+jg=;
-        b=R4PKuJlK+/AfyULyXxWvcGPQgpgcZzA8vpyGhffIE6Y/7zmkqbHZYo0qEQU6icK1P0
-         5148ZfFX/Ur+lY3aJrk5xc725ylHycQRX/eSU8DMk1Dqktc7747tmdrPHg8SclF05/a3
-         r+qmzx/Oc2cTqliHu2aNWo6KhD8MEmQBBMkQMS8ci5nmUQwt9FuUk2fQsKYaLkgi7xeP
-         jbO5C5zcqZL23VmaiU+YVVSzU4BJkH7LmJjPT+V3S4BM4tYqmDbjF73woQiFpxz5Cinq
-         V4lLHmnl40LOsTuDbTDD4S7hh71rSqspfnd8uxBXWRU1Slb2liS7lZc9EphU7ZOJvTZM
-         tNHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWx7X+Dxh02yQTlBpnLWnixd5hgUjnz6kbBcmQXghbqkK0VYVhuYIEF31B5iVQiSVRJ4MCb5qXA4g==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yya1u9Z+3VbRBDGArkgU3k1wg/jLXQEw9a70hTnCNVdlKnS4JtC
-	pFOnZQjjz/XbQ0kO24O9lCaMGmesu+vKc5X1XFMW86xlrcxhk17l
-X-Google-Smtp-Source: AGHT+IEhecH03Yfxi41gNK1hbdYrmcm5znBdh53eu0xiDAaYM515kwGsvc5oH5TD7C7pSaFidP72qQ==
-X-Received: by 2002:a5d:4ec9:0:b0:374:bd00:d1e with SMTP id ffacd0b85a97d-378a89e6350mr12961939f8f.3.1726486986750;
-        Mon, 16 Sep 2024 04:43:06 -0700 (PDT)
-Received: from [192.168.0.166] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42d9b055052sm109885825e9.9.2024.09.16.04.43.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Sep 2024 04:43:06 -0700 (PDT)
-Message-ID: <370c2b62-032a-4997-9ecb-10f58d8f3b80@gmail.com>
-Date: Mon, 16 Sep 2024 14:43:04 +0300
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="TEhkVw6n"
+ARC-Seal: i=1; a=rsa-sha256; t=1726568084; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=I1bp/2fYt51Fw9FoZ8s2ImIY4g9Br8dCAQ8Kmfh4WXRZsp7RW8uxnVo1Uf05AhHU1to15OYmRvon+YmEPmwJgZDKaiCkfzSo6wJkXphhambfTgT53CsMfXD1PIpCi5Mr1Jyi5PS2LrKoOQfUX9QW3xw+gpRaCjacgfybPkGeu5w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1726568084; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=FxpmNUGUnXs9mBTv9Jjh2uupQbS3XD7oRvl5oWTt5Kw=; 
+	b=Cqz66MUMVN+dOve+G/q0/IIfCQMlUq1zKNcqhOeelTJrW5TCr9k8xrjzFM/ulqxaSKGraCCBhJbAZRnFJ3QQQAsheuf1QOqKzF/rNkCY5BMAKbIZpZtyhvW0KbDNDTKghDkXAewqYhHLjLDy6UUkFgP0aGFD2EZWlSbV8v9u7qs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
+	dmarc=pass header.from=<laura.nao@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1726568084;
+	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=FxpmNUGUnXs9mBTv9Jjh2uupQbS3XD7oRvl5oWTt5Kw=;
+	b=TEhkVw6nE1arrzxyfZIM0Mah6ByxcJVq3whYd2gOsb6S9pIMrgOGccNHBxjvxDWe
+	5F8AeJ9CbcWvotM9j9N6KGqbTsyFNmNR8HRkV08+o55PbsmDCIRpXTvUyS1VzqsJnbD
+	AqSV3yShjJnuok+CKrT/R8j/dLVEOrYXBpfco0ew=
+Received: by mx.zohomail.com with SMTPS id 1726568082905333.8731650082517;
+	Tue, 17 Sep 2024 03:14:42 -0700 (PDT)
+Message-ID: <6edcd2a2-4e09-4f41-a4f5-5595fefecf75@collabora.com>
+Date: Tue, 17 Sep 2024 12:15:25 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -61,44 +45,50 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: KCIDB: Support more checkout data
-From: Nikolai Kondrashov <spbnick@gmail.com>
-To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
- <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
- Alice Ferrazzi <alicef@gentoo.org>,
- automated-testing@lists.yoctoproject.org,
- Cristian Marussi <cristian.marussi@arm.com>, Tim Bird <Tim.Bird@sony.com>,
- Johnson George <Johnson.George@microsoft.com>,
- Veronika Kabatova <vkabatov@redhat.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
- Don Zickus <dzickus@redhat.com>, Mark Brown <broonie@kernel.org>,
- Philip Li <philip.li@intel.com>, Denys Fedoryshchenko
- <denys.f@collabora.com>, Michael Hofmann <mhofmann@redhat.com>,
- Tales da Aparecida <tdaapare@redhat.com>,
- Aditya Nagesh <adityanagesh@microsoft.com>,
- Jeny Dhruvit Sheth <jeny.sadadia@collabora.com>,
- Sachin Sant <sachinp@linux.ibm.com>, "Hambardzumyan, Minas" <minas@ti.com>
-References: <9ea96b8e-6490-4541-81eb-8bab011c8918@gmail.com>
+Subject: Re: Test catalog
+To: Donald Zickus <dzickus@redhat.com>,
+ Nikolai Kondrashov <nkondras@redhat.com>
+Cc: kernelci@lists.linux.dev, Gustavo Padovan <gustavo.padovan@collabora.com>
+References: <CAK18DXZ9610pCm42m-D-gAKTrGQuh5TmEwaPyA6QHiB_80pK4Q@mail.gmail.com>
 Content-Language: en-US
-In-Reply-To: <9ea96b8e-6490-4541-81eb-8bab011c8918@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Laura Nao <laura.nao@collabora.com>
+In-Reply-To: <CAK18DXZ9610pCm42m-D-gAKTrGQuh5TmEwaPyA6QHiB_80pK4Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On 8/21/24 8:02 PM, Nikolai Kondrashov wrote:
-> Hello again, everyone (potentially) involved with sending data to KCIDB,
+Hi Don,
+
+Sure, count me in! Thursday morning works for me. Looking forward to the 
+discussion. I agree it's important to centralize info on available test 
+suites and how to pick the right subset for each platform, focusing on 
+maintainers' needs.
+
+Best,
+
+Laura
+
+On 9/16/24 17:47, Donald Zickus wrote:
+> Hi Laura,
 > 
-> The previous schema update (v4.4, test data enhancements) is already being
-> deployed, but I have prepared more backwards-compatible changes to go out with
-> v4.5.
-
-Support for this has been deployed last week.
-
-Please consider sending the `git_repository_branch_tip` boolean field, if you
-can, as it will help us move forward on regression detection.
-
-The commit messages would help us make dashboards more useful, and tags would
-help us track release history.
-
-Thank you!
-Nick
+> I was talking with Gustavo and Nikolai about the test catalog idea that 
+> has been floating around.  I think having a way for maintainers to 
+> accurately describe their test and hardware needs to define what does 
+> 'testing done' look like from a maintainers perspective, allows the 
+> community to come together and work on filling the gaps.  I don't 
+> believe a single CI system nor lab has enough resources to provide 
+> everything a maintainer wants.  But as a community we can.
+> 
+> I would like to sit down with folks from Collabora, Red Hat and others 
+> at LPC to discuss this more.  I see this as a 2025 roadmap.  Gustavo 
+> thinks that Thursday morning somewhere might be an open time where folks 
+> don't have talks.  I was hoping to chat for an hour.  This could help us 
+> drive conversations with community members on how they could contribute 
+> (mostly focused on hardware vendors).
+> 
+> All are welcome to chat.  Let me know if there is interest and I can 
+> find a room and timeslot.
+> 
+> Cheers,
+> Don
 
