@@ -1,58 +1,82 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E461D17332C
-	for <kernelci@lists.linux.dev>; Wed, 18 Sep 2024 09:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726651915; cv=pass; b=NuEao1shHierwAZSg7mYABR7B1tBtvOCQy/GBNW10sOIUBpt1vTtSk4Ty6ZVr6lf/ccfmSg1gVgB3CUXLZLH9p55xsFU1lIjiNYizDltVf1f0DU5sevKJdSZCi6K2ImTCyHK756SiLOqfib3zMGPP+PR+Y3N7QzuskU6ymvCoQc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726651915; c=relaxed/simple;
-	bh=+6bYDy+UqI4lofOq0zVPz8R31zAMwgOGw/kyIpIf6Oo=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=OhjH7r/ITYahTTRnvrrYkuePYAW9WEmLi2oXX1ZSfQo4+TE5bDbDiXRE28/QI+2GhTUFYDtT8PNLUZSJXaiZ3UGlGETKlBOBSjla4AG4fmJoRNvTdlSNnFCX6wc8iujBJWWxnLM5y8b9neQUnWZVo9LJ4sceFqXAq6URoKMuCYg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=Qdsv7Fe5; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885D918952A
+	for <kernelci@lists.linux.dev>; Wed, 18 Sep 2024 13:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726665606; cv=none; b=us+utIWT+2Pmr+qZOTcrOr9aY9yVyG6EabOSX9dsbEq9BoQQ9pZmjoGTPOVMnXewXo6RNSFly3l9KzWjv+4QLIMuCvqiCL5oXl+CFViHSe9UKEnPV7BFNMsLYZJ4l7hrYzQVi+eBBKDfUDw9IPgffHC3bIh9EVftY75NufIqVRQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726665606; c=relaxed/simple;
+	bh=SHkWgd2IAx+QnCM0yiTdiJ1NU3em+8781oaGRwXaidQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LaLg/008LLVKLTHNGSXLSZrlI9Z89mBp3U7lIkcSDqqnOnhYTZS66Z7Fy5/tmIIPJDSCOxPnj7IEbbDZYOHzlRvBKVA972vb86PlGJ7tCiTGAyzhFX1r4H9iuaLye5ZSXiTefStXLyk6/QR7ib838Q9+TelXNsbB1ZSOO4TjSPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPi8kRTV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="Qdsv7Fe5"
-ARC-Seal: i=1; a=rsa-sha256; t=1726651911; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=jVhDSNQYo0E+hox8UkaztG225RmBTn1oYyFicltyBSNozvLGxYLzuLvphGnX4ye8D7FFUCdiKRQ4KlZct3MVIXnbs3UDeg2OGj+GyoNgqYVVunmI4xKkpkodcZtAriTRgVUOZye7vDohM7soFqHM+MaC7t4PQswS6kw3Y6Ohc20=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1726651911; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=pEw2nw1wdWCY3x3aMQpNkpc2vx8yugwA1DTNXvWZ4bg=; 
-	b=m1EbvyfxUo+K0RikN1PFUVhTNLzhol+dAORZUWFqfr/H6OScf5/pcypOIWs4/WGlIAWHO5taULIZ4MfmiqR1sI2PRdny6g6mzyOR9DpvSlWBJcjwoMxFIY73XcetkpzwhDB2ZOZS6t0FqtROwtpjhNWKtMJkVEj1vuEDIJ5n598=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
-	dmarc=pass header.from=<Usama.Anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1726651911;
-	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:To:To:From:From:Subject:Subject:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=pEw2nw1wdWCY3x3aMQpNkpc2vx8yugwA1DTNXvWZ4bg=;
-	b=Qdsv7Fe5WzXxQppOCV/G3JLs+/SHrpip2FWY5BKkZAft+4SXawV7YfGbInshVrng
-	xwGHH7+JUNN/ruWsX3VZF0A/j8OyLBPibvJ5Rq5mhAppw8gGqOrwNUv8J8PR8nJBtXS
-	3AOZC46rr/Pbv13sQwNxwB8JL3AHXT14sEmh1GlY=
-Received: by mx.zohomail.com with SMTPS id 1726651909740619.5467255647811;
-	Wed, 18 Sep 2024 02:31:49 -0700 (PDT)
-Message-ID: <6088c70c-4573-45aa-88bc-af9b043055ff@collabora.com>
-Date: Wed, 18 Sep 2024 14:31:45 +0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPi8kRTV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA828C4CEC3;
+	Wed, 18 Sep 2024 13:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726665606;
+	bh=SHkWgd2IAx+QnCM0yiTdiJ1NU3em+8781oaGRwXaidQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jPi8kRTV19eLU+bY6nb+epcTBuy7RvkFrY1EDpX/NWlLPGB/aZ+Y9lxDYUNFuFOx9
+	 m0YepGxQuwOLJIWgCtVA9BfNrC4PLjbqLnC5cngn57J3r9f2qmJU0B3n4+QUvt1I/U
+	 Zzb3WZHGt8ixnkCVPVdysQgg2t4RQeaIMYYukm1h0xrqifO/qUHWpXOpYoNA8zzd6W
+	 34qOGuCpGjGKpkFo5IvWUSNtzX0dSYATosCrKmi0X16ykfMg2kso3pWhdyiUAqoL+y
+	 Yiy5dH2RisF7qWxMDijWmxfMLztUfFOc8JJEpdFPBXmKFFO5/jQNw0acFDqZxs9/oJ
+	 78jsC/ZATwbtA==
+Date: Wed, 18 Sep 2024 15:20:02 +0200
+From: Mark Brown <broonie@kernel.org>
+To: Laura Nao <laura.nao@collabora.com>
+Cc: Donald Zickus <dzickus@redhat.com>,
+	Nikolai Kondrashov <nkondras@redhat.com>, kernelci@lists.linux.dev,
+	Gustavo Padovan <gustavo.padovan@collabora.com>
+Subject: Re: Test catalog
+Message-ID: <ZurTgmBPQ_gTjKF2@finisterre.sirena.org.uk>
+References: <CAK18DXZ9610pCm42m-D-gAKTrGQuh5TmEwaPyA6QHiB_80pK4Q@mail.gmail.com>
+ <6edcd2a2-4e09-4f41-a4f5-5595fefecf75@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: kernelci@lists.linux.dev
-From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-Subject: Subscribe
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xbKknv0Ook8F02Sg"
+Content-Disposition: inline
+In-Reply-To: <6edcd2a2-4e09-4f41-a4f5-5595fefecf75@collabora.com>
+X-Cookie: Editing is a rewording activity.
 
 
--- 
-BR,
-Muhammad Usama Anjum
+--xbKknv0Ook8F02Sg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 17, 2024 at 12:15:25PM +0200, Laura Nao wrote:
+> Hi Don,
+>=20
+> Sure, count me in! Thursday morning works for me. Looking forward to the
+> discussion. I agree it's important to centralize info on available test
+> suites and how to pick the right subset for each platform, focusing on
+> maintainers' needs.
+
+Thursday monring should be good for me as well.
+
+--xbKknv0Ook8F02Sg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbq04EACgkQJNaLcl1U
+h9CVxQf/bQiBqUBSGbuYHJIGqWXqFMmH06TZhH80IDLHsYGRPV6usgILL2lKY3WH
+ti6+boBhaJOV+dtJ20jLvUoksfzOXb/kkR987UNp2t8/CezWO5mqEzxG+lLGuF5w
+8M/wYLaX68akgqNfj5YLAHxvyEqQTSa4NuJ6YKBdL23MGUzrvHNZbxGYDcnEuc9S
+7if1c2sCkWZSHgzPY0/xY82o+NEWrd70eRvUGOnwrBF8yPsVHJM18G5vD9O46N0X
+Z5ZDD/AoO8DIQQonA3r9mAG0ORU5W2duqNyN7yp71uMAKrE8a7hz5YFqiVqZ1QDS
+nAsD9j0UaUbhcktqIWOdicrev3JM9A==
+=Plcs
+-----END PGP SIGNATURE-----
+
+--xbKknv0Ook8F02Sg--
