@@ -1,113 +1,114 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587D2194A54
-	for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 10:08:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1168578B60
+	for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 10:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727086081; cv=none; b=kbwD04zxfXfrezURGZaCm4FsoLnjjx092IJtlNA4bwIPAXncSYbCVIfV8Zw+GEDsA6xzYevXdybgher9/gdgnmRPFntO24AC3uwfDgfgtIHbcCwygh7YvEyjdVzfDOS6BRDb2spePe3jsnpjchgmgLO16xOfX2tOYgL+PnuCB/0=
+	t=1727088280; cv=none; b=HLC+HVf62IORH1hYtJhYwVWcYs5koQ5PtGl3DOE4QyzuzhGAVZGwnC3LUrNTXsD99cu/FA68dBAVgzRbJVVt6VUL2K0IXmHvRskGROeja28McblZtECb9ZrvuEd60dPYdqL5FSfrBJE7mop731QV8zRvy0m3t6LmNUDsaOM7kbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727086081; c=relaxed/simple;
-	bh=rtI+WHqQTHTw6Sd2Xg7IYxsZbOCEY2/C5Bt/8zVVZQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=sW/L7sA+7hAdd39w6zAurWU2UaU/9latbPy24nSjryto9fpIIFKEb/NIdIUf2c4oyaWruqssADwhugj6MlUpvUPEC923kSVigGcxzgY71RGaFLkj/4Er+CG4C5+ATFV42Y8l9454SSm3lGGYlrdC+7EdsTSixavJfjn3Q/F9Eo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A1GlZl1y; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727088280; c=relaxed/simple;
+	bh=t+gJTsJTX2/QqXQSXbfh00w9GuEotgXPm06OpofZ028=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZCg83JXVJ+aA/leAhNh3WR0ma0QQ576dS6VvzFEvvAQ5Jtq1Pz4IFfZJbjPQ7Da1F0WLnf6LdByyQn1Oy8oY04TghuFWotUtLsHurWgHaO/zM1lnYwlPrPxB6mz86pKqyrt5iMPO3jg02TKvaYLMz07dYjdIy12ZxPbY2nPwVmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mh0ZHLUt; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A1GlZl1y"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cb1758e41so32483385e9.1
-        for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 03:08:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727086078; x=1727690878; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rtI+WHqQTHTw6Sd2Xg7IYxsZbOCEY2/C5Bt/8zVVZQ4=;
-        b=A1GlZl1ymPk7sw6gIYQFptgFM8lVG+pAkcum6+V6sPlNB4CktU/HtdKqps++6CjoIt
-         zNzowvJRGI2+xkmaICOnYZNEUMzuSs399uiyZKmt8oj6tT4WaczjIyn2FJEDnWVfmqzN
-         ZCTWQTjBWrh6Y13Dp/SGYuj6vXLdN1kDNICIb5t8RURz/TxBxUYhkqHp3GWxa1sSTCKh
-         Ba8pF3bBMm2O4yzGZT/iX8zBk1fOemTqDJLRPuwEzips/ZaMZ1jdmwyvOTgfENLbSrfY
-         X3XVO9jsl5LBhNTgbOaDsDqVXQZUDvt1UGxe4t6wIjCCYYHQRXcY+4ILMzWZ+jbhT49Y
-         RzGA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mh0ZHLUt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727088278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ErLXtrXOXGPduj3xBPIZSgWTiWUJMwLP4DM2bARSSqI=;
+	b=Mh0ZHLUthymTDFutQQKuxHVBDTWSVmwMCai5MSmpwXYLvKTwdFfnx3aw0a/Xc5vroNxOUv
+	GKWeS+wziSh2RKi/ZWD8sHShhU/YcUjLh2wDfTXIQPW85YI1W3QclTLUmVJRVdZad2wAK9
+	x3nV2/9Tx7wYTXUQ4yzMFtIcFuSvV70=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-385-6WvOtF9gMFKo_4VyvGlcQQ-1; Mon, 23 Sep 2024 06:44:36 -0400
+X-MC-Unique: 6WvOtF9gMFKo_4VyvGlcQQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-42e8bf0f5e8so3528135e9.2
+        for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 03:44:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727086078; x=1727690878;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1727088275; x=1727693075;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rtI+WHqQTHTw6Sd2Xg7IYxsZbOCEY2/C5Bt/8zVVZQ4=;
-        b=X1JTXcppNsEx9ExVmHNiAoT7b4kli/jkV4MvKwi8h9jBqUL4AhaaSqwHiwt+sq9Fij
-         NPP11MAAuLVr/W59KlUVJ3WvAnLtYbFJYlNNuXls/M4uwou+6DSCPWFFNHKBgTHOI1K+
-         IxZjuXnhL6W0o7wTIik3CeoHOzJOKVH3XbxyRyPjGlXa590ODNxtPZAqAoCTFjTpBVOv
-         SOG4IRzc2fjwy443ZTC9G8cBjFIApkXvECGkddYZKH/Oqe4xN6Z2Ycv3loLGj2sZHNTL
-         hR6+VK33egIeyDShfNxLes+TqrOEqOyNa07HaYkqq0J4fFWG/KGDasng192wMKPhSVcX
-         7PPw==
-X-Gm-Message-State: AOJu0YwyQMLmdTdQrbBcFjCkVwr3dkV2OqDw0uVnYicouqRo2+ZN1tDP
-	oI/mrFHDn/QhUdkMsCQU5hJJNgG3JFWOWXqA2x8QXx+Lr9RPkbHXWj8Zsg==
-X-Google-Smtp-Source: AGHT+IG3qoFHw0tz8YHGUJ2IlLXyhtq7gnrv4CVrPPVxYukaOOg52wXCjN81+4m2zkXv6IsPY4HoMw==
-X-Received: by 2002:a05:600c:1c04:b0:428:1b0d:8657 with SMTP id 5b1f17b1804b1-42e7ad8e706mr81160955e9.22.1727086078042;
-        Mon, 23 Sep 2024 03:07:58 -0700 (PDT)
-Received: from orome (p200300e41f147300f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f14:7300:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e754c7580sm122176915e9.47.2024.09.23.03.07.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 03:07:57 -0700 (PDT)
-Date: Mon, 23 Sep 2024 12:07:56 +0200
-From: Thierry Reding <thierry.reding@gmail.com>
-To: kernelci@lists.linux.dev
-Cc: Jon Hunter <jonathanh@nvidia.com>
-Subject: KernelCI DB credentials
-Message-ID: <gw7roxtasg6njfj7xzhgglbbomwuy7ipintlzd2iojpsvlflpp@6vj4aqcoekst>
+        bh=ErLXtrXOXGPduj3xBPIZSgWTiWUJMwLP4DM2bARSSqI=;
+        b=e5Jxx4UfkjjOusH69h48h/ANn6mH49EKvpGOSxcikZr5qvU+Ptfu/s0trkmQmFLDW7
+         uJzfGapb+xRRdPzsn5G8/Hs0LoEkxUcARw+pKv1McrFFuoxtxPqeSEM+FhVAchdTgaNe
+         ckYUx4Iuez90j/0FdXnSii0XRC/7/wuK8fKka1hTKi3mILU/M09dJzklCwzPRx0JOJfW
+         qKPdV96qdtQEbFvORxR0BxRTqrJzHKbz70OTWk8hOXif6Kn1VjYa1hxHOKVPWnXBwJwG
+         K9I0XpuWWuHXnUd/tNLAtTqRumTddiC9iYCFy9+ZeydLl0pIu3KZRIhf3TGIiKR6fsZw
+         05lw==
+X-Forwarded-Encrypted: i=1; AJvYcCW8vdB3FQtZQzS4Vyjlx9jtCtAVFE5mtkW+kmxroQsjKwgWGE0049XzkGGsHrrppwwD4Z4m4Fx6ew==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yziht4wDQLNg0Gmfu5RzxZTi7Sk+qx3oJZ1ezQPsI/3HgAOKrq6
+	34kZKeaUUnSZed/p2hWFPESJ5Zx2D+tNRcwGOMazpynfRESrjM1Bce2M6N/GFSMoemXfUvXQx3M
+	/dpLXezKSFFaNQdTcVwpq5Of0jnKqTaC2No81i+tMpM1RAupC89jP+nV/
+X-Received: by 2002:a05:600c:3115:b0:42c:b949:328e with SMTP id 5b1f17b1804b1-42e7add1478mr75680855e9.31.1727088275570;
+        Mon, 23 Sep 2024 03:44:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZbqI9mcuWamxL10+bS4VdGc0K0aN8K20u9h6hvj58zBE+dIZGfqzoMi4tpuR3CdzzBWC9AA==
+X-Received: by 2002:a05:600c:3115:b0:42c:b949:328e with SMTP id 5b1f17b1804b1-42e7add1478mr75680725e9.31.1727088275154;
+        Mon, 23 Sep 2024 03:44:35 -0700 (PDT)
+Received: from [192.168.0.166] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e75450114sm123457005e9.23.2024.09.23.03.44.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Sep 2024 03:44:34 -0700 (PDT)
+Message-ID: <60b94fd6-b185-428e-8ce2-c1c1a2b5a4d9@redhat.com>
+Date: Mon, 23 Sep 2024 13:44:33 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mlyup23rdoovk4qd"
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: KernelCI DB credentials
+To: Thierry Reding <thierry.reding@gmail.com>, kernelci@lists.linux.dev
+Cc: Jon Hunter <jonathanh@nvidia.com>
+References: <gw7roxtasg6njfj7xzhgglbbomwuy7ipintlzd2iojpsvlflpp@6vj4aqcoekst>
+From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+In-Reply-To: <gw7roxtasg6njfj7xzhgglbbomwuy7ipintlzd2iojpsvlflpp@6vj4aqcoekst>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi Thierry,
 
---mlyup23rdoovk4qd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 9/23/24 1:07 PM, Thierry Reding wrote:
+> Hi everyone,
+> 
+> I've been looking into ways to contribute the test results from our
+> internal Tegra test farms to the KernelCI DB. Following the process
+> outlined in the documentation, I'd like to request submission
+> credentials.
+> 
+> We usually run build and boot tests on various Tegra-based boards on
+> linux-next and various stable and mainline builds. In addition, some
+> sanity testing beyond just booting is also performed, such as boot log
+> analysis and several system-specific tests.
 
-Hi everyone,
+Awesome!
 
-I've been looking into ways to contribute the test results from our
-internal Tegra test farms to the KernelCI DB. Following the process
-outlined in the documentation, I'd like to request submission
-credentials.
+As long as the kernel and test sources you're running are open, you can send
+any kernel build and test results.
 
-We usually run build and boot tests on various Tegra-based boards on
-linux-next and various stable and mainline builds. In addition, some
-sanity testing beyond just booting is also performed, such as boot log
-analysis and several system-specific tests.
+> Initially these would be manually submitted, but once this process is
+> mature enough we may want to set up our system to automatically send.
+> Can we reuse one set of credentials for both or is it better to request
+> separate credentials at that time?
 
-Initially these would be manually submitted, but once this process is
-mature enough we may want to set up our system to automatically send.
-Can we reuse one set of credentials for both or is it better to request
-separate credentials at that time?
+Sure, you can use the same credentials!
 
-Thanks,
-Thierry
+I just sent them to you. I gave you access to submit to playground for now, so
+you can figure out how it works. Once you're ready I'll add the production
+permissions.
 
---mlyup23rdoovk4qd
-Content-Type: application/pgp-signature; name="signature.asc"
+Nick
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmbxPfsACgkQ3SOs138+
-s6Hn3A/9HjAYVylmhUOO5zHSW7yUMFFDgLBc0AhqeFv8zdpMsdtdqo5ek1KXle6s
-ZL9GSM+mE6ORjVyUJwfc+r1eJINc/8n0Kqd9Jg7hif1fXu8jgao7T0LGA8A1lEbI
-4rb67YPGJgyMxqJbWbNFojkKJ0VadeGy+BrbwPfhBCdmYMlY+ksOPHTTdNFXsh2+
-w8vgoAd7L2VAl8iav2QL/+wfOhbu4U+D5TKom2ahsw++9o4dw3It3Roi+wJBW/t+
-1n4uM2ZffRcbj2gZ75zP6dCMVcBijiGOxJKfhxxzMBfLNCyGI5Df0Za9ByuYZb1A
-sIgWm3AnWVjSlkXXcMTAQtANcYpUkDPHB++I6MIey+aFpFHYqtD53dhkR2GW2Un9
-5ygVgLDybsfrLp9g1SmpR1PGCX8qZ0/AJVfhYIXlHe06+jsEK/JM7pB7h+CAKCYH
-yNxodplu8L5TbCzo3OIu9vN4KexejlBF5/cxlErlrH8XfIjHFGFYH0maAKQw+AjY
-Kyyypy3ptrsjp5seKue5GI79t/2V29h0S1drZCcthuFoQ0v/G5vI+k7/WenBU02l
-zBXt0eTgFWUgyvzcHtNR4mSLDZa7h9cNV1ltHkn+sJ/phF1HDOKh3KqyquAr4egP
-mGzkNOb5YUWbjvehFFdjmBl3lndmZhO/pmdkO62ZiiW9rz7vEvg=
-=F7IR
------END PGP SIGNATURE-----
-
---mlyup23rdoovk4qd--
