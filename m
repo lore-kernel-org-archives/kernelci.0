@@ -1,62 +1,113 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EC4811F7
-	for <kernelci@lists.linux.dev>; Fri, 20 Sep 2024 12:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726836331; cv=pass; b=WhE26GgUIkG4EcIjPtiCrlL2nUCspWS8Trh9TIXbH8DdLJCd4e1+jxaQGDwYlkOElKnhOHKhs6omQxea2qmzs3xEfcpRvEl5oWmLjAWBUXSuBbk+jPikvuhI3Hc78BKqXrhtkhxGrhhnlvaW3SXsWxkFYeJhVVXBFgL5PXnvSBI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726836331; c=relaxed/simple;
-	bh=bvrYHhQzl5C8ZE1rgVaUClb/0mhD2k8tS6HhnzLe81o=;
-	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type; b=Nlyb7gBh1HMbbn86IaX3/UxvSSYOdzw9IAzj2zgebX9YW76vWM/UbJ7M+EcRbF7BZ1khnXwHpcabpKTnxJR4wKXaE0cgdvExTGL2NNv9YrJYa1LDRV20/PZqMs0moxDGXUm1XrDn2+D/EXCz2qBK8s54e1tTFs3gyTWZPy87jcA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=helen.koike@collabora.com header.b=T+Vq/rOV; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587D2194A54
+	for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 10:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727086081; cv=none; b=kbwD04zxfXfrezURGZaCm4FsoLnjjx092IJtlNA4bwIPAXncSYbCVIfV8Zw+GEDsA6xzYevXdybgher9/gdgnmRPFntO24AC3uwfDgfgtIHbcCwygh7YvEyjdVzfDOS6BRDb2spePe3jsnpjchgmgLO16xOfX2tOYgL+PnuCB/0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727086081; c=relaxed/simple;
+	bh=rtI+WHqQTHTw6Sd2Xg7IYxsZbOCEY2/C5Bt/8zVVZQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=sW/L7sA+7hAdd39w6zAurWU2UaU/9latbPy24nSjryto9fpIIFKEb/NIdIUf2c4oyaWruqssADwhugj6MlUpvUPEC923kSVigGcxzgY71RGaFLkj/4Er+CG4C5+ATFV42Y8l9454SSm3lGGYlrdC+7EdsTSixavJfjn3Q/F9Eo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A1GlZl1y; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=helen.koike@collabora.com header.b="T+Vq/rOV"
-ARC-Seal: i=1; a=rsa-sha256; t=1726836327; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gxS5t01X5HZXEBFN1HQ450l5Xchv3R4731ieV/qOQUr3u00hfqICm4XEM/3Y6MypggQ6WaUjmVPSHmYxUag8+FiffdFCNibEzR6JokII7onFFuC8KmDNR6Njl+6/uhSj2p/Vg4qh90b/pr6cSYeZE2jzajPubk0xPSdCJybAuoA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1726836327; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=bvrYHhQzl5C8ZE1rgVaUClb/0mhD2k8tS6HhnzLe81o=; 
-	b=Fl2AGSTRKN7raBrP2A2CUx6CsiJrOrF3TCHgSqe1/Z6b/q7A0IRDjcGspiDrnD0oOq3IfVIxhLHAWVPOKC1py/94x947fJv+J1wDyik3XZMUIK9zYa/MWTEqyQplj9FHa7pOjucrSp9oOow8hV5h/e2DVK87Ybe4/I/U+YtvZ/8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=helen.koike@collabora.com;
-	dmarc=pass header.from=<helen.koike@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1726836327;
-	s=zohomail; d=collabora.com; i=helen.koike@collabora.com;
-	h=Date:Date:From:From:To:To:Message-ID:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=bvrYHhQzl5C8ZE1rgVaUClb/0mhD2k8tS6HhnzLe81o=;
-	b=T+Vq/rOVgHWCepRuieTinaK7iWWtfeThBq5BI6ovoKeyZF492cCyYQOSTGw/XPO9
-	7ZtZ3qyaidOe9yOtUniWDhQfUtRQk5hUdYohhtBAvCSES7CDfiSXWSW0wd1d9AkgTM8
-	CxPP+3ImG99ahYasicIBXz/1Lz5YlBxsej2YnOB8=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1726836325558637.9458419690432; Fri, 20 Sep 2024 05:45:25 -0700 (PDT)
-Date: Fri, 20 Sep 2024 09:45:25 -0300
-From: Helen Mae Koike Fornazier <helen.koike@collabora.com>
-To: "kernelci" <kernelci@lists.linux.dev>
-Message-ID: <1920f773c71.b5f38e34367952.5923016543929330876@collabora.com>
-Subject: Meeting about KCI Gitlab, KernelCI integration and testing catalog
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A1GlZl1y"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cb1758e41so32483385e9.1
+        for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 03:08:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727086078; x=1727690878; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rtI+WHqQTHTw6Sd2Xg7IYxsZbOCEY2/C5Bt/8zVVZQ4=;
+        b=A1GlZl1ymPk7sw6gIYQFptgFM8lVG+pAkcum6+V6sPlNB4CktU/HtdKqps++6CjoIt
+         zNzowvJRGI2+xkmaICOnYZNEUMzuSs399uiyZKmt8oj6tT4WaczjIyn2FJEDnWVfmqzN
+         ZCTWQTjBWrh6Y13Dp/SGYuj6vXLdN1kDNICIb5t8RURz/TxBxUYhkqHp3GWxa1sSTCKh
+         Ba8pF3bBMm2O4yzGZT/iX8zBk1fOemTqDJLRPuwEzips/ZaMZ1jdmwyvOTgfENLbSrfY
+         X3XVO9jsl5LBhNTgbOaDsDqVXQZUDvt1UGxe4t6wIjCCYYHQRXcY+4ILMzWZ+jbhT49Y
+         RzGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727086078; x=1727690878;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rtI+WHqQTHTw6Sd2Xg7IYxsZbOCEY2/C5Bt/8zVVZQ4=;
+        b=X1JTXcppNsEx9ExVmHNiAoT7b4kli/jkV4MvKwi8h9jBqUL4AhaaSqwHiwt+sq9Fij
+         NPP11MAAuLVr/W59KlUVJ3WvAnLtYbFJYlNNuXls/M4uwou+6DSCPWFFNHKBgTHOI1K+
+         IxZjuXnhL6W0o7wTIik3CeoHOzJOKVH3XbxyRyPjGlXa590ODNxtPZAqAoCTFjTpBVOv
+         SOG4IRzc2fjwy443ZTC9G8cBjFIApkXvECGkddYZKH/Oqe4xN6Z2Ycv3loLGj2sZHNTL
+         hR6+VK33egIeyDShfNxLes+TqrOEqOyNa07HaYkqq0J4fFWG/KGDasng192wMKPhSVcX
+         7PPw==
+X-Gm-Message-State: AOJu0YwyQMLmdTdQrbBcFjCkVwr3dkV2OqDw0uVnYicouqRo2+ZN1tDP
+	oI/mrFHDn/QhUdkMsCQU5hJJNgG3JFWOWXqA2x8QXx+Lr9RPkbHXWj8Zsg==
+X-Google-Smtp-Source: AGHT+IG3qoFHw0tz8YHGUJ2IlLXyhtq7gnrv4CVrPPVxYukaOOg52wXCjN81+4m2zkXv6IsPY4HoMw==
+X-Received: by 2002:a05:600c:1c04:b0:428:1b0d:8657 with SMTP id 5b1f17b1804b1-42e7ad8e706mr81160955e9.22.1727086078042;
+        Mon, 23 Sep 2024 03:07:58 -0700 (PDT)
+Received: from orome (p200300e41f147300f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f14:7300:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e754c7580sm122176915e9.47.2024.09.23.03.07.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Sep 2024 03:07:57 -0700 (PDT)
+Date: Mon, 23 Sep 2024 12:07:56 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: kernelci@lists.linux.dev
+Cc: Jon Hunter <jonathanh@nvidia.com>
+Subject: KernelCI DB credentials
+Message-ID: <gw7roxtasg6njfj7xzhgglbbomwuy7ipintlzd2iojpsvlflpp@6vj4aqcoekst>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="mlyup23rdoovk4qd"
+Content-Disposition: inline
 
 
-Hello everyone,
+--mlyup23rdoovk4qd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-We'll have a meeting today (20th of Sep) at 3pm in room 1.34 at Plumbers.
+Hi everyone,
 
-You're welcome to join the discussion!
+I've been looking into ways to contribute the test results from our
+internal Tegra test farms to the KernelCI DB. Following the process
+outlined in the documentation, I'd like to request submission
+credentials.
 
-Helen
+We usually run build and boot tests on various Tegra-based boards on
+linux-next and various stable and mainline builds. In addition, some
+sanity testing beyond just booting is also performed, such as boot log
+analysis and several system-specific tests.
+
+Initially these would be manually submitted, but once this process is
+mature enough we may want to set up our system to automatically send.
+Can we reuse one set of credentials for both or is it better to request
+separate credentials at that time?
+
+Thanks,
+Thierry
+
+--mlyup23rdoovk4qd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmbxPfsACgkQ3SOs138+
+s6Hn3A/9HjAYVylmhUOO5zHSW7yUMFFDgLBc0AhqeFv8zdpMsdtdqo5ek1KXle6s
+ZL9GSM+mE6ORjVyUJwfc+r1eJINc/8n0Kqd9Jg7hif1fXu8jgao7T0LGA8A1lEbI
+4rb67YPGJgyMxqJbWbNFojkKJ0VadeGy+BrbwPfhBCdmYMlY+ksOPHTTdNFXsh2+
+w8vgoAd7L2VAl8iav2QL/+wfOhbu4U+D5TKom2ahsw++9o4dw3It3Roi+wJBW/t+
+1n4uM2ZffRcbj2gZ75zP6dCMVcBijiGOxJKfhxxzMBfLNCyGI5Df0Za9ByuYZb1A
+sIgWm3AnWVjSlkXXcMTAQtANcYpUkDPHB++I6MIey+aFpFHYqtD53dhkR2GW2Un9
+5ygVgLDybsfrLp9g1SmpR1PGCX8qZ0/AJVfhYIXlHe06+jsEK/JM7pB7h+CAKCYH
+yNxodplu8L5TbCzo3OIu9vN4KexejlBF5/cxlErlrH8XfIjHFGFYH0maAKQw+AjY
+Kyyypy3ptrsjp5seKue5GI79t/2V29h0S1drZCcthuFoQ0v/G5vI+k7/WenBU02l
+zBXt0eTgFWUgyvzcHtNR4mSLDZa7h9cNV1ltHkn+sJ/phF1HDOKh3KqyquAr4egP
+mGzkNOb5YUWbjvehFFdjmBl3lndmZhO/pmdkO62ZiiW9rz7vEvg=
+=F7IR
+-----END PGP SIGNATURE-----
+
+--mlyup23rdoovk4qd--
