@@ -1,136 +1,134 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DDC7DA95
-	for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 11:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16ED76410;
+	Thu, 26 Sep 2024 14:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727089648; cv=none; b=YFf1eMj+rUS55m49cJ+vZHyaNdieMol7pWIzUlqoJljz+Zx4RuwpUQ4zZHKAwqsIiKw1YM0W1PhWi5ZUu20/hxMUrQ011C2QNExE2/Cr4DuxKP5UfonTcl9ss8pWQME68sbHwc6+NkqpSESw8dt8kDhYK5YBdOjDCktNJfxwKLM=
+	t=1727360098; cv=none; b=eFxpDnaR1hJeQuyb1GYpgQ/6GjsTyh4FUSjsO6MrBBQeBlP4kgnfuoTqHRusamhup6URweYknEUGuv98LnFIjzLBMBzLD0/GKoEa2fdQGsRGSveo9p4Nzuupp5q9cCvus8FfZX4+G/z5SmhRDuKfMuarmuS+jnh3+LhHnerKA7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727089648; c=relaxed/simple;
-	bh=oi5EljUYeaAqczSgAUsCd+ZDFmFgE9iMitP/mERI3io=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UJvnm3pSEQmQjWw9BePbpKCiMF3IuzHLxAnOFdrIvts3Tz6cwH5O7EBxTX8/PyZZIeC/NpHOjSEUJLwnW3tpMNfX9H8yWn94PsG9X6PME3npd4JR7fMHtHAIIGNBVj6MgS1R4HminmzAdi9oyz6lsNnhneEl82ydoiyodoUdoq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XJmMGjd2; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727360098; c=relaxed/simple;
+	bh=xOYG5RGqxeLQkmMttklxNRWvBmW1y2v3QvsWponf7F8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mnQQ84DsNfPxzK5rpK6NokvasPhQi+B2CaXJ5ptJjxTcRqwY48qSc/gg7PWYy33k5l6jZSR2XMGsGIU7z4XhvkPVlwv8AmA/FRJqbk0VJkXvRhaXQ9vwzQj9LOyhScHBsshNiE18GSYUftZEXVcEMTz2sIIKlfs/gZ9N3oaVQT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4EBY8c8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XJmMGjd2"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42cbe624c59so35591925e9.3
-        for <kernelci@lists.linux.dev>; Mon, 23 Sep 2024 04:07:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727089645; x=1727694445; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oi5EljUYeaAqczSgAUsCd+ZDFmFgE9iMitP/mERI3io=;
-        b=XJmMGjd2i4L+ahVIulWc6QAlQyp7nu2BRS/a5nJoP3aZF4gzuaLbYky2ysuFWMBzAS
-         YWxXlKpRTUg7fvcjoec9TYBeFNZKDW2HRqBynd0A2FABmuKR6CDdrQ2DtWzAFWzJs9Vj
-         BpcvJPj+bVkrqaxzAHcz7UGmSqeKd9cn73BDgyjErEmzfnD8B4a5l+sOBrZaWDHKcOCU
-         +lHnanaAbV2Q+H8Cqbvv+gEdoXYLBXOiz1qVMA/h6y9kkgzekooKXhY7o5GOSk0c+O40
-         6PzOg3m74Gu1/IQKwQW471Ct1ceNk/E9dGrGqaS+1YQKeLYlPEa6r+IUMyqDLd7QwcgL
-         fEZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727089645; x=1727694445;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oi5EljUYeaAqczSgAUsCd+ZDFmFgE9iMitP/mERI3io=;
-        b=UwWOPBYLjxcRQOeyPDaU2jkIv9ocJFJ2QGiXZbD0tN3EtMKVTdA4dnxYLdnrra80Gh
-         u+/Yr9JwFE9Zf6koRc3MrQ78k9bqr5kRHh4wcQiUxA7y+faUuwC3jXo+Q7pMMnwBDD1Y
-         vz9O6uKRqjbpJBElA8gS6G5+MGBLJqc6113XQ+82oQyNggWngpCuKLN2nTWCXulhQCcQ
-         1BNIrnMrhVPzhFejep5i7CUVV7LPAHJ1Y+UPo9rCpyJV2sqy4dGC8SFTsXMTy+WeCZ7c
-         Xlw3qwUFtuTs1hQdBtRVcb/OxPxglIGtsP8bziD/hzl/UVDfABFfx5FhXVMrRzk89iPL
-         d9tw==
-X-Gm-Message-State: AOJu0Yyj3GCtt+Ph5gAFt97NgYXhiC/ipHNZ8rERlwgtGib8Q28aHSej
-	vCZkdh9x/X8A9dvGsAiyjZystAMpRP/fK0/oPqHzAElmohg/oCqoEOEOxQ==
-X-Google-Smtp-Source: AGHT+IGfNDtLEitLzPv91QGovnGshViyCvdJM9a88J8q5S5SDnK8Vj0iAWPcx69GFtTzrFtzgN5Ztg==
-X-Received: by 2002:a05:600c:4ed0:b0:426:64a2:5362 with SMTP id 5b1f17b1804b1-42e7abeda5amr89527355e9.8.1727089645009;
-        Mon, 23 Sep 2024 04:07:25 -0700 (PDT)
-Received: from orome (p200300e41f147300f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f14:7300:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e7afd7490sm98038175e9.28.2024.09.23.04.07.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 04:07:24 -0700 (PDT)
-Date: Mon, 23 Sep 2024 13:07:23 +0200
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-Cc: kernelci@lists.linux.dev, Jon Hunter <jonathanh@nvidia.com>
-Subject: Re: KernelCI DB credentials
-Message-ID: <yr6tydus6dyx7dqucalkwhesck4rh7ibxqyiwt7pah4njk352h@prinuovf2ddf>
-References: <gw7roxtasg6njfj7xzhgglbbomwuy7ipintlzd2iojpsvlflpp@6vj4aqcoekst>
- <60b94fd6-b185-428e-8ce2-c1c1a2b5a4d9@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4EBY8c8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BA2C4CEC5;
+	Thu, 26 Sep 2024 14:14:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727360098;
+	bh=xOYG5RGqxeLQkmMttklxNRWvBmW1y2v3QvsWponf7F8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=P4EBY8c8D7c4iGAO+4T3IyhZDELYEe74LPDGwT7whsmjEfrzXO3cYGW80RNobghBO
+	 AXrNJVPUrSfrhWA8/T4HNZ2hJHbAGMn5XCvmWDUpPpk89h3CxZp3o+laoysO0A3Urk
+	 g4XTmp8gqlReFGM6t4ZFujYiaI/ulOxzado4dbhd0A6PR7hpJcV022Gbl/PetTjZ7o
+	 ohoXaol8K56ZqjAZpbEGK/swko6Rqz0hVnORS3rmcfK3gBMR+k0O2sVtCd4FQkuuD4
+	 +NVkIIXSRlmDbW/9WXt2L/Oraqs3s2LpKPe3GVC5/v/ID3QA3zlHvfXq0y7a2/FbCz
+	 EfOqqPKfp1VsA==
+Date: Thu, 26 Sep 2024 16:14:50 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: "Hecht, Martin (Avnet Silica)" <Martin.Hecht@avnet.eu>
+Cc: Sebastian Fricke <sebastian.fricke@collabora.com>, Hans Verkuil
+ <hverkuil@xs4all.nl>, Linux Media Mailing List
+ <linux-media@vger.kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Tommaso Merciai <tomm.merciai@gmail.com>, Jacopo
+ Mondi <jacopo.mondi@ideasonboard.com>, Benjamin Mugnier
+ <benjamin.mugnier@foss.st.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Ricardo Ribalda
+ <ribalda@chromium.org>, Michael Tretter <m.tretter@pengutronix.de>, Alain
+ Volmat <alain.volmat@foss.st.com>, Sean Young <sean@mess.org>, Steve Cho
+ <stevecho@chromium.org>, Tomasz Figa <tfiga@chromium.org>, Hidenori
+ Kobayashi <hidenorik@chromium.org>, "Hu, Jerry W" <jerry.w.hu@intel.com>,
+ "Suresh Vankadara" <svankada@qti.qualcomm.com>, Devarsh Thakkar
+ <devarsht@ti.com>, "r-donadkar@ti.com" <r-donadkar@ti.com>, Dave Stevenson
+ <dave.stevenson@raspberrypi.com>, Mehdi Djait
+ <mehdi.djait@linux.intel.com>, Nicolas Dufresne <nicolas@ndufresne.ca>,
+ Salahaldeen Altous <salahaldeen.altous@leica-camera.com>,
+ kernelci@lists.linux.dev, Gustavo Padovan <gus@collabora.com>
+Subject: Kernel CI media test - Was: Re: [ANN] Media Summit September 16th:
+ Final Agenda (v7)
+Message-ID: <20240926161450.5022ba06@foz.lan>
+In-Reply-To: <FR4P281MB3434AE7AEB218146C9CD062CFD6C2@FR4P281MB3434.DEUP281.PROD.OUTLOOK.COM>
+References: <98236d10-4024-4b96-a8ce-8e1dc2a34f1b@xs4all.nl>
+	<20240917091744.qltmddftdy7bpgpg@basti-XPS-13-9310>
+	<bb8c09c7-0eae-4e1a-8fb8-e325fcf326df@xs4all.nl>
+	<20240918092454.21884920@sal.lan>
+	<20240918093020.u5rz7qfjoumfezql@basti-XPS-13-9310>
+	<FR4P281MB3434AE7AEB218146C9CD062CFD6C2@FR4P281MB3434.DEUP281.PROD.OUTLOOK.COM>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="t4qlwxlttvsp3poz"
-Content-Disposition: inline
-In-Reply-To: <60b94fd6-b185-428e-8ce2-c1c1a2b5a4d9@redhat.com>
-
-
---t4qlwxlttvsp3poz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 23, 2024 at 01:44:33PM GMT, Nikolai Kondrashov wrote:
-> Hi Thierry,
+Hi Martin,
+
+Em Wed, 25 Sep 2024 22:53:42 +0300
+Laurent Pinchart <laurent.pinchart@ideasonboard.com> escreveu:
+
+> Hi Martin,
 >=20
-> On 9/23/24 1:07 PM, Thierry Reding wrote:
-> > Hi everyone,
+> On Fri, Sep 20, 2024 at 12:16:29PM +0000, Hecht, Martin (Avnet Silica) wr=
+ote:
+> > Hey Hans and Mauro,
 > >=20
-> > I've been looking into ways to contribute the test results from our
-> > internal Tegra test farms to the KernelCI DB. Following the process
-> > outlined in the documentation, I'd like to request submission
-> > credentials.
+> > I remember also on a very little point regarding hardware for testing.
+> > But we didn't go in detail again during the summit.
 > >=20
-> > We usually run build and boot tests on various Tegra-based boards on
-> > linux-next and various stable and mainline builds. In addition, some
-> > sanity testing beyond just booting is also performed, such as boot log
-> > analysis and several system-specific tests.
+> > How do we can go ahead here? Are there some test systems up and
+> > running somewhere centralized or how it is organized right now? =20
 >=20
-> Awesome!
->=20
-> As long as the kernel and test sources you're running are open, you can s=
-end
-> any kernel build and test results.
->=20
-> > Initially these would be manually submitted, but once this process is
-> > mature enough we may want to set up our system to automatically send.
-> > Can we reuse one set of credentials for both or is it better to request
-> > separate credentials at that time?
->=20
-> Sure, you can use the same credentials!
->=20
-> I just sent them to you. I gave you access to submit to playground for no=
-w, so
-> you can figure out how it works. Once you're ready I'll add the production
-> permissions.
+> Testing on real hardware is among our goals, but will require quite som
+> extra work. We will likely need to setup lava labs and integrate them
+> with media-ci. We had a discussion on Friday with kernel-ci developers,
+> and we will probably benefit from ongoing work on their side. I don't
+> think there's a plan to address this on our side in the very short term
+> (mostly due to lack of time, we're currently focusing on getting
+> media-ci up and running and integrated with the maintenance workflow).
 
-Excellent, thank you!
+With regards to integrating Avnet Silica labs for doing CI tests on
+media hardware with upstream kernels, this is something I always wanted.
 
-Thierry
+Yet, as Laurent mentioned, right now we're not doing it directly=20
+(but I guess Collabora is doing it for some media drivers they're=20
+developing).
 
---t4qlwxlttvsp3poz
-Content-Type: application/pgp-signature; name="signature.asc"
+=46rom the discussions I had during LPC and the ones I also had one year
+ago at ELCE, it seems that the best way to do it is by using Kernel CI
+to aggregate results from different test labs.
 
------BEGIN PGP SIGNATURE-----
+The main idea is to use Kernel CI for such purpose.
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmbxS+oACgkQ3SOs138+
-s6HWog//fnhmEjxOnncuwmcu94dqDUALEoSn6euXHjDIihMbMRhjOcmqR2F8Y8qK
-MQsQRHANOqFD8mKFKTQMFBEKFIJ+3RSnQaEnkDdqXBIIuCggrtlkYvafSL7+1a+b
-af+MemGbD1jy/jP4JB6QyFbBKEH8ZO8IUurzfOQXKp4mLllR5Q+QfJ/yairMjf/q
-EzBDTCiak1Y6W/TgpGTf1z3aCa+IsJZP2WfEW7kgP3kV4IEba8uQuBlNY/77uNGi
-KorpLl7NW/vY/fFbdXWZgDygQdbmZR+G3hdu8GQm7j5DFS7fFhwDeuMC751PzKeY
-Q7cUD95RX6pdhACS46Uj4VaOfkllxvBiBW1uyFLg6BlGQHPk89/lH5PP7IPDG86/
-5HqnFrSiPeBDuo29TBmCiCt0BBY1V0WoWXhEYG4N0qiK3Uid/BsjdNaBwBXQQHNC
-2Z84wVEKpElkkboKNSB/IMrvyh+IHHVBH8XPFuDTNgm0l2hkz8p2KibfeaS7qq/N
-ERT4YRrqVuTtJaBUGBrnIOZXmziMJJ2LWw40iAyT9SeYDyhRrsOrwseqSUfzGZjo
-0LjFyzV3Wmb13RGBIM/a3wATRm2YBH6jd3I4VOsG1bTgvJ6/xyt0vc1IiQqq6hyd
-C3TYKPls4uOPmDZjcIow+SDM6YWzwnW2awYmSTzZBFR9Gno1HSE=
-=rNlp
------END PGP SIGNATURE-----
+With such purpose, let's start a separate thread to discuss it together
+with the Kernel CI community.=20
 
---t4qlwxlttvsp3poz--
+So, I'm c/c Kernel CI public ML here and Gustavo Padovan that have been=20
+involved on several efforts related to that. I had some hallway=20
+discussions with him during LPC.
+
+It I recall correctly, we need to is:
+
+1. To define a common test set (probably a subset of what we do=20
+   already for the virtual drivers);
+2. add hardware platforms to Kernel CI infrastructure;
+3. add some logic at Kernel CI to execute the tests at the hardware
+   that will be made available at the labs.
+
+=46rom our discussions during the Media Summit, my understanding is that
+Avnet Silica can help us with that by providing some hardware platforms
+that could be integrated at Kernel CI infra and test real drivers with
+real hardware. If you have someone to spare, maybe you can also contribute
+with (1) and (3).
+
+Anyway, this is just an introduction e-mail with what I captured so far
+to start our discussions.
+
+
+Thanks,
+Mauro
