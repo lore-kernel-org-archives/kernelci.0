@@ -1,155 +1,94 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6871C9EA7
-	for <kernelci@lists.linux.dev>; Tue,  1 Oct 2024 15:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727797456; cv=none; b=EyMwN2EwdaWHjRLnM+12ANuV6x+uMSia1Dwgl+2AKuViDAj4f0J6dtPe3uncaa6M2P2C76oXmfzK8GakT6Vk4MWJZvpY9DyOq7Ayz81ZrWUaoguBOtMKnjBTTlqzXPJWrcm2CxcTYqVwxDR4LfhB74kRFriv8beh4CzP+Pcv9SM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727797456; c=relaxed/simple;
-	bh=uh9EhIRmTQfFlAsmyL3OVDGo/q51it5ueX+NO09uEbc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cg/7eeqdkL4K2JAvQfHlGz3kT8ohmPQvmUun0eLL4UcY5LygRrOgPE0kCyRrgEy753+ceVnF/IWhTOvQS24fPsMmze1QZJiQk5ytknUBStUxVZ1uH3rpaO3Z27NArIbIwkaBbjIMYPbaLzeTnPCAfi4Kp1kYgoVMGbmsEETg/nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=T4xJxuhW; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054D71CB519
+	for <kernelci@lists.linux.dev>; Tue,  1 Oct 2024 16:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727799446; cv=pass; b=ihRGMO4MQ0v9OhbhIiAUiqav370WELBpvf/c+VQtWTHxrKcHZpp3z2PE7wuKl9qLGxVH2vcU2BWn17/hn0SZMNClZrdWkTbRzg4JqzuZsdSLflSk8YhXRgWz4OI73AVmjx5XiQMehtLX/ZZ4+CeulAKPcJJH1BZb2StZwf1lVS4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727799446; c=relaxed/simple;
+	bh=6pwo92hhor9V48K27tAc4wzLwXYI79+05XgJOt5y8G0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=F92daPAkY2vZyPc3mp2hHkOM3uri9aj1jtBaXJmLEbmipTmPgc18RNuuuQWAwYr/pZRQPG1LVx9Ln11hsYThEN2VdvCYzpFodgpe2F8+IIBYDx+OmOlD5cakGckyG1XCvV0n3vJ30sgtrMFh34Voo/sIdMrR63c0QkbuoxrdYpk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=SO/ci/jx; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="T4xJxuhW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1727797451;
-	bh=uh9EhIRmTQfFlAsmyL3OVDGo/q51it5ueX+NO09uEbc=;
-	h=From:Date:Subject:To:Cc:From;
-	b=T4xJxuhWZDmr4RQw/qGKq8YoSdDeaRZSKIJ7crVtLTibbNqgnVmCCQXMIL7s7cxN7
-	 SM2GZadJykWIgbjaosM4l6L6HrcNbx1FK7xzd4OPpbafP22gYF9vAnwSN/yemHtom/
-	 nN68JbmHn/mMLS5gtOcMfGW9e+msWXsRjVMfs7mXZbUfDjGcxBRYUYlipeKXgd1XfQ
-	 MdsldGQz1qxgly7N0Z7k+d366fX7iP1ApsQqX7j5DgfhezKeWIjIO1OUTPe2mzT7Vv
-	 5MLVFYLpPMJmYZRP9FaDkEDY5iEfI30XgsRHlSJDMthv5hBToonOa9SBU3Emx1tXJr
-	 /EJWSIr5UnPFg==
-Received: from [192.168.1.33] (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 62CEC17E0FE4;
-	Tue,  1 Oct 2024 17:44:10 +0200 (CEST)
-From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Date: Tue, 01 Oct 2024 11:43:23 -0400
-Subject: [PATCH] docs: dev-tools: Add documentation for the device focused
- kselftests
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="SO/ci/jx"
+ARC-Seal: i=1; a=rsa-sha256; t=1727799442; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=H0oVzlnyOsI4Vf2IHZMzwvyBI82D0Pqdu3eYYXxliKyhewelk01YorxVW+euuQS03ZTFc8RQ/o37qsgfvnUjRxy7yWPN6lZ/iwseyuZI/EVr/RHkdDp4YB5RLk22HZWtouPM/MP/nlM4Yen9aBtNgnp8iUbPix5aMnYrVz3f9i4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1727799442; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=49bHsrlq/5dRHsYYu6slZH6cb0oLKFoNnrp1ZhvhW8M=; 
+	b=WQutthxj0YtAGgZR1c2pawt3GleggfGJBvhL1Zejb4RgJvfVllt0gKehzXoX8X4OXOnEON5CyvKky68WFy4A2X73CyoxOgcFR00k5o2unE+Q6AGTq+DtTzoNl1WJeX1rimlwtdnRbt24vnhYIda5H7+djOIQwC3mOxJfhFL3+V8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1727799442;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=49bHsrlq/5dRHsYYu6slZH6cb0oLKFoNnrp1ZhvhW8M=;
+	b=SO/ci/jxotMI0F59PotpBPCN7nPcUF97dP7dF4kxPDTAJQDj/pd1Z+weNb7/3wNg
+	9llNv481oOe9Ijt2sEP1pQZXN8tKuloeE7d5f7wXi2vRBDNg+yhjx/cWY/9mDhpqZUL
+	wZp7c1qSOaNOtR3tuF31PrO3wCcb176SuEFDFXxM=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1727799441277876.8785403331386; Tue, 1 Oct 2024 09:17:21 -0700 (PDT)
+Date: Tue, 01 Oct 2024 13:17:21 -0300
+From: Gustavo Padovan <gus@collabora.com>
+To: "Alexandre Ghiti" <alex@ghiti.fr>
+Cc: "kernelci" <kernelci@lists.linux.dev>, "Rafael Sene" <rafael@riscv.org>,
+	"Helen koike" <helen.koike@collabora.com>
+Message-ID: <19248df3764.c59f50b81776107.1655937717841580625@collabora.com>
+In-Reply-To: <82421990-2826-4efc-adbe-8b256e7b4b12@ghiti.fr>
+References: <82421990-2826-4efc-adbe-8b256e7b4b12@ghiti.fr>
+Subject: Re: RISC-V
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAJoY/GYC/x2M0QpAQBAAf0X7bOtWCL8iD9wtNjq6ldTl310ep
- 2YmgnIQVuiyCIFvUTl8AsozsOvoF0ZxiaEwRUnGEG7K+3yxXuiSbhndYRVr24wlEZl2qiC1Z+B
- Znv/bD+/7ARsAJ4ZnAAAA
-To: Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org, 
- workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernelci@lists.linux.dev, 
- =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-X-Mailer: b4 0.14.1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-Add documentation for the kselftests focused on testing devices and
-point to it from the kselftest documentation. There are multiple tests
-in this category so the aim of this page is to make it clear when to run
-each test.
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
----
-This patch depends on patch "kselftest: devices: Add test to detect
-missing devices" [1], since this patch documents that test.
+Hi Alexandre,
 
-[1] https://lore.kernel.org/all/20240928-kselftest-dev-exist-v2-1-fab07de6b80b@collabora.com
----
- Documentation/dev-tools/kselftest.rst       |  9 ++++++
- Documentation/dev-tools/testing-devices.rst | 47 +++++++++++++++++++++++++++++
- 2 files changed, 56 insertions(+)
+---- On Tue, 01 Oct 2024 12:21:49 -0300 Alexandre Ghiti  wrote ---
 
-diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
-index f3766e326d1e..fdb1df86783a 100644
---- a/Documentation/dev-tools/kselftest.rst
-+++ b/Documentation/dev-tools/kselftest.rst
-@@ -31,6 +31,15 @@ kselftest runs as a userspace process.  Tests that can be written/run in
- userspace may wish to use the `Test Harness`_.  Tests that need to be
- run in kernel space may wish to use a `Test Module`_.
- 
-+Documentation on the tests
-+==========================
-+
-+For documentation on the kselftests themselves, see:
-+
-+.. toctree::
-+
-+   testing-devices
-+
- Running the selftests (hotplug tests are run in limited mode)
- =============================================================
- 
-diff --git a/Documentation/dev-tools/testing-devices.rst b/Documentation/dev-tools/testing-devices.rst
-new file mode 100644
-index 000000000000..ab26adb99051
---- /dev/null
-+++ b/Documentation/dev-tools/testing-devices.rst
-@@ -0,0 +1,47 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. Copyright (c) 2024 Collabora Ltd
-+
-+=============================
-+Device testing with kselftest
-+=============================
-+
-+
-+There are a few different kselftests available for testing devices generically,
-+with some overlap in coverage and different requirements. This document aims to
-+give an overview of each one.
-+
-+Note: Paths in this document are relative to the kselftest folder
-+(``tools/testing/selftests``).
-+
-+Device oriented kselftests:
-+
-+* Devicetree (``dt``)
-+
-+  * **Coverage**: Probe status for devices described in Devicetree
-+  * **Requirements**: None
-+
-+* Error logs (``devices/error_logs``)
-+
-+  * **Coverage**: Error (or more critical) log messages presence coming from any
-+    device
-+  * **Requirements**: None
-+
-+* Discoverable bus (``devices/probe``)
-+
-+  * **Coverage**: Presence and probe status of USB or PCI devices that have been
-+    described in the reference file
-+  * **Requirements**: Manually describe the devices that should be tested in a
-+    YAML reference file (see ``devices/probe/boards/google,spherion.yaml`` for
-+    an example)
-+
-+* Exist (``devices/exist``)
-+
-+  * **Coverage**: Presence of all devices
-+  * **Requirements**: Generate the reference (see ``devices/exist/README.rst``
-+    for details) on a known-good kernel
-+
-+Therefore, the suggestion is to enable the error log and devicetree tests on all
-+(DT-based) platforms, since they don't have any requirements. Then to greatly
-+improve coverage, generate the reference for each platform and enable the exist
-+test. The discoverable bus test can be used to verify the probe status of
-+specific USB or PCI devices, but is probably not worth it for most cases.
+ > Hi everyone, 
+ >  
+ > We (the RISC-V community) are looking for improving our CIs that are 
+ > currently spread over all the RISC-V companies, mostly private and very 
+ > incomplete. 
 
----
-base-commit: cea5425829f77e476b03702426f6b3701299b925
-change-id: 20241001-kselftest-device-docs-6c8a411109b5
+That is great to hear!  We have other hardware vendors coming to KernelCI with the same wishes of improving CI overall.
 
-Best regards,
--- 
-Nícolas F. R. A. Prado <nfraprado@collabora.com>
+ >  
+ > I only found one RISC-V build in kernelci, can I do something to help 
+ > adding a better RISC-V support?
+
+YES!
+
+First of all, we can enable more kernel trees and kernel configs in the maestro system.
+That would give you wider build coverage. If you have a list of configs we can work on adding these.
+- https://docs.kernelci.org/kernel-community/
+
+Then, we have to look at running these kernel on actual RISC-V devices. We can get RISC-V devices in KernelCI through a maestro lab, either through some of the existing labs or setting up a dedicated lab. Cc'ing Rafael from RISC-V as we discussed that already.
+- https://docs.kernelci.org/labs/
+
+Another way, that could be relatively easy if you have a CI setup already, is to get the results of the current CIs in the RISC-V ecosystem into KCIDB (as long as you area running fully Open Source software in those tests).
+- https://docs.kernelci.org/kcidb/
+
+Let us know how does that sound to you. We would happy to learn more about the ways we can make this work and chat more with you.
+
+Best,
+
+- Gus
 
