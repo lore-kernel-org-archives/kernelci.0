@@ -1,141 +1,182 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F224B1C9DCD
-	for <kernelci@lists.linux.dev>; Tue,  1 Oct 2024 16:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDDA78C76
+	for <kernelci@lists.linux.dev>; Wed,  2 Oct 2024 18:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727800607; cv=none; b=hWDiBFK4y7XH6fa6T4xUBJW4cd0L+xNqZNu9EuMKtychp0cD5hgpaK/iULc6npKvYihzN71ukU4jpL5SWg4LEwsoHJTgXKPNE/d/A27ocQJh2nn5szNGWx+FkcFI0OHjdGkjsgtGj/W0S/v5IbAQFwzlkqo0sCcctIfL6oi7btE=
+	t=1727892015; cv=none; b=DPihDKU5UqSeIgIkb8qxUuLQ281up/TY5Y6LDQYjAJMDvUKyYTVbF4VCr9e65hECi5YyWFn8/iggjjscy36hBjFR3FmpUIyJnFJyGIoUkanJVJKFgtpUB956F5kaxZgayfp9P70IP7dfJMfDH8FQUvuN34Xu5ICbL/P+u4QZbo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727800607; c=relaxed/simple;
-	bh=OUjhRE+pjFQCuzl79pYdApZXQrqCwgWS0jVzsFG5PBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GP2OG1C/AJ3yjxJF44UzNjKaPotOOzjZwPcyQARSM3fFGLegPfaoM4pKKxL2LRa0wk+jaP456S1L1x2wz7OS62jOku3LRzs2tBpq6RISTAFQsjVKbgxJqiYdyUFzq7/yTuUV6AzQ079jjaD5WtSofl/OzsH7XMkzKfU1WX/RPfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=himxzGIV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727892015; c=relaxed/simple;
+	bh=VXOOUNdnAEhPqciXyVZksZiXTp0bQQtRDANzdI1gkBA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SyTzyjt8jU9l91tN84/1VLkdQcrEjPy8Z0dWU+YK0BwHTWLfa9r3tQ/vADTim0srP1QkIdcbPYcmWqcF7X3chycjOM4DGmn0NHrvAqTC41MX/qfv2HBrmCkkDoqY2JsllBPPwA2hsxvdgmiqblgRat6u/FCB/lBKExRpd4+kYkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMifu8Hw; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="himxzGIV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727800605;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5qChfFfhCEbj0UIjHeyX5+YBnDdJO2bfz/aq7uWDaAg=;
-	b=himxzGIVqdJ1tkYqDIxnEi363Rw8EglE1lVUhS0IKEmIGLF1m91dAV98RlIz+BUzANTFFG
-	tfT3v2kMba+U/2KtfVxB1N92U61DVwJEGqeg3L9CPX/vTnRA2EyYG2yrD8JJOyQb9TulAq
-	rIMecm1TpR4DHNlvlDbmrzJuKgHwYDA=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-xSGBwWWtM1qpWF2nXbfUHQ-1; Tue, 01 Oct 2024 12:36:43 -0400
-X-MC-Unique: xSGBwWWtM1qpWF2nXbfUHQ-1
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-6db791c42e3so89013817b3.1
-        for <kernelci@lists.linux.dev>; Tue, 01 Oct 2024 09:36:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMifu8Hw"
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-82cdb749598so4259139f.1
+        for <kernelci@lists.linux.dev>; Wed, 02 Oct 2024 11:00:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1727892013; x=1728496813; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=h2ii6GPB8LbcDkdZtu/vEyeCXjQrhQgW3fBbVs7hZZg=;
+        b=DMifu8HwLeIjiRouNVE4LeyKpLOlkA1uJYIgCtWL2zNgKbb1/Wsq/vJeapP35v56YY
+         OenFjr3+GDIrxr/yqwdhHSXcJUmShuN5hMwret8+KMNM72qWgJybG8kK06ENFDntc+R2
+         Kf+Tfod84RLKfs2oDsCvs+i0TEHLQPplOhwA0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727800603; x=1728405403;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5qChfFfhCEbj0UIjHeyX5+YBnDdJO2bfz/aq7uWDaAg=;
-        b=oJQTHNFZRGzVAg8mlmFUT7BoOWsCfDuQtcqO3seH+mE8U1bDqofhM4GvTq7Pn7CEJu
-         wlOurTXRie4ewE+FyMk6HV5R+MiNgZM2XlpTxJM8abtJcfoBUKr5zgU46Hj97G4o2X2U
-         erEc++mRCtJhXt0+hoCeeBkovi1BQQP9OJtXWv2YAKuPh9/1qEnArwdNG5Rl8KAxCxtI
-         fd7cGhYq6F4g2SmEub3kH+XWQfMHGNerKcDbfHP7704UJ4+dfQPo+8yFSSoRZ7qICx97
-         6scWI2gxC0Kpnsj9mUuO7DMgOIVwh3q7SbZX5XGV6pd25AewJfiOMD9CvC7OuKC8N6Wc
-         Meqw==
-X-Forwarded-Encrypted: i=1; AJvYcCViqNLQ7dFMnU0BNbsq/jn08mC71ll2zRZnxKcR+Etgq6Uc/yarl2E+U5q2VVfqikyoYP8lvTn1Ow==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyWtOBO2u1Wve9vIpfy6vXLKWI+5MgSNavAr+ZszmyMDkN1GjnA
-	8wPvY0RI643Qk8Q23CW+hsH1yU4S9CSSF2MmzXdZ8ZSRc3wBw0X3iUBrUAfFud8xcv+mRxE5CYs
-	CG6nb9MaVx3WrUwksj3Ap/nXcS1xDyf0ljsYA1wsh6BudiFqmCWMY2ij1DJnSuHgbebEO3W5Zz/
-	fmB/7FzX39sEccJp4Mpg0JeW995ybJ3Pw=
-X-Received: by 2002:a05:690c:3146:b0:6db:e52f:69f4 with SMTP id 00721157ae682-6e2a2b132b6mr2598607b3.20.1727800603271;
-        Tue, 01 Oct 2024 09:36:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFlSRSFzePKR5AtmR2/edgBsKTUXLPAxyOENt0IzBpafq/CvKvcSXpSRRNx+YAwbas2RDl3cXLvD2FLEgcyb5o=
-X-Received: by 2002:a05:690c:3146:b0:6db:e52f:69f4 with SMTP id
- 00721157ae682-6e2a2b132b6mr2598467b3.20.1727800602941; Tue, 01 Oct 2024
- 09:36:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727892013; x=1728496813;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h2ii6GPB8LbcDkdZtu/vEyeCXjQrhQgW3fBbVs7hZZg=;
+        b=p3ptJJ48OoQSDt2VTQKko3z6akTFRyK+qfsujsIf1Z908TFdVlpkLRFTEcvzL/7yZU
+         eGb/zfTpcWL5Pty+fhGsTlL/vDr9wcApe6lLPnkY4YNLfTSyiVI0cUt1dc2mEKyvPUeZ
+         oBzfGLkIpwAzYJvttMkvwEOk5Yw01njyWM/cJ5z43mNEaxIGref7YSIWjL4StQRVhyKc
+         O2a/AYCZQb1fIGLn9luF/ptUVBXsNt1jAZWn1btMxt28CFTlwNe4Zav8V0LG76PPIn6L
+         8E0Uy8addeF3VRDCGQyFYPfyUpDLWBvBi3TLz4T9V8YfZ8IXoviukIR9+TM7zzgdCRCE
+         gP4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVmk5frEQvtrm5I7QnSwjEF6kKf1kGjo7XWfYHu/pzPr5WpqaZJdHgC/DinldCS0Zf/SabZLKI46g==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzppEaDsQxzI5sNyrmbK2PQXLnYbt83Ehs5M1GCFSnNyKjryxxp
+	V97SfgZOU3Yu5ts0lVJbTyCttjrISmi2LteCuCWL17Up6Jab3rL3wzcK62AJsCU=
+X-Google-Smtp-Source: AGHT+IFZG+oK4eRQhMYCZ+1EA/WngOtJ5AXbNw+nKvg+PAQy26l2faeXkJTKlKwWhIU/wZbdksh8gQ==
+X-Received: by 2002:a05:6e02:1a6c:b0:3a0:9026:3b65 with SMTP id e9e14a558f8ab-3a365954e63mr38914205ab.25.1727892012800;
+        Wed, 02 Oct 2024 11:00:12 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d888835090sm3187850173.15.2024.10.02.11.00.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Oct 2024 11:00:11 -0700 (PDT)
+Message-ID: <0040a842-de9c-4f9c-9d61-c1bfbd010470@linuxfoundation.org>
+Date: Wed, 2 Oct 2024 12:00:10 -0600
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <82421990-2826-4efc-adbe-8b256e7b4b12@ghiti.fr> <19248df3764.c59f50b81776107.1655937717841580625@collabora.com>
-In-Reply-To: <19248df3764.c59f50b81776107.1655937717841580625@collabora.com>
-From: Donald Zickus <dzickus@redhat.com>
-Date: Tue, 1 Oct 2024 12:36:32 -0400
-Message-ID: <CAK18DXbgQcBhia8na9Nn8taTuXtJkJ1d2AvnXO_hELk9wMUSqw@mail.gmail.com>
-Subject: Re: RISC-V
-To: Gustavo Padovan <gus@collabora.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, kernelci <kernelci@lists.linux.dev>, 
-	Rafael Sene <rafael@riscv.org>, Helen koike <helen.koike@collabora.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: dev-tools: Add documentation for the device focused
+ kselftests
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernelci@lists.linux.dev,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Alexandre,
+On 10/1/24 09:43, Nícolas F. R. A. Prado wrote:
+> Add documentation for the kselftests focused on testing devices and
+> point to it from the kselftest documentation. There are multiple tests
+> in this category so the aim of this page is to make it clear when to run
+> each test.
+> 
+> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+> ---
+> This patch depends on patch "kselftest: devices: Add test to detect
+> missing devices" [1], since this patch documents that test.
+> 
+> [1] https://lore.kernel.org/all/20240928-kselftest-dev-exist-v2-1-fab07de6b80b@collabora.com
+> ---
+>   Documentation/dev-tools/kselftest.rst       |  9 ++++++
+>   Documentation/dev-tools/testing-devices.rst | 47 +++++++++++++++++++++++++++++
 
-On Tue, Oct 1, 2024 at 12:31=E2=80=AFPM Gustavo Padovan <gus@collabora.com>=
- wrote:
->
->
-> Hi Alexandre,
->
-> ---- On Tue, 01 Oct 2024 12:21:49 -0300 Alexandre Ghiti  wrote ---
->
->  > Hi everyone,
->  >
->  > We (the RISC-V community) are looking for improving our CIs that are
->  > currently spread over all the RISC-V companies, mostly private and ver=
-y
->  > incomplete.
->
-> That is great to hear!  We have other hardware vendors coming to KernelCI=
- with the same wishes of improving CI overall.
->
->  >
->  > I only found one RISC-V build in kernelci, can I do something to help
->  > adding a better RISC-V support?
->
-> YES!
->
-> First of all, we can enable more kernel trees and kernel configs in the m=
-aestro system.
-> That would give you wider build coverage. If you have a list of configs w=
-e can work on adding these.
-> - https://docs.kernelci.org/kernel-community/
->
-> Then, we have to look at running these kernel on actual RISC-V devices. W=
-e can get RISC-V devices in KernelCI through a maestro lab, either through =
-some of the existing labs or setting up a dedicated lab. Cc'ing Rafael from=
- RISC-V as we discussed that already.
-> - https://docs.kernelci.org/labs/
->
-> Another way, that could be relatively easy if you have a CI setup already=
-, is to get the results of the current CIs in the RISC-V ecosystem into KCI=
-DB (as long as you area running fully Open Source software in those tests).
-> - https://docs.kernelci.org/kcidb/
->
-> Let us know how does that sound to you. We would happy to learn more abou=
-t the ways we can make this work and chat more with you.
+The new file needs to be added to Documentation/dev-tools/index.rst
 
-In addition to everything Gustavo mentioned above, Red Hat's Fedora
-project can be another path as it uses CKI to do some CI testing and
-submit results to the same KCIDB mentioned above.  I believe Red Hat
-already has folks in the RISC-V community working on getting the
-hardware enabled on Fedora and possibly RHEL.  Just another option.
-Either way works or both!
+Docs make should have warned about this?
 
-Cheers,
-Don
+>   2 files changed, 56 insertions(+)
+> 
+> diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
+> index f3766e326d1e..fdb1df86783a 100644
+> --- a/Documentation/dev-tools/kselftest.rst
+> +++ b/Documentation/dev-tools/kselftest.rst
+> @@ -31,6 +31,15 @@ kselftest runs as a userspace process.  Tests that can be written/run in
+>   userspace may wish to use the `Test Harness`_.  Tests that need to be
+>   run in kernel space may wish to use a `Test Module`_.
+>   
+> +Documentation on the tests
+> +==========================
+> +
+> +For documentation on the kselftests themselves, see:
+> +
+> +.. toctree::
+> +
+> +   testing-devices
+> +
+>   Running the selftests (hotplug tests are run in limited mode)
+>   =============================================================
+>   
+> diff --git a/Documentation/dev-tools/testing-devices.rst b/Documentation/dev-tools/testing-devices.rst
+> new file mode 100644
+> index 000000000000..ab26adb99051
+> --- /dev/null
+> +++ b/Documentation/dev-tools/testing-devices.rst
+> @@ -0,0 +1,47 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +.. Copyright (c) 2024 Collabora Ltd
+> +
+> +=============================
+> +Device testing with kselftest
+> +=============================
+> +
 
->
-> Best,
->
-> - Gus
->
->
+Get rid of the extra blank line.
 
+> +
+> +There are a few different kselftests available for testing devices generically,
+> +with some overlap in coverage and different requirements. This document aims to
+> +give an overview of each one.
+> +
+> +Note: Paths in this document are relative to the kselftest folder
+> +(``tools/testing/selftests``).
+> +
+> +Device oriented kselftests:
+> +
+> +* Devicetree (``dt``)
+> +
+> +  * **Coverage**: Probe status for devices described in Devicetree
+> +  * **Requirements**: None
+> +
+> +* Error logs (``devices/error_logs``)
+> +
+> +  * **Coverage**: Error (or more critical) log messages presence coming from any
+> +    device
+> +  * **Requirements**: None
+> +
+> +* Discoverable bus (``devices/probe``)
+> +
+> +  * **Coverage**: Presence and probe status of USB or PCI devices that have been
+> +    described in the reference file
+> +  * **Requirements**: Manually describe the devices that should be tested in a
+> +    YAML reference file (see ``devices/probe/boards/google,spherion.yaml`` for
+> +    an example)
+> +
+> +* Exist (``devices/exist``)
+> +
+> +  * **Coverage**: Presence of all devices
+> +  * **Requirements**: Generate the reference (see ``devices/exist/README.rst``
+> +    for details) on a known-good kernel
+> +
+> +Therefore, the suggestion is to enable the error log and devicetree tests on all
+> +(DT-based) platforms, since they don't have any requirements. Then to greatly
+> +improve coverage, generate the reference for each platform and enable the exist
+> +test. The discoverable bus test can be used to verify the probe status of
+> +specific USB or PCI devices, but is probably not worth it for most cases.
+> 
+> ---
+> base-commit: cea5425829f77e476b03702426f6b3701299b925
+> change-id: 20241001-kselftest-device-docs-6c8a411109b5
+> 
+> Best regards,
+
+thanks,
+-- Shuah
