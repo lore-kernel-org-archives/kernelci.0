@@ -1,70 +1,97 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B5550A63
-	for <kernelci@lists.linux.dev>; Fri,  4 Oct 2024 17:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3EA1D9683
+	for <kernelci@lists.linux.dev>; Fri,  4 Oct 2024 19:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728063431; cv=none; b=chwsZPg4E8uZFvI+t0tEYUG40D2bRcCH0+sQewHof/xPfuwupbz53206EzjYTSmXxcx9sTFUYcOlxMV9tsAzXZ1s0maGVAxJ7WimlEFnlWVrv2Jx7T0Mrz+2Z5AK6Zpne1/toQQ5fvtcdXXQ75Uycvw8f9Kr3z39K6iJ9z1T4RM=
+	t=1728069690; cv=none; b=FvkLuahbqr+lJCxA8lsn3zanKSj/HJmz60DQXDlPLyFVh+XIVkNOnx7HvqAUB9qDNstQiSjNk3hkm37OdiOUa3p+n+QxBl/KRSmC9UwgYPx7cCLe1/tW8Aoh4OLOL2UGHmnBNBWh/vjKm5jLtceOI4w3PbOagJwJpp+8Ap3NwF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728063431; c=relaxed/simple;
-	bh=Rp57pMGyAcU9nt9TEmfZs9lMFXdF3AL13y1sIqxt0jw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qZTGB6EmIPhk+wc4nwIkLHaEpWjcLAhtRPVEcQBP2D6vgqnuEiZPHl8vl3JFw44BZujEH68Pk3H0I1auOQRS4gZaYVGcHCZ8+28UmpRE4JaoM4580fGTDhV2oJxef4balb4IKpC0ojCcGMZ5RoHrp4y9y03+HMredpVDjKsiAGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=Mhj16Aad; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1728069690; c=relaxed/simple;
+	bh=fVEBfxSyDVlc0EpJfy5QcSEdCXKTPrX7H/6owJNViQ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Iox7udfUTgyTzxBPN8AWPM/RG6qh7WtW2Ca58/Z6D/AqacigvT+b/srx7VOZEP9o8SKehYnJQRmT5YfOrzDT/abIWNRnb2y+C4YTEJG9g6YWhZDjhoG/IlZU+vq3KlIxys/9lImUPEtx4VXKM5Pj3qqNakK6jfdRgzg6X1QNcp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N81UNnMT; arc=none smtp.client-ip=209.85.166.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="Mhj16Aad"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 4963841043
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1728063423; bh=Rp57pMGyAcU9nt9TEmfZs9lMFXdF3AL13y1sIqxt0jw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Mhj16AadZP7RomdIpj5dg+10RMHWhF8r7BbPSO2sBURlkqPLBIi9hdu3Zk35Rr7HG
-	 ogjKSp1JC9n93TMEglqicv9/j9+7EQ0pwzCij8mhisUmQoFZS8BPQglx28baH3v9JO
-	 pFB5Pe5zHPsNiihluDVq65AVCCV5MSEQnx6VonvFe3La+7dBpRZ+FZbUcUXu6hdw3h
-	 5eZQ73jQhC0ocQUAk3D88kndYPt9RKOJ+KY022z9waveHuhRkHZafVzXrpa+YSRnEG
-	 bwKV+WGFvLPleDbqhxdiQEJDMiCcNv80Jr/esR5KOvi0BoESRCJy/maF5SZ+e5fnTO
-	 Xp8gmM4A8G2MA==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 4963841043;
-	Fri,  4 Oct 2024 17:37:00 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Shuah Khan <skhan@linuxfoundation.org>, =?utf-8?Q?N=C3=ADcolas_F=2E_R?=
- =?utf-8?Q?=2E_A=2E_Prado?=
- <nfraprado@collabora.com>
-Cc: Shuah Khan <shuah@kernel.org>, kernel@collabora.com,
- linux-kselftest@vger.kernel.org, workflows@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernelci@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH] docs: dev-tools: Add documentation for the device
- focused kselftests
-In-Reply-To: <e3602786-d656-40ae-9e22-0e8195d33f0f@linuxfoundation.org>
-References: <20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com>
- <0040a842-de9c-4f9c-9d61-c1bfbd010470@linuxfoundation.org>
- <ef428a44-783c-43c3-81c6-9abf88ae8949@notapiano>
- <e3602786-d656-40ae-9e22-0e8195d33f0f@linuxfoundation.org>
-Date: Fri, 04 Oct 2024 11:36:51 -0600
-Message-ID: <87ldz33h3g.fsf@trenco.lwn.net>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N81UNnMT"
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3a27638f868so10211345ab.2
+        for <kernelci@lists.linux.dev>; Fri, 04 Oct 2024 12:21:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1728069688; x=1728674488; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c5m87vTHE++8UIJNUrbgN2K2EeqcMpq6wjqepk0fGDo=;
+        b=N81UNnMTYJA0uhBh3H+PxlsLO1DSIoMIwsfabZKePWvvlvQQac3o/1/u2c5E4VFkP5
+         c2k1R8RJzYUteFaK8/bRRTdd6c7JtDL3/9rRk/4sh8lQKZjrAMYsBbkbFKYy4pBhjCJS
+         slH0bSRbwYpadvbZ5kuOQhmfMU9NYc24bf4uM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728069688; x=1728674488;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c5m87vTHE++8UIJNUrbgN2K2EeqcMpq6wjqepk0fGDo=;
+        b=vnvTn0MgIdMGRSrEq3z6P35G7y3rJhkXg7VN/NQUPI+lJHOb9sQMY2wBFV5BTqQbjm
+         UG69Tr0nGPj16MwwVYz2UO8jCXSKdp4jyobKSIrBm2FTvTxLKjgm9ylzlogUz+hGbKi/
+         uvu2Ae/nkZs73HQEC2eBnKjdp0IkkuxFqfHX1rPw1pUIToq49vmU0DTfVerZ5C0C1Ybt
+         I6dBAQYSAwPmEpbVl/oBePnSopPxQICW/2TMmehsseK371il+p8xqxARL0BO218c/swT
+         dmqsBTFJTg2vfuQrgrgERanPEbl1B5Yh+QIsP4Y8yiMCp1GMFlfnaQLuTtdPXaYPVPO+
+         DGDg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXPAQQHMY43tFNy7p4Azc0WBK/zQ7jtJmSKNtib5B60M8vh1cVMCLbGt7JzKnq0UsN5ybbMhKa7g==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy7DQ/0N4nWkIhbKM+xzTuoplgUCuQqX8amFqNxeZxIpwlmcuZF
+	fyPzvKoGl+ZFU8lhxLjZLtvTmMXUxfa3wX8w5aJQaKlCZagzyato8fn0lLeTyzs=
+X-Google-Smtp-Source: AGHT+IHB9Cfcv2Wdm+1ezrAxG7L3TnJZuWABNHgrPxjVCcI+GkBmPYJoLNEarQtWr0dK+x5QB4T06A==
+X-Received: by 2002:a05:6e02:1561:b0:39f:5521:2cd4 with SMTP id e9e14a558f8ab-3a375bf8c2fmr41012735ab.26.1728069688147;
+        Fri, 04 Oct 2024 12:21:28 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3a37a87510csm942265ab.79.2024.10.04.12.21.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Oct 2024 12:21:27 -0700 (PDT)
+Message-ID: <f5e004d8-3b90-4697-a2db-4f9dc29b70e9@linuxfoundation.org>
+Date: Fri, 4 Oct 2024 13:21:26 -0600
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: dev-tools: Add documentation for the device focused
+ kselftests
+To: Jonathan Corbet <corbet@lwn.net>,
+ =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>, kernel@collabora.com,
+ linux-kselftest@vger.kernel.org, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernelci@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
+References: <20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com>
+ <0040a842-de9c-4f9c-9d61-c1bfbd010470@linuxfoundation.org>
+ <ef428a44-783c-43c3-81c6-9abf88ae8949@notapiano>
+ <e3602786-d656-40ae-9e22-0e8195d33f0f@linuxfoundation.org>
+ <87ldz33h3g.fsf@trenco.lwn.net>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <87ldz33h3g.fsf@trenco.lwn.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Shuah Khan <skhan@linuxfoundation.org> writes:
+On 10/4/24 11:36, Jonathan Corbet wrote:
+> Shuah Khan <skhan@linuxfoundation.org> writes:
+> 
+>> Jon, Let me know if you would like me to take this through kselftest
+>> tree.
+> 
+> I'm happy either way - go ahead and grab it if you like, just let me
 
-> Jon, Let me know if you would like me to take this through kselftest
-> tree.
+> know.
+> 
+> Thanks,
+> 
+> jon
 
-I'm happy either way - go ahead and grab it if you like, just let me
-know.
+Applied to linux-kselftest next for Linux 6.13-rc1.
 
-Thanks,
-
-jon
+thanks,
+-- Shuah
