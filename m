@@ -1,134 +1,119 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A04719F409
-	for <kernelci@lists.linux.dev>; Thu,  3 Oct 2024 14:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9121E378D
+	for <kernelci@lists.linux.dev>; Fri,  4 Oct 2024 17:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727966482; cv=none; b=Jz37GXJtkQDCmygqNUWHR3hB0diFheeTcBMZmBnX4m/vMc68WMFEiVebiWRk8d6EaIKwkzPpcZImZrWEkRdPfcS6Uxc4+lWg3o1R7eGZtBTf1uIzeZS32a0Z6fvkrgbsBZQJZs90wN2JGy3bfUANM5kV0D72GY5rcVvkwubKVNE=
+	t=1728062581; cv=none; b=CLFccO6BbW0bcKmUrIeZpdsx8lIlB94sftGw2rQO+xd+FfE22t9eHMMl0VZeGozkSQJUBm51uKYB9YYTHWjPyEhzLsZKOe74mjfnPvf/PjB0Rn2J0OORtgOFF+VxbcR/RoIje2R8jyUMzPwOUpbMJ4pvdnwHPncbISjLvDO/tdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727966482; c=relaxed/simple;
-	bh=3KUgYZAvBROUVRlj9xA2dwDZBFvPABlTt1AcVlOUlXo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JPZ3YUxA8dCErl3QbbzWs9xqyVIiZXPt5Z6zvZW8MUIqsZJJzkVVOGMHWElJ7kGShZXZnzptwVFz6d9WSv/tpXSBfLs9yHIdyug9sNGn6h+nCUkGE3I7Nt/7pAv9PVyF6BmEznw2hJ3EX6mG4fQtKguLiDtd/nKIYaask80e/i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=K87whl/U; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1728062581; c=relaxed/simple;
+	bh=vkXradS47TZRsD+Tw9Obi8t9ec/M35OKeWU2WxNXipU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CLpfArbTNNOMMH2aftOgBbkLqD4+4cYyRzovB3oMqtMRywu0c2M++t7x1zpOq5pxIgbLBQ3rNoxL3T8QYe2knd0R/RRso6A/czpBeDl6dMaMkqCXD3EpXc9qw4k15OdpbIOwkPcCMsDziiFhVoux4d2U4Pjkgc2NXIqTk4UuxCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNnaeiDs; arc=none smtp.client-ip=209.85.166.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="K87whl/U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1727966477;
-	bh=3KUgYZAvBROUVRlj9xA2dwDZBFvPABlTt1AcVlOUlXo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K87whl/UPgzHZr6nvDL/vuqKx814CKy7hkJumknnGce9dCIjhik4v+dIMtXQybjPq
-	 g1LTU3JFFRJHzEscbD7fO5rzyxZ523HCqxXBREmUknoWVE8wlMFQo37Wm3aYOFdfai
-	 vPuc2gxk9jJKcFWnodnS525rh5AQCsxaktnz/CRVN6AIwFqNzi1WeX+wjJNFkN2++U
-	 XQyL5FsdPu7zzepnx+TJHRPft6ciayl9HhaKhixD6jp5dgMO6ymb0/PZB/Wb7ZdSdJ
-	 Rl08qZuweqXXyWXpGtPaAvnzF/PT5KYZkctKDcm3uk79NzO9QL6GamnNtgbqEutg02
-	 2Uf0cCTO65hdA==
-Received: from notapiano (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3769D17E35FD;
-	Thu,  3 Oct 2024 16:41:16 +0200 (CEST)
-Date: Thu, 3 Oct 2024 10:41:13 -0400
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	kernel@collabora.com, linux-kselftest@vger.kernel.org,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernelci@lists.linux.dev
-Subject: Re: [PATCH] docs: dev-tools: Add documentation for the device
- focused kselftests
-Message-ID: <ef428a44-783c-43c3-81c6-9abf88ae8949@notapiano>
-References: <20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com>
- <0040a842-de9c-4f9c-9d61-c1bfbd010470@linuxfoundation.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNnaeiDs"
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-8323b555ae2so110642239f.2
+        for <kernelci@lists.linux.dev>; Fri, 04 Oct 2024 10:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1728062578; x=1728667378; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UjxtETvebgPu96nn5gAk9Ijr0Fw8D2drEbjhjiJbq5Y=;
+        b=bNnaeiDsgxzKt3mN1QgfGyydLXcGSEfMxIhkoxxkBisjWZ21jjCAB5dp2pM8Sb652a
+         5a79HM+nnLA3mGO7k78hjvYcJY7Vw5grBs9XN0OKNWVvB49J8qbHvjR7++Jr4iBtPsb+
+         gjsFxvd0GMborf1bRArMX0EOfD4gMoAPfULJY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728062578; x=1728667378;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UjxtETvebgPu96nn5gAk9Ijr0Fw8D2drEbjhjiJbq5Y=;
+        b=IFL1GPyDdjtaXR7B//ZIo6Xlv07WUzqi/oOZBJJ///GdvI2oRYUdkxANBV/VqxSpz9
+         Xv+l8T2E4WHo+UaQWae5mdFZaaUX7pOxepJlrivue5OykqJeyGcoXiL2vYSqtfu4ksZW
+         rQudSpuZY4wfXL6cNojmYnuwPMe0ZlKsn87W/yEOK0eIyO+XLe6Z7+jNyLrK/5VmlCxx
+         M3gcA/SK5HxlT7Xj81lf925nhK/4Uf8WXSWarfbXKUt7YsA7fjgmqpxIPYpYJjilH8fw
+         DAtdQSzo4jqwFAgIj1dAAqHLNOwLWZCTNucoCmSsQX6RVqbM6NV9Cy3xoUiKKriJbrLk
+         UgbA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzVUhI3NeeEkogFKilVK7odAhpXU9HRDhFlJKNrLGOmjeYtNkUIf+EfrDthsuNodAUkUPQ86kWLg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYfRJAb/8Z6/0Abgsl5QlNK8V5mWWfBqR8D6qz73cIW8oA900y
+	F5W8yT3f/OQCDrgqrzklmp3Mq8IEUbullDbDItd9t+cRwEVmFYBsLF/COz5bENM=
+X-Google-Smtp-Source: AGHT+IEng1VQK79hPV945GkxjWJmm7jzrP9Wu7f2kokbpX4AGNwAmboL7kqahAU8iEa3xBWgrBpQ0g==
+X-Received: by 2002:a05:6602:6c1c:b0:82d:d07:daaa with SMTP id ca18e2360f4ac-834f7c741d9mr304525239f.4.1728062577959;
+        Fri, 04 Oct 2024 10:22:57 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-83503a92f7bsm4195939f.18.2024.10.04.10.22.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Oct 2024 10:22:57 -0700 (PDT)
+Message-ID: <e3602786-d656-40ae-9e22-0e8195d33f0f@linuxfoundation.org>
+Date: Fri, 4 Oct 2024 11:22:55 -0600
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: dev-tools: Add documentation for the device focused
+ kselftests
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ kernel@collabora.com, linux-kselftest@vger.kernel.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernelci@lists.linux.dev,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com>
+ <0040a842-de9c-4f9c-9d61-c1bfbd010470@linuxfoundation.org>
+ <ef428a44-783c-43c3-81c6-9abf88ae8949@notapiano>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <ef428a44-783c-43c3-81c6-9abf88ae8949@notapiano>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0040a842-de9c-4f9c-9d61-c1bfbd010470@linuxfoundation.org>
 
-On Wed, Oct 02, 2024 at 12:00:10PM -0600, Shuah Khan wrote:
-> On 10/1/24 09:43, Nícolas F. R. A. Prado wrote:
-> > Add documentation for the kselftests focused on testing devices and
-> > point to it from the kselftest documentation. There are multiple tests
-> > in this category so the aim of this page is to make it clear when to run
-> > each test.
-> > 
-> > Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> > ---
-> > This patch depends on patch "kselftest: devices: Add test to detect
-> > missing devices" [1], since this patch documents that test.
-> > 
-> > [1] https://lore.kernel.org/all/20240928-kselftest-dev-exist-v2-1-fab07de6b80b@collabora.com
-> > ---
-> >   Documentation/dev-tools/kselftest.rst       |  9 ++++++
-> >   Documentation/dev-tools/testing-devices.rst | 47 +++++++++++++++++++++++++++++
+On 10/3/24 08:41, NÃ­colas F. R. A. Prado wrote:
+> On Wed, Oct 02, 2024 at 12:00:10PM -0600, Shuah Khan wrote:
+>> On 10/1/24 09:43, NÃ­colas F. R. A. Prado wrote:
+>>> Add documentation for the kselftests focused on testing devices and
+>>> point to it from the kselftest documentation. There are multiple tests
+>>> in this category so the aim of this page is to make it clear when to run
+>>> each test.
+>>>
+>>> Signed-off-by: NÃ­colas F. R. A. Prado <nfraprado@collabora.com>
+>>> ---
+>>> This patch depends on patch "kselftest: devices: Add test to detect
+>>> missing devices" [1], since this patch documents that test.
+>>>
+>>> [1] https://lore.kernel.org/all/20240928-kselftest-dev-exist-v2-1-fab07de6b80b@collabora.com
+>>> ---
+>>>    Documentation/dev-tools/kselftest.rst       |  9 ++++++
+>>>    Documentation/dev-tools/testing-devices.rst | 47 +++++++++++++++++++++++++++++
+>>
+>> The new file needs to be added to Documentation/dev-tools/index.rst
+>>
+>> Docs make should have warned about this?
 > 
-> The new file needs to be added to Documentation/dev-tools/index.rst
+> There is no warning. I have added this new document in a new toctree in the
+> kselftest.rst, as you can see in the hunk below.
 > 
-> Docs make should have warned about this?
 
-There is no warning. I have added this new document in a new toctree in the
-kselftest.rst, as you can see in the hunk below.
+I missed that.
 
-Since this new page is specific to kselftest, I think listing it on the
-kselftest page makes the most sense and will make it easier to find.
-
-Do you want the new file to be listed in both places (ie kselftest.rst and
-index.rst)? It will show up in the index.rst next to kselftest rather than
-inside it.
-
-Another option would be to do like kunit and create a directory for kselftest
-and have an index.rst there to point to both the current kselftest.rst and the
-new document. Structure-wise that would probably be the best approach.
-
+> Since this new page is specific to kselftest, I think listing it on the
+> kselftest page makes the most sense and will make it easier to find.
 > 
-> >   2 files changed, 56 insertions(+)
-> > 
-> > diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
-> > index f3766e326d1e..fdb1df86783a 100644
-> > --- a/Documentation/dev-tools/kselftest.rst
-> > +++ b/Documentation/dev-tools/kselftest.rst
-> > @@ -31,6 +31,15 @@ kselftest runs as a userspace process.  Tests that can be written/run in
-> >   userspace may wish to use the `Test Harness`_.  Tests that need to be
-> >   run in kernel space may wish to use a `Test Module`_.
-> > +Documentation on the tests
-> > +==========================
-> > +
-> > +For documentation on the kselftests themselves, see:
-> > +
-> > +.. toctree::
-> > +
-> > +   testing-devices
-> > +
-> >   Running the selftests (hotplug tests are run in limited mode)
-> >   =============================================================
-> > diff --git a/Documentation/dev-tools/testing-devices.rst b/Documentation/dev-tools/testing-devices.rst
-> > new file mode 100644
-> > index 000000000000..ab26adb99051
-> > --- /dev/null
-> > +++ b/Documentation/dev-tools/testing-devices.rst
-> > @@ -0,0 +1,47 @@
-> > +.. SPDX-License-Identifier: GPL-2.0
-> > +.. Copyright (c) 2024 Collabora Ltd
-> > +
-> > +=============================
-> > +Device testing with kselftest
-> > +=============================
-> > +
-> 
-> Get rid of the extra blank line.
 
-Ack.
+Yes - including it from kselftest makes sense to me.
 
-Thanks,
-Nícolas
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+
+Jon, Let me know if you would like me to take this through kselftest
+tree.
+
+thanks,
+-- Shuah
+
