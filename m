@@ -1,167 +1,113 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D358ED520
-	for <kernelci@lists.linux.dev>; Sat,  5 Oct 2024 14:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C8433CA
+	for <kernelci@lists.linux.dev>; Mon,  7 Oct 2024 09:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728137741; cv=pass; b=BWn0eo7cn7yBW/jS8aIXRjFUIxMJIJccQf7y0E6BxwDiTn5a+nFY+Ss5HTSgpYxt6Zh/5WrmfRJzmrmUjSrmtE8t7MLJutQ8H69CQfTLixvqcUGjZIq+qVuQc7EdZ8/CpQqDDLU8vrlYBJFy3pOCcONfLK7k1GIYFVfetKY3J7M=
+	t=1728294058; cv=pass; b=PeSrUuYtMmnhsGBeIvmJPHOko1TVd5xnfJci4IVBYWFD1VCRd7ZTgFqBULCVSOqCb/uC/tAsbDClBQGBXb4nC+0BUqFH4rkwfQO9wc/R/07j2DRacOCMKZJHTjR0pMdC3U+Z9U7IcnBhIi/imto7qc/4STbTXYV54yZCGPLCucY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728137741; c=relaxed/simple;
-	bh=mHbM+mUp+YWTFV5sQM+Vl5FBCHAS0y9P2+8g5OiwOa0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=LvboPWTjzgizYMfXlMYMscSab0Iyx6HiWzj4PoOUzDZWbAqDEsWTZhw94a1e5vrqCMHYphgeEg5S8/x42OY8SqtWq25gCPRM21B9+4qEyIoxgWcoMAJfCUMrieQX4Lvzn6/Fxhv0xv1RVWOwIKLM6zEFTVRmnYyufcIMiAajrwA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=FHlK55fB; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1728294058; c=relaxed/simple;
+	bh=SwdsTsngSuvz6QeG10QNqbVsW20XU1qVdprd/BgSiQs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NBGLIpaw2TNY80alLPizKKDupdO7oz7eyW58u4ws66uQ7w9K6wKzZEWZogW6ZvQv3Orj7yhkoWvWEkluVZWGfDMRoA5L/SnHV5UN7Z+yip4HaQxTMgNhne03J3dl2rmBN0ZW4ijeFJM3bTatf2f5N2ai8QFx3yKsOIqM5SrxXbw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=fBi7Vgk7; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="FHlK55fB"
-ARC-Seal: i=1; a=rsa-sha256; t=1728137717; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="fBi7Vgk7"
+ARC-Seal: i=1; a=rsa-sha256; t=1728294056; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Aw0VVgvcD2F+94zUjo6pc7HPWBgv53Bxvi3uMJUjDo+KfDkd+Cx2THFqvGyEr9Rph6VUGTFbtCWzfpk8jnEL3NRPZo2IXVL/zD+fN6N1G/mHneZBjKBlGMO9Nq7Tqn8ru11bvqxeeHe7owGg6fHTEWTZmIOJ7O6a9Pnz+me4MV0=
+	b=EFbzVR2KiLoMfc/GCa0cflXGvkw3jIX1UVVIt/1csc5jbZbWEvR4kdZ8YD2qZSda2W/DUShJaYiPdxIVt88aOX6QwzPKgTs5q4U2Kf27jTUUf6+lcNP7iZiEAw5yqsrfuIS06NBWOuctVfYDWcvKeo80g37OSwFeXwqHBNEb7NE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1728137717; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=7H3IQzgccMsNg5tQzZHUe4gV7spyI8nvdr4vDcWL4k4=; 
-	b=OXS53tBOFhXJ2+8mdREOnZrjgjFQ/EqfxD/EjBXJ2NCiPmBj1o+eETsDVXDeTDHCLZ/nQwvMTrHHU7LwBmC1q74M8vzJaM+QFPRZLFlLuXaV6kD4au0ddGubxoSFo1cHYAD3EWELCcAI719UCGRG9mp+HyWHWHOR3qZ3sdOKW/g=
+	t=1728294056; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ia7bVofVVswAbaGXu/q9y8haQ9Yf6IOtNOhLDyMshXg=; 
+	b=FalYJF19k1uNVTGIbMM53fFa0LIClMcBmBemf3Om2VHAQc/cCkaBQPvN/hl7UcavTUnwt6pgZgqKt4tNvHTrOhCZOYBC7wJhN5RMvULV2ahyBwKlWo3BvByn+kBuRyoiNFaCCIidMafCYXmvrV4mdjQA+48NOwp5djd1a7aBEkE=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1728137717;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=7H3IQzgccMsNg5tQzZHUe4gV7spyI8nvdr4vDcWL4k4=;
-	b=FHlK55fBaqSsKXiakCRIqrlA0sP14rMSXFlLKqlnpN3nxJ5VGT5zqWgf36RDIf6a
-	AejcfGhB3amhKhZOCUCimm53ypps5bCdAoz+giAM1bAwIoe6lBd6vlMKh6tnxViXjM7
-	8sRuM5V8uLOpe8QTccaKiqHalZL/XyFczZ4vrJww=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1728137716561624.9577962701924; Sat, 5 Oct 2024 07:15:16 -0700 (PDT)
-Date: Sat, 05 Oct 2024 11:15:16 -0300
-From: Gustavo Padovan <gus@collabora.com>
-To: "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>
-Cc: "Hecht,  Martin" <Martin.Hecht@avnet.eu>,
-	"Sebastian Fricke" <sebastian.fricke@collabora.com>,
-	"Hans Verkuil" <hverkuil@xs4all.nl>,
-	"Linux Media Mailing List" <linux-media@vger.kernel.org>,
-	"Sakari Ailus" <sakari.ailus@linux.intel.com>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	"Mauro Carvalho Chehab" <mchehab@kernel.org>,
-	"Tommaso Merciai" <tomm.merciai@gmail.com>,
-	"Jacopo Mondi" <jacopo.mondi@ideasonboard.com>,
-	"Benjamin Mugnier" <benjamin.mugnier@foss.st.com>,
-	"Laurent Pinchart" <laurent.pinchart@ideasonboard.com>,
-	"Ricardo Ribalda" <ribalda@chromium.org>,
-	"Michael Tretter" <m.tretter@pengutronix.de>,
-	"Alain Volmat" <alain.volmat@foss.st.com>,
-	"Sean Young" <sean@mess.org>, "Steve Cho" <stevecho@chromium.org>,
-	"Tomasz Figa" <tfiga@chromium.org>,
-	"Hidenori Kobayashi" <hidenorik@chromium.org>,
-	"Hu,  Jerry W" <jerry.w.hu@intel.com>,
-	"Suresh Vankadara" <svankada@qti.qualcomm.com>,
-	"Devarsh Thakkar" <devarsht@ti.com>,
-	"r-donadkar@ti.com" <r-donadkar@ti.com>,
-	"Dave Stevenson" <dave.stevenson@raspberrypi.com>,
-	"Mehdi Djait" <mehdi.djait@linux.intel.com>,
-	"Nicolas Dufresne" <nicolas@ndufresne.ca>,
-	"Salahaldeen Altous" <salahaldeen.altous@leica-camera.com>,
-	"kernelci" <kernelci@lists.linux.dev>
-Message-ID: <1925d08e33b.c47247b0327349.1577809225810669681@collabora.com>
-In-Reply-To: <20240926161450.5022ba06@foz.lan>
-References: <98236d10-4024-4b96-a8ce-8e1dc2a34f1b@xs4all.nl>
-	<20240917091744.qltmddftdy7bpgpg@basti-XPS-13-9310>
-	<bb8c09c7-0eae-4e1a-8fb8-e325fcf326df@xs4all.nl>
-	<20240918092454.21884920@sal.lan>
-	<20240918093020.u5rz7qfjoumfezql@basti-XPS-13-9310>
-	<FR4P281MB3434AE7AEB218146C9CD062CFD6C2@FR4P281MB3434.DEUP281.PROD.OUTLOOK.COM> <20240926161450.5022ba06@foz.lan>
-Subject: Re: Kernel CI media test - Was: Re: [ANN] Media Summit September
- 16th: Final Agenda (v7)
+	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
+	dmarc=pass header.from=<laura.nao@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1728294056;
+	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=ia7bVofVVswAbaGXu/q9y8haQ9Yf6IOtNOhLDyMshXg=;
+	b=fBi7Vgk7f/dMR0kEeVBccvi2f61NT6DN0pslF4YZdoyjSco7o5SmmpTdH75lp90C
+	4AQDgztxcs/vrCDqwIPOW4j1PXV3p1RKghqGzkP3BR++rLK/UBlb71EovbJxpqCFNmr
+	wPPGZesOf9O9fKt/tPFsR9TSr6uAR9VtVKl82ero=
+Received: by mx.zohomail.com with SMTPS id 1728294054769331.59808967692425;
+	Mon, 7 Oct 2024 02:40:54 -0700 (PDT)
+From: Laura Nao <laura.nao@collabora.com>
+To: kernelci@lists.linux.dev
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Testing Quality Call notes - 2024-11-03
+Date: Mon,  7 Oct 2024 11:41:22 +0200
+Message-Id: <20241007094122.22023-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
 Hello,
 
+KernelCI is hosting a bi-weekly call on Thursday to discuss improvements
+to existing upstream tests, the development of new tests to increase 
+kernel testing coverage, and the enablement of these tests in KernelCI. 
 
----- On Thu, 26 Sep 2024 11:14:50 -0300 Mauro Carvalho Chehab  wrote ---
+Below is a list of the tests the community has been working on and their 
+latest status updates, as discussed in the last meeting held on 
+2024-11-03:
 
- > Hi Martin, 
- >  
- > Em Wed, 25 Sep 2024 22:53:42 +0300 
- > Laurent Pinchart laurent.pinchart@ideasonboard.com> escreveu: 
- >  
- > > Hi Martin, 
- > > 
- > > On Fri, Sep 20, 2024 at 12:16:29PM +0000, Hecht, Martin (Avnet Silica) wrote: 
- > > > Hey Hans and Mauro, 
- > > > 
- > > > I remember also on a very little point regarding hardware for testing. 
- > > > But we didn't go in detail again during the summit. 
- > > > 
- > > > How do we can go ahead here? Are there some test systems up and 
- > > > running somewhere centralized or how it is organized right now? 
- > > 
- > > Testing on real hardware is among our goals, but will require quite som 
- > > extra work. We will likely need to setup lava labs and integrate them 
- > > with media-ci. We had a discussion on Friday with kernel-ci developers, 
- > > and we will probably benefit from ongoing work on their side. I don't 
- > > think there's a plan to address this on our side in the very short term 
- > > (mostly due to lack of time, we're currently focusing on getting 
- > > media-ci up and running and integrated with the maintenance workflow). 
- >  
- > With regards to integrating Avnet Silica labs for doing CI tests on 
- > media hardware with upstream kernels, this is something I always wanted. 
- >  
- > Yet, as Laurent mentioned, right now we're not doing it directly 
- > (but I guess Collabora is doing it for some media drivers they're 
- > developing). 
- >  
- > From the discussions I had during LPC and the ones I also had one year 
- > ago at ELCE, it seems that the best way to do it is by using Kernel CI 
- > to aggregate results from different test labs. 
- >  
- > The main idea is to use Kernel CI for such purpose. 
- >  
- > With such purpose, let's start a separate thread to discuss it together 
- > with the Kernel CI community. 
- >  
- > So, I'm c/c Kernel CI public ML here and Gustavo Padovan that have been 
- > involved on several efforts related to that. I had some hallway 
- > discussions with him during LPC. 
- >  
- > It I recall correctly, we need to is: 
- >  
- > 1. To define a common test set (probably a subset of what we do 
- >  already for the virtual drivers); 
- > 2. add hardware platforms to Kernel CI infrastructure; 
- > 3. add some logic at Kernel CI to execute the tests at the hardware 
- >  that will be made available at the labs. 
+*Missing devices kselftest*
 
-That is correct. We can connect labs into the KernelCI infrastructure through a
-lab-runtime in maestro or if you have a CI system in place you can just listen
-to tests events generate by KernelCI, execute them and send the results into
-KCIDB for data aggregation as explained by Mauro.
+- Proposing new kselftest to report devices that go missing in the system
+(v2):
+https://lore.kernel.org/all/20240928-kselftest-dev-exist-v2-1-fab07de6b80b@collabora.com/
+- Sent v2 addressing feedback received on the RFCv1 and during the session
+at LPC 2024:
+https://www.youtube.com/live/kcr8NXEbzcg?si=QWBvJAOjj7tg264o&t=11283
 
- >  
- > From our discussions during the Media Summit, my understanding is that 
- > Avnet Silica can help us with that by providing some hardware platforms 
- > that could be integrated at Kernel CI infra and test real drivers with 
- > real hardware. If you have someone to spare, maybe you can also contribute 
- > with (1) and (3). 
- >  
- > Anyway, this is just an introduction e-mail with what I captured so far 
- > to start our discussions.
+*Boot time test*
 
-I'd happy to have a video meeting to look at the details or attend one
-of the Media CI syncs.
+- RFC:
+https://lore.kernel.org/all/20240725110622.96301-1-laura.nao@collabora.com/T/#ma568382acdc81af65c30fe3823a7be3e49f98108
+- Discussed proposal at LPC2024:
+https://www.youtube.com/live/8XQwzUZxLK4?feature=shared&t=16944 
+- Planning on preparing v2, based on feedback received in the session 
+- Suggestions for improvements and additional features include: exploring 
+bootloader tracing via pre-filled ftrace buffers, adding support for 
+specifying variance values on a per-event basis, investigating the use of 
+ftrace histograms for initcalls
 
-Best, 
+*Device testing documentation*
 
-- Gus
+- Patch:
+https://lore.kernel.org/all/20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com/
+- Submitted documentation on device testing, detailing the types of
+kselftests available, their requirements, and the coverage they provide.
+The goal is to guide users in selecting the appropriate tests for their
+devices.
+
+*GPIO test*
+
+- RFC:
+https://lore.kernel.org/all/20240909-kselftest-gpio-set-get-config-v1-0-16a065afc3c1@collabora.com/
+- Proposed a new kselftest to verify the GPIO driver functionality. The
+test uses a YAML-based test plan that specifies the configurations to be
+checked. It sets each pin configuration and retrieves it to ensure they
+match. Currently, the test only verifies bias settings, but it can be
+easily extended to cover additional pin configurations.
+
+Please reply to this thread if you'd like to join the call or discuss any
+of the topics further. We look forward to collaborating with the community
+to improve upstream tests and expand coverage to more areas of interest
+within the kernel.
+
+Best regards,
+
+Laura Nao
+
