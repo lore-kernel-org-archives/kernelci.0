@@ -1,113 +1,103 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C8433CA
-	for <kernelci@lists.linux.dev>; Mon,  7 Oct 2024 09:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728294058; cv=pass; b=PeSrUuYtMmnhsGBeIvmJPHOko1TVd5xnfJci4IVBYWFD1VCRd7ZTgFqBULCVSOqCb/uC/tAsbDClBQGBXb4nC+0BUqFH4rkwfQO9wc/R/07j2DRacOCMKZJHTjR0pMdC3U+Z9U7IcnBhIi/imto7qc/4STbTXYV54yZCGPLCucY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728294058; c=relaxed/simple;
-	bh=SwdsTsngSuvz6QeG10QNqbVsW20XU1qVdprd/BgSiQs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NBGLIpaw2TNY80alLPizKKDupdO7oz7eyW58u4ws66uQ7w9K6wKzZEWZogW6ZvQv3Orj7yhkoWvWEkluVZWGfDMRoA5L/SnHV5UN7Z+yip4HaQxTMgNhne03J3dl2rmBN0ZW4ijeFJM3bTatf2f5N2ai8QFx3yKsOIqM5SrxXbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=fBi7Vgk7; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="fBi7Vgk7"
-ARC-Seal: i=1; a=rsa-sha256; t=1728294056; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=EFbzVR2KiLoMfc/GCa0cflXGvkw3jIX1UVVIt/1csc5jbZbWEvR4kdZ8YD2qZSda2W/DUShJaYiPdxIVt88aOX6QwzPKgTs5q4U2Kf27jTUUf6+lcNP7iZiEAw5yqsrfuIS06NBWOuctVfYDWcvKeo80g37OSwFeXwqHBNEb7NE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1728294056; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ia7bVofVVswAbaGXu/q9y8haQ9Yf6IOtNOhLDyMshXg=; 
-	b=FalYJF19k1uNVTGIbMM53fFa0LIClMcBmBemf3Om2VHAQc/cCkaBQPvN/hl7UcavTUnwt6pgZgqKt4tNvHTrOhCZOYBC7wJhN5RMvULV2ahyBwKlWo3BvByn+kBuRyoiNFaCCIidMafCYXmvrV4mdjQA+48NOwp5djd1a7aBEkE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
-	dmarc=pass header.from=<laura.nao@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1728294056;
-	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=ia7bVofVVswAbaGXu/q9y8haQ9Yf6IOtNOhLDyMshXg=;
-	b=fBi7Vgk7f/dMR0kEeVBccvi2f61NT6DN0pslF4YZdoyjSco7o5SmmpTdH75lp90C
-	4AQDgztxcs/vrCDqwIPOW4j1PXV3p1RKghqGzkP3BR++rLK/UBlb71EovbJxpqCFNmr
-	wPPGZesOf9O9fKt/tPFsR9TSr6uAR9VtVKl82ero=
-Received: by mx.zohomail.com with SMTPS id 1728294054769331.59808967692425;
-	Mon, 7 Oct 2024 02:40:54 -0700 (PDT)
-From: Laura Nao <laura.nao@collabora.com>
-To: kernelci@lists.linux.dev
-Cc: linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Testing Quality Call notes - 2024-11-03
-Date: Mon,  7 Oct 2024 11:41:22 +0200
-Message-Id: <20241007094122.22023-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D892E1A2C32
+	for <kernelci@lists.linux.dev>; Mon, 14 Oct 2024 11:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728903971; cv=none; b=gCNjhttDY8VoYfUapp5NdnDt602/h2y8H06e30Ok79iy/Sx6Far0MLgDxNgVO16E6nvyUToUZn/gOOZApKC1ZUH1ALpuZBQKwr3PNmcuRMcyICh1GQx1jIrTC9rpNZr4H23JlTizJ3WIvIHzCeg2jfdO1IXV+yb3T45n+5sXXuU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728903971; c=relaxed/simple;
+	bh=4vSAaHaZMSlPO4ln9oe4oTDIMdHo6v31ogD6Cgc0VEM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lTTo1UehiS3zcQ24xudowWjHsP/eA+5IOvnQME87qyHXjHp9ngj4/ndEbUrDb0LN1eiy9wZl4Uoc5qXZVnnz17qtMkMGZp+38T4z7bN2/RENjyvBNyJroE5bddzLnCjM8zZj5P5xaCnMZE5xQnoYFFWHQEeMcbApWuRQA1dyOvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 68C5D240009;
+	Mon, 14 Oct 2024 11:06:00 +0000 (UTC)
+Message-ID: <578c7c03-1252-47e5-996b-73048383dfc2@ghiti.fr>
+Date: Mon, 14 Oct 2024 13:05:58 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: RISC-V
+Content-Language: en-US
+To: Donald Zickus <dzickus@redhat.com>, Gustavo Padovan <gus@collabora.com>
+Cc: kernelci <kernelci@lists.linux.dev>, Rafael Sene <rafael@riscv.org>,
+ Helen koike <helen.koike@collabora.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@rivosinc.com>
+References: <82421990-2826-4efc-adbe-8b256e7b4b12@ghiti.fr>
+ <19248df3764.c59f50b81776107.1655937717841580625@collabora.com>
+ <CAK18DXbgQcBhia8na9Nn8taTuXtJkJ1d2AvnXO_hELk9wMUSqw@mail.gmail.com>
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <CAK18DXbgQcBhia8na9Nn8taTuXtJkJ1d2AvnXO_hELk9wMUSqw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+X-GND-Sasl: alex@ghiti.fr
 
-Hello,
+Hi Gustavo, Donald,
 
-KernelCI is hosting a bi-weekly call on Thursday to discuss improvements
-to existing upstream tests, the development of new tests to increase 
-kernel testing coverage, and the enablement of these tests in KernelCI. 
+On 01/10/2024 18:36, Donald Zickus wrote:
+> Hi Alexandre,
+>
+> On Tue, Oct 1, 2024 at 12:31 PM Gustavo Padovan <gus@collabora.com> wrote:
+>>
+>> Hi Alexandre,
+>>
+>> ---- On Tue, 01 Oct 2024 12:21:49 -0300 Alexandre Ghiti  wrote ---
+>>
+>>   > Hi everyone,
+>>   >
+>>   > We (the RISC-V community) are looking for improving our CIs that are
+>>   > currently spread over all the RISC-V companies, mostly private and very
+>>   > incomplete.
+>>
+>> That is great to hear!  We have other hardware vendors coming to KernelCI with the same wishes of improving CI overall.
+>>
+>>   >
+>>   > I only found one RISC-V build in kernelci, can I do something to help
+>>   > adding a better RISC-V support?
+>>
+>> YES!
+>>
+>> First of all, we can enable more kernel trees and kernel configs in the maestro system.
+>> That would give you wider build coverage. If you have a list of configs we can work on adding these.
+>> - https://docs.kernelci.org/kernel-community/
+>>
+>> Then, we have to look at running these kernel on actual RISC-V devices. We can get RISC-V devices in KernelCI through a maestro lab, either through some of the existing labs or setting up a dedicated lab. Cc'ing Rafael from RISC-V as we discussed that already.
+>> - https://docs.kernelci.org/labs/
+>>
+>> Another way, that could be relatively easy if you have a CI setup already, is to get the results of the current CIs in the RISC-V ecosystem into KCIDB (as long as you area running fully Open Source software in those tests).
+>> - https://docs.kernelci.org/kcidb/
+>>
+>> Let us know how does that sound to you. We would happy to learn more about the ways we can make this work and chat more with you.
+> In addition to everything Gustavo mentioned above, Red Hat's Fedora
+> project can be another path as it uses CKI to do some CI testing and
+> submit results to the same KCIDB mentioned above.  I believe Red Hat
+> already has folks in the RISC-V community working on getting the
+> hardware enabled on Fedora and possibly RHEL.  Just another option.
+> Either way works or both!
+>
+> Cheers,
+> Don
+>
+>> Best,
+>>
+>> - Gus
+>>
+>>
 
-Below is a list of the tests the community has been working on and their 
-latest status updates, as discussed in the last meeting held on 
-2024-11-03:
+Sorry for the late answer! Bjorn and I have been talking with Rafael and 
+we'll soon come up with a plan to integrate RISC-V in KernelCI, I'll 
+keep you posted :)
 
-*Missing devices kselftest*
+Thanks again for your quick answers,
 
-- Proposing new kselftest to report devices that go missing in the system
-(v2):
-https://lore.kernel.org/all/20240928-kselftest-dev-exist-v2-1-fab07de6b80b@collabora.com/
-- Sent v2 addressing feedback received on the RFCv1 and during the session
-at LPC 2024:
-https://www.youtube.com/live/kcr8NXEbzcg?si=QWBvJAOjj7tg264o&t=11283
+Alex
 
-*Boot time test*
-
-- RFC:
-https://lore.kernel.org/all/20240725110622.96301-1-laura.nao@collabora.com/T/#ma568382acdc81af65c30fe3823a7be3e49f98108
-- Discussed proposal at LPC2024:
-https://www.youtube.com/live/8XQwzUZxLK4?feature=shared&t=16944 
-- Planning on preparing v2, based on feedback received in the session 
-- Suggestions for improvements and additional features include: exploring 
-bootloader tracing via pre-filled ftrace buffers, adding support for 
-specifying variance values on a per-event basis, investigating the use of 
-ftrace histograms for initcalls
-
-*Device testing documentation*
-
-- Patch:
-https://lore.kernel.org/all/20241001-kselftest-device-docs-v1-1-be28b70dd855@collabora.com/
-- Submitted documentation on device testing, detailing the types of
-kselftests available, their requirements, and the coverage they provide.
-The goal is to guide users in selecting the appropriate tests for their
-devices.
-
-*GPIO test*
-
-- RFC:
-https://lore.kernel.org/all/20240909-kselftest-gpio-set-get-config-v1-0-16a065afc3c1@collabora.com/
-- Proposed a new kselftest to verify the GPIO driver functionality. The
-test uses a YAML-based test plan that specifies the configurations to be
-checked. It sets each pin configuration and retrieves it to ensure they
-match. Currently, the test only verifies bias settings, but it can be
-easily extended to cover additional pin configurations.
-
-Please reply to this thread if you'd like to join the call or discuss any
-of the topics further. We look forward to collaborating with the community
-to improve upstream tests and expand coverage to more areas of interest
-within the kernel.
-
-Best regards,
-
-Laura Nao
 
