@@ -1,400 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A5118C01D
-	for <kernelci@lists.linux.dev>; Fri, 18 Oct 2024 20:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4538204953
+	for <kernelci@lists.linux.dev>; Fri, 18 Oct 2024 20:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729282656; cv=none; b=LGHWQGAr4JnRbK43/52vfrgHOf9zQrFJtRqy2nYh/Po3adxibg9NHC4mo57+r3XeAbsVQt/BSuZDtwNcLCYgLcazLxVGvldVI15h8i4JyNuuLPpCNmH5JmG4Y5sizK1PCM0aWyBsmNjgXUcgWDNBrKEEwbC26xrefHNaHA3fsEs=
+	t=1729284280; cv=none; b=lsKcYdOYUiEZ9Wb/MflEjju8QUD5I3WNdbTppp1jBLLt3NJpsFQ4fND7MFBWkK7wzlbe4hpqcZtst0XHL5T+vNDzneqQuEECXajxu8pnSNGU71Xw33KSGDxvC1yL2dyus3LH1NiWo6cDNllqpCQQn2jTKG2xWgXYYJutLzpzJwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729282656; c=relaxed/simple;
-	bh=yhbjXMciGwC8kCtt68DLHeWJh2KGB6zIn4NSga0I7OY=;
+	s=arc-20240116; t=1729284280; c=relaxed/simple;
+	bh=69qRsotGQXPciyrpKEn9wE08eXZVkhTmsPipXvaAhuc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pVe4qrFcVxNwovoxGPeDowJIrz83BLZnyrRq1eIpfLMpaj68CcC01MUZmOzHz7LFB91wivSVKocKo+uCTonvb4aBaQDM6u/yaakvsVxpsw31XIunFj8h2XvjA5Qd8OQq/yiITPf2LyJAdZ4XIj87SfTWSS8p5BMRMd3Uj91CWDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cGXa6k8M; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=tqQ5fPT2ZnCsImJoG69CvH2pI95noOp8bxuqenyeZUcmUGJomjpi3F6xSbFjqivB504EUq0PFwJSpbw99HD6rbCezkkkFxtGj+OAHyTc3YZiTY91JSzZcXO8g9EPj+eCDv8ovzUd7XkJNlI7ly2M+Yv+6RTssTJkSQ3ZtYXUxDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K/BL8iS9; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cGXa6k8M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729282652;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TbnmlN4w8zqivsHbL3mw7REsYVzkigS6r5daWEI1haQ=;
-	b=cGXa6k8MP4ly8hq4lm4fsDuToC8yLOHwldoBZ8lgJrRkYc44sTsrdBTr/U0Hh2i1PPpPa6
-	7rnr0V3WFrecydf42kzmmQgEQi1DX/xA6nqLBRUGJ9/wKJFAe1fufK3eCa2/VExmBxotxk
-	u40b9khheFKGkVOY7OYr/P3aoOBu2uY=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-tt4cnVonNwm7y8xpIvR0OQ-1; Fri, 18 Oct 2024 16:17:31 -0400
-X-MC-Unique: tt4cnVonNwm7y8xpIvR0OQ-1
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-6e3c638cc27so45120697b3.0
-        for <kernelci@lists.linux.dev>; Fri, 18 Oct 2024 13:17:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K/BL8iS9"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e2e87153a3so1834771a91.3
+        for <kernelci@lists.linux.dev>; Fri, 18 Oct 2024 13:44:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729284278; x=1729889078; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=69qRsotGQXPciyrpKEn9wE08eXZVkhTmsPipXvaAhuc=;
+        b=K/BL8iS9Ed4A7iRAKp3s6fL5ewBd9LWpZ/Z+SrmZWWIEA2hW39i9f9x5U2d2IrA88W
+         MFb0tEg6X8BoIvwyuQj87nsDK1fu2aHY8rtqYwarSl//ONLkEpqc46bqbQV/y8X5QvwI
+         SWdnDRdhkBGkix8XgxtTxuQeCuo2MDZR/g2XcBzKvupuPq4HX3NywvKonuf3V9ndfB7m
+         j6snl4XU+ToWKbooxc5vZSF9aePqpRdQ0q9j0sEPCuydsmipvq08RQNp+wuDT4F7M6sE
+         iAWy86fBi/Cdqq5kED8u8EkLItkEBb7N2lkoETLx0WOI78RmN2qrho+WSojj5CHiq9jt
+         vluw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729282650; x=1729887450;
+        d=1e100.net; s=20230601; t=1729284278; x=1729889078;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TbnmlN4w8zqivsHbL3mw7REsYVzkigS6r5daWEI1haQ=;
-        b=s5tbhD2ijbbsNYOcXVzVJA3nq5m2hFKxWUWXOUJlR6cJQ92tyrwjYWm2TtrCrFP2NG
-         HicugAISRvdp4I2G3thZ7yWo552jil5MH2ggYOBJc6LRbAGM0y6f4zF44KhGT9wU+fv+
-         Tfh5shtEYSRVx0fdNt5CDYfNhNQMLm1Ddr8DEf3aEbClYA1mnIKAQrNVaqzQA05xAENc
-         7N7Z4wwM8XHddqZSwj06JShCrb1RZ2oElZMgqskLLKcfpsu+5sEt1WSMbaXMStbsaA3j
-         H+hfLoeIREy5Me1cQwd2r4hcXZt0iDBpuUbATku3NusI06EY34Qy4TIPlyYwqhXjdk2z
-         G1EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpevotonF1fpMB5jC1OLUKY+m9M18mpLTSpkBrWFmETJFUerx3R4hCSnRLBxEofmj2QWSPCqW0AA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxODk61EGHsarjDE2IKMWi47tGtm8/u40uB6AW0NkFKX+fAgPMn
-	h8B1uPQDLQaiU0VDYtKGJzV3FjIH/u9v5wsU+L79gID1AUy98z39x3nL643Ny0lRKI2A1TeAf4b
-	+y0OX9povb0+wicGAAl55P6xHyqIEJAf6rJ358Oek9ITtHOUJ6En8mSB0W7A/U6gGJGhaD8KLSR
-	16idF+wrkVdwD//3v0UStSs+oRdeP1lSY=
-X-Received: by 2002:a05:690c:102:b0:6b2:28c3:b706 with SMTP id 00721157ae682-6e5bfd4e9a8mr30874437b3.34.1729282648695;
-        Fri, 18 Oct 2024 13:17:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGowxvJ0ukN32Bngs1BmEaLRkLlyu3um1V4EwoDJhFP9p93Rj0yIlNx1nP5A5pFV3GehApCp89fAT9p50wOdGs=
-X-Received: by 2002:a05:690c:102:b0:6b2:28c3:b706 with SMTP id
- 00721157ae682-6e5bfd4e9a8mr30874117b3.34.1729282648217; Fri, 18 Oct 2024
- 13:17:28 -0700 (PDT)
+        bh=69qRsotGQXPciyrpKEn9wE08eXZVkhTmsPipXvaAhuc=;
+        b=Ylr1qDK8Ags60l50eSerRr42IeN+Vw00DVNNwEiGaKjO2jYk1QY5EdXhzmUmcHt72U
+         wJKOTN3Il7D1W9dcLy3ZRvP1mjg9So3M7lfaPTKAsbFV2j4ZUWlnNDSvoO4cDt4O8a7/
+         16nAd1LSpu964BgW/v6uRdNJ1qbJ54y92ZJucKiWMp7PSajUQ9gH5BnHWERilyH5Fnpt
+         El1ASR9/TqxQRuwoWmNxCRD9SEylVOFiU+K8Z/s+3in6JofGd/MqHewXJdcDecLWkorB
+         s2rN2qeb/pnhGCDxl9H1jyYeM+ap0knQdIBMIMtUK7GyXucUdlMfRKP1YLuh4tCpDnJk
+         2GXA==
+X-Gm-Message-State: AOJu0YyloY5fd10yx2Pkx7e+Vhb88RTPECfcEFhxab30QHEpWA1u8pFs
+	hZBf5sMoW08Naz4fdnNTvzf5KviRJYX8Aro9IkxRMTan0wBE5DBvDxVIwvv+FtkGVm6r8JICXen
+	Cv/enPYp+1OIxdJaiOp3R/uqadF6dpGQ584hA
+X-Google-Smtp-Source: AGHT+IGKAaD6Cr9KqZ39BEBtjr3cdfgDFwrYGWM3vKO/Ps92Ubmz0jwSfsigpW26faUoD40Q1bCXhuVLV4i1MbIxf7Y=
+X-Received: by 2002:a17:90a:cf8e:b0:2e2:bd34:f23b with SMTP id
+ 98e67ed59e1d1-2e5618d0f5emr3896587a91.32.1729284277561; Fri, 18 Oct 2024
+ 13:44:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAK18DXYitS7hL1mA3QsPLmW9-R0q6Kin0C5Uv9fj=uS90WSnxA@mail.gmail.com>
- <CABVgOSk1ng46scbJc-3qPZUhkn+0KrZsFDe-UYnw0q-XksP_2Q@mail.gmail.com>
-In-Reply-To: <CABVgOSk1ng46scbJc-3qPZUhkn+0KrZsFDe-UYnw0q-XksP_2Q@mail.gmail.com>
-From: Donald Zickus <dzickus@redhat.com>
-Date: Fri, 18 Oct 2024 16:17:16 -0400
-Message-ID: <CAK18DXZtBdxQdYY06X+Q=vYybnkCLBQBioCLqvSfkYZ21jBSWg@mail.gmail.com>
-Subject: Re: [RFC] Test catalog template
-To: David Gow <davidgow@google.com>
-Cc: workflows@vger.kernel.org, automated-testing@lists.yoctoproject.org, 
-	linux-kselftest@vger.kernel.org, kernelci <kernelci@lists.linux.dev>, 
-	Nikolai Kondrashov <nkondras@redhat.com>, Gustavo Padovan <gustavo.padovan@collabora.com>, 
-	kernelci-members <kernelci-members@groups.io>, laura.nao@collabora.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <CAHRSSEx3vyonQonF0cXOvnFS4=nZh_G4yRgpf1EsMNnXDrdTsQ@mail.gmail.com>
+ <CAHRSSEzk6QcBkdA4UhOfQzFxzLy9njSvZ67zgGpw1HZir=42bg@mail.gmail.com> <47-6712c080-3-9f748b0@144132032>
+In-Reply-To: <47-6712c080-3-9f748b0@144132032>
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 18 Oct 2024 13:44:22 -0700
+Message-ID: <CAHRSSEy=5waf9HDH=c-x6O22L9jxY-Wde1afkTkSanfMAk3KHA@mail.gmail.com>
+Subject: Re: please add android16-6.12
+To: Denys Fedoryshchenko <nuclearcat@nuclearcat.com>
+Cc: kernelci@lists.linux.dev, Viktor Martensson <vmartensson@google.com>, 
+	Betty Zhou <bettyzhou@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 18, 2024 at 3:22=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
+Sorry, I goofed. Yes, the branch is android16-6.12
+
+On Fri, Oct 18, 2024 at 1:08=E2=80=AFPM Denys Fedoryshchenko
+<nuclearcat@nuclearcat.com> wrote:
 >
-> Hi Don,
+> Hello Todd,
 >
-> Thanks for putting this together: the discussion at Plumbers was very use=
-ful.
+> I noticed it is mentioned android16-6.12 but then mentioned branch androi=
+d16-6.6.
+> I guess correct branch is android16-6.12?
 >
-> On Tue, 15 Oct 2024 at 04:33, Donald Zickus <dzickus@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > At Linux Plumbers, a few dozen of us gathered together to discuss how
-> > to expose what tests subsystem maintainers would like to run for every
-> > patch submitted or when CI runs tests.  We agreed on a mock up of a
-> > yaml template to start gathering info.  The yaml file could be
-> > temporarily stored on kernelci.org until a more permanent home could
-> > be found.  Attached is a template to start the conversation.
-> >
+> On Friday, October 18, 2024 22:48 EEST, Todd Kjos <tkjos@google.com> wrot=
+e:
 >
-> I think that there are two (maybe three) separate problems here:
-> 1. What tests do we want to run (for a given patch/subsystem/environment/=
-etc)?
-
-My thinking is this is maintainer's choice.  What would they like to
-see run on a patch to verify its correctness?  I would like to think
-most maintainers already have scripts they run before commiting
-patches to their -next branch.  All I am trying to do is expose what
-is already being done I believe.
-
-
-> 2. How do we describe those tests in such a way that running them can
-> be automated?
-
-This is the tricky part.  But I am going to assume that if most
-maintainers run tests before committing patches to their -next branch,
-then there is a good chance those tests are scripted and command line
-driven (this is the kernel community, right :-) ).  So if we could
-expose those scripts and make the copy-and-pastable such that
-contributors or testers (including CI bots) can just copy and run
-them.  Some maintainers have more complex environments and separating
-command line driven tests from the environment scripts might be
-tricky.
-
-Does that sound reasonable?
-
-> 3. (Exactly what constitutes a 'test'? A single 'test', a whole suite
-> of tests, a test framework/tool? What about the environment: is, e.g.,
-> KUnit on UML different from KUnit on qemu-x86_64 different from KUnit
-> on qemu-arm64?)
 >
-> My gut feeling here is that (1) is technically quite easy: worst-case
-> we just make every MAINTAINERS entry link to a document describing
-> what tests should be run. Actually getting people to write these
-> documents and then run the tests, though, is very difficult.
-
-Well if I look at kunit or kselftest, really all you are doing as a
-subsystem maintainer is asking contributors or testers to run a 'make'
-command right?  Everything else is already documented I think.
-
+> Please add the new android16-6.12 branch to kernelci testing:
 >
-> (2) is the area where I think this will be most useful. We have some
-> arbitrary (probably .yaml) file which describes a series of tests to
-> run in enough detail that we can automate it. My ideal outcome here
-> would be to have a 'kunit.yaml' file which I can pass to a tool
-> (either locally or automatically on some CI system) which will run all
-> of the checks I'd run on an incoming patch. This would include
-> everything from checkpatch, to test builds, to running KUnit tests and
-> other test scripts. Ideally, it'd even run these across a bunch of
-> different environments (architectures, emulators, hardware, etc) to
-> catch issues which only show up on big-endian or 32-bit machines.
->
-> If this means I can publish that yaml file somewhere, and not only
-> give contributors a way to check that those tests pass on their own
-> machine before sending a patch out, but also have CI systems
-> automatically run them (so the results are ready waiting before I
-> manually review the patch), that'd be ideal.
-
-Yes, that is exactly the goal of this exercise.  :-) but instead of a
-kunit.yaml file, it is more of a test.yaml file with hundreds of
-subystems inside it (and probably a corresponding get_tests.pl
-script)[think how MAINTAINERS file operates and this is a sister
-file].
-
-Inside the 'KUNIT' section would be a container of tests that would be
-expected to run (like you listed).  Each test has its own command line
-and params.
-
-
->
-> > Longer story.
-> >
-> > The current problem is CI systems are not unanimous about what tests
-> > they run on submitted patches or git branches.  This makes it
-> > difficult to figure out why a test failed or how to reproduce.
-> > Further, it isn't always clear what tests a normal contributor should
-> > run before posting patches.
-> >
-> > It has been long communicated that the tests LTP, xfstest and/or
-> > kselftests should be the tests  to run.  However, not all maintainers
-> > use those tests for their subsystems.  I am hoping to either capture
-> > those tests or find ways to convince them to add their tests to the
-> > preferred locations.
-> >
-> > The goal is for a given subsystem (defined in MAINTAINERS), define a
-> > set of tests that should be run for any contributions to that
-> > subsystem.  The hope is the collective CI results can be triaged
-> > collectively (because they are related) and even have the numerous
-> > flakes waived collectively  (same reason) improving the ability to
-> > find and debug new test failures.  Because the tests and process are
-> > known, having a human help debug any failures becomes easier.
-> >
-> > The plan is to put together a minimal yaml template that gets us going
-> > (even if it is not optimized yet) and aim for about a dozen or so
-> > subsystems.  At that point we should have enough feedback to promote
-> > this more seriously and talk optimizations.
-> >
-> > Feedback encouraged.
-> >
-> > Cheers,
-> > Don
-> >
-> > ---
-> > # List of tests by subsystem
->
-> I think we should split this up into several files, partly to avoid
-> merge conflicts, partly to make it easy to maintain custom collections
-> of tests separately.
->
-> For example, fs.yaml could contain entries for both xfstests and fs
-> KUnit and selftests.
-
-I am not opposed to the idea.  But I am a fan of the user experience.
-So while an fs.yaml might sound good, is it obvious to a contributor
-or tester that given a patch, do they know if fs.yaml is the correct
-yaml file to parse when running tests?  How do you map a patch to a
-yaml file?  I was trying to use subsystems like MAINTAINERS (and
-get_maintainers.pl) as my mapping.  Open to better suggestions.
-
->
-> It's also probably going to be necessary to have separate sets of
-> tests for different use-cases. For example, there might be a smaller,
-> quicker set of tests to run on every patch, and a much longer, more
-> expensive set which only runs every other day. So I don't think
-> there'll even be a 1:1 mapping between 'test collections' (files) and
-> subsystems. But an automated way of running "this collection of tests"
-> would be very useful, particularly if it's more user-friendly than
-> just writing a shell script (e.g., having nicely formatted output,
-> being able to run things in parallel or remotely, etc).
-
-I don't disagree.  I am trying to start small to get things going and
-some momentum.  I proposed a container of tests section.  I would like
-to think adding another field in each individual test area like
-(short, medium, long OR mandatory, performance, nice-to-have) would be
-easy to add to the yaml file overall and attempt to accomplish what
-you are suggesting.  Thoughts?
-
-
->
-> > #
-> > # Tests should adhere to KTAP definitions for results
-> > #
-> > # Description of section entries
-> > #
-> > #  maintainer:    test maintainer - name <email>
-> > #  list:                mailing list for discussion
-> > #  version:         stable version of the test
-> > #  dependency: necessary distro package for testing
-> > #  test:
-> > #    path:            internal git path or url to fetch from
-> > #    cmd:            command to run; ability to run locally
-> > #    param:         additional param necessary to run test
-> > #  hardware:      hardware necessary for validation
-> > #
-> > # Subsystems (alphabetical)
-> >
-> > KUNIT TEST:
->
-> For KUnit, it'll be interesting to draw the distinction between KUnit
-> overall and individual KUnit suites.
-> I'd lean towards having a separate entry for each subsystem's KUnit
-> tests (including one for KUnit's own tests)
-
-KUNIT may not have been the best 'common' test example due to its
-complexities across other subsystems. :-/
-
->
-> >   maintainer:
-> >     - name: name1
-> >       email: email1
-> >     - name: name2
-> >       email: email2
-> >   list:
->
-> How important is it to have these in the case where they're already in
-> the MAINTAINERS file? I can see it being important for tests which
-> live elsewhere, though eventually, I'd still prefer the subsystem
-> maintainer to take some responsibility for the tests run for their
-> subsystems.
-
-I wasn't sure if all subsystem maintainers actually want to maintain
-the tests too or just point someone else at it.  I look at LTP as an
-example here.  But I could be wrong.
-
->
-> >   version:
->
-> This field is probably unnecessary for test frameworks which live in
-> the kernel tree.
-
-Possibly.  It was brought up at Plumbers, so I included it for completeness=
-.
-
->
-> >   dependency:
-> >     - dep1
-> >     - dep2
->
-> If we want to automate this in any way, we're going to need to work
-> out a way of specifying these. Either we'd have to pick a distro's
-> package names, or have our own mapping.
-
-Agreed.  I might lean on what 'perf' outputs.  They do dependency
-detection and output suggested missing packages.  Their auto detection
-of already included deps is rather complicated though.
-
->
-> (A part of me really likes the idea of having a small list of "known"
-> dependencies: python, docker, etc, and trying to limit tests to using
-> those dependencies. Though there are plenty of useful tests with more
-> complicated dependencies, so that probably won't fly forever.)
-
-Hehe.  For Fedora/RHEL at least, python has hundreds of smaller
-library packages.  That is tricky.  And further some tests like to
-compile, which means a bunch of -devel packages.  Each distro has
-different names for their -devel packages. :-/
-But a side goal of this effort is to define some community standards.
-Perhaps we can influence things here to clean up this problem??
-
->
-> >   test:
-> >     - path: tools/testing/kunit
-> >       cmd:
-> >       param:
-> >     - path:
-> >       cmd:
-> >       param:
->
-> Is 'path' here supposed to be the path to the test binary, the working
-> directory, etc?
-> Maybe there should be 'working_directory', 'cmd', 'args', and 'env'.
-
-The thought was the command to copy-n-paste to run the test after
-installing it.  I am thinking most tests might be a git-clone or
-exploded tarball, leaving the path to be from the install point.  So
-maybe working_directory is more descriptive.
-
->
-> >   hardware: none
+> repo: https://android.googlesource.com/kernel/common
+> branch: android16-6.6
 >
 >
 >
-> For KUnit, I'd imagine having a kunit.yaml, with something like this,
-> including the KUnit tests in the 'kunit' and 'example' suites, and the
-> 'kunit_tool_test.py' test script:
 >
-> ---
-> KUnit:
->   maintainer:
->     - name: David Gow
->       email: davidgow@google.com
->     - name: Brendan Higgins
->       email: brendan.higgins@linux.dev
->   list: kunit-dev@googlegroups.com
->   dependency:
->     - python3
->   test:
->     - path: .
->       cmd: tools/testing/kunit.py
->       param: run kunit
->     - path: .
->       cmd: tools/testing/kunit.py
->       param: run example
->   hardware: none
-> KUnit Tool:
->   maintainer:
->     - name: David Gow
->       email: davidgow@google.com
->     - name: Brendan Higgins
->       email: brendan.higgins@linux.dev
->   list: kunit-dev@googlegroups.com
->   dependency:
->     - python3
->   test:
->     - path: .
->       cmd: tools/testing/kunit_tool_test.py
->       param:
->   hardware: none
-> ---
 >
-> Obviously there's still some redundancy there, and I've not actually
-> tried implementing something that could run it. It also lacks any
-> information about the environment. In practice, I have about 20
-> different kunit.py invocations which run the tests with different
-> configs and on different architectures. Though that might make sense
-> to keep in a separate file to only run if the simpler tests pass. And
-> equally, it'd be nice to have a 'common.yaml' file with basic patch
-> and build tests which apply to almost everything (checkpatch, make
-> defconfig, maybe even make allmodconfig, etc).
-
-Nice, thanks for the more detailed example.
-
-Cheers,
-Don
-
->
-> Cheers,
-> -- David
-
