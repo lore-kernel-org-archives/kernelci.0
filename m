@@ -1,487 +1,396 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F9D188A18
-	for <kernelci@lists.linux.dev>; Fri, 18 Oct 2024 10:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729246465; cv=pass; b=jYCQ9ANy6CheAS3sPEPQ/PZYiUUgavu3xZ8zbCSOKamqtXQ8luE0DjFKxlf7CMhS2fXm7RoxbC2mKHKLpQLxC0Foxv90QDDJOYq+wfX5Y/JmH8bqtmGNZ0rDsy70GJzr+zZT+Ff5NHexX/Tf39UTHwj8gEYonRm1lS3yNPJolaI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729246465; c=relaxed/simple;
-	bh=NYvOUxpVgYoK3sYkpSJnOD/N7FKJJHg08DiKJLhL9UU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N+iSQYagKw4rmH6Qiv1nXoIZZ/VXZWaZ1eox6IxOyVGQUB0Y3/ZceHc7NHMGEuyAYcW3q+sHPvAyE1st2sfnMkDI8oek7Qsam9BZIK/1YY95jreV7N6l9MMn+YrsaQwAseFuEC7DseXsCvsUWb2JQIaG0KXkEEr+ykhx5dF/Z2I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=E78oKcep; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7408718784A
+	for <kernelci@lists.linux.dev>; Fri, 18 Oct 2024 13:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729258363; cv=none; b=HhgMt26K/eqX1Gedrf62HD1pimMgBi7H0QaZWg+S92wqjAc4DJVvt8Te53cgq21sS1PogxRsbtp3XpguqH29c+fM0r8JLwdamryHWyi1yHPKAEU6WOeBgVuTudguXCv1h9lqyeY5QQayWBd9+a3s08b9reBPnM7aAfDxTHPg1JQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729258363; c=relaxed/simple;
+	bh=L1+lwIs7ceJRx+8i5WTazMp1ZsO792WkjaH9GqhvtKQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=au1/zB9HKJXUxyvKIy2ihllDt54C5rvcVZQxGeaee1ZPQLPao97Ek2C5Ww9lsIEk5Kb6l3R3ZHeVg49zczEGKmLNBEP4+iXxilPZOOEMR2RJjrAIKGsTe6ZhfYClGafm8nHtMhthfUTjGk8SIabUzIYPCBJFvHTObf1uR8PA6Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=faI9/iIH; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="E78oKcep"
-ARC-Seal: i=1; a=rsa-sha256; t=1729246456; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gMGzn/9eEyiJVQ1DsuOobKU1bbqK4wzcv55WxSJVsJDSf0fw8M2MXWty4QoAdH0CETVvH8dzlmUCmQxshCuN3vD7JQnVtQ3QBpNybWGNWnsr+6sKoq6PBiwG7LzzOBj9FynnwTuFLKRP6AKZLNbnBTCG5fdgc/ufind1bFd/k2M=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1729246456; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=UhMDyqiYC37BE8WnfdqPMkYIHUHA3WhURp8QKOLssWg=; 
-	b=eX67o5OyuUbUSuNdbDO+0ItyM0zzp6fiL1Q5Bfyn1MGt0goj82iGGZsDOnpKxGIfrMNxV2pB9DUQSGbfRuo/EJWbIR8xNaKWSFFTbObEeDHaezGrd0mSzg3dd+BfNQVZpMJxiDT1B5ppR2w5XRzkpGAyFko7nfuFB1pu0upfOCw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
-	dmarc=pass header.from=<laura.nao@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729246456;
-	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=UhMDyqiYC37BE8WnfdqPMkYIHUHA3WhURp8QKOLssWg=;
-	b=E78oKcepe44F2PW4Y7UriCg5ZbjRyqqDssSEj1UkWGGBFci/B+vhSWg6nvDj3tdF
-	OQN79d+0m9Y6yXof83SsPp76Q1UTwm24iH8+MwdttiGTpw59Frbky+1ljUAa21yy7N9
-	Rq2ZKxrFGIGv7GBuqPsew49zy8opXhQnbhoqc5m0=
-Received: by mx.zohomail.com with SMTPS id 1729246455946654.0125228174601;
-	Fri, 18 Oct 2024 03:14:15 -0700 (PDT)
-From: Laura Nao <laura.nao@collabora.com>
-To: shuah@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kernel@collabora.com,
-	kernelci@lists.linux.dev,
-	tim.bird@sony.com,
-	mhiramat@kernel.org,
-	Laura Nao <laura.nao@collabora.com>
-Subject: [PATCH v2] kselftests: Add test to detect boot event slowdowns
-Date: Fri, 18 Oct 2024 12:14:39 +0200
-Message-Id: <20241018101439.20849-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="faI9/iIH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729258360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FU0vZywherdnf3s9Hj1ChHgDMZpIjoW7My8IPDGeo9M=;
+	b=faI9/iIHsH/YlB+7XjXgUciXZzOHlfZE5xnk0+nyGF25XgH5NrhOa4KF7kt/dkpjCMP+2O
+	ZxleMOCObM4uYOp9D8UUfB5AakerqWFjFvonunC9oUvDR9JwZaJh73fB+0Jaq/g+Cl5Tu/
+	HXr5TdSHzuD+twsqeTrU0izLn0PeFWA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-509-__QW_pE8NoyaJQP67UK7hg-1; Fri, 18 Oct 2024 09:32:38 -0400
+X-MC-Unique: __QW_pE8NoyaJQP67UK7hg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315cefda02so12183265e9.0
+        for <kernelci@lists.linux.dev>; Fri, 18 Oct 2024 06:32:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729258358; x=1729863158;
+        h=content-transfer-encoding:in-reply-to:from:cc:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FU0vZywherdnf3s9Hj1ChHgDMZpIjoW7My8IPDGeo9M=;
+        b=qcnxPh8rKKUWX2h66zfXX/k6H5UMOsR+W1PIoUHFYpKjt/Zo7h/bEG3bLL/rPm7S2a
+         X6r9Q0ygtV7Z2Z76aDyvPlhYlyuWgIePReL8Qh8s5D8uLFzbo6YRciYXk0xqzh3EBQL8
+         9b6KtCkIFul5RXPRPVmxF+xIHR0qhsZlk28hjVSqrsS6U3MbdQMoLgR9XWBCyszSP7XH
+         MbK4NZnpkd6Z4/6OVWCfDnatihm3Lr8yNO6M+WErGW4eiWQxJ7oHaxmk1LyHWCVaCuyk
+         hFWhwbe+C8lNbsZn7TIfkfhjWUw2uomtrONP6qM/nAes2JOy/yPgLa81AdgVcuVa48Lp
+         N4TA==
+X-Gm-Message-State: AOJu0Ywt5xwjOMbovX+76Ks7tVoJAHAbp/aadNYJhN9KaGyJmm8uvCHL
+	igvJ3/jhnFzP/P/PB9q2SIA1CVX+famjy1S3F1GEJ6nBBwjHku/sRRyNfNtGLetHXea0n6qBIdl
+	yu5raoO1Y/ZxEVfEjJepI+7wLdfEVa1RwcmAeHRz328CffNHCkMNs/rpo
+X-Received: by 2002:a05:600c:3b89:b0:42c:a574:6360 with SMTP id 5b1f17b1804b1-4316168f6f8mr21306205e9.29.1729258357514;
+        Fri, 18 Oct 2024 06:32:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBGNtP2o0/SYBb+uPt8hh6D0ZJQ7zIU7SBVFEYBSxg1PlyIt21qmOTvgyaOWdx22zIWNOyRA==
+X-Received: by 2002:a05:600c:3b89:b0:42c:a574:6360 with SMTP id 5b1f17b1804b1-4316168f6f8mr21305205e9.29.1729258355525;
+        Fri, 18 Oct 2024 06:32:35 -0700 (PDT)
+Received: from [192.168.0.166] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43160dc9365sm24219795e9.11.2024.10.18.06.32.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Oct 2024 06:32:34 -0700 (PDT)
+Message-ID: <e90b3ccc-fd16-406b-ac8a-7d2bf66abd1f@redhat.com>
+Date: Fri, 18 Oct 2024 16:32:33 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: KCIDB database
+To: Manoj Kumar <ManojKumar08@arm.com>
+References: <547ddf99-1b75-c463-e6c7-32389c461468@redhat.com>
+ <AS8PR08MB6407FD1D5E33918F5DA6032A9E772@AS8PR08MB6407.eurprd08.prod.outlook.com>
+ <PAXPR08MB6813993A4C70BDE277129A76C47D2@PAXPR08MB6813.eurprd08.prod.outlook.com>
+ <d9f9111e-9890-4795-9f8a-a6946a8fcbb9@redhat.com>
+ <PAXPR08MB68136B5FD6BFD45B2BC1BE2DC47D2@PAXPR08MB6813.eurprd08.prod.outlook.com>
+ <9ab1e3c8-9c7f-4657-815a-13a68e0b87f7@redhat.com>
+ <PAXPR08MB68139AC2C5DFA28EC9A4CCC6C47E2@PAXPR08MB6813.eurprd08.prod.outlook.com>
+ <2626f2ce-adb0-4aad-bbfc-c19f634a4d30@redhat.com>
+ <DB9PR08MB68103176F5638C352F410BCBC4402@DB9PR08MB6810.eurprd08.prod.outlook.com>
+Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ Denys Fedoryshchenko <denys.f@collabora.com>
+From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+In-Reply-To: <DB9PR08MB68103176F5638C352F410BCBC4402@DB9PR08MB6810.eurprd08.prod.outlook.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-Introduce a new kselftest to identify slowdowns in key boot events.
-This test uses ftrace to monitor the start and end times, as well as
-the durations of all initcalls, and compares these timings to reference
-values to identify significant slowdowns.
-The script functions in two modes: the 'generate' mode allows to create
-a JSON file containing initial reference timings for all initcalls from
-a known stable kernel. The 'test' mode can be used during subsequent
-boots to assess current timings against the reference values and
-determine if there are any significant differences.
-The test ships with a bootconfig file for setting up ftrace and a
-configuration fragment for the necessary kernel configs.
+Hi Manoj,
 
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
-Hello,
+> I looked at the below link to get installation steps for the kcidb-submit
+command.
+>
+> https://docs.kernelci.org/kcidb/installation/ <https://docs.kernelci.org/
+> kcidb/installation/>
+>
+> This instruction is for Python version V3.9 but our backend is using the
+> Python 2.7.16 at the moment.
+>
+> Do you have instruction for python 2.7.16 to install this package
 
-This v2 is a follow-up to RFCv1[1] and includes changes based on feedback
-from the LPC 2024 session [2], along with some other fixes.
+KCIDB requires Python 3, and that's why KernelCI Legacy (which requires Python
+2) is invoking the kcidb-submit command-line tool in a new process instead of
+using the KCIDB library directly.
 
-[1] https://lore.kernel.org/all/20240725110622.96301-1-laura.nao@collabora.com/
-[2] https://www.youtube.com/watch?v=rWhW2-Vzi40
+You will need to install Python 3 in your deployment, I assume. Perhaps Denys,
+or someone else on the KernelCI maillist (both CC'd) could tell you how we did
+that.
 
-After reviewing other available tests and considering the feedback from
-discussions at Plumbers, I decided to stick with the bootconfig file
-approach but extend it to track all initcalls instead of a fixed set of
-functions or events. The bootconfig file can be expanded and adapted to
-track additional functions if needed for specific use cases.
+Nick
 
-I also defined a synthetic event to calculate initcall durations, while
-still tracking their start and end times. Users are then allowed to choose
-whether to compare start times, end times, or durations. Support for
-specifying different rules for different initcalls has also been added.
-
-In RFCv1, there was some discussion about using existing tools like
-bootgraph.py. However, the output from these tools is mainly for manual
-inspection (e.g., HTML visual output), whereas this test is designed to run
-in automated CI environments too. The kselftest proposed here combines the
-process of generating reference data and running tests into a single script
-with two modes, making it easy to integrate into automated workflows.
-
-Many of the features in this v2 (e.g., generating a JSON reference file,
-comparing timings, and reporting results in KTAP format) could potentially
-be integrated into bootgraph.py with some effort.
-However, since this test is intended for automated execution rather than
-manual use, I've decided to keep it separate for now and explore the
-options suggested at LPC, such as using ftrace histograms for initcall
-latencies. I'm open to revisiting this decision and working toward
-integrating the changes into bootgraph.py if there's a strong preference
-for unifying the tools.
-
-Let me know your thoughts.
-
-A comprehensive changelog is reported below.
-
-Thanks,
-
-Laura
----
-Changes in v2:
-- Updated ftrace configuration to track all initcall start times, end
-  times, and durations, and generate a histogram.
-- Modified test logic to compare initcall durations by default, with the
-  option to compare start or end times if needed.
-- Added warnings if the initcalls in the reference file differ from those
-  detected in the running system.
-- Combined the scripts into a single script with two modes: one for
-  generating the reference file and one for running the test.
-- Added support for specifying different rules for individual initcalls.
-- Switched the reference format from YAML to JSON.
-- Added metadata to the reference file, including kernel version, kernel
-  configuration, and cmdline.
-- Link to v1: https://lore.kernel.org/all/20240725110622.96301-1-laura.nao@collabora.com/
----
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/boot-time/Makefile    |  16 ++
- tools/testing/selftests/boot-time/bootconfig  |  15 +
- tools/testing/selftests/boot-time/config      |   6 +
- .../selftests/boot-time/test_boot_time.py     | 265 ++++++++++++++++++
- 5 files changed, 303 insertions(+)
- create mode 100644 tools/testing/selftests/boot-time/Makefile
- create mode 100644 tools/testing/selftests/boot-time/bootconfig
- create mode 100644 tools/testing/selftests/boot-time/config
- create mode 100755 tools/testing/selftests/boot-time/test_boot_time.py
-
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index b38199965f99..1bb20d1e3854 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -3,6 +3,7 @@ TARGETS += acct
- TARGETS += alsa
- TARGETS += amd-pstate
- TARGETS += arm64
-+TARGETS += boot-time
- TARGETS += bpf
- TARGETS += breakpoints
- TARGETS += cachestat
-diff --git a/tools/testing/selftests/boot-time/Makefile b/tools/testing/selftests/boot-time/Makefile
-new file mode 100644
-index 000000000000..cdcdc1bbe779
---- /dev/null
-+++ b/tools/testing/selftests/boot-time/Makefile
-@@ -0,0 +1,16 @@
-+PY3 = $(shell which python3 2>/dev/null)
-+
-+ifneq ($(PY3),)
-+
-+TEST_PROGS := test_boot_time.py
-+
-+include ../lib.mk
-+
-+else
-+
-+all: no_py3_warning
-+
-+no_py3_warning:
-+	@echo "Missing python3. This test will be skipped."
-+
-+endif
-\ No newline at end of file
-diff --git a/tools/testing/selftests/boot-time/bootconfig b/tools/testing/selftests/boot-time/bootconfig
-new file mode 100644
-index 000000000000..e4b89a33b7a3
---- /dev/null
-+++ b/tools/testing/selftests/boot-time/bootconfig
-@@ -0,0 +1,15 @@
-+ftrace.event {
-+    synthetic.initcall_latency {
-+        # Synthetic event to record initcall latency, start, and end times
-+        fields = "unsigned long func", "u64 lat", "u64 start", "u64 end"
-+        actions = "hist:keys=func.sym,start,end:vals=lat:sort=lat"
-+    }
-+    initcall.initcall_start {
-+        # Capture the start time (ts0) when initcall starts
-+        actions = "hist:keys=func:ts0=common_timestamp.usecs"
-+    }
-+    initcall.initcall_finish {
-+        # Capture the end time, calculate latency, and trigger synthetic event
-+        actions = "hist:keys=func:lat=common_timestamp.usecs-$ts0:start=$ts0:end=common_timestamp.usecs:onmatch(initcall.initcall_start).initcall_latency(func,$lat,$start,$end)"
-+    }
-+}
-\ No newline at end of file
-diff --git a/tools/testing/selftests/boot-time/config b/tools/testing/selftests/boot-time/config
-new file mode 100644
-index 000000000000..bcb646ec3cd8
---- /dev/null
-+++ b/tools/testing/selftests/boot-time/config
-@@ -0,0 +1,6 @@
-+CONFIG_TRACING=y
-+CONFIG_BOOTTIME_TRACING=y
-+CONFIG_BOOT_CONFIG_EMBED=y
-+CONFIG_BOOT_CONFIG_EMBED_FILE="tools/testing/selftests/boot-time/bootconfig"
-+CONFIG_SYNTH_EVENTS=y
-+CONFIG_HIST_TRIGGERS=y
-\ No newline at end of file
-diff --git a/tools/testing/selftests/boot-time/test_boot_time.py b/tools/testing/selftests/boot-time/test_boot_time.py
-new file mode 100755
-index 000000000000..556dacf04b6d
---- /dev/null
-+++ b/tools/testing/selftests/boot-time/test_boot_time.py
-@@ -0,0 +1,265 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2024 Collabora Ltd
-+#
-+# This script reads the
-+# /sys/kernel/debug/tracing/events/synthetic/initcall_latency/hist file,
-+# extracts function names and timings, and compares them against reference
-+# timings provided in an input JSON file to identify significant boot
-+# slowdowns.
-+# The script operates in two modes:
-+# - Generate Mode: parses initcall timings from the current kernel's ftrace
-+#   event histogram and generates a JSON reference file with function
-+#   names, start times, end times, and latencies.
-+# - Test Mode: compares current initcall timings against the reference
-+#   file, allowing users to define a maximum allowed difference between the
-+#   values (delta). Users can also apply custom delta thresholds for
-+#   specific initcalls using regex-based overrides. The comparison can be
-+#   done on latency, start, or end times.
-+#
-+
-+import os
-+import sys
-+import argparse
-+import gzip
-+import json
-+import re
-+import subprocess
-+
-+this_dir = os.path.dirname(os.path.realpath(__file__))
-+sys.path.append(os.path.join(this_dir, "../kselftest/"))
-+
-+import ksft
-+
-+def load_reference_from_json(file_path):
-+    """
-+    Load reference data from a JSON file and returns the parsed data.
-+    @file_path: path to the JSON file.
-+    """
-+
-+    try:
-+        with open(file_path, 'r', encoding="utf-8") as file:
-+            return json.load(file)
-+    except FileNotFoundError:
-+        ksft.print_msg(f"Error: File {file_path} not found.")
-+        ksft.exit_fail()
-+    except json.JSONDecodeError:
-+        ksft.print_msg(f"Error: Failed to decode JSON from {file_path}.")
-+        ksft.exit_fail()
-+
-+
-+def mount_debugfs(path):
-+    """
-+    Mount debugfs at the specified path if it is not already mounted.
-+    @path: path where debugfs should be mounted
-+    """
-+    # Check if debugfs is already mounted
-+    with open('/proc/mounts', 'r', encoding="utf-8") as mounts:
-+        for line in mounts:
-+            if 'debugfs' in line and path in line:
-+                print(f"debugfs is already mounted at {path}")
-+                return True
-+
-+    # Mount debugfs
-+    try:
-+        subprocess.run(['mount', '-t', 'debugfs', 'none', path], check=True)
-+        return True
-+    except subprocess.CalledProcessError as e:
-+        print(f"Failed to mount debugfs: {e.stderr}")
-+        return False
-+
-+
-+def ensure_unique_function_name(func, initcall_entries):
-+    """
-+    Ensure the function name is unique by appending a suffix if necessary.
-+    @func: the original function name.
-+    @initcall_entries: a dictionary containing parsed initcall entries.
-+    """
-+    i = 2
-+    base_func = func
-+    while func in initcall_entries:
-+        func = f'{base_func}[{i}]'
-+        i += 1
-+    return func
-+
-+
-+def parse_initcall_latency_hist():
-+    """
-+    Parse the ftrace histogram for the initcall_latency event, extracting
-+    function names, start times, end times, and latencies. Return a
-+    dictionary where each entry is structured as follows:
-+    {
-+        <function symbolic name>: {
-+            "start": <start time>,
-+            "end": <end time>,
-+            "latency": <latency>
-+        }
-+    }
-+    """
-+
-+    pattern = re.compile(r'\{ func: \[\w+\] ([\w_]+)\s*, start: *(\d+), end: *(\d+) \} hitcount: *\d+  lat: *(\d+)')
-+    initcall_entries = {}
-+
-+    try:
-+        with open('/sys/kernel/debug/tracing/events/synthetic/initcall_latency/hist', 'r', encoding="utf-8") as hist_file:
-+            for line in hist_file:
-+                match = pattern.search(line)
-+                if match:
-+                    func = match.group(1).strip()
-+                    start = int(match.group(2))
-+                    end = int(match.group(3))
-+                    latency = int(match.group(4))
-+
-+                    # filter out unresolved names
-+                    if not func.startswith("0x"):
-+                        func = ensure_unique_function_name(func, initcall_entries)
-+
-+                        initcall_entries[func] = {
-+                            "start": start,
-+                            "end": end,
-+                            "latency": latency
-+                        }
-+    except FileNotFoundError:
-+        print("Error: Histogram file not found.")
-+
-+    return initcall_entries
-+
-+
-+def compare_initcall_list(ref_initcall_entries, cur_initcall_entries):
-+    """
-+    Compare the current list of initcall functions against the reference
-+    file. Print warnings if there are unique entries in either.
-+    @ref_initcall_entries: reference initcall entries.
-+    @cur_initcall_entries: current initcall entries.
-+    """
-+    ref_entries = set(ref_initcall_entries.keys())
-+    cur_entries = set(cur_initcall_entries.keys())
-+
-+    unique_to_ref = ref_entries - cur_entries
-+    unique_to_cur = cur_entries - ref_entries
-+
-+    if (unique_to_ref):
-+        ksft.print_msg(
-+            f"Warning: {list(unique_to_ref)} not found in current data. Consider updating reference file.")
-+    if unique_to_cur:
-+        ksft.print_msg(
-+            f"Warning: {list(unique_to_cur)} not found in reference data. Consider updating reference file.")
-+
-+
-+def run_test(ref_file_path, delta, overrides, mode):
-+    """
-+    Run the test comparing the current timings with the reference values.
-+    @ref_file_path: path to the JSON file containing reference values.
-+    @delta: default allowed difference between reference and current
-+    values.
-+    @overrides: override rules in the form of regex:threshold.
-+    @mode: the comparison mode (either 'start', 'end', or 'latency').
-+    """
-+
-+    ref_data = load_reference_from_json(ref_file_path)
-+
-+    ref_initcall_entries = ref_data['data']
-+    cur_initcall_entries = parse_initcall_latency_hist()
-+
-+    compare_initcall_list(ref_initcall_entries, cur_initcall_entries)
-+
-+    ksft.set_plan(len(ref_initcall_entries))
-+
-+    for func_name in ref_initcall_entries:
-+        effective_delta = delta
-+        for regex, override_delta in overrides.items():
-+            if re.match(regex, func_name):
-+                effective_delta = override_delta
-+                break
-+        if (func_name in cur_initcall_entries):
-+            ref_metric = ref_initcall_entries[func_name].get(mode)
-+            cur_metric = cur_initcall_entries[func_name].get(mode)
-+            if (cur_metric > ref_metric and (cur_metric - ref_metric) >= effective_delta):
-+                ksft.test_result_fail(func_name)
-+                ksft.print_msg(f"'{func_name}' {mode} differs by "
-+                               f"{(cur_metric - ref_metric)} usecs.")
-+            else:
-+                ksft.test_result_pass(func_name)
-+        else:
-+            ksft.test_result_skip(func_name)
-+
-+
-+def generate_reference_file(file_path):
-+    """
-+    Generate a reference file in JSON format, containing kernel metadata
-+    and initcall timing data.
-+    @file_path: output file path.
-+    """
-+    metadata = {}
-+
-+    config_file = "/proc/config.gz"
-+    if os.path.isfile(config_file):
-+        with gzip.open(config_file, "rt", encoding="utf-8") as f:
-+            config = f.read()
-+            metadata["config"] = config
-+
-+    metadata["version"] = os.uname().release
-+
-+    cmdline_file = "/proc/cmdline"
-+    if os.path.isfile(cmdline_file):
-+        with open(cmdline_file, "r", encoding="utf-8") as f:
-+            cmdline = f.read().strip()
-+            metadata["cmdline"] = cmdline
-+
-+    ref_data = {
-+        "metadata": metadata,
-+        "data": parse_initcall_latency_hist(),
-+    }
-+
-+    with open(file_path, "w", encoding='utf-8') as f:
-+        json.dump(ref_data, f, indent=4)
-+        print(f"Generated {file_path}")
-+
-+
-+if __name__ == "__main__":
-+    parser = argparse.ArgumentParser(
-+        description="")
-+
-+    subparsers = parser.add_subparsers(dest='mode', required=True, help='Choose between generate or test modes')
-+
-+    generate_parser = subparsers.add_parser('generate', help="Generate a reference file")
-+    generate_parser.add_argument('out_ref_file', nargs='?', default='reference_initcall_timings.json',
-+                                 help='Path to output JSON reference file (default: reference_initcall_timings.json)')
-+
-+    compare_parser = subparsers.add_parser('test', help='Test against a reference file')
-+    compare_parser.add_argument('in_ref_file', help='Path to JSON reference file')
-+    compare_parser.add_argument(
-+        'delta', type=int, help='Maximum allowed delta between the current and the reference timings (usecs)')
-+    compare_parser.add_argument('--override', '-o', action='append', type=str,
-+                                help="Specify regex-based rules as regex:delta (e.g., '^acpi_.*:50')")
-+    compare_parser.add_argument('--mode', '-m', default='latency', choices=[
-+                                'start', 'end', 'latency'],
-+                                help="Comparison mode: 'latency' (default) for latency, 'start' for start times, or 'end' for end times.")
-+
-+    args = parser.parse_args()
-+
-+    if args.mode == 'generate':
-+        generate_reference_file(args.out_ref_file)
-+        sys.exit(0)
-+
-+    # Process overrides
-+    overrides = {}
-+    if args.override:
-+        for override in args.override:
-+            try:
-+                pattern, delta = override.split(":")
-+                overrides[pattern] = int(delta)
-+            except ValueError:
-+                print(f"Invalid override format: {override}. Expected format is 'regex:delta'.")
-+                sys.exit(1)
-+
-+    # Ensure debugfs is mounted
-+    if not mount_debugfs("/sys/kernel/debug"):
-+        ksft.exit_fail()
-+
-+    ksft.print_header()
-+
-+    run_test(args.in_ref_file, args.delta, overrides, args.mode)
-+
-+    ksft.finished()
--- 
-2.30.2
+On 10/18/24 4:21 PM, Manoj Kumar wrote:
+> Hi Nikolai,
+> 
+>  
+> 
+> I am planning to push test build data to public KCIDB . I am seeing a failure
+> because of the kcidb-submit command in a thread at backend.
+> 
+>  
+> 
+> The class KcidbSubmit expect the command kcidb-submit installed on the backend
+> system.
+> 
+> /class KcidbSubmit(object):/
+> 
+> /    def __init__(self, kcidb_options):/
+> 
+> /        kcidb_path = kcidb_options.get("kcidb_path", "")/
+> 
+> /        self.kcidb_submit_cmd = os.path.join(kcidb_path, "kcidb-submit")/
+> 
+>  
+> 
+> I looked at the below link to get installation steps for the kcidb-submit command.
+> 
+> https://docs.kernelci.org/kcidb/installation/ <https://docs.kernelci.org/
+> kcidb/installation/>
+> 
+>  
+> 
+> This instruction is for Python version V3.9 but our backend is using the
+> Python 2.7.16 at the moment.
+> 
+> Do you have instruction for python 2.7.16 to install this package
+> 
+>  
+> 
+> Br,
+> 
+> Manoj
+> 
+>  
+> 
+> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+> *Date: *Tuesday, 8 October 2024 at 11:46
+> *To: *Manoj Kumar <ManojKumar08@arm.com>
+> *Subject: *Re: KCIDB database
+> 
+> Hi Manoj,
+> 
+> On 10/8/24 1:26 PM, Manoj Kumar wrote:
+>> One additional question regarding the credentials file.
+>>
+>> Attached credentials files was shared with me named  “.kernelci-production-ci-
+>> arm.json” .
+>>
+>> The attached file contains multiple parameters , If I understood correctly all
+>> the contents of this file should be assigned to this variable https://
+>> github.com/kernelci/kernelci-backend/
+>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38 <https://
+>> github.com/kernelci/kernelci-backend/
+>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+> 
+> Not the contents, but a path to the file itself.
+> 
+>> Also , the email ID used by internal kernelCI deployment is different . They
+>> will be “bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com>>
+>> and bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com>>”.
+> 
+> That doesn't matter, the email in the JSON credentials is simply a user
+> (service account) ID and is specific to Google Cloud. It identifies a
+> particular submitter to the system.
+> 
+> You don't really need to look into the credentials file at all.
+> 
+> Nick
+> 
+> On 10/8/24 1:26 PM, Manoj Kumar wrote:
+>> Hi Nick,
+>> 
+>>  
+>> 
+>> Thanks for your prompt responses :thumbsup
+>> 
+>>  
+>> 
+>> One additional question regarding the credentials file.
+>> 
+>> Attached credentials files was shared with me named  “.kernelci-production-ci-
+>> arm.json” .
+>> 
+>> The attached file contains multiple parameters , If I understood correctly all
+>> the contents of this file should be assigned to this variable https://
+>> github.com/kernelci/kernelci-backend/
+>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38 <https://
+>> github.com/kernelci/kernelci-backend/
+>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+>> 
+>>  
+>> 
+>> Also , the email ID used by internal kernelCI deployment is different . They
+>> will be “bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com>>
+>> and bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com>>”.
+>> 
+>>  
+>> 
+>> Br,
+>> 
+>> Manoj
+>> 
+>>  
+>> 
+>>  
+>> 
+>> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+>> *Date: *Tuesday, 8 October 2024 at 05:36
+>> *To: *Manoj Kumar <ManojKumar08@arm.com>
+>> *Subject: *Re: KCIDB database
+>> 
+>> On 10/7/24 7:49 PM, Manoj Kumar wrote:
+>>> I do have some questions if you can help me find answer.
+>>>
+>>>   * Do I need to use the private key from the credential json for this
+>>>     parameter https://github.com/kernelci/kernelci-backend/ <https://github.com/kernelci/
+> kernelci-backend/> <https://github.com/kernelci/
+>> kernelci-backend/>
+>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38
+>>>     <https://github.com/kernelci/kernelci-backend/
+>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+>> 
+>> Yes, that needs to be pointing to the credentials JSON file.
+>> 
+>>>   * As the storage server is internal , I guess we need to open access to
+>>>     storage server for these urls https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->
+> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>
+>>>     backend/blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/
+>>>     kcidb.py#L173 <https://github.com/kernelci/kernelci-backend/
+>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L173>
+>>>     files so the kcidb server can access them . Can you confirm this , please
+>> 
+>> Yes, KCIDB right now will try to download every 256th URL you submit, that is
+>> under 5MB. The artifact caching system is in trial mode still. However, what's
+>> more important, *people* will try to open the URLs you submit.
+>> 
+>> Opening the access to the whole server might be problematic for you guys, as
+>> you want to keep some results secret, IIRC. Maybe you could copy them to some
+>> other web server and translate the URLs as you submit them?
+>> 
+>> Nick
+>> 
+>> On 10/7/24 7:49 PM, Manoj Kumar wrote:
+>>> Hi Nick,
+>>> 
+>>> Nice to meet you too mate, I am going through the code base of kcidb.py to
+>>> push results.
+>>> 
+>>> I will test pushing results to playground with the earlier credentials as you
+>>> mentioned.
+>>> 
+>>>  
+>>> 
+>>> Also , I will be configuring internal kernelci deployment to push results to
+>>> public KCIDB for builds and tests.
+>>> 
+>>>  
+>>> 
+>>> I do have some questions if you can help me find answer.
+>>> 
+>>>   * Do I need to use the private key from the credential json for this
+>>>     parameter https://github.com/kernelci/kernelci-backend/ <https://github.com/kernelci/
+> kernelci-backend/> <https://github.com/kernelci/
+>> kernelci-backend/>
+>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38
+>>>     <https://github.com/kernelci/kernelci-backend/
+>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+>>>   * As the storage server is internal , I guess we need to open access to
+>>>     storage server for these urls https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->
+> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>
+>>>     backend/blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/
+>>>     kcidb.py#L173 <https://github.com/kernelci/kernelci-backend/
+>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L173>
+>>>     files so the kcidb server can access them . Can you confirm this , please
+>>> 
+>>>  
+>>> 
+>>> Br,
+>>> 
+>>> Manoj
+>>> 
+>>>  
+>>> 
+>>> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+>>> *Date: *Monday, 7 October 2024 at 12:15
+>>> *To: *Manoj Kumar <ManojKumar08@arm.com>
+>>> *Subject: *Re: KCIDB database
+>>> 
+>>> Hi Manoj,
+>>> 
+>>> Nice to meet you!
+>>> 
+>>> I'm glad to hear there's progress towards resuming KCIDB submissions at ARM!
+>>> 
+>>> The access parameters are out of date, although they will work for
+>>> submissions. Here's more up-to-date info:
+>>> 
+>>> https://docs.kernelci.org/kcidb/submitter_guide/ <https://docs.kernelci.org/
+> kcidb/submitter_guide/> <https://docs.kernelci.org/
+>> kcidb/submitter_guide/> <https://docs.kernelci.org/
+>>> kcidb/submitter_guide/>
+>>> 
+>>> The credentials I gave ARM before should still work. I'd recommend restarting
+>>> submissions to the "playground" database ("playground_kcidb_new" topic) so you
+>>> can experiment freely without worrying about bothering anyone with invalid
+>>> data. Then when you're ready, switch to production ("kcidb_new").
+>>> 
+>>> Don't hesitate to reach out, if you have any questions. I'll add you as the
+>>> ARM's current contact here:
+>>> 
+>>> https://github.com/kernelci/kcidb/issues/328 <https://github.com/kernelci/
+> kcidb/issues/328> <https://github.com/kernelci/
+>> kcidb/issues/328> <https://github.com/kernelci/
+>>> kcidb/issues/328>
+>>> 
+>>> I think ARM doesn't let employees use Slack, but if I'm wrong, I can invite
+>>> you to our channel, so we can have more interactive Q&A, if needed.
+>>> 
+>>> Nick
+>>> 
+>>> On 10/7/24 12:37 PM, Manoj Kumar wrote:
+>>>> Hi Nikolai,
+>>>> 
+>>>> I wanted to say hello to you and start the initial thread regarding pushing
+>>>> the test results to KernelCI KCIDB.
+>>>> I will be enabling the changes to push kernel test and build results to KCIDB
+>>>> from ARM testing . I was told by Cristian and Mark that you are the POC from
+>>>> kernelCI KCIDB side.
+>>>> 
+>>>> The access parameters shared with me are below , can you confirm they are
+>>>> still valid and not expired / updated .
+>>>> 
+>>>>  
+>>>> 
+>>>>  
+>>>> 
+>>>> The access parameters are:
+>>>> 
+>>>>          Google Cloud project name: kernelci-production
+>>>>            Playground dataset name: playground_kernelci04
+>>>> Playground submission queue topic: playground_kernelci_new
+>>>>            Production dataset name: kernelci04
+>>>> Production submission queue topic: kernelci_new
+>>>> 
+>>>>  
+>>>> 
+>>>> Regards,
+>>>> 
+>>>> Manoj
+>>>> 
+>>>>  
+>>>> 
+>>>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>>>> confidential and may also be privileged. If you are not the intended
+>>>> recipient, please notify the sender immediately and do not disclose the
+>>>> contents to any other person, use it for any purpose, or store or copy the
+>>>> information in any medium. Thank you.
+>>> 
+>>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>>> confidential and may also be privileged. If you are not the intended
+>>> recipient, please notify the sender immediately and do not disclose the
+>>> contents to any other person, use it for any purpose, or store or copy the
+>>> information in any medium. Thank you.
+>> 
+>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>> confidential and may also be privileged. If you are not the intended
+>> recipient, please notify the sender immediately and do not disclose the
+>> contents to any other person, use it for any purpose, or store or copy the
+>> information in any medium. Thank you.
+> 
+> IMPORTANT NOTICE: The contents of this email and any attachments are
+> confidential and may also be privileged. If you are not the intended
+> recipient, please notify the sender immediately and do not disclose the
+> contents to any other person, use it for any purpose, or store or copy the
+> information in any medium. Thank you.
 
