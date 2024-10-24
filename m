@@ -1,90 +1,67 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437EE218594
-	for <kernelci@lists.linux.dev>; Thu, 24 Oct 2024 21:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C074722B641
+	for <kernelci@lists.linux.dev>; Thu, 24 Oct 2024 23:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729804254; cv=none; b=rNJ1AanDPcPhigctOnrXCusLq5ktVVGGN2VisPkVsAlIH5OA/TNwVLJEGRGLulsJtY4t+LWSydsJo2UuZPjcehjoLBKUxS+91v1bEO6PAFnM4/ImZYcscOZ3nyEfhdwV+ywgCCY7lBV9I6STczJTD8oEFAYghLg07EU3rps5E8w=
+	t=1729812548; cv=none; b=hbgNvmXgagmIuOgnIXl3X+GhrN4YYUSTr/SZcOzskTa2JU1LdzPt4VfzzgbuX7WsdUjsBcn4QQtK/4Auv4+2cxLkK9PTxpNTTErdDIqxdhchInqFTQlR+1TgcET2I3VfAdSCVnBnYDPuDxGiJFInQMcLqsUVZH6DrecE6K69vS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729804254; c=relaxed/simple;
-	bh=uxxv3rsrsDdIR4rVcpPQbE7R9mirjBXETmL27R5UO+4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=G9/PSD/oCiY+BOQLDoEnTHjW8AnZswAt68GaahnK3bA/ECpY4IorhNUXZi5CbXclx+6NLSZm0Y6/YrpdfYr4dihC1XtldrqD+5db0By1PiCTY9mvhFoRcn6HIW6j8vQ4cYniDqNfel0cWdSMzS9Lwob9pBHz7uGqpYN3Jpp5QCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MvH/a/+5; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1729812548; c=relaxed/simple;
+	bh=zAeYqFRoTzxtXr9JdTuII7KSpWnb9PIppUbKeAOfBvE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=nqyBK4NLw+Y56KnM3RWfcN7UYydvKFN+Sv+ruFE6V1fMBgslT8ahEg1IL59S5bJy4e+Zfbpmv3XkEHZSjd4zZE7JqU5ujtTvfIAl4WgbKVjnWUXfzE2UU0H+Ba2sqKL/t2TwJdM7pbAOBuVUxjAJEsR6UfNF22jHSMfBSRC5G4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1MxsPWrt; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MvH/a/+5"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49O9jaVY026205;
-	Thu, 24 Oct 2024 21:10:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	wzHHaH4Kd02X0N5dS/4kGQMpiNXeC4k4wesEKpX/q38=; b=MvH/a/+5lDEknMGC
-	tkp/DhgqVQIIcjkBAb9nY4tAi32wTBHnBnR03YhRF2xYnIvJgkg6g/waIAv19Ix7
-	0l6IeJMXvPYmhpdzNWALuD9nCTVyfjYhvWVcVOaEgaFOorfyI7W3IJRG3uS2q9KW
-	Ts1eknM2+WbZIgug9J911a/WYuQAMfyvA08M+hAMpWuBBUXPIc8HtwtR9qF23ywW
-	uBrvy1Fo63N8aemJuCitp/E9UKmdXIUGHozYofcKDH0bO+tqgBnI+VbkUrVB5WCS
-	MpaImmpciAx06qjo04+VPXQKnpNPKpaUDhiztw5PonDguW7Wky1oTuOv4tNOtszq
-	yBwcMA==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em40eywh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Oct 2024 21:10:49 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49OLAn85016088
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Oct 2024 21:10:49 GMT
-Received: from [10.110.38.73] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 24 Oct
- 2024 14:10:49 -0700
-Message-ID: <b4336093-9136-4a00-9191-d8946a594ff2@quicinc.com>
-Date: Thu, 24 Oct 2024 14:10:37 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1MxsPWrt"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71ec12160f6so1023648b3a.3
+        for <kernelci@lists.linux.dev>; Thu, 24 Oct 2024 16:29:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729812546; x=1730417346; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zAeYqFRoTzxtXr9JdTuII7KSpWnb9PIppUbKeAOfBvE=;
+        b=1MxsPWrtEdIFG3ntxMwLJFcEeNLtZSN3dKdyIAOt1abV+XDFnV9fW/79I9rtVfZET4
+         0cKPJNi0bb3V5DLcFyoUZxiNrEv8HemS800LpyglhDg/n+kuaGElhCuAsv4lXPjJMTLm
+         nmKIHEtWXS++68vVDuYEwHn6v/k/q6EDz9jifqpuJ7JN2KwiFVecarVh7I01OS3eXigh
+         oO7E6ZUDFvFIBbKFGJDcc749G9m5zb8PPsHHqIW33NfSB5aEMkeSutqDV28883lWTGt1
+         PiWrrqAW1G3Kut6QCdSTEu84MBgJjDDCUVP10yJ/wiNubcibvKKxEqZibF/upvRP7wik
+         ZRZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729812546; x=1730417346;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zAeYqFRoTzxtXr9JdTuII7KSpWnb9PIppUbKeAOfBvE=;
+        b=Vk1Ik49k7U7r37Qm+g6qZGEFG9LtoIpNByw3x5KAasHjzLp3rttAP0pSnxED6bmdjZ
+         BnlR2UQUIKKOFlCqYdD0RZy2BkGIX7CkvyNIjDqdu2UvYYJWLmCIwbKdIR5Mk7HrCDoL
+         wk4QUWXAYNLl3sqAJDVGXcfp8ZwGwjaP5YYf8KhxL6KhjlG6ixNXR8Yul44Qb9q/TOTL
+         ZIrj7i7De57B/BC7K3xi7vR97pk8p1cb8sOx3PMup5k6IKzndsDgmUh7/FxN78MQWD+d
+         LN8ls5ppungZYkcwuvdPlBfgGcBLhjQB2z2ig98tHNjo38Vgyef/tGjlFE1J2OR7dHdO
+         PiTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEPTtXfqd0Yu+R+3OAfbdNI1px+zCjeZip/oFemuZMd4Puy0oneqViE/LSz30qU67d9cGU7WtoTA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxB1KR/3Xj4JesZJXVd5hBF676rVPOpCQDP6SfzJ4xZ3JIdwAwm
+	T2+HMz9QlNQ7KuC8MNl+2i0Q1bQ/L1WLiXZsGh+Wr7ncKEWxF7PcelRCVcLW5ByewZHLJlKyMDK
+	D4c0EldYRIt/Vsho5TVo0DePYiKd64PQQta9v
+X-Google-Smtp-Source: AGHT+IFJeoZHWXyQp/+eYqpLkPtgktpeck+ylobh2RtNotMHpoWOUgDb8sxk3frJsME6l8tk6dC8cqwP7idvQ74lshs=
+X-Received: by 2002:a05:6a00:b54:b0:71e:79a8:1d84 with SMTP id
+ d2e1a72fcca58-72045e25843mr4537638b3a.3.1729812545494; Thu, 24 Oct 2024
+ 16:29:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: TSC Votes on Chat Choice
-To: Nikolai Kondrashov <spbnick@gmail.com>,
-        "kernelci@lists.linux.dev"
-	<kernelci@lists.linux.dev>
-References: <e84eac0b-f5de-47e1-9a1e-cb4ae1947b0d@gmail.com>
-Content-Language: en-US
-From: Trilok Soni <quic_tsoni@quicinc.com>
-In-Reply-To: <e84eac0b-f5de-47e1-9a1e-cb4ae1947b0d@gmail.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Thu, 24 Oct 2024 16:28:49 -0700
+Message-ID: <CAHRSSExUboorgLqnrRoAX_w8BNRpN6hh21Z8vscx+G=VPVirig@mail.gmail.com>
+Subject: kick kernelci tests?
+To: Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>, 
+	kernelci@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 6qmLlpuD0ApLjBeAycpxF97Fl0AlOoBU
-X-Proofpoint-GUID: 6qmLlpuD0ApLjBeAycpxF97Fl0AlOoBU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=743
- lowpriorityscore=0 clxscore=1011 malwarescore=0 bulkscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410240173
 
-On 10/21/2024 3:48 AM, Nikolai Kondrashov wrote:
-> It seems that the majority would prefer moving to Discord, and have a bridge
-> with IRC. Although there are "Matrix and IRC bridge" advocates too
+the old kernelci seems stuck again. No runs since 2 days ago:
+https://linux.kernelci.org/job/android/
 
-I would prefer to use the Discord. Best part here is that I can install it on 
-my mobile but can't install in my work computer due to restrictions. 
-
-I like discord because it keeps me near to the technologies used
-by my teenage son :).
-
--- 
----Trilok Soni
-
+Can you give it a kick?
