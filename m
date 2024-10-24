@@ -1,101 +1,90 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2D71FE0F6
-	for <kernelci@lists.linux.dev>; Thu, 24 Oct 2024 17:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437EE218594
+	for <kernelci@lists.linux.dev>; Thu, 24 Oct 2024 21:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729792008; cv=none; b=YCUIMZlBJNHCiVGrNuGvOOTtfToZBKTAxDPNzDDI04ex5FyZjmWyknIUjPT7qjXm+TaVizRysFzhjO6/B38tuI4Ebz8emn370HLqlAc2O7wRT/wT34Pzop2f7oenU3WNx3F+AHAu3AMrNMjJ6CXdXyEdmujMLoI+rQO0rnWLLK4=
+	t=1729804254; cv=none; b=rNJ1AanDPcPhigctOnrXCusLq5ktVVGGN2VisPkVsAlIH5OA/TNwVLJEGRGLulsJtY4t+LWSydsJo2UuZPjcehjoLBKUxS+91v1bEO6PAFnM4/ImZYcscOZ3nyEfhdwV+ywgCCY7lBV9I6STczJTD8oEFAYghLg07EU3rps5E8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729792008; c=relaxed/simple;
-	bh=W3VllNwtqRwVtIeBKaJd3C2VVqpPgbov///WpOSkPlQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tLM27rMTvXmf1hUNWx4ON8B2n49i18Rv6tKGfeN4okGk86ku27WKaNOkxQOWUjPaCRz3OeMz8EtdS/TdDNQrCSD1Tvfppv2uMIdsZqDOegJSZqaAiGVTF2fKqjbOn2Y5FHr6zyCOWBoexFC8mOZn73LS0EdA6idnpyyvVHMN2Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=pGdBVc4A; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1729804254; c=relaxed/simple;
+	bh=uxxv3rsrsDdIR4rVcpPQbE7R9mirjBXETmL27R5UO+4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=G9/PSD/oCiY+BOQLDoEnTHjW8AnZswAt68GaahnK3bA/ECpY4IorhNUXZi5CbXclx+6NLSZm0Y6/YrpdfYr4dihC1XtldrqD+5db0By1PiCTY9mvhFoRcn6HIW6j8vQ4cYniDqNfel0cWdSMzS9Lwob9pBHz7uGqpYN3Jpp5QCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MvH/a/+5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="pGdBVc4A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1729792002;
-	bh=W3VllNwtqRwVtIeBKaJd3C2VVqpPgbov///WpOSkPlQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pGdBVc4ASaPLaghvUgQ0DFhiGKTEDqIoVFn1+HyNer1j93XXc5Cz5BjgV87wgH0CQ
-	 B6nsj1eITJ7aMAWhWuAC9FR3zsdafizu1HIG9qFgRpaqxZbx9bzt4byAUFw5Z2MyGQ
-	 BbQxFkD3lxxVK9S1FqDJkKWKfCkVuL2nfVUjbNeCIS/bI5w3FVpYYMmV5+XbERHprI
-	 DeTa7IdFS/rJb7Kz76JJ/ZL0wYH2NE/1/QvvYzshXNOe0vtqNyDyo2X3dFX1p8mH9D
-	 de8N5I/jXKxhNl8NwmS3DALC8CeQif3oOJygSYXrzZs4IJ2uKPB9aRmPcdKHpF/3T8
-	 u2h8mOoubrz6g==
-Received: from notapiano (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 00C2F17E36B5;
-	Thu, 24 Oct 2024 19:46:40 +0200 (CEST)
-Date: Thu, 24 Oct 2024 13:46:38 -0400
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Bamvor Jian Zhang <bamv2005@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, kernel@collabora.com,
-	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kselftest@vger.kernel.org, kernelci@lists.linux.dev
-Subject: Re: [PATCH RFC 1/3] pinctrl: mediatek: paris: Expose more
- configurations to GPIO set_config
-Message-ID: <a3d6b2b9-1379-4bab-a584-651ca66677ee@notapiano>
-References: <20240909-kselftest-gpio-set-get-config-v1-0-16a065afc3c1@collabora.com>
- <20240909-kselftest-gpio-set-get-config-v1-1-16a065afc3c1@collabora.com>
- <01020191e0901d10-d427a5dd-af4e-4ecf-99e1-4bb051ad1475-000000@eu-west-1.amazonses.com>
- <8fdeec5c-5de7-44ae-9086-7930d02d610e@collabora.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MvH/a/+5"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49O9jaVY026205;
+	Thu, 24 Oct 2024 21:10:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wzHHaH4Kd02X0N5dS/4kGQMpiNXeC4k4wesEKpX/q38=; b=MvH/a/+5lDEknMGC
+	tkp/DhgqVQIIcjkBAb9nY4tAi32wTBHnBnR03YhRF2xYnIvJgkg6g/waIAv19Ix7
+	0l6IeJMXvPYmhpdzNWALuD9nCTVyfjYhvWVcVOaEgaFOorfyI7W3IJRG3uS2q9KW
+	Ts1eknM2+WbZIgug9J911a/WYuQAMfyvA08M+hAMpWuBBUXPIc8HtwtR9qF23ywW
+	uBrvy1Fo63N8aemJuCitp/E9UKmdXIUGHozYofcKDH0bO+tqgBnI+VbkUrVB5WCS
+	MpaImmpciAx06qjo04+VPXQKnpNPKpaUDhiztw5PonDguW7Wky1oTuOv4tNOtszq
+	yBwcMA==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em40eywh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 21:10:49 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49OLAn85016088
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 21:10:49 GMT
+Received: from [10.110.38.73] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 24 Oct
+ 2024 14:10:49 -0700
+Message-ID: <b4336093-9136-4a00-9191-d8946a594ff2@quicinc.com>
+Date: Thu, 24 Oct 2024 14:10:37 -0700
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8fdeec5c-5de7-44ae-9086-7930d02d610e@collabora.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: TSC Votes on Chat Choice
+To: Nikolai Kondrashov <spbnick@gmail.com>,
+        "kernelci@lists.linux.dev"
+	<kernelci@lists.linux.dev>
+References: <e84eac0b-f5de-47e1-9a1e-cb4ae1947b0d@gmail.com>
+Content-Language: en-US
+From: Trilok Soni <quic_tsoni@quicinc.com>
+In-Reply-To: <e84eac0b-f5de-47e1-9a1e-cb4ae1947b0d@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 6qmLlpuD0ApLjBeAycpxF97Fl0AlOoBU
+X-Proofpoint-GUID: 6qmLlpuD0ApLjBeAycpxF97Fl0AlOoBU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=743
+ lowpriorityscore=0 clxscore=1011 malwarescore=0 bulkscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410240173
 
-On Thu, Oct 24, 2024 at 05:17:05PM +0200, AngeloGioacchino Del Regno wrote:
-> Il 11/09/24 12:10, AngeloGioacchino Del Regno ha scritto:
-> > Il 09/09/24 20:37, Nícolas F. R. A. Prado ha scritto:
-> > > Currently the set_config callback in the gpio_chip registered by the
-> > > pinctrl_paris driver only supports PIN_CONFIG_INPUT_DEBOUNCE, despite
-> > 
-> > [...] only supports operations configuring the input debounce parameter
-> > of the EINT controller and denies configuring params on the other AP GPIOs [...]
-> > 
-> > (reword as needed)
-> > 
-> > > many other configurations already being implemented and available
-> > > through the pinctrl API for configuration of pins by the Devicetree and
-> > > other drivers.
-> > > 
-> > > Expose all configurations currently implemented through the GPIO API so
-> > > they can also be set from userspace, which is particularly useful to
-> > > allow testing them from userspace.
-> > > 
-> > > Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> > > ---
-> > >   drivers/pinctrl/mediatek/pinctrl-paris.c | 20 ++++++++++----------
-> > 
-> > You can do the same for pinctrl-moore too, it's trivial.
-> > 
-> > Other than that, I agree about performing this change, as this may be useful
-> > for more than just testing.
-> > 
-> 
-> Nicolas, please don't forget to respin this patch.
+On 10/21/2024 3:48 AM, Nikolai Kondrashov wrote:
+> It seems that the majority would prefer moving to Discord, and have a bridge
+> with IRC. Although there are "Matrix and IRC bridge" advocates too
 
-I was hoping to get some feedback on the test itself as well, particularly from
-Linus as the pinctrl maintainer, but it's also been a while so I'll send a v2
-with the feedback here addressed.
+I would prefer to use the Discord. Best part here is that I can install it on 
+my mobile but can't install in my work computer due to restrictions. 
 
-Thanks,
-Nícolas
+I like discord because it keeps me near to the technologies used
+by my teenage son :).
+
+-- 
+---Trilok Soni
+
