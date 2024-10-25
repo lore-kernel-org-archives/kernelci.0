@@ -1,66 +1,83 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6E518F2E8
-	for <kernelci@lists.linux.dev>; Fri, 25 Oct 2024 06:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729839451; cv=pass; b=isbgIJrDcuWvp3OVeSTCOU3Kv0VcrPN8XhyJliQq3GIQ8YIXkZ/t4N1D7zPFWVQlCXARMVGHM8aRWYiFjul+I4HuEqK6p+C5b+/Qcldj7x9cpTJhKEG9Dz0tYqyy4xKKIz7oY23UfMJrKUueIR4aQixWcoQoLJFvYAyB/0nzSpo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729839451; c=relaxed/simple;
-	bh=bGv+kS/g/cN0i7pTUrgNGz2oTltQ3gWB+QNxsJiq9g4=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=q9ZEnWoSRYPeFBGOaVKBUJW62H1Ubc/7GQAolzkxCEcYsJTmBnyBPYx9vz51gWiJ8casTQ90Tf+DGHdArnY8Dw18wzaRyhbW2FL6kUFIDJIKwoGqcP977biP12eG8xuUL0Jj8Pwkp7Di7jr9i/6rTN8nXpjQnhpjjl/121pntNg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=Twg3thV5; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BBD21A4D1
+	for <kernelci@lists.linux.dev>; Fri, 25 Oct 2024 15:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729870735; cv=none; b=gR3pPlkkO8hSs3wop+xrorYws7ur20OJDIVqEVopobNP03K1LDKfQSm6IbJEgPW0u2BJU/2yP0l5eiMXBtGaPoOBCebBkXTq21ysh1bO0e2ZX5E37jK5fIuOdsTz7Szrbz3F1T8vMGcRB5/Rzpip1W3zVjBLf0XIVBX8WvIlBUU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729870735; c=relaxed/simple;
+	bh=AYlvKJ9EqD1PhK1YapKDCGpCk1AhVC/q21onaug8yD8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qI+gEMy6V7e8KApc4zNAiWbJgXKT3fkike7cxgIgN82cZcdKSwTWe/qEIe11Ajf+gUOiIh2yIQbe4jGPUblCdvmSkFmqtkeRlOn9xHwkg8WfOlusMGz6rz7JydK6/GJx2Oh1DbmZVMulkQkYXk8szEJ6Tlsxp4NRCyIFMJOfAI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xRhen8qV; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="Twg3thV5"
-ARC-Seal: i=1; a=rsa-sha256; t=1729839447; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=GsVSS9CVCB/WiyJ1KnjYQW/JrPnOm/uxm2KHaLcKtSbn2APPya4tZC+T6F9+G53NK5ZvEE/qwu11GX7A8NllMjbBFxvHhSm0kvXkJTaFFaPgbkkzHQOBwnL/GjbZB3N9daYtMzqjJryjf5Cq8UWbCkGB3o0JkUyGwD07v1YfEvQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1729839447; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=bGv+kS/g/cN0i7pTUrgNGz2oTltQ3gWB+QNxsJiq9g4=; 
-	b=l33+aTrR8pi8i3Iu10nPeJrahsVBDqjaVCzAqoPX6juDDq5pv+mnw8K67lXnUcmwZIKYFiyryv8MDGS3hVqIyfLw73Hsfz4Z2zPebtBkqZq8wAGTMNKxbJ5CdMGzdx7pROcDf3UoAr4ysjlPCeP+c667WcKogT/w8Xp+etvgwZA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=denys.f@collabora.com;
-	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729839447;
-	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
-	bh=bGv+kS/g/cN0i7pTUrgNGz2oTltQ3gWB+QNxsJiq9g4=;
-	b=Twg3thV5hoVmcAeJ6eo0rwIVLjkqanaLzBGki5anWBfj6gv4hZcj4zvOURhl2bDg
-	PYY7RK4uqnZFNra3DDfhkKqV9Rl9DWiGPHhs+iMgbZacDZQ/DbVm2pwMp5vu+jc4N7C
-	lELRU+nXO0i/FW8Mf3vzBNy2kmmYn7DzbeoleSlU=
-Received: by mx.zohomail.com with SMTPS id 1729839445743252.76426176053712;
-	Thu, 24 Oct 2024 23:57:25 -0700 (PDT)
-Message-ID: <e8212dc96afd1fc6531ee4d2388233bdf3fb650b.camel@collabora.com>
-Subject: Re: kick kernelci tests?
-From: Denys Fedoryshchenko <denys.f@collabora.com>
-To: Todd Kjos <tkjos@google.com>, Viktor Martensson
- <vmartensson@google.com>,  Betty Zhou <bettyzhou@google.com>,
- kernelci@lists.linux.dev
-Date: Fri, 25 Oct 2024 09:57:21 +0300
-In-Reply-To: <CAHRSSExUboorgLqnrRoAX_w8BNRpN6hh21Z8vscx+G=VPVirig@mail.gmail.com>
-References: 
-	<CAHRSSExUboorgLqnrRoAX_w8BNRpN6hh21Z8vscx+G=VPVirig@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xRhen8qV"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e49ef3b2bso1553848b3a.2
+        for <kernelci@lists.linux.dev>; Fri, 25 Oct 2024 08:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729870733; x=1730475533; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AYlvKJ9EqD1PhK1YapKDCGpCk1AhVC/q21onaug8yD8=;
+        b=xRhen8qVYDIXdeMk2mwSMXdwjyYSA/gnCygLsRWwAKLIzPkSsxqptDS3mGzxHCJZaP
+         VLvp3ecIOQkO/VN/at9VHhd+o/GfMSPflRQxoD6x3Mz0EQLZX3FwwOUFdG3rk4pKYr64
+         T9xU37dJidd2CWoa7++wx2udrF83C6U374nsoZnc/aLwA0A3/o7d7CthJiGjhrr69pVV
+         M07EgY0h2jY1iEs4Oft42Y0ofCL32GTpr5B97YLpJOuA1+DS75CloAiqJd15Nof9GZTY
+         a47+haHZMGxQY7PnA7Fq+jyLiTdT5LkbZbYSEN/ghJz/xcV7+/xcs/bvNjQ6w2AcQUMe
+         WHcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729870733; x=1730475533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AYlvKJ9EqD1PhK1YapKDCGpCk1AhVC/q21onaug8yD8=;
+        b=PR96uDlnJS1CGCc8Fox1nouzWXIV1enIuhO2M06YeuzsNS1hc3A0sRykEgwhV2p/W3
+         q25FhJrHfix0kK2cj0ov8OW1Jn4DeEKgNzVIjrDRz+PfZizzobi9TBXwr6DsqhMYdGtk
+         O+U2Cjm8VfRgIH75ttgSEvEDJoFF3/fjq+MUMIlXF1ZqwVt3kV43Qqvgl66CuOyVGwnk
+         uVa5tstSRYHUHrF9poEwBwMRAIbU2Vqz8GDpZV7kUCK1paSxxtGN/E1lVUrANltLUcb4
+         5XjlnLQmY1wXU7HnFLnW10IzpLEb91p5UOvgrua6nwGno/Txns9xK4O3BlQ/tGIawZhC
+         eiJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSN3IXk/Wo5YndmS2zYuHi5LI6PA1vD/1IN/tBMeBPfM+p2anQY7DS/ZFNIyJkcre3DsMPi/dAgw==@lists.linux.dev
+X-Gm-Message-State: AOJu0YyJU2kAgcUNTEj9sv/QAjj8N61ehFpYcr1K4+njYjukjBmSXmKM
+	rY0xuCwiZY6U8yQll644FNiCGuk+aphs+pBCmpZbJX8Gkwwo/6NKwe0SRzZbKJ3LpfYho8D3C95
+	+SXfEIYDVo1bKusHD7yduCcXS7K1YpdoCUJ0W
+X-Google-Smtp-Source: AGHT+IGNhZJX9sTDlSDWk095wzZnsl9V4eRskDf73XxmmH0nh8iydx6Nd3G+ozElc0BvbLm+/6RPrhbMsPnBuib1aEk=
+X-Received: by 2002:a05:6a00:1acb:b0:71e:4ee1:6d78 with SMTP id
+ d2e1a72fcca58-72030a073bdmr12816825b3a.1.1729870732879; Fri, 25 Oct 2024
+ 08:38:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+References: <CAHRSSExUboorgLqnrRoAX_w8BNRpN6hh21Z8vscx+G=VPVirig@mail.gmail.com>
+ <e8212dc96afd1fc6531ee4d2388233bdf3fb650b.camel@collabora.com>
+In-Reply-To: <e8212dc96afd1fc6531ee4d2388233bdf3fb650b.camel@collabora.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Fri, 25 Oct 2024 08:38:37 -0700
+Message-ID: <CAHRSSEz7VdAvKWLKH19Wg+97vbhgq0m=SbexqEjeBcew7n=buw@mail.gmail.com>
+Subject: Re: kick kernelci tests?
+To: Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>, 
+	kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2024-10-24 at 16:28 -0700, Todd Kjos wrote:
-> the old kernelci seems stuck again. No runs since 2 days ago:
-> https://linux.kernelci.org/job/android/
->=20
-> Can you give it a kick?
->=20
-Yes, i will do manual kick now.
+On Thu, Oct 24, 2024 at 11:57=E2=80=AFPM Denys Fedoryshchenko
+<denys.f@collabora.com> wrote:
+>
+> On Thu, 2024-10-24 at 16:28 -0700, Todd Kjos wrote:
+> > the old kernelci seems stuck again. No runs since 2 days ago:
+> > https://linux.kernelci.org/job/android/
+> >
+> > Can you give it a kick?
+> >
+> Yes, i will do manual kick now.
+
+That did the trick. Thanks Denys.
