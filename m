@@ -1,83 +1,166 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BBD21A4D1
-	for <kernelci@lists.linux.dev>; Fri, 25 Oct 2024 15:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F041D8E10
+	for <kernelci@lists.linux.dev>; Fri, 25 Oct 2024 19:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729870735; cv=none; b=gR3pPlkkO8hSs3wop+xrorYws7ur20OJDIVqEVopobNP03K1LDKfQSm6IbJEgPW0u2BJU/2yP0l5eiMXBtGaPoOBCebBkXTq21ysh1bO0e2ZX5E37jK5fIuOdsTz7Szrbz3F1T8vMGcRB5/Rzpip1W3zVjBLf0XIVBX8WvIlBUU=
+	t=1729885573; cv=none; b=sc+MCp3vhP2z2oGtI0BIdPt5fIh1CAZfTjmZ3srpFrVIRE2V+jqEVPr3rUtTJDv70xhgUqImVGZjK2lRzW7bBmiQ6sFCxqbi8hgIp7PAb5biczc+6IZGisZ+sFEh5Ea2n7dV3vKlqciz9e+2XNersCuGDMBQVbZUCJkU2CzJvHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729870735; c=relaxed/simple;
-	bh=AYlvKJ9EqD1PhK1YapKDCGpCk1AhVC/q21onaug8yD8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qI+gEMy6V7e8KApc4zNAiWbJgXKT3fkike7cxgIgN82cZcdKSwTWe/qEIe11Ajf+gUOiIh2yIQbe4jGPUblCdvmSkFmqtkeRlOn9xHwkg8WfOlusMGz6rz7JydK6/GJx2Oh1DbmZVMulkQkYXk8szEJ6Tlsxp4NRCyIFMJOfAI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xRhen8qV; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729885573; c=relaxed/simple;
+	bh=a1xD5U+KJRHHHihCSOYqaYazM7sD048UvQTjfIB42Gs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YarYGi/q4VAeyoDyzxgmOFM3HuvYNFQXWMBKSPs7uAGY/Hi9mXVUZrEEt/31E7/hymAUj5ZfNG6WrkwjhXHnR7YNNFDhzaNZ41ZsOK40DAIW2AsCvFl10u5xkeHkmwlP45vTdMl4694bpU1yWeY1zK5M2pwsGxRjdGWsgOpmYKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=BgYrs3ek; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xRhen8qV"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e49ef3b2bso1553848b3a.2
-        for <kernelci@lists.linux.dev>; Fri, 25 Oct 2024 08:38:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729870733; x=1730475533; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AYlvKJ9EqD1PhK1YapKDCGpCk1AhVC/q21onaug8yD8=;
-        b=xRhen8qVYDIXdeMk2mwSMXdwjyYSA/gnCygLsRWwAKLIzPkSsxqptDS3mGzxHCJZaP
-         VLvp3ecIOQkO/VN/at9VHhd+o/GfMSPflRQxoD6x3Mz0EQLZX3FwwOUFdG3rk4pKYr64
-         T9xU37dJidd2CWoa7++wx2udrF83C6U374nsoZnc/aLwA0A3/o7d7CthJiGjhrr69pVV
-         M07EgY0h2jY1iEs4Oft42Y0ofCL32GTpr5B97YLpJOuA1+DS75CloAiqJd15Nof9GZTY
-         a47+haHZMGxQY7PnA7Fq+jyLiTdT5LkbZbYSEN/ghJz/xcV7+/xcs/bvNjQ6w2AcQUMe
-         WHcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729870733; x=1730475533;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AYlvKJ9EqD1PhK1YapKDCGpCk1AhVC/q21onaug8yD8=;
-        b=PR96uDlnJS1CGCc8Fox1nouzWXIV1enIuhO2M06YeuzsNS1hc3A0sRykEgwhV2p/W3
-         q25FhJrHfix0kK2cj0ov8OW1Jn4DeEKgNzVIjrDRz+PfZizzobi9TBXwr6DsqhMYdGtk
-         O+U2Cjm8VfRgIH75ttgSEvEDJoFF3/fjq+MUMIlXF1ZqwVt3kV43Qqvgl66CuOyVGwnk
-         uVa5tstSRYHUHrF9poEwBwMRAIbU2Vqz8GDpZV7kUCK1paSxxtGN/E1lVUrANltLUcb4
-         5XjlnLQmY1wXU7HnFLnW10IzpLEb91p5UOvgrua6nwGno/Txns9xK4O3BlQ/tGIawZhC
-         eiJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSN3IXk/Wo5YndmS2zYuHi5LI6PA1vD/1IN/tBMeBPfM+p2anQY7DS/ZFNIyJkcre3DsMPi/dAgw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyJU2kAgcUNTEj9sv/QAjj8N61ehFpYcr1K4+njYjukjBmSXmKM
-	rY0xuCwiZY6U8yQll644FNiCGuk+aphs+pBCmpZbJX8Gkwwo/6NKwe0SRzZbKJ3LpfYho8D3C95
-	+SXfEIYDVo1bKusHD7yduCcXS7K1YpdoCUJ0W
-X-Google-Smtp-Source: AGHT+IGNhZJX9sTDlSDWk095wzZnsl9V4eRskDf73XxmmH0nh8iydx6Nd3G+ozElc0BvbLm+/6RPrhbMsPnBuib1aEk=
-X-Received: by 2002:a05:6a00:1acb:b0:71e:4ee1:6d78 with SMTP id
- d2e1a72fcca58-72030a073bdmr12816825b3a.1.1729870732879; Fri, 25 Oct 2024
- 08:38:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="BgYrs3ek"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1729885568;
+	bh=a1xD5U+KJRHHHihCSOYqaYazM7sD048UvQTjfIB42Gs=;
+	h=From:Subject:Date:To:Cc:From;
+	b=BgYrs3ekdOayxKEFAUcDI91I69Pms2obdaqO60iGnJ+8ccKCq+VqafhPQliizIHv2
+	 4/Om4Yu589ezyURJsJqv4HmTZmRQ0bIRkLyXIhhWdsZvV7fbdVJK7xLUuQ9DnEZlG6
+	 R/ZjygaS8Y0NGtodknIvfvg+Mhfzj4hq3SORioMWnx3ykaCuGIS2ZP2AK93ttOPA5A
+	 wF0Gv6sKFJ+hkGAfHQbzI0xcI5VktsE4SCHngYoRNgToH3lCXZGihUZ/kV/9QUsrdd
+	 T3jufgDRuN2iiogTP0S2o7IqebXyfot3eEEngGO0DIeZbEfA4ZBgCuMeKUEw3xT9Ji
+	 x6O8hHrJY1O6g==
+Received: from [192.168.1.54] (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nfraprado)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 85DC217E3704;
+	Fri, 25 Oct 2024 21:46:06 +0200 (CEST)
+From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+Subject: [PATCH RFC v2 0/5] Verify bias functionality for pinctrl_paris
+ driver through new gpio test
+Date: Fri, 25 Oct 2024 15:45:35 -0400
+Message-Id: <20241025-kselftest-gpio-set-get-config-v2-0-040d748840bb@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHRSSExUboorgLqnrRoAX_w8BNRpN6hh21Z8vscx+G=VPVirig@mail.gmail.com>
- <e8212dc96afd1fc6531ee4d2388233bdf3fb650b.camel@collabora.com>
-In-Reply-To: <e8212dc96afd1fc6531ee4d2388233bdf3fb650b.camel@collabora.com>
-From: Todd Kjos <tkjos@google.com>
-Date: Fri, 25 Oct 2024 08:38:37 -0700
-Message-ID: <CAHRSSEz7VdAvKWLKH19Wg+97vbhgq0m=SbexqEjeBcew7n=buw@mail.gmail.com>
-Subject: Re: kick kernelci tests?
-To: Denys Fedoryshchenko <denys.f@collabora.com>
-Cc: Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>, 
-	kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAF/1G2cC/4WNTQrCMBCFr1JmbSSpNlJXguAB3EoX6ThpB9tOS
+ UpRSu9uKO5dPHg/8L0FIgWmCOdsgUAzR5YhhXyXAbZuaEjxM2XIdX7UpbbqFanzE8VJNSOLipR
+ MEsrguVGWirq2J43GFZAYYyDP743/gPvtClUqW46ThM/2OZtt+uHLP/jZKK2MddoWzuMBzQWl6
+ 1wtwe1ReqjWdf0C88Dq29MAAAA=
+X-Change-ID: 20240906-kselftest-gpio-set-get-config-6e5bb670c1a5
+To: Sean Wang <sean.wang@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Bamvor Jian Zhang <bamv2005@gmail.com>, Shuah Khan <shuah@kernel.org>
+Cc: kernel@collabora.com, linux-mediatek@lists.infradead.org, 
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+ kernelci@lists.linux.dev, 
+ =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+X-Mailer: b4 0.14.2
 
-On Thu, Oct 24, 2024 at 11:57=E2=80=AFPM Denys Fedoryshchenko
-<denys.f@collabora.com> wrote:
->
-> On Thu, 2024-10-24 at 16:28 -0700, Todd Kjos wrote:
-> > the old kernelci seems stuck again. No runs since 2 days ago:
-> > https://linux.kernelci.org/job/android/
-> >
-> > Can you give it a kick?
-> >
-> Yes, i will do manual kick now.
+This series was motivated by the regression fixed by 166bf8af9122
+("pinctrl: mediatek: common-v2: Fix broken bias-disable for
+PULL_PU_PD_RSEL_TYPE"). A bug was introduced in the pinctrl_paris driver
+which prevented certain pins from having their bias configured.
 
-That did the trick. Thanks Denys.
+Running this test on the mt8195-tomato platform with the test plan
+included below[1] shows the test passing with the fix applied, but failing
+without the fix:
+
+With fix:
+  $ ./gpio-setget-config.py
+  TAP version 13
+  # Using test plan file: ./google,tomato.yaml
+  1..3
+  ok 1 pinctrl_paris.34.pull-up
+  ok 2 pinctrl_paris.34.pull-down
+  ok 3 pinctrl_paris.34.disabled
+  # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+Without fix:
+  $ ./gpio-setget-config.py
+  TAP version 13
+  # Using test plan file: ./google,tomato.yaml
+  1..3
+  # Bias doesn't match: Expected pull-up, read pull-down.
+  not ok 1 pinctrl_paris.34.pull-up
+  ok 2 pinctrl_paris.34.pull-down
+  # Bias doesn't match: Expected disabled, read pull-down.
+  not ok 3 pinctrl_paris.34.disabled
+  # Totals: pass:1 fail:2 xfail:0 xpass:0 skip:0 error:0
+
+In order to achieve this, the first three patches expose bias
+configuration through the GPIO API in the MediaTek pinctrl drivers,
+notably, pinctrl_paris, patch 4 extends the gpio-mockup-cdev utility for
+use by patch 5, and patch 5 introduces a new GPIO kselftest that takes a
+test plan in YAML, which can be tailored per-platform to specify the
+configurations to test, and sets and gets back each pin configuration to
+verify that they match and thus that the driver is behaving as expected.
+
+Since the GPIO uAPI only allows setting the pin configuration, getting
+it back is done through pinconf-pins in the pinctrl debugfs folder.
+
+The test currently only verifies bias but it would be easy to extend to
+verify other pin configurations.
+
+The test plan YAML file can be customized for each use-case and is
+platform-dependant. For that reason, only an example is included in
+patch 3 and the user is supposed to provide their test plan. That said,
+the aim is to collect test plans for ease of use at [2].
+
+[1] This is the test plan used for mt8195-tomato:
+
+- label: "pinctrl_paris"
+  tests:
+  # Pin 34 has type MTK_PULL_PU_PD_RSEL_TYPE and is unused.
+  # Setting bias to MTK_PULL_PU_PD_RSEL_TYPE pins was fixed by
+  # 166bf8af9122 ("pinctrl: mediatek: common-v2: Fix broken bias-disable for PULL_PU_PD_RSEL_TYPE")
+  - pin: 34
+    bias: "pull-up"
+  - pin: 34
+    bias: "pull-down"
+  - pin: 34
+    bias: "disabled"
+
+[2] https://github.com/kernelci/platform-test-parameters
+
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+---
+Changes in v2:
+- Added patches 2 and 3 enabling the extra GPIO pin configurations on
+  the other mediatek drivers: pinctrl-moore and pinctrl-mtk-common
+- Tweaked function name in patch 1:
+  mtk_pinconf_set -> mtk_paris_pin_config_set,
+  to make it clear it is not a pinconf_ops
+- Adjusted commit message to make it clear the current support is
+  limited to pins supported by the EINT controller
+- Link to v1: https://lore.kernel.org/r/20240909-kselftest-gpio-set-get-config-v1-0-16a065afc3c1@collabora.com
+
+---
+Nícolas F. R. A. Prado (5):
+      pinctrl: mediatek: paris: Expose more configurations to GPIO set_config
+      pinctrl: mediatek: moore: Expose more configurations to GPIO set_config
+      pinctrl: mediatek: common: Expose more configurations to GPIO set_config
+      selftest: gpio: Add wait flag to gpio-mockup-cdev
+      selftest: gpio: Add a new set-get config test
+
+ drivers/pinctrl/mediatek/pinctrl-moore.c           | 283 +++++++++++----------
+ drivers/pinctrl/mediatek/pinctrl-mtk-common.c      |  48 ++--
+ drivers/pinctrl/mediatek/pinctrl-paris.c           |  26 +-
+ tools/testing/selftests/gpio/Makefile              |   2 +-
+ tools/testing/selftests/gpio/gpio-mockup-cdev.c    |  14 +-
+ .../gpio-set-get-config-example-test-plan.yaml     |  15 ++
+ .../testing/selftests/gpio/gpio-set-get-config.py  | 183 +++++++++++++
+ 7 files changed, 395 insertions(+), 176 deletions(-)
+---
+base-commit: a39230ecf6b3057f5897bc4744a790070cfbe7a8
+change-id: 20240906-kselftest-gpio-set-get-config-6e5bb670c1a5
+
+Best regards,
+-- 
+Nícolas F. R. A. Prado <nfraprado@collabora.com>
+
