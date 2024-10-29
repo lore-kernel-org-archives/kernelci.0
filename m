@@ -1,91 +1,97 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.nuclearcat.com (mailgw.nuclearcat.com [78.47.178.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4C42E414
-	for <kernelci@lists.linux.dev>; Mon, 28 Oct 2024 22:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B835D26AFF
+	for <kernelci@lists.linux.dev>; Tue, 29 Oct 2024 04:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.47.178.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730154249; cv=none; b=blmYNihbBMpO3WjjxoS/3sY9uMORYOCScTjgcMwuy0SnNIndn9ANv8fLzlrejxhi/8KDmCTw3Zu18E5J24k4B2XsTH+E+a9qo+OzxVEUksx6Og7975kvjvjp+Apzd4z1PY7bjBp1pwLDd8Fo2wANbI+ykaNsTHOSIQBEZPbcrl4=
+	t=1730175368; cv=none; b=RBj4LwHd+Quj5UmaQ+L+pAwZx7jff1obno9PJNk9krCb3TyA5ftBY8FohZPhpAl6pqo3piKQShWf16sZwT48gV27d4MZa1D0QzTmSS7B00uoJrf15opt12sIXQOKG+kJdtt0llL62d1V8pd5qLVXhSMLH1sDtHWKHNWwYshrIHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730154249; c=relaxed/simple;
-	bh=S12iColk/b3a7n3NtIXEcWEg43rTtG6MRytEnEG7sUg=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=HhDNON+Val7xI9YjXXKO7pBsAgGqS9fZX6say8rPnh6c5H6keSMNpLIpf8MEgytIuH1wVdw9/LK6Ivzp04L+nXks1w9vBRAaaGizAs7xVVwd7QAhgLM4nwnaz6cFySYrk5XPAKtRm06p04ASbJVYu75bO4cBAKZTYdEiLrusAQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=li1cYlbl; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730175368; c=relaxed/simple;
+	bh=kxLst7SF2L88tJNdZll/I2X0CRnBx7NmM/yZ7/n57So=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=oMVKSRfE8lJKhn7sBG6zOCBPdVkON8eUb0YIGOMHA5y5E0b3DHquek6h9FzCQishWY6booA0J4QAoDAZhES/J2VoJ2bL8i1Ta7nMC4skpWQI4lQx6qXlUSRpiEiXBH8FRaEGoeAuqD7VyXGzFGgxGCTjew9/qvQvgFDKuwH2MZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nuclearcat.com; spf=pass smtp.mailfrom=nuclearcat.com; dkim=pass (2048-bit key) header.d=nuclearcat.com header.i=@nuclearcat.com header.b=URl4HRv9; arc=none smtp.client-ip=78.47.178.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nuclearcat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuclearcat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="li1cYlbl"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71e49ef3bb9so3329392b3a.1
-        for <kernelci@lists.linux.dev>; Mon, 28 Oct 2024 15:24:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730154246; x=1730759046; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=S12iColk/b3a7n3NtIXEcWEg43rTtG6MRytEnEG7sUg=;
-        b=li1cYlbl/YQdYfvZjobht2gWnn2gg1R14vrlMHUYi35YbQZ4pNICk6JqAnhMGoVVGF
-         11zYncOIb3TprPFYygQ7NWtAV8QUps0Xc8rdmvm1qcDP8/LhdAuCsDo5tdF6zeMkLrRC
-         TW2iPI2yPxN/P9jlPIV6U7uq7yJnrrkG2tyOdhZM03G23rG934MO4vkbcMUdfVzqOXC3
-         K2eUI+IeEpJCBAHw1AoSFt377EbXJyFZn8uH9xvRoBXYskqxjsIdZjwzO4gwMDYAphrd
-         tm31cxqAa3oPfhFT7I0thMdF+8QmgKxz+1lUG8MqJ8TzlBDZITIbbiisZOakloq9CRjV
-         8Ksg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730154246; x=1730759046;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=S12iColk/b3a7n3NtIXEcWEg43rTtG6MRytEnEG7sUg=;
-        b=A/Jkk1EK4TP7YJ6YQnWYUMKVIiQWPu74/2Qd6Rf8VDYOGrtcrc4Xku//DSz6ZpmcJ+
-         M/n2iTjJ7dwgN1wDVGsdvv3Hx2yBKIONuNXee6Lw84a/e2JR1/ARwrFiIqVGB85dNb7j
-         suMrcRAlHZljtfOX+4K876HyOwihkIiqxBvZB5xrvrvj9+mDfjXIPxuD2VVaEIxVeMuO
-         hdCNm98SfXlIxeU8nr+auNY3GlRntdudr92hgWSzAJ+EARM44QZXAXU9YnEJsscPNdU0
-         Q+WMmxEbs6Nxw+HPU11ra0uLqlMe3HpIOJZN8cZke5D05FM/e01WhtFSGP35KwYtj6gP
-         WrgA==
-X-Gm-Message-State: AOJu0YyexhCbd1OnZACN4T4x8D04tm9HW8/dwOWEqzxwdEvQjosoVeJM
-	TCswtDd+DQ0LBo9/W44Fs8MxlCdl0VS7N3mHcttfYYbTzaJnNKwopji3PmV3Ji9mjL6tXbgd8+N
-	u8OcXz/ml/SqjbrMlKxu3fm/v6xDGQiUoVD9CeN2BI0aSVAyRvnV9
-X-Google-Smtp-Source: AGHT+IGxgaWi/GE2QDYz9DKuLlvR2ZdoaiGr/6aAFa436vIQ+wHP7PIAOdOKbyJZQ5GCzC/gCw1idsn4J8JiOjodi9A=
-X-Received: by 2002:a05:6a00:2184:b0:71e:4dc5:259a with SMTP id
- d2e1a72fcca58-7209672fe92mr84214b3a.7.1730154245483; Mon, 28 Oct 2024
- 15:24:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nuclearcat.com header.i=@nuclearcat.com header.b="URl4HRv9"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPA id 15EB35F02B;
+	Tue, 29 Oct 2024 06:10:44 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nuclearcat.com;
+	s=dkim; t=1730175044;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=kxLst7SF2L88tJNdZll/I2X0CRnBx7NmM/yZ7/n57So=;
+	b=URl4HRv9vXBG/fSMskjeAxaKhI6aaIPnMepB8fP4uu41QgzkAhRo9p0CeXcSsJVwGc/ast
+	yWs3hTiWsUbw2XjM/xvScPUHjI4HXZb7DdnjIAvv03gRYArXElZndW49IWH/+sYBL8NB9s
+	UfIHmn/MR4fg8L6iIOOOVV//msQ7qpH4I+E8PFLebM7jtpjtCbU+eFibTbqOA709I9c4tL
+	am5s3JqL97fImrLmfjWAaBwXxTOd111SaLhN5XbizjTm/2YqwzNxu9adHyrW/lFu/56kZx
+	4PGZqTJQLqGevTCe9A5TsDniiLlVIJYgcwsokx4m60Jo1T3S626SHdFwlqV9Fw==
+From: "Denys Fedoryshchenko" <nuclearcat@nuclearcat.com>
+In-Reply-To: <CAHRSSEyCAMtXogOHOUY=zVipGOrYSGcbe59OpGxr-1_RnK9+UA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+References: <CAHRSSEyCAMtXogOHOUY=zVipGOrYSGcbe59OpGxr-1_RnK9+UA@mail.gmail.com>
+Date: Tue, 29 Oct 2024 06:10:43 +0200
+Cc: kernelci@lists.linux.dev, "Viktor Martensson" <vmartensson@google.com>, "Betty Zhou" <bettyzhou@google.com>
+To: "Todd Kjos" <tkjos@google.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Todd Kjos <tkjos@google.com>
-Date: Mon, 28 Oct 2024 15:23:49 -0700
-Message-ID: <CAHRSSEyCAMtXogOHOUY=zVipGOrYSGcbe59OpGxr-1_RnK9+UA@mail.gmail.com>
-Subject: fix for kernelci errors?
-To: kernelci@lists.linux.dev
-Cc: Viktor Martensson <vmartensson@google.com>, Betty Zhou <bettyzhou@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <44-67206080-b-17df13@5111824>
+Subject: =?utf-8?q?Re=3A?= fix for kernelci =?utf-8?q?errors=3F?=
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: None
 
-I'm looking through the android kernel build failures using the new UI
-(still a little painful since it is missing some features compared to
-the old UI, but getting better). I have questions on 3 of our error
-cases:
+On Tuesday, October 29, 2024 00:23 EET, Todd Kjos <tkjos@google.com> wr=
+ote:
 
-1. android16-6.12 (gcc tools building *+allmodconfig):
-/bin/sh: 1: gawk: not found
-make[2]: *** [scripts/Makefile.vmlinux:47: modules.builtin.ranges] Error 127
-make[2]: *** Deleting file 'modules.builtin.ranges'
-make[1]: *** [/tmp/kci/linux/Makefile:1227: vmlinux] Error 2
-make: *** [Makefile:242: __sub-make] Error 2
+> I'm looking through the android kernel build failures using the new U=
+I
+> (still a little painful since it is missing some features compared to
+> the old UI, but getting better). I have questions on 3 of our error
+> cases:
+>=20
+> 1. android16-6.12 (gcc tools building *+allmodconfig):
+> /bin/sh: 1: gawk: not found
+> make[2]: *** [scripts/Makefile.vmlinux:47: modules.builtin.ranges] Er=
+ror 127
+> make[2]: *** Deleting file 'modules.builtin.ranges'
+> make[1]: *** [/tmp/kci/linux/Makefile:1227: vmlinux] Error 2
+> make: *** [Makefile:242: =5F=5Fsub-make] Error 2
+>=20
+> Is gawk missing on your build machines? How do we fix this?
+PR with fix is already in the testing, likely will be merged today and =
+pushed into production
+https://github.com/kernelci/kernelci-core/pull/2723
 
-Is gawk missing on your build machines? How do we fix this?
+>=20
+> 2. android15-6.6 (clang tools building *+allmodconfig):
+> drivers/i3c/master/svc-i3c-master.c:1100:29: error: variable 'reg' is
+> uninitialized when used here [-Werror,-Wuninitialized]
+>=20
+> It looks like the stable kernels only have 1 clang build configured
+> (x86=5F64=5Fdefconfig). Would it be possible to add an allmodconfig b=
+uild
+> using clang so we can compare our allmodconfig failures with the
+> stable kernel?
+Do you mean stable-rc kernels?
 
-2. android15-6.6 (clang tools building *+allmodconfig):
-drivers/i3c/master/svc-i3c-master.c:1100:29: error: variable 'reg' is
-uninitialized when used here [-Werror,-Wuninitialized]
+>=20
+> 3. android-mainline
+>=20
+> Is there a reason that there are no allmodconfig builds of
+> mainline.master? It would help us to know if we introduced an issue i=
+f
+> we could see the equivalent upstream build. It seems like it would
+> also benefit upstream to see those issues early.
+>=20
+allmodconfig is quite heavy build, and as legacy is still running, we a=
+re unable to use build capacity allocated for it, and Maestro-own build=
+ capacity is limited. If it is just mainline master - we can try to run=
+ it.
 
-It looks like the stable kernels only have 1 clang build configured
-(x86_64_defconfig). Would it be possible to add an allmodconfig build
-using clang so we can compare our allmodconfig failures with the
-stable kernel?
-
-3. android-mainline
-
-Is there a reason that there are no allmodconfig builds of
-mainline.master? It would help us to know if we introduced an issue if
-we could see the equivalent upstream build. It seems like it would
-also benefit upstream to see those issues early.
