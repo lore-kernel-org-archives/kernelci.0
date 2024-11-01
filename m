@@ -1,125 +1,172 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900B6191F7C
-	for <kernelci@lists.linux.dev>; Tue, 29 Oct 2024 15:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B03C55896
+	for <kernelci@lists.linux.dev>; Fri,  1 Nov 2024 07:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730216619; cv=none; b=OB2+FKPc4k/0K/DEna9mdALWSzYJIQPPcvxaqH+n2PFygBlbzUnqcHjTRB6MFRGh41Nhd4y8ucXGr4tVCmuAXV4VFFm+gSdtOscLXisinYl1ng451TQ1MbdqoCrOaBQPxgxyAxDpRQKDvepwiLryBZ2yDAyaOH++00Sr/M6HO04=
+	t=1730446930; cv=none; b=U99TtKxMxjeIuc+s6mWGOG833Ke/upkloOLOFZNH4EtXxU4WPNxXjrvLxTdRPnnQ64IpQY4DflCOZjTXJ/F0R0XyzPD3cTcl5pQbQmoV6EGKzKIvbQht9y39s+4YpM41NWIhF4Mh1gd90YCfrJ11xRgrnmxCijhUxrysZWh+XBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730216619; c=relaxed/simple;
-	bh=IsFiPocCx1av6OZes0vSAEa6BWLaThLtIBja/ha7aFY=;
+	s=arc-20240116; t=1730446930; c=relaxed/simple;
+	bh=g+B7AVhh8UjWeq4IJJekLF0zC8V8tvpQXB0el9dq2a4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iycLwUeJZdIoSBqPo5HBfqxtWMm7nFoNuS2mwDV3c2jX+fDVTnJQ+7IRFwPOIiFsBULHP2o4dsVIU4AeKDUSIkw9MFDRLcN6R2myqCVjnNFhX7JpA98/RDt7UNUGCCthZTef3FqZtVWK5WAIa9jHPK8Abk4y12KXaoKC+xy4QlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TXnandeR; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=IrzZssKR5uzg4cp+O5P+jx81PYjSmsH+auwp1AbkSupZ2GwQmrNF+g3YZ/5Ej7dzV7XFebENQJJzSTt6eY8pgybTcpkqCC6tmAz9sprAPwGMoEK3Mqc7PkvETF8OTqz73AG+4QCk9bvJ1Dckcea/Ydei6biYWl9fNdFfj/OOWDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LbW7nbw/; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TXnandeR"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-71e953f4e7cso4118415b3a.3
-        for <kernelci@lists.linux.dev>; Tue, 29 Oct 2024 08:43:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LbW7nbw/"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53a097aa3daso1647333e87.1
+        for <kernelci@lists.linux.dev>; Fri, 01 Nov 2024 00:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730216617; x=1730821417; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1730446926; x=1731051726; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IsFiPocCx1av6OZes0vSAEa6BWLaThLtIBja/ha7aFY=;
-        b=TXnandeRCzqxkKMqMnfTTQOUFRFc2zOLcrKU1Gtzr+O5qcEz5fhmcLfu5PmJCTU4qB
-         VWAyMASsrs6tyiFaEMrTyMCMSIP0Se6BbQdvytgD2cZz8/qb74Zvs+IBB7wTf5rPQNnT
-         lNvAYWr98SqFNlCjKUas/9qiXhAuFEKuR/YYxQPvzB7lN09X8EWJf5sNl2z8StAbO2iL
-         2ITgaMDY4bY77hOeloeV0RCZxzNCpEXbbgqnMBsPeQgYrslipuV6HJl7F47iaPjqH7Ni
-         CiQ/z4e/893emtcX5uKj2l3ptfHOXUPsjYN3t02M1+w6/1cz4q9K2bBH+P6auXxgEFwq
-         JSAg==
+        bh=AIdrzBhxaYOudwVJlEqwarkgMuVinNcfj9JrlrLM6E0=;
+        b=LbW7nbw//lfSsNmxoWVqBZLArd7yYSRljak8VtW3837f5W1b/vDDjfzACDDsow0f84
+         yO96/veUCO7nE9zUWnUnhoxBqThkSq1Cy+B5Hkt7oxVd9kAfuzdlNoUUuwUypMzb8vtp
+         2UX5UbZBwHHvOrY5Y2D71HxiwRogATgQ1VgTc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730216617; x=1730821417;
+        d=1e100.net; s=20230601; t=1730446926; x=1731051726;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IsFiPocCx1av6OZes0vSAEa6BWLaThLtIBja/ha7aFY=;
-        b=Yke3NUGOaSaMb68RqqCKoB1bI8XmZiWN9FM6TjIRvf4/14DXcOwWTqkkZlqr59+oke
-         2ke3VZNqrVU5gLFFeQ/3fDSA4HzOeZiTgDKOw06nCVNXE+3M5rBIjc0JAY+Yi/wDgDin
-         REIeweNEpdhiol63QveyvgZw5ZKD111cu8X+tHx3vK7ThITrtt5di8qjWJUJsQvO+e/w
-         USrOGhIrnZXD87SXtJrVR/7OPMc/et1hJyH288xiQkegkQrkz2Ud5T8WSl9NUgR+ni0e
-         eWKbSuO+NxvyjeOZYwN0oeDMGXj41KmOMbwhKXEd2WyCAAFUaQM4r5KI9E7K+b1yvxZU
-         s41g==
-X-Gm-Message-State: AOJu0YxJe+EmKhiVfL0nyFbqvDzjSDvZ/SUR3BSPhBsDMHSUIQ0rfBze
-	NGjicJAzN/TRW9F3UEiXpSTdH9XVVutj3exzQh1zDRQkn2FGUr5SoWWFlxLd78n9n9YwMcHIHVn
-	x+rYAI1xhvBlo/9dN9YKNDQM7CaRMpiabiWz2
-X-Google-Smtp-Source: AGHT+IEmX2Jc7p+KRhqSAAZ+yx+POS7Ks609L79Omok34sY6fbUb0bGJkKoUSiVYMitnW0nCv2yqewpH7xXe4c7fVM0=
-X-Received: by 2002:a05:6a20:9f97:b0:1d8:b81c:4e1a with SMTP id
- adf61e73a8af0-1d9a85053bbmr16275671637.44.1730216616354; Tue, 29 Oct 2024
- 08:43:36 -0700 (PDT)
+        bh=AIdrzBhxaYOudwVJlEqwarkgMuVinNcfj9JrlrLM6E0=;
+        b=jWFRC6pc1AsCO3pJfQ8yvgV6uJIMByMOTrbpphoJ48SBhgmD9xmaU1gZxxKPN75VG5
+         hVovYOJtF8/zsi0Q/m/7sJkEon0yo1LEmDGaxd3ixkGecqgfqwA+tlQUsvCp43SL62eZ
+         fIAyl08D+5GeFHOv8RRWaJqSPakIUOr3L6gH0zBUsmfJeTaDt/NE1kBNZef+mOZLJgpa
+         Vfi/Ta2RSj8m9Br6qsUtMhdAZJFlwPqQYkaXKs8Ok8WbjiTOMS097dbRzDAhdUWxZHvz
+         uhpILHJ7Xz/z5yjw5PWTNc/SsjjI7eb58GG2KikMd+u0uRglQfaeIOw++TwTewEQWZye
+         eEzA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8Y1wgXZnatGCo7oXNx+D/JhH3uqn4bJVmEjNk/huQnpOe5jOCK9ZdLYfc0SOV7aFzZtd0i11fjA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzhsQZWkndhRr+R+IHvu1aFjOCNlLrLlpgq+fmAbh4LfsePYdUK
+	UgDLuhyHteGn/Yvkgtnc+k4BUu0l9oirPjlsb2/bJH97CNzm9lSxRmHqoKXKz3Hw1Q7wgkht/uC
+	1F6SpL/BlyHVDgKGEAzwXzO9Y7iZr87i3mY/9gI6Qvi9EnYE=
+X-Google-Smtp-Source: AGHT+IEH94/fyCantPWg+JSDsdCT1KoXU+c1gdEceLGqvlXMPVHqZ/SsqaDoW07J3kRkVsMcqqlDVlzNv5mQm5MpnK0=
+X-Received: by 2002:a05:6512:3e22:b0:536:54df:bff2 with SMTP id
+ 2adb3069b0e04-53d65e265e8mr1216351e87.54.1730446926248; Fri, 01 Nov 2024
+ 00:42:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAHRSSEyCAMtXogOHOUY=zVipGOrYSGcbe59OpGxr-1_RnK9+UA@mail.gmail.com>
- <44-67206080-b-17df13@5111824>
-In-Reply-To: <44-67206080-b-17df13@5111824>
-From: Todd Kjos <tkjos@google.com>
-Date: Tue, 29 Oct 2024 08:43:19 -0700
-Message-ID: <CAHRSSEwBQ0hGO8rw5BptC-9s2jOYxV_=Knq3HuHiLFNEqdzFUg@mail.gmail.com>
-Subject: Re: fix for kernelci errors?
-To: Denys Fedoryshchenko <nuclearcat@nuclearcat.com>
-Cc: kernelci@lists.linux.dev, Viktor Martensson <vmartensson@google.com>, 
-	Betty Zhou <bettyzhou@google.com>
+References: <20241025-kselftest-gpio-set-get-config-v2-0-040d748840bb@collabora.com>
+ <20241025-kselftest-gpio-set-get-config-v2-1-040d748840bb@collabora.com>
+In-Reply-To: <20241025-kselftest-gpio-set-get-config-v2-1-040d748840bb@collabora.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Fri, 1 Nov 2024 15:41:55 +0800
+Message-ID: <CAGXv+5HNwk2B_01_o90nZ1smDcZoFf3O-4-+n+E7vKtLTS9-rQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 1/5] pinctrl: mediatek: paris: Expose more
+ configurations to GPIO set_config
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
+Cc: Sean Wang <sean.wang@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Bamvor Jian Zhang <bamv2005@gmail.com>, Shuah Khan <shuah@kernel.org>, kernel@collabora.com, 
+	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kselftest@vger.kernel.org, kernelci@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 9:10=E2=80=AFPM Denys Fedoryshchenko
-<nuclearcat@nuclearcat.com> wrote:
+On Sat, Oct 26, 2024 at 4:06=E2=80=AFAM N=C3=ADcolas F. R. A. Prado
+<nfraprado@collabora.com> wrote:
 >
-> On Tuesday, October 29, 2024 00:23 EET, Todd Kjos <tkjos@google.com> wrot=
-e:
+> Currently the set_config callback in the gpio_chip registered by the
+> pinctrl_paris driver only supports configuring a single parameter on
+> specific pins (the input debounce of the EINT controller, on pins that
+> support it), even though many other configurations are already
+> implemented and available through the pinctrl API for configuration of
+> pins by the Devicetree and other drivers.
 >
-> > I'm looking through the android kernel build failures using the new UI
-> > (still a little painful since it is missing some features compared to
-> > the old UI, but getting better). I have questions on 3 of our error
-> > cases:
-> >
-> > 1. android16-6.12 (gcc tools building *+allmodconfig):
-> > /bin/sh: 1: gawk: not found
-> > make[2]: *** [scripts/Makefile.vmlinux:47: modules.builtin.ranges] Erro=
-r 127
-> > make[2]: *** Deleting file 'modules.builtin.ranges'
-> > make[1]: *** [/tmp/kci/linux/Makefile:1227: vmlinux] Error 2
-> > make: *** [Makefile:242: __sub-make] Error 2
-> >
-> > Is gawk missing on your build machines? How do we fix this?
-> PR with fix is already in the testing, likely will be merged today and pu=
-shed into production
-> https://github.com/kernelci/kernelci-core/pull/2723
+> Expose all configurations currently implemented through the GPIO API so
+> they can also be set from userspace, which is particularly useful to
+> allow testing them from userspace.
 >
-> >
-> > 2. android15-6.6 (clang tools building *+allmodconfig):
-> > drivers/i3c/master/svc-i3c-master.c:1100:29: error: variable 'reg' is
-> > uninitialized when used here [-Werror,-Wuninitialized]
-> >
-> > It looks like the stable kernels only have 1 clang build configured
-> > (x86_64_defconfig). Would it be possible to add an allmodconfig build
-> > using clang so we can compare our allmodconfig failures with the
-> > stable kernel?
-> Do you mean stable-rc kernels?
+> Signed-off-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
 
-Yes, like "linux-6.6-y".
-https://dashboard.kernelci.org/tree?origin=3Dmaestro&treeSearch=3Dstable-rc=
-&intervalInDays=3D14
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
 
+> ---
+>  drivers/pinctrl/mediatek/pinctrl-paris.c | 26 +++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
 >
-> >
-> > 3. android-mainline
-> >
-> > Is there a reason that there are no allmodconfig builds of
-> > mainline.master? It would help us to know if we introduced an issue if
-> > we could see the equivalent upstream build. It seems like it would
-> > also benefit upstream to see those issues early.
-> >
-> allmodconfig is quite heavy build, and as legacy is still running, we are=
- unable to use build capacity allocated for it, and Maestro-own build capac=
-ity is limited. If it is just mainline master - we can try to run it.
-
-IMHO, allmodconfig is the best test to find build issues. Understood
-that it is heavy. Yes, mainline master would be fine - and I think it
-would be helpful for upstream rc validation too.
+> diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/m=
+ediatek/pinctrl-paris.c
+> index 87e958d827bf939aa6006794287698be4936f25e..c9455de266a447ab7f5446c15=
+11bef0ef9c9128e 100644
+> --- a/drivers/pinctrl/mediatek/pinctrl-paris.c
+> +++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
+> @@ -255,10 +255,9 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctld=
+ev,
+>         return err;
+>  }
+>
+> -static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin=
+,
+> -                          enum pin_config_param param, u32 arg)
+> +static int mtk_paris_pin_config_set(struct mtk_pinctrl *hw, unsigned int=
+ pin,
+> +                                   enum pin_config_param param, u32 arg)
+>  {
+> -       struct mtk_pinctrl *hw =3D pinctrl_dev_get_drvdata(pctldev);
+>         const struct mtk_pin_desc *desc;
+>         int err =3D -ENOTSUPP;
+>         u32 reg;
+> @@ -795,9 +794,9 @@ static int mtk_pconf_group_set(struct pinctrl_dev *pc=
+tldev, unsigned group,
+>         int i, ret;
+>
+>         for (i =3D 0; i < num_configs; i++) {
+> -               ret =3D mtk_pinconf_set(pctldev, grp->pin,
+> -                                     pinconf_to_config_param(configs[i])=
+,
+> -                                     pinconf_to_config_argument(configs[=
+i]));
+> +               ret =3D mtk_paris_pin_config_set(hw, grp->pin,
+> +                                              pinconf_to_config_param(co=
+nfigs[i]),
+> +                                              pinconf_to_config_argument=
+(configs[i]));
+>                 if (ret < 0)
+>                         return ret;
+>
+> @@ -937,18 +936,19 @@ static int mtk_gpio_set_config(struct gpio_chip *ch=
+ip, unsigned int offset,
+>  {
+>         struct mtk_pinctrl *hw =3D gpiochip_get_data(chip);
+>         const struct mtk_pin_desc *desc;
+> -       u32 debounce;
+> +       enum pin_config_param param =3D pinconf_to_config_param(config);
+> +       u32 arg =3D pinconf_to_config_argument(config);
+>
+>         desc =3D (const struct mtk_pin_desc *)&hw->soc->pins[offset];
+>
+> -       if (!hw->eint ||
+> -           pinconf_to_config_param(config) !=3D PIN_CONFIG_INPUT_DEBOUNC=
+E ||
+> -           desc->eint.eint_n =3D=3D EINT_NA)
+> -               return -ENOTSUPP;
+> +       if (param =3D=3D PIN_CONFIG_INPUT_DEBOUNCE) {
+> +               if (!hw->eint || desc->eint.eint_n =3D=3D EINT_NA)
+> +                       return -ENOTSUPP;
+>
+> -       debounce =3D pinconf_to_config_argument(config);
+> +               return mtk_eint_set_debounce(hw->eint, desc->eint.eint_n,=
+ arg);
+> +       }
+>
+> -       return mtk_eint_set_debounce(hw->eint, desc->eint.eint_n, debounc=
+e);
+> +       return mtk_paris_pin_config_set(hw, offset, param, arg);
+>  }
+>
+>  static int mtk_build_gpiochip(struct mtk_pinctrl *hw)
+>
+> --
+> 2.47.0
+>
+>
