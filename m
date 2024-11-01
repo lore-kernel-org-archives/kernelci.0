@@ -1,52 +1,52 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B03C55896
-	for <kernelci@lists.linux.dev>; Fri,  1 Nov 2024 07:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD201553AB
+	for <kernelci@lists.linux.dev>; Fri,  1 Nov 2024 07:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730446930; cv=none; b=U99TtKxMxjeIuc+s6mWGOG833Ke/upkloOLOFZNH4EtXxU4WPNxXjrvLxTdRPnnQ64IpQY4DflCOZjTXJ/F0R0XyzPD3cTcl5pQbQmoV6EGKzKIvbQht9y39s+4YpM41NWIhF4Mh1gd90YCfrJ11xRgrnmxCijhUxrysZWh+XBU=
+	t=1730447670; cv=none; b=VlO6plYm378QRESP6T21jx7Q7Ocj/+MaFn4nlY2ZQ3edDqHCBR5Nk3f2E2UGT7qQxbwtc3B8NDhxM7IHJwYMG7C/96UYHUm+z9OMb/uRKOMv7IyoxUv5qytNkm2gO//ncAgFVlKcfSXXbz2khVT4PUUSITEzQCpnYoEZyGlGsLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730446930; c=relaxed/simple;
-	bh=g+B7AVhh8UjWeq4IJJekLF0zC8V8tvpQXB0el9dq2a4=;
+	s=arc-20240116; t=1730447670; c=relaxed/simple;
+	bh=YolA9hy7dqg+uVVvj+arDWmukVIcWR/zKun7TKWBDGQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IrzZssKR5uzg4cp+O5P+jx81PYjSmsH+auwp1AbkSupZ2GwQmrNF+g3YZ/5Ej7dzV7XFebENQJJzSTt6eY8pgybTcpkqCC6tmAz9sprAPwGMoEK3Mqc7PkvETF8OTqz73AG+4QCk9bvJ1Dckcea/Ydei6biYWl9fNdFfj/OOWDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LbW7nbw/; arc=none smtp.client-ip=209.85.167.52
+	 To:Cc:Content-Type; b=fDaObELLfOxjmdu081mONF1FBRTf4SZco1OuUMCIMjFyu2u0jce1CwAQ/AfVM5F04SchefRCPFws77BNn7kaXFZzpnaUoWkyZpnAJh8fMSrlVFyvvi+YECSHE83xu7FoLzKKsI1XDdMypLEeBc9IccI4Ky8sKRUj40sYM/OMZuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=h2USV3q2; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LbW7nbw/"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53a097aa3daso1647333e87.1
-        for <kernelci@lists.linux.dev>; Fri, 01 Nov 2024 00:42:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="h2USV3q2"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-539f4d8ef66so2277663e87.1
+        for <kernelci@lists.linux.dev>; Fri, 01 Nov 2024 00:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1730446926; x=1731051726; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1730447664; x=1731052464; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AIdrzBhxaYOudwVJlEqwarkgMuVinNcfj9JrlrLM6E0=;
-        b=LbW7nbw//lfSsNmxoWVqBZLArd7yYSRljak8VtW3837f5W1b/vDDjfzACDDsow0f84
-         yO96/veUCO7nE9zUWnUnhoxBqThkSq1Cy+B5Hkt7oxVd9kAfuzdlNoUUuwUypMzb8vtp
-         2UX5UbZBwHHvOrY5Y2D71HxiwRogATgQ1VgTc=
+        bh=ijggQrqCp3VgpHcHOhod7fNcrpQe7wWt5axhaq9S/tE=;
+        b=h2USV3q2OvgfLkT4+MFUpbCkxOfVXzzUlor/KRoYEtrKsLMmMp6ta0+Iap0OwCDcxy
+         O/582x/0N4tErOwr8eJLtVEjp77KbpM0RgcMOrC++zgKPUhNJHsdY+sSIdR9xXgffb2b
+         T9aKLEZIt0PsA6c6j+ug7b1a8Owdx2o6BJAe4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730446926; x=1731051726;
+        d=1e100.net; s=20230601; t=1730447664; x=1731052464;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AIdrzBhxaYOudwVJlEqwarkgMuVinNcfj9JrlrLM6E0=;
-        b=jWFRC6pc1AsCO3pJfQ8yvgV6uJIMByMOTrbpphoJ48SBhgmD9xmaU1gZxxKPN75VG5
-         hVovYOJtF8/zsi0Q/m/7sJkEon0yo1LEmDGaxd3ixkGecqgfqwA+tlQUsvCp43SL62eZ
-         fIAyl08D+5GeFHOv8RRWaJqSPakIUOr3L6gH0zBUsmfJeTaDt/NE1kBNZef+mOZLJgpa
-         Vfi/Ta2RSj8m9Br6qsUtMhdAZJFlwPqQYkaXKs8Ok8WbjiTOMS097dbRzDAhdUWxZHvz
-         uhpILHJ7Xz/z5yjw5PWTNc/SsjjI7eb58GG2KikMd+u0uRglQfaeIOw++TwTewEQWZye
-         eEzA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8Y1wgXZnatGCo7oXNx+D/JhH3uqn4bJVmEjNk/huQnpOe5jOCK9ZdLYfc0SOV7aFzZtd0i11fjA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzhsQZWkndhRr+R+IHvu1aFjOCNlLrLlpgq+fmAbh4LfsePYdUK
-	UgDLuhyHteGn/Yvkgtnc+k4BUu0l9oirPjlsb2/bJH97CNzm9lSxRmHqoKXKz3Hw1Q7wgkht/uC
-	1F6SpL/BlyHVDgKGEAzwXzO9Y7iZr87i3mY/9gI6Qvi9EnYE=
-X-Google-Smtp-Source: AGHT+IEH94/fyCantPWg+JSDsdCT1KoXU+c1gdEceLGqvlXMPVHqZ/SsqaDoW07J3kRkVsMcqqlDVlzNv5mQm5MpnK0=
-X-Received: by 2002:a05:6512:3e22:b0:536:54df:bff2 with SMTP id
- 2adb3069b0e04-53d65e265e8mr1216351e87.54.1730446926248; Fri, 01 Nov 2024
- 00:42:06 -0700 (PDT)
+        bh=ijggQrqCp3VgpHcHOhod7fNcrpQe7wWt5axhaq9S/tE=;
+        b=VQulStTVLRcjiAnjgoPr8I16PDesGEQ4xFx15aRSgGyLICPNo9XKVaVO3Pbfn5a4Vw
+         qXGxHHecTCEAkyy5nBJRkRAg6/72PpFozZ/kMBPs/afGM3/MuQk6+xP8x44JPLZxZ3cn
+         axVSoUnN9RnicZ/9odaZzP5tQUgVGDCv+AHDXa6vKUzTNwVR3R5mlLacl5UbQFkhFLf8
+         s85vjCXl+NTczE27Y9c5eJTQLeyfNWYLNBHQoSXhE+WEZKPWIl22ZHeIfCgHHr4XE9Ci
+         EtxayLpe4mF/Nj4YvrDSYwW852cPfMJhnC7Z89jbV2zYjeScz/kVN8Y6RRzfIRQOTXIV
+         t2Tg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrVRxOdQPMY2uQSRgxE2TZsFZ9W7OpQFuqlEUgslBtsgAVnrok/Ke3UaTtU6xXhPqd0ft32CRorQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYewz1A6f6StMlmnavuj3Sr4GU8+F+Zxc9vpEk9uZlbGTGpwSC
+	6XhvPfcAvrLNiZ64vutQOixPJENynLkMNIo3CMjxF8ivm2d9ZjvKZgrRM/8XCQY/naILqCVnDPt
+	uUreWHcOeE3oUAF77h/zBvLkiMxvO7zFm8lkW
+X-Google-Smtp-Source: AGHT+IGVU/lUXWWbYrSDow1cLQ0HI1sHWadRX6pTuTRsABm++WDQNv3dQ9oZlPSltO0k3eA9d3yRfGI6TbGat6Vgmmw=
+X-Received: by 2002:a05:6512:b22:b0:539:e8c6:7c1c with SMTP id
+ 2adb3069b0e04-53b348f9d60mr10821100e87.20.1730447664142; Fri, 01 Nov 2024
+ 00:54:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -54,12 +54,12 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20241025-kselftest-gpio-set-get-config-v2-0-040d748840bb@collabora.com>
- <20241025-kselftest-gpio-set-get-config-v2-1-040d748840bb@collabora.com>
-In-Reply-To: <20241025-kselftest-gpio-set-get-config-v2-1-040d748840bb@collabora.com>
+ <20241025-kselftest-gpio-set-get-config-v2-2-040d748840bb@collabora.com>
+In-Reply-To: <20241025-kselftest-gpio-set-get-config-v2-2-040d748840bb@collabora.com>
 From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Fri, 1 Nov 2024 15:41:55 +0800
-Message-ID: <CAGXv+5HNwk2B_01_o90nZ1smDcZoFf3O-4-+n+E7vKtLTS9-rQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 1/5] pinctrl: mediatek: paris: Expose more
+Date: Fri, 1 Nov 2024 15:54:12 +0800
+Message-ID: <CAGXv+5EW+eo6yM0YCPikHLQeh0H26RJ5TC5Mf2NxmB1e_teRSw@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 2/5] pinctrl: mediatek: moore: Expose more
  configurations to GPIO set_config
 To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
 Cc: Sean Wang <sean.wang@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
@@ -72,11 +72,11 @@ Cc: Sean Wang <sean.wang@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 26, 2024 at 4:06=E2=80=AFAM N=C3=ADcolas F. R. A. Prado
+On Sat, Oct 26, 2024 at 4:14=E2=80=AFAM N=C3=ADcolas F. R. A. Prado
 <nfraprado@collabora.com> wrote:
 >
 > Currently the set_config callback in the gpio_chip registered by the
-> pinctrl_paris driver only supports configuring a single parameter on
+> pinctrl_moore driver only supports configuring a single parameter on
 > specific pins (the input debounce of the EINT controller, on pins that
 > support it), even though many other configurations are already
 > implemented and available through the pinctrl API for configuration of
@@ -91,50 +91,346 @@ On Sat, Oct 26, 2024 at 4:06=E2=80=AFAM N=C3=ADcolas F. R. A. Prado
 Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
 
 > ---
->  drivers/pinctrl/mediatek/pinctrl-paris.c | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
+>  drivers/pinctrl/mediatek/pinctrl-moore.c | 283 ++++++++++++++++---------=
+------
+>  1 file changed, 144 insertions(+), 139 deletions(-)
 >
-> diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/m=
-ediatek/pinctrl-paris.c
-> index 87e958d827bf939aa6006794287698be4936f25e..c9455de266a447ab7f5446c15=
-11bef0ef9c9128e 100644
-> --- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-> +++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-> @@ -255,10 +255,9 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctld=
-ev,
->         return err;
+> diff --git a/drivers/pinctrl/mediatek/pinctrl-moore.c b/drivers/pinctrl/m=
+ediatek/pinctrl-moore.c
+> index aad4891223d3e060431a990bfabb6bd2cbb82087..de3494e9f228cef7f2eadf6a6=
+ea2b3b708f1fb25 100644
+> --- a/drivers/pinctrl/mediatek/pinctrl-moore.c
+> +++ b/drivers/pinctrl/mediatek/pinctrl-moore.c
+> @@ -246,156 +246,160 @@ static int mtk_pinconf_get(struct pinctrl_dev *pc=
+tldev,
+>         return 0;
 >  }
 >
 > -static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin=
 ,
-> -                          enum pin_config_param param, u32 arg)
-> +static int mtk_paris_pin_config_set(struct mtk_pinctrl *hw, unsigned int=
+> -                          unsigned long *configs, unsigned int num_confi=
+gs)
+> +static int mtk_moore_pin_config_set(struct mtk_pinctrl *hw, unsigned int=
  pin,
 > +                                   enum pin_config_param param, u32 arg)
 >  {
 > -       struct mtk_pinctrl *hw =3D pinctrl_dev_get_drvdata(pctldev);
 >         const struct mtk_pin_desc *desc;
->         int err =3D -ENOTSUPP;
->         u32 reg;
-> @@ -795,9 +794,9 @@ static int mtk_pconf_group_set(struct pinctrl_dev *pc=
-tldev, unsigned group,
->         int i, ret;
+> -       u32 reg, param, arg;
+> -       int cfg, err =3D 0;
+> +       u32 reg;
+> +       int err =3D 0;
 >
->         for (i =3D 0; i < num_configs; i++) {
-> -               ret =3D mtk_pinconf_set(pctldev, grp->pin,
-> -                                     pinconf_to_config_param(configs[i])=
+>         desc =3D (const struct mtk_pin_desc *)&hw->soc->pins[pin];
+>         if (!desc->name)
+>                 return -ENOTSUPP;
+>
+> -       for (cfg =3D 0; cfg < num_configs; cfg++) {
+> -               param =3D pinconf_to_config_param(configs[cfg]);
+> -               arg =3D pinconf_to_config_argument(configs[cfg]);
+> -
+> -               switch (param) {
+> -               case PIN_CONFIG_BIAS_DISABLE:
+> -                       if (hw->soc->bias_set_combo) {
+> -                               err =3D hw->soc->bias_set_combo(hw, desc,=
+ 0, MTK_DISABLE);
+> -                               if (err)
+> -                                       return err;
+> -                       } else if (hw->soc->bias_disable_set) {
+> -                               err =3D hw->soc->bias_disable_set(hw, des=
+c);
+> -                               if (err)
+> -                                       return err;
+> -                       } else {
+> -                               return -ENOTSUPP;
+> -                       }
+> -                       break;
+> -               case PIN_CONFIG_BIAS_PULL_UP:
+> -                       if (hw->soc->bias_set_combo) {
+> -                               err =3D hw->soc->bias_set_combo(hw, desc,=
+ 1, arg);
+> -                               if (err)
+> -                                       return err;
+> -                       } else if (hw->soc->bias_set) {
+> -                               err =3D hw->soc->bias_set(hw, desc, 1);
+> -                               if (err)
+> -                                       return err;
+> -                       } else {
+> -                               return -ENOTSUPP;
+> -                       }
+> -                       break;
+> -               case PIN_CONFIG_BIAS_PULL_DOWN:
+> -                       if (hw->soc->bias_set_combo) {
+> -                               err =3D hw->soc->bias_set_combo(hw, desc,=
+ 0, arg);
+> -                               if (err)
+> -                                       return err;
+> -                       } else if (hw->soc->bias_set) {
+> -                               err =3D hw->soc->bias_set(hw, desc, 0);
+> -                               if (err)
+> -                                       return err;
+> -                       } else {
+> -                               return -ENOTSUPP;
+> -                       }
+> -                       break;
+> -               case PIN_CONFIG_OUTPUT_ENABLE:
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_SMT,
+> -                                              MTK_DISABLE);
+> -                       if (err)
+> -                               goto err;
+> -
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_DIR,
+> -                                              MTK_OUTPUT);
+> +       switch ((u32)param) {
+> +       case PIN_CONFIG_BIAS_DISABLE:
+> +               if (hw->soc->bias_set_combo) {
+> +                       err =3D hw->soc->bias_set_combo(hw, desc, 0, MTK_=
+DISABLE);
+>                         if (err)
+> -                               goto err;
+> -                       break;
+> -               case PIN_CONFIG_INPUT_ENABLE:
+> -
+> -                       if (hw->soc->ies_present) {
+> -                               mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_IES,
+> -                                                MTK_ENABLE);
+> -                       }
+> -
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_DIR,
+> -                                              MTK_INPUT);
+> +                               return err;
+> +               } else if (hw->soc->bias_disable_set) {
+> +                       err =3D hw->soc->bias_disable_set(hw, desc);
+>                         if (err)
+> -                               goto err;
+> -                       break;
+> -               case PIN_CONFIG_SLEW_RATE:
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_SR,
+> -                                              arg);
+> +                               return err;
+> +               } else {
+> +                       return -ENOTSUPP;
+> +               }
+> +               break;
+> +       case PIN_CONFIG_BIAS_PULL_UP:
+> +               if (hw->soc->bias_set_combo) {
+> +                       err =3D hw->soc->bias_set_combo(hw, desc, 1, arg)=
+;
+>                         if (err)
+> -                               goto err;
+> -
+> -                       break;
+> -               case PIN_CONFIG_OUTPUT:
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_DIR,
+> -                                              MTK_OUTPUT);
+> +                               return err;
+> +               } else if (hw->soc->bias_set) {
+> +                       err =3D hw->soc->bias_set(hw, desc, 1);
+>                         if (err)
+> -                               goto err;
+> -
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_DO,
+> -                                              arg);
+> +                               return err;
+> +               } else {
+> +                       return -ENOTSUPP;
+> +               }
+> +               break;
+> +       case PIN_CONFIG_BIAS_PULL_DOWN:
+> +               if (hw->soc->bias_set_combo) {
+> +                       err =3D hw->soc->bias_set_combo(hw, desc, 0, arg)=
+;
+>                         if (err)
+> -                               goto err;
+> -                       break;
+> -               case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+> -                       /* arg =3D 1: Input mode & SMT enable ;
+> -                        * arg =3D 0: Output mode & SMT disable
+> -                        */
+> -                       arg =3D arg ? 2 : 1;
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_DIR,
+> -                                              arg & 1);
+> +                               return err;
+> +               } else if (hw->soc->bias_set) {
+> +                       err =3D hw->soc->bias_set(hw, desc, 0);
+>                         if (err)
+> -                               goto err;
+> +                               return err;
+> +               } else {
+> +                       return -ENOTSUPP;
+> +               }
+> +               break;
+> +       case PIN_CONFIG_OUTPUT_ENABLE:
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT, M=
+TK_DISABLE);
+> +               if (err)
+> +                       return err;
+> +
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR, M=
+TK_OUTPUT);
+> +               if (err)
+> +                       return err;
+> +               break;
+> +       case PIN_CONFIG_INPUT_ENABLE:
+> +
+> +               if (hw->soc->ies_present) {
+> +                       mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, M=
+TK_ENABLE);
+> +               }
+> +
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR, M=
+TK_INPUT);
+> +               if (err)
+> +                       return err;
+> +               break;
+> +       case PIN_CONFIG_SLEW_RATE:
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SR, ar=
+g);
+> +               if (err)
+> +                       return err;
+> +
+> +               break;
+> +       case PIN_CONFIG_OUTPUT:
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR, M=
+TK_OUTPUT);
+> +               if (err)
+> +                       return err;
+> +
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DO, ar=
+g);
+> +               if (err)
+> +                       return err;
+> +               break;
+> +       case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+> +               /* arg =3D 1: Input mode & SMT enable ;
+> +                * arg =3D 0: Output mode & SMT disable
+> +                */
+> +               arg =3D arg ? 2 : 1;
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR, a=
+rg & 1);
+> +               if (err)
+> +                       return err;
+>
+> -                       err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_RE=
+G_SMT,
+> -                                              !!(arg & 2));
+> +               err =3D mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT, !=
+!(arg & 2));
+> +               if (err)
+> +                       return err;
+> +               break;
+> +       case PIN_CONFIG_DRIVE_STRENGTH:
+> +               if (hw->soc->drive_set) {
+> +                       err =3D hw->soc->drive_set(hw, desc, arg);
+>                         if (err)
+> -                               goto err;
+> -                       break;
+> -               case PIN_CONFIG_DRIVE_STRENGTH:
+> -                       if (hw->soc->drive_set) {
+> -                               err =3D hw->soc->drive_set(hw, desc, arg)=
+;
+> -                               if (err)
+> -                                       return err;
+> -                       } else {
+> -                               err =3D -ENOTSUPP;
+> -                       }
+> -                       break;
+> -               case MTK_PIN_CONFIG_TDSEL:
+> -               case MTK_PIN_CONFIG_RDSEL:
+> -                       reg =3D (param =3D=3D MTK_PIN_CONFIG_TDSEL) ?
+> -                              PINCTRL_PIN_REG_TDSEL : PINCTRL_PIN_REG_RD=
+SEL;
+> -
+> -                       err =3D mtk_hw_set_value(hw, desc, reg, arg);
+> +                               return err;
+> +               } else {
+> +                       return -ENOTSUPP;
+> +               }
+> +               break;
+> +       case MTK_PIN_CONFIG_TDSEL:
+> +       case MTK_PIN_CONFIG_RDSEL:
+> +               reg =3D (param =3D=3D MTK_PIN_CONFIG_TDSEL) ?
+> +                      PINCTRL_PIN_REG_TDSEL : PINCTRL_PIN_REG_RDSEL;
+> +
+> +               err =3D mtk_hw_set_value(hw, desc, reg, arg);
+> +               if (err)
+> +                       return err;
+> +               break;
+> +       case MTK_PIN_CONFIG_PU_ADV:
+> +       case MTK_PIN_CONFIG_PD_ADV:
+> +               if (hw->soc->adv_pull_set) {
+> +                       bool pullup;
+> +
+> +                       pullup =3D param =3D=3D MTK_PIN_CONFIG_PU_ADV;
+> +                       err =3D hw->soc->adv_pull_set(hw, desc, pullup, a=
+rg);
+>                         if (err)
+> -                               goto err;
+> -                       break;
+> -               case MTK_PIN_CONFIG_PU_ADV:
+> -               case MTK_PIN_CONFIG_PD_ADV:
+> -                       if (hw->soc->adv_pull_set) {
+> -                               bool pullup;
+> -
+> -                               pullup =3D param =3D=3D MTK_PIN_CONFIG_PU=
+_ADV;
+> -                               err =3D hw->soc->adv_pull_set(hw, desc, p=
+ullup,
+> -                                                           arg);
+> -                               if (err)
+> -                                       return err;
+> -                       } else {
+> -                               return -ENOTSUPP;
+> -                       }
+> -                       break;
+> -               default:
+> -                       err =3D -ENOTSUPP;
+> +                               return err;
+> +               } else {
+> +                       return -ENOTSUPP;
+>                 }
+> +               break;
+> +       default:
+> +               return -ENOTSUPP;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin=
 ,
-> -                                     pinconf_to_config_argument(configs[=
-i]));
-> +               ret =3D mtk_paris_pin_config_set(hw, grp->pin,
-> +                                              pinconf_to_config_param(co=
-nfigs[i]),
-> +                                              pinconf_to_config_argument=
-(configs[i]));
->                 if (ret < 0)
->                         return ret;
+> +                          unsigned long *configs, unsigned int num_confi=
+gs)
+> +{
+> +       struct mtk_pinctrl *hw =3D pinctrl_dev_get_drvdata(pctldev);
+> +       enum pin_config_param param;
+> +       int cfg, err =3D 0;
+> +       u32 arg;
+> +
+> +       for (cfg =3D 0; cfg < num_configs; cfg++) {
+> +               param =3D pinconf_to_config_param(configs[cfg]);
+> +               arg =3D pinconf_to_config_argument(configs[cfg]);
+> +
+> +               err =3D mtk_moore_pin_config_set(hw, pin, param, arg);
+> +               if (err)
+> +                       return err;
+>         }
+> -err:
+> -       return err;
+> +
+> +       return 0;
+>  }
 >
-> @@ -937,18 +936,19 @@ static int mtk_gpio_set_config(struct gpio_chip *ch=
+>  static int mtk_pinconf_group_get(struct pinctrl_dev *pctldev,
+> @@ -539,20 +543,21 @@ static int mtk_gpio_set_config(struct gpio_chip *ch=
 ip, unsigned int offset,
 >  {
 >         struct mtk_pinctrl *hw =3D gpiochip_get_data(chip);
@@ -144,14 +440,16 @@ ip, unsigned int offset,
 > +       u32 arg =3D pinconf_to_config_argument(config);
 >
 >         desc =3D (const struct mtk_pin_desc *)&hw->soc->pins[offset];
+>         if (!desc->name)
+>                 return -ENOTSUPP;
 >
 > -       if (!hw->eint ||
 > -           pinconf_to_config_param(config) !=3D PIN_CONFIG_INPUT_DEBOUNC=
 E ||
-> -           desc->eint.eint_n =3D=3D EINT_NA)
+> -           desc->eint.eint_n =3D=3D (u16)EINT_NA)
 > -               return -ENOTSUPP;
 > +       if (param =3D=3D PIN_CONFIG_INPUT_DEBOUNCE) {
-> +               if (!hw->eint || desc->eint.eint_n =3D=3D EINT_NA)
+> +               if (!hw->eint || desc->eint.eint_n =3D=3D (u16)EINT_NA)
 > +                       return -ENOTSUPP;
 >
 > -       debounce =3D pinconf_to_config_argument(config);
@@ -161,7 +459,7 @@ E ||
 >
 > -       return mtk_eint_set_debounce(hw->eint, desc->eint.eint_n, debounc=
 e);
-> +       return mtk_paris_pin_config_set(hw, offset, param, arg);
+> +       return mtk_moore_pin_config_set(hw, offset, param, arg);
 >  }
 >
 >  static int mtk_build_gpiochip(struct mtk_pinctrl *hw)
