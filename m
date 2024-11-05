@@ -1,90 +1,87 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from sender3-op-o18.zoho.com (sender3-op-o18.zoho.com [136.143.184.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C7F19DF40
-	for <kernelci@lists.linux.dev>; Fri,  1 Nov 2024 12:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730462699; cv=none; b=YcmGTv/wi9WvMtCLiUHUdZ10rSkCEjezd3KpIHgZcwi95u2H46gA3Enx81Kr9TP+0OF7vIzl/IM9zeUPOhpcD9QZEUPhA/UASn1tqy50IS4u55i7v+Tnmzel+R6Zg9ysGJEolwEilmjR3dkxfpnOVEHgcWQ/QMDz6kjJuKs8iMc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730462699; c=relaxed/simple;
-	bh=VUpg8swfaMH8KH/YYd4yjICcXgkMLBMqp0RubHiLe2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JZsn84CPIGf3gcTSbfp9L8xiZGn6MqEsMxeVoOuey9WZI2MJUXQtnZ5yeBushrnMpTFjfY11n+mhfM2uUx44u9EhXd467atwearOdjVJYN+4siPcI7uxQ4MKASJCTGD7pI8I5sQ0a/Gjm9yaI/6pUHOZaYMArbQ7UGC7XANX8Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=V8kGI6/O; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F31BA42
+	for <kernelci@lists.linux.dev>; Tue,  5 Nov 2024 14:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730817927; cv=pass; b=OO92Qb3dohmpvuNLslfIVBb2k0Fqz0pS9Fru8+f/JZ8MKPGzD7yTgSKcOCGSUtpzoO1XvGL8UBWp6tqFGlvJTMxkxnE3OJvVpiuT+9Jre+SV4LWAR8SvnGZ4n1hBi6EAnSIPtIGgO0G9ChYv/R0XKcdm0EnME7XzpLtiO8ObDvA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730817927; c=relaxed/simple;
+	bh=gzKWcucrWTtlRZyqO+yYtSNsJhTFLTP054aizZjuVlM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hqZlW3u1jRVEy9hjSiluaDIQk1LyZzqX1Os8I+eQqPY2C4/VKTuucDtqE9YeJT0iyvagmwjjaLFYrOEErBdyw/40L3+/t3EcaMSqwbAkwlIn7xR5o+zgCDiGt6lLU87hclXX3z7pLURSSrUKWxLEUEgehpB/BABjLYZA+NiDL7k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b=OCUz+175; arc=pass smtp.client-ip=136.143.184.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="V8kGI6/O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1730462695;
-	bh=VUpg8swfaMH8KH/YYd4yjICcXgkMLBMqp0RubHiLe2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V8kGI6/OGf9VC0m9ypPCHAgD5grp8peLL1jVHBsKMKcQUcN/w1MyDpUQY5TngyiuY
-	 SucTeTCT8+2RkPrpgp8k7dEipBeaEWF98mOy4iG6iP3vfIxvI28XhvJ7o/ChVp3H19
-	 21n4VMIeO+z4mcyVF3/476PbEfeHQBb7RFqs2XeHru0kW6p+OqyQaVY8OHvi0unIIy
-	 pvIDS4tBcJePoA9cHV1VgnOhQ6MU/6xMDc2S9EVnxfvbG+KzfKrTmsPnKHfJq6yTjJ
-	 1XpH7imWfxuJOaz76QdRScHfYdOyYPqsR9zYrnAca0hj4SMYQS3Ei6QPaIfIYcqJbr
-	 PtQg4h8JEmMPg==
-Received: from notapiano (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B7E7717E1574;
-	Fri,  1 Nov 2024 13:04:53 +0100 (CET)
-Date: Fri, 1 Nov 2024 08:04:51 -0400
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Chen-Yu Tsai <wenst@chromium.org>
-Cc: Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Bamvor Jian Zhang <bamv2005@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, kernel@collabora.com,
-	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kselftest@vger.kernel.org, kernelci@lists.linux.dev
-Subject: Re: [PATCH RFC v2 3/5] pinctrl: mediatek: common: Expose more
- configurations to GPIO set_config
-Message-ID: <4ed22f25-ad10-461c-be68-8472590db44d@notapiano>
-References: <20241025-kselftest-gpio-set-get-config-v2-0-040d748840bb@collabora.com>
- <20241025-kselftest-gpio-set-get-config-v2-3-040d748840bb@collabora.com>
- <CAGXv+5H9OTCn033yoi6oxxRKG1G=vbrBK+aw+ZWwGPWbn=uWuA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=laura.nao@collabora.com header.b="OCUz+175"
+ARC-Seal: i=1; a=rsa-sha256; t=1730817924; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=gvdXt5wrS1uCQYPC/18Opn1pvfm00jB4UgTrLVMVSsmMnbHkGQuKmMPpr2CFnREba6o2J9YOi/58ypXBfekdVX72ulWJiaVus4bmwE+sud9gcs2mjwrkSrmPtK27Cf6wIF5ROkZrWcDK1r0bN4Hp4L1JLK7baVuQDNKSXnyT6JI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1730817924; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=7xTugTmdId5LpmBx04SJn8CH/YaZvqgaoOxAHK2vlKQ=; 
+	b=nkYmlp8wRhzk627dbIDJ6r/leVlbDN6+eYLdOSmZHmvnFIKyFYsOW5HjHjcjagIK7A22AYEFqrXOW7oYeWPu2Bd237b6+5beN+2WBToJFDZ0w97OUhy4JMlmTLP+5sb6ErOfDXUur+Rrfn2hSseXa/CXlxpqjfJ1TXmVkm8hkyc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=laura.nao@collabora.com;
+	dmarc=pass header.from=<laura.nao@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730817924;
+	s=zohomail; d=collabora.com; i=laura.nao@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=7xTugTmdId5LpmBx04SJn8CH/YaZvqgaoOxAHK2vlKQ=;
+	b=OCUz+175pMVdkqcSc/Z5e5WoQt20LkrsrKUV8jLIzCa+r+ML6LVC4LU9RnvZ5GWW
+	tbI/LP7/PcC6jI0XlPZHAe2qHYCg4cdSQPZq3v5qrdw8Vt8n/jNUFAw9WtyYbKLZSnW
+	IsXMA7Vz1aCony3AWxo64dfQC4icoWjPNDMmdJn4=
+Received: by mx.zohomail.com with SMTPS id 1730817921788987.9649850875669;
+	Tue, 5 Nov 2024 06:45:21 -0800 (PST)
+From: Laura Nao <laura.nao@collabora.com>
+To: kernelci@lists.linux.dev
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Testing Quality Call notes - 2024-10-31
+Date: Tue,  5 Nov 2024 15:45:55 +0100
+Message-Id: <20241105144555.245561-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGXv+5H9OTCn033yoi6oxxRKG1G=vbrBK+aw+ZWwGPWbn=uWuA@mail.gmail.com>
+X-ZohoMailClient: External
 
-On Fri, Nov 01, 2024 at 03:54:58PM +0800, Chen-Yu Tsai wrote:
-> On Sat, Oct 26, 2024 at 5:16 AM Nícolas F. R. A. Prado
-> <nfraprado@collabora.com> wrote:
-> >
-> > Currently the set_config callback in the gpio_chip registered by the
-> > pinctrl-mtk-common driver only supports configuring a single parameter
-> > on specific pins (the input debounce of the EINT controller, on pins
-> > that support it), even though many other configurations are already
-> > implemented and available through the pinctrl API for configuration of
-> > pins by the Devicetree and other drivers.
-> >
-> > Expose all configurations currently implemented through the GPIO API so
-> > they can also be set from userspace, which is particularly useful to
-> > allow testing them from userspace.
+Hello,
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+KernelCI is hosting a bi-weekly call on Thursday to discuss improvements
+to existing upstream tests, the development of new tests to increase 
+kernel testing coverage, and the enablement of these tests in KernelCI. 
+In recent months, we at Collabora have focused on various kernel areas,
+assessing the tests already available upstream and contributing patches 
+to make them easily runnable in CIs.
 
-> 
-> Missing signed-off-by?
+Below is a list of the tests we've been working on and their latest
+status updates, as discussed in the last meeting held on 2024-10-31:
 
-Huh, I don't know how the pre-send checks didn't catch it, will take a look,
-thanks for pointing it out! I've added the SoB above so it can
-still be merged if no further versions are required.
+*Boot time test*
 
-Thanks,
-Nícolas
+- Sent v2:
+  https://lore.kernel.org/all/20241018101439.20849-1-laura.nao@collabora.com/
+- Changes in v2 driven by feedback received in the LPC session
+
+*ACPI probe kselftest*
+
+- RFCv2:
+  https://lore.kernel.org/all/20240308144933.337107-1-laura.nao@collabora.com/
+- Related upstream discussion on probe status tracking through printks:
+  https://lore.kernel.org/lkml/dc7af563-530d-4e1f-bcbb-90bcfc2fe11a@stanley.mountain/
+
+Please reply to this thread if you'd like to join the call or discuss
+any of the topics further. We look forward to collaborating with the
+community to improve upstream tests and expand coverage to more areas of 
+interest within the kernel.
+
+Best regards,
+
+Laura Nao
