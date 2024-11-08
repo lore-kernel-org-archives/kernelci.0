@@ -1,553 +1,618 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B33020514C
-	for <kernelci@lists.linux.dev>; Wed,  6 Nov 2024 17:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAB91EABA3
+	for <kernelci@lists.linux.dev>; Fri,  8 Nov 2024 13:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730912480; cv=none; b=pi5DY97RZSPWMdrd3fOoqDjz/bZbO3VrNKRO0vkFj76Rw1VvjkCZetKu7JokBxncD8axOLqR0w9csqzwA85pX4ogGu0x2RfmMPPnqoUqcYFBeFfcvmpbVlF6QLXaedWrI+BlVdwLABFOkTe989rJ8uVffVzPjZ45Mp/xH+uOWzA=
+	t=1731071731; cv=none; b=qFDt0K8DSjLVf+Bw//rhX7T6SebNRP4YQMp+oxlH0z2PBHTHLJPHJrWjslevWExnwlRzg8+MqZ8gp0gFFB8b8MXZHT55hvJfB7BNhR8M86ZJKibnjuUIkdxs6CtnL+DhqlVi0s20L1UmXUYisBJjVfJdI+RIrTr2GC8bQmwC+vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730912480; c=relaxed/simple;
-	bh=q9rihScmhZAOxpPIfbwAduusOgbC5ixRzXvVx3Qn0KU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XPf/UGcRRswEgWt8LYbEFQttYWYCciPgFOrNJJO6rfALHwDsmnIdcGgxpyQpaNA9EuEvSkOzWc9xF5tcJw4et7lVYyKscMfl4ApZqAqMyonuE2wosIo4mvjtKNb/upiWAbttaPnGxXmalD4+HorrJcfXF5hXOEseg9X/h5dq3Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LKVRcmkf; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1731071731; c=relaxed/simple;
+	bh=KdrgIhf04+SxMsygTXygRuUW7DrTY+Gt3t2U2zFmg8M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lps9kIzxRjf1lLbL6jgvgDvwTYaEqx4fUeqhUHH+ccRVC518N9QwHie4C8TCiQVfFBWg/xyrpZlIXeTMCdrjDxKd9e83Lo36WwXmApF8cdsC5TB/L39SeWdB2QoglX3oLEydBmn7lmsec7sqbqilIYswM5mlNEYEj9XG2FkJ5B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SfKlwJLD; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LKVRcmkf"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SfKlwJLD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730912475;
+	s=mimecast20190719; t=1731071728;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p6njKn4P9YVbv4L+ogmy0dcPnDK4/dU1er1B06b00o0=;
-	b=LKVRcmkfNJ6bfmAMEv6fcj6gvH/Tm+MIgx6BfdM8hCiaGfyL8nxaH4PUsiLEBr7WfMqkbN
-	NMfZFXzFdZXv2chOhKpdQyyWmzqZN2QF5xap4TumSEE7kRwPOD6yvv3cr9/RzWCn+XZpbY
-	w4HELyt8WvtTC4TmikvZhF1dUY+R9ZY=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=XqSv0BasALwEc87j45L8PzqKE/5S6JoSVQG5TwsNVzo=;
+	b=SfKlwJLD6UqWftCAKMrSikAUBkfIzk6Vc78EJR1yBUqz8i3Vea97NokulhWHC4yg1TQoXb
+	2QFdqvmNqzYfi/Kd/t0O5ODDHBBGC5d361ha/O6TAgaraVfHn2NK4HN0yDVELu72gkFRT6
+	5tsEK9DQGUHaLa869rCvnFac1IorkAA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175-Q6FibJruPYiuVfVM0G5A3A-1; Wed, 06 Nov 2024 12:01:13 -0500
-X-MC-Unique: Q6FibJruPYiuVfVM0G5A3A-1
-X-Mimecast-MFC-AGG-ID: Q6FibJruPYiuVfVM0G5A3A
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-6e9d6636498so131796997b3.2
-        for <kernelci@lists.linux.dev>; Wed, 06 Nov 2024 09:01:13 -0800 (PST)
+ us-mta-690-X-e5JcIDOJ6xdaQGmgKuBg-1; Fri, 08 Nov 2024 08:15:27 -0500
+X-MC-Unique: X-e5JcIDOJ6xdaQGmgKuBg-1
+X-Mimecast-MFC-AGG-ID: X-e5JcIDOJ6xdaQGmgKuBg
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d563a1af4so1047084f8f.2
+        for <kernelci@lists.linux.dev>; Fri, 08 Nov 2024 05:15:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730912473; x=1731517273;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p6njKn4P9YVbv4L+ogmy0dcPnDK4/dU1er1B06b00o0=;
-        b=gzVDCYIM2gvXRW0FYbmjnhzE+6+GA/9I1ZsU7EgGvs8L9qotfZb+/4CfTsK4+39qN7
-         fkFlYfbu2EhthpWa8/x/F+5q1+que/xJUbMZnO4hZU5P9DwZ869ku8Bnh6tcpO0J4e9l
-         MtGvaX+SJ0N8xH05n8vKVI7uG4K43YJSZZvAC3RG0nN5SleXHY35iPKwSeAYGzXrP5Ln
-         zAAq20Q8n7ZNDNyuJN7RSol1nPOtjCmPMmgsAhC1f5X36iRCSYHSRO7pbfug9YPls9Sv
-         HgYC0jTdlUKBvtaOypekZSZan/rMuwgJam6p6u5ekwwU33Aqv0QXB7Hdw6ukKpoc8s5w
-         Snkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVNgW/i61l8jTlIWomR2zn9dw4OSk1XJFHQVID549hqU5c+tVTieRY/V0YoNLv+a8bXrc7u4D06w==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPqNgkahD7WpiM+RgH2/dSBorSriZpDcOSGxHnrMqUGS0rLpJO
-	rAnIO5B0BzlAg/+2ewBc/S+SGwkR/0AWfHTrw89eP8V/pqoQTjGg0cplDAvDh1xAuJom+3Gwz0C
-	Xn23iNfMEMuyUVxCh+byDPnBE1COKXtHAHqW8cQQwebqxawBvS8w82cfKHBmtb13Q0Pkb9DF6Jn
-	8HiVz2fi7G8K1t+usDAgvKNV9r25ZGc24=
-X-Received: by 2002:a05:690c:61ca:b0:6e3:252c:408 with SMTP id 00721157ae682-6ea523cb2c8mr254640057b3.20.1730912472502;
-        Wed, 06 Nov 2024 09:01:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEcban3KNO2ycX02IVD7OOHSA1xjIU5RZ1dd1XrIqYbEGIFUzC5QcEqb7peE+ox4D6SVXnsW4TIgR9qxz1wytU=
-X-Received: by 2002:a05:690c:61ca:b0:6e3:252c:408 with SMTP id
- 00721157ae682-6ea523cb2c8mr254639487b3.20.1730912471965; Wed, 06 Nov 2024
- 09:01:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731071725; x=1731676525;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XqSv0BasALwEc87j45L8PzqKE/5S6JoSVQG5TwsNVzo=;
+        b=gN1VcTbzZ16/wWb5NGAVWpQYdt03hq17L/zm51GtlDdfd4NvA9sZUwrMeNomY1jlds
+         EofYdd1zShW2zQbGZv9w8IJ4gsJ8Hfn3amWJPPNxg2bz9vdEezcJJ90jdVtj5HMWDi8U
+         60+227UhC8y2qc41QGvCqGVP+Lb81c7mtLdz2aO00izHbCGncl2LvcnxQOWg1gCXGJ/e
+         0ZeH4sMHUlBadel688ylRCLr/sC+AgTEQ0nErYx59z75heX+lhd3peJUE/8OY1YBcAya
+         WyC6yscAlAZZyCU/w3tI2WhDsLDwOCkRmLpdSZoNn5FpOah529zWJblTndQSEbDKUZ5H
+         qC5w==
+X-Gm-Message-State: AOJu0Yyg2aM7Q4kSugtBWX0ntaXUi4emd+B31avGcrjELnDkRhLFUpNG
+	pA8a2PM1gqBe3FelWl7hkzi60Fg2SBsDr2phHwvn32Uam1DcSpUSS4cgLWZTa2hcPrMrYoy9UCR
+	IScs3ALvhBCwoWH9MlJXmxfSRfXZDxjk82JgFeWvPCgT5EIZNKzeOSnAiS1A8+mUq
+X-Received: by 2002:a05:6000:1ac9:b0:37d:461d:b1ea with SMTP id ffacd0b85a97d-381f1885defmr2438822f8f.48.1731071724993;
+        Fri, 08 Nov 2024 05:15:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7vrvTZRq2uOKt+UbjASDTd6bHE1HFjtP9B8jl9sFUEGyRevW8zXAPelFrhTfF355SJgH9eA==
+X-Received: by 2002:a05:6000:1ac9:b0:37d:461d:b1ea with SMTP id ffacd0b85a97d-381f1885defmr2438794f8f.48.1731071724461;
+        Fri, 08 Nov 2024 05:15:24 -0800 (PST)
+Received: from [192.168.0.166] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed99681csm4878915f8f.49.2024.11.08.05.15.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Nov 2024 05:15:23 -0800 (PST)
+Message-ID: <4f93cd0c-5927-4734-af42-1b6c4f0f8208@redhat.com>
+Date: Fri, 8 Nov 2024 15:15:22 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAK18DXYitS7hL1mA3QsPLmW9-R0q6Kin0C5Uv9fj=uS90WSnxA@mail.gmail.com>
- <CABVgOSk1ng46scbJc-3qPZUhkn+0KrZsFDe-UYnw0q-XksP_2Q@mail.gmail.com>
- <CAK18DXZtBdxQdYY06X+Q=vYybnkCLBQBioCLqvSfkYZ21jBSWg@mail.gmail.com> <CABVgOSkBF3fT5JdVCEpBRvO1V8ZgZ-dD7fvxcv7Rxb_XPcFNbg@mail.gmail.com>
-In-Reply-To: <CABVgOSkBF3fT5JdVCEpBRvO1V8ZgZ-dD7fvxcv7Rxb_XPcFNbg@mail.gmail.com>
-From: Donald Zickus <dzickus@redhat.com>
-Date: Wed, 6 Nov 2024 12:01:00 -0500
-Message-ID: <CAK18DXZM7sapjOHcsOUAEn_+Q+bvFUtL-CNjEgq373gpWr7r-w@mail.gmail.com>
-Subject: Re: [RFC] Test catalog template
-To: David Gow <davidgow@google.com>
-Cc: workflows@vger.kernel.org, automated-testing@lists.yoctoproject.org, 
-	linux-kselftest@vger.kernel.org, kernelci <kernelci@lists.linux.dev>, 
-	Nikolai Kondrashov <nkondras@redhat.com>, Gustavo Padovan <gustavo.padovan@collabora.com>, 
-	kernelci-members <kernelci-members@groups.io>, laura.nao@collabora.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: KCIDB database
+To: Manoj Kumar <ManojKumar08@arm.com>
+Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ Denys Fedoryshchenko <denys.f@collabora.com>
+References: <547ddf99-1b75-c463-e6c7-32389c461468@redhat.com>
+ <AS8PR08MB6407FD1D5E33918F5DA6032A9E772@AS8PR08MB6407.eurprd08.prod.outlook.com>
+ <PAXPR08MB6813993A4C70BDE277129A76C47D2@PAXPR08MB6813.eurprd08.prod.outlook.com>
+ <d9f9111e-9890-4795-9f8a-a6946a8fcbb9@redhat.com>
+ <PAXPR08MB68136B5FD6BFD45B2BC1BE2DC47D2@PAXPR08MB6813.eurprd08.prod.outlook.com>
+ <9ab1e3c8-9c7f-4657-815a-13a68e0b87f7@redhat.com>
+ <PAXPR08MB68139AC2C5DFA28EC9A4CCC6C47E2@PAXPR08MB6813.eurprd08.prod.outlook.com>
+ <2626f2ce-adb0-4aad-bbfc-c19f634a4d30@redhat.com>
+ <DB9PR08MB68103176F5638C352F410BCBC4402@DB9PR08MB6810.eurprd08.prod.outlook.com>
+ <e90b3ccc-fd16-406b-ac8a-7d2bf66abd1f@redhat.com>
+ <DB9PR08MB68104499218B100804567075C4402@DB9PR08MB6810.eurprd08.prod.outlook.com>
+ <fbfed2eb-d4f7-4c56-8549-de32dae29da8@redhat.com>
+ <DB9PR08MB68109AF608CFB742F567968DC4532@DB9PR08MB6810.eurprd08.prod.outlook.com>
+From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+In-Reply-To: <DB9PR08MB68109AF608CFB742F567968DC4532@DB9PR08MB6810.eurprd08.prod.outlook.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -2EYB7sND5Kl52jQ5YEe21f42UB_nNMW05TsqWSRytk_1730912473
+X-Mimecast-MFC-PROC-ID: 58Fj2n3ftwjbpY7h0g4TW08cd3sZUiEQCCJ5iqh_blM_1731071726
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Hi Manoj,
 
-Thanks for the feedback. I created a more realistic test.yaml file to
-start (we can split it when more tests are added) and a parser.  I was
-going to add patch support as input to mimic get_maintainers.pl
-output, but that might take some time.  For now, you have to manually
-select a subsystem.  I will try to find space on kernelci.org to grow
-this work but you can find a git tree here[0].
+Glad to hear you managed to make it work!
 
-From the README.md
-"""
-An attempt to map kernel subsystems to kernel tests that should be run
-on patches or code by humans and CI systems.
+It looks like KernelCI legacy is sending schema v1 indeed:
+https://github.com/kernelci/kernelci-backend/blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L149
 
-Examples:
+Gosh, that's old. However, it's working fine in production.
 
-Find test info for a subsystem
+I suspect this is because production is using an older version of KCIDB, and
+in newer versions support for old schemas is broken. I'll work on a fix, which
+should be available today. Meanwhile, could you please respond with a complete
+JSON you're sending, as an attachment, so I could make sure I reproduce this
+correctly.
 
-./get_tests.py -s 'KUNIT TEST' --info
+Thank you!
+Nick
 
-Subsystem:    KUNIT TEST
-Maintainer:
-  David Gow <davidgow@google.com>
-Mailing List: None
-Version:      None
-Dependency:   ['python3-mypy']
-Test:
-  smoke:
-    Url: None
-    Working Directory: None
-    Cmd: ./tools/testing/kunit/kunit.py
-    Env: None
-    Param: run --kunitconfig lib/kunit
-Hardware:     arm64, x86_64
-
-Find copy-n-pastable tests for a subsystem
-
-./get_tests.py -s 'KUNIT TEST'
-
-./tools/testing/kunit/kunit.pyrun --kunitconfig lib/kunit
-"""
-
-Is this aligning with what people were expecting?
-
-Cheers,
-Don
-
-[0] - https://github.com/dzickusrh/test-catalog/tree/main
-
-On Sat, Oct 19, 2024 at 2:36=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
->
-> On Sat, 19 Oct 2024 at 04:17, Donald Zickus <dzickus@redhat.com> wrote:
-> >
-> > On Fri, Oct 18, 2024 at 3:22=E2=80=AFAM David Gow <davidgow@google.com>=
- wrote:
-> > >
-> > > Hi Don,
-> > >
-> > > Thanks for putting this together: the discussion at Plumbers was very=
- useful.
-> > >
-> > > On Tue, 15 Oct 2024 at 04:33, Donald Zickus <dzickus@redhat.com> wrot=
-e:
-> > > >
-> > > > Hi,
-> > > >
-> > > > At Linux Plumbers, a few dozen of us gathered together to discuss h=
-ow
-> > > > to expose what tests subsystem maintainers would like to run for ev=
-ery
-> > > > patch submitted or when CI runs tests.  We agreed on a mock up of a
-> > > > yaml template to start gathering info.  The yaml file could be
-> > > > temporarily stored on kernelci.org until a more permanent home coul=
-d
-> > > > be found.  Attached is a template to start the conversation.
-> > > >
-> > >
-> > > I think that there are two (maybe three) separate problems here:
-> > > 1. What tests do we want to run (for a given patch/subsystem/environm=
-ent/etc)?
-> >
-> > My thinking is this is maintainer's choice.  What would they like to
-> > see run on a patch to verify its correctness?  I would like to think
-> > most maintainers already have scripts they run before commiting
-> > patches to their -next branch.  All I am trying to do is expose what
-> > is already being done I believe.
-> >
->
-> Agreed.
->
-> >
-> > > 2. How do we describe those tests in such a way that running them can
-> > > be automated?
-> >
-> > This is the tricky part.  But I am going to assume that if most
-> > maintainers run tests before committing patches to their -next branch,
-> > then there is a good chance those tests are scripted and command line
-> > driven (this is the kernel community, right :-) ).  So if we could
-> > expose those scripts and make the copy-and-pastable such that
-> > contributors or testers (including CI bots) can just copy and run
-> > them.  Some maintainers have more complex environments and separating
-> > command line driven tests from the environment scripts might be
-> > tricky.
-> >
-> > Does that sound reasonable?
->
-> Yeah: that's basically what I'd want.
->
-> >
-> > > 3. (Exactly what constitutes a 'test'? A single 'test', a whole suite
-> > > of tests, a test framework/tool? What about the environment: is, e.g.=
-,
-> > > KUnit on UML different from KUnit on qemu-x86_64 different from KUnit
-> > > on qemu-arm64?)
-> > >
-> > > My gut feeling here is that (1) is technically quite easy: worst-case
-> > > we just make every MAINTAINERS entry link to a document describing
-> > > what tests should be run. Actually getting people to write these
-> > > documents and then run the tests, though, is very difficult.
-> >
-> > Well if I look at kunit or kselftest, really all you are doing as a
-> > subsystem maintainer is asking contributors or testers to run a 'make'
-> > command right?  Everything else is already documented I think.
-> >
-> > >
-> > > (2) is the area where I think this will be most useful. We have some
-> > > arbitrary (probably .yaml) file which describes a series of tests to
-> > > run in enough detail that we can automate it. My ideal outcome here
-> > > would be to have a 'kunit.yaml' file which I can pass to a tool
-> > > (either locally or automatically on some CI system) which will run al=
-l
-> > > of the checks I'd run on an incoming patch. This would include
-> > > everything from checkpatch, to test builds, to running KUnit tests an=
-d
-> > > other test scripts. Ideally, it'd even run these across a bunch of
-> > > different environments (architectures, emulators, hardware, etc) to
-> > > catch issues which only show up on big-endian or 32-bit machines.
-> > >
-> > > If this means I can publish that yaml file somewhere, and not only
-> > > give contributors a way to check that those tests pass on their own
-> > > machine before sending a patch out, but also have CI systems
-> > > automatically run them (so the results are ready waiting before I
-> > > manually review the patch), that'd be ideal.
-> >
-> > Yes, that is exactly the goal of this exercise.  :-) but instead of a
-> > kunit.yaml file, it is more of a test.yaml file with hundreds of
-> > subystems inside it (and probably a corresponding get_tests.pl
-> > script)[think how MAINTAINERS file operates and this is a sister
-> > file].
-> >
-> > Inside the 'KUNIT' section would be a container of tests that would be
-> > expected to run (like you listed).  Each test has its own command line
-> > and params.
-> >
->
-> Yeah. My hope is we can have a "run_tests" tool which parses that
-> file/files and runs everything.
->
-> So whether that ends up being:
-> run_tests --subsystem "KUNIT" --subsystem "MM"
-> or
-> run_test --file "kunit.yaml" --file "mm.yaml"
-> or even
-> run_test --patch "my_mm_and_kunit_change.patch"
->
-> A CI system can just run it against the changed files in patches, a
-> user who wants to double check something specific can override it to
-> force the tests for a subsystem which may be indirectly affected. And
-> if you're working on some new tests, or some private internal ones,
-> you can keep your own yaml file and pass that along too.
->
-> > >
-> > > > Longer story.
-> > > >
-> > > > The current problem is CI systems are not unanimous about what test=
-s
-> > > > they run on submitted patches or git branches.  This makes it
-> > > > difficult to figure out why a test failed or how to reproduce.
-> > > > Further, it isn't always clear what tests a normal contributor shou=
-ld
-> > > > run before posting patches.
-> > > >
-> > > > It has been long communicated that the tests LTP, xfstest and/or
-> > > > kselftests should be the tests  to run.  However, not all maintaine=
-rs
-> > > > use those tests for their subsystems.  I am hoping to either captur=
-e
-> > > > those tests or find ways to convince them to add their tests to the
-> > > > preferred locations.
-> > > >
-> > > > The goal is for a given subsystem (defined in MAINTAINERS), define =
-a
-> > > > set of tests that should be run for any contributions to that
-> > > > subsystem.  The hope is the collective CI results can be triaged
-> > > > collectively (because they are related) and even have the numerous
-> > > > flakes waived collectively  (same reason) improving the ability to
-> > > > find and debug new test failures.  Because the tests and process ar=
-e
-> > > > known, having a human help debug any failures becomes easier.
-> > > >
-> > > > The plan is to put together a minimal yaml template that gets us go=
-ing
-> > > > (even if it is not optimized yet) and aim for about a dozen or so
-> > > > subsystems.  At that point we should have enough feedback to promot=
-e
-> > > > this more seriously and talk optimizations.
-> > > >
-> > > > Feedback encouraged.
-> > > >
-> > > > Cheers,
-> > > > Don
-> > > >
-> > > > ---
-> > > > # List of tests by subsystem
-> > >
-> > > I think we should split this up into several files, partly to avoid
-> > > merge conflicts, partly to make it easy to maintain custom collection=
-s
-> > > of tests separately.
-> > >
-> > > For example, fs.yaml could contain entries for both xfstests and fs
-> > > KUnit and selftests.
-> >
-> > I am not opposed to the idea.  But I am a fan of the user experience.
-> > So while an fs.yaml might sound good, is it obvious to a contributor
-> > or tester that given a patch, do they know if fs.yaml is the correct
-> > yaml file to parse when running tests?  How do you map a patch to a
-> > yaml file?  I was trying to use subsystems like MAINTAINERS (and
-> > get_maintainers.pl) as my mapping.  Open to better suggestions.
-> >
->
-> One option would be to have multiple files, which still have the
-> MAINTAINERS subsystems listed within, and worst-case a tool just
-> parses all of the files in that directory until it finds a matching
-> one. Maybe a bit slower than having everything in the one file, but it
-> sidesteps merge conflicts well.
->
-> But ideally, I'd like (as mentioned below) to have a tool which I can
-> use to run tests locally, and being able to run, e.g.,
-> ./run_tests --all -f fs.yaml
-> If I want to specify the tests I want to run manually, personally I
-> think a filename would be a bit nicer than having to pass through,
-> e.g., subsystem names.
->
->
-> > >
-> > > It's also probably going to be necessary to have separate sets of
-> > > tests for different use-cases. For example, there might be a smaller,
-> > > quicker set of tests to run on every patch, and a much longer, more
-> > > expensive set which only runs every other day. So I don't think
-> > > there'll even be a 1:1 mapping between 'test collections' (files) and
-> > > subsystems. But an automated way of running "this collection of tests=
-"
-> > > would be very useful, particularly if it's more user-friendly than
-> > > just writing a shell script (e.g., having nicely formatted output,
-> > > being able to run things in parallel or remotely, etc).
-> >
-> > I don't disagree.  I am trying to start small to get things going and
-> > some momentum.  I proposed a container of tests section.  I would like
-> > to think adding another field in each individual test area like
-> > (short, medium, long OR mandatory, performance, nice-to-have) would be
-> > easy to add to the yaml file overall and attempt to accomplish what
-> > you are suggesting.  Thoughts?
-> >
->
-> I think that'd be a great idea. Maybe a "stage" field could work, too,
-> where later tests only run if the previous ones pass. For example:
-> Stage 0: checkpatch, does it build
-> Stage 1: KUnit tests, unit tests, single architecture
-> Stage 2: Full boot tests, selftests, etc
-> Stage 3: The above tests on other architectures, allyesconfig, randconfig=
-, etc.
->
-> Regardless, it'd be useful to be able to name individual tests and/or
-> configurations and manually trigger them and/or filter on them.
->
-> _Maybe_ it makes sense to split up the "what tests to run" and "how
-> are they run" bits. The obvious split here would be to have the test
-> catalogue just handle the former, and the "how they're run" bit
-> entirely live in shell scripts. But if we're going to support running
-> tests in parallel and nicely displaying results, maybe there'll be a
-> need to have something more data driven than a shell script.
->
-> > >
-> > > > #
-> > > > # Tests should adhere to KTAP definitions for results
-> > > > #
-> > > > # Description of section entries
-> > > > #
-> > > > #  maintainer:    test maintainer - name <email>
-> > > > #  list:                mailing list for discussion
-> > > > #  version:         stable version of the test
-> > > > #  dependency: necessary distro package for testing
-> > > > #  test:
-> > > > #    path:            internal git path or url to fetch from
-> > > > #    cmd:            command to run; ability to run locally
-> > > > #    param:         additional param necessary to run test
-> > > > #  hardware:      hardware necessary for validation
-> > > > #
-> > > > # Subsystems (alphabetical)
-> > > >
-> > > > KUNIT TEST:
-> > >
-> > > For KUnit, it'll be interesting to draw the distinction between KUnit
-> > > overall and individual KUnit suites.
-> > > I'd lean towards having a separate entry for each subsystem's KUnit
-> > > tests (including one for KUnit's own tests)
-> >
-> > KUNIT may not have been the best 'common' test example due to its
-> > complexities across other subsystems. :-/
-> >
->
-> Yeah: I think KUnit tests are a good example of the sorts of tests
-> which would be relatively easy to integrate, but KUnit as a subsystem
-> can be a bit confusing as an example because no-one's sure if we're
-> talking about KUnit-the-subsystem or KUnit-the-tests.
->
-> > >
-> > > >   maintainer:
-> > > >     - name: name1
-> > > >       email: email1
-> > > >     - name: name2
-> > > >       email: email2
-> > > >   list:
-> > >
-> > > How important is it to have these in the case where they're already i=
-n
-> > > the MAINTAINERS file? I can see it being important for tests which
-> > > live elsewhere, though eventually, I'd still prefer the subsystem
-> > > maintainer to take some responsibility for the tests run for their
-> > > subsystems.
-> >
-> > I wasn't sure if all subsystem maintainers actually want to maintain
-> > the tests too or just point someone else at it.  I look at LTP as an
-> > example here.  But I could be wrong.
-> >
->
-> Fair enough. Maybe we just make this optional, and if empty we
-> "default" to the subsystem maintainer.
->
-> > >
-> > > >   version:
-> > >
-> > > This field is probably unnecessary for test frameworks which live in
-> > > the kernel tree.
-> >
-> > Possibly.  It was brought up at Plumbers, so I included it for complete=
-ness.
-> >
->
-> Yeah. Again, good to have, but make it optional.
->
-> > >
-> > > >   dependency:
-> > > >     - dep1
-> > > >     - dep2
-> > >
-> > > If we want to automate this in any way, we're going to need to work
-> > > out a way of specifying these. Either we'd have to pick a distro's
-> > > package names, or have our own mapping.
-> >
-> > Agreed.  I might lean on what 'perf' outputs.  They do dependency
-> > detection and output suggested missing packages.  Their auto detection
-> > of already included deps is rather complicated though.
-> >
->
-> Sounds good.
->
-> > >
-> > > (A part of me really likes the idea of having a small list of "known"
-> > > dependencies: python, docker, etc, and trying to limit tests to using
-> > > those dependencies. Though there are plenty of useful tests with more
-> > > complicated dependencies, so that probably won't fly forever.)
-> >
-> > Hehe.  For Fedora/RHEL at least, python has hundreds of smaller
-> > library packages.  That is tricky.  And further some tests like to
-> > compile, which means a bunch of -devel packages.  Each distro has
-> > different names for their -devel packages. :-/
-> > But a side goal of this effort is to define some community standards.
-> > Perhaps we can influence things here to clean up this problem??
-> >
->
-> That'd be nice. :-)
->
-> > >
-> > > >   test:
-> > > >     - path: tools/testing/kunit
-> > > >       cmd:
-> > > >       param:
-> > > >     - path:
-> > > >       cmd:
-> > > >       param:
-> > >
-> > > Is 'path' here supposed to be the path to the test binary, the workin=
-g
-> > > directory, etc?
-> > > Maybe there should be 'working_directory', 'cmd', 'args', and 'env'.
-> >
-> > The thought was the command to copy-n-paste to run the test after
-> > installing it.  I am thinking most tests might be a git-clone or
-> > exploded tarball, leaving the path to be from the install point.  So
-> > maybe working_directory is more descriptive.
-> >
->
-> Sounds good. In the KUnit case, the tooling currently expects the
-> working directory to be the root of the kernel checkout, and the
-> command to be "./tools/testing/kunit/kunit.py"...
->
-> > >
-> > > >   hardware: none
-> > >
-> > >
-> > >
-> > > For KUnit, I'd imagine having a kunit.yaml, with something like this,
-> > > including the KUnit tests in the 'kunit' and 'example' suites, and th=
-e
-> > > 'kunit_tool_test.py' test script:
-> > >
-> > > ---
-> > > KUnit:
-> > >   maintainer:
-> > >     - name: David Gow
-> > >       email: davidgow@google.com
-> > >     - name: Brendan Higgins
-> > >       email: brendan.higgins@linux.dev
-> > >   list: kunit-dev@googlegroups.com
-> > >   dependency:
-> > >     - python3
-> > >   test:
-> > >     - path: .
-> > >       cmd: tools/testing/kunit.py
-> > >       param: run kunit
-> > >     - path: .
-> > >       cmd: tools/testing/kunit.py
-> > >       param: run example
-> > >   hardware: none
-> > > KUnit Tool:
-> > >   maintainer:
-> > >     - name: David Gow
-> > >       email: davidgow@google.com
-> > >     - name: Brendan Higgins
-> > >       email: brendan.higgins@linux.dev
-> > >   list: kunit-dev@googlegroups.com
-> > >   dependency:
-> > >     - python3
-> > >   test:
-> > >     - path: .
-> > >       cmd: tools/testing/kunit_tool_test.py
-> > >       param:
-> > >   hardware: none
-> > > ---
-> > >
-> > > Obviously there's still some redundancy there, and I've not actually
-> > > tried implementing something that could run it. It also lacks any
-> > > information about the environment. In practice, I have about 20
-> > > different kunit.py invocations which run the tests with different
-> > > configs and on different architectures. Though that might make sense
-> > > to keep in a separate file to only run if the simpler tests pass. And
-> > > equally, it'd be nice to have a 'common.yaml' file with basic patch
-> > > and build tests which apply to almost everything (checkpatch, make
-> > > defconfig, maybe even make allmodconfig, etc).
-> >
-> > Nice, thanks for the more detailed example.
-> >
->
-> Thanks,
-> -- David
+On 11/8/24 11:59 AM, Manoj Kumar wrote:
+> Hi Nikolai,
+> 
+>  
+> 
+> I managed to create virtual environment python3.9 on kernelci backend and
+> worked my way up to push a build message to the kcidb database.
+> 
+> The backend code is generating data structure with schema version “1”.
+> 
+> Below is the content of the message after adding a debug print.
+> 
+>    "builds": [
+> 
+>      {
+> 
+>        "origin": "arm",
+> 
+>        "config_name": "x86_64_defconfig",
+> 
+>        "architecture": "x86_64",
+> 
+>        "start_time": "2024-10-16T11:30:41.592000+00:00",
+> 
+>        "revision_origin_id": "2f87d0916ce0d2925cedbc9e8f5d6291ba2ac7b2",
+> 
+>        "log_url": "",
+> 
+>        "duration": "1224.9012200832367",
+> 
+>        "origin_id": "kernelci.org:670fa3e1e5905849ba40dabe",
+> 
+>        "description": "v6.12-rc3-44-g2f87d0916ce0",
+> 
+>        "misc": {
+> 
+>          "kernel_image_size": ""
+> 
+>        },
+> 
+>        "valid": "true",
+> 
+>        "compiler": "gcc (Debian 12.2.0-14) 12.2.0",
+> 
+>        "revision_origin": "arm",
+> 
+>        "config_url": "",
+> 
+>        "output_files": []
+> 
+>      }
+> 
+>    ],
+> 
+>    *"version": "1"*
+> 
+>  
+> 
+>  
+> 
+> In response to the above , I got a validation failure from the KCIDB server
+> which is expecting structure/ schema version to be high
+> 
+> ValidationError: '1' is not of type 'object'
+> 
+> Failed validating 'type' in schema['properties']['version']:
+> 
+>      {'type': 'object',
+> 
+>       'properties': {'major': {'type': 'integer',
+> 
+>                                'const': 4,
+> 
+>                                'description': 'Major number of the schema '
+> 
+>                                               'version.\n'
+> 
+>                                               '\n'
+> 
+>                                               'Increases represent '
+> 
+>                                               'backward-incompatible '
+> 
+>                                               'changes. E.g. deleting or '
+> 
+>                                               'renaming a property, '
+> 
+>                                               'changing a property type, '
+> 
+>                                               'restricting values, making a '
+> 
+>                                               'property required, or adding '
+> 
+>                                               'a new required property.'},
+> 
+>  
+> 
+> My question to you , what is the expected schema version on the Kernelci
+> legacy backend code so that the message will be accepted by KCIDB database
+> 
+>  
+> 
+>  
+> 
+> Br,
+> 
+> Manoj
+> 
+>  
+> 
+> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+> *Date: *Friday, 18 October 2024 at 16:05
+> *To: *Manoj Kumar <ManojKumar08@arm.com>
+> *Cc: *kernelci@lists.linux.dev <kernelci@lists.linux.dev>, Denys
+> Fedoryshchenko <denys.f@collabora.com>
+> *Subject: *Re: KCIDB database
+> 
+>> It is not that straight forward to update python version to python3.
+> 
+> Of course, and you cannot really do that, as KernelCI Legacy needs Python 2.
+> I was rather suggesting you install Python 3 alongside Python 2, if possible
+> for your target.
+> 
+>> This upgrade will be disruptive for our testing and deployment unless the
+>> KCIDB results push can be done with python2.7 which we will prefer at this
+>> point of time.
+> 
+> If this is hard, one (radical?) way to do this could be running Python 3 on a
+> different machine (in a container?) and executing kcidb-submit there, via e.g.
+> ssh (docker run?).
+> 
+> But perhaps others have other ideas.
+> 
+> Nick
+> 
+> On 10/18/24 5:04 PM, Manoj Kumar wrote:
+>> We used ansible playbooks to deploy backend server https://github.com/ <https://github.com/>
+>> kernelci/kernelci-backend-config <https://github.com/kernelci/kernelci-
+>> backend-config>
+>> 
+>> Which create virtual environment based on python2.7
+>> 
+>> https://github.com/kernelci/kernelci-backend-config/ <https://github.com/
+> kernelci/kernelci-backend-config/>
+>> commit/52d442759cc29ef2453fa5c9a2c90d3fc2c74071 <https://github.com/kernelci/
+>> kernelci-backend-config/commit/52d442759cc29ef2453fa5c9a2c90d3fc2c74071>
+>> 
+>>  
+>> 
+>> It is not that straight forward to update python version to python3.
+>> 
+>> This upgrade will be disruptive for our testing and deployment unless the
+>> KCIDB results push can be done with python2.7 which we will prefer at this
+>> point of time.
+>> 
+>>  
+>> 
+>> br,
+>> 
+>> Manoj
+>> 
+>>  
+>> 
+>> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+>> *Date: *Friday, 18 October 2024 at 14:32
+>> *To: *Manoj Kumar <ManojKumar08@arm.com>
+>> *Cc: *kernelci@lists.linux.dev <kernelci@lists.linux.dev>, Denys
+>> Fedoryshchenko <denys.f@collabora.com>
+>> *Subject: *Re: KCIDB database
+>> 
+>> Hi Manoj,
+>> 
+>>> I looked at the below link to get installation steps for the kcidb-submit
+>> command.
+>>>
+>>> https://docs.kernelci.org/kcidb/installation/ <https://docs.kernelci.org/
+> kcidb/installation/> <https://docs.kernelci.org/
+>> kcidb/installation/> <https://docs.kernelci.org/
+>>> kcidb/installation/>
+>>>
+>>> This instruction is for Python version V3.9 but our backend is using the
+>>> Python 2.7.16 at the moment.
+>>>
+>>> Do you have instruction for python 2.7.16 to install this package
+>> 
+>> KCIDB requires Python 3, and that's why KernelCI Legacy (which requires Python
+>> 2) is invoking the kcidb-submit command-line tool in a new process instead of
+>> using the KCIDB library directly.
+>> 
+>> You will need to install Python 3 in your deployment, I assume. Perhaps Denys,
+>> or someone else on the KernelCI maillist (both CC'd) could tell you how we did
+>> that.
+>> 
+>> Nick
+>> 
+>> On 10/18/24 4:21 PM, Manoj Kumar wrote:
+>>> Hi Nikolai,
+>>> 
+>>>  
+>>> 
+>>> I am planning to push test build data to public KCIDB . I am seeing a failure
+>>> because of the kcidb-submit command in a thread at backend.
+>>> 
+>>>  
+>>> 
+>>> The class KcidbSubmit expect the command kcidb-submit installed on the backend
+>>> system.
+>>> 
+>>> /class KcidbSubmit(object):/
+>>> 
+>>> /    def __init__(self, kcidb_options):/
+>>> 
+>>> /        kcidb_path = kcidb_options.get("kcidb_path", "")/
+>>> 
+>>> /        self.kcidb_submit_cmd = os.path.join(kcidb_path, "kcidb-submit")/
+>>> 
+>>>  
+>>> 
+>>> I looked at the below link to get installation steps for the kcidb-submit command.
+>>> 
+>>> https://docs.kernelci.org/kcidb/installation/ <https://docs.kernelci.org/
+> kcidb/installation/> <https://docs.kernelci.org/
+>> kcidb/installation/> <https://docs.kernelci.org/
+>>> kcidb/installation/>
+>>> 
+>>>  
+>>> 
+>>> This instruction is for Python version V3.9 but our backend is using the
+>>> Python 2.7.16 at the moment.
+>>> 
+>>> Do you have instruction for python 2.7.16 to install this package
+>>> 
+>>>  
+>>> 
+>>> Br,
+>>> 
+>>> Manoj
+>>> 
+>>>  
+>>> 
+>>> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+>>> *Date: *Tuesday, 8 October 2024 at 11:46
+>>> *To: *Manoj Kumar <ManojKumar08@arm.com>
+>>> *Subject: *Re: KCIDB database
+>>> 
+>>> Hi Manoj,
+>>> 
+>>> On 10/8/24 1:26 PM, Manoj Kumar wrote:
+>>>> One additional question regarding the credentials file.
+>>>>
+>>>> Attached credentials files was shared with me named  “.kernelci-production-ci-
+>>>> arm.json” .
+>>>>
+>>>> The attached file contains multiple parameters , If I understood correctly all
+>>>> the contents of this file should be assigned to this variable https://
+>>>> github.com/kernelci/kernelci-backend/
+>>>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38 <https://
+>>>> github.com/kernelci/kernelci-backend/
+>>>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+>>> 
+>>> Not the contents, but a path to the file itself.
+>>> 
+>>>> Also , the email ID used by internal kernelCI deployment is different . They
+>>>> will be “bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com>>>>
+>>>> and bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com>>>>”.
+>>> 
+>>> That doesn't matter, the email in the JSON credentials is simply a user
+>>> (service account) ID and is specific to Google Cloud. It identifies a
+>>> particular submitter to the system.
+>>> 
+>>> You don't really need to look into the credentials file at all.
+>>> 
+>>> Nick
+>>> 
+>>> On 10/8/24 1:26 PM, Manoj Kumar wrote:
+>>>> Hi Nick,
+>>>> 
+>>>>  
+>>>> 
+>>>> Thanks for your prompt responses :thumbsup
+>>>> 
+>>>>  
+>>>> 
+>>>> One additional question regarding the credentials file.
+>>>> 
+>>>> Attached credentials files was shared with me named  “.kernelci-production-ci-
+>>>> arm.json” .
+>>>> 
+>>>> The attached file contains multiple parameters , If I understood correctly all
+>>>> the contents of this file should be assigned to this variable https://
+>>>> github.com/kernelci/kernelci-backend/
+>>>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38 <https://
+>>>> github.com/kernelci/kernelci-backend/
+>>>> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+>>>> 
+>>>>  
+>>>> 
+>>>> Also , the email ID used by internal kernelCI deployment is different . They
+>>>> will be “bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com <mailto:bot@kernelci-dev.oss.arm.com>>>>
+>>>> and bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com <mailto:bot@kernelci.oss.arm.com>>>>”.
+>>>> 
+>>>>  
+>>>> 
+>>>> Br,
+>>>> 
+>>>> Manoj
+>>>> 
+>>>>  
+>>>> 
+>>>>  
+>>>> 
+>>>> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+>>>> *Date: *Tuesday, 8 October 2024 at 05:36
+>>>> *To: *Manoj Kumar <ManojKumar08@arm.com>
+>>>> *Subject: *Re: KCIDB database
+>>>> 
+>>>> On 10/7/24 7:49 PM, Manoj Kumar wrote:
+>>>>> I do have some questions if you can help me find answer.
+>>>>>
+>>>>>   * Do I need to use the private key from the credential json for this
+>>>>>     parameter https://github.com/kernelci/kernelci-backend/ <https://github.com/kernelci/
+> kernelci-backend/> <https://github.com/kernelci/
+>> kernelci-backend/> <https://github.com/kernelci/
+>>> kernelci-backend/> <https://github.com/kernelci/
+>>>> kernelci-backend/>
+>>>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38
+>>>>>     <https://github.com/kernelci/kernelci-backend/
+>>>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+>>>> 
+>>>> Yes, that needs to be pointing to the credentials JSON file.
+>>>> 
+>>>>>   * As the storage server is internal , I guess we need to open access to
+>>>>>     storage server for these urls https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->
+> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>
+>> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>>
+>>> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>>>
+>>>>>     backend/blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/
+>>>>>     kcidb.py#L173 <https://github.com/kernelci/kernelci-backend/
+>>>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L173>
+>>>>>     files so the kcidb server can access them . Can you confirm this , please
+>>>> 
+>>>> Yes, KCIDB right now will try to download every 256th URL you submit, that is
+>>>> under 5MB. The artifact caching system is in trial mode still. However, what's
+>>>> more important, *people* will try to open the URLs you submit.
+>>>> 
+>>>> Opening the access to the whole server might be problematic for you guys, as
+>>>> you want to keep some results secret, IIRC. Maybe you could copy them to some
+>>>> other web server and translate the URLs as you submit them?
+>>>> 
+>>>> Nick
+>>>> 
+>>>> On 10/7/24 7:49 PM, Manoj Kumar wrote:
+>>>>> Hi Nick,
+>>>>> 
+>>>>> Nice to meet you too mate, I am going through the code base of kcidb.py to
+>>>>> push results.
+>>>>> 
+>>>>> I will test pushing results to playground with the earlier credentials as you
+>>>>> mentioned.
+>>>>> 
+>>>>>  
+>>>>> 
+>>>>> Also , I will be configuring internal kernelci deployment to push results to
+>>>>> public KCIDB for builds and tests.
+>>>>> 
+>>>>>  
+>>>>> 
+>>>>> I do have some questions if you can help me find answer.
+>>>>> 
+>>>>>   * Do I need to use the private key from the credential json for this
+>>>>>     parameter https://github.com/kernelci/kernelci-backend/ <https://github.com/kernelci/
+> kernelci-backend/> <https://github.com/kernelci/
+>> kernelci-backend/> <https://github.com/kernelci/
+>>> kernelci-backend/> <https://github.com/kernelci/
+>>>> kernelci-backend/>
+>>>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38
+>>>>>     <https://github.com/kernelci/kernelci-backend/
+>>>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L38>
+>>>>>   * As the storage server is internal , I guess we need to open access to
+>>>>>     storage server for these urls https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->
+> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>
+>> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>>
+>>> <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci- <https://github.com/kernelci/kernelci->>>>
+>>>>>     backend/blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/
+>>>>>     kcidb.py#L173 <https://github.com/kernelci/kernelci-backend/
+>>>>>     blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L173>
+>>>>>     files so the kcidb server can access them . Can you confirm this , please
+>>>>> 
+>>>>>  
+>>>>> 
+>>>>> Br,
+>>>>> 
+>>>>> Manoj
+>>>>> 
+>>>>>  
+>>>>> 
+>>>>> *From: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+>>>>> *Date: *Monday, 7 October 2024 at 12:15
+>>>>> *To: *Manoj Kumar <ManojKumar08@arm.com>
+>>>>> *Subject: *Re: KCIDB database
+>>>>> 
+>>>>> Hi Manoj,
+>>>>> 
+>>>>> Nice to meet you!
+>>>>> 
+>>>>> I'm glad to hear there's progress towards resuming KCIDB submissions at ARM!
+>>>>> 
+>>>>> The access parameters are out of date, although they will work for
+>>>>> submissions. Here's more up-to-date info:
+>>>>> 
+>>>>> https://docs.kernelci.org/kcidb/submitter_guide/ <https://docs.kernelci.org/
+> kcidb/submitter_guide/> <https://docs.kernelci.org/
+>> kcidb/submitter_guide/> <https://docs.kernelci.org/
+>>> kcidb/submitter_guide/> <https://docs.kernelci.org/
+>>>> kcidb/submitter_guide/> <https://docs.kernelci.org/
+>>>>> kcidb/submitter_guide/>
+>>>>> 
+>>>>> The credentials I gave ARM before should still work. I'd recommend restarting
+>>>>> submissions to the "playground" database ("playground_kcidb_new" topic) so you
+>>>>> can experiment freely without worrying about bothering anyone with invalid
+>>>>> data. Then when you're ready, switch to production ("kcidb_new").
+>>>>> 
+>>>>> Don't hesitate to reach out, if you have any questions. I'll add you as the
+>>>>> ARM's current contact here:
+>>>>> 
+>>>>> https://github.com/kernelci/kcidb/issues/328 <https://github.com/kernelci/
+> kcidb/issues/328> <https://github.com/kernelci/
+>> kcidb/issues/328> <https://github.com/kernelci/
+>>> kcidb/issues/328> <https://github.com/kernelci/
+>>>> kcidb/issues/328> <https://github.com/kernelci/
+>>>>> kcidb/issues/328>
+>>>>> 
+>>>>> I think ARM doesn't let employees use Slack, but if I'm wrong, I can invite
+>>>>> you to our channel, so we can have more interactive Q&A, if needed.
+>>>>> 
+>>>>> Nick
+>>>>> 
+>>>>> On 10/7/24 12:37 PM, Manoj Kumar wrote:
+>>>>>> Hi Nikolai,
+>>>>>> 
+>>>>>> I wanted to say hello to you and start the initial thread regarding pushing
+>>>>>> the test results to KernelCI KCIDB.
+>>>>>> I will be enabling the changes to push kernel test and build results to KCIDB
+>>>>>> from ARM testing . I was told by Cristian and Mark that you are the POC from
+>>>>>> kernelCI KCIDB side.
+>>>>>> 
+>>>>>> The access parameters shared with me are below , can you confirm they are
+>>>>>> still valid and not expired / updated .
+>>>>>> 
+>>>>>>  
+>>>>>> 
+>>>>>>  
+>>>>>> 
+>>>>>> The access parameters are:
+>>>>>> 
+>>>>>>          Google Cloud project name: kernelci-production
+>>>>>>            Playground dataset name: playground_kernelci04
+>>>>>> Playground submission queue topic: playground_kernelci_new
+>>>>>>            Production dataset name: kernelci04
+>>>>>> Production submission queue topic: kernelci_new
+>>>>>> 
+>>>>>>  
+>>>>>> 
+>>>>>> Regards,
+>>>>>> 
+>>>>>> Manoj
+>>>>>> 
+>>>>>>  
+>>>>>> 
+>>>>>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>>>>>> confidential and may also be privileged. If you are not the intended
+>>>>>> recipient, please notify the sender immediately and do not disclose the
+>>>>>> contents to any other person, use it for any purpose, or store or copy the
+>>>>>> information in any medium. Thank you.
+>>>>> 
+>>>>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>>>>> confidential and may also be privileged. If you are not the intended
+>>>>> recipient, please notify the sender immediately and do not disclose the
+>>>>> contents to any other person, use it for any purpose, or store or copy the
+>>>>> information in any medium. Thank you.
+>>>> 
+>>>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>>>> confidential and may also be privileged. If you are not the intended
+>>>> recipient, please notify the sender immediately and do not disclose the
+>>>> contents to any other person, use it for any purpose, or store or copy the
+>>>> information in any medium. Thank you.
+>>> 
+>>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>>> confidential and may also be privileged. If you are not the intended
+>>> recipient, please notify the sender immediately and do not disclose the
+>>> contents to any other person, use it for any purpose, or store or copy the
+>>> information in any medium. Thank you.
+>> 
+>> IMPORTANT NOTICE: The contents of this email and any attachments are
+>> confidential and may also be privileged. If you are not the intended
+>> recipient, please notify the sender immediately and do not disclose the
+>> contents to any other person, use it for any purpose, or store or copy the
+>> information in any medium. Thank you.
+> 
+> IMPORTANT NOTICE: The contents of this email and any attachments are
+> confidential and may also be privileged. If you are not the intended
+> recipient, please notify the sender immediately and do not disclose the
+> contents to any other person, use it for any purpose, or store or copy the
+> information in any medium. Thank you.
 
