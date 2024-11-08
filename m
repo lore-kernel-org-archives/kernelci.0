@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAB91EABA3
-	for <kernelci@lists.linux.dev>; Fri,  8 Nov 2024 13:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909001EABDC
+	for <kernelci@lists.linux.dev>; Fri,  8 Nov 2024 14:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731071731; cv=none; b=qFDt0K8DSjLVf+Bw//rhX7T6SebNRP4YQMp+oxlH0z2PBHTHLJPHJrWjslevWExnwlRzg8+MqZ8gp0gFFB8b8MXZHT55hvJfB7BNhR8M86ZJKibnjuUIkdxs6CtnL+DhqlVi0s20L1UmXUYisBJjVfJdI+RIrTr2GC8bQmwC+vs=
+	t=1731077475; cv=none; b=NKVMAA5cgl44T3Fd9L2KcjvDHjiwJ//W2vE6QKvj5to87DLRsJVUoUoXU8i9JCeRxsO/JnGX/zBY/TiTp2quhmrZX9vIrFGmm0Vu3Aj+ZDCoZ6ybLLKembr/56QzV8qh0Rwd5msOdpH3WLo+VTnzjmfLmb5vQ3UHFguu3ubPR3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731071731; c=relaxed/simple;
-	bh=KdrgIhf04+SxMsygTXygRuUW7DrTY+Gt3t2U2zFmg8M=;
+	s=arc-20240116; t=1731077475; c=relaxed/simple;
+	bh=g9f9VYDh5KqiCW0GMM+yhkML1SAl/Q0ejYGluhYHlbo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lps9kIzxRjf1lLbL6jgvgDvwTYaEqx4fUeqhUHH+ccRVC518N9QwHie4C8TCiQVfFBWg/xyrpZlIXeTMCdrjDxKd9e83Lo36WwXmApF8cdsC5TB/L39SeWdB2QoglX3oLEydBmn7lmsec7sqbqilIYswM5mlNEYEj9XG2FkJ5B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SfKlwJLD; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=LOefeO3Gj90qpLKnUGHVqvesbsNRvuqfeKaztGPuzRA4RYfsCuIWZT2Lq8KxqcyhiOGOySlQHBc+vA70wffTJrxXOlfkibaM64ccnfpIVZzt3PvC62yqQGRcJonBMh90H3rV4olWVK/VNQbvbLK6EFRx3CYgVvNto1JDJfSLjTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fC7jxu66; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SfKlwJLD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fC7jxu66"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731071728;
+	s=mimecast20190719; t=1731077471;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XqSv0BasALwEc87j45L8PzqKE/5S6JoSVQG5TwsNVzo=;
-	b=SfKlwJLD6UqWftCAKMrSikAUBkfIzk6Vc78EJR1yBUqz8i3Vea97NokulhWHC4yg1TQoXb
-	2QFdqvmNqzYfi/Kd/t0O5ODDHBBGC5d361ha/O6TAgaraVfHn2NK4HN0yDVELu72gkFRT6
-	5tsEK9DQGUHaLa869rCvnFac1IorkAA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=uVBgfKt6NIsjc4HL0HX+WjJaJArKxM+t+Xr8pGSmxRo=;
+	b=fC7jxu66R72dbpZoFTupecRiwN4+UNdWiFZ+rdg7B87CH5/seaQoGTmfl2Sdqzym0ufbaw
+	Pyxbrk5wT0fqWZ+LW3LhaayPIPLKEkx6SRPqTJT8bgbWyP7KfY9Ku2WGOu/+irpjUWNuBZ
+	3GTWJwmS3sNOqjZDGgplgyiKodemUhw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-X-e5JcIDOJ6xdaQGmgKuBg-1; Fri, 08 Nov 2024 08:15:27 -0500
-X-MC-Unique: X-e5JcIDOJ6xdaQGmgKuBg-1
-X-Mimecast-MFC-AGG-ID: X-e5JcIDOJ6xdaQGmgKuBg
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d563a1af4so1047084f8f.2
-        for <kernelci@lists.linux.dev>; Fri, 08 Nov 2024 05:15:26 -0800 (PST)
+ us-mta-608-gocPQyZWM-WcGQY2C2UPUQ-1; Fri, 08 Nov 2024 09:51:10 -0500
+X-MC-Unique: gocPQyZWM-WcGQY2C2UPUQ-1
+X-Mimecast-MFC-AGG-ID: gocPQyZWM-WcGQY2C2UPUQ
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4316300bb15so14519805e9.2
+        for <kernelci@lists.linux.dev>; Fri, 08 Nov 2024 06:51:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731071725; x=1731676525;
+        d=1e100.net; s=20230601; t=1731077468; x=1731682268;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XqSv0BasALwEc87j45L8PzqKE/5S6JoSVQG5TwsNVzo=;
-        b=gN1VcTbzZ16/wWb5NGAVWpQYdt03hq17L/zm51GtlDdfd4NvA9sZUwrMeNomY1jlds
-         EofYdd1zShW2zQbGZv9w8IJ4gsJ8Hfn3amWJPPNxg2bz9vdEezcJJ90jdVtj5HMWDi8U
-         60+227UhC8y2qc41QGvCqGVP+Lb81c7mtLdz2aO00izHbCGncl2LvcnxQOWg1gCXGJ/e
-         0ZeH4sMHUlBadel688ylRCLr/sC+AgTEQ0nErYx59z75heX+lhd3peJUE/8OY1YBcAya
-         WyC6yscAlAZZyCU/w3tI2WhDsLDwOCkRmLpdSZoNn5FpOah529zWJblTndQSEbDKUZ5H
-         qC5w==
-X-Gm-Message-State: AOJu0Yyg2aM7Q4kSugtBWX0ntaXUi4emd+B31avGcrjELnDkRhLFUpNG
-	pA8a2PM1gqBe3FelWl7hkzi60Fg2SBsDr2phHwvn32Uam1DcSpUSS4cgLWZTa2hcPrMrYoy9UCR
-	IScs3ALvhBCwoWH9MlJXmxfSRfXZDxjk82JgFeWvPCgT5EIZNKzeOSnAiS1A8+mUq
-X-Received: by 2002:a05:6000:1ac9:b0:37d:461d:b1ea with SMTP id ffacd0b85a97d-381f1885defmr2438822f8f.48.1731071724993;
-        Fri, 08 Nov 2024 05:15:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH7vrvTZRq2uOKt+UbjASDTd6bHE1HFjtP9B8jl9sFUEGyRevW8zXAPelFrhTfF355SJgH9eA==
-X-Received: by 2002:a05:6000:1ac9:b0:37d:461d:b1ea with SMTP id ffacd0b85a97d-381f1885defmr2438794f8f.48.1731071724461;
-        Fri, 08 Nov 2024 05:15:24 -0800 (PST)
+        bh=uVBgfKt6NIsjc4HL0HX+WjJaJArKxM+t+Xr8pGSmxRo=;
+        b=QgHfD59Bw3fHYiwuowyCytdHmGA/dUpdewIZvD2Qr7cBgWc+noIw3FOgAOBxZ+Jf1i
+         keFIYarbrGH3cl5A9gB+2KNaWz4AhPx++QitoCXJTsok4le73GbrXz6JEFjP5zYu3XMA
+         ATi0edpV/+QYZ4rfRiEJB424R2sh3uKDqQg4PCwHyf5JSb/8+wUZpGlH0npow5ocJwcL
+         1nlguVU8m3D+PVkcZFSXa+DePgVWRD260VcrjGc3m3e+EIk9VVst4b62w5g8s41SEInV
+         7VzbqwNl68QuWT0V6X+qL/fF3NNcxnTeWmH3jYth14SWlp/GZzdwBf2FD4FDXGsDJz9k
+         8YtQ==
+X-Gm-Message-State: AOJu0YwEzmtRiztyZHxdr4nfUcl+zJn6D/aaUT0wb8Eo7RwCcsK+xCLm
+	ZggxsAl8xlIdv7phFer3PZQXLP6v58U/0z+2A2Ni7BU3YogtIsplUNj+XaKfM1p+ueVsJJG95Km
+	Q4MfxbF9xe5RrdPFiBqOi6rI1TnvqLdbKndGFdYVs2sgm5Bcl8zHgcnRPchJhyM6r
+X-Received: by 2002:a05:600c:4f87:b0:42f:823d:dde9 with SMTP id 5b1f17b1804b1-432b75182b2mr24214355e9.21.1731077468131;
+        Fri, 08 Nov 2024 06:51:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHAWEaR11Yu4HK9JrbLAkeeXCyQjtnCSZG/+f6ZPrKQgO7LmSfDG3L72UhKfRlia9TK6Onc2A==
+X-Received: by 2002:a05:600c:4f87:b0:42f:823d:dde9 with SMTP id 5b1f17b1804b1-432b75182b2mr24214045e9.21.1731077467557;
+        Fri, 08 Nov 2024 06:51:07 -0800 (PST)
 Received: from [192.168.0.166] (h-185-57-5-67.na.cust.bahnhof.fi. [185.57.5.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed99681csm4878915f8f.49.2024.11.08.05.15.23
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6bf546sm110652365e9.21.2024.11.08.06.51.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Nov 2024 05:15:23 -0800 (PST)
-Message-ID: <4f93cd0c-5927-4734-af42-1b6c4f0f8208@redhat.com>
-Date: Fri, 8 Nov 2024 15:15:22 +0200
+        Fri, 08 Nov 2024 06:51:07 -0800 (PST)
+Message-ID: <082b77f2-5088-41b4-96e1-0d700e09d9bb@redhat.com>
+Date: Fri, 8 Nov 2024 16:51:06 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -84,10 +84,11 @@ References: <547ddf99-1b75-c463-e6c7-32389c461468@redhat.com>
  <DB9PR08MB68104499218B100804567075C4402@DB9PR08MB6810.eurprd08.prod.outlook.com>
  <fbfed2eb-d4f7-4c56-8549-de32dae29da8@redhat.com>
  <DB9PR08MB68109AF608CFB742F567968DC4532@DB9PR08MB6810.eurprd08.prod.outlook.com>
+ <DB9PR08MB68105069590B2A3A065DEBC2C45D2@DB9PR08MB6810.eurprd08.prod.outlook.com>
 From: Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
-In-Reply-To: <DB9PR08MB68109AF608CFB742F567968DC4532@DB9PR08MB6810.eurprd08.prod.outlook.com>
+In-Reply-To: <DB9PR08MB68105069590B2A3A065DEBC2C45D2@DB9PR08MB6810.eurprd08.prod.outlook.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 58Fj2n3ftwjbpY7h0g4TW08cd3sZUiEQCCJ5iqh_blM_1731071726
+X-Mimecast-MFC-PROC-ID: BcJvScUAB14cL18f6I7tugtaJn47TcsVGAdu-uz7vCw_1731077469
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
@@ -95,23 +96,109 @@ Content-Transfer-Encoding: 8bit
 
 Hi Manoj,
 
-Glad to hear you managed to make it work!
+OK, the bug is now fixed: https://github.com/kernelci/kcidb-io/pull/91
 
-It looks like KernelCI legacy is sending schema v1 indeed:
-https://github.com/kernelci/kernelci-backend/blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L149
+Please update your local copy of kcidb-io.
 
-Gosh, that's old. However, it's working fine in production.
+> Below is the code snippet for test message at kernelCI backend.
 
-I suspect this is because production is using an older version of KCIDB, and
-in newer versions support for old schemas is broken. I'll work on a fix, which
-should be available today. Meanwhile, could you please respond with a complete
-JSON you're sending, as an attachment, so I could make sure I reproduce this
-correctly.
+Thank you. I can see a few problems with that data:
 
-Thank you!
+* The `duration` is a string, and it should be a number
+* The `log_url` is a `none` string, and should either be a URL, or missing
+  from the data.
+* Same for the `config_url`.
+
+Whenever you want to test your data sample, you can simply pipe it to
+`kcidb-validate` and it will validate it for you, without needing to go
+through the whole submission process.
+
 Nick
 
-On 11/8/24 11:59 AM, Manoj Kumar wrote:
+On 11/8/24 4:01 PM, Manoj Kumar wrote:
+> Hi Nick,
+> 
+> I created a test data structure in the file https://github.com/kernelci/
+> kernelci-backend/blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/
+> kcidb.py#L149 <https://github.com/kernelci/kernelci-backend/
+> blob/7e7bff2703c73b2a3a3734b7bcd0593cbe657705/app/utils/kcidb.py#L149>
+> 
+>  
+> 
+> The same structure is converted to Json and being pushed to upstream as shown
+> below.
+> 
+> Below is the code snippet for test message at kernelCI backend.
+> 
+>  
+> 
+> kcidb_build = {
+> 
+>         'revision_origin': 'arm',
+> 
+>         'revision_origin_id': '2f87d0916ce0d2925cedbc9e8f5d6291ba2ac7b2',
+> 
+>         'origin': 'arm',
+> 
+>         'origin_id': 'kernelci.org:670fa3e1e5905849ba40dabe',
+> 
+>         'start_time': '2024-10-16T11:30:41.592000+00:00',
+> 
+>         'description': 'v6.12-rc3-44-g2f87d0916ce0',
+> 
+>         'duration': '1224.9012200832367',
+> 
+>         'architecture': 'x86_64',
+> 
+>         'compiler': 'gcc (Debian 12.2.0-14) 12.2.0',
+> 
+>         'log_url': 'none',
+> 
+>         'config_name': 'x86_64_defconfig',
+> 
+>         'config_url': 'none',
+> 
+>         'output_files': [],
+> 
+>         'valid': True,
+> 
+>         'misc': {
+> 
+>             'kernel_image_size': '',
+> 
+>         },
+> 
+>     }
+> 
+>     kcidb_data = {
+> 
+>         'version': '1',
+> 
+>     }
+> 
+>     kcidb_data['builds'] = [kcidb_build]
+> 
+>  
+> 
+>     json_data = json.dumps(kcidb_data, indent=2)
+> 
+>     utils.LOG.info(json_data)
+> 
+>     kcidb_submit.write(json_data)
+> 
+>  
+> 
+> br,
+> 
+> Manoj
+> 
+> *From: *Manoj Kumar <ManojKumar08@arm.com>
+> *Date: *Friday, 8 November 2024 at 09:59
+> *To: *Nikolai Kondrashov <Nikolai.Kondrashov@redhat.com>
+> *Cc: *kernelci@lists.linux.dev <kernelci@lists.linux.dev>, Denys
+> Fedoryshchenko <denys.f@collabora.com>
+> *Subject: *Re: KCIDB database
+> 
 > Hi Nikolai,
 > 
 >  
