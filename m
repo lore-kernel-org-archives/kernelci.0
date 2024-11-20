@@ -1,118 +1,269 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3405861FEB
-	for <kernelci@lists.linux.dev>; Fri, 15 Nov 2024 10:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF29165F1D
+	for <kernelci@lists.linux.dev>; Wed, 20 Nov 2024 08:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731666186; cv=none; b=HUWKREK7/iEHkJq3ILDGqLyFlaKQ8U39rYBkFqLeALoKejfo13uH/Ch60IabKvbkzEUpSunGH69Eb/waW5GUd71VjVc0Hcq3mmqFWBPqam6x5WAssF1FPcMV9HcYY1slSdJqWxxWSI9sWcUHR4lY5yWTxRlRVvX+N7FdN2qg0TA=
+	t=1732090578; cv=none; b=GGXr59wFW2g1ELWjhcg0K/WbyTVRXAuy1ZRH1rYBBrdhGtWLI/RXNjc4nBkOZ9lCdTyket21/5oJNugp9m46FooNAqRyX9YujLbjL16VXlJyr1qApnlf3qZXPLHXWL/HS+FoumgrnuB0jtjerjukrKuLRLDc+KzY522p3K8AKIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731666186; c=relaxed/simple;
-	bh=AamLl3y2AKuGrQ+4lxOEAL3rt3hTqwFDZxOtI1jUwQ8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=i44cI/ZOB+GKkPrh0NvW25JRPIqMBRjQHq7Uh6qz3QGLBfflnPYSgVyvdIB3i54PhLGAFRzvUSwG0KdCFLjNwijBPEiFD2dEYHHZPq2yLALApiJq++mTTGc+T7qCCDsOslFfy2JbVgPzLqS8fp2GlHz4LPkIoEbJgWyq7TL/1kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KoWZumYw; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1732090578; c=relaxed/simple;
+	bh=OnWis9wPrivDIi4KdELbNX6y0w6m5lKJI7dPbK1pkkw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aaoBekwVyxJ6rNZW3KqrpNx+MaNAfaY0L7NAd4yW0NKrPywgRJjp/F1eO/7NPTqaxwfO13Gxi+7pfl/p2gFlCJwjozeK/uCkV7MZMoEXZyA0GICJvE++wCdfnsSEAvrkCDiaFbKjdbUBsqU85bsqzxrGFXYcQWp3xz7M1KTFS+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XmObgym8; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KoWZumYw"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb5111747cso5340711fa.2
-        for <kernelci@lists.linux.dev>; Fri, 15 Nov 2024 02:23:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XmObgym8"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6d41864d745so11199576d6.2
+        for <kernelci@lists.linux.dev>; Wed, 20 Nov 2024 00:16:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731666183; x=1732270983; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/OHxKP4AVQX4dy3BwpZlHiOmMIRCDcIf5Yn8GzwRDFY=;
-        b=KoWZumYw3/iwVJLWmBsQI7wZMY2+JtEmRNvYixK3rLZes/11gCAQVSFjK6TuTBk7Ih
-         rNpfP82Tz5cScnKfKE1ae/woc8oVud5JsoWlpQhzta8eOUxyA28a+nvG/MZqwZunvTz2
-         y6TtGAFlvD72GBwd83896Tm4x0RY4DWxMLgxCK4Y5n+MYg5YPcMgocZXNcHS8KgaXjlJ
-         ddpUTqoyksXR+UN7LFkzERXqMv9gdWty9yUSPWDnjy3F/dOqVCl9kDJKgssKI9GtU1iG
-         iBGFYQrbGwiUIza/s5J2YYngrYR6rj+U8tqdBtoK7UjgAsCs7sJHOGkiexXSqG+LeHbK
-         QLXw==
+        d=google.com; s=20230601; t=1732090574; x=1732695374; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RZW5JKkkB2BXGclRggq2IG1FLYfLe/SBbcWHijff6Zw=;
+        b=XmObgym8f+1rAwgQJJcfNca29/tDfzPabrfXpzGu1itoYqEgxnd5hspJu9J6PSeBZy
+         4XYHW5rplQ0RtyEZ+PNP1Mmxs3Xm9HacHRE9QjqpQkS8gTR7EH7S3dmGzl08Twz4Huij
+         eZbqrRJx1QmOdgweB/w00Wtur0sP8/uzZqUv/2/LlFuKs4T4c/Womig/diMG9bfQQFB/
+         ZpoJvd5efUrcyMHN6cRvkAH7S+SKbZluV2+l9nQMYaUI19oI0g+/riTYYawPKodP/N0y
+         gzJ0olqHt3voWeXUo7RGxturwWInWYTBrx8g4+fKvandx2RDxN9jg3I0wRvngllvv3tn
+         i5aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731666183; x=1732270983;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/OHxKP4AVQX4dy3BwpZlHiOmMIRCDcIf5Yn8GzwRDFY=;
-        b=UGWocXQlpqTUTidZPENCzZo5navge6MzbPxq0oOFwCXbJMVDr20eITcjDy1AW7AT+z
-         /bYV2P+u/bsKbWeZQc1KbB8kqksMTuQYIlQkLbVK9N9+u9MM481esMMQiwkSJhq0yqJb
-         mDbPIZxQoPmBBllXorbGJ7NcXGhIzoQQBVPMezwWLeof7R44NG1rXI7d9HqG+Xjt0GvW
-         mDJTLKVAodWQxJNAiRS/kNRaullOi5thUj0PzcPWjtCFn6w5TYnZ/1Sfgsj9aIiPNhAV
-         CAo5CiJfhg9pS9huZXboMWcSj4bWPrdSxcnWmi2xZhGtpNKRUogNa1NZ0gFXodu2Rsvc
-         NF/w==
-X-Gm-Message-State: AOJu0YyJiYKLc/HIPuxkmxjxWO+4qh/h7SzILW1sn/E2SwboC4ADGpWs
-	CSA5dmTxQ1hUdoSF+5Zah10dOVX8v6fUhEUBt0W9pEbZp5hauBF+wWfKi2XDXWk=
-X-Google-Smtp-Source: AGHT+IGtUFcg1mM1ifaQZkwsgYWw8RktYBbgm3P5QjPJxjjXqaJ2NO76aHOmKzgz5iISbmOkVix/SQ==
-X-Received: by 2002:a2e:a902:0:b0:2fb:30d5:669a with SMTP id 38308e7fff4ca-2ff6055168cmr11397471fa.0.1731666183256;
-        Fri, 15 Nov 2024 02:23:03 -0800 (PST)
-Received: from [192.168.7.189] ([212.114.21.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da298c97sm52549155e9.40.2024.11.15.02.23.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Nov 2024 02:23:02 -0800 (PST)
-Message-ID: <63f7cc2f-3f38-4d8e-82c4-86511af6f950@linaro.org>
-Date: Fri, 15 Nov 2024 11:23:02 +0100
+        d=1e100.net; s=20230601; t=1732090574; x=1732695374;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RZW5JKkkB2BXGclRggq2IG1FLYfLe/SBbcWHijff6Zw=;
+        b=g/+VVDn75andlgXmKmB2gYWOAaIZ423ISi0W0gd4m+qZD+uobnC1otJBDXzvcoPMS3
+         x9FsPzOthwANjWuHXS/bIBpXeoCcUj1avStNQuQ9z3KNk3EUduJhazzPVrohLl+8E8bq
+         ybjF5On5lvok5Ik9HE4xoPfHv45f17t/SUxnuxm80TCkfzKPwZsidWsRVUP/6ml+B1sZ
+         8O8oCc36pOh5HDUvJUpzSVGfwtBL4QA0hh+N9Ipb/7HZfPDCEscX4Kqr0/H4BFtvmMgD
+         F6ldHHqGRnabugSVnEVFIv3VLT6JhJxhF6/TNvIp2IzLmj7sgBXgMQkA/mm0ceL4LnB+
+         tMTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVhNDBwXyoES5kCXlW36pFIGdicPfyG+pHXw+wdQiMkB4j6UlGFtYRW2Akj95vNtbPBwghBLU5jA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzPgT/vOknjk/KFGizKQoO2IRg54I9lKOLDWxZNUrLp2X6wJE0z
+	xui807vTTPXpxhODDUJpRP2m5Ywmpl8AQ6tEWDui/K7vF0pwTpoAa70CTULnPENDa7F6A74G6nb
+	xhFP/G+2ozQvYm35C4ZnLRAG+PyvtOt/iGym2
+X-Google-Smtp-Source: AGHT+IFLvnzVK9N3VLxnsAveuywnx+Rb/GdmLvLQ47PBJl9kv4nuvVzFTIP6lX9TLoBehtWW9+VfMbuYo5oF0a2FAgU=
+X-Received: by 2002:ad4:5aec:0:b0:6cb:ee7b:7ac4 with SMTP id
+ 6a1803df08f44-6d4377b1ec0mr24362626d6.3.1732090574320; Wed, 20 Nov 2024
+ 00:16:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: The integ branch disappeared
-To: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-Cc: kernelci@lists.linux.dev
-References: <8a380b8c-3f09-4179-8cad-9aae51b098af@collabora.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <8a380b8c-3f09-4179-8cad-9aae51b098af@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CAK18DXYitS7hL1mA3QsPLmW9-R0q6Kin0C5Uv9fj=uS90WSnxA@mail.gmail.com>
+ <CABVgOSk1ng46scbJc-3qPZUhkn+0KrZsFDe-UYnw0q-XksP_2Q@mail.gmail.com>
+ <CAK18DXZtBdxQdYY06X+Q=vYybnkCLBQBioCLqvSfkYZ21jBSWg@mail.gmail.com>
+ <CABVgOSkBF3fT5JdVCEpBRvO1V8ZgZ-dD7fvxcv7Rxb_XPcFNbg@mail.gmail.com> <CAK18DXZM7sapjOHcsOUAEn_+Q+bvFUtL-CNjEgq373gpWr7r-w@mail.gmail.com>
+In-Reply-To: <CAK18DXZM7sapjOHcsOUAEn_+Q+bvFUtL-CNjEgq373gpWr7r-w@mail.gmail.com>
+From: David Gow <davidgow@google.com>
+Date: Wed, 20 Nov 2024 16:16:01 +0800
+Message-ID: <CABVgOS=ccEK2+ighe=7K3Ja-vH0=fthK4LgV0kHTuNCgO9JzzQ@mail.gmail.com>
+Subject: Re: [RFC] Test catalog template
+To: Donald Zickus <dzickus@redhat.com>
+Cc: workflows@vger.kernel.org, automated-testing@lists.yoctoproject.org, 
+	linux-kselftest@vger.kernel.org, kernelci <kernelci@lists.linux.dev>, 
+	Nikolai Kondrashov <nkondras@redhat.com>, Gustavo Padovan <gustavo.padovan@collabora.com>, 
+	kernelci-members <kernelci-members@groups.io>, laura.nao@collabora.com
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000006d81c2062753c312"
 
-Hi,
+--0000000000006d81c2062753c312
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 15/11/2024 11:16, Muhammad Usama Anjum wrote:
-> Hi Neil,
-> 
-> We had enabled for-next and integ branches from your tree[1] in KernelCI.
-> The integ branch has disappeared. I just wanted to check with you if we
-> should enable some other branch in place of integ in KernelCI.
+On Thu, 7 Nov 2024 at 01:01, Donald Zickus <dzickus@redhat.com> wrote:
+>
+> Hi,
+>
+> Thanks for the feedback. I created a more realistic test.yaml file to
+> start (we can split it when more tests are added) and a parser.  I was
+> going to add patch support as input to mimic get_maintainers.pl
+> output, but that might take some time.  For now, you have to manually
+> select a subsystem.  I will try to find space on kernelci.org to grow
+> this work but you can find a git tree here[0].
+>
+> From the README.md
+> """
+> An attempt to map kernel subsystems to kernel tests that should be run
+> on patches or code by humans and CI systems.
+>
+> Examples:
+>
+> Find test info for a subsystem
+>
+> ./get_tests.py -s 'KUNIT TEST' --info
+>
+> Subsystem:    KUNIT TEST
+> Maintainer:
+>   David Gow <davidgow@google.com>
+> Mailing List: None
+> Version:      None
+> Dependency:   ['python3-mypy']
+> Test:
+>   smoke:
+>     Url: None
+>     Working Directory: None
+>     Cmd: ./tools/testing/kunit/kunit.py
+>     Env: None
+>     Param: run --kunitconfig lib/kunit
+> Hardware:     arm64, x86_64
+>
+> Find copy-n-pastable tests for a subsystem
+>
+> ./get_tests.py -s 'KUNIT TEST'
+>
+> ./tools/testing/kunit/kunit.pyrun --kunitconfig lib/kunit
+> """
+>
+> Is this aligning with what people were expecting?
+>
 
-The integ branch was maintained by Kevin before I take the maintainership,
-I have no plan to re-create one, so for-next should be the one to test.
+
+Awesome! I've been playing around a bit with this, and I think it's an
+excellent start.
+
+There are definitely some more features I'd want in an ideal world
+(e.g., configuration matrices, etc), but this works well enough.
+
+I've been playing around with a branch which adds the ability to
+actually run these tests, based on the 'run_checks.py' script we use
+for KUnit:
+https://github.com/sulix/test-catalog/tree/runtest-wip
+
+In particular, this adds a '-r' option which runs the tests for the
+subsystem in parallel. This largely matches what I was doing manually
+=E2=80=94 for instance, the KUnit section in test.yaml now has three differ=
+ent
+tests, and running it gives me this result:
+../test-catalog/get_tests.py -r -s 'KUNIT TEST'
+Waiting on 3 checks (kunit-tool-test, uml, x86_64)...
+kunit-tool-test: PASSED
+x86_64: PASSED
+uml: PASSED
+
+(Obviously, in the real world, I'd have more checks, including other
+architectures, checkpatch, etc, but this works as a proof-of-concept
+for me.)
+
+I think the most interesting questions will be:
+- How do we make this work with more complicated dependencies
+(containers, special hardware, etc)?
+- How do we integrate it with CI systems =E2=80=94 can we pull the subsyste=
+m
+name for a patch from MAINTAINERS and look it up here?
+- What about things like checkpatch, or general defconfig build tests
+which aren't subsystem-specific?
+- How can we support more complicated configurations or groups of
+configurations?
+- Do we add support for specific tools and/or parsing/combining output?
+
+But I'm content to keep playing around with this a bit more for now.
 
 Thanks,
-Neil
+-- David
 
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git
+--0000000000006d81c2062753c312
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
+MIIUqgYJKoZIhvcNAQcCoIIUmzCCFJcCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+erg7AgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFKFQnbTpSq0q
+cOYnlrbegXJIIvA6MFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQBR
+nRJBmUP+IpudtmSQ/R55Sv0qv8TO9zHTlIdsIf2Gc/zeCi0SamUQkFWb01d7Q+20kcpxNzwV6M7y
+hDRk5uuVFvtVxOrmbhflCo0uBpD9vz/symtfJYZLNyvSDi1PIVrwGNpyRrD0W6VQJxzzsBTwsO+S
+XWN3+x70+QDf7+zovW7KF0/y8QYD6PIN7Y9LRUXct0HKhatkHmO3w6MSJatnqSvsjffIwpNecUMo
+h10c6Etz17b7tbGdxdxLw8njN+UnfoFp3v4irrafB6jkArRfsR5TscZUUKej0ihl7mXEKUBmClkP
+ndcbXHFxS6WTkpjvl7Jjja8DdWJSJmdEWUnFjnQnDrqLqvYjeVMS/8IBF57eyT6yEPrMzA+Zd+f5
+hnM7HuBSGvVHv+c/rlHVp0S364DBGXj11obl7nKgL9D59QwC5/kNJ1whoKwsATUSepanzALdOTn3
+BavXUVE38e4c90il44T1bphqtLfmHZ1T5ZwxjtjzNMKy0Mb9j/jcFxfibCISYbnk661FBe38bhYj
+0DhqINx2fw0bwhpfFGADOZDe5DVhI7AIW/kEMHuIgAJ/HPgyn1+tldOPWiFLQbTNNBnfGv9sDPz0
+hWV2vSAXq35i+JS06BCkbGfE5ci6zFy4pt8fmqMGKFH/t3ELCTYo116lqUTDcVC8DAWN8E55aDGC
+AmowggJmAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAZ6Vqszmp/3gGFW0sCFu
+eDANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgQC79FiOyddUHKApNAvZHrCcQGLcy
+4QWS4RB9XnNQraIwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQx
+MTIwMDgxNjE0WjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
+BAIBMA0GCSqGSIb3DQEBAQUABIIBAD7HB017c7DzgoffH8+P79cMav3ipFY/GoadqSD0lJhEzh5Q
+vHz5QedhXdK/97yQoFgL0blkg8w8x0+aUsRPzZl+YwhM3fSfFDTLFaBUOdlFqhRAVfmw8brkqBoT
+WPkW+7/Ff4jhcLHqdeLgjPTNkVysw3OU8R0RKwTV8pM0nlS+f4E9oRjGCOEOzjVSZGk1wm26hw9h
+0i28MYGg/jIKKtV2FrMKFBpIPsCpR01XvF70Zmd41wZcrG43IEXDe+lQZ3k9vsAugtxNX58QUnls
+iyc7iEbsjhnzWf1gde78ohkkfsgBAx2LTLDo7YpEq6TYJo/f0D3ZP8Xs31U1KmW3xaQ=
+--0000000000006d81c2062753c312--
