@@ -1,72 +1,243 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E70158D79
-	for <kernelci@lists.linux.dev>; Thu, 21 Nov 2024 08:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732177972; cv=pass; b=Jg+l7iJQ349Orons0+2LApAkBwvWUV86aTcu4Re2swXRI9lFD/tZbykR84z6gWwOWu5/Zvuz+JCugwywhLcCItuD61i1FmnFs62Jls/lhxIEdBVAwTrVnxf+oUparfemoZK9gV0NTOWGNhloTVn6c0peunKV8vfcfuR91FW0RCk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732177972; c=relaxed/simple;
-	bh=oJSW9iDP+wEs+4wVN9RNMtIm2gA1oAXOcquHYruz1Uw=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=TtHNdDzsaPpbFP05n1IMmXeDn94edP8Cb4rUGZ7/VrOUE52ITimwzCO8j7sX/JSu5SgaKTReIEA2NWCTFgCLijFRELO6G5Bg3fSgN5hkqdXsvdBZwelPOSlvF+CRpsfed/xwPRDHNVtSkQ+K1wO8z2klfdCtSo8vLYsJZVKXPh4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=W46LA7lo; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7870A1D79BE
+	for <kernelci@lists.linux.dev>; Thu, 21 Nov 2024 15:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732202908; cv=none; b=N/6zjxPAp50xroWMP18za1JFYC/p34sKQ/JDsdrTRb4lhLEGR/U4CAeYtccGlAS0LkhdTV2YdFyYKOS4zrP1Cak1FeHQJq/fY7q8dAMlZDE/XE3YsChGwVIvAUoj4mV5eo+ZOEJ922RvkJF5nboHJ+2glJ4dJYkbMF2rYqFXsiM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732202908; c=relaxed/simple;
+	bh=AiQKPX0HhQDE8c0S4ykPBQmmz/wb/hL2HG+fnVGd1Nc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BP0oE9dfT8FUJj4lDQ5/2K4nvAFV0f+VwJZpBgaggZLMZEKkB0haMju6tH8Cws7nir19emlzXMaHOhe296BZJdhfiVq/MtZQMNrajr4Gs24UKdaoA1RuERSNKkrggJK6+2hhbWSK9HNjopRo8YUxRwkHOazcxghW++1lvO6nvjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vx+KtJlI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="W46LA7lo"
-ARC-Seal: i=1; a=rsa-sha256; t=1732177969; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=RKIkWvUwFu8UHs81SHo70iIbqpjgbQB+j85xqtsDJzoKfXbTYf+uRNjJe1aPQGhfAkxhlssowuuVqreSFeGrosq3ktiNdJq4nJGKGAhHIm6aXNvAB8K5VErdxc6BWI/ceIbBCOLgZlebm1TaeWzQEox/SlIdukpW51uBeG1KtdA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1732177969; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=sImbmu9UBj+wCPLqCoSOhdTCNmCAiL/PcNzoOoYtk6M=; 
-	b=BnyTJm3zRlPdwZPR8/oZaxY+PvsAPjTS/rBxcRy/x/T5j3TAle/ksFkB1TdCdz230gVzlCtON1ZATyIEQ2cTg101H77TdhhNEoVDY7tXR1O7YOerKEo/40cndLN2xZGsMZ9FiIvjWQqMDbZqE3WnCwFmP3CDox1/BnZkLjYL/C8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
-	dmarc=pass header.from=<Usama.Anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732177968;
-	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=sImbmu9UBj+wCPLqCoSOhdTCNmCAiL/PcNzoOoYtk6M=;
-	b=W46LA7loWNHj3QInXAfsA0Qj1OkpB9TUo+zUzaQ0sOhFY4U/WRouB0YaHinEAp5O
-	jXd9UbjzKpQGXqqvfMjpbmUIZPC9H/sYlPqAgB17Lcm8GPvIuQ5Qiyt1Fn37I8qmEc8
-	rURVRaevW60iyYgVzmP74Dd8pkJoDGy9AbpnwZ/I=
-Received: by mx.zohomail.com with SMTPS id 173217796612055.59346655047966;
-	Thu, 21 Nov 2024 00:32:46 -0800 (PST)
-Message-ID: <afdbca60-3cbf-46b6-9cb5-28a71e61ec87@collabora.com>
-Date: Thu, 21 Nov 2024 13:32:42 +0500
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vx+KtJlI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732202903;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XTlRncZxSzMTlrtP+dPEh1AXEBr3udpSzwQ7cYXWV6s=;
+	b=Vx+KtJlIDxNGpleifeInrKLG8NtrQ1fNIbdol73jk18adLcnv6rbT32cLCf9axaqzybn8V
+	wXML6CuegKBoB3bN2UPInBJuwfZZOWbrqG0Mv/md0Od+SbtRPwG5ouj3+seNWq5bR9VD47
+	Rm//TBj5bBa1SdqRuS6aS7Peg0KhOjE=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-385-fr5G6xKnOxmuq6kRb1f68w-1; Thu, 21 Nov 2024 10:28:21 -0500
+X-MC-Unique: fr5G6xKnOxmuq6kRb1f68w-1
+X-Mimecast-MFC-AGG-ID: fr5G6xKnOxmuq6kRb1f68w
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-6ee65ae21b9so16695247b3.3
+        for <kernelci@lists.linux.dev>; Thu, 21 Nov 2024 07:28:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732202901; x=1732807701;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XTlRncZxSzMTlrtP+dPEh1AXEBr3udpSzwQ7cYXWV6s=;
+        b=scXNAm6D1jj86Uf0m3XCL539UwYaISeW0DeIPniHUq0KFRgDxYLfqoAoOb0t/8Lfaf
+         4Dwd9nzvNIILt6TEBL64PzqrygQw5eCJoCQ6cGrGzIVJk1A8tYkd3UgMB/OpCmqx/K6n
+         pHyB2TIvJFiNy3awxb2HbuQHubj7m+4La82NS0nFowIneQ/Q5ihQYGT5qEKr05xiPI3T
+         CMXTrx8elLdnmZrCf70ptFgBelzfegEf6E54CFUbcRniQO74VndJX+kL8nl2Pd7QfYhN
+         XHcx4LJTm6N1JE8ivs9ShoG6Ve0YXhYaAWVw6k4d8kf2JVGd5h+dPA4Dj7NFezbqLGmc
+         IBuw==
+X-Forwarded-Encrypted: i=1; AJvYcCWF68FARMzaZuPt6NMZDZOo+9HIxaVv6Jh2xAYB2Nvtg0fPq4uRRmvy8v+pehlk9EslcYk1oIUJWA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwsZLyspbtBdLhpgeGo5HYbb94Bf6gKugMuQnvvq4hA8anfKJ+Z
+	8ovEpdxvxX6QmGbzDXWvHSwE306I4he5xV8Q/c0ybu3yTAThC1WShXhwn+gGjsZ/V7bL4uHS+ZH
+	VQqKDdfEwDMIi/GtwpkYcrW3QpaQzyIsu2sRMH0i4gNqfMCTCeZeF0FgJ5jcOc07T0DBT8queFp
+	6tmvKxoL+sBHkJlcx8vsjah79B1T4HOiM7X6xxuo4=
+X-Gm-Gg: ASbGncvni0XdiraM2lmWyiwS6N4kz0l/9Zre1Rw+NNIESmbdHG/kd6KNrTwzfJqKHEO
+	D5sUW8576gHmBjE5FFSkW1qIKVSuD6Fk=
+X-Received: by 2002:a05:690c:6307:b0:6ee:7f37:7107 with SMTP id 00721157ae682-6eebd124819mr78596007b3.12.1732202900627;
+        Thu, 21 Nov 2024 07:28:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFleEZ0WGYzANLMhgAnl5eQUxFn8peiSsoWxkXdOvWn2DCAFwsWqoW6djwb3DqQGjxNJFmHIu5JqU28r8yrDE4=
+X-Received: by 2002:a05:690c:6307:b0:6ee:7f37:7107 with SMTP id
+ 00721157ae682-6eebd124819mr78595617b3.12.1732202900226; Thu, 21 Nov 2024
+ 07:28:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Usama.Anjum@collabora.com, kernelci@lists.linux.dev
-Subject: Re: The kernelci branch has disappeared
-To: Peter Zijlstra <peterz@infradead.org>
-References: <06ae426f-7a43-43c5-8474-8605c0092588@collabora.com>
-Content-Language: en-US
-From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-In-Reply-To: <06ae426f-7a43-43c5-8474-8605c0092588@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+References: <CAK18DXYitS7hL1mA3QsPLmW9-R0q6Kin0C5Uv9fj=uS90WSnxA@mail.gmail.com>
+ <CABVgOSk1ng46scbJc-3qPZUhkn+0KrZsFDe-UYnw0q-XksP_2Q@mail.gmail.com>
+ <CAK18DXZtBdxQdYY06X+Q=vYybnkCLBQBioCLqvSfkYZ21jBSWg@mail.gmail.com>
+ <CABVgOSkBF3fT5JdVCEpBRvO1V8ZgZ-dD7fvxcv7Rxb_XPcFNbg@mail.gmail.com>
+ <CAK18DXZM7sapjOHcsOUAEn_+Q+bvFUtL-CNjEgq373gpWr7r-w@mail.gmail.com> <CABVgOS=ccEK2+ighe=7K3Ja-vH0=fthK4LgV0kHTuNCgO9JzzQ@mail.gmail.com>
+In-Reply-To: <CABVgOS=ccEK2+ighe=7K3Ja-vH0=fthK4LgV0kHTuNCgO9JzzQ@mail.gmail.com>
+From: Donald Zickus <dzickus@redhat.com>
+Date: Thu, 21 Nov 2024 10:28:08 -0500
+Message-ID: <CAK18DXZCgRpS=kHgh9xGmjE9dO2s7Gm61m_yq8QUAZEMMUOEyw@mail.gmail.com>
+Subject: Re: [RFC] Test catalog template
+To: David Gow <davidgow@google.com>
+Cc: workflows@vger.kernel.org, automated-testing@lists.yoctoproject.org, 
+	linux-kselftest@vger.kernel.org, kernelci <kernelci@lists.linux.dev>, 
+	Nikolai Kondrashov <nkondras@redhat.com>, Gustavo Padovan <gustavo.padovan@collabora.com>, 
+	kernelci-members <kernelci-members@groups.io>, laura.nao@collabora.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ivJaMtZrmqINUYffLda7b6I2KEq9_brsvt7C89LYQvY_1732202901
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reminder
-On 11/15/24 3:19 PM, Muhammad Usama Anjum wrote:
-> Hi Peter,
-> 
-> We had enabled kernelci branch from your tree in kernelci [1]
-> which has disappeared. We are removing this branch from the kernelci.
-> Do you want us to enable some branch(s) in Kernelci in its place?
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git
+Hi David,
 
--- 
-BR,
-Muhammad Usama Anjum
+On Wed, Nov 20, 2024 at 3:16=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
+>
+> On Thu, 7 Nov 2024 at 01:01, Donald Zickus <dzickus@redhat.com> wrote:
+> >
+> > Hi,
+> >
+> > Thanks for the feedback. I created a more realistic test.yaml file to
+> > start (we can split it when more tests are added) and a parser.  I was
+> > going to add patch support as input to mimic get_maintainers.pl
+> > output, but that might take some time.  For now, you have to manually
+> > select a subsystem.  I will try to find space on kernelci.org to grow
+> > this work but you can find a git tree here[0].
+> >
+> > From the README.md
+> > """
+> > An attempt to map kernel subsystems to kernel tests that should be run
+> > on patches or code by humans and CI systems.
+> >
+> > Examples:
+> >
+> > Find test info for a subsystem
+> >
+> > ./get_tests.py -s 'KUNIT TEST' --info
+> >
+> > Subsystem:    KUNIT TEST
+> > Maintainer:
+> >   David Gow <davidgow@google.com>
+> > Mailing List: None
+> > Version:      None
+> > Dependency:   ['python3-mypy']
+> > Test:
+> >   smoke:
+> >     Url: None
+> >     Working Directory: None
+> >     Cmd: ./tools/testing/kunit/kunit.py
+> >     Env: None
+> >     Param: run --kunitconfig lib/kunit
+> > Hardware:     arm64, x86_64
+> >
+> > Find copy-n-pastable tests for a subsystem
+> >
+> > ./get_tests.py -s 'KUNIT TEST'
+> >
+> > ./tools/testing/kunit/kunit.pyrun --kunitconfig lib/kunit
+> > """
+> >
+> > Is this aligning with what people were expecting?
+> >
+>
+>
+> Awesome! I've been playing around a bit with this, and I think it's an
+> excellent start.
+>
+> There are definitely some more features I'd want in an ideal world
+> (e.g., configuration matrices, etc), but this works well enough.
+
+Yeah, I was trying to nail down the usability angle first before
+expanding with bells and whistles.  I would like to think the yaml
+file is flexible enough to handle those features though??
+
+>
+> I've been playing around with a branch which adds the ability to
+> actually run these tests, based on the 'run_checks.py' script we use
+> for KUnit:
+> https://github.com/sulix/test-catalog/tree/runtest-wip
+
+Thanks!
+
+>
+> In particular, this adds a '-r' option which runs the tests for the
+> subsystem in parallel. This largely matches what I was doing manually
+> =E2=80=94 for instance, the KUnit section in test.yaml now has three diff=
+erent
+> tests, and running it gives me this result:
+> ../test-catalog/get_tests.py -r -s 'KUNIT TEST'
+> Waiting on 3 checks (kunit-tool-test, uml, x86_64)...
+> kunit-tool-test: PASSED
+> x86_64: PASSED
+> uml: PASSED
+
+Interesting.  Originally I was thinking this would be done serially.
+I didn't think tests were safe enough to run in parallel.  I am
+definitely open to this.  My python isn't the best, but I think your
+PR looks reasonable.
+
+>
+> (Obviously, in the real world, I'd have more checks, including other
+> architectures, checkpatch, etc, but this works as a proof-of-concept
+> for me.)
+>
+> I think the most interesting questions will be:
+> - How do we make this work with more complicated dependencies
+> (containers, special hardware, etc)?
+
+I was imagining a 'hw-requires' type line to handle the hardware
+requests as that seemed natural for a lot of the driver work. Run a
+quick check before running the test to see if the required hw is
+present or not and bail if it isn't.  The containers piece is a little
+trickier and ties into the test environment I think.  The script would
+have to create an environment and inject the tests into the
+environment and run them.  I would imagine some of this would have to
+be static as the setup is complicated.  For example, a 'container'
+label would execute custom code to setup a test environment inside a
+container.  Open to ideas here.
+
+> - How do we integrate it with CI systems =E2=80=94 can we pull the subsys=
+tem
+> name for a patch from MAINTAINERS and look it up here?
+
+There are two thoughts.  First is yes.  As a developer you probably
+want to run something like 'get_maintainers.sh <patch> | get_tests.py
+-s -' or something to figure out what variety of tests you should run
+before posting.  And a CI system could probably do something similar.
+
+There is also another thought, you already know the subsystem you want
+to test.  For example, a patch is usually written for a particular
+subsystem that happens to touch code from other subsystems.  You
+primarily want to run it against a specified subsystem.  I know Red
+Hat's CKI will run against a known subsystem git-tree and would fall
+into this category.  While it does leave a gap in other subsystem
+testing, sometimes as a human you already know running those extra
+tests is mostly a no-op because it doesn't really change anything.
+
+> - What about things like checkpatch, or general defconfig build tests
+> which aren't subsystem-specific?
+
+My initial thought is that this is another category of testing.  A lot
+of CI tests are workload testing and have predefined configs.  Whereas
+a generic testing CI system (think 0-day) would focus on those types
+of testing.  So I would lean away from those checks in this approach
+or we could add a category 'general' too.  I do know checkpatch rules
+vary from maintainer to maintainer.
+
+> - How can we support more complicated configurations or groups of
+> configurations?
+
+Examples?
+
+> - Do we add support for specific tools and/or parsing/combining output?
+
+Examples?  I wasn't thinking of parsing test output, just providing
+what to run as a good first step.  My initial thought was to help
+nudge tests towards the KTAP output??
+
+>
+> But I'm content to keep playing around with this a bit more for now.
+
+Thank you! Please do!
+
+Cheers,
+Don
 
