@@ -1,104 +1,151 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8082500DE
-	for <kernelci@lists.linux.dev>; Mon, 25 Nov 2024 06:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7724A288DB
+	for <kernelci@lists.linux.dev>; Thu, 28 Nov 2024 09:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732516859; cv=pass; b=rwYFx9Yh/1DqURimkoveroqaaXN2os52+z++315Gw9ISY8V8NMLP56s6kwulsS8mjyaZPe/QuuRi+GYVIRq+NU5FpHZjPwUptrSxsej4Lu37KtvJyfnRowLJ++buFA2idSBFQvg0JZVV0oAoJgXEvjPS+s5QI47+PO8m20GQ9qQ=
+	t=1732787698; cv=pass; b=bl7awVskcdsawhcwAgOGjjmklWM6Y8AAU4ryxjn7j5uuBoGJrR8t8WUbRsATOkGpDj2qB+aaoWnqZ1E/6TVrHyRuTwF1VOX+1dYEfDasr+0EShw4Xs910J43zQtJuv0PAToF2qihrjXN1NIK8F3e+yO6s6U1u9zz9t9CfgbGZ/c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732516859; c=relaxed/simple;
-	bh=w3tr7VFQ7rsNHP+5Dda/ZOc7kIK4fM7wp4tAktar2Gw=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:Subject:MIME-Version:
-	 Content-Type; b=jzTdoB9TKA9y0vzZE1xbFS0RGNwdWvbEHrOV/tirD1X13JLak0ZGQ2UMOXoZ/7PyOxhWaDkf1aMayeyCQTRkjEb5nP5B5W+mjZpMbwQIV7uU6ckqciC04lys4mPSW5lMDyEgegDwdoNRZyxeACaHK4F9NeXlJ6slS6kFE6FWVvo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=jeny.sadadia@collabora.com header.b=P+EWgex0; arc=pass smtp.client-ip=136.143.188.12
+	s=arc-20240116; t=1732787698; c=relaxed/simple;
+	bh=LWk0Ye7E2FqTF13SvkWfukelAwQExqKg8QRZCx8MaxI=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=F5i3GJmnZAP7OUx3KGaSq1hOO6AmMibdurLIsiGHTwgPiTJvDKo0yUaaPcI8AYtXg6P2o9MYjexPmCPzu6Qg6lN228Io+kRFOzc3PDnyV/iXPBb8a0jZgbwbSTdGhGcxP7jKEY3jyyL8aAQcIik3OQ6N1FIo2sf2+c7PxFKXLhE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=T1eFq5w/; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=jeny.sadadia@collabora.com header.b="P+EWgex0"
-ARC-Seal: i=1; a=rsa-sha256; t=1732516856; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="T1eFq5w/"
+ARC-Seal: i=1; a=rsa-sha256; t=1732787694; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=fGF1utnO7jxCcCxRBg2yOq64ycL8aU7EcHuKvV+Uu5XmdcWvzbtj8Zu9Ua+31w32fXbcE/qee9nrzoBCzFkTlF8dbqZYeQuyxysmianlBVVeyROnOWbK9ZA3VWDrr4HVJkk7UKeS6o0gvv93CFnp8qc02NzyEjqBGIHuqF208fI=
+	b=JnvkzK5FceTGP7PWmvWkYkJUpEjGRgHNwNNvNlQvFVBQKl3JvucSNPP4nbL9gAdKW2MqeKO0EKrN7/eHURbw3s1N72b+pY3bdV2YrBqys/LgNAsxfF3xHcHVyaseSsi3V00lLhUCjcvqmGXyTPEAPULvGom1/5wxsyKeYYySlPc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1732516856; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=w3tr7VFQ7rsNHP+5Dda/ZOc7kIK4fM7wp4tAktar2Gw=; 
-	b=Wa8M3Dene9h6rBRfnznVXkf/0bDyAdfFbCPbeXgiX/aFyf7fyas133pnulky9SJ0upFLVlA7tks6duSQ5dfjfz7IXTwDkjNGtnZYAxRZ+Pe3sKqPVGGiLXpxV+gLp9PcZNohrcHTdhzLcrDPB22PtjAv4UIEX7zqFwHPwWF+8V0=
+	t=1732787694; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=LWk0Ye7E2FqTF13SvkWfukelAwQExqKg8QRZCx8MaxI=; 
+	b=EhYfUC/+yU0L4DB7WZpHHVnKqOXm3R3qVU/Br/XYB/geOZg47XwBsgclYVhakR3hZdxGSsCnEOjJ0MvLJDdVETUPiExdf7+CQH7QTARq3uVVV3ByFl73OdwcymXSUPb7n+DnvTH3q8NZi5WHlQY+v6hYza+YVKdsNtBamuxPKv4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=jeny.sadadia@collabora.com;
-	dmarc=pass header.from=<jeny.sadadia@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732516856;
-	s=zohomail; d=collabora.com; i=jeny.sadadia@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=w3tr7VFQ7rsNHP+5Dda/ZOc7kIK4fM7wp4tAktar2Gw=;
-	b=P+EWgex0p+Psuj0JBgHaPMhJMjPnOuHdzQFS3nZPd7YuW6R8dTFpTM0HFaLfvigW
-	tseidEsPROEZUjgcC7IbZQUlFYm9P7Aog1oeO0dFcj8curx2S5Vs5rSeLqvJrVx4WQS
-	wCt/DV2BYAiujiQAmzdiBrMaUm/79jhcz1YG3AJ4=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1732516854909896.4276695549045; Sun, 24 Nov 2024 22:40:54 -0800 (PST)
-Date: Mon, 25 Nov 2024 12:10:54 +0530
-From: Jeny Sheth <jeny.sadadia@collabora.com>
-To: "kernelci" <kernelci@lists.linux.dev>
-Cc: "Denys Fedoryshchenko" <denys.f@collabora.com>,
-	=?UTF-8?Q?=22Pawe=C5=82_Wieczorek=22?= <pawiecz@collabora.com>
-Message-ID: <193620d3c42.ace85009157860.2102018958107430957@collabora.com>
-In-Reply-To: 
-Subject: [ Maestro ] Config entry changes update
+	spf=pass  smtp.mailfrom=denys.f@collabora.com;
+	dmarc=pass header.from=<denys.f@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732787694;
+	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
+	bh=LWk0Ye7E2FqTF13SvkWfukelAwQExqKg8QRZCx8MaxI=;
+	b=T1eFq5w/GbJc1H2ntE42plKQ0hm18VsEprLnwSmCf4pV773SCUQ7yLLMDm9MLOPN
+	D93rSliHEWdOgg+67qGu1ctp3z2usDeQ3m/gfbQEmItzFZed9oAEFoUnYnkcnNXE9Y5
+	EkjeuVdYCFRzcGsw0buNVNsGVNGPbDwas+tWDzeA=
+Received: by mx.zohomail.com with SMTPS id 1732787694296329.92625736675143;
+	Thu, 28 Nov 2024 01:54:54 -0800 (PST)
+Message-ID: <d2233efc5b6a4c4e4ed73cd572c277b3fa93f7a9.camel@collabora.com>
+Subject: KernelCI Weekly Newsletter (Week 48)
+From: Denys Fedoryshchenko <denys.f@collabora.com>
+To: kernelci <kernelci@lists.linux.dev>
+Date: Thu, 28 Nov 2024 11:54:51 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+X-ZohoMailClient: External
 
-Hello,
+Welcome to the first edition of the KernelCI Weekly Newsletter!
 
-We are pleased to inform you that we have migrated from early-access to=C2=
-=A0production[1]
-instance of maestro API and it's been running smoothly for a while now.
+As our community continues to grow, we recognize the need to keep
+everyone informed about the latest developments, regardless of their
+ability to attend our weekly video meetings. This newsletter aims to
+bridge that gap by providing regular updates on project progress,
+upcoming discussions, and community highlights.
 
-This instance is stable and we usually update it weekly (on=C2=A0Mondays).
+A Note on This First Edition
 
-We recently updated configuration entries in maestro to rename all the "ear=
-ly-access"
-entries with "production".
-Here is a list of PRs for this transition:
-- https://github.com/kernelci/kernelci-pipeline/pull/757
-- https://github.com/kernelci/kernelci-core/pull/2638
-- https://github.com/kernelci/kernelci-project/pull/488
+As with any new initiative, we're learning as we go. This first
+newsletter might have room for improvement in terms of format, content,
+or delivery. We're committed to making this newsletter as valuable as
+possible for our community, and your feedback will be instrumental in
+shaping future editions. Please don't hesitate to share your
+suggestions, point out areas for improvement, or tell us what you'd
+like to see more of. We see this as a collaborative effort to create a
+truly useful resource for the KernelCI community.
 
-Please make sure to use the below change in maestro pipeline=C2=A0TOML conf=
-iguration[2]
-file to accommodate this change if you are using the production API instanc=
-e:
-```
-api_config =3D "production"
-storage_config =3D "production"
-```
+1. What to Expect.
+Each week, you'll receive:
 
-Also, use the below change in your "kci" tool setup config=C2=A0file[3]=C2=
-=A0if you wish to connect
-with production API instance:
-```
-api =3D "production"
-```
-( Here[4] is the "kci" tool setup instructions for reference. )
+- A digest of key development updates and milestones
+- Preview of topics for the upcoming weekly meeting
+- Community contributions and achievements
+- Important announcements and project updates
+- Opportunities to get involved
 
-Please let us know in case of any queries or comments.
+2. Why a Weekly Newsletter?
+We believe that frequent, consistent communication is key to
+maintaining a vibrant open-source community. By sharing weekly updates,
+we hope to:
 
-Thank you,
-Jeny Sadadia
+- Keep everyone aligned with project goals and progress
+- Enable asynchronous participation in project discussions
+- Highlight contributions from our community members
+- Make it easier for newcomers to stay informed and engaged
+- Provide a historical record of project development
 
+KernelCI Newsletter (Week 48)
 
-[1] https://kernelci-api.westus3.cloudapp.azure.com/
-[2] https://github.com/kernelci/kernelci-pipeline/blob/main/config/kernelci=
-.toml
-[3] https://github.com/kernelci/kernelci-core/blob/main/kernelci.toml.sampl=
-e
-[4] https://docs.kernelci.org/maestro/api/staging/#setting-up-the-kci-tool
+Summary:
+
+This week's development activities focused on infrastructure
+improvements and build system optimizations:
+- Infrastructure Updates:
+We expanded our Kubernetes builder capacity to handle increased
+workloads. However, this led to temporary build congestion as we needed
+to rebalance the load across our builder network.
+- Production Updates:
+Some production deployments were delayed due to bugs discovered during
+testing. Our team worked diligently to address these issues before
+proceeding with the updates.
+- KernelCI Enhancements:
+We added additional build configurations (allmodconfig to stable-rc
+trees) in KernelCI to improve our testing coverage. While this
+enhancement provides better testing capabilities, it initially
+contributed to the build system congestion as we worked to optimize the
+new configurations.
+
+Known issues:
+- Some checkouts were failing due '/' symbol in git describe. Fix
+deployed into production at 2024-11-27
+- Some builds are failing on new capacity and become "incomplete",
+issue is under active investigation.
+- There is some hiccups at 25-27 November due changes in k8s build
+capacity
+
+New features, changes and fixes:
+- Add legacy build capacity, multiple k8s build clusters
+- Add minimal support for k8s load-balancing
+- Reconfiguring build k8s clusters from legacy to Maestro
+- tarball filename creation is fixed for the case when git describe
+contains invalid symbols
+- Pydantic fixes from Jeny Sadadia
+- CONFIG_CPUSETS_V1 added back to chromebook configuration, as ChromeOS
+requires it (regression introduced by
+1abab1ba0775036bb67c6c57945c637be644c04f)
+- logspec is being built for staging/production images from it's own
+repository
+- send_kcidb bugfix for nodes that have missing some of job metadata
+- src/send_kcidb: get lava labs from config, dynamically, remove
+hardcoded values
+- Enable v6.12 stable-rc branch
+- Disable baseline tests for ARM Android (as devices fail to boot)
+- Start documenting pipeline configuration file
+- Add allmodconfig to stable-rc builds, as suggested by Todd Kjos they
+greatly improve build coverage
+
+Planned changes / Discussion at weekly meeting:
+- Archiving legacy repositories
+- Archiving mongodb database
+- Pinning Maestro and KCIDB repositories to main github (org) page:
+kcidb, kernelci-pipeline, kernelci-api, dashboard, kernelci-project,
+kci-dev
+- Discord bot development (newsletter reminder, github actions
+notifications)
 
