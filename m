@@ -1,45 +1,45 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B8A1D5CC2
-	for <kernelci@lists.linux.dev>; Thu,  5 Dec 2024 10:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4424B1D31B5
+	for <kernelci@lists.linux.dev>; Wed, 11 Dec 2024 21:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733393453; cv=pass; b=oUWzxG7OnX+Jqj0yc8/vJnFpIQXEdrNBMjecEXGYUHlWyTOCHgYaEVoanzXtnJH7Xfqr6ApE/2RbZHXUEysfP6ssC6piXUlK/qIqIIs5Yf6j8Gbl8KoEwExc2bP0q+ouzre9fkp0992FOTbCjuKDxzthJyNSCZlaBC6SUYj0OPQ=
+	t=1733954047; cv=pass; b=W9ip3DYWisNpfTtX4xoI1WeHma4J6qHkrIFmQZhZgu9N5xj1xTrQ/c1FoikYq7GN6NBrdLRBffby0N3gR9NBQtETUKIDM5bKT8j0I0c/Z9ARReFYAIo9XgEZt0pZJuOW4jcB8oyUD/vhC4C0rWM+qOcrt42eJ3fuWS9DiQux0Mw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733393453; c=relaxed/simple;
-	bh=1Va89NmtoVe2yiLOITk5uBYl+2OXo5SIUoNnl/q/+Ok=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=TRWCGA66CBMUxiUGok3tEC7SoA29IBGHrJuieg5SzVng1399vqz7/XsWxEpM3lByNy/grOSbykixJOx+Ci76ZCgy+NH4Wbe8Hd5TKms9VvJKghO0C2PHS9XArHKYS5FN46Jbjj9FfxUbxMLxac/ycyJqJFQsKUVPcpM+unHEymA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=g95YU9q0; arc=pass smtp.client-ip=136.143.188.12
+	s=arc-20240116; t=1733954047; c=relaxed/simple;
+	bh=TglsoPLlYhQm2Cq7g5l+tXS+SzuNEWgEWitmtE5lPi8=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=S4rzwO3gJoH1OYNfBXvjYTv6dgQmirb3iqRuodhtwsztEoRJ33ZmWERCUINVyF9nJeEHnXu/IvJ1L3I0JkPPQvJc691567ADpbQBxC6zf+ZUQUcWS6HvvCTB+4nzXF8ErHw/6KqWXiVUN4R9eLPbymrPFGE2PkAvCs1xLwFCxxg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=dZabUL5S; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="g95YU9q0"
-ARC-Seal: i=1; a=rsa-sha256; t=1733393449; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="dZabUL5S"
+ARC-Seal: i=1; a=rsa-sha256; t=1733954043; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=I3axaze8GPH+bzfzteAq3sZ17tWpkAKqFwa1xqjvR6J6rKE//wL3131h1JT5rZwQ6nMJAdI3TjN9aMudeN36w/Nsg71+voMQhmPLuTiY32nX96uHsEcBFzHIP5xNNr3w28BAmcGDHuDII1YQqb/edNZTll1ew6BA3V4Rnr166Eo=
+	b=Y6SYWBf6yiYUfz96K9Ki07seqnPhcTbFB3JLvH46TMyynmyKMfDjqEeZf9j6ZN9uA1zPtMFmxBi+RvS24C2CLQViRw6skDaoQALdUbw7lK25Wzb+oEaf8zqDbDJqpAiNqYVH9Pk0RX76jnlmzjphTuav1xc2wc0cAvPjLRp4z2I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1733393449; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=GMSIu7J9J26CCQE0w0snD9vRB/hb+3pasRLlER3JCbA=; 
-	b=hdPIi67Ndz9tci7YJJsLSv32yWiSMq7cvbQX2pccmbdj3ziQ6dMgMACkde+Dv1cq/d0FTDb6pXwmI2WdkYILzDMLe1XTslvNHhTxjBhRNNjqpBMofOy1UmQ1RaXuiU7+VRkVo4ZCl4YWnAya/afVycN2jluc9Jo/iyxhIVnnvV0=
+	t=1733954043; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=fgQvcp8W2yCLer9iBsuoB2VQocYYsG0qbvZZChxfDDw=; 
+	b=IO8nBK0W/Qq/LNUramPnj73lyp+TAVD3oCSuqZDuddq/vkvb1zEEY9hl+U6LaydlKzhRK4L78PdWLhvkb1uYSbjLAK1JkeXpx6GzfY1bd4TUPKUANiZziCaqqoyIZ5m28InWW7UBRl8qjVQWC2aRjs6o2v4sTiHNMZMNGHkew+Y=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=denys.f@collabora.com;
 	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733393449;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733954043;
 	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
 	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
-	bh=GMSIu7J9J26CCQE0w0snD9vRB/hb+3pasRLlER3JCbA=;
-	b=g95YU9q0mr8TOlIG8HCNba2sH6ooO1qRosnhEhmSYMja89tgTar7otAF6dO5dUiE
-	8tCrKPqwG/r3Op2sO3GEwOli+1cMtSkIXEB2/74KM+i2CbXLJRasPazGgAzZ6J2khsT
-	y1s+d9qe22i1HX1V2mcpSsc8+oeEzACODCUm0zfQ=
-Received: by mx.zohomail.com with SMTPS id 1733393446926576.1469060969664;
-	Thu, 5 Dec 2024 02:10:46 -0800 (PST)
-Message-ID: <30f74795dad7fa3d8e6ca302ad77d86f72a68bf5.camel@collabora.com>
-Subject: KernelCI Weekly Newsletter (Week 49)
+	bh=fgQvcp8W2yCLer9iBsuoB2VQocYYsG0qbvZZChxfDDw=;
+	b=dZabUL5SbvnOdPVriPL6VsoaJGFGW8C+Cb6waeBCK3RBVmKh3w48IxeyUbcLpa/G
+	IjLVneu8zeeyoyGj4KwlmkQRJZD2wclZi135Xi3eeqTu0n/pDarLjM14FPIO2S/pTcp
+	qyUAhqB2yoix4K/yTCm3VKGrXmZIb3s/5Q7qi3/A=
+Received: by mx.zohomail.com with SMTPS id 1733954041715233.09331894620993;
+	Wed, 11 Dec 2024 13:54:01 -0800 (PST)
+Message-ID: <4fd04778fbcbe65d889fb68ebaaaed4f5ff6ec69.camel@collabora.com>
+Subject: KernelCI Weekly Newsletter (Week 50)
 From: Denys Fedoryshchenko <denys.f@collabora.com>
 To: kernelci@lists.linux.dev
-Date: Thu, 05 Dec 2024 12:10:44 +0200
+Date: Wed, 11 Dec 2024 23:53:58 +0200
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -51,81 +51,55 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-ZohoMailClient: External
 
-**KernelCI Weekly Newsletter (Week 49)** =20
+**Summary**
 
-**Summary:** =20
-This week, we are investigating an issue with KCIDB submissions. We
-identified that the volume of tests being generated exceeds the
-capacity that the KCIDB-Bridge can handle. Addressing this bottleneck
-is a top priority, and we are actively working on a solution. In
-parallel, we are implementing additional features to enhance the
-functionality of the KernelCI Maestro. =20
+The issues with KCIDB submissions have been largely resolved, though
+KCIDB is still experiencing minor problems with large batches (should
+not cause data loss). We continue to monitor the situation closely.
 
-As always, maintaining the reliability and stability of the KernelCI
-service remains our highest priority, and we are treating this issue
-with the utmost urgency. =20
+This week, we also began planning a redesign of the storage subsystem.
+The goal is to improve performance and reliability while providing
+artifact storage for both KCIDB and partner CI systems. Since these two
+subsystems require significant work, most other features are on hold
+until their completion.
 
-**Known issues**
-KCIDB submissions are currently experiencing a bottleneck due to the
-volume of tests being generated. We are actively working on a solution
-to address this issue.
+**Known Issues**
 
-### Key Updates: =20
+- `/latest/docs` and `openapi.json` are currently returning a 500
+error. We are investigating the issue.
 
-- **Legacy Sunset:** =20
-  Both instances of Jenkins have been fully decommissioned. These
-instances were removed from staging and production scripts.
-Additionally, the MongoDB database has been archived and shut down. =20
+### Key Updates
 
-- **Production Updates:** =20
-  Several critical production updates were deployed out of band this
-week to address and resolve important issues swiftly. =20
+- **Storage Subsystem Design Proposal** =20
+  A design proposal for the storage subsystem has been drafted: =20
+  [Storage Subsystem Design
+Proposal](https://gist.github.com/nuclearcat/2d34f8266ccd1b8356bd993eadcf2e=
+ed
+) =20
+  Feedback and suggestions from the community are welcome at the weekly
+meeting and via the mailing list.
 
-- **Trees Updates:** =20
-  The 4.9 stable tree has been removed from the list of supported trees
-as it reaches its end-of-life (EOL). =20
+- **New Pub/Sub Subsystem Design** =20
+  Work is underway on a new Pub/Sub subsystem to address fundamental
+issues with the current implementation, including non-guaranteed
+message delivery and the lack of load-balancing features. =20
+  - The new subsystem will use Redis Streams as its foundation. =20
+  - It will be backward-compatible, requiring no API changes, enabling
+seamless migration for clients.
 
-- **Website Updates:** =20
-  - The ELISA project is now listed on the KernelCI website as an
-Associate Member. =20
-  - Minor updates were made to improve the website and its deployment
-scripts. =20
+- **Experimental Features in kci-dev** =20
+  The `kci-dev` team has started implementing experimental features for
+retrieving results from the Dashboard API. Details can be found here: =20
+  [GitHub Issue #57](https://github.com/kernelci/kci-dev/issues/57)
 
-- **KCI Command:** =20
-  A new command, `findfast`, has been added to the `kci` command-line
-tool. This command leverages a new API endpoint to enable non-paginated
-searches, enhancing efficiency. =20
+- **Re-enabling ARM64 QEMU Support** =20
+  Efforts are ongoing to re-enable ARM64 QEMU support.
 
-- **API Enhancements:** =20
-  A new safeguard has been added to the `/nodes/fast` API endpoint.
-This ensures that long-running queries are limited to prevent the API
-from being blocked by resource-intensive operations. =20
+- **Buildroot Rootfs Fixes** =20
+  Long-pending fixes for Buildroot rootfs (pending for two years) are
+being addressed.
 
-- **Tast Test Updates:** =20
-  The `tast-ui` tests have been re-enabled to allow observation of
-their results. =20
-
-- **KCIDB Bridge Improvements:** =20
-  The KCIDB-Bridge now ignores incomplete builds and checkouts, as
-these are designed to be retried automatically. This reduces
-unnecessary processing and improves throughput. =20
-
-- **KCIDB updates:**
-  Researching ways to unlock more query and ORM performance.
-  Refactoring ORM caching to better handle issue-related queries, so we
-can implement issue notifications.
-  Fixing empty codec reports, But have we broken them more, instead?
-Where are they?
-
-
-### Planned Discussions for the KernelCI Weekly Meeting: =20
-
-- **MongoDB Archive Management:** =20
-  - Where should the archived MongoDB data (approximately 100GB of
-compressed data) be stored? =20
-  - How can access to this archive be provided to those who need it? =20
-
-- **KCIDB**
-  - Discussion: how to hide already-seen issues for result reviewers
-(Usama and others)
+- **Dashboard Improvements and Fixes** =20
+  As always, continuous improvements and fixes are being made to the
+Dashboard.
 
