@@ -1,89 +1,84 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DEF199956
-	for <kernelci@lists.linux.dev>; Fri, 13 Dec 2024 09:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734081727; cv=none; b=VXlSCT5emtjEvB7oqEjh6GIOifHwEPVY78nQzlXbj214TIoTzDOxSPRLbb7LMGjABbdh9MIMTYBxFnLs2LsUO07nuZzmsKJdPDhYEm/orlm5PBsQRn+BS+85Nm7qfZ09VCNOPk3ndAGXduSlsKR6R/iuHSxeojCN3oNSc1om99U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734081727; c=relaxed/simple;
-	bh=Tefjj1WIrrn3d1by0JezMExKStFLZo4V8zt0H270al0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=NXOiijm/YyNV/xBQt2Qk/m/BinPrKTGWWYhi4ChNESFCPEsJsqotSIZ+AmqYLFlCEtX1KnanmIVxRjVcnw9xr2dJFhDAv0fOqRHcsBMtl+WGIl4fT7A5P4LxVtm1dWZOIQkPzmfRy40whJyP5mT+Z58OftuS0UY9Lyo+IXDBh2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=DCvQUcf1; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4521F541A
+	for <kernelci@lists.linux.dev>; Tue, 17 Dec 2024 14:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734444506; cv=pass; b=rNGXI0mP0kIsl4OUbFFHug/IcWO/VyoNOjJyVgLrXiGyGu//WJblADgp7QKuC8f48cyu5AwJ/kwIpcFKh4TY99MCxjuJwEAwshQmamzNQ/EEvqbUGHG/zd0SjcZZR0DQBjxjUSQaKKoCU2Kz4HEAdyoYIqAAGlwT3BKu9pguhUA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734444506; c=relaxed/simple;
+	bh=L0XnB6EJi+nNovvdJoJO59VE1gdBcDhCSpNfZg3jzCY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:Subject:MIME-Version:
+	 Content-Type; b=sW/Hbyn3C4SGRGY4Tj6BVh4gkfSpyALDqKXwTDkRN6QYnm9nw19a6n6jnr6gQlze6YqrjvJzU/BeUIYdzoZ8I+kagoHPBsCH3fW/c5ZWF99O/32975Rm0iQV4P+2z0kf/vocFFxI1ZqsWCZeuwSy0hpiiHHb2avHEL/R4AaXbrg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=POc1JBuD; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="DCvQUcf1"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 17195FF808;
-	Fri, 13 Dec 2024 09:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1734081717;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nQWApN/JZfQ40f2B6hIEsk+lmCBbxs6l6RHvE910Rug=;
-	b=DCvQUcf1zVAoR869w+4DnQ5+C7LBtrWTqnkjP1ZOdOhcjpVJfWm1KZlnfHaCff/A67kqHP
-	vLN8LlPZHWycL81nhDnEw+Aa63kYcFNfA1jmuJPuXsFrjtXDw8Tg97Icqv+jj8ylti8Tfb
-	NrkQMKQGO2/qfoXH/UvlfPmZGauSrmyiKRgm0CYzhVkbhWy+/z8oszWxzwnk07oqf40l0+
-	Lw8zQDTJbOW5tB7zZngf7/R9/6zwg1l0VlFAmmIyEZalnL4fA/Lf5UYhhjfXkTxgzEmhsD
-	GB4plKioI09OoeDX0V9A0QDNWT3jTVQTrVbdp6IWSnk9BoxNp5Rwl+DO55scoA==
-Message-ID: <93e6a57b-9b89-4319-b52c-26f89333c0aa@gtucker.io>
-Date: Fri, 13 Dec 2024 10:21:56 +0100
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="POc1JBuD"
+ARC-Seal: i=1; a=rsa-sha256; t=1734444500; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LbR4IuhSwf3Htazv4hDSp+bs1yUuORvmKQj46j9g7cdbNocPJmaGNTk0WKzQswIMluPKTCdJ02azWTGGkbLbKBAWyYTPlTSRuYxwCEjBYeB7Jsx688Diy1CDCFG+PHIUbCnfVPlYx9ToS5SnbCSeFTk2mzoMlGDHBtyo6ZsBoFY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1734444500; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=27onBpfwPQscUayYyf8i/13GQ97yM6ax8/0ligUSl+c=; 
+	b=TFuRRKYVtu365E25wlDpHMX2WWMu0znHk2BG/mczfG2G3fkjpfYzBCuf8o7UFUUhnOMAGPI3QXF5KVf6X8I4i2uqQOH2Zj1Mb54pVptEQ+C4j0vs9NvUJkTGG995sAcYV5BGk1168YVzzKp8SVCY9X1d+jOhZDeZK7PeEoStzjE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1734444500;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=27onBpfwPQscUayYyf8i/13GQ97yM6ax8/0ligUSl+c=;
+	b=POc1JBuDq5S0+BrwPG1lf8jH3NGo7QbWIXRP0r9pdcfetOvGzRi5LijBbKU3BlmN
+	w0wG/KFkUlV3DICDmWm0w3vK1SsHj+NrHPKWIiT/K5xqCUYsttS2L9dNdcAIC2mZGzQ
+	jII//lN5YOUamkntIF1UfsJaAITzG/W7cfTrivU0=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1734444497446468.1782248982976; Tue, 17 Dec 2024 06:08:17 -0800 (PST)
+Date: Tue, 17 Dec 2024 11:08:17 -0300
+From: Gustavo Padovan <gus@collabora.com>
+To: "Greg KH" <gregkh@linuxfoundation.org>, "sashal" <sashal@kernel.org>
+Cc: "kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
+	"stable" <stable@vger.kernel.org>,
+	"Engineering - Kernel" <kernel@collabora.com>,
+	"Muhammad Usama Anjum" <usama.anjum@collabora.com>
+Message-ID: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
+In-Reply-To: 
+Subject: add 'X-KernelTest-Commit' in the stable-rc mail header
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KernelCI Weekly Newsletter (Week 50)
-To: Denys Fedoryshchenko <denys.f@collabora.com>, kernelci@lists.linux.dev
-References: <4fd04778fbcbe65d889fb68ebaaaed4f5ff6ec69.camel@collabora.com>
-Content-Language: en-US
-From: Guillaume Tucker <gtucker@gtucker.io>
-In-Reply-To: <4fd04778fbcbe65d889fb68ebaaaed4f5ff6ec69.camel@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-Hello,
+Hey Greg, Sasha,
 
-Thanks Denys for the comprehensive weekly news.
 
-On 11/12/2024 10:53 pm, Denys Fedoryshchenko wrote:
-> - **New Pub/Sub Subsystem Design**
->    Work is underway on a new Pub/Sub subsystem to address fundamental
-> issues with the current implementation, including non-guaranteed
-> message delivery and the lack of load-balancing features.
->    - The new subsystem will use Redis Streams as its foundation.
->    - It will be backward-compatible, requiring no API changes, enabling
-> seamless migration for clients.
+We are doing some work to further automate stable-rc testing, triage, validation and reporting of stable-rc branches in the new KernelCI system. As part of that, we want to start relying on the X-KernelTest-* mail header parameters, however there is no parameter with the git commit hash of the brach head.
 
-This looks similar to the Task concept which was introduced in Renelick 
-after the initial fork, see some WIP documentation here:
+Today, there is only information about the tree and branch, but no tags or commits. Essentially, we want to parse the email headers and immediately be able to request results from the KernelCI Dashboard API passing the head commit being tested.
 
-https://gtucker.gitlab.io/renelick/tasks/
+Is it possible to add 'X-KernelTest-Commit'?
 
-Some polishing is still needed but the main concept has now been 
-stabilised.  Basically they rely on message queues which guarantee each 
-message to be delivered to exactly one consumer.  Any API client can 
-schedule a task, typically this is done by an orchestrator service, then 
-the task object will need to be accepted by a single compatible 
-scheduler which will be responsible for executing it.  If you have 
-multiple instances of the same scheduler, it balances the load between 
-them by design.  It also makes it possible to implement retries and 
-other features related to task management.
+Thank you.
 
-By contrast, Pub/Sub events aren't guaranteed to be delivered since 
-they're not destined to any particular recipient.  They enable a 
-decoupled, modular architecture where you can add and remove subscribers 
-without changing anything in the existing system.
+- Gus
 
-Let me know if you want to discuss it further, also I'll be covering 
-this in an upcoming blog post.
 
-Guillaume
+--
+Gustavo Padovan
+Kernel Lead 
+
+Collabora Ltd. 
+Platinum Building, St John's Innovation Park 
+Cambridge CB4 0DS, UK 
+Registered in England & Wales, no. 5513718
+
 
