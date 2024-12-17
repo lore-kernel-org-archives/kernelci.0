@@ -1,84 +1,70 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4521F541A
-	for <kernelci@lists.linux.dev>; Tue, 17 Dec 2024 14:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734444506; cv=pass; b=rNGXI0mP0kIsl4OUbFFHug/IcWO/VyoNOjJyVgLrXiGyGu//WJblADgp7QKuC8f48cyu5AwJ/kwIpcFKh4TY99MCxjuJwEAwshQmamzNQ/EEvqbUGHG/zd0SjcZZR0DQBjxjUSQaKKoCU2Kz4HEAdyoYIqAAGlwT3BKu9pguhUA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734444506; c=relaxed/simple;
-	bh=L0XnB6EJi+nNovvdJoJO59VE1gdBcDhCSpNfZg3jzCY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:Subject:MIME-Version:
-	 Content-Type; b=sW/Hbyn3C4SGRGY4Tj6BVh4gkfSpyALDqKXwTDkRN6QYnm9nw19a6n6jnr6gQlze6YqrjvJzU/BeUIYdzoZ8I+kagoHPBsCH3fW/c5ZWF99O/32975Rm0iQV4P+2z0kf/vocFFxI1ZqsWCZeuwSy0hpiiHHb2avHEL/R4AaXbrg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=POc1JBuD; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE2B2B2DA;
+	Tue, 17 Dec 2024 14:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734444962; cv=none; b=g5cDvxnXbsz3/2EW8wAyIStLQmnpLAq6CjP0tIYrGKiYDKosj8qSbrMDiEKKtcuVtHUhfdIh6EOJW383pjgTGZHBeqOKzTDUWkbbsLPIt422oNcpmHsWdy2C4zkVJMy77q16cQJxWyeJqzWJM4UTzYGcfeYp/Hk5dQR0raL7jbE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734444962; c=relaxed/simple;
+	bh=NqvE7NB5xW/yNTOuRo+CP4oKquaYLKTQlrj9rhzthrA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EQymuZT65YPjuxfYXp/ure44wWH6ooLwyIhFpN1nt8rnpVNkBy7Q57q3PlI7q+GS/e2Ut+eoA1NFWoLGTX78EXeczu/2JTLBAz59kkUi/rqd0bfAuAyltjM+bu9HVynGuaUgtvz2wP5FdggiCaRaXeBV9l02/5yhH7XcvxCZqe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fN9yW8A1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="POc1JBuD"
-ARC-Seal: i=1; a=rsa-sha256; t=1734444500; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=LbR4IuhSwf3Htazv4hDSp+bs1yUuORvmKQj46j9g7cdbNocPJmaGNTk0WKzQswIMluPKTCdJ02azWTGGkbLbKBAWyYTPlTSRuYxwCEjBYeB7Jsx688Diy1CDCFG+PHIUbCnfVPlYx9ToS5SnbCSeFTk2mzoMlGDHBtyo6ZsBoFY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1734444500; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=27onBpfwPQscUayYyf8i/13GQ97yM6ax8/0ligUSl+c=; 
-	b=TFuRRKYVtu365E25wlDpHMX2WWMu0znHk2BG/mczfG2G3fkjpfYzBCuf8o7UFUUhnOMAGPI3QXF5KVf6X8I4i2uqQOH2Zj1Mb54pVptEQ+C4j0vs9NvUJkTGG995sAcYV5BGk1168YVzzKp8SVCY9X1d+jOhZDeZK7PeEoStzjE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1734444500;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=27onBpfwPQscUayYyf8i/13GQ97yM6ax8/0ligUSl+c=;
-	b=POc1JBuDq5S0+BrwPG1lf8jH3NGo7QbWIXRP0r9pdcfetOvGzRi5LijBbKU3BlmN
-	w0wG/KFkUlV3DICDmWm0w3vK1SsHj+NrHPKWIiT/K5xqCUYsttS2L9dNdcAIC2mZGzQ
-	jII//lN5YOUamkntIF1UfsJaAITzG/W7cfTrivU0=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1734444497446468.1782248982976; Tue, 17 Dec 2024 06:08:17 -0800 (PST)
-Date: Tue, 17 Dec 2024 11:08:17 -0300
-From: Gustavo Padovan <gus@collabora.com>
-To: "Greg KH" <gregkh@linuxfoundation.org>, "sashal" <sashal@kernel.org>
-Cc: "kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
-	"stable" <stable@vger.kernel.org>,
-	"Engineering - Kernel" <kernel@collabora.com>,
-	"Muhammad Usama Anjum" <usama.anjum@collabora.com>
-Message-ID: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
-In-Reply-To: 
-Subject: add 'X-KernelTest-Commit' in the stable-rc mail header
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fN9yW8A1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705D3C4CED3;
+	Tue, 17 Dec 2024 14:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734444961;
+	bh=NqvE7NB5xW/yNTOuRo+CP4oKquaYLKTQlrj9rhzthrA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fN9yW8A1zXVM16bnFrTjKxzWyKoUGndTNLmEP63dGBPZ9zjBd83lWoQUdXwXCjPxV
+	 u/b0DgzkNwF2fJDKf2Dk7RPFiiEBZind3mBSbWmAoStPlI9c2ooRhrYtcW0Q+yem9a
+	 ERomowE0NrVFlbZ4kHaMBV5q/rYXa2pQXg2L9GlU=
+Date: Tue, 17 Dec 2024 15:15:58 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gustavo Padovan <gus@collabora.com>
+Cc: sashal <sashal@kernel.org>,
+	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
+	stable <stable@vger.kernel.org>,
+	Engineering - Kernel <kernel@collabora.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: Re: add 'X-KernelTest-Commit' in the stable-rc mail header
+Message-ID: <2024121731-famine-vacate-c548@gregkh>
+References: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
 
-Hey Greg, Sasha,
+On Tue, Dec 17, 2024 at 11:08:17AM -0300, Gustavo Padovan wrote:
+> Hey Greg, Sasha,
+> 
+> 
+> We are doing some work to further automate stable-rc testing, triage, validation and reporting of stable-rc branches in the new KernelCI system. As part of that, we want to start relying on the X-KernelTest-* mail header parameters, however there is no parameter with the git commit hash of the brach head.
+> 
+> Today, there is only information about the tree and branch, but no tags or commits. Essentially, we want to parse the email headers and immediately be able to request results from the KernelCI Dashboard API passing the head commit being tested.
+> 
+> Is it possible to add 'X-KernelTest-Commit'?
 
+Not really, no.  When I create the -rc branches, I apply them from
+quilt, push out the -rc branch, and then delete the branch locally,
+never to be seen again.
 
-We are doing some work to further automate stable-rc testing, triage, validation and reporting of stable-rc branches in the new KernelCI system. As part of that, we want to start relying on the X-KernelTest-* mail header parameters, however there is no parameter with the git commit hash of the brach head.
+That branch is ONLY for systems that can not handle a quilt series, as
+it gets rebased constantly and nothing there should ever be treated as
+stable at all.
 
-Today, there is only information about the tree and branch, but no tags or commits. Essentially, we want to parse the email headers and immediately be able to request results from the KernelCI Dashboard API passing the head commit being tested.
+So my systems don't even have that git id around in order to reference
+it in an email, sorry.  Can't you all handle a quilt series?
 
-Is it possible to add 'X-KernelTest-Commit'?
+thanks,
 
-Thank you.
-
-- Gus
-
-
---
-Gustavo Padovan
-Kernel Lead 
-
-Collabora Ltd. 
-Platinum Building, St John's Innovation Park 
-Cambridge CB4 0DS, UK 
-Registered in England & Wales, no. 5513718
-
-
+greg k-h
