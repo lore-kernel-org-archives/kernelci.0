@@ -1,96 +1,66 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36CF157A67
-	for <kernelci@lists.linux.dev>; Fri,  3 Jan 2025 07:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735889966; cv=pass; b=lEoUwTYXkDJSnHGmOWefH7C38Yqo4osbguNTjvdlAQpyVD0INPj8N5YMEgf52ZREZFek4YCWZdgkjDm3zVr5uFM8RelV/hTc5uPpDcxKT4UbJqqsI40HIkOCWJxUsnPDxxnoNY5eYo/6Fdw1IKibW4kThtNNME2d7bClss4jnoc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735889966; c=relaxed/simple;
-	bh=oBiAEek3WiyH76F6b4FEAYHumRN+CMgM67pAE1A4zkM=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=ATEg339iXaHuoFaRU2Cchww5MVFL8jjyUx8fNSg21k08qW8uwZciKEjcacTxKanUZ1fxhcIVOq98qWo2GeaG/D/6BDzz5bcUTjDCHY0wmqSC+SVHgZDMsXCqyN3GM8W9xj+dSHKkcIcu3WiKFb96hLl9m8EDd6dyB6KffQyQMqQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=MWldmDKs; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B071F37CF
+	for <kernelci@lists.linux.dev>; Tue,  7 Jan 2025 18:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736274998; cv=none; b=cSGaCCQjVx+3GeedV0qYUM8Fv3rF5fd1jIeGf+c5R92qu2UBKHHYzZU8dO/R56PbJ/0Dh2yK12/c/O+o1st/PnarnMBSpaNbV+4vhicOE/5egNR5ZhEVJUUsChYc955Wqd7CyRt55hV05HXi+qGRmh/9a7/zufrpHfJ6I57RDic=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736274998; c=relaxed/simple;
+	bh=D4ZYiVlhNYk6m/EXyeq/3IyUJ4/ur5s+iP2N/L39/iQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=URUdd48IhEP6OsaHSqK7xCwSj2Atsaxj0ZJkT4TnwpIQUG9AMKdiaWDAMkeQAMyJQeNl2bo4eOj6mZ8KXm+CSdTKPTh4zkRO3Z49CjALx37DuC+ZmSDJqYFMdnGVpXKwGoj5tZA+GCCVt5y4o7KsQCoz2J10s16msqNamLGyOxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b+8OPnjO; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="MWldmDKs"
-ARC-Seal: i=1; a=rsa-sha256; t=1735889962; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cpl4693yGsinEa5FiWrCz0/DSQdtByZU2qUKjZPEwMSX4TkfWzkHUQ6Glg4Y7GlozqPC/nHl/RcZ3oT8U1U7j/EBord+/n8oUDiD0SPd1s9ptLMhc4RPQXx2XM8ENXP3MAStWFtWvm/Z0DWR4pamHEfyH7s4LgKVEWRLLSWuM20=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1735889962; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=oBiAEek3WiyH76F6b4FEAYHumRN+CMgM67pAE1A4zkM=; 
-	b=Xcu2C6hmThJRIDW4Id8X4qWBlksdy55LJfnlmLhDM+YtvEmFcUSXuJ0qXNgUYw+jvHM/AO3+3shyQmqu/XXOQq7KipkXiYhDzuDcDBkUejS72SXEyRpKWv4pdxKbZM2iCLCGE3MuqbGtxIscZ29ZKhb+B8oFCcUxznpLBVefnro=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=denys.f@collabora.com;
-	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1735889962;
-	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
-	bh=oBiAEek3WiyH76F6b4FEAYHumRN+CMgM67pAE1A4zkM=;
-	b=MWldmDKsIA0tKZTksuwFrIpB+7XtLlzIKereLz2yUETjeYPNV714nI6FdIe5Ol/y
-	Jg1XRsffZ4CLXalnED+kWejPz/Zus5823SkYj43/V+vpxHB1EPvEM0fREshlf7WKLmw
-	/ifDSrljFg+/hAJ64iCbbHc+RA9lxT5m499Te5w8=
-Received: by mx.zohomail.com with SMTPS id 1735889959910209.57577842480214;
-	Thu, 2 Jan 2025 23:39:19 -0800 (PST)
-Message-ID: <ea1d18727e090033155644806fbf7424bb826b7d.camel@collabora.com>
-Subject: **KernelCI Weekly Newsletter (Week 1)**
-From: Denys Fedoryshchenko <denys.f@collabora.com>
-To: kernelci@lists.linux.dev
-Date: Fri, 03 Jan 2025 09:39:16 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b+8OPnjO"
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-85c15e283bfso2624411241.2
+        for <kernelci@lists.linux.dev>; Tue, 07 Jan 2025 10:36:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736274995; x=1736879795; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=D4ZYiVlhNYk6m/EXyeq/3IyUJ4/ur5s+iP2N/L39/iQ=;
+        b=b+8OPnjOke/oMaU8XTD9HHA28c/lYxtWyXekBFuQVB8ahxY7L1JYnzk2EAf3lAJynK
+         zo90243cG1sUWd9k5uLYYKC7h10FPr82MuqQdJnBEuCNnzsD8YX+jcRGdSaZc/5Btqfs
+         G/R30lIRRXk2THnwUS6XYwF7lJoRlE6HZt2hJec/AxYmRV3tW35cUUdhil/Nh4upNnNr
+         +IaPm6otS3X8zufw3oIo6SO1MuMOgQlBrZdNNyg6T3aF0UR/TKO5CzQ5HPvwHSg1DH0+
+         Z4qZdEo6jhfHT+J1qDSKuCQaOWI5qWBCQzddk6yVBNVOKGHmSOavcc1Jiq2CY+KY3qmT
+         /+Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736274995; x=1736879795;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D4ZYiVlhNYk6m/EXyeq/3IyUJ4/ur5s+iP2N/L39/iQ=;
+        b=fIO3vNX4Kec5bP9RpvXlCzQNzpqMyxlax+dXpSxVkN977012y50ResEytRUOQK8oU3
+         UUM9vhoVmsAQDmLf5sB2tnBb3hOA8agp55+EKDOxPL7X+4NumVz5FWfO1wEjvmIMmsye
+         Y8VWmfLVGBZ7G4fWZvge4SbONv2DCVy1WH4x3S2Xqs8qe6w3JQgpXl0RmH7rnilL/CYe
+         oGQ/gnSHyYpwkLCMq81+L/aKKlZda+IsbN3MQgDQRgwoKsdEzualBPSHuE4TgwCkOCsQ
+         /z3q+pdoN7hg9gXtjCvfIqMttkmVVShV8TWSySQG5VlI4JY701JwRWMfALOrdMb7SERP
+         pZHg==
+X-Gm-Message-State: AOJu0Yzjvr8nVIDXnl6Sq86EAR+lB8PD6dtsBgb8uYnv81tXq4FXUFAL
+	2cuYwEz75/fpXqFnlmqYbHnwhUujGbliXPTonIHT31cdbSAPlpb+JbGabQk3cWortFI2zOpRGQv
+	c6O1z3zRPJ16BJ4uK5H9D63CPOCZ8oBBKUuVgc7OplZ/m9EWLtg==
+X-Gm-Gg: ASbGncuhAC6egHxGJ5DrOy79hLdl8LyYxrln5bE6/zxb8SF3fOwSFe8WQc0q0CZl//v
+	DYmz3yMiNiW9B9oPFL5FNRLa2gtS140n6mCtCEfuWY+WIuOPz1hgrNNZGtiSxO1vsOEEniys=
+X-Google-Smtp-Source: AGHT+IER9agRBdFcIUeGPab4hYR0bnHQHPE6sTy6B1DY37OTnOfYDZtf71AJaalOPPSkKvIcIrdYTUZw9zG0ulufjpc=
+X-Received: by 2002:a05:6102:94c:b0:4af:ea3b:7b31 with SMTP id
+ ada2fe7eead31-4b3d0f42025mr230170137.14.1736274995491; Tue, 07 Jan 2025
+ 10:36:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+From: Todd Kjos <tkjos@google.com>
+Date: Tue, 7 Jan 2025 10:36:23 -0800
+X-Gm-Features: AbW1kvaSlvjClaxhlgCcRMVsT9FfJ8Da6s8iRckbA47m57_NDUAlm8Lu6jkaqiM
+Message-ID: <CAHRSSEy3cDt13XcErp5qNLKhgZDoC212MSRpDgGOXRE1=_RN2Q@mail.gmail.com>
+Subject: remove android-4.19-stable from kernelci testing
+To: kernelci@lists.linux.dev, Gustavo Padovan <gus@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
 
-**Summary**
-
-Welcome to the first issue of the KernelCI Weekly Newsletter for 2024.
-Happy New Year once again to the entire KernelCI community!
-
-This week, we have several updates to share. The KernelCI team has been
-working on a new storage backend, which is now live on the staging
-environment. This backend is built using Rust, Axum, and Azure Blob (a
-big thanks to Microsoft for providing the storage). The new system is
-designed to be more reliable and scalable than the previous setup. The
-team is currently focusing on migrating the production backend to this
-improved system.
-
-The new backend has already helped uncover some issues within the
-KernelCI infrastructure. One notable issue involves certain log
-analysis tools repeatedly attempting to download the same log file=E2=80=94=
-over
-40 times=E2=80=94resulting in excessive egress traffic. Thanks to the enhan=
-ced
-visibility and flexibility provided by the new backend, the team is now
-working to resolve this issue. This includes identifying the root
-cause, fixing it, and, in some cases, redirecting these requests to a
-more cost-effective egress path.
-
-**New Backend Deployment Plan**
-
-The deployment of the new backend will proceed in the following stages:
-
-1. Create an `A` record for `files.kernelci.org` to point to the new
-backend. =20
-2. Take a final snapshot of the legacy production server. =20
-3. Develop a new Ansible playbook for deploying the backend and attach
-the old backend's block device to the new system. =20
-4. Deploy the new backend on staging. =20
-5. Configure `nginx` to proxy requests to the new backend while
-providing access to static website docs.kernelci.org and temporary
-access to the old storage.
-
-**Important Note** =20
-If you have any valuable data stored at `storage.kernelci.org`, please
-inform the team. They can take a snapshot of the data before the
-migration and propose a method to move it to the new backend.
-
+The android-4.19-stable branch is now deprecated. Please remove it
+from kernelci testing. Thanks.
