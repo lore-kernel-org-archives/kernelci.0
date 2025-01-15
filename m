@@ -1,45 +1,49 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F2F1EBFE8
-	for <kernelci@lists.linux.dev>; Wed, 15 Jan 2025 11:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17185241693
+	for <kernelci@lists.linux.dev>; Wed, 15 Jan 2025 11:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736940935; cv=pass; b=mWj5ALJzHxga4tm8dgasunZrgMES4cOYpxRDufJJUKWBVgWwn7TWshqUMY0FHeRoaeU1cukFLwDBXUzdJEYsPqJXXdlI5gUSQeFmbe4Bi388plXIdJGeXid8MMYKTfBMl4Us/IXoXYsGa3/sRDEMRtRGgcZEovel+hoVbJhqjpc=
+	t=1736941054; cv=pass; b=jhff8CFPpgqNfRhjgb9kwuaTwOUQQkvaFbSwVwDepfKqEaSGXtQRquUdh0saMvFvx6H37inCC5khEJYpRTrXTttGOojWx13zFEkcniOP87H7gJFOwDRlpH/XrRCURSeMNpYRV5io1UTOIZWIMv/dN0pwQEq7ElJGi85aAXCq9+I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736940935; c=relaxed/simple;
-	bh=jigMdohUs5H7URzFOGVWYvK87nVu7xuefkDvS0fQoPU=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=OVkDX/TFaf4b0H8DUqCB+5eI4Ivq9bJQX4BXQfFDKrM9Ree+x78lCQ6NgrZ3RKbWFC0HrrDvuFlnQ2ZXyA5PfLMAXshfX6jbqvRI7kr2N1FhKciDzsnCzwoNS35cND9N5fRRGCAQpqVL9m3YEgCqLd1LfJIZJVNp3GJQTLk3kdg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=T1DfwAI/; arc=pass smtp.client-ip=136.143.188.12
+	s=arc-20240116; t=1736941054; c=relaxed/simple;
+	bh=qQ8HE2GfwFN8/wfA4gtpl6jzZqTY+eJf+eA8Y54UC4k=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jdN+hj817/ntTHZ2Ipn+iiTkhYXUZ7ZKaP05PrAdjnDfBKFJm460r2tT5aQar58Jg6o1NUyZw25gjvHhrjxjJWA2wJEkC3QCWSO9XND782eEuc3uv9ZoBM+XGLjW/AJkGOJBSWb6F7vyCJ52GSiQI742zyiIA4+txgZB79O6BvM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=HmC355ax; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="T1DfwAI/"
-ARC-Seal: i=1; a=rsa-sha256; t=1736940931; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="HmC355ax"
+ARC-Seal: i=1; a=rsa-sha256; t=1736941050; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=dU15fKK/IDkhe8zdMyAe/OEVNe1a+tI/W6nG6pq8OgcDNIvh2waeYiMAMfje8B4c07P0pPDDuiZLvem6yKS3pEo0Ms4nQjy2959uDwStxUcw6AqpXbU1ssGtgKlWT6qGlzxtlmfXJVy2LTvucXo7B8kVUYhhcUPNeNPq2+hSRUc=
+	b=ZcaPadFqArGmDGKNujobeZeteo9/dAR5mJ7E8QbhK6pG7Kts3JTFS8VXTPSU1EvYCh6IRpv9Nh17QO2NF2GzAShdUswfjv2cX12wuwEkR/ZNzmy/TgBiakneOYBbavJWGb3dG/gz0/Ezg0oG+uDymWOKhuTab0YkGaSrJaSEb7M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1736940931; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=Yn1a2ezw0sDzYikA0C31iBFlruGvc4t8KTQso5o8/vw=; 
-	b=G2flFgYsHEg7eqPTXB+cuHbXdW7py9TdHzXW9c4ubnF3grLUx9tJzOdN6xay+tIF7MEyKSu73PsJCaUJ+IrH9BcLFPhvXKGAfhuD6cqATBrn1hR+sZDes+5s8umM3it9I6ohPsKDOWXDXQWISRR4oGHGidiN7xhEqju0rgvAgcM=
+	t=1736941050; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=qQ8HE2GfwFN8/wfA4gtpl6jzZqTY+eJf+eA8Y54UC4k=; 
+	b=BLDwQTCCGC9bADuRAUd2he6zQWC9xrZ0u0TWxzMp4sRk+k7gcLk8UTwDwkzqTkNLmYkB/aq40qlX+JNHWd7Y3CrbefA+YcNQnfVuRAsRZ+qXr0qBQroNvPMyQxyJGxdQFW+Zam1Ar93yZdjm0KIUQY3nkgDSnQN6bIC5t8DmzOM=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=denys.f@collabora.com;
 	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1736940930;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1736941050;
 	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
-	bh=Yn1a2ezw0sDzYikA0C31iBFlruGvc4t8KTQso5o8/vw=;
-	b=T1DfwAI/VoSDDRq21o6bJRzbpC/ME85542g5j04SanSthmPoockPPMo5Wq4A2FHS
-	l8R/PSIhq5oFHsjLGy5A2gD5YutfUF9flXPIpkirIhanneHCeKuKMc3nyOId3q6WiiB
-	JjsghiYvhjBjpG3k/SOp2pI/heIl0YRMog9P7RHI=
-Received: by mx.zohomail.com with SMTPS id 1736940929678662.2440089813945;
-	Wed, 15 Jan 2025 03:35:29 -0800 (PST)
-Message-ID: <8b00de79dda2b1aebc01e9e62ace74053be76da0.camel@collabora.com>
-Subject: KernelCI Weekly Newsletter (Week 3)
+	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
+	bh=qQ8HE2GfwFN8/wfA4gtpl6jzZqTY+eJf+eA8Y54UC4k=;
+	b=HmC355axJxxyMwy+L51MoPo4t4bUiSMWIAoVXp35v1+TI90F2ofeCjXdWKqh8ban
+	jVFvDFxyRhLAy1/z1PrFN8jduXyyT3L6m6w6Kk+BcqxQpTdM/GXnrWos0qv6qUTA8kt
+	9qeAh29PhD1exswhly/NYDcrN+/KJycW0wjcFdGI=
+Received: by mx.zohomail.com with SMTPS id 1736941048691541.2921938367418;
+	Wed, 15 Jan 2025 03:37:28 -0800 (PST)
+Message-ID: <8798491ed2f6780db990b164f8eca8a9627ad491.camel@collabora.com>
+Subject: Re: KernelCI Weekly Newsletter (Week 2)
 From: Denys Fedoryshchenko <denys.f@collabora.com>
-To: kernelci@lists.linux.dev
-Date: Wed, 15 Jan 2025 13:35:27 +0200
+To: Nikolai Kondrashov <spbnick@gmail.com>, kernelci@lists.linux.dev
+Date: Wed, 15 Jan 2025 13:37:24 +0200
+In-Reply-To: <962b6b41-3f21-4149-8869-562e11225681@gmail.com>
+References: <8a2c4f7da3df1d3cd0e52c3bcc49f7fee9475b0c.camel@collabora.com>
+	 <962b6b41-3f21-4149-8869-562e11225681@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -51,76 +55,33 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-ZohoMailClient: External
 
-**Summary**
+Hi Nick,
 
-This week, we focused on the following:
-- Enabling full support for the GRUB bootloader, including NFS-rootfs
-support.
-- Enabling kselftests on the Aaeon x86 platform.
-- Fixing kselftest build issues caused by missing environment
-variables.
-- Enabling net/kselftest on x86 (amd64) and arm64 platforms.
+It is still in draft/work in progress state, but here is the link:
+https://docs.google.com/document/d/1JW1rl05qsZwvId_upDFlkQPrh5R0ielF1zoK0GZ=
+nKaA/edit?usp=3Dsharing
 
-**Sysadmin**
-
-Except regular production updates, we have been working on:
-- Separating storage tokens for Kubernetes build clusters to allow
-testing of new storage solutions without impacting production.
-
-**kci-dev**
-
-As kci-dev continues to evolve, we released version 0.1.1. A special
-thanks to Arisu!=C2=A0
-We have been utilizing kci-dev for various purposes, and here are some
-examples of how it can be used:
-
-- **Running a Single Test on a Specific Platform in Real-Time** =20
-  ```
-  kci-dev checkout --giturl
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git --
-branch master --tipoftree --jobfilter kbuild-gcc-12-x86-chromeos-intel
---jobfilter tast-power-x86-intel --test tast-power-x86-intel --
-platformfilter acer-cb317-1h-c3z6-dedede --watch
-  ```
-  This command checks out the latest kernel from the master branch,
-builds it with GCC-12, runs the `tast-power` test on the `acer-cb317-
-1h-c3z6-dedede` platform, and monitors the results in real-time. Such
-combinations are often used to verify the consistency of test results
-on specific platforms.
-
-- **Testing a Specific Tree on Staging After Configuration Changes** =20
-  ```
-  kci-dev checkout --giturl
-https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git
---branch fixes --tipoftree
-  ```
-  This command checks out the latest kernel from the `fixes` branch of
-the `linux-kselftest` repository and builds it with the default
-configuration. It invokes the same builds and tests as in production
-when a new revision is pushed to the `linux-kselftest` repository.
-
-- **Initiating Bisection (Early Stage)** =20
-  ```
-  kci-dev bisect --giturl
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git --
-branch master --jobfilter kbuild-gcc-12-x86-chromeos-intel --jobfilter
-tast-power-x86-intel --test tast-power-x86-intel --platformfilter acer-
-cb317-1h-c3z6-dedede --good 2f27fce67173bbb05d5a0ee03dae5c021202c912 --
-bad 2d5404caa8c7bb5c4e0435f94b28834ae5456623
-  ```
-  Using this command, we can initiate a bisection on a specific
-platform and test, while monitoring the results in real-time. The `--
-good` and `--bad` parameters correspond to Git commit hashes, following
-the same procedure as the `git bisect` command.
-
-We will share more examples of how to use kci-dev in the next
-newsletter.
-
-**Planned Work**
-
-Next week, we plan to update the production server. As a result, there
-will be some downtime for `storage.kernelci.org` and
-`docs.kernelci.org`. We will strive to minimize the downtime as much as
-possible.
-
+On Mon, 2025-01-13 at 13:23 +0200, Nikolai Kondrashov wrote:
+> Hi Denys,
+>=20
+> Thank you for keeping posting these updates!
+>=20
+> On 1/8/25 4:51 PM, Denys Fedoryshchenko wrote:
+> > 2. **KernelCI Development Roadmap**=C2=A0=20
+> > =C2=A0=C2=A0 Through discussions with the community, we've identified a=
+ list
+> > of
+> > features and improvements for KernelCI.=C2=A0=20
+> > =C2=A0=C2=A0 Please share your ideas or indicate if you'd like to contr=
+ibute
+> > to
+> > any of these items.=20
+> > =C2=A0=C2=A0 This is initial draft, and we will continue to refine the =
+list.
+>=20
+> Is there perhaps a doc or an issue where these are fleshed out with
+> more details?
+>=20
+> Nick
+>=20
 
