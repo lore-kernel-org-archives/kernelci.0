@@ -1,77 +1,79 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283F6219A68
-	for <kernelci@lists.linux.dev>; Fri, 24 Jan 2025 10:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B36C3594D;
+	Fri, 24 Jan 2025 12:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737713556; cv=none; b=I/rgd2YcGitCRLNQSyATWPucpt9dgDFmmU25pUmDyjtO3jx91q5vlXhMtJrzrv/6rThs0PwynTrr3jRLgMDy9IBSmzhYGlgzJ1aHNdx0uErxiNzBU6sUdoXQaYofGyHSHf5/6704BAIsWkOBLVyPsggmdnkdgE/9n29ns5WQzg0=
+	t=1737721017; cv=none; b=TtT2o7p0j8OhbS6hxToNQIVTm5OK802Lg/OW+J4glf9/ERs6xVqwcxosX+RG5MroY0T72iRLmQ1Fg6Fy9KwqI6fUwn9GvnMwpwhC6TVhHzby34qY/7J1Vh/7pxNzHEgRpMB6L+DAvTTyhpuwQM0J7jvmU8GejqrsjgCAXH6i1bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737713556; c=relaxed/simple;
-	bh=UfgS02pAUa+ePGgnieVixDzw+SBCOXQQt8HCa4cH8wU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Y6daftq8AgXcA3X2i0eSEj3iOrqF+if8IXQ/pSsx85Tu7+JBD1ygJkBHOz4RyDM96fTk2pWy7bvqPUGK4ZjsEX0JpZrz/PExjOVAce9mlaRYA2Ld2kO+W2EXDrrcFy44dmxBtlhbDWjDPIVJO7w4srD5ofVlB0xflq1yJNa10RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=PcNvVS3f; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1737721017; c=relaxed/simple;
+	bh=9/zDMqN6hhaBomecOPelO7rWtXLPgec1udymjzwGahE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=QcrTLObIqTqsff0fNDoyX6geCMJ6PfXM5pin+X892YNR28Q0nyF6CRbvcjSK/oCc54tVP5HvgxxD7s7NpQpbaxYIYW/0ow2SGBED4Vi+2DCQbtORSmDdca+K/jvPMg2vyCl/4DPlI89xos0DfGD8MTK5lkaBBCAjzwzL/7cOk2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWQQv3Ug; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="PcNvVS3f"
-Received: from relay0.mail.gandi.net (relay0.mail.gandi.net [IPv6:2001:4b98:dc4:8::220])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 0F2255801A4
-	for <kernelci@lists.linux.dev>; Fri, 24 Jan 2025 10:06:50 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6826E44089;
-	Fri, 24 Jan 2025 10:06:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1737713202;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wzTKBK+WuPNtIv4dZRT1MpAuGWSso9ZmNuJG3gF30dg=;
-	b=PcNvVS3fiB9WUYWNntZ3xFdrqSZhcDoO7hd9bWNECuW0Z8RciPMEpYBSVZD4TdySNyp8HN
-	s4QBf8FTOssSp3icPbwODEj3ztMsZp05gGuepvfkpQ/+mfBRLQU5E++oDoZwr/VHeeM6yE
-	SQfxbqR3BrFvDmwzHGuCfYgF3ptRFpPM7YIidtoLrwnf/XV+lM6eOFSiBcrngms8APiWkX
-	aZWq7Qicy8WNXD+4A2l6h7JwtN7+xScoMiTEdrBSywby1DsoBN6MfHCId09YymiHU30vel
-	mwqnnloxd3SXhMhAtUKc4eJz8qsE/kvQXtuPwa0YHb55ILTWE2t1XxUUc02CnQ==
-Message-ID: <9a24892b-f123-4259-b0b4-34557491b862@gtucker.io>
-Date: Fri, 24 Jan 2025 11:06:42 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWQQv3Ug"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67084C4CED2;
+	Fri, 24 Jan 2025 12:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737721017;
+	bh=9/zDMqN6hhaBomecOPelO7rWtXLPgec1udymjzwGahE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=eWQQv3Ugf4xoyIoBxAR8/sos283LO4tfdtueimw31HSVDOwgMGB2kNZZjf66Dh0hz
+	 a6I1ULEjZyhOvrOUc6AeIeqjkUJNyN1XggtE5/hweH1G/K00T8rfWPCVrcG7yaIRPA
+	 x6u3EX8rgtXrld9535e+lpZovv6mPWAHhz+p9KKX3xEGzGgW66k4DaL+AU/wyGeIBG
+	 d8ukAc8lExSOcWXjbHtFdQ1e7We3n4HIl24sN4qcJNDa+BdbKRAIKXlK31y52ODIq9
+	 IA5m48dT88TqN7E8sRAKrgIRUrPcpk7CXYyYrKvjz6WQYrhTeeORinbGugexmKmiGa
+	 d0joC22bDyNIw==
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KernelCI Weekly Newsletter (Week 50)
-To: Denys Fedoryshchenko <denys.f@collabora.com>, kernelci@lists.linux.dev
-References: <4fd04778fbcbe65d889fb68ebaaaed4f5ff6ec69.camel@collabora.com>
-Content-Language: en-US
-From: Guillaume Tucker <gtucker@gtucker.io>
-In-Reply-To: <4fd04778fbcbe65d889fb68ebaaaed4f5ff6ec69.camel@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedggedvgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthejredttddvjeenucfhrhhomhepifhuihhllhgruhhmvgcuvfhutghkvghruceoghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhoqeenucggtffrrghtthgvrhhnpefgveffffeutdehvefhvdettdehudegueejkeelhedvveffteduhfdtkeehgeegleenucffohhmrghinhepghhithhlrggsrdgtohhmpdhgthhutghkvghrrdhiohenucfkphepvddttddumeekiedumeegrgegtdemkeeivddtmeejgegsfeemvgdurgdvmegsvgeisgemvggvfhgunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeegrgegtdemkeeivddtmeejgegsfeemvgdurgdvmegsvgeisgemvggvfhgupdhhvghloheplgfkrfggieemvddttddumeekiedumeegrgegtdemkeeivddtmeejgegsfeemvgdurgdvmegsvgeisgemvggvfhgungdpmhgrihhlfhhrohhmpehgthhutghkvghrsehgthhutghkvghrrdhiohdpnhgspghrtghpthhtohepvddprhgtphhtthhopeguvghnhihsrdhfsegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohepkhgvrhhnvghltghisehli
- hhsthhsrdhlihhnuhigrdguvghv
-X-GND-Sasl: gtucker@gtucker.io
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Jan 2025 14:16:52 +0200
+Message-Id: <D7AAOSNDJV11.AXVF80Z934BK@kernel.org>
+Cc: "Vignesh Raman" <vignesh.raman@collabora.com>,
+ <kernelci@lists.linux.dev>, <linuxtv-ci@linuxtv.org>,
+ <dave.pigott@collabora.com>, <mripard@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kselftest@vger.kernel.org>, <gustavo.padovan@collabora.com>,
+ <pawiecz@collabora.com>, <spbnick@gmail.com>, <tales.aparecida@gmail.com>,
+ <workflows@vger.kernel.org>, <skhan@linuxfoundation.org>,
+ <kunit-dev@googlegroups.com>, <nfraprado@collabora.com>,
+ <davidgow@google.com>, <cocci@inria.fr>, <Julia.Lawall@inria.fr>,
+ <laura.nao@collabora.com>, <kernel@collabora.com>,
+ <torvalds@linuxfoundation.org>, <gregkh@linuxfoundation.org>,
+ <daniels@collabora.com>, <helen.koike@collabora.com>,
+ <shreeya.patel@collabora.com>, <denys.f@collabora.com>,
+ <nicolas.dufresne@collabora.com>, <louis.chauvet@bootlin.com>,
+ <hamohammed.sa@gmail.com>, <melissa.srw@gmail.com>, <simona@ffwll.ch>,
+ <airlied@gmail.com>, <Tim.Bird@sony.com>, <broonie@kernel.org>,
+ <groeck@google.com>, <rdunlap@infradead.org>, <geert@linux-m68k.org>,
+ <michel.daenzer@mailbox.org>, <sakari.ailus@iki.fi>
+Subject: Re: [PATCH v2 0/5] kci-gitlab: Introducing GitLab-CI Pipeline for
+ Kernel Testing
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Laurent Pinchart" <laurent.pinchart@ideasonboard.com>,
+ =?utf-8?q?Leonardo_Br=C3=A1s?= <leobras.c@gmail.com>
+X-Mailer: aerc 0.18.2
+References: <20250123135342.1468787-1-vignesh.raman@collabora.com>
+ <f779c9af4133629f724e366241fab7421d13d227.camel@gmail.com>
+ <20250124081250.GA24731@pendragon.ideasonboard.com>
+In-Reply-To: <20250124081250.GA24731@pendragon.ideasonboard.com>
 
-On 11/12/2024 10:53 pm, Denys Fedoryshchenko wrote:
-> - `/latest/docs` and `openapi.json` are currently returning a 500
-> error. We are investigating the issue.
+On Fri Jan 24, 2025 at 10:12 AM EET, Laurent Pinchart wrote:
+> Gitlab as an open-source software project (the community edition) is one
+> thing, but can we please avoid advertising specific proprietary services
+> in the kernel documentation ?
 
-Not sure if you've fixed this already but I've hit the same issue
-with Renelick.  The workaround I've found was to downgrade Beanie
-to v1.27.0 since v1.28.0 which was released in December appears
-to be breaking Pydantic validation.  The latest Beanie v1.29.0
-also shows the same problem, and upgrading Pydantic didn't solve
-the error either.
+I don't think we should have any of this in the mainline kernel.
 
-I've created this GitLab issue to keep track of it, aiming to
-have it resolved by the end of next week:
+One angle is that "no regressions rule" applies also to the shenanigans.
 
-   https://gitlab.com/gtucker.io/renelick/-/issues/133
+Do we really spend energy on this proprietary crap to the eternity?
 
-Hope this helps,
-Guillaume
-
+BR, Jarkko
