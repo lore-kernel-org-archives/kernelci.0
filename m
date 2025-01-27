@@ -1,273 +1,109 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D2418A6A1
-	for <kernelci@lists.linux.dev>; Mon, 27 Jan 2025 19:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BAD191F74
+	for <kernelci@lists.linux.dev>; Mon, 27 Jan 2025 19:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738004760; cv=none; b=mmUy2Ta7cruPm7bBbpjFS6BFYKVIYvF2MqwixvEzLev6DiJyTl64Lrl/2Y13/eXvkVWhTMidwpVEAGbrnAmRY9X3rvo6LTFPOIQBrJLHelDveJNC5c6rwkjBcWrJ9Fq5YQzSB7PJVW7wXi+DQIST7N4SZuisaIqSRm8IAZi6C1I=
+	t=1738005155; cv=none; b=iAhutM80YFNlUZzh7stFhS7wOoJEYkfsWFyzcY2ox0YNRMhnfZ4p2wH96vIrGDLK56btgR+sGdaq740ucrRYJuUfsaZzsBoPDwqqjJKBMr5t7Xm5r0wlMgEcNKb2yfNKWg7S8Hnq/MDxTRjqRUsm2d51Y8x15+3CcJQ+6RAMLdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738004760; c=relaxed/simple;
-	bh=HnTMoUG4dF2vVS5CZSVNz97wU/G3QgT1IJKqTX1YryY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=q23vp+qRyf6mQLjGkD2UNCjj0wVOuAK7yOeEu22+hcs5BoIuQLRc6Nu7L4Ih018mQ7+9qTsXXe6Jt/xeB9AFfRL+PrrzOc4d8FbIqkutQZ6mBQh5f38y5Z/LrWoZnGjetnt9Yc+T1Hz2Lzf76vCLvWtoi2Nm/Yb+C012q4F0n6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8+MIWD9; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738005155; c=relaxed/simple;
+	bh=UcNITMy5DVWrZbbR/azPBFt9W9DY/yhAk/aJXSOMVAQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QhxM7/4OXpYhY81XESR1VFCmpzk7RxC02t/iXBPSgdx0EHx3eCxBG8RxwzEbTIqvmFb2GWIXwBTGOw+bTVYB5rzZroo3CAho503KgFqJ4oHcsl4xk7nS2bWg7407+dexL7fUOFB6o2qE92yuH41zcpB6deLSLDwjrL3Bna7UASM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VfFaXqLx; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8+MIWD9"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ee9a780de4so6409618a91.3
-        for <kernelci@lists.linux.dev>; Mon, 27 Jan 2025 11:05:58 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VfFaXqLx"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d3d143376dso6833123a12.3
+        for <kernelci@lists.linux.dev>; Mon, 27 Jan 2025 11:12:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738004757; x=1738609557; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FgpSNPeAjFZp+XVJ99wWjxWH+/lWeKYYdQIoeMWl0ls=;
-        b=O8+MIWD9VjWBRjDUfECP4AmgY5NimCtH39wovsa7P0iigGWrIgzgmO8rU+1jh5xVli
-         Y30LhEx7mRF389y/87bvLQmqS2ysOSrQtmoDJYeeINOQ+7G+Kau4Yht88bSDHsuu22m6
-         OCopp4uKxdR5SOIanEwVTdnZ1IUGUCfZ/h+No8XxZ3Earkl2adFhxlEYLQEG56hEXU8G
-         sOcyoLf6qia6crGOpUya5ARZL1zkzAguiQOOr2h4brNq7Iyv3kXqKKT9vE7zNrvYO6Tv
-         IdWm6QSW9Mwo5vFrb4k4XRuOShNNKK5QowjDY0OrrhbuBRLCg0JyMKcF1bKUWwCCeXtB
-         b+yA==
+        d=linux-foundation.org; s=google; t=1738005152; x=1738609952; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oRWc0yc4UzREqFCikMBtMstVl9pz1QdSpT6OJeveUwc=;
+        b=VfFaXqLx+k+XhE80hBVDx0pMJi3pml5KSUmIGMbbSND+ZKVLumky15ZGupT939Am3D
+         Uw40K7aMEmSdbqjKKbrOZXAvN8UtsEpQPMW84xLAJDl8vq4Hj90OYrg6d3LyTCbf9AKV
+         m0yIKYtjZFgHcpJiZjnZ1MZvA0YgbdoL0h+co=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738004757; x=1738609557;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FgpSNPeAjFZp+XVJ99wWjxWH+/lWeKYYdQIoeMWl0ls=;
-        b=jl6f9eGpA6Cint/2W2P3avLv51DnQBIy0ZywGsLSDN1fPMYIgKCRfWrVUMTJ8pwVw4
-         MfOeUclOd7tABm/dy2qGEXYYRRrSbgdkGlpaEZ63R7c+6wmEjb6f6lkWBNih74nAlrpj
-         W6M+1yaeTyCnbEjKCXlrfhi3CGF21aRZ7vx9rhq9nUMWzUmO++uIDW6Gk6m+lJjFfLHA
-         JtgBxmz5ON/aG42mx7Qis72oyoRfDq09CAMmuqQDw3hE00S6fepwePnb7vYXzMUlppAI
-         Rori7xSqoBbixv8Ch131Z8mDfS0vpVQw5b0n2VWt2h5WlbusKsRpvS/oDQkPTX03h9lZ
-         7iGQ==
-X-Gm-Message-State: AOJu0YwQozpSxMnxkSB14GW/WDjXzCuaGYmA4ySDNRjbzuLufa3WPe7c
-	VG4QEIT6RWBLKmg7TTiOghdp+M8mk5FKLUPJj2GAjvrPeSgXG39A+baRGchA
-X-Gm-Gg: ASbGncsIWIpqarJsXO3Nz0oeJnGOTrusNTY68p4ADoaIfjb34wiyIeE3cRGZ9xAhgp8
-	oDiqvc+pi7qV9fhitojZiNw0RFA/R9d8S+wwD1scIiUR1Kh9FZSzrFGbg/olDOF0WWPnBOOLM1C
-	psFBwP/Tl0fF9HgVIZSZbsYcVY5a0S5FdKFiLk7kSmPh+KRr+lSfo+vo4IlWwyT/rhJtvLIvN8c
-	AmInSZk8fedXUtLFmUIfXzRkzhjxWivBwzCfCjYLXbZFFtG80g9ZoF1q7SU34HD9h5s1QZYpCk3
-	pIp5VifFDOtJObY4A2JPtU8gF8ITWy7wWIj4OVIRST33OJ70eR0=
-X-Google-Smtp-Source: AGHT+IGV7gPf93QQO1WJVtV/nW0FDXYUQssyR5CStDGifbGwwzQP3dnpV8mOxs8Y4y2sm2ikFERqIA==
-X-Received: by 2002:a17:90a:d648:b0:2ee:3cc1:793a with SMTP id 98e67ed59e1d1-2f782d8c178mr8304612a91.29.1738004757474;
-        Mon, 27 Jan 2025 11:05:57 -0800 (PST)
-Received: from ?IPv6:2804:1b3:a801:16c4:2e00:3d86:8f34:c7fb? ([2804:1b3:a801:16c4:2e00:3d86:8f34:c7fb])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffaf8f03sm7546423a91.39.2025.01.27.11.05.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 11:05:57 -0800 (PST)
-Message-ID: <a6816a68e5e9aeb1d330b68f6a73decd2233c164.camel@gmail.com>
-Subject: Re: [PATCH v2 0/5] kci-gitlab: Introducing GitLab-CI Pipeline for
- Kernel Testing
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
-To: Vignesh Raman <vignesh.raman@collabora.com>, Laurent Pinchart
-	 <laurent.pinchart@ideasonboard.com>
-Cc: kernelci@lists.linux.dev, linuxtv-ci@linuxtv.org,
- dave.pigott@collabora.com, 	mripard@kernel.org,
- linux-kernel@vger.kernel.org, 	dri-devel@lists.freedesktop.org,
- linux-kselftest@vger.kernel.org, 	gustavo.padovan@collabora.com,
- pawiecz@collabora.com, spbnick@gmail.com, 	tales.aparecida@gmail.com,
- workflows@vger.kernel.org, skhan@linuxfoundation.org, 
-	kunit-dev@googlegroups.com, nfraprado@collabora.com, davidgow@google.com, 
-	cocci@inria.fr, Julia.Lawall@inria.fr, laura.nao@collabora.com, 
-	kernel@collabora.com, torvalds@linuxfoundation.org,
- gregkh@linuxfoundation.org, 	daniels@collabora.com,
- helen.koike@collabora.com, shreeya.patel@collabora.com, 
-	denys.f@collabora.com, nicolas.dufresne@collabora.com,
- louis.chauvet@bootlin.com, 	hamohammed.sa@gmail.com, melissa.srw@gmail.com,
- simona@ffwll.ch, airlied@gmail.com, 	Tim.Bird@sony.com, broonie@kernel.org,
- groeck@google.com, rdunlap@infradead.org, 	geert@linux-m68k.org,
- michel.daenzer@mailbox.org, sakari.ailus@iki.fi, 	jarkko@kernel.org
-Date: Mon, 27 Jan 2025 16:05:47 -0300
-In-Reply-To: <6ebd1551-017f-4b31-b235-829b2735d78f@collabora.com>
-References: <20250123135342.1468787-1-vignesh.raman@collabora.com>
-	 <f779c9af4133629f724e366241fab7421d13d227.camel@gmail.com>
-	 <20250124081250.GA24731@pendragon.ideasonboard.com>
-	 <6ebd1551-017f-4b31-b235-829b2735d78f@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+        d=1e100.net; s=20230601; t=1738005152; x=1738609952;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oRWc0yc4UzREqFCikMBtMstVl9pz1QdSpT6OJeveUwc=;
+        b=PcGCDCJCkadjc5py1XrAvKs8VyQA3BVIV96uXLLeaW3osXzcsuKqaiVeXYf723Az9q
+         PUBvV7MPOLZpfir9ZAqxfA2Tjn0fMJ8Q+nqncGU/bfuvHikf9YkoqgwgPvFxX2y6sUo8
+         +H8V01/tEWpYPQ6Py8JTA46kcQGblVK3/konbTraj8HybXGuRPglHFA5qFCTJsPhrRj+
+         s8yzxrLVT7ssXMzMeJD+CYsmhJKE9xnXFjWJoLiHcgUsvWT23BOXcWINjbzoupgpxMrN
+         tsaomoO5cx7M7LFiKrNPAzf5y8XS9mFaTqMz8cAKgeY2iZk5PlRRGNdawT7XcAsw7Ch3
+         1ODA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgz79jiS0tUWOt9CTqdjyYu9Tz9kwuBC4/J0/+SYsyMYlunmoumVCvxHGu4Jmu+EUhndzciviozQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx6QlQDDxCnme9+EBMp7q+cHMQSLRdcji1ZCjwIEop5D1ZgYWBO
+	wbrL0ePLdCd8UgkqgBRCn8TJPV8J6py5BIAVkI+gllajd2gncF7W9t8qbS0SzXYOUkvNFp5lV/R
+	n2Tk=
+X-Gm-Gg: ASbGncsFXAmm2CTbmqyUp3csyh1kpv6qTCgFtLpmV0gGJMhuh6mcQlhC0YWnwc80FAQ
+	5lZxi+nTntY/3sKvVGk13I/YLIJRCNxWKsO+abF/bxyGCag/c52p9L71aayOYPLbZuIl+TziVP1
+	Tmw5Fgx6Vxsqr62H7DOkOp8PJIsBdS0+6XoUVIhppH8+p+nWGRaa8gYiPogCYNOT/+mSRUahhAj
+	UT6qY9pnQ/UVBM743YPrm4QE7H6oOtYcnsz/pcASqdsepT8k6s4+m8MVu3Itj9sUeK2R/o3pUqA
+	o906Ua1GOmDPAPBDPcDP+yI/N89tAy58ulVU+8Wk7v80WAb9fZgJ57w=
+X-Google-Smtp-Source: AGHT+IGr+bdDOEyqBhbR1LvF/51nWXZ4xkELdz+XETn8n1GET4ZK9t5Z2EyqCAIkJw4003fBjacs2Q==
+X-Received: by 2002:a05:6402:40c9:b0:5d0:214b:96b0 with SMTP id 4fb4d7f45d1cf-5db7d2e2f66mr37871321a12.1.1738005150036;
+        Mon, 27 Jan 2025 11:12:30 -0800 (PST)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dc186183eesm5823161a12.10.2025.01.27.11.12.28
+        for <kernelci@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jan 2025 11:12:29 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9e44654ae3so791305266b.1
+        for <kernelci@lists.linux.dev>; Mon, 27 Jan 2025 11:12:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVtZ7O8Qny/VxOZYsmobnoRF/arnnAL+9D1X1Ci8OQzS2niqtsNmS06eFWnyHYpnNdTE1Xraj32mg==@lists.linux.dev
+X-Received: by 2002:a17:907:783:b0:ab3:64dd:bc89 with SMTP id
+ a640c23a62f3a-ab38b1100d9mr3171825266b.20.1738005147960; Mon, 27 Jan 2025
+ 11:12:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20250127044721.GD1977892@ZenIV> <Z5fAOpnFoXMgpCWb@lappy>
+In-Reply-To: <Z5fAOpnFoXMgpCWb@lappy>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 27 Jan 2025 11:12:11 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wh=PVSpnca89fb+G6ZDBefbzbwFs+CG23+WGFpMyOHkiw@mail.gmail.com>
+X-Gm-Features: AWEUYZnfYCSPESiHiidOrlrhf_2gR4sjvZbtI4_GCzVar-LNOMBy-6juZGoYcwQ
+Message-ID: <CAHk-=wh=PVSpnca89fb+G6ZDBefbzbwFs+CG23+WGFpMyOHkiw@mail.gmail.com>
+Subject: Re: [git pull] d_revalidate pile
+To: Sasha Levin <sashal@kernel.org>, kernelci@lists.linux.dev
+Cc: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 2025-01-27 at 13:02 +0530, Vignesh Raman wrote:
-> Hi Leo,
->=20
-> On 24/01/25 13:42, Laurent Pinchart wrote:
-> > On Fri, Jan 24, 2025 at 02:11:26AM -0300, Leonardo Br=C3=A1s wrote:
-> > > On Thu, 2025-01-23 at 19:23 +0530, Vignesh Raman wrote:
-> > > > This patch series introduces "kci-gitlab," a GitLab CI pipeline
-> > > > specifically designed for kernel testing. It provides kernel
-> > > > developers with an integrated, efficient, and flexible testing
-> > > > framework using GitLab's CI/CD capabilities. This patch includes
-> > > > a .gitlab-ci file in the tools/ci/gitlab-ci/ folder, along with
-> > > > additional YAML and script files, to define a basic test pipeline
-> > > > triggered by code pushes to a GitLab-CI instance.
-> > > > The initial version implements:
-> > > >     =20
-> > > > - Static checks: Includes checkpatch and smatch for code validation=
-.
-> > > > - Build tests: Covers various architectures and configurations.
-> > > > - Boot tests: Utilizes virtme for basic boot testing.
-> > > >=20
-> > > > Additionally, it introduces a flexible "scenarios" mechanism to
-> > > > support subsystem-specific extensions.
-> > > >=20
-> > > > This series also introduces a drm scenario that adds a job to run I=
-GT
-> > > > tests for vkms. This scenario includes helper scripts to build deqp=
--runner
-> > > > and IGT, leveraging approaches from the drm-ci/mesa-ci project.
-> > > >=20
-> > > > We are working towards creating a generic, upstream GitLab-CI pipel=
-ine
-> > > > (kci-gitlab) that will replace DRM-CI [1]. The proposed GitLab-CI p=
-ipeline
-> > > > is designed with a distributed infrastructure model, making it poss=
-ible
-> > > > to run on any gitLab instance. We plan to leverage KernelCI [2] as =
-the
-> > > > backend, utilizing its hardware, rootfs, test plans, and KCIDB [3]
-> > > > integration.
-> > > >=20
-> > > > For an example of a fully executed pipeline with drm scenario set,
-> > > > including documentation generation,
-> > > > see: https://gitlab.freedesktop.org/vigneshraman/kernel/-/pipelines=
-/1350262
-> > > >=20
-> > > > Please refer to the documentation included in the patch, or check t=
-he
-> > > > rendered version, here:
-> > > > https://vigneshraman.pages.freedesktop.org/-/kernel/-/jobs/69787927=
-/artifacts/artifacts/Documentation-output/ci/gitlab-ci/gitlab-ci.html
-> > > >=20
-> > > > Differences from v1 to v2:
-> > > > - moved to tools/ci as suggested by Linus on the previous version
-> > > > - add arm64 containers for native compilation
-> > > > - added boot tests using virtme: this is the base structure for boo=
-t tests,
-> > > >    next steps would be adding other tests such as kselftests/kunit =
-tests
-> > > > - added DRM scenario testing on vkms: this should replace current v=
-kms test
-> > > >    in drm-ci. This work shows how a test scenario can be used by di=
-fferent
-> > > >    subsystems to add their tests.
-> > > > - update documentation
-> > > >=20
-> > > > For more details on the motivation behind this work, please refer t=
-o the
-> > > > cover letter of v1: https://patchwork.kernel.org/project/linux-ksel=
-ftest/cover/20240228225527.1052240-1-helen.koike@collabora.com/
-> > > >=20
-> > > > [1] https://www.collabora.com/news-and-blog/blog/2024/02/08/drm-ci-=
-a-gitlab-ci-pipeline-for-linux-kernel-testing/
-> > > > [2] https://kernelci.org/
-> > > > [3] https://docs.kernelci.org/kcidb/
-> > > >=20
-> > > > Helen Koike (3):
-> > > >    kci-gitlab: Introducing GitLab-CI Pipeline for Kernel Testing
-> > > >    kci-gitlab: Add documentation
-> > > >    kci-gitlab: docs: Add images
-> > > >=20
-> > > > Vignesh Raman (2):
-> > > >    MAINTAINERS: Add an entry for ci automated testing
-> > > >    kci-gitlab: Add drm scenario
-> > >=20
-> > > Hi Vignesh Raman,
-> > > I am very happy to see this project going forward :)
-> > >=20
-> > > It's been a few years since I first thought on finding a good way of =
-helping
-> > > kernel developers testing their patches, while making use of the free=
- runner
-> > > minutes Gitlab offers. It can greatly simplify the testing for people=
- who are
-> > > new to kernel development, or students trying to understand it better=
-.
-> > >=20
-> > > And this patchset allows that to happen :)
->=20
-> Thanks for testing the patch and providing feedback.
+On Mon, 27 Jan 2025 at 09:19, Sasha Levin <sashal@kernel.org> wrote:
+>
+> With this pulled on top of Linus's tree, LKFT is managing to trigger
+> kfence warnings:
+>
+> <3>[   62.180289] BUG: KFENCE: out-of-bounds read in d_same_name+0x4c/0xd0
+> <3>[   62.180289]
+> <3>[   62.182647] Out-of-bounds read at 0x00000000eedd4b55 (64B right of kfence-#174):
+> <4>[   62.184178]  d_same_name+0x4c/0xd0
 
-:)
+Bah. I've said this before, but I really wish LKFT would use debug
+builds and run the warnings through scripts/decode_stacktrace.sh.
 
->=20
-> > >=20
-> > > Actually, I spoke to Helen last year, and to enable it to run on the =
-free
-> > > Gitlab-CI runners, there is a small extra patch which is needed:
-> > >=20
-> > > https://lore.kernel.org/all/20240327013055.139494-2-leobras@redhat.co=
-m/
->=20
-> Thanks for the patch.
+Getting filenames and line numbers (and inlining information!) for
+stack traces can be really really useful.
 
-Thank you for most of the work, it sure will be useful :)
+I think you are using KernelCI builds (at least that was the case last
+time), and apparently they are non-debug builds. And that's possibly
+due to just resource issues (the debug info does take a lot more disk
+space and makes link times much longer too). So it might not be easily
+fixable.
 
->=20
-> We can keep the variable name as KCI_CI_TAGS (like other variables) and=
-=20
-> add it in variables with default empty string.
+But let's see if it might be an option to get this capability. So I'm
+adding the kernelci list to see if somebody goes "Oh, that was just an
+oversight" and might easily be made to happen. Fingers crossed.
 
-Just tested, if it's an empty string, it will just be ignored, as it won't =
-match
-anything (that is not an empty string)
-
->=20
-> >=20
-> > Gitlab as an open-source software project (the community edition) is on=
-e
-> > thing, but can we please avoid advertising specific proprietary service=
-s
-> > in the kernel documentation ?
->=20
-> Agree. We could remove the lines which mentions gitlab.com SaaS in
-> commit message and documentation.
-
-Done :)
-Added a generic reason for needing better instance
-
->=20
-> >=20
-> > > Could you please apply it on top of your tree?
-> > > Some stuff changed places, but I can send a v2 with that fix if you w=
-ant.
->=20
-> I will test your patch and we can add this for v3.
-
-Thanks!
-That's the v2 with the required changes:
-
-https://lore.kernel.org/all/20250127185849.34131-1-leobras@redhat.com/T/#u
-
-Please let me know if any further change is needed.
-
-Thanks!
-Leo
-
->=20
-> Regards,
-> Vignesh
->=20
-> > >=20
-> > >=20
-> > > While I have yet to review this v2 patchset, I applied it on my repo =
-for
-> > > testing,=C2=A0and cherry-picked the patch on above link, triggering a=
- Pipeline:
-> > >=20
-> > > https://gitlab.com/linux-kernel/linux/-/pipelines/1638955600
-> > >=20
-> > > It seems to be working fine, please check it, as you may be more used=
- to the
-> > > results.
-> > >=20
-> > > Thanks!
-> > > Leo
-> >=20
-
+              Linus
