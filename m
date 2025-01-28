@@ -1,108 +1,117 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502B71DEFF3
-	for <kernelci@lists.linux.dev>; Tue, 28 Jan 2025 09:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5D21A83FB;
+	Tue, 28 Jan 2025 12:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738055976; cv=none; b=twbifrBrJOthHWz7E3KgcTamb0p+tVrjpXy8HRgDodk11l4D0Sh7ZaNSxEJFbrxbdGHDb4BEfrnwTxtFLo4Myg16+d8aQGBJryrPSFOQz/xcZCmV6Lv8dx94Iu7jhMOUY+Hzxcan7D40M4W5BfGnNkAxcnLTuR4mnAuawi7PZPs=
+	t=1738066452; cv=none; b=O91Jz66G2wKcqhXOlaqHFz90egEN4ES05fg8zG+1/pdxI9mec4SDXVHM4/W0C3yj9PIgHZnBzaKRxtkOLYua5QAqZNPMr9rtXx8vAVQGo9LxunFa6/y00CfBAiC1t5CMYeQE2t1C+J8HnKo4vevE8AkhyXn7zjY9yQWix0vbw4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738055976; c=relaxed/simple;
-	bh=G0IYIPruK8FJGb1qnPS8pft12oH93nV7sm6DrKWuEoY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UGqW7/g2Do75XzO/B3Ey8Vz3X5IzsX6dW1BGW0YQkCBSf7+haDuBepGK08maKCToffw45n9drSNdh0P9pJFxcTdkT7vSXIpeW7h4qvJOBKjGsV8LSJoyNdL8j9poHWM3LLkWmj2NEVXhpA7eTWSPKwFhccaMM2UaSmvD1smw6TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=bcKhzTh1; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1738066452; c=relaxed/simple;
+	bh=VPmQMeTKshQi8BLPiBnU+quZcCNk2gBWVueKbAAt7hw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P8zm7HiUpAXDK8bJ6DVWqjWtx2yB2q4m5aO/nFceE6LIzSht1KDqFiAYn1B23JKiXgp/2wuwPW/0/RrALScTZbw7QOD6MAioqt6UVWSnqlZX493IMcQNPB9p7WAxuv5lmNns2acoL2UeGym9LYSRB5rAoSt/52lYDcYjuESs2Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aexm+d10; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="bcKhzTh1"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9E68CC000D;
-	Tue, 28 Jan 2025 09:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1738055969;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GqmawlmBPTzK6rsXa4fts2SY1kwgVYQnTT/l6s8w8TM=;
-	b=bcKhzTh1ZT8iUOfgExF4S2DIbomL7PDkNTBhfsQ6aT+w5jvGzceZgtpvqbAjf9w+ET7Wse
-	aD6YYHF9Ba9CaICxe5ipN8jgJWHTFE/of/am42OsJzd9OAju8TF8Lhgd0uYuLCZmXdoJ26
-	HowqMNlRxl4eso0/RL37sJeRw5NWsmkh3D1qIquhL2XHcgzHe90pc+avXVtQIcxjXX2WI5
-	j4BgxXUC635tBXCbtjUtm+47HbvBV6JY0FG/TNhhsLxu3z+uRR1wKlFdYwdB9MOOqunvm4
-	G4+hmlwMT1LgEzKmPET7t9q7G1SqHKLQYyBjIa2I4z6ZqqjpmnXn6IINLWTIUg==
-Message-ID: <fe0ff3c2-b010-46f0-8916-5b471f5506c3@gtucker.io>
-Date: Tue, 28 Jan 2025 10:19:28 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aexm+d10"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE60C4CED3;
+	Tue, 28 Jan 2025 12:14:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738066451;
+	bh=VPmQMeTKshQi8BLPiBnU+quZcCNk2gBWVueKbAAt7hw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aexm+d10gkwLafsjApxGoJimfTgljfCLIWi4xLssNjuUuWMcp+PBzVxu8tHd2EKyx
+	 rGqKog1ElS3/OEQDRcD82z/oZezg9Kj6iwBRxVr1t0ual+2v+Dsz+U0w+PGaEZqoJU
+	 D/wuOF955EfwSZU5N6M2UxeWFV2adrYgc5ULhfXsLJEsUQv78GuJH3GayfG9YBQy0W
+	 JpUZ3da5vaPYEeUbgCxswlXP7AM/ISxcp3Wq8MhtIjogU3ayc+CRIPe+07W3m5cur+
+	 zJ75NRTfRh38WdcLevujaJWPQQVkYgn5FrqZKeh0Zbs1iaJ4bSM67/i5IswRyfjmv8
+	 GWaTtd2gVwZOg==
+Date: Tue, 28 Jan 2025 12:14:07 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	kernelci@lists.linux.dev, Al Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lkft@linaro.org
+Subject: Re: [git pull] d_revalidate pile
+Message-ID: <3770d3ed-e261-4093-9a41-90f0dfdd393b@sirena.org.uk>
+References: <20250127044721.GD1977892@ZenIV>
+ <Z5fAOpnFoXMgpCWb@lappy>
+ <CAHk-=wh=PVSpnca89fb+G6ZDBefbzbwFs+CG23+WGFpMyOHkiw@mail.gmail.com>
+ <804bea31-973e-40b6-974a-0d7c6e16ac29@sirena.org.uk>
+ <Z5gJcnAPTXMoKwEr@lappy>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [git pull] d_revalidate pile
-To: Mark Brown <broonie@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, kernelci@lists.linux.dev,
- Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250127044721.GD1977892@ZenIV> <Z5fAOpnFoXMgpCWb@lappy>
- <CAHk-=wh=PVSpnca89fb+G6ZDBefbzbwFs+CG23+WGFpMyOHkiw@mail.gmail.com>
- <804bea31-973e-40b6-974a-0d7c6e16ac29@sirena.org.uk>
-Content-Language: en-US
-From: Guillaume Tucker <gtucker@gtucker.io>
-In-Reply-To: <804bea31-973e-40b6-974a-0d7c6e16ac29@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="aZFSBvZRh7wr7T/o"
+Content-Disposition: inline
+In-Reply-To: <Z5gJcnAPTXMoKwEr@lappy>
+X-Cookie: I never did it that way before.
 
 
+--aZFSBvZRh7wr7T/o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 27/01/2025 9:38 pm, Mark Brown wrote:
->> But let's see if it might be an option to get this capability. So I'm
->> adding the kernelci list to see if somebody goes "Oh, that was just an
->> oversight" and might easily be made to happen. Fingers crossed.
-> The issue with KernelCI has been that it's not storing the vmlinux, this
-> was indeed done due to space issues like you suggest.  With the new
-> infrastructure that's been rolled out as part of the KernelCI 2.0 revamp
-> the storage should be a lot more scaleable and so this should hopefully
-> be a cost issue rather than actual space limits like it used to be so
-> more tractable.  AFAICT we haven't actually revisited making the
-> required changes to include the vmlinux in the stored output though, I
-> filed a ticket:
-> 
->     https://github.com/kernelci/kernelci-project/issues/509
-> 
-> The builds themselves are generally using standard defconfigs and
-> derivatives of that so will normally have enough debug info for
-> decode_stacktrace.sh.  Where they don't we should probably just change
-> that upstream.
+On Mon, Jan 27, 2025 at 05:32:18PM -0500, Sasha Levin wrote:
+> [ Adding in the LKFT folks ]
 
-One approach that was suggested a while ago was to do extra debug
-builds in automated post-processing jobs whenever a failure is
-detected.  This came as an evolution of the automated bisection
-which had checks for the good and bad revisions: if a stacktrace
-was found while testing the "bad" kernel then it could easily be
-decoded since bisections do incremental builds and keep the
-vmlinux at hand.
+Oops, sorry - didn't realise they weren't already on the report since it
+was on LKFT or I'd have done the same.
 
-As Sasha mentioned in his email, some particular configs are
-required in order to decode the stacktrace (IIRC this is enabled
-with arm64_defconfig but not x86).  Debug builds also make larger
-binaries and affect runtime behaviour, as we all know.  So one
-post-processing check would be to do a special debug build with
-the right configs for decoding stacktraces as well as maybe some
-sanitizers and extra useful things to add more information.
+> On Mon, Jan 27, 2025 at 08:38:50PM +0000, Mark Brown wrote:
 
-Builds from bisections or any extra jobs should still be uploaded
-to public storage so they would be available for manual
-investigation too.  That way, the impact on storage costs and
-compute resources would be minimal without any real drawback - it
-might take 30min to get the post-processing job to complete but
-even that could be optimized and it seems a lot more efficient
-than doing debug builds and uploading large vmlinux images all
-the time.
+> > have the ability to save the vmlinux.  Poking around the LKFT output it
+> > does look like they're doing that for the LKFT builds:
 
-Hope this helps!
+> My understanding was that becuase CONFIG_DEBUG_INFO_NONE=3Dy is set, we
+> actually don't have enough info to resolve line numbers.
 
-Cheers,
-Guillaume
+The arm64 and arm defconfigs which are the main ones I'd end up looking
+at both set CONFIG_DEBUG_INFO (_REDUCED in the case of arm64), the trace
+you posted was from arm64 so unless it was some config that overrode
+things there ought to be info.  x86_64 which I guess you might use more
+indeed doesn't have it.
+
+> I've tried running decode_stacktrace.sh on the vmlinux image linked
+> above, and indeed we can't get line numbers.
+
+That was a random build I pulled out which turns out to be a tinyconfig
+rather than the specific build that was used - if we look at an arm64
+defconfig (your trace looked to be from arm64):
+
+    https://qa-reports.linaro.org/lkft/sashal-linus-next/build/v6.13-rc7-85=
+84-gd4639f3659ae/testrun/27028517/suite/build/test/clang-nightly-defconfig-=
+40bc7ee5/details/
+    https://storage.tuxsuite.com/public/linaro/lkft/builds/2sDW1oYDQrsEOOs4=
+L6yoysbu9aS/
+
+I'm able to decode (just feeding a random log message in, no idea what
+specific build generated the log message so the line number is almost
+certainly wrong):
+
+   $ echo [   62.184178]  d_same_name+0x4c/0xd0 | ./scripts/decode_stacktra=
+ce.sh /tmp/vmlinux
+   [   62.184178] d_same_name (fs/dcache.c:2127) =20
+
+--aZFSBvZRh7wr7T/o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeYyg4ACgkQJNaLcl1U
+h9ABLwgAhnkclVNICA/aHT+23arfK9S3L44hGHHrDVOokd5JPC5CibjVlNYz2UM+
+U+ZLTV1r6XJlKPI0tgmNhjyrmBSNqwz3BcjPlldwGBJRiDkD04sFjfaVYh+5Rlun
+iAQ0QYQvft1v0gquWilwLZ1TrGlI6x81hk2c7Q/b84HIG9zpz7JA+/7Xe4gr99Wi
+v2/eFlc2Y/NpacFMJnLPTt+KtugL3TllfyHU/Oh5USO4j7oZyYU9i9PGG89O/9oh
+hKkFzlD8/aYhngT8QYGN75uAFZm1fgmkdCv8cLpmJft3OM9zkw8CyJf2zO5J+T9w
+KmhavpIYql2a088i5rZnrtnYwnqgaA==
+=2o/n
+-----END PGP SIGNATURE-----
+
+--aZFSBvZRh7wr7T/o--
