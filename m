@@ -1,132 +1,108 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9531B59A
-	for <kernelci@lists.linux.dev>; Tue, 28 Jan 2025 01:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738028980; cv=pass; b=Mh/YSLfgkj54jWX3gMS/YN1nomBU4wQVbdKNaz3FZpkNwz68vHLjgugH705PF4Jqaw9MqdpS6iyIg0y+QCR06q3IKSJoZg4UyPXwnqAEvrzs/44F/iMgqcec7N12SzFOHUlgK9CSoloUkuYDiqsBHn6kbhza8yyoAnVfiUUP1+Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738028980; c=relaxed/simple;
-	bh=M32V+KVZimZqfAKZPpanBbE3xzX03A+MXxBzsWsQU8Y=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=QA97WWOPiPZ5t3kGWVEQdd6mSE1/pg82djTp1nEM0hsy7aHonuM/iAppGGi+Nl8xjdmcDB4i2Ywi6oDjVG4VmHbxNY8K5go/Qec3pIO6yV/UA4xYmPPL9nkA94jcMQ+IKhun1mrXqYPLumrv4MBwDaKO/FB6Ucc1SdloV0+Jn/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=aPedJULB; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502B71DEFF3
+	for <kernelci@lists.linux.dev>; Tue, 28 Jan 2025 09:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738055976; cv=none; b=twbifrBrJOthHWz7E3KgcTamb0p+tVrjpXy8HRgDodk11l4D0Sh7ZaNSxEJFbrxbdGHDb4BEfrnwTxtFLo4Myg16+d8aQGBJryrPSFOQz/xcZCmV6Lv8dx94Iu7jhMOUY+Hzxcan7D40M4W5BfGnNkAxcnLTuR4mnAuawi7PZPs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738055976; c=relaxed/simple;
+	bh=G0IYIPruK8FJGb1qnPS8pft12oH93nV7sm6DrKWuEoY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UGqW7/g2Do75XzO/B3Ey8Vz3X5IzsX6dW1BGW0YQkCBSf7+haDuBepGK08maKCToffw45n9drSNdh0P9pJFxcTdkT7vSXIpeW7h4qvJOBKjGsV8LSJoyNdL8j9poHWM3LLkWmj2NEVXhpA7eTWSPKwFhccaMM2UaSmvD1smw6TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=bcKhzTh1; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="aPedJULB"
-ARC-Seal: i=1; a=rsa-sha256; t=1738028976; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cm1PJ2ZX6J5WHlRjZtlQg7d23LFGuuP1KCaspRFzRa6Hb4r0zie1vV7feimF1uFZ3JrY9+qdXYq3x3bbvYbLASdWKt+Ef/Qhx/w7RqyXxaOtuj1ruTMisIJ4/1PApbjF1qYzpfzvvwP8OgQ59yhMEa1YrG+5QvYBZoOhP8texNI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1738028976; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=V5VU+sU/CW+Aa8BtZlfzUku+IXl4qgo6TWy+hJnnB5A=; 
-	b=OP+OBRbi0oyFx1RWA75e4U9XYt1EgSclT6f3jdzsV3i83eOj3dmSiBzGFdqAWgdRwV66ZDU3CwImwhETsEJdQeMV6pg4zZmdFeyX1GUc4MX+f+qdemFHjZioJzlKGya3LJ/jz3bzfNTsAzZoNnuHNP0g/T7EcI+tXqw7tI586cc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=denys.f@collabora.com;
-	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738028976;
-	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
-	bh=V5VU+sU/CW+Aa8BtZlfzUku+IXl4qgo6TWy+hJnnB5A=;
-	b=aPedJULBEN26DTFldCVQyxCsD0hg5UENzsm4FjlL3Fl1VDCs+s75UlIiaMGBUbE7
-	LZkddiz7xcWK2PlLiTv+JdDmdyZQ7wW5X4YrUEwlmeA0PJ/CsYdT+YDsgK7INI7WY/T
-	M3uai/sA07QrldNhFkEtvmyBH/J53B32CsweUpwY=
-Received: by mx.zohomail.com with SMTPS id 1738028973470971.793396268736;
-	Mon, 27 Jan 2025 17:49:33 -0800 (PST)
-Message-ID: <8895855f627c1a0d17e510738ec3105936e9eedf.camel@collabora.com>
-Subject: KernelCI Weekly Newsletter (Week 4)
-From: Denys Fedoryshchenko <denys.f@collabora.com>
-To: kernelci@lists.linux.dev
-Date: Tue, 28 Jan 2025 03:49:30 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="bcKhzTh1"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9E68CC000D;
+	Tue, 28 Jan 2025 09:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1738055969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GqmawlmBPTzK6rsXa4fts2SY1kwgVYQnTT/l6s8w8TM=;
+	b=bcKhzTh1ZT8iUOfgExF4S2DIbomL7PDkNTBhfsQ6aT+w5jvGzceZgtpvqbAjf9w+ET7Wse
+	aD6YYHF9Ba9CaICxe5ipN8jgJWHTFE/of/am42OsJzd9OAju8TF8Lhgd0uYuLCZmXdoJ26
+	HowqMNlRxl4eso0/RL37sJeRw5NWsmkh3D1qIquhL2XHcgzHe90pc+avXVtQIcxjXX2WI5
+	j4BgxXUC635tBXCbtjUtm+47HbvBV6JY0FG/TNhhsLxu3z+uRR1wKlFdYwdB9MOOqunvm4
+	G4+hmlwMT1LgEzKmPET7t9q7G1SqHKLQYyBjIa2I4z6ZqqjpmnXn6IINLWTIUg==
+Message-ID: <fe0ff3c2-b010-46f0-8916-5b471f5506c3@gtucker.io>
+Date: Tue, 28 Jan 2025 10:19:28 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ZohoMailClient: External
-
-**Summary**
-
-Summary
-
-Apologies for the delayed update as we were finalizing the newsletter conte=
-nt.
-
-This edition is dedicated to the latest release of kci-dev.
-
-We=E2=80=99re excited to announce that kci-dev v0.1.2 has officially been r=
-eleased!
-
-Currently available on [PyPI](https://pypi.org/project/kci-dev/) and [gento=
-o](https://github.com/gentoo/gentoo/commit/2f500dc9e17abdb5f447106c4e284384=
-c56e0da6).
-
-This version is providing the following new features =20
-for the recently added `kci-dev results` command. =20
-`kci-dev results` as been splitted into three subcommands:
-- `kci-dev results builds` Display build results.
-- `kci-dev results summary` Display a summary of results.
-- `kci-dev results tree` List trees from a given origin.
-
-each of the previous subcommand can be executed without arguments in a loca=
-l Linux Kernel tree =20
-repository folder like in the following examples:
-
-```sh
-Linux Kernel:
-=E2=9E=9C  linux git:(master) kci-dev results summary
-git folder: None
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-branch: master
-commit: fbfd64d25c7af3b8695201ebc85efe90be28c5a3
-
-pass/fail/inconclusive
-builds: 46/0/0
-boots:  580/48/8
-tests:  7858/6903/654
-```
-```sh
-Linux CIP v4.19.325-cip116:
-=E2=9E=9C  linux-cip git:(linux-4.19.y-cip) kci-dev results summary
-git folder: None
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git
-branch: linux-4.19.y-cip
-commit: 6e07bbcb7050f0840638c734437cc842a855dd10
-
-pass/fail/inconclusive
-builds: 19/2/0
-boots:  298/52/25
-tests:  165/180/105
-```
-```sh
-Linux CIP v5.10.233-cip56:
-=E2=9E=9C  linux-cip git:(linux-5.10.y-cip) kci-dev results summary
-git folder: None
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git
-branch: linux-5.10.y-cip
-commit: 6077b17f20b1bcfeccaa23bc05573b938c47679d
-
-pass/fail/inconclusive
-builds: 21/0/0
-boots:  440/36/18
-tests:  1190/184/100
-```
-
-Added new `kci-dev config` command for adding a configuration template to b=
-e used with the maestro commands
-```
-=E2=9E=9C kci-dev config
-Config file not present, adding a config file to ~/.config/kci-dev/kci-dev.=
-toml
-```
-
-Also, new bisect command has been added! We=E2=80=99ll provide examples and=
- detailed usage in the next newsletter.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [git pull] d_revalidate pile
+To: Mark Brown <broonie@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, kernelci@lists.linux.dev,
+ Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250127044721.GD1977892@ZenIV> <Z5fAOpnFoXMgpCWb@lappy>
+ <CAHk-=wh=PVSpnca89fb+G6ZDBefbzbwFs+CG23+WGFpMyOHkiw@mail.gmail.com>
+ <804bea31-973e-40b6-974a-0d7c6e16ac29@sirena.org.uk>
+Content-Language: en-US
+From: Guillaume Tucker <gtucker@gtucker.io>
+In-Reply-To: <804bea31-973e-40b6-974a-0d7c6e16ac29@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
 
 
+
+On 27/01/2025 9:38 pm, Mark Brown wrote:
+>> But let's see if it might be an option to get this capability. So I'm
+>> adding the kernelci list to see if somebody goes "Oh, that was just an
+>> oversight" and might easily be made to happen. Fingers crossed.
+> The issue with KernelCI has been that it's not storing the vmlinux, this
+> was indeed done due to space issues like you suggest.  With the new
+> infrastructure that's been rolled out as part of the KernelCI 2.0 revamp
+> the storage should be a lot more scaleable and so this should hopefully
+> be a cost issue rather than actual space limits like it used to be so
+> more tractable.  AFAICT we haven't actually revisited making the
+> required changes to include the vmlinux in the stored output though, I
+> filed a ticket:
+> 
+>     https://github.com/kernelci/kernelci-project/issues/509
+> 
+> The builds themselves are generally using standard defconfigs and
+> derivatives of that so will normally have enough debug info for
+> decode_stacktrace.sh.  Where they don't we should probably just change
+> that upstream.
+
+One approach that was suggested a while ago was to do extra debug
+builds in automated post-processing jobs whenever a failure is
+detected.  This came as an evolution of the automated bisection
+which had checks for the good and bad revisions: if a stacktrace
+was found while testing the "bad" kernel then it could easily be
+decoded since bisections do incremental builds and keep the
+vmlinux at hand.
+
+As Sasha mentioned in his email, some particular configs are
+required in order to decode the stacktrace (IIRC this is enabled
+with arm64_defconfig but not x86).  Debug builds also make larger
+binaries and affect runtime behaviour, as we all know.  So one
+post-processing check would be to do a special debug build with
+the right configs for decoding stacktraces as well as maybe some
+sanitizers and extra useful things to add more information.
+
+Builds from bisections or any extra jobs should still be uploaded
+to public storage so they would be available for manual
+investigation too.  That way, the impact on storage costs and
+compute resources would be minimal without any real drawback - it
+might take 30min to get the post-processing job to complete but
+even that could be optimized and it seems a lot more efficient
+than doing debug builds and uploading large vmlinux images all
+the time.
+
+Hope this helps!
+
+Cheers,
+Guillaume
