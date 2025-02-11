@@ -1,100 +1,100 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15728230D0E;
-	Tue, 11 Feb 2025 15:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD5A2505B3
+	for <kernelci@lists.linux.dev>; Tue, 11 Feb 2025 15:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739287223; cv=none; b=V0Qe1LlaUP1pC0TqO1fzttdU9APYTXRez5BDU6rWIecVOz8NQ4tlrODwKZCORA25WOIdzFKUBjOJK63wnT+F++6QhqKMflaY+Tytd6JrHBdh0v0ljD9VqmZe/dzLKiQyxx4iJGAS43nKZdz1ztO1oV4Kkb+2hlM2bocBVKpFCFw=
+	t=1739288053; cv=none; b=pJ577leZI/L7Yf8xWC6VjErCLD0QVGYu2Dor9ul41lfT2PKNAzDPCzSkXgvKG4Dkf0gcBzjcQLzdp3ADnmODZqr765MHR248kuEhMM+u2BCGPv9SdPAJKMli3ALM42FwdsbfET7qmbUxJcUdwF8tUq3/m1HZEJV0Zko8Tqd1hCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739287223; c=relaxed/simple;
-	bh=mOAVxW6tetpGZjcYV2weElMouCc/GtOd82EnhQ8+85I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tM70loOzz4qOiyYSW/CVlNMNY0ZwpRtNB2ZI1foOX3SzR2ZqqFwXvWpTFHbS20yMJn88yGWPEnUnkfcL4jC5DaJByH3VJP/YXoAHQ/haKdhhMoechNx/rV4tzbDTi0u148R6Tdr2xRqt/SxE5xfuf8HFf6njArQ2m4rXCyzuTlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lo2JW7si; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ri9koU7W; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1739288053; c=relaxed/simple;
+	bh=c4U0BQoGEDqvwQiEJG/iNEafKJ/9ljNNGuWV+PcZbfM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OusLOBrhRXYKm5mbLO16qCmtfS6msUM7vXMxyfmNx4WrNM3IXx7OQgHZS0aqRzB5h+K/ULOxXqs5ot7lpCtUr8kCUcLPEiV+xzYGlwGZoCcfM96E7/OhewZOHIoqMLRAou12fOfxuWHudtjUAtpdg4YWqjyQ80FdUSioK3Zgy1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kVg7/1C5; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lo2JW7si";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ri9koU7W"
-Date: Tue, 11 Feb 2025 16:20:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739287219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xGUgApZDmXbkZQbNRmGSAJtUSm3HnPj/hv+ZmYMXOjY=;
-	b=lo2JW7si0mmZdBT+bWGK5iop4rllSU+1FwOOetdO/iW6km9Q09xn5CrJ5o+AAtWdx8L83K
-	hYeAMsUZwdMkSvjwvY+rbd423YPZFJoMeXxoGGtih3Mw5R/QL1kcwef1q8sQBdjLbxGfgf
-	bFonJdcaXBlzspXMHzvV89BsWGXSjQJ0DTGODPUXz4s5ISBcH+L6GOXmmlJX1GWjnt7NrK
-	9BrAvLUf51eCIUNRV213VsquKUDKCYXNHtTznzwB1mKyWoHfPf4xY1B4tEueFdprIwb3FZ
-	cGqO+ncxhRNSTEcphbkYghsiudhESx78xBhbFUR1BVi9h7H9FU7mlcJWfwi3/Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739287219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xGUgApZDmXbkZQbNRmGSAJtUSm3HnPj/hv+ZmYMXOjY=;
-	b=ri9koU7W9LfDekfm23bFg2OwuVj+iGqpawBr8/PqYfdrS3j4PyjGi6qVbLYSCVttRkRiS5
-	/Wp4vsG8jfcvyxBw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Gustavo Padovan <gus@collabora.com>
-Cc: kernelci <kernelci@lists.linux.dev>,
-	linux-rt-devel <linux-rt-devel@lists.linux.dev>,
-	stable-rt <stable-rt@vger.kernel.org>,
-	Daniel Wagner <wagi@monom.org>
-Subject: Re: PREEMPT_RT testing on kernelci
-Message-ID: <20250211152018.sK91dh93@linutronix.de>
-References: <20250211090511.xeFJVnH_@linutronix.de>
- <194f4c989de.bdd18d3279996.2067896388251039576@collabora.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kVg7/1C5"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5de6d412ee9so8048a12.1
+        for <kernelci@lists.linux.dev>; Tue, 11 Feb 2025 07:34:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739288050; x=1739892850; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZbL9eQa2NHquqUeuZMpqgcfigc8NbXhYu6ZhdCUgNRA=;
+        b=kVg7/1C5wVCKPL0c+lU+2FABhJktznvqJHacq/7ZNDGjz7qLKBdSlG4ZSqDn8L2nUb
+         tKqxAkNnSZitrkEdmqmme2o6/kasEp5bFcRbO8hCPpYzDd5lrF1owLHATgKPwFuDw8sg
+         bzw0bz5hdaLGZwdaupy0Ol3v+8SqZzTfCTnuXYIWxlX3fEURSeyRH0DinvEVdbE3Uwu9
+         7RwUcwzxiqDaQgKBduraILM0Lz4iwCabz3Unn9s1+4A7FPeLUVsftMCkGw1VO39oQ5Hd
+         JjPIzd0eMziaIEQ/95m9RHPyRyC9iR9ArQ2HEkTGEzTmzblEhHba+6in3DhyrcUAkJWh
+         Rrmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739288050; x=1739892850;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZbL9eQa2NHquqUeuZMpqgcfigc8NbXhYu6ZhdCUgNRA=;
+        b=U6PCDitrklzGBnUb+xz4G5aR0Ytp4sPMCbr5rkMJ/dN29bAoaaVSJUUhYXbGdsQCrb
+         uXsLtvrdMBWfxAzp3Gu5S4LxugHsiE+ZrpsBR3yxhp8W0Xhdna5p58HkFyJSWxyZYiRH
+         3cftTA0lWRfQ6/Fl6A3kha4/wDebhcO2B++sDh6uhptUPKWrqsmp6OWjVCEYHXq4I9KC
+         u8tez9ifZ3vqiSjzFmk5OfSit3KLLWSnEUJocYNUpxuu9eGCGiZRv12rh1pM7g+wtjhG
+         PgzuF8SDilJntYy4ePSROorhLyQVJLGEq/KJKcvI+8NO8mySuT1Rz+TprzX/zEdU661k
+         WQPg==
+X-Gm-Message-State: AOJu0Yx5c6lzA8KrEa/Wl725Azu6PlRMI4ajfo+aQAkgzEdCh/ldkdWu
+	DGO7FyCaQhUg5sF+PPFSdNrsCw/1RPzAePhkIovq7qPVebzAlwNSaGHIQZMnUg0S5Av9IBqVS56
+	OLduGjng8n4RvFsXhg7VVx+CzqUosH7A3ey3j
+X-Gm-Gg: ASbGncuZaDmJd8PEExYZchOGtk7py5mF/Mj4L1pCPf/jVeWU8pC75gnlxbRXoslri9S
+	N/gsQbe8ppcPoQHY/NINI7lGb787zVP9JccrLAJU+lRZ2TPuLEcRu4v7ODQ64aHEEagDUD+mgwM
+	iXjHJwwpQxsUwq00X+3EYgkdiC1XYTqeE=
+X-Google-Smtp-Source: AGHT+IHqGDGz0wfrcp45JtErtpRAYfNh1EE57PPR06fLJQNwhTHl/SAaKNWTZ8LVn4rijthtDnq+ZrEwVKQjctxaREg=
+X-Received: by 2002:a50:aa93:0:b0:5dc:d08e:e128 with SMTP id
+ 4fb4d7f45d1cf-5dea05e7838mr88792a12.5.1739288049612; Tue, 11 Feb 2025
+ 07:34:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <194f4c989de.bdd18d3279996.2067896388251039576@collabora.com>
+References: <20250211090511.xeFJVnH_@linutronix.de>
+In-Reply-To: <20250211090511.xeFJVnH_@linutronix.de>
+From: Guenter Roeck <groeck@google.com>
+Date: Tue, 11 Feb 2025 07:33:57 -0800
+X-Gm-Features: AWEUYZlq96aEBCvQeCZ-nHsg7o-TOaHeFPxTcHp9j8eLA7B3lgOzEs9a9524BPo
+Message-ID: <CABXOdTeLUi8mKkV38SegM_n8=Uyykd-X+n7RysjpgAZfxxb5BQ@mail.gmail.com>
+Subject: Re: PREEMPT_RT testing on kernelci
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: kernelci@lists.linux.dev, linux-rt-devel@lists.linux.dev, 
+	stable-rt@vger.kernel.org, Daniel Wagner <wagi@monom.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025-02-11 08:33:56 [-0300], Gustavo Padovan wrote:
-> Hi Sebastian,
-Hi Gustavo,
+On Tue, Feb 11, 2025 at 1:05=E2=80=AFAM Sebastian Andrzej Siewior
+<bigeasy@linutronix.de> wrote:
+>
+> Hi,
+>
+> I remember Daniel Wagner has been asking to include PREEMPT_RT within
+> kernelci. I don't really know what the status here is. Thank you for the
+> work.
+>
+> Since PREEMPT_RT is now available upstream, would it work to compile and
+> enable some of its tests for the supported architectures on Linus' tree
+> and maybe the -next tree? I don't think that happens at the moment, I
+> saw only a few stable-rt trees.
+>
+> If so, should I just open an issue at
+>         https://github.com/kernelci/kernelci-core/issues/new
+>
+> Is there be anything in particular you need help with?
+>
 
-> Thank you for your email. We are happy that KernelCI is helping you with tests.
-;)
->  > Since PREEMPT_RT is now available upstream, would it work to compile and 
->  > enable some of its tests for the supported architectures on Linus' tree 
->  > and maybe the -next tree? I don't think that happens at the moment, I 
->  > saw only a few stable-rt trees. 
-> 
-> https://github.com/kernelci/kernelci-pipeline/pull/1010
-> 
-> This will get it enabled for mainline and next. Allow us a few days for processing and
-> deploying this in production.
+Unrelated to KernelCI - how stable is PREEMPT_RT in practice ? Reason
+for asking is that I enabled it for x86_64 together with lock
+debugging and got an almost immediate "sleeping function called"
+backtrace.
 
-Sure. Just poke if you have something to inspect or look at because of
-$reason.
-
-The architectures, that support RT are what you see in
-| git grep ARCH_SUPPORTS_RT arch/
-
-so this does not include arm at current stage for instance. So in
-general, if you can't select CONFIG_PREEMPT_RT you can skip the
-config/ build/ test.
-
-RiscV on the other hand is supported.
-
-> Beyond that, we would love any feedback you have to us. A lot of the infra
-> we have today is new, so there are still rough edges to work on.
-
-Sure. How do I see easily what is tested/ done? I could maybe wait a few
-days and check the dashboard. The link from above showed timerlat has
-been but I didn't manage to figure what has been. I guess there is a
-script somewhere handling the logic.
-
-> Best,
-> 
-> - Gus
-
-Sebastian
+Thanks,
+Guenter
