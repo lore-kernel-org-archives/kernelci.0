@@ -1,102 +1,69 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620B0AD2F
-	for <kernelci@lists.linux.dev>; Sun,  2 Feb 2025 13:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738502350; cv=pass; b=kuMmI217eX3tTkiAjEAbiK6wlN9ZO1QBS1R1Aa5OdktlW73QM3wN548qZOXqK8oyIR1o9Jb63hSikGzuv3FPEhmRuaFJg2Ej196ySZ1K4AXG7kFg/r2DenbM4jp/X1D/hqYCw1Ey8DO9WYFjEXX3abYEbaRgdcDZdDWiHZcaSt4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738502350; c=relaxed/simple;
-	bh=qVVBhtmKQFPrvMmYjvWyJyTRAwWAvw32waXuYHu0UVc=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=fsy5MqAxfzfzEf4F4o/JJZQPvAHjRHcGIF3mCeQcILb0xldp2KwkHcJNIEUZHPsRE5nWw5Dizv0rq9Tr3ctLrrHCtAURIEM8f9lLPzbqh3LCr4TV2HxxO8mEBrDUOOnCpV4e0b/uO1cVxX7pKiNTH52QO7gQB7Riyz4TEqMK+fc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=YJ2T0Ldd; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A2026BDA6;
+	Tue, 11 Feb 2025 09:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739264721; cv=none; b=sZ78fPCeXSul4R6dHlr5khx/LK9I+kiCyj8eYxo1zBFy89aTOSI3RkYane76tnx4IPZwOTbnurNYo86nI2mR9t1kpwcPpFc9LgmD0HuDTCVW9ZHwrtFThn7dVaTKyyepJk/xSPv1sToaUj9hQxzDuIfKXSjqo21SXd9crti4whw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739264721; c=relaxed/simple;
+	bh=Svv+nwNCLHdzs6QrvQV8o+WcV42oA41c9NaBW6BdasE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=tMypTRaXfhCTdW1BigdWYSL7IvF0rsR9IfKW6Ljoi8ZfmutmZ2PIZv50xVKKAdVJBpOTkbVwATfnlsszbcI6ob2lAdUVOsBP1RsQZfVd9CrCOLPOBQ5N7tabqmb6S6QjkaFyXW0E+LpgOsPejpbc8ZKgd2RzR8Gikx1k76i3+10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DY7yj8oa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=g39q/iz9; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="YJ2T0Ldd"
-ARC-Seal: i=1; a=rsa-sha256; t=1738502345; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=IaElo1IcobTQ/o0rfzOVjpEbgN7BzJC5CUW5BiREBRELToKE4AoASHjIUod5eTEY9xh8iK7tYk0OeZk2x2RNP050s492vRBvcdaN2Gpgop3idfXj671KCw52uEHknH6A3CR1qMYT5e5lQzAArIJ8KkRs+oVzAe4Z2KDmsSRS1ZQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1738502345; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=qVVBhtmKQFPrvMmYjvWyJyTRAwWAvw32waXuYHu0UVc=; 
-	b=VQFPlCoXjX60RclD0nX2r3+EO3B3/JAzcvEj3zls+6Sj0tUL4DdbwxHmU+c25bd9ymaQTcIinix+OWb8wlaC5DfaO+AnNTP+Gq8BovFxt9aDy/+P5x2siRakPd5PESTtF3/jOy8ZPX8Gf8p2hb8xUOyNo6bUm2RTbq+PJ4x1jsM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=denys.f@collabora.com;
-	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738502345;
-	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Date:Date:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To:Cc;
-	bh=qVVBhtmKQFPrvMmYjvWyJyTRAwWAvw32waXuYHu0UVc=;
-	b=YJ2T0LddQB9L6QM2RdnaMplAxVCdja/d8NA1CIpW034JpILHAYWJE/Ma/eU4ZSkm
-	Qt+n83weNahA1ooRWnj14s9pwsoAbraYZR/h2sfetldGWkUVKFA2OmXXQWNBbfBPtpS
-	APX/duXOYieH6GTVaMVJoTtd3COkdweoqxfn7Qrs=
-Received: by mx.zohomail.com with SMTPS id 1738502341095226.73863335266446;
-	Sun, 2 Feb 2025 05:19:01 -0800 (PST)
-Message-ID: <b746afa1ae72011a3ea65fa84a0237486b191d83.camel@collabora.com>
-Subject: KernelCI Weekly Newsletter (Week 5)
-From: Denys Fedoryshchenko <denys.f@collabora.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DY7yj8oa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="g39q/iz9"
+Date: Tue, 11 Feb 2025 10:05:11 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739264712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=kXfJDnilUU+EYr3pa8mS3jm4mEYeovUBiYG2tSWSdXE=;
+	b=DY7yj8oah8Ym4OYEC60ABITHHNoha1WSkbrOjQCELm2kZA6pOc42AdOdioWioGgivjlKZC
+	cK1OO703QRq/DzpfL6PzcOhCugxjWyP+L5J17699WaDLILqZTuyA0XJ9elpIl6Cpn59o3T
+	mtKnt2PANnvU0CVpzlb7WjH/iMs5bFXAjwERxGja/dnZlxW/CITAAnJRu4GZ42CkXpdPq3
+	OmPLFaiKCGazUY+rGENeFBln7SW0AeZLbV2GGnB3Zx4r8513T9q0QSD+FUoxpqPWeGE/h/
+	3LtB2IDcJzg39w4bo34fz4OE+pqNKbZ6BgS1/Ep1j22sQeQuURt32rgZXqyIlA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739264712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=kXfJDnilUU+EYr3pa8mS3jm4mEYeovUBiYG2tSWSdXE=;
+	b=g39q/iz9djZntcVtBjHuJsajq8pnvv1A2R9uL+rMydv0r6jiKrMrefTiLcVUSe2Hc5cu7Y
+	HjFIecQtj756XkDw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 To: kernelci@lists.linux.dev
-Date: Sun, 02 Feb 2025 15:18:58 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+Cc: linux-rt-devel@lists.linux.dev, stable-rt@vger.kernel.org,
+	Daniel Wagner <wagi@monom.org>
+Subject: PREEMPT_RT testing on kernelci
+Message-ID: <20250211090511.xeFJVnH_@linutronix.de>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-# Weekly Development Summary
+Hi,
 
-## Key Highlights
-* Sysadmin team successfully implemented production deployment
-workflows via GitHub
-* KCI-dev received significant updates and improvements
+I remember Daniel Wagner has been asking to include PREEMPT_RT within
+kernelci. I don't really know what the status here is. Thank you for the
+work.
 
-## Sysadmin Team Achievements
-The sysadmin team has completed the implementation of production
-deployment workflows through GitHub, marking a significant milestone
-for the project. This enhancement represents a substantial improvement
-over our legacy system.
+Since PREEMPT_RT is now available upstream, would it work to compile and
+enable some of its tests for the supported architectures on Linus' tree
+and maybe the -next tree? I don't think that happens at the moment, I
+saw only a few stable-rt trees.
 
-Previously, deployment relied on server-side scripts with multiple
-manual interventions. The process, which included building large docker
-images, typically consumed an entire workday. The new GitHub-based
-system, leveraging free CI/CD capabilities and parallel builds, has
-dramatically reduced deployment time to 1-2 hours while fully
-automating the workflow.
+If so, should I just open an issue at
+	https://github.com/kernelci/kernelci-core/issues/new
 
-Key benefits of the new system include:
-* Increased deployment frequency capabilities
-* Broader deployment access across team members
-* Enhanced process transparency and documentation
-* Reduced operational overhead for the sysadmin team, requiring only
-initial process initiation and final verification
-* Elimination of dedicated deployment server requirements
+Is there be anything in particular you need help with?
 
-## KCI-dev Updates
-Special recognition goes to Gustavo Padovan and Arisu Tachibana for
-their valuable contributions to KCI-dev this week.
-
-Gustavo Padovan implemented several significant enhancements:
-* Real-time build status monitoring through the watch option (PR #107:
-https://github.com/kernelci/kci-dev/pull/107)
-* Enhanced results command functionality, incorporating boot and test
-results with hardware filtering capabilities and visualization
-improvements (PR #102: https://github.com/kernelci/kci-dev/pull/102)
-
-Arisu Tachibana delivered multiple critical improvements:
-* Implementation of stability fixes
-* Streamlined pip deployment process
-* Introduction of KCI-dev development version
-* Additional system enhancements
-
-Reference PRs:
-* https://github.com/kernelci/kci-dev/pull/106
-* https://github.com/kernelci/kci-dev/pull/104
-* https://github.com/kernelci/kci-dev/pull/103
+Sebastian
