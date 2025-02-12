@@ -1,97 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D80253B61;
-	Tue, 11 Feb 2025 16:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAC320B1E5
+	for <kernelci@lists.linux.dev>; Wed, 12 Feb 2025 17:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739291164; cv=none; b=WF2U/OMvxnxfX14cG5Hvpcfwh5DvzJeCHtGBuwmXy5sYyFtFk6YJsX30HUE5tZOTWmGoZenUtvKh8oRocK+Tu0Z19AFQRnlU1/pRTaRoh/5O4kU5nsABEgWxc1Kt6+ZLnNarkhWx4Yo2arD89nKSBDfOpCBMmwZc/z2LUrKGPLU=
+	t=1739380692; cv=none; b=L/5SQYt1DoCL0fi3rWVYtaMH/K9Eajl1ZPBCCt0NVyMmBweLx8lrN/yz2Z8AIxGy6iM9Msx+ZIhCEhYwDeVSaGTxVdy5X/9vfYqrO0E3G/kFiAmfPZK92MvQef+RCDXs6Rn1MrRpwyUNeFzZbwr/dHLAQEW3U7z3ZlcqfXBc2TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739291164; c=relaxed/simple;
-	bh=bhRsq0b5reECDJvaMAqhTXpua3kqM/0rBeuBIVouF+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m7vrOWlZrZf4wEcPiaq691VSl7OfLQQxJ1AwIA+i0vCExOoCNZpd8Bg6P5jnuXwCn9AWDE8LHrUNeln4MgS6hAIvABcHwFDldKYDKgSsXWtnI1pSZjxEx2v224ZYVxSgrwi6fqRV8e4ZSaZXADLUEV6FEUkPhWKdWQvTVTMGxUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QtOLM+mW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739380692; c=relaxed/simple;
+	bh=E6V3ktEebwSlI2OpSCn820nCr2t0SYwR+etcpticThE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LJQk6sTNrPrp8TdZV/pSGMR81kyFUN6LbwDE0pFuzxJyWPoLWsuy5YxmZqt6jMglQsAZPsN7axm9Lkc7LQv2ZgmO5AcUye1aC5XUN2C6g8RyH6A8xOKJ4hvG/3BRxfi8cPLvlA0PpNZz+YWycBbxomECPYyCE8rXuzXMIXzYJKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PLqMOAuX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QtOLM+mW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64A1C4CEDD;
-	Tue, 11 Feb 2025 16:26:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739291164;
-	bh=bhRsq0b5reECDJvaMAqhTXpua3kqM/0rBeuBIVouF+o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QtOLM+mWfmLAttg7/2FG74ZO8YFOUBB4a1hGPkGh/8QJwdfj29Iyj0exaQplJjqiD
-	 2GtyHmFM0BH394XNuKUuxUUR9RN4jXsDrih2hhlXYEjipqA6pByNfPzsLwyqnpFy1V
-	 A4djSjSIsGLDqhHjvNqPICppJ+a8sbOGi+P+4EWisjPy7j/mp27YuLd1bKU7+rozBI
-	 YI/mhOHopQibgpaj7dVeJBBy8ANpZAjFsf3G2V2AkkBMuVV7nydtUPedgsANMjkPKs
-	 miyjf0Vjo5lilSpluU6+2CFDn+HiU4nJ0INjU4rJ4UqJFBpmsHa7op+MUbthPdomR0
-	 Tun4u8K63/DOw==
-Date: Tue, 11 Feb 2025 16:26:00 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Gustavo Padovan <gus@collabora.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	kernelci <kernelci@lists.linux.dev>,
-	linux-rt-devel <linux-rt-devel@lists.linux.dev>,
-	stable-rt <stable-rt@vger.kernel.org>,
-	Daniel Wagner <wagi@monom.org>
-Subject: Re: PREEMPT_RT testing on kernelci
-Message-ID: <c357446d-6df3-4e29-a9d2-fb4f94e34ac3@sirena.org.uk>
-References: <20250211090511.xeFJVnH_@linutronix.de>
- <194f4c989de.bdd18d3279996.2067896388251039576@collabora.com>
- <20250211152018.sK91dh93@linutronix.de>
- <194f5b4b029.e5ee4014194612.536900249866001318@collabora.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PLqMOAuX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739380689;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eTfc47a39PqxjnScnMsX8C0/EadmIM8SFWHp+lTEE0Y=;
+	b=PLqMOAuX245CGSfFal6fzMw8+QRxDhokTLQwiVPwCvXJZJsHKLKQGboRCjxqJ+rYJvLEGE
+	R02dI0AmezEww/BHPdzTUt7wOHVAmlMtl+L5PyRRlM6ntnCBTOEGzOoRyCzhQZCQyxzZCY
+	e4QAqTOPVcZ00gMzs9G9fYkKkX3admY=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-331-M7XFM3T1Mq-Wb_WaWEXxEg-1; Wed, 12 Feb 2025 12:18:07 -0500
+X-MC-Unique: M7XFM3T1Mq-Wb_WaWEXxEg-1
+X-Mimecast-MFC-AGG-ID: M7XFM3T1Mq-Wb_WaWEXxEg
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-6f97ec73df7so43894257b3.1
+        for <kernelci@lists.linux.dev>; Wed, 12 Feb 2025 09:18:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739380687; x=1739985487;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eTfc47a39PqxjnScnMsX8C0/EadmIM8SFWHp+lTEE0Y=;
+        b=vhzJHbXiP4GL9g+7mCafd52F2eonmzs2QsWLPBxCRXHD/N3cp6oVN7sjqV+cmt/3fL
+         oQH4lwx/GabKvgYnR2zEgEEBnB1tGKQqnY+MpzOoJwqymT5w6kAEendHwqIpJHMJzyPs
+         n9lRInOu8vX0AZ1ImmYC79W/cTT5Ku4+oKb/Rok6xd2q2Ub9IFsYQaX9MNOMosSl4R/e
+         3KeKX38gjI4idQwxot6MA39SDO8aKxz3B3ihKf0PCcyRsm+A03nV55CPvw5v3+Qv17jt
+         ssizFcgb8EvnfXCfawS5lLekJ3qHHSpkdbWNCv62YJxXAaAyhxBU0BZDoQEr9JEf8ajC
+         9LMA==
+X-Forwarded-Encrypted: i=1; AJvYcCU35WtVRw2NITfGDZA0LGQw8fc31xKfxXFojN37Muh8KXg3lwf9aRFkckqP03DnAoHdoloS2Y+JRQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxloZuTQRWUot9ueYKIjRY4eBb50MNwcxstzw+vxD//JejssqTO
+	w8dGojxNoXjI0Rp25w2bBvquijNipKm/0Vwdwg9Zl84Mzi1jnciZkAyohfsyKja7Bn0taEl6IvA
+	xPZdeP5k5ROBDZuaaC9Lst86+kYOa7q/pFA2N10XofzavooWv0ymuuidtWg5TYtvKkCcFwXncPT
+	ftSNglIuARa1fi0/g4yCz0kvhgy6pR2ig=
+X-Gm-Gg: ASbGnctYH0s/WNC7wFfxyK1KfczPXBC46ct1WonrMOyYWknYcVaujdGT+buz2CmjIQq
+	YuAs/FI2St1dZuzZ0TeL3I/mqA8pNoZe0m4O/Kwzr1I2JLDfw8yPp47izWXMUhvI=
+X-Received: by 2002:a05:6902:154f:b0:e58:835:a7b0 with SMTP id 3f1490d57ef6-e5da02a4f6bmr3247570276.37.1739380687210;
+        Wed, 12 Feb 2025 09:18:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHbcERdLFsmV+t17LaOEBVplV+A8dPg7iawzUSS4hQ8DXBwoLV8Iidd0fJd8KWBkejyYFVdkPWSIEhX+wMQzw4=
+X-Received: by 2002:a05:6902:154f:b0:e58:835:a7b0 with SMTP id
+ 3f1490d57ef6-e5da02a4f6bmr3247531276.37.1739380686797; Wed, 12 Feb 2025
+ 09:18:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="F5A77GSB2tRzHk7e"
-Content-Disposition: inline
-In-Reply-To: <194f5b4b029.e5ee4014194612.536900249866001318@collabora.com>
-X-Cookie: Printed on recycled paper.
-
-
---F5A77GSB2tRzHk7e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250211090511.xeFJVnH_@linutronix.de> <CABXOdTeLUi8mKkV38SegM_n8=Uyykd-X+n7RysjpgAZfxxb5BQ@mail.gmail.com>
+In-Reply-To: <CABXOdTeLUi8mKkV38SegM_n8=Uyykd-X+n7RysjpgAZfxxb5BQ@mail.gmail.com>
+From: Donald Zickus <dzickus@redhat.com>
+Date: Wed, 12 Feb 2025 12:17:55 -0500
+X-Gm-Features: AWEUYZlcXv-LP2ufUcwWauxbM15m0TCVbCYsswBmEDrEIUobFHZOQuZFboYNhn8
+Message-ID: <CAK18DXYjsLNS+Hm2qW3COF4_gChPNLwtP1yViY32b+xPkmOapA@mail.gmail.com>
+Subject: Re: PREEMPT_RT testing on kernelci
+To: Guenter Roeck <groeck@google.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, kernelci@lists.linux.dev, 
+	linux-rt-devel@lists.linux.dev, stable-rt@vger.kernel.org, 
+	Daniel Wagner <wagi@monom.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Q7dP4JvaVRcmBbqeMtG1SB8rgEF_xV8eeZRRHg2Hg08_1739380687
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2025 at 12:50:47PM -0300, Gustavo Padovan wrote:
+On Tue, Feb 11, 2025 at 10:43=E2=80=AFAM Guenter Roeck <groeck@google.com> =
+wrote:
+>
+> On Tue, Feb 11, 2025 at 1:05=E2=80=AFAM Sebastian Andrzej Siewior
+> <bigeasy@linutronix.de> wrote:
+> >
+> > Hi,
+> >
+> > I remember Daniel Wagner has been asking to include PREEMPT_RT within
+> > kernelci. I don't really know what the status here is. Thank you for th=
+e
+> > work.
+> >
+> > Since PREEMPT_RT is now available upstream, would it work to compile an=
+d
+> > enable some of its tests for the supported architectures on Linus' tree
+> > and maybe the -next tree? I don't think that happens at the moment, I
+> > saw only a few stable-rt trees.
+> >
+> > If so, should I just open an issue at
+> >         https://github.com/kernelci/kernelci-core/issues/new
+> >
+> > Is there be anything in particular you need help with?
+> >
+>
+> Unrelated to KernelCI - how stable is PREEMPT_RT in practice ? Reason
+> for asking is that I enabled it for x86_64 together with lock
+> debugging and got an almost immediate "sleeping function called"
+> backtrace.
 
->  > The architectures, that support RT are what you see in=20
->  > | git grep ARCH_SUPPORTS_RT arch/=20
+Red Hat has been selling a kernel-rt product for almost a decade now.
+It should be fairly stable.  We also enable lock debugging on our
+debug version of kernel-rt and I don't recall anyone seeing anything
+(though those debug kernels are slow).  We may not have the same
+config options set and haven't seen it yet.  Stacktrace?
 
->  > so this does not include arm at current stage for instance. So in=20
->  > general, if you can't select CONFIG_PREEMPT_RT you can skip the=20
->  > config/ build/ test.=20
+Cheers,
+Don
 
->  > RiscV on the other hand is supported.
+>
+> Thanks,
+> Guenter
+>
 
-> Right. Let me look at how we can limit this to x86 only.
-> Unfortunatelly, we don't have much RISC-V hw support in KernelCI yet.
-
-We should enable it on arm64 as well, there's plenty of boards for that.
-The current list of supported architectures is arm64, loongarch, riscv
-and x86.
-
-I'd be happy to have it running in my lab for the boards I've got
-multiples of. =20
-
---F5A77GSB2tRzHk7e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmerehcACgkQJNaLcl1U
-h9AXUQf9H91n4wKdeyjpiFDBhd7BTmf92KidIyz24azYCXZsFnIQYBLLNLHFFsA+
-AxU/8lxmeQAVJZ7+sbLtmc/4c/HeBT2FJ6wFZe/hvXcgGyqfs6vSRSK8EGMlNKGA
-QQbXagxbmrHbhjgMEFjzvLKiuGm9B1KuKdNe1qYk2JSIFy2SAacArCaXLjJxkQ8P
-/1lDOMsksQPZy7LseLSZhfMdIZ4hwRtftz7Tnrn6QUlEywVlPKnUy158pkuATdsD
-ZG/4alb5KBSDMJi97d+IIOztsbzHZjKGMyzzntPa2dXljWYkalts6I9LLP/1jE2+
-VVzMZ23Ysk4A81WDQ4CzW/Pr2mi2RA==
-=N8Hz
------END PGP SIGNATURE-----
-
---F5A77GSB2tRzHk7e--
