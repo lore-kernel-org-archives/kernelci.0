@@ -1,93 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161E417C9F1;
-	Tue, 11 Mar 2025 14:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AED3BBE5
+	for <kernelci@lists.linux.dev>; Fri, 14 Mar 2025 18:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741702971; cv=none; b=pGNFpbqDo2HtV0/vdSk2uvggDH1PfsrIddu87IcCPfMdn03ywW7x2GejbVqMsZAijuUFwL8rxbVoMbUUIVkvOkZmejRZQIzFaqgE2BVM4hCbE4HDjByAevEIK6obczuzNzjAfDFMbdIBJYn+YVI0CzJUVdYp3vHUWv765OkTWF0=
+	t=1741976495; cv=none; b=tosxNFXLq9SEXrPnrh1HibtIYWxxzSVxTQrux2zF2r5TCcQiZzFBham/J9YWvD0eSQzdCf146RwvDjIyPfGbspuYR8F9JuBZjeQa+hlMXNBRF3/m5V8QdkxvHoPIS1KMjIkjhYdNMoeSdjzrUMhvK1NUmgWZ32h81er8Nme+uKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741702971; c=relaxed/simple;
-	bh=lW9JgeTCgja/9QF2Gj21kVDR6N5RMaq482Rv2AlFh9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qdzFRidb/ogaMRWi+YHNergwudCoPipmcPhxG2P44wPt5Mozgp8K4KZQ2Q8JMwzks2rx8Yqj1Z6RTe+zTDkgP96DTWQ6e9FpimHuG4+LIrofXwUY+ylnlbPdtXAT5rdLOJcm6G06/T6PRN/CEGlPx6+scecc/FZL2B3YhzUNGSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Blk3qBcb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741976495; c=relaxed/simple;
+	bh=LAhDvdhf5K4gNvgaeGroh8T6IoG4Wk91LDNrjm2qV1k=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=qqHsFEYrLGb4iu4MpkrcQ1DMIt70wD1n0Eei0fvRo3lxzpehWtdybXi8jFZNhpp8y5GnVue4etKuN3F1nKYLuUraB2AU6DfQbtj4a6EbsgXTa6NhwBg4pZl2yf2x38qKLwmpnvYZavok9sF7iXK2AmXdDEr5KtkOkuhIhQ0jIIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dm2rrgDT; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Blk3qBcb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CDBC4CEE9;
-	Tue, 11 Mar 2025 14:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741702970;
-	bh=lW9JgeTCgja/9QF2Gj21kVDR6N5RMaq482Rv2AlFh9U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Blk3qBcbEgQ5bZNcbUSI81pVjM0Gyrj+56eke5K3TPsaKF2o+/qXQzzuncj7BQClz
-	 xIzvoSoZS6gINQh76en8c56BGuiy1wskXzSh/H4FaIqCJPbsmPRScsODQ7aoskBgnR
-	 7mezpvRsEkiI+G1GmFCPrZcKk7EGVderUIMVFZXc=
-Date: Tue, 11 Mar 2025 15:22:47 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io, gus@collabora.com, stable@vger.kernel.org
-Subject: Re: [REGRESSION] stable-rc/linux-5.10.y: (build) in vmlinux
- (Makefile:1212) [logspec:kbuild,kbuild.other]
-Message-ID: <2025031121-aged-stand-c8f3@gregkh>
-References: <CACo-S-0BKPQcA2Qh-7jmuU-YuX9E_wWcHEgr8pDhgwkzt0K5cQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dm2rrgDT"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30bfe0d2b6dso25571311fa.3
+        for <kernelci@lists.linux.dev>; Fri, 14 Mar 2025 11:21:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741976491; x=1742581291; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LAhDvdhf5K4gNvgaeGroh8T6IoG4Wk91LDNrjm2qV1k=;
+        b=dm2rrgDTMSzytDgnjjAmMSdmjRgzMjt2okWtpemx9TAYuFYaFosZ/ofbxlMok1ITrg
+         /ai9xkVXXEWg46GOOcSRqAswc+05aPL4QGAgEISif50TdyFIRSvr2lZNqBCyxlp5gwXg
+         vb2DVo9HlVDPE5144gd16JSJO8sLvTN7oXczYVOBKbVaezudPtSpOUENHSIhRQDSB40v
+         mdTeHoQIGDJ/d4WjHavcSjY4QlFnFKxDHkPMPGTMSphjwOuUbsOdVLk7tNz/0iJFKWtQ
+         tpEcRBotL5ns/7ABYHfltcw4W/173tMaxnRHo6AjlZhkfPGOXWspdz+OFGQcbEsmS1Ky
+         WuYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741976491; x=1742581291;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=LAhDvdhf5K4gNvgaeGroh8T6IoG4Wk91LDNrjm2qV1k=;
+        b=nZY7D/xf+LD66lBr4/TjzHpj2NczsMCukCB3JeIpL3bNFGs+8VY1eQLWdwRPmo4R59
+         XfXrD3AJH4dffVtNaCmog8eG7uobtMUF1KLAFB9CFkuI1NmkYljH2tlhQQ2Yyjfjzr9w
+         exSAmgn1Fsw8y1hMBxapHASizH6JQOTivBsPqcscNNRm+Mm43FjXZmhcck0aO5Ebk3Gs
+         kWH2m7CD7MwdmlrgAcY81e5dW/U5CdU5wrwk2bYVwlHQ/0VsNVHlt1IVQbCD+obvVoXv
+         Cz9z881G1btYSOeXiI6JtyyqRBqv3eHCQnUhfcgLcPkb6AXEDYuXQ4QU7oxYG4oKl/4M
+         U7Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCXh1nW2aWYEFHiA+8MrJUPFmrWXVjciHdVXaf8uzM0e6SiHIAXJI7jQLNozF8omP3jf8pzHaa0m6g==@lists.linux.dev
+X-Gm-Message-State: AOJu0YyKF2Ke/AV8hR4pP/dGQFMtYhetMUtLbbRp7eatcOwQyJekGyMX
+	gxur1lwIhE9Z3OHkJOuvAP8qGN18SJLJ18f1PdRaN5CvNL2wsV+b
+X-Gm-Gg: ASbGncurAQuxmWwbQJ5bDMBLEoyk3861HsnIEb27gIgh4DJJkpiCqxyN6YUzUKimbag
+	IgrfaRHQ16QmqX2OgwWtSDHx1BGR+exjL70il7FUC8240DfdpcB0OLoBAx8UuLBUFZy6qDjEkiT
+	+hAvj4/5vDy0x4t2rmhRmFF1X9KwfM31WiWe7lVPisUXmwHgU1tBk5UkWdiITP7AN0L3pZZNqTE
+	L/qO/WWRlwnndygyxj8j1AwSVRd0Vk1md7zgfKBeYDi1rUIkKnw2fga1hAaZUZ4Fm8KFJQ0QOGA
+	24svnbpsfhcw8SlrBv3WeOiQbkDrxGchyoIsRh4fYCm7mKMsItJALIifGmlJQC2MIRlftZ/wXUX
+	sSLkCQfvsHUEdBAU=
+X-Google-Smtp-Source: AGHT+IFQUFYRm/mbpTK/t2pikQAT0Xubt4Vy23FhfzyX4B3TcSCdh/+VHIDQ30vvqjxq6OR+ruaVOA==
+X-Received: by 2002:a2e:a9a4:0:b0:30b:a20d:1c06 with SMTP id 38308e7fff4ca-30c4a658bcfmr15277411fa.0.1741976491109;
+        Fri, 14 Mar 2025 11:21:31 -0700 (PDT)
+Received: from [192.168.0.167] (h-185-57-5-149.na.cust.bahnhof.fi. [185.57.5.149])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30c3f10ab4bsm6507941fa.50.2025.03.14.11.21.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Mar 2025 11:21:29 -0700 (PDT)
+Message-ID: <4697ff8f-7d97-4bcc-938f-958662289ba0@gmail.com>
+Date: Fri, 14 Mar 2025 20:21:29 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACo-S-0BKPQcA2Qh-7jmuU-YuX9E_wWcHEgr8pDhgwkzt0K5cQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+From: Nikolai Kondrashov <spbnick@gmail.com>
+Subject: KCIDB: v5.1 - origin's build/test finish timestamps
+To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
+ <dvyukov@google.com>, Vishal Bhoj <vishal.bhoj@linaro.org>,
+ Alice Ferrazzi <alicef@gentoo.org>,
+ automated-testing@lists.yoctoproject.org,
+ Cristian Marussi <cristian.marussi@arm.com>,
+ Johnson George <Johnson.George@microsoft.com>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ Mark Brown <broonie@kernel.org>, Philip Li <philip.li@intel.com>,
+ Denys Fedoryshchenko <denys.f@collabora.com>,
+ Tales da Aparecida <tdaapare@redhat.com>,
+ Aditya Nagesh <adityanagesh@microsoft.com>,
+ Sachin Sant <sachinp@linux.ibm.com>,
+ Benjamin Copeland <Benjamin.Copeland@linaro.org>,
+ Manoj Kumar <ManojKumar08@arm.com>, Michael Hofmann <mhofmann@redhat.com>,
+ marcelo.santos@profusion.mobi, kernelci-webdashboard@groups.io
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 11, 2025 at 01:47:06PM +0000, KernelCI bot wrote:
-> Hello,
-> 
-> New build issue found on stable-rc/linux-5.10.y:
-> 
-> ---
->  in vmlinux (Makefile:1212) [logspec:kbuild,kbuild.other]
-> ---
-> 
-> - dashboard: https://d.kernelci.org/issue/maestro:d5c2be698989c7de46471109aae8df0339b713c1
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> - commit HEAD:  a0e8dfa03993fda7b4d4b696c50f69726522abba
-> 
-> 
-> Log excerpt:
-> =====================================================
-> .lds
-> In file included from ./include/linux/kernel.h:15,
-> net/ipv6/udp.c: In function ‘udp_v6_send_skb’:
-> ./include/linux/minmax.h:20:35: warning: comparison of distinct
-> pointer types lacks a cast
-> ./include/linux/minmax.h:26:18: note: in expansion of macro ‘__typecheck’
-> ./include/linux/minmax.h:36:31: note: in expansion of macro ‘__safe_cmp’
-> ./include/linux/minmax.h:45:25: note: in expansion of macro ‘__careful_cmp’
-> net/ipv6/udp.c:1213:28: note: in expansion of macro ‘min’
-> In file included from ./include/linux/uaccess.h:7,
-> net/ipv4/udp.c: In function ‘udp_send_skb’:
-> ./include/linux/minmax.h:20:35: warning: comparison of distinct
-> pointer types lacks a cast
-> ./include/linux/minmax.h:26:18: note: in expansion of macro ‘__typecheck’
-> ./include/linux/minmax.h:36:31: note: in expansion of macro ‘__safe_cmp’
-> ./include/linux/minmax.h:45:25: note: in expansion of macro ‘__careful_cmp’
-> net/ipv4/udp.c:926:28: note: in expansion of macro ‘min’
+Hello again, everyone involved with sending data to KCIDB,
 
-This warnings I can understand, we'll just have to live with that.
+We've mostly finished implementing support for v5.0, so it's time for another
+update. This time backwards-compatible.
 
-But:
+We would like to add two fields to checkouts: "origin_builds_finish_time" and
+"origin_tests_finish_time". They're supposed to contain the time the CI system
+which sent the checkout has finished running the builds/tests it planned for it.
 
-> FAILED unresolved symbol filp_close
+These fields are requested by the KernelCI Webdashboard team to help implement
+marking a CI system's checkout as "done building" and "done testing". Note
+that each revision can have multiple checkouts, from one, or more CI systems.
 
-What is that from?
+The new fields duplicate the general (but harder to implement) mechanism
+supported thus far: sending individual planned builds/tests without their
+status, and then sending their status when they're done.
 
-Seems to be from 890ed45bde80 ("acct: block access to kernel internal
-filesystems")?  If so, that's really odd as this is not a new call to
-this function, but just some additional ones.
+Here's the corresponding PR:
 
-thanks,
+https://github.com/kernelci/kcidb-io/pull/97
 
-greg k-h
+Please comment there, or in response to this message.
+
+As the change is minor and backwards-compatible, I'd like to set the feedback
+deadline to Wed, Mar 19. If there are no objections by that time, I'll merge
+this change to the schema and database support on that day.
+
+Nick
