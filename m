@@ -1,134 +1,86 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830102AE90
-	for <kernelci@lists.linux.dev>; Mon,  7 Apr 2025 19:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC2626989C;
+	Fri, 11 Apr 2025 19:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744052863; cv=none; b=iPbd6EKrChX9hnlHSZGHu2LGqyRQoRryU0jS8qLSVDPIUSuZX4SBS+ozPeELDdxvCl5ifpCUd9L99FP0oVvFHSQekiy77Dngxw0PY99pxkVCDXtdi4+diJaJcIIiLnX76V/sL1hUiEl07U7/3Q0z/sCrI72qJ0ZsPqPQlibilqg=
+	t=1744400677; cv=none; b=pj8NWjuJBscqim5tp1IM4260IfwpCOt3CZru1ArIzK98M+UAPuNhVX2ZRffASNa7ec67VSWk3UXonDQ7P0btcI14fxgtn8Jr1stalAc7oMByuAGoQViNKYoPhfnDjoEKvnonJYq9l6whcbcFf8tpC7JiglmYCxPTIULNDGE39Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744052863; c=relaxed/simple;
-	bh=Tv1fwomTDkihD3yk+FLZ19bVhPMEsfDJUnLd4jwD3v0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tixSFJOVGwI7J5Yu8RPiNObgfqeAjzfdTre5EDBBq1j6VkO2FTS+1L73K309oR2i0YWh07F5R3VBzA8HDmx39m76nOof6/kApd+VIy7ayAVW9v0Stj9seeP2pHHgI4Y3EIkYgQBrApQIa4/gIgj1Ed3VGg74XDq0h6IsrwyrTpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f8RhOumP; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744400677; c=relaxed/simple;
+	bh=/6v0zw5ak3f/ZZAspKY370OySndK9g5vXV6fKod9kqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M2WKVHZfkA2BQyQJMPGhw3hAJ1t6F7QHYhvFYoDWvvNmbs2ZVK2tOiQBR4agS/ehCddlqEN2LumdhRCuaA8qBHFmhhAGMFuncmMBzYypAlxnO7R8wMyilTz+p4L8XZai945KKAPke3UHMgkQkOzJyhC7DwtXVSUf+K2jm+nVbTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gYSS4ir0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vz9n5VFg; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f8RhOumP"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6f0c30a1ca3so19769826d6.1
-        for <kernelci@lists.linux.dev>; Mon, 07 Apr 2025 12:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744052860; x=1744657660; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CXhv4yIIInGDYbQpkzHVUlH0pu858YpdC/sleKM4SDQ=;
-        b=f8RhOumPela/uZyP/QYQbmNuUccIuZjZLnRsD2Lfj8lA/s8RwrG5tPoeoF2j4acas0
-         Felh01qH6uw8mTsIlRFmIsJQipls+UAp11XPMgegsuQzV+yLfT6KIuLfeyFOLXykj1+l
-         kw7QK4fsLVdrYCOk79sLabEnaYQu+YsUeBhtbhJ/1YFok7N7gx7b03nTDBMZS0KZoJLH
-         I1mJFEUXC7QQ9mhMqeSOelzWKiJ3ssD617uX50j+2o614I0fYvEYOxLshgadgyciES9i
-         VI6KqNpQ2s9JMCPRskIWiIE0/LUNHKjnXS1jh5S1mwNI8YQYfEiLnW6a5ZTTlFmN0XjV
-         8Pxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744052860; x=1744657660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CXhv4yIIInGDYbQpkzHVUlH0pu858YpdC/sleKM4SDQ=;
-        b=sQM1CV2ve2EA7lgpAJDyBmPrMGTbTt0DcFgcD4ZT7YWAW5Howt8s01oDmyFB2R+XOH
-         dO8T8PKqo7Dlcpz2VLhxXEfAQgVhmIXhtJxvKS/snGB+iAnT6VEAmAw0of4y+4UCObGu
-         ogXJ7NNxbt4MG5U/+XqVHvJYErcJashvleQftyk9SDDzeAAThyThu7f00h6jWRTIhdCB
-         aMXCTKHShqF6EvjRk57oxZ6f7RRP0FzC+ItryAQEkU1zLcWTuJod8VpYdlcZ+rwV4NG7
-         Nmg0jcoJZ5peK6viwT3HsFfHhuAxArniawJh+1swpc0s6nd3zNbfr9Ys7d+p+ynwzCl5
-         OSBg==
-X-Gm-Message-State: AOJu0YxDgyip01O7XJruxKh6F1myNCIhTc0ya4r1m+txW2tQrvVgq3gj
-	IeAre7JcXa7SZ3AATEKNLOJ0o/WuxJj3sIcue+a+HYOV0FGX4hUQlvGrcxe3Jr0+124dhmmBrch
-	meqXSxBBN074Qi1SXurbUS7DCcfA=
-X-Gm-Gg: ASbGnctA0TVZ0NIKNOY2+WUz/9MXk5y3GdEPTw0TRGm8J5hga6C3AUcp2VgbFgBIUiC
-	aAo3e+Di8Z9eOQ0ZFk1IoZZe7/oo5dNCNFa/awmLvpTBg5oTZ5aDwhtwmjorCb+ElLjkdHsD16m
-	BdpRssk5E6aLKL8IHd4MT0hLSa/7t2gtnPXVGVUKo=
-X-Google-Smtp-Source: AGHT+IEqXP6ZjZYk5PO+f3BrpbNM2C/+oDaAkVY6ywnRlpLka/gSG1qnXXiHtsi5KX4DSHvUyutGpFRolMeGu6sgt+o=
-X-Received: by 2002:a05:6214:1d04:b0:6e8:fa72:be49 with SMTP id
- 6a1803df08f44-6f00de8c79fmr227101416d6.12.1744052860450; Mon, 07 Apr 2025
- 12:07:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gYSS4ir0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vz9n5VFg"
+Date: Fri, 11 Apr 2025 21:44:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744400674;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xQs9wonNrxU6bloYlGrlPFmXTxtcyoPcHDbYs2ntwY0=;
+	b=gYSS4ir06p+cjhF8LTpR/CTZI1da3QrVO1s2oJcbS7SfkgIm8F4I4JNpGTu44mjgFlsFlV
+	UXbC5lbZ9S/KbNMuf3WJjqOgVmZynbvryab3nbbmYQ/JHzLTy1ZgX/ctbW/ozRCDFBphBt
+	8t7BTuXNxYea0vxfQJE98V1HtBnbhBEA+4p7nzaJpOoY4iQoLp8ngnX5o7emsnejSYsxGD
+	7eAGsYydPE0iVZyTM17soX88UbPTbNI8ubwBCBKGkS6kLIgEg0AVJBRadU9OZ7rQxHjx4G
+	S1yun29iElBaEDp62KWinjAxJFSPynrJkS8jJ67eh2lvtZZcZAvF1w9Jep13VQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744400674;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xQs9wonNrxU6bloYlGrlPFmXTxtcyoPcHDbYs2ntwY0=;
+	b=Vz9n5VFgohqys4/KOB3Jlp1CimyZROTd1PaEn5DZ3D3tuwd7B8SpRbkCnPda5PEmQXPb1K
+	5+Uuzgq3K3ozP4BA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Gustavo Padovan <gus@collabora.com>
+Cc: kernelci <kernelci@lists.linux.dev>,
+	linux-rt-devel <linux-rt-devel@lists.linux.dev>,
+	stable-rt <stable-rt@vger.kernel.org>,
+	Daniel Wagner <wagi@monom.org>
+Subject: Re: PREEMPT_RT testing on kernelci
+Message-ID: <20250411194432.pwc6U7Ds@linutronix.de>
+References: <20250211090511.xeFJVnH_@linutronix.de>
+ <194f4c989de.bdd18d3279996.2067896388251039576@collabora.com>
+ <20250211152018.sK91dh93@linutronix.de>
+ <194f5b4b029.e5ee4014194612.536900249866001318@collabora.com>
+ <20250213085256.nhWptGL3@linutronix.de>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAMtebm+miDTOR-PcJrJbzfSS=1eNLQJ8CGQf1E3+NpcLh+mYKQ@mail.gmail.com>
- <CAK18DXbHK5BOjEcLSAnMSZ4SejXtwiQ_EhrnzsN9U2stg8XGBQ@mail.gmail.com>
-In-Reply-To: <CAK18DXbHK5BOjEcLSAnMSZ4SejXtwiQ_EhrnzsN9U2stg8XGBQ@mail.gmail.com>
-From: Adrian Johnston <adrian3@gmail.com>
-Date: Mon, 7 Apr 2025 12:07:28 -0700
-X-Gm-Features: ATxdqUFb4prthOo-8OF5C9-b41NwbEvG1Fn3bqrLMgNfykSjuZgjAYMAnf3Kml8
-Message-ID: <CAMtebm+onFgWnwDjotybQOr5aWZFFZ+3=jhhA_RLgMDWst3rXw@mail.gmail.com>
-Subject: Re: ref_tracker
-To: Donald Zickus <dzickus@redhat.com>
-Cc: kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250213085256.nhWptGL3@linutronix.de>
 
-There was a LWN article that descrives it:
-https://lwn.net/Articles/877603/  That article claims that "A simple
-call to ref_tracker_dir_print() will cause the stack traces associated
-with any leaked references to be printed to the system log."
+On 2025-02-13 09:52:56 [+0100], To Gustavo Padovan wrote:
+> On 2025-02-11 12:50:47 [-0300], Gustavo Padovan wrote:
+> > Hi Sebastian,
+Hi Gustavo,
 
-From looking at the code:
-https://codebrowser.dev/linux/linux/lib/ref_tracker.c.html  It seems
-that a double free will cause a printk(KERN_ERR...).  If you have that
-as part of your debug build the it should just be a matter of checking
-the logs.  This probably the most important class of bugs.
+> > That is one the current limitations in the dashboard. The CI systems are not sending
+> > a clear signal yet that they completed all tests they wanted to run. They just submit
+> > test result individually as they get finished. 
+> > 
+> > Imo, it is a priority to fix this as it is second time this week I get this feedback.
+> 
+> Ah okay. No need to rush. If you have something to look at, let me know
+> and I will. Other than that I will lean back and wait for the bot to
+> complain ;)
+> 
+> Thank you.
 
-Eric Dumazet <eric.dumazet@gmail.com> was the original author.  The
-main questions I have about this tool is whether more changes would be
-required to capture ref-counts all across the kernel.  I'm happy to
-follow up with him if you want me to get him involved.
+any updates on this?
 
+> > Best,
+> > 
+> > - Gus
 
-
-On Mon, Apr 7, 2025 at 6:27=E2=80=AFAM Donald Zickus <dzickus@redhat.com> w=
-rote:
->
-> Hi Adrian,
->
-> On Fri, Apr 4, 2025 at 5:53=E2=80=AFPM Adrian Johnston <adrian3@gmail.com=
-> wrote:
->>
->> Hello kernelci,
->>
->> I have exciting news. We have a reoccurring class of dangerous bugs in
->> the kernel that could be identified during a CI run.
->>
->> The kernel comes with a reference count debugger called ref_tracker.
->> And yet, every minor release of the kernel seems to fix another
->> reference counting bug.  Often kernel releases fix 3 or more.
->> Meanwhile, the folks over on linux-debuggers aren't even sure anyone
->> is using this reference counting debugger that often.
->>
->> Is anyone willing to flip the switch on this debugger on your staging
->> machine?  This seems like the kind of thing Linus should know about 20
->> minutes after merging a patch.
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-include/linux/ref_tracker.h
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commi=
-t/?id=3D4e66934eaadc83b27ada8d42b60894018f3bfabf
->
->
-> It appears the Fedora / Red Hat kernels have it enabled in their debug ke=
-rnels.  We don't explicitly set it, it appears to be auto enabled by settin=
-g the 'DEBUG' config.  Not sure if that is expected.
->
-> How can a CI system take advantage of this? Is there a stack trace that s=
-hows up?  Do we have to cat the output of a /sys or /proc file?
->
-> Cheers,
-> Don
->
->>
->>
->> Thanks!
->>
+Sebastian
