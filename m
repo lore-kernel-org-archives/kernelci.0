@@ -1,86 +1,107 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC2626989C;
-	Fri, 11 Apr 2025 19:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB542750F2
+	for <kernelci@lists.linux.dev>; Mon, 14 Apr 2025 14:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744400677; cv=none; b=pj8NWjuJBscqim5tp1IM4260IfwpCOt3CZru1ArIzK98M+UAPuNhVX2ZRffASNa7ec67VSWk3UXonDQ7P0btcI14fxgtn8Jr1stalAc7oMByuAGoQViNKYoPhfnDjoEKvnonJYq9l6whcbcFf8tpC7JiglmYCxPTIULNDGE39Fg=
+	t=1744640611; cv=none; b=IiTH7RBkH7Qybl0ROmR2wVJwQHzz9qoxE0VCm5ZzjzMa87WP6JRZLdVIN+3n+RbVk7M07mbiyqzWwP+nywoosaDUjFY/DDQh05A47NvwqN4v2/oz7N27yciiytQzHaNPXJHpxAHFg05ZLKgsWlZq+O5qRzoWLdLgjgg+xVNjf90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744400677; c=relaxed/simple;
-	bh=/6v0zw5ak3f/ZZAspKY370OySndK9g5vXV6fKod9kqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M2WKVHZfkA2BQyQJMPGhw3hAJ1t6F7QHYhvFYoDWvvNmbs2ZVK2tOiQBR4agS/ehCddlqEN2LumdhRCuaA8qBHFmhhAGMFuncmMBzYypAlxnO7R8wMyilTz+p4L8XZai945KKAPke3UHMgkQkOzJyhC7DwtXVSUf+K2jm+nVbTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gYSS4ir0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vz9n5VFg; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1744640611; c=relaxed/simple;
+	bh=3HfnSoykwQBm4O7rJnPBrjQ3MLdN3ezVDIcUNH99Mwg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=E4ANjhw66/vvQeEwKDPtxO9mhUnDKNccVOBuoTqDtuSuojkW031NsnQ0rq5FGTd+5nTdBEQklAaXdyo7WcpxQhHKv0F4gDen8PA++2Dhe7SL9z6Eq/yN6BAshfmFgrM5EyT4DSgXhYj8wEOn7Hk6z4Fm7LZm/jURK2cd+WjSR8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KtShg9rX; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gYSS4ir0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vz9n5VFg"
-Date: Fri, 11 Apr 2025 21:44:32 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744400674;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xQs9wonNrxU6bloYlGrlPFmXTxtcyoPcHDbYs2ntwY0=;
-	b=gYSS4ir06p+cjhF8LTpR/CTZI1da3QrVO1s2oJcbS7SfkgIm8F4I4JNpGTu44mjgFlsFlV
-	UXbC5lbZ9S/KbNMuf3WJjqOgVmZynbvryab3nbbmYQ/JHzLTy1ZgX/ctbW/ozRCDFBphBt
-	8t7BTuXNxYea0vxfQJE98V1HtBnbhBEA+4p7nzaJpOoY4iQoLp8ngnX5o7emsnejSYsxGD
-	7eAGsYydPE0iVZyTM17soX88UbPTbNI8ubwBCBKGkS6kLIgEg0AVJBRadU9OZ7rQxHjx4G
-	S1yun29iElBaEDp62KWinjAxJFSPynrJkS8jJ67eh2lvtZZcZAvF1w9Jep13VQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744400674;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xQs9wonNrxU6bloYlGrlPFmXTxtcyoPcHDbYs2ntwY0=;
-	b=Vz9n5VFgohqys4/KOB3Jlp1CimyZROTd1PaEn5DZ3D3tuwd7B8SpRbkCnPda5PEmQXPb1K
-	5+Uuzgq3K3ozP4BA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Gustavo Padovan <gus@collabora.com>
-Cc: kernelci <kernelci@lists.linux.dev>,
-	linux-rt-devel <linux-rt-devel@lists.linux.dev>,
-	stable-rt <stable-rt@vger.kernel.org>,
-	Daniel Wagner <wagi@monom.org>
-Subject: Re: PREEMPT_RT testing on kernelci
-Message-ID: <20250411194432.pwc6U7Ds@linutronix.de>
-References: <20250211090511.xeFJVnH_@linutronix.de>
- <194f4c989de.bdd18d3279996.2067896388251039576@collabora.com>
- <20250211152018.sK91dh93@linutronix.de>
- <194f5b4b029.e5ee4014194612.536900249866001318@collabora.com>
- <20250213085256.nhWptGL3@linutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KtShg9rX"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cfebc343dso33618105e9.2
+        for <kernelci@lists.linux.dev>; Mon, 14 Apr 2025 07:23:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744640608; x=1745245408; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3HfnSoykwQBm4O7rJnPBrjQ3MLdN3ezVDIcUNH99Mwg=;
+        b=KtShg9rXAw8oK6QrHzkgtBldgZYKtz3YCGoPr3z3Y/aE2e9Mn2UZD30X1KI1OeZ+ii
+         EUtvOr28wgc+jUxlvc7ttcFdbWw23idxX2feA3BpYa0JsTVmzSgcq31dwFKy61rwXB7V
+         hZ2cY0GKu21TwWnwbHc5zEJcO3O7oM2YUPM4fLQmnlSExTThM93GpJigxLUXFpdHIp+m
+         fI8kZCHI+mJYjheOtZJJNtI2SkTiK5Yi5MiJQuV3bhaBoXJUYeo+pjpvHxQPfeX1V+ju
+         aONu6E3b2Opsb2CzqSV0Z104DtA5H8fbW8tQwP1MUnlW610b68hxA5i1nbdYIyB3XqEA
+         xB0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744640608; x=1745245408;
+        h=content-transfer-encoding:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3HfnSoykwQBm4O7rJnPBrjQ3MLdN3ezVDIcUNH99Mwg=;
+        b=fBUaLsHScPRPOU44Qds58DAx4FdR5E6MxmZ9wHofZzfY43Dx2YgDaF9IOtKbAZxiId
+         q1+j3yKkcVIhjqKSEFDFLVT5xeo18mqVh1u8HU+O9lvBi2Wf2ltAEoHbxErOV8C/2yUK
+         Qlz0Zs8Vx+IMIZ15iJeFTrLYAUsl11UJwM34MRJ32elByLieJ3tICqoS+UMPbn9IUdR5
+         Ehr19wH+uujqYZZzbcNrF0l+IyBM95sKYEoL/3B8MtIeFU/bWeAC3BYR3/4Y0HpFgdIr
+         oOZIW1TIHoxkv4gLZzS32ce7GBHCB7YapW+LGrxusKRpewKk5aetUZsV4PKVtuJhUBbQ
+         y8NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVqMRkNeAIperVdq0PdKDhB3FpsFtbuHO8eJo4plgwqSaEuzz5HT0tFaacS6I9nFoKX0Q0j3QReQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwqlEOIv7Jw4rWzBTcHMkaiOoWOa5MnRDx4eR/uAeajuS3zMMc5
+	hXlhZc8AZqJb7LDcWtIjRi75w1lgWKt7r9uMyOjOKY3F0GGudTcx
+X-Gm-Gg: ASbGncuRpdAItaSIuSYdM5EKHq7/+KILAIKlNMolCKwDmq5WjUvh7cM0Qf2lG2rEO7V
+	oasTiEDpclG+2+7dAa/MJsHzEN4/vhxMnMxj2Tvds6ih7mPKkqj6Wg38HBUPPdZSGucu47XZFiH
+	qffgQLXR9/cTLO6+35LhFD/f6+uPGqP74UjIYFR+PfDwu6DKYb+ff+rp5GAgVPbhOY0uAqqYcIr
+	+0Wd8Nr5xWrRkfw6qtzU3MPYy/RSTSVTXOzqElcCl072QnSqt69psGodxbJsAcOOsANaGorUeWV
+	czDOYXq/XvwbYbUopLpAdiKBDIuqmY1gYdlz2AXyibNTfbfbfvgCLuHNuI1HjgOvyBqQmd1eGAE
+	/
+X-Google-Smtp-Source: AGHT+IFqTY4s1prkZ90gnxE5B1a168CDJ+OcsCJZGddzRXEsCZ/zttjsa5lEciBlp+mCphfu4/1vIw==
+X-Received: by 2002:a05:600c:3ac4:b0:43b:b756:f0a9 with SMTP id 5b1f17b1804b1-43f3a93cf3fmr113964455e9.11.1744640607520;
+        Mon, 14 Apr 2025 07:23:27 -0700 (PDT)
+Received: from [192.168.0.167] (h-185-57-5-149.na.cust.bahnhof.fi. [185.57.5.149])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae963fccsm11072634f8f.3.2025.04.14.07.23.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Apr 2025 07:23:27 -0700 (PDT)
+Message-ID: <43f4fcf5-647e-4d2e-957c-a861fc458257@gmail.com>
+Date: Mon, 14 Apr 2025 17:23:25 +0300
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250213085256.nhWptGL3@linutronix.de>
+User-Agent: Mozilla Thunderbird
+From: Nikolai Kondrashov <spbnick@gmail.com>
+Subject: KCIDB: Stepping down
+To: syzkaller <syzkaller@googlegroups.com>, Dmitry Vyukov
+ <dvyukov@google.com>, Alice Ferrazzi <alicef@gentoo.org>,
+ automated-testing@lists.yoctoproject.org,
+ Cristian Marussi <cristian.marussi@arm.com>,
+ Johnson George <Johnson.George@microsoft.com>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>,
+ Mark Brown <broonie@kernel.org>, Philip Li <philip.li@intel.com>,
+ Denys Fedoryshchenko <denys.f@collabora.com>,
+ Tales da Aparecida <tdaapare@redhat.com>,
+ Aditya Nagesh <adityanagesh@microsoft.com>,
+ Sachin Sant <sachinp@linux.ibm.com>,
+ Benjamin Copeland <Benjamin.Copeland@linaro.org>,
+ Manoj Kumar <ManojKumar08@arm.com>, Michael Hofmann <mhofmann@redhat.com>,
+ marcelo.santos@profusion.mobi, kernelci-webdashboard@groups.io,
+ Simone Tollardo <tollsimy.dev@protonmail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2025-02-13 09:52:56 [+0100], To Gustavo Padovan wrote:
-> On 2025-02-11 12:50:47 [-0300], Gustavo Padovan wrote:
-> > Hi Sebastian,
-Hi Gustavo,
+Hello, everyone involved with sending results to KCIDB,
 
-> > That is one the current limitations in the dashboard. The CI systems are not sending
-> > a clear signal yet that they completed all tests they wanted to run. They just submit
-> > test result individually as they get finished. 
-> > 
-> > Imo, it is a priority to fix this as it is second time this week I get this feedback.
-> 
-> Ah okay. No need to rush. If you have something to look at, let me know
-> and I will. Other than that I will lean back and wait for the bot to
-> complain ;)
-> 
-> Thank you.
+I'm stepping down from designing, developing, and maintaining KCIDB and its
+deployments at the end of this Thursday, Apr 17, 2025.
 
-any updates on this?
+Afterwards I will still be available for questions about past work and for
+opinions and advice, but I won't be working on the design, code, or
+deployments anymore.
 
-> > Best,
-> > 
-> > - Gus
+With these please reach out to the kernelci@lists.linux.dev maillist, or throw
+your request into a channel on the KernelCI Discord server:
 
-Sebastian
+https://discord.gg/Xz95Wh6p (link only valid for 7 days?)
+
+Thank you everyone for the ride, it was awesome!
+
+See you around.
+Nick
