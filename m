@@ -1,52 +1,60 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B209EEC8;
-	Fri, 18 Apr 2025 14:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D76A202C36;
+	Fri, 18 Apr 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744988075; cv=pass; b=FlzZEXBDW9D+Mn7xp0RjeNdMUA3g4k8rPbCBlB1GCE/d5UKWTNZ8GbZyC3FY51z1itBiMOPLkmXXznefn1oWZ3mebO3R9XHPAurD9KLT2GgymwPdCKuJKzBAlNAamgPRyehIO59hTIw5D50H93gFOGDRZOvoCBM2I273oSVHZt8=
+	t=1744988751; cv=pass; b=FTXZ6+qXyZI83Ay4EB6Rx9I2ftjy6shZr+154aIGbV9Z30gklfUrOcXYBw6BOGKJZOx8MIY+cz889c3OzrvGUZ3YnNrIBhQKZZancA3aLlKKQV3B277GKKC2T+Z0LU2y4DbcAJfBqLMpA3I0al1AvGuAlMhbl4rnwJEYJqmdn7M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744988075; c=relaxed/simple;
-	bh=WggftEIK2mvt4u75qp2O03tHBXothXB+itpeElo6ZYs=;
+	s=arc-20240116; t=1744988751; c=relaxed/simple;
+	bh=kYK53vgf3Gxgh3NrxiKB2oe/cE9e3gPPkHdTFhWZJ6M=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=V356QBNTocm1YBzIZVilIvKeaVGiYciyv+AKLJHKjtU37KUWEy8jXIuu4ZKqoPcvGNm3QADfkzFF2/JTxMS03QFnk15vbP9+OlbKfx55lapyjD+eQWXjoOXfMH8HMA1h/CAwgl3BkGKcEklSazaLB+SiVMjKlam+u1Rxt4li49Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=eO5PJr1C; arc=pass smtp.client-ip=136.143.188.112
+	 MIME-Version:Content-Type; b=Uc+RaaJ0KY4xAChfmHjFS0I3MnSbnf+iDE4cp6Ig3AwO8gDiWLJWgyQDaa1a3oROOkQIwOya7Dep0uQzGPbuJfLFjXVHoQD7xT7hYg4QrMfAf/aNNHpA6Bi3i9nV52V+H8xbuokJg6cwUVS+E4JO9fxz9GcamPeOxo43qH8LpW0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=kmCbxyws; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="eO5PJr1C"
-ARC-Seal: i=1; a=rsa-sha256; t=1744988069; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="kmCbxyws"
+ARC-Seal: i=1; a=rsa-sha256; t=1744988737; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=nGiifR6RnL7JVLdQrl4WbShTC6W/w1YaBpJQVmovhKNOUyw2SxNAlYRauud1S8YzylvC1HpUgkKkI+ubqFrp1IQVj2JPWsoQ3ZMX7COHLACqAjbW1PRw95Suw1DJ9+WfpdwDhcezXC/Hg8+ldeUtW8+CXoUkx5JzygF8Qy4vdwk=
+	b=BM0amRTvqvZagPYRw1g60C5nY4PAXvdmatzCUo/FwlMVFdNq0k9QmiSo4husKEuSn8QFKfJz5YSXVCxk7tOSHbw6q0nHNJQDN3Qyj/AyVzD7AYVMM0JZD7EQPYPf1PFtKIFD+N3+FS7i4zrdUK+nIOF7EdUDLU9vHEd4RBYAIN0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1744988069; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=BSd3sz8Qz860VcIh/f0YXhtMUJ/XA/IsbbFc//H4pQA=; 
-	b=Tbvbd4rPctmwQz3yn0s8Qr1rn+VYk27F0jJeL+4+RV5L6DgmxdAQcNAfnsyLEXGofYq9aYQK/KP0W8SoetfnP4yqOJswuE0U/Uik+6E1K9P2ResZIVppQ2ZEyeqmbuQcCeuShFghc9msrrGxYV4Rg5vRsnWs1jmqhPUOkbOxmWI=
+	t=1744988737; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Mlcb9GTu4Ko1EG4fpypORSwh8YyrHUT6FQ8NqDCHIV8=; 
+	b=IRdsz5aVKXK/abV8lfJyfM6vCf+4p0xZIU9TDtbDACEAYLaaX5HPu5mVBYYRdSweDWd5Amm7SPi0L0HLKx+K70e00joTeezz9c2KpJQUoMYCz50PGhXQVGrurBOB0GQiMLIvw/brCpjW1uRylT3JYQoBB/HuZarVsVceEcInxHY=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=gus@collabora.com;
 	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1744988069;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1744988737;
 	s=zohomail; d=collabora.com; i=gus@collabora.com;
 	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=BSd3sz8Qz860VcIh/f0YXhtMUJ/XA/IsbbFc//H4pQA=;
-	b=eO5PJr1C64JuEDfPqoFinkyRjDPX8yQnqZ7sD0npe3iv5xgc3lMRghKsasNQXQtx
-	6Q0xWNoPWEvMjp2/z6XF0OygWjYp3nK1bprblJHiuBVvUlsDB7+87Q2GyRnhasw1ezB
-	9e7Qg7bIKBI0P7LmOXQ9+dsJrtVAN7qBT5L/IpgE=
+	bh=Mlcb9GTu4Ko1EG4fpypORSwh8YyrHUT6FQ8NqDCHIV8=;
+	b=kmCbxywsIFZC9SYepHFva9pHT6nUe31g3kTCW24AFaIeecZCja6S4e8craA3Avcv
+	oH+lw9fDMatQKLjsu1ASpxv0P2t4qN691vEqXwzjQO6/CjRJ/BcMHT0Zuk4TpQgkD2K
+	/4hm2fzs+ycAsHJPPsRbLMXT8lsk+Pcm+w92SeYA=
 Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1744988066829910.0793453823826; Fri, 18 Apr 2025 07:54:26 -0700 (PDT)
-Date: Fri, 18 Apr 2025 11:54:26 -0300
+	with SMTP id 1744988735829632.1218085959247; Fri, 18 Apr 2025 08:05:35 -0700 (PDT)
+Date: Fri, 18 Apr 2025 12:05:35 -0300
 From: Gustavo Padovan <gus@collabora.com>
-To: "Luis Chamberlain" <mcgrof@kernel.org>
-Cc: "Linux FS Devel" <linux-fsdevel@vger.kernel.org>,
-	"Tso Ted" <tytso@mit.edu>, "kdevops" <kdevops@lists.linux.dev>,
-	"fstests" <fstests@vger.kernel.org>,
-	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>
-Message-ID: <1964964d3f7.10a86724c62742.5510698901836310404@collabora.com>
-In-Reply-To: <aAEyNxkMyJEVHRhR@bombadil.infradead.org>
-References: <aAEp8Z6VIXBluMbB@bombadil.infradead.org> <aAEyNxkMyJEVHRhR@bombadil.infradead.org>
-Subject: Re: Automation of parsing of fstests xunit xml to kicdb kernel-ci
+To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
+Cc: "kernelci" <kernelci@lists.linux.dev>,
+	"linux-rt-devel" <linux-rt-devel@lists.linux.dev>,
+	"stable-rt" <stable-rt@vger.kernel.org>,
+	"Daniel Wagner" <wagi@monom.org>
+Message-ID: <196496f093e.e656f40064825.6229534852937712238@collabora.com>
+In-Reply-To: <20250417151113.W9MG8dy3@linutronix.de>
+References: <20250211090511.xeFJVnH_@linutronix.de>
+ <194f4c989de.bdd18d3279996.2067896388251039576@collabora.com>
+ <20250211152018.sK91dh93@linutronix.de>
+ <194f5b4b029.e5ee4014194612.536900249866001318@collabora.com>
+ <20250213085256.nhWptGL3@linutronix.de>
+ <20250411194432.pwc6U7Ds@linutronix.de>
+ <19634ddfa6f.10623b4b6827067.8120388710582651736@collabora.com>
+ <20250417100410.zxlZCBp-@linutronix.de>
+ <19643df8092.ac2e879d858176.2114269254543526159@collabora.com> <20250417151113.W9MG8dy3@linutronix.de>
+Subject: Re: PREEMPT_RT testing on kernelci
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -61,42 +69,49 @@ X-Mailer: Zoho Mail
 
 
 
----- On Thu, 17 Apr 2025 13:54:15 -0300 Luis Chamberlain <mcgrof@kernel.org> wrote ---
+---- On Thu, 17 Apr 2025 12:11:13 -0300 Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote ---
 
- > On Thu, Apr 17, 2025 at 09:18:57AM -0700, Luis Chamberlain wrote: 
- > > We're at the point that we're going to start enablish automatic push 
- > > of tests for a few filesystems with kdevops. We now have automatic 
- > > collection of results, parsing of them, etc. And so the last step 
- > > really, is to just send results out to kicdb [0]. 
+ > On 2025-04-17 10:10:43 [-0300], Gustavo Padovan wrote: 
  > > 
- > > Since we have the xml file, I figured I'd ask if anyone has already 
- > > done the processing of this file to kicdb, because it would be easier 
- > > to share the same code rather than re-invent. We then just need to 
- > > describe the source, kdevops, version, etc. 
  > > 
- > > If no one has done this yet, we can give it a shot and we can post 
- > > here the code once ready. 
+ > > ---- On Thu, 17 Apr 2025 07:04:10 -0300 Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote --- 
  > > 
- > > [0] https://docs.kernelci.org/kcidb/submitter_guide/ 
- 
-From KernelCI side, we are not aware of anyone who created that xml->kcidb
-processing.
+ > >  > On 2025-04-14 12:14:44 [-0300], Gustavo Padovan wrote: 
+ > >  > > Hi Sebastian, 
+ > >  > Hi Gustavo, 
+ > >  > 
+ > >  > > In my understanding you want to know when results for any rt-tests change status (eg PASS -> FAIL or 
+ > >  > > vice versa) for a selection of trees (eg mainline, next, etc). Can you confirm? 
+ > >  > 
+ > >  > The results change is definitely interesting. The other thing is what is 
+ > >  > tested and how. I remember you added/ changed some architectures for the 
+ > >  > RT subset. I also assume that warnings at bootime (as in lockdep or 
+ > >  > general warnings) are reported. 
+ > > 
+ > > We have some support around that, but this work is still evolving. 
+ >  
+ > Okay. 
+ >  
+ > >  > I remember Daniel asked for some cyclictests/rt-tests integration so I 
+ > >  > don't know what is tested here ;) 
+ > >  > 
+ > >  > From the commandline you sent that there are a few boards running the 
+ > >  > cyclictests and everything either passes or is in state "INCONCLUSIVE". 
+ > >  > So this looks nice. 
+ > > 
+ > > Okay. 
+ > > 
+ > > As for notifications, for which trees/branches you want to see it? 
+ >  
+ > Linus' master and the -next tree would be good. If you plan add to add 
+ > Cc here, it would be nice if you could add linux-rt-devel@lists.linux.dev 
 
-It is a good time to discuss that though as we are making some fundamental
-changes in KCIDB to improve performance and  allow it to be more agile in
-how we deal with the various needs we are seeing from the community.
+Sounds good. Let me look at how to enable that in the coming weeks, as 
+today we don't support report "profiles"  for a given tree.. Eg, the mainline
+report comes with all the tests[1], but that would be noise to you.
 
-In a nutshell, we are creating a new interface to publish the data to KCIDB and
-also allow easier local dev env for people to try it out. Thinking about your
-need here, maybe we could go as far as having an endpoint in the new KCIDB api
-that consumes the xml directly and do the translation internally. We should 
-also look if the schema is enough for you or new additions may be needed.
+[0]  https://groups.io/g/kernelci-results/message/58797
 
-For context, for those not aware with the new KernelCI infra. KCIDB data
-is the backend of our https://dashboard.kernelci.org/ and https://kci.dev/ cmdline.
-Mind you that both project are quite new and will grow more and more functionality
-over the years. We'd be happy to collect your usecases and see how we can evolve
-our infra, dashboard, etc.
 
 Best,
 
