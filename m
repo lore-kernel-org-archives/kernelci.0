@@ -1,66 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A4B28DB65;
-	Wed, 14 May 2025 19:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747250554; cv=none; b=BSXqozBFBejv5WdVb4XwH0+dteJfsmQhdSlXZYDOnuT332wcizllfjHAML0k8VgkLmr1KaG/78S0mGlcuZCtZxMmh0RTEjVhkwoYb8T4dABZagaWomHzgsHvbKCMl1R82va4QallYXsiZH2vkb6/BiuwFy35oOL51SV3UWRfU5s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747250554; c=relaxed/simple;
-	bh=Mxf/fj8HDlShT6XSWRVqUTxyBGXLLH7Y8YOPuunmseg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWG+0dICkx180UF6QJMmTBdFC9cNJYs2jBBnaEwznbT5I3qg02gsDwCqR/ABU42P8xxtyRDd0UCO4A8f4uWhWJthNOAEoxPvtGter1736pzAz+TtggjZsyHRJI3wfHTOJr67wgNYmouBSIs/bq1/6Mf4mbXbFaS7zxAfJeb+txw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9qjztrR; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3396579FE
+	for <kernelci@lists.linux.dev>; Mon, 19 May 2025 19:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747682435; cv=pass; b=WMEODCgSeUx/xrMpFhpJpL6FgK7F8JtpGhW5z0PXs6b3m8wZt/ZU+zefp1UfhhXdICHA8kbJNNMKmdRbrL8qCw74RetNicbiyGP4TQ7lIeZqxqfSi7ddF2BkBTSQ/BvwVf43yuKUBBx+ICFwffUQko/QkT1qj7o2CfsfTnA+Wik=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747682435; c=relaxed/simple;
+	bh=BYmZcfyoELBlrBp1HZQreD1Bcc/kEOsTn3LEkRmiQh0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=ehygNzC38A3Ix/IHQJr2tN4+GMrBG/N2psxeKG7DG9r+oDte+EJ62ZO1FDmK7Q7zIKpssa4aHJTX4yptAoPqNxlEKdg8X6isF9IDKhx5CDEfdSZmV/4KS+MF0MDPiQ7mLq9vSEv3bwMkk75j0e6mzRDk1yDG9YrPO5HGCwh8bvc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=K8yro62C; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9qjztrR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DACC4CEE3;
-	Wed, 14 May 2025 19:22:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747250553;
-	bh=Mxf/fj8HDlShT6XSWRVqUTxyBGXLLH7Y8YOPuunmseg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J9qjztrRO3r2XYkq/Xvb9NBlLlOGyVMXE4Qr86Jpe8L4/6evEqi23JDOWbzWieeEE
-	 lusz7mmMfaFl3rmot6MoxQmqGI/um0pJSPHS1v1jsOh6GZ6CeBfA5NGO5BwQtPgtIm
-	 cdl70nzrARQIwAixc8/8Xq2CLwD4W5MW/syiBOQSN5txbuhiQ5bdCJLDehC9qtFOmU
-	 HJcAhvv9hYscIEHCq7ufbDpFBVD59EoitpEaWQl6o3cvStoep4DAFTGDOMZqWtCwQj
-	 W1neA/3DPmvja+/rNv9L+A0OUry0CnwWksD0Fbn1KVLxfDm09PCHbt3nqsh00I19Jb
-	 89Y1gP4wEO12g==
-Date: Wed, 14 May 2025 12:22:31 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Gustavo Padovan <gus@collabora.com>
-Cc: Song Liu <song@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	kdevops <kdevops@lists.linux.dev>,
-	Jim Zemlin <jzemlin@linux-foundation.org>,
-	Konstantin Ryabitsev <mricon@kernel.org>,
-	=?iso-8859-1?Q?=22Javier_Gonz=E1lez=22?= <javier.gonz@samsung.com>,
-	Greg Marsden <greg.marsden@oracle.com>, Tso Ted <tytso@mit.edu>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="K8yro62C"
+ARC-Seal: i=1; a=rsa-sha256; t=1747682429; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cKfGCiwOqmOz+aSRbln1/Ib+ptkj4zzNIxPxj0GKWiWPjtZdJVl6ZMl7JXBVa3o2E2Q77FnPhf9lHT1u+sT5Mivu5A+XV89h1UuGXk6UJNrLpdqBzpcWeUsEZvOI6Gu7KRd2A7s0sBmXf7lEVX1MUJuxIz3Bqi02llIJjpxWqx4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1747682429; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=BYmZcfyoELBlrBp1HZQreD1Bcc/kEOsTn3LEkRmiQh0=; 
+	b=NKbu+ngRRcdBzEFVnvFphUgRZ0xJEp08Mtm8ARFcRYZBewN5JhIwgQlPfh7DO7O5py1h5kEsUH93y4nCr5j44kNw7En4lubGj/nTHWkcFX3QGkkTXDeG+WxOGoIdK/FKpTbuXNT/2pcbITuCuoTjzll/lgfjdLT0XpvE3iyl4Fg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747682429;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=BYmZcfyoELBlrBp1HZQreD1Bcc/kEOsTn3LEkRmiQh0=;
+	b=K8yro62Cp+doosEQqOoZH/jfb9mMayOt3sUewTz1JsXQOi5SQVDhVyzsn7vcnboQ
+	YnIaxtAXy5dEcQzJr90PHlxHavDWazHuN1fckAwWbsmXutxXudD6wTbKyzM7nhzF4eO
+	EPcuwA8TbQwXKu5+EgYijJ9gfPIXBn28juDuIZqU=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1747682428369324.08306608786916; Mon, 19 May 2025 12:20:28 -0700 (PDT)
+Date: Mon, 19 May 2025 16:20:28 -0300
+From: Gustavo Padovan <gus@collabora.com>
+To: "Gustavo Padovan" <gus@collabora.com>
+Cc: "Automated Testing" <automated-testing@lists.yoctoproject.org>,
 	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kicinski@meta.com>, sashal <sashal@kernel.org>
-Subject: Re: The future of kernel-patches-daemon - folding under LF?
-Message-ID: <aCTtdxuz2jz0cO-o@bombadil.infradead.org>
-References: <Z_6bxZUiodrE45HJ@bombadil.infradead.org>
- <196cb1de31b.ef78ff442883955.7374847682594204868@collabora.com>
+	"Linux Kselftest" <linux-kselftest@vger.kernel.org>,
+	"Linux Kernel" <linux-kernel@vger.kernel.org>,
+	"Bird,  Tim" <tim.bird@sony.com>, "sashal" <sashal@kernel.org>
+Message-ID: <196e9fd85b6.d44fded2341548.6761365870876559180@collabora.com>
+In-Reply-To: <196ca91a75b.e0a5fd292825092.4995709177992280379@collabora.com>
+References: <196ca91a75b.e0a5fd292825092.4995709177992280379@collabora.com>
+Subject: Automated Testing Summit - CFP extended until May 20th
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <196cb1de31b.ef78ff442883955.7374847682594204868@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-On Tue, May 13, 2025 at 04:27:35PM -0300, Gustavo Padovan wrote:
-> We really need to move towards a more aligned testing story across the board, so all
-> systems can expand the value they add
+Hello,
 
-The project has its own repo now:
+We extended the CFP until tomorrow May 20, 2025, at 11:59 PM (MDT). If you =
+didn't submit your session, it is the last chance now.
 
-https://github.com/kernel-patches/kernel-patches-daemon
+Best,
 
-  Luis
+- Gus
+
+--
+Gustavo Padovan
+
+Collabora Ltd.
+
+
+---- On Tue, 13 May 2025 13:54:25 -0300 Gustavo Padovan <gus@collabora.com>=
+ wrote ---
+
+ > Hello,=20
+ > =20
+ > It is the last week to submit your proposal!=20
+ > =20
+ > The Automated Testing Summit (ATS) 2025 will be held as a co-located eve=
+nt at the Open Source Summit North America!=20
+ > =20
+ > https://events.linuxfoundation.org/open-source-summit-north-america/feat=
+ures/co-located-events/#automated-testing-summit-2025=20
+ > =20
+ > =F0=9F=93=85 Date: June 26, 2025=20
+ > =F0=9F=93=8D Location: Denver, CO, USA=20
+ > =20
+ > Hosted by KernelCI, ATS is a technical summit focused on the challenges =
+of testing and quality assurance in the Linux ecosystem =E2=80=94 especiall=
+y in upstream kernel development, embedded systems, cloud environments, and=
+ CI integration.=20
+ > =20
+ > This is a great opportunity to share your work on:=20
+ > =20
+ > * Kernel and userspace test frameworks=20
+ > * Lab infrastructure and automation=20
+ > * CI/CD pipelines for Linux=20
+ > * Fuzzing, performance testing, and debugging tools=20
+ > * Sharing and standardizing test results across systems=20
+ > =20
+ > Whether you=E2=80=99re working on kernel testing, running tests on hardw=
+are labs, developing QA tools, or building infrastructure that scales acros=
+s projects, ATS is the place to collaborate and move the ecosystem forward.=
+=20
+ > =20
+ > Submit your talk by May 18, 2025:=20
+ > =F0=9F=91=89 Call for Proposals (CFP): https://sessionize.com/atsna2025=
+=20
+ > =20
+ > We hope to see you in Denver!=20
+ > =20
+ > =E2=80=94 The KernelCI Team=20
+ > =20
+ > --=20
+ > Gustavo Padovan=20
+ > =20
+ > Collabora Ltd.=20
+ > =20
+ > =20
+ >=20
+
