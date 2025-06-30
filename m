@@ -1,178 +1,115 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8030E21C9E5
-	for <kernelci@lists.linux.dev>; Fri, 27 Jun 2025 09:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2135924503E
+	for <kernelci@lists.linux.dev>; Mon, 30 Jun 2025 11:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751017591; cv=none; b=RhmyEgOX3mh7MUWRN1OjVL7ci0DtdnV1DmN5SUOUfYiD9XIpmMJal7IZS/JJ0hvdk/IQfhxKDudxDdyCL9EDiyyOsst519PhVWjh2xRTOSxr9qZui5dPOE1xEPkEqJfAeyUupwJb+BcXqLz0SDyRT5pPm5tK8tVHKjr+6Jmrh3Y=
+	t=1751282879; cv=none; b=tPgAM4z1ooSevE8UvUd1p678J7nk+vuXgW65Sk7UrdLGwYczGisilvQETh2aXekWS6xEk9wnDr61eWTM6h1Rctp1PEG3BfnR4GjoTuHkOGn99n74C7xBsZRmJCS17qjlSFmtiHGLn2VwSQVJ/Cn+GdtQ2OLZrYEg41MTlHmGCc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751017591; c=relaxed/simple;
-	bh=a+bZLnnid55k5p3Jw89Mr2OfAiy6OFj/gF3M29bjNF0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NDzF2p2w5V5xsFHpaheeN/BZqT+yl6QG3O6bvy+nmSDwvWZa63puS19J3zXGKThXiukcRrrV2RnUyyMW4yGtFRrs9046n7+T9cfNZO+H4m7IL7FEp9y1M5semIAErDhJYTe24NKF7pEv/rPECUM1ai2NkWRZe1Qq+tu2CbbItdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=Ty0k88ey; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1751282879; c=relaxed/simple;
+	bh=PkA1sgdMHtl1Uz3A4r28hbWiyGj8MS17LO7uYz3zm2Q=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qmDnMY2+Ugtr/LM2Wd1iNcD1ETf9xDWlrow/zbr54GDESvGZNueFnCzxbC7rbVRywZo+Eo5QVXK5zMZ+1f1ND2AcodWTqP70T0NEKwaKnHUM7fkO20SRLELHaYfufKxBMqKV0ErWqlLZhkat3MOXXlS+BN7V/euv58XOtGRydMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b=MwGDs1+m; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="Ty0k88ey"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E190541C93;
-	Fri, 27 Jun 2025 09:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1751017581;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cNkdD1J8IeKXiofIBxvUtKc+e6RSFdWofYrzT6TOHGE=;
-	b=Ty0k88ey7gLjzs3QwdMDB/0Hfmysd1GYFEj9nGSPWrfjnIRYuSeGYGvAXPzNOWknn9W0nc
-	LrORmk2VtzODtjGcE5Ca2X8J2hkisXyBgaCJyKoSwLc0AmvxKp88rKgtZ6xd+nNOmLw79Z
-	m1os5zGVil7S2JMDRM8hrPRpOEMWs3EC3eSeFwmMRtOr/NVzsc4Mh5sguDdzIZWqKTOv3N
-	2uTmRnr1yJ3+h7wvVWQ2Bj1B3m7uXydfa5K7neI1+vLseAI1PrxmEU79EIqMbhwy+Wcyu+
-	zlDcpbzfnzvnUH+b4IjcIOW2HmCIHgm+5Fq//EbQ4EDBgppJPzcX3f4VApI74A==
-Message-ID: <14e8ec3c-3006-484f-bc38-ca858d73fe26@gtucker.io>
-Date: Fri, 27 Jun 2025 11:46:20 +0200
+	dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b="MwGDs1+m"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-553b7a3af9aso221669e87.2
+        for <kernelci@lists.linux.dev>; Mon, 30 Jun 2025 04:27:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profusion.mobi; s=google; t=1751282875; x=1751887675; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PkA1sgdMHtl1Uz3A4r28hbWiyGj8MS17LO7uYz3zm2Q=;
+        b=MwGDs1+mPM1QzHCJpoiha9BCLrh2Q9ZbAnzA7+OoQcR1jOvufUb8fyWHbjBAdmTOs3
+         XiRD218ztcCjQMe3uSeVfuGpxQ6/y+iHPG1HOkDlA0zrHv2TDdC+c0XHgwHcsr+JnC98
+         WxsxDTdRlsHy1g+d42pIWyDHGstkpy3WUsX3JSIfZ+qwLTKwgKZNoT3Xqs2E0Qifwd/R
+         tq2WPywGJMS2tX5+DyTzyaGNe4E8OFYRKZNT+lHsYJj75CffCQyeb6T+e7VaMhnjqXs2
+         yBIBVD4CK1vKKxluBS/8iDhZG41is37oAef5oS43cS8j/Utu3MolitZbdTtUT1Z7ldpw
+         On8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751282875; x=1751887675;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PkA1sgdMHtl1Uz3A4r28hbWiyGj8MS17LO7uYz3zm2Q=;
+        b=TrzqknlWW5LiH0HjIi5EE7t6bxMX+0X/jCLriA6wt7izEGXQRnUoxvqLl54HltF16l
+         YOzjQ4aBd8/ryDewIWGHPVhK60ECVcXQx5lOcD/pmTxQk7hwaBiB7MPIGFL7l8A4ntA7
+         f4okjTHZwOkCVQ3hnAmQ5ejXJNGl7xdj0wvniGqBu/8f4sn6icNazkfYVkTPRzKAILjq
+         aCDLpjWV8YLt2Bt4cKXOjKv47VK0Cs9QkTvlq1W0OfCaQAN6Iur9AKKxKL4iBjDUx/9O
+         hzLIh7NwCU8MxsztOprTG2xofVbdhriNYu0LgtNcrMPlR18BRyP27/tvuaYpugkMxO+f
+         MLNg==
+X-Gm-Message-State: AOJu0YybyB8b+OZQ6NoOsZ3az47fdatIgmPi1p4PtDU6/aAwbZQNzYou
+	Ed45VrofwqwNK0UAErLfGLBV9GyN8XzMviHdJ8gUhb8MqNUxN+omx/WBv7qhZ+bT1WCmmKcIgPB
+	rwLhdN2FzNmNSxrWzg+PinrGlFkSR66BKPvwSar3Hh6GxjjA0UGsYxYQ=
+X-Gm-Gg: ASbGncshfOqhw93dtuiGPA1GNtw+SVFM8j/B9Ir3iy7yV1qAVYR+NiWD/KOeszrlXJj
+	jibz9lr4eDcQNQIZsZN7so07aWzAAeYLNlbtgGabRtXwfWOEgm4TIkhzXb+GQxM447lrqtl/+H9
+	3OgvSgE4c2CAF+ouTUSATjUMn5ZfSFUp2AFRlc/+mhUJOClg==
+X-Google-Smtp-Source: AGHT+IHVIIfz2J2rJ7fAGS/fVpdzZ5TB/PL5Vwoe/pof13+lGBJC1xsFkCtQysZuCUynfO3bcQskhCA+IdHtYL43yn8=
+X-Received: by 2002:a05:6512:1056:b0:553:d12c:feff with SMTP id
+ 2adb3069b0e04-555133ee18cmr836124e87.9.1751282874398; Mon, 30 Jun 2025
+ 04:27:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KernelCI TSC Reset
-To: Gustavo Padovan <gus@collabora.com>,
- "kernelci lists.linux.dev" <kernelci@lists.linux.dev>
-Cc: KernelCI Members <kernelci-members@groups.io>
-References: <1973207707f.12474557a4721197.2962489771298840013@collabora.com>
-Content-Language: en-US
-From: Guillaume Tucker <gtucker@gtucker.io>
-In-Reply-To: <1973207707f.12474557a4721197.2962489771298840013@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvjeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepifhuihhllhgruhhmvgcuvfhutghkvghruceoghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhoqeenucggtffrrghtthgvrhhnpeetjeehteeghfduiedtvedukeefueeuleefhfeguddvueekveetgffgjeeutefgffenucffohhmrghinhepkhgvrhhnvghltghirdhorhhgnecukfhppedvtddtudemkeeiudemgegrgedtmeekiedvtdemjeekrggsmeekfhekudemvdekledumeegsggvgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgegrgedtmeekiedvtdemjeekrggsmeekfhekudemvdekledumeegsggvgedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgegrgedtmeekiedvtdemjeekrggsmeekfhekudemvdekledumeegsggvgegnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhnsggprhgtphhtthhopeefpdhrtghpthhtohepghhushestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehkvghrnhgvlhgtiheslhhishhtshdrlhhinhhugidruggvv
- hdprhgtphhtthhopehkvghrnhgvlhgtihdqmhgvmhgsvghrshesghhrohhuphhsrdhioh
-X-GND-Sasl: gtucker@gtucker.io
+From: Marcelo Robert Santos <marcelo.santos@profusion.mobi>
+Date: Mon, 30 Jun 2025 08:27:41 -0300
+X-Gm-Features: Ac12FXwzPxU3W7j6hodjQbJoMfzBW30LabqaeBhfgQeupQrBA7EbbZ39EeiIiJo
+Message-ID: <CAMVAkEt8GBiWnh=BUd9oE6pMJU0Leg7vxcX8xDq5RGv-Hs+HgQ@mail.gmail.com>
+Subject: KernelCI Dashboard Report - June 11 - June 26
+To: kernelci@lists.linux.dev
+Cc: kernelci-webdashboard@groups.io
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hello everyone, here is another summary of the changes in the KernelCI
+web dashboard with the improvements and bug fixes from the last weeks.
 
-On 02/06/2025 9:03 pm, Gustavo Padovan wrote:
-> Hello everyone,
-> 
-> Recently, we have been discussion the current state of the Technical Steering Committee(TSC)
-> in KernelCI. Over time, a disconnect emerged between the members of the TSC and the current
-> active contributors to the KernelCI community and we didn't act in time to correct course. That's
-> part of the pains of a growing community.
-> 
-> On the flip side, it opens the door for us to rethink the TSC structure from scratch - something the
-> KernelCI Project Advisory Board jumped on and took a proposal for feedback to the weekly
-> community meeting last week. Now, we want to share it with the wide community to discuss any
-> feedback people may have before we take this to final stages.
-> 
-> Of course, just having a new structure is not the solution to all problems. It
-> will require engagement and commitment from TSC members to help the community grow,
-> keep an open collaborative space, seek alignment of technical roadmap to our main goals and
-> mediate key strategic decisions.
+One of the big improvements that we have in this new release is that
+the urls for the tree pages got much shorter, improving the
+readability and shareability of those pages. The previous, long urls
+are still supported, so older links will not break. Whenever a tree
+has a defined tree_name and git_repository_branch, it will use the
+shorter url, so we encourage maintainers to give some care to these
+fields.
 
-That sounds great, and very much on point about engagement and
-commitment.  The TSC has grown organically from the early team of
-contributors and the hope when joining the LF was that member
-companies and kernel developers would take it to the next level.
-While part of this did happen with Collabora being a driving
-force along with Red Hat, there hasn't been the fresh influx of
-engineers anticipated.  That would have naturally provided a path
-for keeping the TSC healthy in the long run with a renewal of
-active contributors.  So now seems like a good time to try again.
+Other improvements include adding a filter for boot and test result
+origins within a single tree, having a more precise origin filter for
+hardware, and more.
 
-> # Proposal for the new KernelCI TSC
-> 
-> The current proposal was build taking inspiration from how other TSC (eg ELISA, Zephyr, Yocto)
-> are structured today. It has two main spaces:
-> * the TSC itself
-> * the KernelCI Infrastructure Working Group(Infra WG)
-> 
-> In a nutshell, the Infra WG is responsible for the core infra of the project (Maestro, KCIDB, Storage,
-> Web Dashboard) and the TSC drives the engament with the Linux kernel community, bridging the
-> gap between the user needs and infra roadmap development.
-> 
-> 
-> ## TSC
-> 
-> *  5 members total
->      -> 4 by community vote with 1 year term
->      -> plus the KernelCI Infrastructure WG Lead
-> *  Most voted person elected TSC Chair for a 1 year term
-> *  Max of two employees from the same company
-> *  Any of the community members listed below are eligible to vote and be voted to the KernelCI TSC:
->     -> Contributors to KernelCI git repositories
->     -> Technical members of CI systems and labs connected to KernelCI
->     -> Upstream Linux kernel maintainer who interacts with KernelCI results and/or give public feedback to the project
-> 
-> 
-> ## KernelCI Infrastructure WG
-> 
-> * Responsible for the software projects deployed as KernelCI services
->     ->Maestro, KCIDB, Storage, Web Dashboard
-> * Manages the Sysadmin team. With the creation of the Infrastructure WG, the Sysadmin WG becomes a
->    team inside the Infrastructure WG with some people getting access to the sysadmin secrets.
-> * Initial member selection is based on key contributions and ownership
-> * WG can vote new members in and out at any time
-> * Members who haven’t contributed to the KernelCI projects for over 6 months are automatically removed from the WG
-> * WG Lead shall preside for two years
-> * Voting members for WG Lead include the WG members and TSC members
+# Improvements
 
-That sounds like a refresh of the Sysadmin WG we used to have,
-it's great to see it come back and with a stronger structure.
+* The tree details page now has a much shorter url when possible. For
+trees that have tree name and branch well defined, you can now access
+the details of that tree through
+d.kernelci.org/tree/tree_name/branch/commit_hash [1]
+* Added origin card by each tab in the tree details page, also
+allowing filtering by the origin of each tab [2].
+* Reworked hardware listing to make the origin filter affect the tests
+themselves, and not the checkout that they relate to [3].
+* Added all test origins to the origin selector of hardware pages [4].
+* Removed issues where all their incidents are related to nonexistent
+checkouts [5].
+* Removed the hardware label for the build log viewer sheet [6]
 
-Out of interest, are there any plans for other Working Groups?
+# Bugfixes
 
-> ### Additional TSC responsibilities
-> 
-> Beyond what is already listed in the Charter, the TSC should be responsible for:
-> 
-> * Seeking feedback from the Linux kernel community and company members as driving the
->   creation of processes for improving the feedback process over time;
-> * Setting up a process (e.g. RFC, PEP, …) for decision making around important architectural
-> decisions in the project. Such a process should be used whenever consensus is not achieved
-> trivially.
+* Renamed tree and issue listing endpoint parameters, making them
+follow the snake case used in the backend as a whole [7].
+* The log excerpt of an issue in the issue details page didn=E2=80=99t have=
+ a
+height limit, now it has a scroll [8]
 
-One important aspect to add here would be transparency, with
-public TSC meetings and public votes.  This is something that has
-been discussed for a while as most other projects operate this
-way, so now seems like a good time to make it happen too.
-
-> ###  Final thoughts
-> 
-> For reference, today's the current TSC structure is described in the project charter[1] and any
-> modification we will make to the TSC structure will require voting by the Advisory Board.
-
-In addition to the Charter created with the LF, a number of rules
-have been voted over time by the TSC to clarify certain aspects
-and make things easier in practice:
-
-   https://docs.kernelci.org/org/tsc/#rules
-
-It would seem worth going through these and consolidating things
-into the new Charter document, for example to remove ambiguity
-around votes (email vs meeting, quorum when some members abstain
-etc).
-
-Even if everything ends up being perfectly well described in the
-new Charter, keeping some documentation section about the TSC
-rules always helps in particular for people who want to learn
-about the project.
-
-> In the next steps, once we collect extra pieces of feedback here, the board will evaluate and
-> hold a voting for changing the charter. Once that happens an election process can start.
-> 
-> Let us know your thoughts,
-
-My 2¢, hope this helps.
-
-Looking forward to the next KernelCI chapter!
-
-Best wishes,
-Guillaume
-
-> [1] https://docs.kernelci.org/files/KernelCI_Project_Technical_Charter_20181107.pdf
+References:
+[1] https://github.com/kernelci/dashboard/issues/1281
+[2] https://github.com/kernelci/dashboard/issues/1251
+[3] https://github.com/kernelci/dashboard/issues/1280
+[4] https://github.com/kernelci/dashboard/issues/1242
+[5] https://github.com/kernelci/dashboard/issues/1279
+[6] https://github.com/kernelci/dashboard/issues/1283
+[7] https://github.com/kernelci/dashboard/issues/1287
+[8] https://github.com/kernelci/dashboard/issues/114
