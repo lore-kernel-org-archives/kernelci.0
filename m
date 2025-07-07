@@ -1,57 +1,50 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70182BE051
-	for <kernelci@lists.linux.dev>; Mon,  7 Jul 2025 14:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934281AB52D
+	for <kernelci@lists.linux.dev>; Mon,  7 Jul 2025 20:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751897214; cv=pass; b=I6IP6FQrVuXENkxUqYNG+9OYlrtxxWjbIbzwVbmtdv8JHptLJMScx5YAQXYVpDNb22YLHElupV24C0+iM7mlCd5rvljniLkvFn9DBVHUX9ZIFU6HPnM4kWfGeLf64evVbHtfH1cpbynvtZBvoi+q7ccAc8QGGoBFoFlRWN7+Sh4=
+	t=1751919227; cv=pass; b=nuny+3aAtkUiUR1d+zYay5HXnxp1nu9SDvK5JSo4ayxaL4PKcDZtWgbLqa037BANPXrR+9edVR/g5P4ZWWxY87vKMYnTpvu332xyUUVXtE7tWI/OgWKqPxE3rK+h9064QjxfakAL62VKpKKGQ2b1iOz09WXeQVP6Xw8mAKJrKHY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751897214; c=relaxed/simple;
-	bh=nVL8RzbfQUbV3cWEN5HyzMj2JgPrLDM8C/LUWwir5pc=;
+	s=arc-20240116; t=1751919227; c=relaxed/simple;
+	bh=Rx8x+UBi4w2Hy4E10Hqoc25FefH/hNg5KSnA0M6sxpk=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=p8wJQNv3l0oa62rPunKLIs84NqInLq6UZib7LpcDCI1uXXD7uE7rvwiHptb7qp1thEarfa2xUXs/jhNofd9hvJZIOS6pZ9DS2/k0ggG2OZrweEX1+MFuwxvyzZQGyKO0vAoJ8TqmVfErb63vAKqZ/tXCm1TXYGug10NtVAFEqSc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=F6zJHbYC; arc=pass smtp.client-ip=136.143.188.112
+	 MIME-Version:Content-Type; b=by0dhuQde490UbC7UbeAG+ITVQRK+cakRzXxQzdsbLPiCzh3GIsm2p+TLc268brYhv9+KRnI0QxXtAiCl5PUyOibra2W2ouTZX511t2YfHgHLrQDQqLmkPVVUzDstu7gS9mFTMRqMRLAFwuGi6cuz/93Fu0zwyiYBTWtDRvgEnw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=ZnAONZ7y; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="F6zJHbYC"
-ARC-Seal: i=1; a=rsa-sha256; t=1751897194; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="ZnAONZ7y"
+ARC-Seal: i=1; a=rsa-sha256; t=1751919223; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=LLNCR/NHkkh4BtqPJ/pCtseK5Ws83oNmpJh/GforqVFlguYwvIBNA98X+3RH/2aLRQvuOVpumum5U1cNiKzSGdz8m/zIMaeaMFiSjHOM4M3FxDPdfFTLbskUt6ruJo2Gmmbpj3nA8IvBseDeD8iCi+qj55JDKRJCTIkfmcexHsk=
+	b=Lyy1WFtGjZbNu7UJkNt9NwlrHOfIfEXtWkMMCXRvvbmOovEhdjClsd/5BS+fHXIKZq04Fmsaq2EOYRa4Cp1cFTxx6VKUSbVnemBv/gS8KTh5F2aBBliFMNY6er0OkJKbW74lkZb8xcfoSYxz+jt6u7v85E2vYYOW8WZtdgJnWas=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1751897194; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=p6r215HORtQkgpJubgFcQt2s0rODNo5ViU4EIRgi/3s=; 
-	b=hy8A1BZXYujB1ebEPIQDioLRmyBnLGIrBarFzbw3hOijaYeqvdA0E71iI9KGWkusngIY0f6E3aJyhD74/anu5qqiMeqjwvUBL/FoJ/0+bK/U6SvlarU1v8OjLN9L8CHJU01Zb9KFNH6LsMBBjaHRURCdV5PKGsNSyV2+tJ12qlw=
+	t=1751919223; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ypEKcNnYzvKXYGzYGKAndaAtx3umsxfWwU4DtOX8Uo0=; 
+	b=kpAf8ygC9MOlKsfDyaSosIEzXkTwUZgdh3eLKncwiCTxv1XdZPTV6z2N9LyugCe9tct1wMFEhpST/UJWFX1iUl2i8JBagfmhijWLj1sGaezsZmod72XC5BQiu29PGOwBrFbTMf+Z/Pt5XAhUagtFtXP5123saDVvKvBm+XtAluU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=gus@collabora.com;
 	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751897194;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751919223;
 	s=zohomail; d=collabora.com; i=gus@collabora.com;
 	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=p6r215HORtQkgpJubgFcQt2s0rODNo5ViU4EIRgi/3s=;
-	b=F6zJHbYCHlzWqNy+5ogEzSuVhclGr3HMknP58crLG6vbFkXT75CKz23/eSB4LNtZ
-	3cRN08qWfSR3+GKwhk8319Ht3f+/l+ylPJcnkVrEzn4cYUcoNaMPFdxyvLlcs8GJ9jO
-	OiAtk66JaIHW8pvXJEcS70nHSfXrsZkhrmFPqugg=
+	bh=ypEKcNnYzvKXYGzYGKAndaAtx3umsxfWwU4DtOX8Uo0=;
+	b=ZnAONZ7ysszH57EJzN2+Cs20Rwgu1OAWTEgbthztppD8v9nuW293pLoZvdlKWX/r
+	/cfNAqyoghEzAKFouCrSYMT8M46pHZqs9b0dl34tAOmVQUe8URdNqbqAD3OBtgy0xEL
+	4te0mCGZV52Dn5ncAqufjotRhFPFjaQn6NjdkDms=
 Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1751897191262513.0769904210841; Mon, 7 Jul 2025 07:06:31 -0700 (PDT)
-Date: Mon, 07 Jul 2025 11:06:31 -0300
+	with SMTP id 1751919222511267.07592660932244; Mon, 7 Jul 2025 13:13:42 -0700 (PDT)
+Date: Mon, 07 Jul 2025 17:13:42 -0300
 From: Gustavo Padovan <gus@collabora.com>
-To: "Randy Dunlap" <rdunlap@infradead.org>
-Cc: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "bot" <bot@kernelci.org>,
-	"kernelci" <kernelci@lists.linux.dev>,
-	"Stephen Rothwell" <sfr@canb.auug.org.au>,
-	"Linux Next Mailing List" <linux-next@vger.kernel.org>,
-	"Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-	"bpf" <bpf@vger.kernel.org>
-Message-ID: <197e535b307.1104f59621371677.7964423033912786920@collabora.com>
-In-Reply-To: <d5136da0-51f9-4359-a283-9075b4992bfb@infradead.org>
-References: <20250704205116.551577e4@canb.auug.org.au>
- <5496b723-440f-451b-b101-f0c7c971fc9b@infradead.org>
- <f06082bf-27b5-488d-b484-fecc100014a1@infradead.org>
- <CAP01T77AWoBqDgOPpmmcL5tQFqNa8W3rxBDB+Er0J5rxogCrVA@mail.gmail.com> <d5136da0-51f9-4359-a283-9075b4992bfb@infradead.org>
-Subject: Re: linux-next: Tree for Jul 4 (kernel/bpf/stream.c)
+To: "Gustavo Padovan" <gus@collabora.com>
+Cc: "Stephen Rothwell" <sfr@canb.auug.org.au>,
+	"kernelci" <kernelci@lists.linux.dev>
+Message-ID: <197e685ded3.e673ce7447423.785163730221310361@collabora.com>
+In-Reply-To: <197d671eb9e.126ad1ffd778607.8492163273409295826@collabora.com>
+References: <20250704225909.52d1555d@canb.auug.org.au> <197d671eb9e.126ad1ffd778607.8492163273409295826@collabora.com>
+Subject: Re: feedback about KernelCI reports
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -66,54 +59,49 @@ X-Mailer: Zoho Mail
 
 
 
----- On Sat, 05 Jul 2025 01:52:58 -0300 Randy Dunlap <rdunlap@infradead.org> wrote ---
+---- On Fri, 04 Jul 2025 14:17:59 -0300 Gustavo Padovan <gus@collabora.com> wrote ---
 
- > 
- > 
- > On 7/4/25 9:44 PM, Kumar Kartikeya Dwivedi wrote: 
- > > On Sat, 5 Jul 2025 at 01:38, Randy Dunlap <rdunlap@infradead.org> wrote: 
- > >> 
- > >> 
- > >> 
- > >> On 7/4/25 4:35 PM, Randy Dunlap wrote: 
- > >>> 
- > >>> 
- > >>> On 7/4/25 3:51 AM, Stephen Rothwell wrote: 
- > >>>> Hi all, 
- > >>>> 
- > >>>> Changes since 20250703: 
- > >>>> 
- > >>> 
- > >>> on i386: 
- > >>> 
- > >>> kernel/bpf/stream.c: In function 'dump_stack_cb': 
- > >>> kernel/bpf/stream.c:501:53: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast] 
- > >>>   501 |                                                     (void *)ip, line, file, num); 
- > >>>       |                                                     ^ 
- > >>> ../kernel/bpf/stream.c:505:64: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast] 
- > >>>   505 |         ctxp->err = bpf_stream_stage_printk(ctxp->ss, "%pS\n", (void *)ip); 
- > >>>       | 
- > >>> 
- > >>> 
- > >> 
- > >> Also reported (earlier) here: 
- > >> 
- > >> https://lore.kernel.org/linux-next/CACo-S-16Ry4Gn33k4zygRKwjE116h1t--DSqJpQfodeVb0ssGA@mail.gmail.com/T/#u 
- > >> 
- > > 
- > > Thanks, I will share a fix soon. Could the bot also Cc the author of 
- > > the commit using git blame? 
+ > Hi Stephen, 
  >  
- > I added the email address for the bot. We'll see if it can read email. 
+ > Thanks a lot for your email. We appreciate the feedback! 
+ >  
+ >  
+ > ---- On Fri, 04 Jul 2025 09:59:09 -0300 Stephen Rothwell <sfr@canb.auug.org.au> wrote --- 
+ >  
+ >  > Hi, 
+ >  > 
+ >  > Firstly, thanks for your testing and reporting. 
+ >  > 
+ >  > Just a couple of simple thing: 
+ >  > 
+ >  > It could be worth while reporting any tag on the HEAD commit.  This is 
+ >  > especially true for linux-next which comes out every day (with a tag) 
+ >  > - it would give people an upfront idea of which linux-next tree has a 
+ >  > problem. 
+ >  
+ >  
+ > For sure. I can fix that quickly for you next week. Adding the tags 
+ > is definitelly possible. 
 
-The bot doesn't know how to read email yet. :)
 
-The challenge with Cc the author today is that we don't build every commit or bisect,
-so we are not able to indentify the culprit commit. It is definitely on our roadmap to
-do that, but we don't know when such a feature would be available.
+I pushed a PR into the dashboard for adding tags. It should be in prod in a week or two.
+
+https://github.com/kernelci/dashboard/pull/1337
+
+ >  
+ >  > Also, something is line wrapping your Log excerpt (and the reported 
+ >  > error/warning) which makes it harder to read. 
+ >  
+ > I am aware of that and tried a few things to solve this. It is something 
+ > in the Gmail API handling for the KernelCI bot. We'll look into it again. 
+
+I also investigated this, but it seems to a deeper limitation into how Gmail API
+handles plain text emails.  I tried a few things but nothing worked, even though
+when I use that API fetch the e-mail that was just sent the content is not wrapped, 
+but when a client shows it, there is a line wrap.
+
+Maybe we need to a different approach or different mail server.
 
 Best,
 
 - Gus
-
-
