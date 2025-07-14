@@ -1,98 +1,77 @@
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21B51E7C23
-	for <kernelci@lists.linux.dev>; Sun, 13 Jul 2025 08:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752395071; cv=none; b=a6T/nQZO1NjE4nkgggxDGkFO8mpj6PX0WReVcWDyUTvHVR8cVs0gQhTTQ2e9uFQsR8K78FTQkbFazwWc7+TOdRGu+q3GYo8nlOLPR5FAudhHp3veAuOtYf/I2xpujctydem4tyjbobcMvzYbHTuJPEjVuhfKPrIy01XaD0uKWto=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752395071; c=relaxed/simple;
-	bh=lcdydv8sYkAEzCFbM1kD/zH/iQmbLtyt/8XOYlmpchc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=p4KB7PrsWStZyiUN78FUatU68T5x5tv8usPC/Da6J+5Z/IjyuMmo+dUekJmfhJOpvmev9Snrv4ylLSr/LgmIxU846/hfj3U2aEHfcR6Lewpa+QugrkHfsthDaRqJD2aULCdlQ2WKpnjlgDvwRvkKkUuOOt1MsLfwSVsj8tx6UIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uu6h1CCy; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E088257448
+	for <kernelci@lists.linux.dev>; Mon, 14 Jul 2025 14:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752502010; cv=pass; b=gpWxzRZjWdsZxaYsA1TAWIQorbFghFz8Tx/k/caEZpXuu5DzDRKizMy7aBlCE2jZXZ+ihWXcbdMqBOKFFzkI0U6MYks/ZID1yJ7A9at7TQGJ7STs2oFuUoI1+IviqG2gVMU9P/EnRMO1Nni7mVq/gYFn5VktIFrHz2Bes7ZpTUs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752502010; c=relaxed/simple;
+	bh=tU7HXnHp7K9MSYbgo3deRiYFSLMxnf3vfjcdxJOTDvE=;
+	h=Date:From:To:Message-ID:In-Reply-To:Subject:MIME-Version:
+	 Content-Type; b=T7N1TgmeQYXA1563ucSIoCY9C5rxKFN3nJ1Oz9SH2JSvSqQqy3eSas7wIi4U3T+YUjmoA00b1UQ4CStbxyHla3stPnAsI5/VsSUg9nmdp3kTI/zU7iJ9K+YrvssVrCHp5Vc3N+6bIDN/ueTV8Ihh52OzUJtyLqJmeRFdsMpph7w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=lCTmXGZs; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uu6h1CCy"
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e81749142b3so2944759276.3
-        for <kernelci@lists.linux.dev>; Sun, 13 Jul 2025 01:24:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752395068; x=1752999868; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Busf/73Amz2RvNENLx/WG5XU+64PtmKHqQY2kO8k0Z4=;
-        b=Uu6h1CCyebw9fcw44HD6nu+i9v+y+6RFI+2NgIZx6dTW3owPbtGp8XTNcf81y4jkOy
-         yXo03dbFQmLlSx7DpGeZv/9z9igh2x4fRls05iWhraXf0kO7Oe10bNFFw/nJvAn7AIAH
-         zKxQpcfTghvSZsX3ZqC0ib2KEt0eYrybxDXTjeDdD9zVnIADHG/qqm3Gz6Cl1hIOfyfH
-         onipLHPx5IgEEs40/BNYxTFqGC8z1vGc4y9OdeF90af8aze5cqTgl5BzwLgvXeKUGmLD
-         HYD/WftDSJjotrdJwNVh6+8aPp+IQpjJ8xF+a6olxW6KIk8Wij58y1LeODUgbDySp8XE
-         ylkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752395068; x=1752999868;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Busf/73Amz2RvNENLx/WG5XU+64PtmKHqQY2kO8k0Z4=;
-        b=UhLT5ki2LpBfx4f33NcsOClSEe/GdGs68ldGML7o+zkXopg10qeAxdYRQgB1/NNR+C
-         jY9zzRMAUJryjKayzcN4NwDt4cxsS4oyPgXeQ/8AwLRjHBQmRPNFs5ALUJQtWZatryPM
-         xbJ0VdrQXWIpVe5SeUwVRBkpsm6Z8HqSJ0ZWkmUFM1MQuz0b/qhDBBe0rJbSmJjQzUHA
-         H6Ttc5Bz48craJFjI5OHbz7WoM7je1ivoIkPzhWpviqNM2jlUh7t8vcv3CrNUVhN5JIL
-         g1LpBK0e4d/xPhnPHyreeIWAZRVVtAtnipQAt73UiLk2hMj8jPkdW3uCZHy3TU5o34w+
-         cLOQ==
-X-Gm-Message-State: AOJu0Yx1Q0W4yJiPzT625H8vdrRYJH1lVggPM8kVgC1TN+o+Rwe4krAb
-	s8VQ9RS7i7eYuwodgcKnX9iEMZunbPQbcuAwuk1PrULCoJbtQOkbc99Yg3UDXfM58IzNFl2rPU1
-	7IKQrbZElmAnNaAObi80xm9PPlqeYzkujKDoDK7M=
-X-Gm-Gg: ASbGncs+GbwibnG0qgPeTAhtN1+MJ8wrTbgpIrymuGoaGarZScqFRQdQi+osIy54IVV
-	1ke5VMIOGntDLnxHedt9wdkb2mh6u+k1DJShp/bk7CEwgUDuvcRsR5qQFFY++AdH4hzJLSVL7he
-	+2FrbScvOPFIT1ViQV9rxhuFREB9jmTsm5ePryoORGKiKcVRJRldOiub4um/iDuc8cgIcc8DUhJ
-	ePWSUQa
-X-Google-Smtp-Source: AGHT+IG89XTR+PkINLv+WymVj3ZpnxW6lZOEE7UolBay7kFXMHvTwgGTgcwqLPL1DRh/1KhHTByXkg1THpTbCXQAoSo=
-X-Received: by 2002:a05:690c:dd5:b0:70f:88e2:c4ae with SMTP id
- 00721157ae682-717d5e368e3mr149103377b3.37.1752395068555; Sun, 13 Jul 2025
- 01:24:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="lCTmXGZs"
+ARC-Seal: i=1; a=rsa-sha256; t=1752502005; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=l7DXCEtjBRUpG+U34aheHjNlNCwTWCb7GznJ8qNK9haMDeFMwk+UCvwdTBH0qA7QBQtHYc7+YTUq6u9mklbJepHLyEOLrU4RWYuhp0qpszg2QmXrz6PAJY7YdYJNb9izjVoJRA9vYp7CVoCTRfHDtDfiJ3ijcXFsA8uAYIt8tQA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752502005; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=Jy7baaugCX9j0frCqrykV3NoCsSZACRLMY6u3PfPuxA=; 
+	b=m47nArOsXRihvx1ae/cxaM4m4Ur4lHAqOFShwRabIIWOniLHvtaRnZTCZ2uRQfgnPsN//N1yqNz/srOVc+i1kJt8P8rYvNTASgCOLYGL8uBHPG2BU5hQsmo+qqk9yJuMv5GL8EetfHinh3WQJLcLjZVIZHWsICee5y1g41wUWO8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752502005;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Date:Date:From:From:To:To:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=Jy7baaugCX9j0frCqrykV3NoCsSZACRLMY6u3PfPuxA=;
+	b=lCTmXGZs4cSYyCXlbR5pppVpwtAI7TSjmyaTiYqgAOvscAuWkmkeB6PFPhOrNEbg
+	/qpawQrwZhLI+MD2fooXU1D83QZcVbiLP+oHBwsd6oW4PkiPUifvf9HDB2kSxOH2ugK
+	VptQqe9j3M4/0K8wvGXy1JfjFATDQ60odTDL4ZV0=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1752502004035289.37526612552654; Mon, 14 Jul 2025 07:06:44 -0700 (PDT)
+Date: Mon, 14 Jul 2025 11:06:43 -0300
+From: Gustavo Padovan <gus@collabora.com>
+To: "kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
+	"Automated Testing" <automated-testing@lists.yoctoproject.org>,
+	"KernelCI Members" <kernelci-members@groups.io>,
+	"kernelci-hw-vendors" <kernelci-hw-vendors@groups.io>
+Message-ID: <19809426904.3c4822be1251531.2628638964882412232@collabora.com>
+In-Reply-To: 
+Subject: KernelCI Workshop in Amsterdam on Aug 28th
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Jesse Simpson <jesse.simpson36@gmail.com>
-Date: Sun, 13 Jul 2025 04:24:17 -0400
-X-Gm-Features: Ac12FXxtV0PKgIcHxMmpXUGgnpE3ut5u2hl6JHzLENldEUIyPtwDYVMYeQxnogk
-Message-ID: <CACH1CvPX8G6J=HyPV_jOYBFNba+TCT+8+YjyZ-OB53NX0OOieA@mail.gmail.com>
-Subject: Hello from the Gentoo Kernel CI (and requesting test credentials)
-To: kernelci@lists.linux.dev
-Cc: alicef@gentoo.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-Hey everyone,
+Hello everyone,
 
-I am working with Arisu on the Gentoo Kernel CI project hosted here:
-https://gkernelci.gentoo.org/#/ . For a little while, this project was
-getting persistent test failures and even longer still, this project
-wasn't even able to post to KCIDB. (I see records from 2022 where it
-failed to post).   I started working on this project earlier this
-year, and have gotten tests to pass, and now I want to fix the
-connection to KCIDB. (https://github.com/kernelci/kcidb/issues/330)
+We will run a KernelCI Workshop on August 28th right after Open Source Summit Europe(OSSEU) in Amsterdam. The location is not too far from the main OSSEU venue.
 
-The Gentoo Kernel CI project takes the linux kernel of various
-supported versions, applies the gentoo linux-patches, and then runs
-basic tests.
+The goal of the workshop is to discuss the current architecture and roadmap of the project and refine our directions forward as a community. The workshop will run as an un-conference style with agenda discussed and decided at the beginning of workshop.
 
-Arisu is still the admin of this infrastructure, but I am taking the
-role as contributor, submitting patches based on how they work in my
-testing environment but without access to the live environment. I
-suspect that Arisu will need a new credentials file, but as a
-contributor,  I would like a set of test credentials to test
-kcidb-validate and kcidb-submit so that I can make sure that our
-scripts that calls these functions in
-https://github.com/GKernelCI/Ghelper/tree/651090a3082ec684a315a808874a9091e819db3b/kcidb
-folder works.
+If you want to take part, please manifest your interest at:
+    https://forms.gle/SwanWMQnwg6F6UAx9
 
- Do you all offer test credentials or a staging environment that I
-could post to?
+For any questions don't hesitate to reach out to me.
 
-Thanks,
+- The KernelCI team
 
-Jesse Simpson
-jesse.simpson36@gmail.com
+--
+Gustavo Padovan
+
+Collabora Ltd.
+
