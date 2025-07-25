@@ -1,124 +1,98 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484C94685;
-	Fri, 25 Jul 2025 04:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1512E1DE3A7
+	for <kernelci@lists.linux.dev>; Fri, 25 Jul 2025 08:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753417693; cv=none; b=T1l9U26Di2cV8bVYBWJOfkHSFGxJIs/mGh7d7lBWDnsLJFrXX52mXwGeDckG/5w+057VFx14rc2pxBOFwylABX/+Y/wpX1cDjeANCAxCLwgWi4Jj6By+YUlp27fSJMMCf453h1THWfui1d1X/SCkMmG/Fo4HgH8boKp3vncMSP8=
+	t=1753432703; cv=none; b=otF5Pq4ZFsMmw8Sf8OqXwyXErkEQEHJxiPhzN/CyswS2lLA04uFeoppqMejFXhmSv2MQW7qaYSJ/9L3vuKRRuR+pSh+zqCfwOigny9QNqsleK1JeUxeyXbvRAekNqwrPPw329FEdSoUhkcsPppwNJz+PPnr66B8nS11YsLoSIso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753417693; c=relaxed/simple;
-	bh=nViCZVdIhHht4rvexq8fB+IyLWUtriTy6OzTnOIybqE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NWYC85iIrouNN/Y8j1NoUdh8dfpiB4m1sGHmAbb3XLlwI+Gi37u72AzNveSZ6U2/zD2hW1ZEv+ihPhq/PsWJHwmv9NN8uFDwgV5bVoEeKFLYDvgYeLqYbxoeKyjEQ6ut797khSpbTea/kmiI9/kQpF3v54LjcmQocV1aMESWZsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=EIMbukyR; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1753432703; c=relaxed/simple;
+	bh=TXwNMHahCwTnrJfL9xKeS40A5b6CJKKrcTK+pyajkkA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VeqNHPEEIG1Ivmnjxts2yRgRqJzxnkOSGmaoXVC6Y2Kd3fKz1vEMpvJZocNvW5ci9U3YdZyk1gsmOJj03CtlBCuN9+HdPE8bQodiXHmMNcgyvwRY3AmGDBG8SNCz3PpJUjNlE0U/4TuIVLSd7CncUbMcOROVWVzM15mOLLH/T74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y52B5BOl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="EIMbukyR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=0/PVh4vnK+7cRx31zEAoBbAbZ5vTsgkuRvc6rDgjdps=; b=EIMbukyRQ+c5hi5N2IXI1jTgp9
-	2JiiH5m8k4bQ1woFO7vY8dRuLR5hW6DhMiKsc5dtQox9l/f2uqx3dkzrbnTs1D60IZkce7Kz6z9sG
-	tLXbuio6WenoMaYfv9ppQybRfTTV87Z7HkhKfRSaN4idjrhvRlzNf7yHzteN+dMEdlM+VTI47SAKu
-	hAtG+U8wyOLC3jTJrb5HbwXU3CMpUdbWHUoLFkF0C6OCHHO9Nu0P0ctWWvoUalSnywkahJpqVqUgJ
-	0/aGinLIEzVen4kao2BbZkRR17F3tAOPInaI5WlAaR0HNYltSfCYi9Yo9AFuzbJh7UpIUNwUBDGTE
-	h+bsNyPw==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1ufA2U-000000091Y8-1EEn;
-	Fri, 25 Jul 2025 04:28:10 +0000
-Message-ID: <d2e84599-bf73-44bb-a0f4-a5fe4086978e@infradead.org>
-Date: Thu, 24 Jul 2025 21:28:09 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y52B5BOl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753432700;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TXwNMHahCwTnrJfL9xKeS40A5b6CJKKrcTK+pyajkkA=;
+	b=Y52B5BOl7HUKtcU7tk2EIzdHQHFkUhIGDXouhCuU39CULhFExPioU1WYCHfsQFcTAnk3eW
+	0hJmNBkgS0RZVqueWjOxljiuMV0qnei1GrozI9igOAXB6AST7/TV4wb0X4b+YYHjrjUL3T
+	c6e6NDG2BLvIwzg4Vw2dHHMCgoK1Iws=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-82-T4LeSXX8OaKhglOe6lmXBQ-1; Fri, 25 Jul 2025 04:38:18 -0400
+X-MC-Unique: T4LeSXX8OaKhglOe6lmXBQ-1
+X-Mimecast-MFC-AGG-ID: T4LeSXX8OaKhglOe6lmXBQ_1753432698
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2369dd58602so19818515ad.1
+        for <kernelci@lists.linux.dev>; Fri, 25 Jul 2025 01:38:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753432698; x=1754037498;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TXwNMHahCwTnrJfL9xKeS40A5b6CJKKrcTK+pyajkkA=;
+        b=qT83tCrNgOxgi3eXsXMgle4qvYaNRIgreAlHy4Q5B0o0wrkRSofNk0f0REsyw6QHo2
+         ruYAqkY2gWbgd8GILvp7h3pMuOohP5FVDTqZAiQsZWQQUBeGyYJGeNfiZdpYZI3IY/7U
+         8oTKZaK9sgUeZoP1S2dVOBP09fv+6TkEBI3v5l1iWuhDGhLhd5vxX5h4YZjndjK6aap4
+         GKjhEGVBLqyg4j7vxEI+YUrJuOTySLdXMKX+oQ8eWxvi3T0/AdHejzEH04clyoQb3/JO
+         J6dn5tTs2TOTCpDwfL9eRGGufWzw47oj7mCjKM45bPDwg+bJSXYUxVuP17MYUa6GpsSk
+         /E/g==
+X-Gm-Message-State: AOJu0YxE94n/VbPfJcBb5O9QBh3EdmIjVXtn27CEr8PFJTmi36JeYySB
+	75A3TtqxW49elY9icdRMjrrjJLp/M2URKASk6LsWoWAB0jEm5zeZTeUb90/1AMZD5v9CdsDD/RL
+	NucSoxWQo/q1CzIBQANfmfK3myn7FUE8xalCJLZIC1pgZR86U7YImKP/fmRvv7ZEKKmuJh48iV3
+	+MKzbR7ThzZBB7OJ8ky2GaqCkmUD+O8VkHqlA=
+X-Gm-Gg: ASbGnctVfrFkwHloJ+gfTsuwwtmtLR77o+BG9l5Y39Lq5BEKmxIqrulX2E666X5Zk4n
+	5cpQPXzuHgXIIX5HKp3LUfnCBfeOjaUd555Z4OS4bYUTrK2shtFN7RfBxz7khegsTAiLWQ5FS57
+	QDQPdu7JELNROwBKwU5mIX
+X-Received: by 2002:a17:902:ea02:b0:234:9375:e081 with SMTP id d9443c01a7336-23fb319041emr15224895ad.42.1753432697787;
+        Fri, 25 Jul 2025 01:38:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHxiXGFsVJ6VCDQe69iuWZ8IkeaAljBvCSgmtMhHsWEWWFbjBiBJy5Wl237ze4kjSg2FPfsWB5YeRg80cn+io=
+X-Received: by 2002:a17:902:ea02:b0:234:9375:e081 with SMTP id
+ d9443c01a7336-23fb319041emr15224615ad.42.1753432697398; Fri, 25 Jul 2025
+ 01:38:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <175341594422.117.11494999566960779174@508e4dbc6f9f> <d2e84599-bf73-44bb-a0f4-a5fe4086978e@infradead.org>
+In-Reply-To: <d2e84599-bf73-44bb-a0f4-a5fe4086978e@infradead.org>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 25 Jul 2025 16:38:06 +0800
+X-Gm-Features: Ac12FXwJd96XrGIsW0Jv49edVkL7BCbWfeMwc-34kp0AVdNMEzvYogs4x3NChbM
+Message-ID: <CACGkMEuFbNMiFUY-aYHgZTvLcypFJWatgAuGB_M25f7QyzqTEw@mail.gmail.com>
 Subject: Re: [REGRESSION] next/master: (build) variable 'id' is uninitialized
  when used here [-Werror,-Wuninitial...
-To: kernelci@lists.linux.dev, kernelci-results@groups.io
-Cc: regressions@lists.linux.dev, gus@collabora.com,
- linux-next@vger.kernel.org, Jason Wang <jasowang@redhat.com>
-References: <175341594422.117.11494999566960779174@508e4dbc6f9f>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <175341594422.117.11494999566960779174@508e4dbc6f9f>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: kernelci@lists.linux.dev, kernelci-results@groups.io, 
+	regressions@lists.linux.dev, gus@collabora.com, linux-next@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: T3sJIk3yYPlh6VhHZg1jlqkEOp_0h1BJaBbX-nWBgIE_1753432698
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-due to commit 60c060930f481: 
+On Fri, Jul 25, 2025 at 1:03=E2=80=AFPM Randy Dunlap <rdunlap@infradead.org=
+> wrote:
+>
+> due to commit 60c060930f481:
+>
+> +cc Jason Wang
 
-+cc Jason Wang
+I've posted a fix:
 
-On 7/24/25 8:59 PM, KernelCI bot wrote:
-> 
-> 
-> 
-> 
-> Hello,
-> 
-> New build issue found on next/master:
-> 
-> ---
->  variable 'id' is uninitialized when used here [-Werror,-Wuninitialized] in drivers/virtio/virtio_ring.o (drivers/virtio/virtio_ring.c) [logspec:kbuild,kbuild.compiler.error]
-> ---
-> 
-> - dashboard: https://d.kernelci.org/i/maestro:33d32f9f3fc65aa1a71269ee14bd5f37d938b6bc
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> - commit HEAD:  d7af19298454ed155f5cf67201a70f5cf836c842
-> - tags: next-20250725
-> 
-> 
-> Log excerpt:
-> =====================================================
-> drivers/virtio/virtio_ring.c:2113:40: error: variable 'id' is uninitialized when used here [-Werror,-Wuninitialized]
->  2113 |                 BAD_RING(vq, "id %u out of range\n", id);
->       |                                                      ^~
-> drivers/virtio/virtio_ring.c:60:32: note: expanded from macro 'BAD_RING'
->    60 |                         "%s:"fmt, (_vq)->vq.name, ##args);      \
->       |                                                     ^~~~
-> ./include/linux/dev_printk.h:154:65: note: expanded from macro 'dev_err'
->   154 |         dev_printk_index_wrap(_dev_err, KERN_ERR, dev, dev_fmt(fmt), ##__VA_ARGS__)
->       |                                                                        ^~~~~~~~~~~
-> ./include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
->   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
->       |                                     ^~~~~~~~~~~
-> drivers/virtio/virtio_ring.c:2077:19: note: initialize the variable 'id' to silence this warning
->  2077 |         u16 last_used, id, last_used_idx;
->       |                          ^
->       |                           = 0
-> 1 error generated.
-> 
-> =====================================================
-> 
-> 
-> # Builds where the incident occurred:
-> 
-> ## x86_64_defconfig on (x86_64):
-> - compiler: clang-17
-> - dashboard: https://d.kernelci.org/build/maestro:6882f2ab2ce2c1874eede7df
-> 
-> ## x86_64_defconfig+kselftest+x86-board on (x86_64):
-> - compiler: clang-17
-> - dashboard: https://d.kernelci.org/build/maestro:6882f2b12ce2c1874eede7f3
-> 
-> 
-> #kernelci issue maestro:33d32f9f3fc65aa1a71269ee14bd5f37d938b6bc
-> 
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> 
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
-> 
-> Made with love by the KernelCI team - https://kernelci.org
-> 
+https://lore.kernel.org/virtualization/20250725083635.73355-1-jasowang@redh=
+at.com/T/#u
 
--- 
-~Randy
+Thanks
 
