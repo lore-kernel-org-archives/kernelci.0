@@ -1,103 +1,189 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC1421B9FD
-	for <kernelci@lists.linux.dev>; Tue,  5 Aug 2025 11:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754395077; cv=pass; b=SR3LLk+08IC/qxMfz76EgUrc+C4unVwX17rgW98J463x+PUtIJupacuDetzVvPqO7RbzhFLysYaLYcIGgl4yAVzY07/OzL3wzMxhaqJwcc2JzAf7L6xwDWLdFHt4VTEuK3d3Fz/duHzmCKa/rzhzyUMvob7xRO8OwygeUp7w8BA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754395077; c=relaxed/simple;
-	bh=65K5x7AKDJBTZ/bCh0d1bjYyqhnN1iLxRVPM6dBAOYY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=PET7R8gXNRpA3lQQhTqvB3lSNjc7cODXOwsAORgWYreLnaJDHTB7Ns7KhOUrNI85jNkQ56D5EggVySZJ1OK2yLdR9ebWfsEAdrji/TWZyr/XN+DsRorASsNfj+tXUcLaWDaAE8UBuwjmO8Kx80T1o00mRoe+ORVV3NAKhsNMd2Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=B8ocZJDr; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB2B2749CF;
+	Tue,  5 Aug 2025 12:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754396750; cv=none; b=plepDIGwoCGrmofennzs7VfAdy6AbbKBicklK1b3dGj0l5VJvAOf8cNaTwpL20f1wF4e9uoMbbvN1q3fLGcs7Om0IHvidmpVKPeT0l2d+xER6wVFJjFgafBkIUUQpxt29LkL34PxK7QIVcrDfv/pgPH2f5BdJ5LxWdQiGIzZSG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754396750; c=relaxed/simple;
+	bh=9uqag+0+Xegzr+l3svBjDjVLIzo35g9RdE8wlR/GZQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u883W4S4OFNlbTWrI03bTDEIE93Z5l/rqJfPOMkE4d77dJvGilnOEINLvx8OOYRBXbO3b4K8155XS0+xf+h33sYqUlPuQslhObu7WoxQSQVYo143vwFQ6Rz2s0sLZUEUXDc+oPYI48VTSQhRrxY3gE9e0hzijYRpT5QoQ9E/qdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=SKQSEjqI; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="B8ocZJDr"
-ARC-Seal: i=1; a=rsa-sha256; t=1754395073; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=aSNXulgLaZO3Yu3U1OZpJ6DLrFWtJ5aGkRPDo8RM24jb0Yg8vsfMP/kUc956dAH1nWOAbfn/SC1hvlWc6WkjGJ/l+/sbGa3IV6HGfQj5LAmBM/ftwQTHs+DAm/MCJFaC2sNI1w+Ow29WYTOyD7FgMi4S7bgTte21VvjAsxFw8rI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754395073; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=bbC1UM+/ObBKIKo4+zqaBJV81QPy3lX/MU16lfAyiqw=; 
-	b=XyDh71oRgh/qOjnDTYRgS10tWaVFQ09aWzZRoPd8cqBDxaZFkYEab6DbIGovGibaPwh+AbjLaUBqB8oShZb2SKV+pv8wMCw0d8Ga1zCIDXUQe+cfStW+SG3oKncLU1wwSvlbtyLvzhq29kCJoBdh7TI+BhEbPQsnliiOdl3/5Cc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754395073;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=bbC1UM+/ObBKIKo4+zqaBJV81QPy3lX/MU16lfAyiqw=;
-	b=B8ocZJDrV1UIimDB9DJ2ckfPmtOaWNZfxX4Ggl4CXTFB5388s65CQ/Twx0vthi14
-	/hva7a1PL4YwdL7NxdwctLi5yH+c68A32o8fD1lMn952P6mqOiOV6OrZJUH76gdWfen
-	aV/768m7nyRFbxZVeuv6LlrtU4bCcBh64gbHduJ8=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1754395070906378.45960490973084; Tue, 5 Aug 2025 04:57:50 -0700 (PDT)
-Date: Tue, 05 Aug 2025 08:57:50 -0300
-From: Gustavo Padovan <gus@collabora.com>
-To: "Gustavo Padovan" <gus@collabora.com>
-Cc: "kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
-	"Automated Testing" <automated-testing@lists.yoctoproject.org>,
-	"KernelCI Members" <kernelci-members@groups.io>,
-	"kernelci-hw-vendors" <kernelci-hw-vendors@groups.io>
-Message-ID: <1987a1851a3.360c6270521972.8904361685319295839@collabora.com>
-In-Reply-To: <19809426904.3c4822be1251531.2628638964882412232@collabora.com>
-References: <19809426904.3c4822be1251531.2628638964882412232@collabora.com>
-Subject: Re: KernelCI Workshop in Amsterdam on Aug 28th
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="SKQSEjqI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1754396391;
+	bh=89aa+0VDBNvHlryLxy5mMqLpPniftwYq/dfu5JfPqyY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SKQSEjqIBN4TmNlTX7jape8XnXnJpGjHwxwtzp61KNUThPFAm2MwNAPN18DupEAYq
+	 4v2wc4dzBh9I/+b0mWFYPcPRf+PuusfxGSsXLCAV/Chdofb7Cs7Ixh8MRouN5IRaai
+	 kyuuXmibbuv7YLCxQ1k9DBlVOzjJxZb3EQO+AdLyKnaEN5mG0pvOvXW5f66e5/5gq2
+	 63INV/sivRnletACxAeoxg5EdkLfZa5uHrxPcg9/cBFN7+VHm3EAypUyB/kH23YeTH
+	 wWORwBGf4YwLZndBt3dmbTV7fFsEpPnQQzm4EcwhFd3TmEJegotVLOEfw89WVxJsAY
+	 x7ApaZRgctm3A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bxCD72n1jz4wb0;
+	Tue,  5 Aug 2025 22:19:51 +1000 (AEST)
+Date: Tue, 5 Aug 2025 22:19:46 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Reza Amini <reza.amini@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>
+Cc: KernelCI bot <bot@kernelci.org>, kernelci@lists.linux.dev,
+ kernelci-results@groups.io, regressions@lists.linux.dev, gus@collabora.com,
+ linux-next@vger.kernel.org
+Subject: Re: [REGRESSION] next/master: (build) the frame size of 1448 bytes
+ is larger than 1024 bytes [-Werror=fr...
+Message-ID: <20250805221946.6b8e0a42@canb.auug.org.au>
+In-Reply-To: <175437354419.1010.14815981800290011272@508e4dbc6f9f>
+References: <175437354419.1010.14815981800290011272@508e4dbc6f9f>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: multipart/signed; boundary="Sig_/FTRV2MXrS//G=iarmlT=MuP";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-Hello,
+--Sig_/FTRV2MXrS//G=iarmlT=MuP
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Thanks to everyone who subscribed already! 
+Hi all,
 
-This is reminder for those who want to join the workshop. Follow the link on the message below to subscribe.
+On Tue, 05 Aug 2025 05:59:04 -0000 KernelCI bot <bot@kernelci.org> wrote:
+>
+> Hello,
+>=20
+> New build issue found on next/master:
+>=20
+> ---
+>  the frame size of 1448 bytes is larger than 1024 bytes [-Werror=3Dframe-=
+larger-than=3D] in drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn10/dcn1=
+0_hwseq.o (drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn10/dcn10_hwseq.=
+c) [logspec:kbuild,kbuild.compiler.error]
+> ---
+>=20
+> - dashboard: https://d.kernelci.org/i/maestro:4d4120bf99fecc5f852604382b7=
+c406b99440116
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
+.git
+> - commit HEAD:  afec768a6a8fe7fb02a08ffce5f2f556f51d4b52
+> - tags: next-20250805
+>=20
+>=20
+> Log excerpt:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+> drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn10/dcn10_hwseq.c:608:1: =
+error: the frame size of 1448 bytes is larger than 1024 bytes [-Werror=3Dfr=
+ame-larger-than=3D]
+>   608 | }
+>       | ^
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn303/dcn303_hws=
+eq.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn303/dcn303_ini=
+t.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn31/dcn31_hwseq=
+.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn31/dcn31_init.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn314/dcn314_hws=
+eq.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn314/dcn314_ini=
+t.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn32/dcn32_hwseq=
+.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn32/dcn32_init.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn35/dcn35_hwseq=
+.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn35/dcn35_init.o
+> drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn10/dcn10_hwseq.c: In fun=
+ction =E2=80=98dcn10_log_hubp_states=E2=80=99:
+> drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn10/dcn10_hwseq.c:447:1: =
+error: the frame size of 1156 bytes is larger than 1024 bytes [-Werror=3Dfr=
+ame-larger-than=3D]
+>   447 | }
+>       | ^
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn351/dcn351_hws=
+eq.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn351/dcn351_ini=
+t.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn401/dcn401_hws=
+eq.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn401/dcn401_ini=
+t.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/irq/irq_service.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dce80/irq_service_=
+dce80.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dce110/irq_service=
+_dce110.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dce120/irq_service=
+_dce120.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn10/irq_service_=
+dcn10.o
+>   CC      drivers/gpu/drm/amd/amdgpu/../display/dc/irq/dcn20/irq_service_=
+dcn20.o
+> cc1: all warnings being treated as errors
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+>=20
+>=20
+> # Builds where the incident occurred:
+>=20
+> ## defconfig+kcidebug+x86-board on (i386):
+> - compiler: gcc-12
+> - dashboard: https://d.kernelci.org/build/maestro:689185f279d5d217e5430785
+>=20
+>=20
+> #kernelci issue maestro:4d4120bf99fecc5f852604382b7c406b99440116
+>=20
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+>=20
+> --
+> This is an experimental report format. Please send feedback in!
+> Talk to us at kernelci@lists.linux.dev
+>=20
+> Made with love by the KernelCI team - https://kernelci.org
+>=20
 
-And let us know of any topics you might want to discuss.
+Presumably caused by commit
 
-Best,
+  e63e9f8b3d1c ("drm/amd/display: Fixing hubp programming of 3dlut fast loa=
+d")
 
-- Gus
+from the amdgpu tree.  Just making the two new pLabels arrays "static"
+(and maybe "const") will probably help.  Maybe declaring them "static
+const char *pLabels[]" ?
 
---
-Gustavo Padovan
+--=20
+Cheers,
+Stephen Rothwell
 
-Collabora Ltd.
+--Sig_/FTRV2MXrS//G=iarmlT=MuP
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmiR9uMACgkQAVBC80lX
+0GynsAf/aC0QnO59J48o2kuKmTnJ/uh9mJTKPKwA/qWoVcnOpnlR9/IPZ+PLS8rM
+qosMIkjXtQqEHGsmFy+/1vxFIs3jsN1fmVKoCS160xPXMkEFaL7ASZkjnHD6XrAu
+ZHjAgNDOCTJhJSYPs4kK8Pc+3oKt/IwUbiwn0u3PwJJKJ13x2JSXf2RumJbYON0H
+Dv78FbxqCDhiwhuV+l5bYS/+9VQZavamw5jL19Uqkgs9jprTMaInvGyiI037MVTp
+bGQTHjDhgyOecT1rVL7uEFqDtNMgnWDCm46SClHesUXJOPHk3JsO3QAinUsz3yS1
+mA6k86oVel0OJwKKwweFkHBEw1w4wQ==
+=jTO4
+-----END PGP SIGNATURE-----
 
----- On Mon, 14 Jul 2025 11:06:43 -0300 Gustavo Padovan <gus@collabora.com> wrote ---
-
- > Hello everyone, 
- >  
- > We will run a KernelCI Workshop on August 28th right after Open Source Summit Europe(OSSEU) in Amsterdam. The location is not too far from the main OSSEU venue. 
- >  
- > The goal of the workshop is to discuss the current architecture and roadmap of the project and refine our directions forward as a community. The workshop will run as an un-conference style with agenda discussed and decided at the beginning of workshop. 
- >  
- > If you want to take part, please manifest your interest at: 
- >  https://forms.gle/SwanWMQnwg6F6UAx9 
- >  
- > For any questions don't hesitate to reach out to me. 
- >  
- > - The KernelCI team 
- >  
- > -- 
- > Gustavo Padovan 
- >  
- > Collabora Ltd. 
- >  
- >  
- > 
-
+--Sig_/FTRV2MXrS//G=iarmlT=MuP--
