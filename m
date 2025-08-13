@@ -1,74 +1,171 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B172405FD;
-	Wed, 13 Aug 2025 04:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8A21A256E;
+	Wed, 13 Aug 2025 06:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755060947; cv=none; b=u/3G8aqE8YL8V4ByzfSwPjWU4fEIuuQzCBtgBO94A5oBI3+xQ8xulKyNsgZeJHJuBTgztEPtj23Yzn2oi0/EdoRB6xvYb/0qAgQ0xY8FCNfjGg5HXvGinVMMLC4MguRSvHTC27CAnUA2ZFsoC3v9xIYK9IJ9j1/T8hHmeEZVhsA=
+	t=1755065586; cv=none; b=mQG2LNBISZ9alaxrNEDU1FT+dOvoOGuE0B2XI/4GeP4nvR/J62Fxx6rq7qHnYxfNHS5g/trU6oJNcNxyQblPJIkYLBaiTMP0KeY2GOKBs1vC56cKO7lvMOuXCPy9YViG4hokdeR75OIq+Wdd4i7IH8u8lmq7w0Tkv94L5KbEzxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755060947; c=relaxed/simple;
-	bh=uLewvsdYKkSfsdBhd6L0K/pFsujHLTnjEW79997MTS8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kRUKX1/dRMIO/DlfK0pu+Ab/5BdCdlkZnZzBQU+EqvjI0evcpW39/W0ArRZ8EC47SlnzVuXTCRszXdGSpBAbXKX4gv/q8TjMlgRUGlnXRAnqOeOmtjb3UrHE8Q8N40m+E52waPw4p0TEfez8bcCQOewyVgjx0I7CibxL8vdJlkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Q2/6WHjg; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1755065586; c=relaxed/simple;
+	bh=gGvv5qBocT3MGjOCRTO++ZDE2aZYiCw9yd8Lmihb7Bs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=geP79FytiTOj3r8Ve7zaAephUFxMulJtWUQg3QX7KKdY6O221G0Tw5ii0RSARYKInDW7zJwjD6gdtTqFVQb6DFjXcj9B21RI9po6S5vPeeNaj6AKXw2z4FF/JuGy40We2DcB9RpQ5uTJoDbcZbEFCyQOWWWPa3d64vDBkWvmZIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=Io7tQ0H/; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Q2/6WHjg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=9W1TrK0EC7UsEh7WF9a0gySMmx2qJn4DubX247brGRo=; b=Q2/6WHjgro3Pw52DA0Bw7reSyW
-	5OZoGdLxAX2vhHvlgwkcfqR03zpYP0m3bJAonxcyNHsTQjJyOPVJcJwclR06IZwvl4NNIjUuQ3CqJ
-	oyuO//xfg4BX601auQV0aMlvkWDBj5O22bF5E98AAAgCqo0NszJKxUXl6LfvHULqt0uz4iMQ8hoXL
-	IklVfmD30gOZWuvlpuwIcAw28DdARINCf8aVwlaeEJsQiOgSvFVXAypW3tvnuadFkRytgziV2unMp
-	pTqODaG/8LpZjPIPFD/O8W07WbO2ppBcesplCakjwvjS4PPsVh66PQSgpcXyTTTjuqukbKt8OqkFB
-	BVIHwaCg==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1um3Wa-0000000Ccgt-17wo;
-	Wed, 13 Aug 2025 04:55:44 +0000
-Message-ID: <efe1c519-22fe-42a7-9d57-69ab805eed65@infradead.org>
-Date: Tue, 12 Aug 2025 21:55:43 -0700
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="Io7tQ0H/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1755065580;
+	bh=qYVt4Zxf129LD0FO9JFjw9WPOgPssVkDWXKWHNiLpWI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Io7tQ0H/yZIxPUu8BhvWpZAectB1JJV8dO5CxeWWWZNI8Gst7Q87lN5iC82gKNUa/
+	 o40ScU9YMnCKoUda10x7bCgHS+4OOgrFO4wg9j+1KFmqvPoWXAug98f0rUCaETPwbg
+	 MEMdKOtKoe3HgNpAOLeRtZ81xOFjDGqGfxuRgqZJBuhLtPyhuK9Ju1H/tahzqn5a5R
+	 nOJgfeaXqyUUpD3D8wI1Q/lW328bEClgr+E03JPt4EfIMUn6uM20hmIjpMZd1K5B0V
+	 7tnPqcqmXLX622XmseSa1SqoH0jwComw6Zlc1axvCej+My8grwYDLtnRb03zp++JXM
+	 pBgBurynAny/g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4c1yj73YXnz4wcn;
+	Wed, 13 Aug 2025 16:12:59 +1000 (AEST)
+Date: Wed, 13 Aug 2025 16:12:58 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: KernelCI bot <bot@kernelci.org>, kernelci@lists.linux.dev,
+ kernelci-results@groups.io, regressions@lists.linux.dev, gus@collabora.com,
+ linux-next@vger.kernel.org, Dominique Martinet <asmadeus@codewreck.org>
+Subject: Re: [REGRESSION] next/pending-fixes: (build)
+ ./include/linux/iov_iter.h:171:7: error: variable 'remain' is used...
+Message-ID: <20250813161258.68661171@canb.auug.org.au>
+In-Reply-To: <175506114403.296.12737351814093118427@99cfaf6094a7>
+References: <175506114403.296.12737351814093118427@99cfaf6094a7>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [STATUS] next/master - 2674d1eadaa2fd3a918dfcdb6d0bb49efe8a8bb9
-From: Randy Dunlap <rdunlap@infradead.org>
-To: kernelci@lists.linux.dev, kernelci-results@groups.io
-Cc: gus@collabora.com, linux-next@vger.kernel.org
-References: <175505222976.280.16617959115337420644@99cfaf6094a7>
- <97ca374f-5beb-4189-9e39-7b35824c2fb7@infradead.org>
-Content-Language: en-US
-In-Reply-To: <97ca374f-5beb-4189-9e39-7b35824c2fb7@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/ckNnx3JwNN/So0/By+g2gap";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
+--Sig_/ckNnx3JwNN/So0/By+g2gap
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
 
-On 8/12/25 7:37 PM, Randy Dunlap wrote:
-> Hi,
-> 
-> 
-> On 8/12/25 7:30 PM, KernelCI bot wrote:
->> Hello,
->>
->> Status summary for next/master
->>
->> Dashboard:
->> https://d.kernelci.org/c/next/master/2674d1eadaa2fd3a918dfcdb6d0bb49efe8a8bb9/
-> 
-> This link (as well as dashboard.kernelci.org) is not working for me.
-> Is it down?
+On Wed, 13 Aug 2025 04:59:04 -0000 KernelCI bot <bot@kernelci.org> wrote:
+>
+> New build issue found on next/pending-fixes:
+>=20
+> ---
+>  ./include/linux/iov_iter.h:171:7: error: variable 'remain' is used unini=
+tialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized=
+] in net/core/skbuff.o (net/core/skbuff.c) [logspec:kbuild,kbuild.compiler.=
+error]
+> ---
+>=20
+> - dashboard: https://d.kernelci.org/i/maestro:e3e604796d8d054968bf2b979c7=
+940708d16e0ee
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
+.git
+> - commit HEAD:  1b07edbd37d5ab410613ebe09b0641d0f4fe717b
+>=20
+>=20
+>=20
+> Log excerpt:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+> In file included from net/core/skbuff.c:66:
+> ./include/linux/iov_iter.h:171:7: error: variable 'remain' is used uninit=
+ialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
+>   171 |                 if (skip >=3D fsize)
+>       |                     ^~~~~~~~~~~~~
+> ./include/linux/iov_iter.h:190:7: note: uninitialized use occurs here
+>   190 |                 if (remain)
+>       |                     ^~~~~~
+> ./include/linux/iov_iter.h:171:3: note: remove the 'if' if its condition =
+is always false
+>   171 |                 if (skip >=3D fsize)
+>       |                 ^~~~~~~~~~~~~~~~~~
+>   172 |                         goto next;
+>       |                         ~~~~~~~~~
+> ./include/linux/iov_iter.h:163:22: note: initialize the variable 'remain'=
+ to silence this warning
+>   163 |                 size_t part, remain, consumed;
+>       |                                    ^
+>       |                                     =3D 0
+>   CC      drivers/pci/search.o
+>   CC      sound/core/seq/seq_dummy.o
+>   CC      lib/ctype.o
+>   CC      lib/dec_and_lock.o
+>   AR      sound/i2c/other/built-in.a
+>   AR      sound/i2c/built-in.a
+>   CC      kernel/fork.o
+> 1 error generated.
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+>=20
+>=20
+> # Builds where the incident occurred:
+>=20
+> ## x86_64_defconfig on (x86_64):
+> - compiler: clang-17
+> - dashboard: https://d.kernelci.org/build/maestro:689c1610233e484a3f9165be
+>=20
+> ## x86_64_defconfig+kselftest+x86-board on (x86_64):
+> - compiler: clang-17
+> - dashboard: https://d.kernelci.org/build/maestro:689c1617233e484a3f9165c4
+>=20
+>=20
+> #kernelci issue maestro:e3e604796d8d054968bf2b979c7940708d16e0ee
+>=20
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+>=20
+> --
+> This is an experimental report format. Please send feedback in!
+> Talk to us at kernelci@lists.linux.dev
+>=20
+> Made with love by the KernelCI team - https://kernelci.org
+>=20
 
-working now.
+This is caused by commit
 
--- 
-~Randy
+  eacecdbf2789 ("iov_iter: iterate_folioq: fix handling of offset >=3D foli=
+o size")
 
+in the mm-hotfixes-unstable branch of the mm-hotfixes tree.
+
+This is now commit
+
+  b8da3ae0ae53 ("iov_iter: iterate_folioq: fix handling of offset >=3D foli=
+o size")
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/ckNnx3JwNN/So0/By+g2gap
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmicLOoACgkQAVBC80lX
+0Gy1+Qf8C/PHElFrT+Rpi3gZlFVtsREeuOH+grAsgqS+YB7xk1mjzx0ZGnbUs5YN
+JYyjWNFLlddQSgtWyJ3pFhQdGjzGJZglx96YZ1U2OLvrhpdPeOK4Wpe+1UJ+qeZ4
+X0wkjBDzpP0RzfGJ3p1SIOS1NOeYk3BghGSO5+OF6Iiy9aoKcpPo5Ys6GIWfGbW+
+ykhXQMm+dZ/SVqJZO6/SCtNR5nu34qXSU142PVxQt6w3vUSI/aV6TWTz+Ui5A52W
+JDWZ7TauQ1YsXITWiNj81ZH8Qjgf+Lhx7IXV0Tca9FsoKA5JRsBhzHZb9g7UhSHA
+41llClX/pqZXLPgDcAICbjmZr0dtIg==
+=Plwf
+-----END PGP SIGNATURE-----
+
+--Sig_/ckNnx3JwNN/So0/By+g2gap--
