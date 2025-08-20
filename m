@@ -1,131 +1,288 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8A21A256E;
-	Wed, 13 Aug 2025 06:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755065586; cv=none; b=mQG2LNBISZ9alaxrNEDU1FT+dOvoOGuE0B2XI/4GeP4nvR/J62Fxx6rq7qHnYxfNHS5g/trU6oJNcNxyQblPJIkYLBaiTMP0KeY2GOKBs1vC56cKO7lvMOuXCPy9YViG4hokdeR75OIq+Wdd4i7IH8u8lmq7w0Tkv94L5KbEzxI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755065586; c=relaxed/simple;
-	bh=gGvv5qBocT3MGjOCRTO++ZDE2aZYiCw9yd8Lmihb7Bs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=geP79FytiTOj3r8Ve7zaAephUFxMulJtWUQg3QX7KKdY6O221G0Tw5ii0RSARYKInDW7zJwjD6gdtTqFVQb6DFjXcj9B21RI9po6S5vPeeNaj6AKXw2z4FF/JuGy40We2DcB9RpQ5uTJoDbcZbEFCyQOWWWPa3d64vDBkWvmZIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=Io7tQ0H/; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC24C19D8A8;
+	Wed, 20 Aug 2025 10:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755685513; cv=pass; b=PRV/G9DrIXbVhMRH23phLteOhIoWWPEW+kf19WG6wbfP8aAedt7H7DSL2bgT/6tvnpsba58/6IgdcdxnnRLCabOxeLlZ+NuaPSvsqHk1CA8699wJIA7VDrfXFA7UeY7wEj0SAZTOmHTKnzmbDYueqe1iSoPyb2P3+cyO1BLB/n0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755685513; c=relaxed/simple;
+	bh=MutQRfU1vlAAyDrHvo83dHCHOplPvJiMt+FOhq2qVoQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KFkwTL/Cjy72m3G227WMd/Gj5+pJ6t5NolTYNDn7dDbo7E24/Z8z1paMeZoZ6rCd/uDSttADwPqxW9XhAcLt5aNLo+p+X3zn1lkCzC8T+tKhshdFJx4JSi2d3ujO/SkhvN17touRF25aNluARGeIsEJEOoNIbtoe9X+Q0jA93Eg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=LX4KEaee; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="Io7tQ0H/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1755065580;
-	bh=qYVt4Zxf129LD0FO9JFjw9WPOgPssVkDWXKWHNiLpWI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Io7tQ0H/yZIxPUu8BhvWpZAectB1JJV8dO5CxeWWWZNI8Gst7Q87lN5iC82gKNUa/
-	 o40ScU9YMnCKoUda10x7bCgHS+4OOgrFO4wg9j+1KFmqvPoWXAug98f0rUCaETPwbg
-	 MEMdKOtKoe3HgNpAOLeRtZ81xOFjDGqGfxuRgqZJBuhLtPyhuK9Ju1H/tahzqn5a5R
-	 nOJgfeaXqyUUpD3D8wI1Q/lW328bEClgr+E03JPt4EfIMUn6uM20hmIjpMZd1K5B0V
-	 7tnPqcqmXLX622XmseSa1SqoH0jwComw6Zlc1axvCej+My8grwYDLtnRb03zp++JXM
-	 pBgBurynAny/g==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4c1yj73YXnz4wcn;
-	Wed, 13 Aug 2025 16:12:59 +1000 (AEST)
-Date: Wed, 13 Aug 2025 16:12:58 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: KernelCI bot <bot@kernelci.org>, kernelci@lists.linux.dev,
- kernelci-results@groups.io, regressions@lists.linux.dev, gus@collabora.com,
- linux-next@vger.kernel.org, Dominique Martinet <asmadeus@codewreck.org>
-Subject: Re: [REGRESSION] next/pending-fixes: (build)
- ./include/linux/iov_iter.h:171:7: error: variable 'remain' is used...
-Message-ID: <20250813161258.68661171@canb.auug.org.au>
-In-Reply-To: <175506114403.296.12737351814093118427@99cfaf6094a7>
-References: <175506114403.296.12737351814093118427@99cfaf6094a7>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="LX4KEaee"
+ARC-Seal: i=1; a=rsa-sha256; t=1755685507; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=h+AXgcvpxaUzhSA5YhulYfrjQ4KFcdOtl1RQpZ7oMSLx4x/g+mILjjK+xwqh50gjr+AmDdUdaIGIn0MEI6apJ3oIokXP1gsF6Dc/JpXEg41cB/PnMQ2m4cgkJOgTGgzArDs3BdIeFLXGwzEvgXPQ2xXXnQXI68kUjrS8HgaQ7wg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755685507; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1BvZFqmRTJ7ahMq/XeE/0dEi295M+UK3CiexvNDLCpk=; 
+	b=Q7mFMEBNFHrliTOFA8r99c0TuW6/ceLcyqDZcmb4qS9Mofdo4DwZZ3ttTu7Xsue2cXn6d0RetGQCbvd8ek7KXWQHrEogY/OSfvUKIzNLombVH2xVqZUjR+xGZ0gydYEEEUKqiW0G8zaxULO7cOwchW7KIBgGNAf5uW/z2k20LBc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755685507;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=1BvZFqmRTJ7ahMq/XeE/0dEi295M+UK3CiexvNDLCpk=;
+	b=LX4KEaeeJkwci3Q/FTR8g0+bk4Xjs8UzJvLG0dZbfihZ98yMW1ucPyZuQvbZzwEQ
+	AviazBo0V/TeIh3b2NkExDU4tl4hZzf9KonGFrBfPv78LXbVNPNuM8LvEVSreXR7jb8
+	xlBfwwtJorwTGvM8KIbnMp/lzm9f1x5r3W42Wexg=
+Received: by mx.zohomail.com with SMTPS id 1755685504993404.4586990290858;
+	Wed, 20 Aug 2025 03:25:04 -0700 (PDT)
+Message-ID: <b169f9cc331254dafc3060b0dc3b8bfee882a285.camel@collabora.com>
+Subject: Re: [REGRESSION] next/master: (boot) sleeping function called from
+ invalid context at kernel/locking/rw...
+From: Gustavo Padovan <gus@collabora.com>
+To: kernelci@lists.linux.dev, kernelci-results@groups.io
+Cc: regressions@lists.linux.dev, linux-mediatek@lists.infradead.org, 
+	linux-next@vger.kernel.org
+Date: Wed, 20 Aug 2025 07:25:00 -0300
+In-Reply-To: <175568535010.3222387.7351336690916179632@poutine>
+References: <175568535010.3222387.7351336690916179632@poutine>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/ckNnx3JwNN/So0/By+g2gap";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+X-ZohoMailClient: External
 
---Sig_/ckNnx3JwNN/So0/By+g2gap
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-On Wed, 13 Aug 2025 04:59:04 -0000 KernelCI bot <bot@kernelci.org> wrote:
->
-> New build issue found on next/pending-fixes:
+On Wed, 2025-08-20 at 10:22 +0000, KernelCI bot wrote:
+>=20
+>=20
+>=20
+>=20
+>=20
+> Hello,
+>=20
+> New boot regression found on next/master:
 >=20
 > ---
->  ./include/linux/iov_iter.h:171:7: error: variable 'remain' is used unini=
-tialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized=
-] in net/core/skbuff.o (net/core/skbuff.c) [logspec:kbuild,kbuild.compiler.=
-error]
+> =C2=A0sleeping function called from invalid context at
+> kernel/locking/rwsem.c:1589
+> [logspec:generic_linux_boot,linux.kernel.bug]
 > ---
 >=20
-> - dashboard: https://d.kernelci.org/i/maestro:e3e604796d8d054968bf2b979c7=
-940708d16e0ee
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
-.git
-> - commit HEAD:  1b07edbd37d5ab410613ebe09b0641d0f4fe717b
->=20
+> - dashboard:
+> https://d.kernelci.org/i/maestro:4a7604ad2b208f9142109c871e17a6453ee9ff9c
+> - giturl:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+> - commit HEAD:=C2=A0 5303936d609e09665deda94eaedf26a0e5c3a087
+> - tags: next-20250820
 >=20
 >=20
 > Log excerpt:
 > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D
-> In file included from net/core/skbuff.c:66:
-> ./include/linux/iov_iter.h:171:7: error: variable 'remain' is used uninit=
-ialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
->   171 |                 if (skip >=3D fsize)
->       |                     ^~~~~~~~~~~~~
-> ./include/linux/iov_iter.h:190:7: note: uninitialized use occurs here
->   190 |                 if (remain)
->       |                     ^~~~~~
-> ./include/linux/iov_iter.h:171:3: note: remove the 'if' if its condition =
-is always false
->   171 |                 if (skip >=3D fsize)
->       |                 ^~~~~~~~~~~~~~~~~~
->   172 |                         goto next;
->       |                         ~~~~~~~~~
-> ./include/linux/iov_iter.h:163:22: note: initialize the variable 'remain'=
- to silence this warning
->   163 |                 size_t part, remain, consumed;
->       |                                    ^
->       |                                     =3D 0
->   CC      drivers/pci/search.o
->   CC      sound/core/seq/seq_dummy.o
->   CC      lib/ctype.o
->   CC      lib/dec_and_lock.o
->   AR      sound/i2c/other/built-in.a
->   AR      sound/i2c/built-in.a
->   CC      kernel/fork.o
-> 1 error generated.
+
+Our logspec tool failed to collect the relevant part of the crash.
+Here it is: (We will fix this).
+
+
+[    5.926489] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[    5.930486] [ BUG: Invalid wait context ]
+[    5.934484] 6.17.0-rc2-next-20250820 #1 Not tainted
+[    5.939350] -----------------------------
+[    5.943347] kworker/u32:0/12 is trying to lock:
+[    5.947864] ffffbca6d49c19b8 (sysfs_symlink_target_lock){+.+.}-
+{3:3}, at: sysfs_remove_dir+0x48/0xe8
+[    5.956997] other info that might help us debug this:
+[    5.962034] context-{5:5}
+[    5.964642] 4 locks held by kworker/u32:0/12:
+[    5.968986]  #0: ffff0000c0039148
+((wq_completion)events_unbound){+.+.}-{0:0}, at:
+process_one_work+0x674/0x1800
+[    5.979153]  #1: ffff800080187ce0 (deferred_probe_work){+.+.}-{0:0},
+at: process_one_work+0x698/0x1800
+[    5.988450]  #2: ffff0000c24a10f8 (&dev->mutex){....}-{4:4}, at:
+__device_attach+0x80/0x358
+[    5.996794]  #3: ffffbca6d6571cd8 (devtree_lock){....}-{2:2}, at:
+of_find_node_with_property+0x34/0x204
+[    6.003882] usb 1-1: new high-speed USB device number 2 using xhci-
+mtk
+[    6.006180] stack backtrace:
+[    6.006183] CPU: 7 UID: 0 PID: 12 Comm: kworker/u32:0 Not tainted
+6.17.0-rc2-next-20250820 #1 PREEMPT
+[    6.006187] Hardware name: Acer Tomato (rev2) board (DT)
+[    6.006190] Workqueue: events_unbound deferred_probe_work_func
+[    6.006195] Call trace:
+[    6.006196]  show_stack+0x18/0x24 (C)
+[    6.006201]  dump_stack_lvl+0x90/0xd0
+[    6.006205]  dump_stack+0x1c/0x28
+[    6.006208]  __lock_acquire+0x924/0xc2c
+[    6.006213]  lock_acquire.part.0+0x164/0x25c
+[    6.006216]  lock_acquire+0x88/0x1a0
+[    6.006219]  _raw_spin_lock+0xa8/0xd8
+[    6.006223]  sysfs_remove_dir+0x48/0xe8
+[    6.006226]  __kobject_del+0xb0/0x27c
+[    6.006228]  kobject_release+0xfc/0x134
+[    6.006231]  kobject_put+0xb0/0x130
+[    6.006234]  of_node_put+0x18/0x28
+[    6.006237]  of_find_node_with_property+0xcc/0x204
+[    6.006240]  scpsys_get_bus_protection_legacy+0x16c/0x428
+[    6.006244]  scpsys_probe+0x3bc/0x584
+[    6.006247]  platform_probe+0xc4/0x1c0
+[    6.006250]  really_probe+0x188/0x5d0
+[    6.006253]  __driver_probe_device+0x160/0x2e8
+[    6.006256]  driver_probe_device+0x5c/0x298
+[    6.006259]  __device_attach_driver+0x184/0x328
+[    6.006262]  bus_for_each_drv+0x104/0x18c
+[    6.006265]  __device_attach+0x168/0x358
+[    6.006268]  device_initial_probe+0x14/0x20
+[    6.006271]  bus_probe_device+0x128/0x160
+[    6.006274]  deferred_probe_work_func+0x128/0x1d0
+[    6.006277]  process_one_work+0x740/0x1800
+[    6.006279]  worker_thread+0x738/0xb88
+[    6.006282]  kthread+0x328/0x3d4
+[    6.006285]  ret_from_fork+0x10/0x20
+[    6.006291] BUG: sleeping function called from invalid context at
+kernel/locking/rwsem.c:1589
+[    6.017529] i2c_hid_of 4-0010: i2c_hid_get_input: IRQ triggered but
+there's no data
+[    6.024878] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid:
+12, name: kworker/u32:0
+[    6.024881] preempt_count: 1, expected: 0
+[    6.024882] RCU nest depth: 0, expected: 0
+[    6.024884] INFO: lockdep is turned off.
+[    6.024886] irq event stamp: 537370
+[    6.024887] hardirqs last  enabled at (537369): [<ffffbca6cf0a140c>]
+_raw_spin_unlock_irqrestore+0x84/0x90
+[    6.024891] hardirqs last disabled at (537370): [<ffffbca6cf0a033c>]
+_raw_spin_lock_irqsave+0xe0/0xf4
+[    6.024894] softirqs last  enabled at (365608): [<ffffbca6cb9bcfc4>]
+handle_softirqs+0x8ec/0xd90
+[    6.219570] softirqs last disabled at (365431): [<ffffbca6cb810ab8>]
+__do_softirq+0x14/0x20
+[    6.227908] CPU: 7 UID: 0 PID: 12 Comm: kworker/u32:0 Not tainted
+6.17.0-rc2-next-20250820 #1 PREEMPT
+[    6.227912] Hardware name: Acer Tomato (rev2) board (DT)
+[    6.227914] Workqueue: events_unbound deferred_probe_work_func
+[    6.227919] Call trace:
+[    6.227920]  show_stack+0x18/0x24 (C)
+[    6.227923]  dump_stack_lvl+0x90/0xd0
+[    6.227927]  dump_stack+0x1c/0x28
+[    6.227930]  __might_resched+0x360/0x578
+[    6.227933]  __might_sleep+0xa4/0x16c
+[    6.227937]  down_write+0x8c/0x21c
+[    6.227940]  kernfs_remove+0x28/0x4c
+[    6.227944]  sysfs_remove_dir+0xa8/0xe8
+[    6.227947]  __kobject_del+0xb0/0x27c
+[    6.227950]  kobject_release+0xfc/0x134
+[    6.227952]  kobject_put+0xb0/0x130
+[    6.227955]  of_node_put+0x18/0x28
+[    6.227958]  of_find_node_with_property+0xcc/0x204
+[    6.227961]  scpsys_get_bus_protection_legacy+0x16c/0x428
+[    6.227965]  scpsys_probe+0x3bc/0x584
+[    6.227967]  platform_probe+0xc4/0x1c0
+[    6.227971]  really_probe+0x188/0x5d0
+[    6.227974]  __driver_probe_device+0x160/0x2e8
+[    6.227977]  driver_probe_device+0x5c/0x298
+[    6.227980]  __device_attach_driver+0x184/0x328
+[    6.227983]  bus_for_each_drv+0x104/0x18c
+[    6.227985]  __device_attach+0x168/0x358
+[    6.227988]  device_initial_probe+0x14/0x20
+[    6.227991]  bus_probe_device+0x128/0x160
+[    6.227993]  deferred_probe_work_func+0x128/0x1d0
+[    6.227996]  process_one_work+0x740/0x1800
+[    6.227999]  worker_thread+0x738/0xb88
+[    6.228002]  kthread+0x328/0x3d4
+[    6.228004]  ret_from_fork+0x10/0x20
+[   31.875576] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   32.017394] rcu: ?7-...0: (14 ticks this GP)
+idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D1298
+[   32.026515] rcu: ?(detected by 5, t=3D6503 jiffies, g=3D-383, q=3D816
+ncpus=3D8)
+[   32.033203] Sending NMI from CPU 5 to CPUs 7:
+[   44.067673] watchdog: CPU1: Watchdog detected hard LOCKUP on cpu 2
+[   44.073902] Modules linked in:
+[   44.073927] irq event stamp: 17405
+[   44.073942] hardirqs last  enabled at (17405): [<ffffbca6ce8032c0>]
+psci_cpu_suspend_enter+0x1b8/0x320
+[   44.073994] hardirqs last disabled at (17404): [<ffffbca6cbaba4e8>]
+do_idle+0xf8/0x1a0
+[   44.074038] softirqs last  enabled at (17402): [<ffffbca6cb9bcfc4>]
+handle_softirqs+0x8ec/0xd90
+[   44.074079] softirqs last disabled at (17397): [<ffffbca6cb810ab8>]
+__do_softirq+0x14/0x20
+[   44.074118] Sending NMI from CPU 1 to CPUs 2:
+[   44.103650] watchdog: CPU5: Watchdog detected hard LOCKUP on cpu 6
+[   44.125270] Modules linked in:
+[   44.125273] irq event stamp: 26161
+[   44.125274] hardirqs last  enabled at (26161): [<ffffbca6ce8032c0>]
+psci_cpu_suspend_enter+0x1b8/0x320
+[   44.125281] hardirqs last disabled at (26160): [<ffffbca6cbaba4e8>]
+do_idle+0xf8/0x1a0
+[   44.125286] softirqs last  enabled at (26140): [<ffffbca6cb9bcfc4>]
+handle_softirqs+0x8ec/0xd90
+[   44.125289] softirqs last disabled at (26135): [<ffffbca6cb810ab8>]
+__do_softirq+0x14/0x20
+[   56.471758] sched: DL replenish lagged too much
+[  109.911578] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[  109.917672] rcu: ?7-...0: (14 ticks this GP)
+idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D4192
+[  109.926794] rcu: ?(detected by 4, t=3D26012 jiffies, g=3D-383, q=3D816
+ncpus=3D8)
+[  109.933570] Sending NMI from CPU 4 to CPUs 7:
+[  187.931577] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[  187.937669] rcu: ?7-...0: (14 ticks this GP)
+idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D7593
+[  187.946790] rcu: ?(detected by 4, t=3D45517 jiffies, g=3D-383, q=3D816
+ncpus=3D8)
+[  187.953565] Sending NMI from CPU 4 to CPUs 7:
+[  265.951574] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[  265.957666] rcu: ?7-...0: (14 ticks this GP)
+idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D10993
+[  265.966873] rcu: ?(detected by 5, t=3D65022 jiffies, g=3D-383, q=3D816
+ncpus=3D8)
+
 >=20
 > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D
 >=20
 >=20
-> # Builds where the incident occurred:
+> # Hardware platforms affected:
 >=20
-> ## x86_64_defconfig on (x86_64):
-> - compiler: clang-17
-> - dashboard: https://d.kernelci.org/build/maestro:689c1610233e484a3f9165be
+> ## mt8186-corsola-steelix-sku131072
+> - dashboard:
+> https://d.kernelci.org/test/maestro:68a572e9233e484a3fa2c0db
+> - compatibles: google,steelix-sku131072 | google,steelix
+> - 1 fails since 2025-08-20 07:25 UTC
+> - test path: boot
+> - last pass:
+> https://d.kernelci.org/test/maestro:68a429e6233e484a3fa0aba6
+> =C2=A0=C2=A0=C2=A0 - on 2025-08-19 07:38 UTC
+> =C2=A0=C2=A0=C2=A0 - commit hash:=C2=A0 886e5e7b0432360842303d587bb4a65d1=
+0741ae8
+> =C2=A0=C2=A0=C2=A0 - test id:=C2=A0 maestro:68a429e6233e484a3fa0aba6
 >=20
-> ## x86_64_defconfig+kselftest+x86-board on (x86_64):
-> - compiler: clang-17
-> - dashboard: https://d.kernelci.org/build/maestro:689c1617233e484a3f9165c4
+> ## mt8195-cherry-tomato-r2
+> - dashboard:
+> https://d.kernelci.org/test/maestro:68a572ea233e484a3fa2c0e1
+> - compatibles: google,tomato-rev2 | google,tomato | mediatek,mt8195
+> - 1 fails since 2025-08-20 07:25 UTC
+> - test path: boot
+> - last pass:
+> https://d.kernelci.org/test/maestro:68a2ce76233e484a3f9e5dcc
+> =C2=A0=C2=A0=C2=A0 - on 2025-08-18 06:55 UTC
+> =C2=A0=C2=A0=C2=A0 - commit hash:=C2=A0 3ac864c2d9bb8608ee236e89bf5618116=
+13abfce
+> =C2=A0=C2=A0=C2=A0 - test id:=C2=A0 maestro:68a2ce76233e484a3f9e5dcc
 >=20
 >=20
-> #kernelci issue maestro:e3e604796d8d054968bf2b979c7940708d16e0ee
+> #kernelci issue maestro:4a7604ad2b208f9142109c871e17a6453ee9ff9c
 >=20
 > Reported-by: kernelci.org bot <bot@kernelci.org>
 >=20
@@ -134,38 +291,4 @@ is always false
 > Talk to us at kernelci@lists.linux.dev
 >=20
 > Made with love by the KernelCI team - https://kernelci.org
->=20
 
-This is caused by commit
-
-  eacecdbf2789 ("iov_iter: iterate_folioq: fix handling of offset >=3D foli=
-o size")
-
-in the mm-hotfixes-unstable branch of the mm-hotfixes tree.
-
-This is now commit
-
-  b8da3ae0ae53 ("iov_iter: iterate_folioq: fix handling of offset >=3D foli=
-o size")
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/ckNnx3JwNN/So0/By+g2gap
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmicLOoACgkQAVBC80lX
-0Gy1+Qf8C/PHElFrT+Rpi3gZlFVtsREeuOH+grAsgqS+YB7xk1mjzx0ZGnbUs5YN
-JYyjWNFLlddQSgtWyJ3pFhQdGjzGJZglx96YZ1U2OLvrhpdPeOK4Wpe+1UJ+qeZ4
-X0wkjBDzpP0RzfGJ3p1SIOS1NOeYk3BghGSO5+OF6Iiy9aoKcpPo5Ys6GIWfGbW+
-ykhXQMm+dZ/SVqJZO6/SCtNR5nu34qXSU142PVxQt6w3vUSI/aV6TWTz+Ui5A52W
-JDWZ7TauQ1YsXITWiNj81ZH8Qjgf+Lhx7IXV0Tca9FsoKA5JRsBhzHZb9g7UhSHA
-41llClX/pqZXLPgDcAICbjmZr0dtIg==
-=Plwf
------END PGP SIGNATURE-----
-
---Sig_/ckNnx3JwNN/So0/By+g2gap--
