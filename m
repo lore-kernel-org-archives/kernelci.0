@@ -1,294 +1,222 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC24C19D8A8;
-	Wed, 20 Aug 2025 10:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977763054E4
+	for <kernelci@lists.linux.dev>; Thu, 21 Aug 2025 17:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755685513; cv=pass; b=PRV/G9DrIXbVhMRH23phLteOhIoWWPEW+kf19WG6wbfP8aAedt7H7DSL2bgT/6tvnpsba58/6IgdcdxnnRLCabOxeLlZ+NuaPSvsqHk1CA8699wJIA7VDrfXFA7UeY7wEj0SAZTOmHTKnzmbDYueqe1iSoPyb2P3+cyO1BLB/n0=
+	t=1755797556; cv=pass; b=I+Pr5Ehji/R+j4xXWjC4tzAq1dD6EGMG/L7Qo2CH5EI4jXxcGbgNmsMRxHCAPBfxGzIBBZAbRIkaZ1cmk7WimDZez0AQ5nnwuZ/WexZ+mo2PTPT8HuMhAeq9l8kJJwDxVMv8SJSyaYbOzI3H05r680gcIiFOlMvwd01mU5HmJTM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755685513; c=relaxed/simple;
-	bh=MutQRfU1vlAAyDrHvo83dHCHOplPvJiMt+FOhq2qVoQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KFkwTL/Cjy72m3G227WMd/Gj5+pJ6t5NolTYNDn7dDbo7E24/Z8z1paMeZoZ6rCd/uDSttADwPqxW9XhAcLt5aNLo+p+X3zn1lkCzC8T+tKhshdFJx4JSi2d3ujO/SkhvN17touRF25aNluARGeIsEJEOoNIbtoe9X+Q0jA93Eg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=LX4KEaee; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1755797556; c=relaxed/simple;
+	bh=ljAaO/s3ZM4xjKIQSPqnnjSFpN/joTJRTKLTEigccTc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Bd1jWSp3DQjH7l6PITXCtkG6cpL3U/+/M7XRVEz7szFgp1590IuMsO+F1sfYYNdADiP+k863FgDc8uPWElo3whIJJOeJSZxzbHQPIXvA3P6+0SEtvu0EYDGFzIOIbhERPzGpvqzA+HHCeK0W9ajGe+cZ7h4HYJeKanj+SMWDuus=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=Cqt9xc9s; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="LX4KEaee"
-ARC-Seal: i=1; a=rsa-sha256; t=1755685507; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="Cqt9xc9s"
+ARC-Seal: i=1; a=rsa-sha256; t=1755797545; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=h+AXgcvpxaUzhSA5YhulYfrjQ4KFcdOtl1RQpZ7oMSLx4x/g+mILjjK+xwqh50gjr+AmDdUdaIGIn0MEI6apJ3oIokXP1gsF6Dc/JpXEg41cB/PnMQ2m4cgkJOgTGgzArDs3BdIeFLXGwzEvgXPQ2xXXnQXI68kUjrS8HgaQ7wg=
+	b=IWlW79SqT7rBGNsSTzhGhYEf4G5r48eiVM4sZvOmXvmD1NKv40Wm4ZIqH9efx9NrzDAHXvn/MXVtXxksVWhyWBtnyaLGjOm+qNPVxGW1BmaxieHcZKvISWgkU1ow1ZNYsWa5biU1Lct3YPJTJiC0xfzsXoxJoJBn+mA941mwcZM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1755685507; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1BvZFqmRTJ7ahMq/XeE/0dEi295M+UK3CiexvNDLCpk=; 
-	b=Q7mFMEBNFHrliTOFA8r99c0TuW6/ceLcyqDZcmb4qS9Mofdo4DwZZ3ttTu7Xsue2cXn6d0RetGQCbvd8ek7KXWQHrEogY/OSfvUKIzNLombVH2xVqZUjR+xGZ0gydYEEEUKqiW0G8zaxULO7cOwchW7KIBgGNAf5uW/z2k20LBc=
+	t=1755797545; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=t5a/MuGgAXGRJz5fMITkXfoiXGJyb+VCGeF9sd/HHC4=; 
+	b=Aqc7zLT1rAQWm0UmKu2ZSwEPkFbXKRj5a9LYrUhxufrnUX4CeiKN7ir093BRKL4uKsaYTqkRTNw0hYwGVjpQgXKqe/i+EBxZJfMPpsHh/u4xDB5dLM5T/VFhSpHBDlTO3ht/tVzu1SfEjdiCtNqF/7kSFSCMfN3MO8YCVU6Wn9w=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=gus@collabora.com;
 	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755685507;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755797545;
 	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=1BvZFqmRTJ7ahMq/XeE/0dEi295M+UK3CiexvNDLCpk=;
-	b=LX4KEaeeJkwci3Q/FTR8g0+bk4Xjs8UzJvLG0dZbfihZ98yMW1ucPyZuQvbZzwEQ
-	AviazBo0V/TeIh3b2NkExDU4tl4hZzf9KonGFrBfPv78LXbVNPNuM8LvEVSreXR7jb8
-	xlBfwwtJorwTGvM8KIbnMp/lzm9f1x5r3W42Wexg=
-Received: by mx.zohomail.com with SMTPS id 1755685504993404.4586990290858;
-	Wed, 20 Aug 2025 03:25:04 -0700 (PDT)
-Message-ID: <b169f9cc331254dafc3060b0dc3b8bfee882a285.camel@collabora.com>
-Subject: Re: [REGRESSION] next/master: (boot) sleeping function called from
- invalid context at kernel/locking/rw...
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=t5a/MuGgAXGRJz5fMITkXfoiXGJyb+VCGeF9sd/HHC4=;
+	b=Cqt9xc9sETOSlFDSjPvLe6is5IGUOflFJK4RgJBCZ37a7rRvjBIuj1c4+deiRkp1
+	XMIpgyEx27qdQTYODynM/yb2tyma6XZoX6a89kYCgXkpyUgqJi3Pk+alWfA1PfMl8mY
+	sQhUSD+6V0Q4aUoae2jqRNuD/d7BubmNdZVyr+tU=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1755797543262682.3683859568998; Thu, 21 Aug 2025 10:32:23 -0700 (PDT)
+Date: Thu, 21 Aug 2025 14:32:23 -0300
 From: Gustavo Padovan <gus@collabora.com>
-To: kernelci@lists.linux.dev, kernelci-results@groups.io
-Cc: regressions@lists.linux.dev, linux-mediatek@lists.infradead.org, 
-	linux-next@vger.kernel.org
-Date: Wed, 20 Aug 2025 07:25:00 -0300
-In-Reply-To: <175568535010.3222387.7351336690916179632@poutine>
-References: <175568535010.3222387.7351336690916179632@poutine>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+To: "Gustavo Padovan" <gus@collabora.com>
+Cc: "kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
+	"Automated Testing" <automated-testing@lists.yoctoproject.org>,
+	"KernelCI Members" <kernelci-members@groups.io>,
+	"kernelci-hw-vendors" <kernelci-hw-vendors@groups.io>
+Message-ID: <198cdb05900.390510884659603.8671527595926972481@collabora.com>
+In-Reply-To: <1987a1851a3.360c6270521972.8904361685319295839@collabora.com>
+References: <19809426904.3c4822be1251531.2628638964882412232@collabora.com> <1987a1851a3.360c6270521972.8904361685319295839@collabora.com>
+Subject: Re: KernelCI Workshop in Amsterdam on Aug 28th
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-On Wed, 2025-08-20 at 10:22 +0000, KernelCI bot wrote:
->=20
->=20
->=20
->=20
->=20
-> Hello,
->=20
-> New boot regression found on next/master:
->=20
-> ---
-> =C2=A0sleeping function called from invalid context at
-> kernel/locking/rwsem.c:1589
-> [logspec:generic_linux_boot,linux.kernel.bug]
-> ---
->=20
-> - dashboard:
-> https://d.kernelci.org/i/maestro:4a7604ad2b208f9142109c871e17a6453ee9ff9c
-> - giturl:
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> - commit HEAD:=C2=A0 5303936d609e09665deda94eaedf26a0e5c3a087
-> - tags: next-20250820
->=20
->=20
-> Log excerpt:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
+Hello,=20
 
-Our logspec tool failed to collect the relevant part of the crash.
-Here it is: (We will fix this).
+We are one week away from the KernelCI workshop! So let=E2=80=99s dive deep=
+er into the content we want for the workshop.
+
+The workshop will run from 9am to 5pm (Amsterdam time) on August 28th. If y=
+ou want to be there in person please register through:=20
+
+https://forms.gle/SwanWMQnwg6F6UAx9=20
+
+We will also open a Zoom conference call for remote attendees. See details =
+at the bottom of this email.
+
+## Content
+
+The gathering will be informal and driven by the interest of the participan=
+ts. We will start the day with=20
+a quick overview of KernelCI by Gustavo Padovan to bring everyone to the sa=
+me page and then discuss which topics we want to focus during the day.=20
+
+So now it is the time for you to place your suggestions! Please bring in di=
+scussions you want to see or topics you want to present.
+
+I=E2=80=99ll start by listing a few discussion topics here to warm up:
+* Maintainer=E2=80=99s usecases: discuss and prioritize key usecases and un=
+derstand the steps to implement them.
+* stable-rc: How to create and deliver unified reports to the stable mainta=
+iners in a timely manner
+* quality of test results - we run many thousands of tests everyday, but th=
+e confidence level is not where we want it to be. Some tests and platforms =
+are unstable, but currently we have no tracking of that.
+* What=E2=80=99s the sweet spot for email notifications? It is known that b=
+ots send too many emails. We don=E2=80=99t want to repeat that with KernelC=
+I. Our notifications infra is still PoC, so let=E2=80=99s discuss the next =
+steps.
+* Web Dashboard: what are we missing? What are the next steps?
+* Defining Hardware/Platform information: Today hw info in pretty much inex=
+istent in KernelCI and a big limitation for showing results filtered by hw =
+capabilities.
+* KCIDB-ng and Dashboard DB roadmap: we have been revamping how we store te=
+st results sent to KCIDB, so this is a pretty good discussion topic as well=
+.
+* Testing patches from the mailing list. What to look for in this testing?
+* Listening to test events in the Maestro API: current limitations and wish=
+list to improve support the CI ecosystem that want to test jobs generated b=
+y Maestro
+* kci-dev: requesting ad-hoc test execution to test patches against regress=
+ions, bisections, etc.
+* bisection support: how to do it?
+* Labs in Maestro: What can we improve there?
+* Test results retention policy: for how long should we retain results? Whi=
+ch summary info should we keep?
+* KernelCI sysadmin policies
+* =E2=80=A6add yours here
+
+=20
+## Prep material
+
+If you want to dive into some material ahead of time to be more prepared fo=
+r the discusssons, we highly recommend you to:
+
+* study our architecture and key concepts in our docs[1]
+* look at our non-comprehensive wishlist in the KernelCI Roadmap doc[2]
+* try out our command line tooling kci-dev[3]
+* navigate through our dashboard[4]
+* look at our email reports [5]
+
+[1] https://docs.kernelci.org/=20
+[2] https://docs.google.com/document/d/1q7g5LLCFL0Sr6V5Y3wHWWVQjIQuLjhmvmzH=
+bjgnmG8M/edit?tab=3Dt.0
+[3] https://kci.dev/=20
+[4] https://dashboard.kernelci.org/=20
+[5] https://groups.io/g/kernelci-results
 
 
-[    5.926489] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[    5.930486] [ BUG: Invalid wait context ]
-[    5.934484] 6.17.0-rc2-next-20250820 #1 Not tainted
-[    5.939350] -----------------------------
-[    5.943347] kworker/u32:0/12 is trying to lock:
-[    5.947864] ffffbca6d49c19b8 (sysfs_symlink_target_lock){+.+.}-
-{3:3}, at: sysfs_remove_dir+0x48/0xe8
-[    5.956997] other info that might help us debug this:
-[    5.962034] context-{5:5}
-[    5.964642] 4 locks held by kworker/u32:0/12:
-[    5.968986]  #0: ffff0000c0039148
-((wq_completion)events_unbound){+.+.}-{0:0}, at:
-process_one_work+0x674/0x1800
-[    5.979153]  #1: ffff800080187ce0 (deferred_probe_work){+.+.}-{0:0},
-at: process_one_work+0x698/0x1800
-[    5.988450]  #2: ffff0000c24a10f8 (&dev->mutex){....}-{4:4}, at:
-__device_attach+0x80/0x358
-[    5.996794]  #3: ffffbca6d6571cd8 (devtree_lock){....}-{2:2}, at:
-of_find_node_with_property+0x34/0x204
-[    6.003882] usb 1-1: new high-speed USB device number 2 using xhci-
-mtk
-[    6.006180] stack backtrace:
-[    6.006183] CPU: 7 UID: 0 PID: 12 Comm: kworker/u32:0 Not tainted
-6.17.0-rc2-next-20250820 #1 PREEMPT
-[    6.006187] Hardware name: Acer Tomato (rev2) board (DT)
-[    6.006190] Workqueue: events_unbound deferred_probe_work_func
-[    6.006195] Call trace:
-[    6.006196]  show_stack+0x18/0x24 (C)
-[    6.006201]  dump_stack_lvl+0x90/0xd0
-[    6.006205]  dump_stack+0x1c/0x28
-[    6.006208]  __lock_acquire+0x924/0xc2c
-[    6.006213]  lock_acquire.part.0+0x164/0x25c
-[    6.006216]  lock_acquire+0x88/0x1a0
-[    6.006219]  _raw_spin_lock+0xa8/0xd8
-[    6.006223]  sysfs_remove_dir+0x48/0xe8
-[    6.006226]  __kobject_del+0xb0/0x27c
-[    6.006228]  kobject_release+0xfc/0x134
-[    6.006231]  kobject_put+0xb0/0x130
-[    6.006234]  of_node_put+0x18/0x28
-[    6.006237]  of_find_node_with_property+0xcc/0x204
-[    6.006240]  scpsys_get_bus_protection_legacy+0x16c/0x428
-[    6.006244]  scpsys_probe+0x3bc/0x584
-[    6.006247]  platform_probe+0xc4/0x1c0
-[    6.006250]  really_probe+0x188/0x5d0
-[    6.006253]  __driver_probe_device+0x160/0x2e8
-[    6.006256]  driver_probe_device+0x5c/0x298
-[    6.006259]  __device_attach_driver+0x184/0x328
-[    6.006262]  bus_for_each_drv+0x104/0x18c
-[    6.006265]  __device_attach+0x168/0x358
-[    6.006268]  device_initial_probe+0x14/0x20
-[    6.006271]  bus_probe_device+0x128/0x160
-[    6.006274]  deferred_probe_work_func+0x128/0x1d0
-[    6.006277]  process_one_work+0x740/0x1800
-[    6.006279]  worker_thread+0x738/0xb88
-[    6.006282]  kthread+0x328/0x3d4
-[    6.006285]  ret_from_fork+0x10/0x20
-[    6.006291] BUG: sleeping function called from invalid context at
-kernel/locking/rwsem.c:1589
-[    6.017529] i2c_hid_of 4-0010: i2c_hid_get_input: IRQ triggered but
-there's no data
-[    6.024878] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid:
-12, name: kworker/u32:0
-[    6.024881] preempt_count: 1, expected: 0
-[    6.024882] RCU nest depth: 0, expected: 0
-[    6.024884] INFO: lockdep is turned off.
-[    6.024886] irq event stamp: 537370
-[    6.024887] hardirqs last  enabled at (537369): [<ffffbca6cf0a140c>]
-_raw_spin_unlock_irqrestore+0x84/0x90
-[    6.024891] hardirqs last disabled at (537370): [<ffffbca6cf0a033c>]
-_raw_spin_lock_irqsave+0xe0/0xf4
-[    6.024894] softirqs last  enabled at (365608): [<ffffbca6cb9bcfc4>]
-handle_softirqs+0x8ec/0xd90
-[    6.219570] softirqs last disabled at (365431): [<ffffbca6cb810ab8>]
-__do_softirq+0x14/0x20
-[    6.227908] CPU: 7 UID: 0 PID: 12 Comm: kworker/u32:0 Not tainted
-6.17.0-rc2-next-20250820 #1 PREEMPT
-[    6.227912] Hardware name: Acer Tomato (rev2) board (DT)
-[    6.227914] Workqueue: events_unbound deferred_probe_work_func
-[    6.227919] Call trace:
-[    6.227920]  show_stack+0x18/0x24 (C)
-[    6.227923]  dump_stack_lvl+0x90/0xd0
-[    6.227927]  dump_stack+0x1c/0x28
-[    6.227930]  __might_resched+0x360/0x578
-[    6.227933]  __might_sleep+0xa4/0x16c
-[    6.227937]  down_write+0x8c/0x21c
-[    6.227940]  kernfs_remove+0x28/0x4c
-[    6.227944]  sysfs_remove_dir+0xa8/0xe8
-[    6.227947]  __kobject_del+0xb0/0x27c
-[    6.227950]  kobject_release+0xfc/0x134
-[    6.227952]  kobject_put+0xb0/0x130
-[    6.227955]  of_node_put+0x18/0x28
-[    6.227958]  of_find_node_with_property+0xcc/0x204
-[    6.227961]  scpsys_get_bus_protection_legacy+0x16c/0x428
-[    6.227965]  scpsys_probe+0x3bc/0x584
-[    6.227967]  platform_probe+0xc4/0x1c0
-[    6.227971]  really_probe+0x188/0x5d0
-[    6.227974]  __driver_probe_device+0x160/0x2e8
-[    6.227977]  driver_probe_device+0x5c/0x298
-[    6.227980]  __device_attach_driver+0x184/0x328
-[    6.227983]  bus_for_each_drv+0x104/0x18c
-[    6.227985]  __device_attach+0x168/0x358
-[    6.227988]  device_initial_probe+0x14/0x20
-[    6.227991]  bus_probe_device+0x128/0x160
-[    6.227993]  deferred_probe_work_func+0x128/0x1d0
-[    6.227996]  process_one_work+0x740/0x1800
-[    6.227999]  worker_thread+0x738/0xb88
-[    6.228002]  kthread+0x328/0x3d4
-[    6.228004]  ret_from_fork+0x10/0x20
-[   31.875576] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[   32.017394] rcu: ?7-...0: (14 ticks this GP)
-idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D1298
-[   32.026515] rcu: ?(detected by 5, t=3D6503 jiffies, g=3D-383, q=3D816
-ncpus=3D8)
-[   32.033203] Sending NMI from CPU 5 to CPUs 7:
-[   44.067673] watchdog: CPU1: Watchdog detected hard LOCKUP on cpu 2
-[   44.073902] Modules linked in:
-[   44.073927] irq event stamp: 17405
-[   44.073942] hardirqs last  enabled at (17405): [<ffffbca6ce8032c0>]
-psci_cpu_suspend_enter+0x1b8/0x320
-[   44.073994] hardirqs last disabled at (17404): [<ffffbca6cbaba4e8>]
-do_idle+0xf8/0x1a0
-[   44.074038] softirqs last  enabled at (17402): [<ffffbca6cb9bcfc4>]
-handle_softirqs+0x8ec/0xd90
-[   44.074079] softirqs last disabled at (17397): [<ffffbca6cb810ab8>]
-__do_softirq+0x14/0x20
-[   44.074118] Sending NMI from CPU 1 to CPUs 2:
-[   44.103650] watchdog: CPU5: Watchdog detected hard LOCKUP on cpu 6
-[   44.125270] Modules linked in:
-[   44.125273] irq event stamp: 26161
-[   44.125274] hardirqs last  enabled at (26161): [<ffffbca6ce8032c0>]
-psci_cpu_suspend_enter+0x1b8/0x320
-[   44.125281] hardirqs last disabled at (26160): [<ffffbca6cbaba4e8>]
-do_idle+0xf8/0x1a0
-[   44.125286] softirqs last  enabled at (26140): [<ffffbca6cb9bcfc4>]
-handle_softirqs+0x8ec/0xd90
-[   44.125289] softirqs last disabled at (26135): [<ffffbca6cb810ab8>]
-__do_softirq+0x14/0x20
-[   56.471758] sched: DL replenish lagged too much
-[  109.911578] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[  109.917672] rcu: ?7-...0: (14 ticks this GP)
-idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D4192
-[  109.926794] rcu: ?(detected by 4, t=3D26012 jiffies, g=3D-383, q=3D816
-ncpus=3D8)
-[  109.933570] Sending NMI from CPU 4 to CPUs 7:
-[  187.931577] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[  187.937669] rcu: ?7-...0: (14 ticks this GP)
-idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D7593
-[  187.946790] rcu: ?(detected by 4, t=3D45517 jiffies, g=3D-383, q=3D816
-ncpus=3D8)
-[  187.953565] Sending NMI from CPU 4 to CPUs 7:
-[  265.951574] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[  265.957666] rcu: ?7-...0: (14 ticks this GP)
-idle=3D3c14/1/0x4000000000000000 softirq=3D936/941 fqs=3D10993
-[  265.966873] rcu: ?(detected by 5, t=3D65022 jiffies, g=3D-383, q=3D816
-ncpus=3D8)
+## Virtual Conference details
 
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
->=20
->=20
-> # Hardware platforms affected:
->=20
-> ## mt8186-corsola-steelix-sku131072
-> - dashboard:
-> https://d.kernelci.org/test/maestro:68a572e9233e484a3fa2c0db
-> - compatibles: google,steelix-sku131072 | google,steelix
-> - 1 fails since 2025-08-20 07:25 UTC
-> - test path: boot
-> - last pass:
-> https://d.kernelci.org/test/maestro:68a429e6233e484a3fa0aba6
-> =C2=A0=C2=A0=C2=A0 - on 2025-08-19 07:38 UTC
-> =C2=A0=C2=A0=C2=A0 - commit hash:=C2=A0 886e5e7b0432360842303d587bb4a65d1=
-0741ae8
-> =C2=A0=C2=A0=C2=A0 - test id:=C2=A0 maestro:68a429e6233e484a3fa0aba6
->=20
-> ## mt8195-cherry-tomato-r2
-> - dashboard:
-> https://d.kernelci.org/test/maestro:68a572ea233e484a3fa2c0e1
-> - compatibles: google,tomato-rev2 | google,tomato | mediatek,mt8195
-> - 1 fails since 2025-08-20 07:25 UTC
-> - test path: boot
-> - last pass:
-> https://d.kernelci.org/test/maestro:68a2ce76233e484a3f9e5dcc
-> =C2=A0=C2=A0=C2=A0 - on 2025-08-18 06:55 UTC
-> =C2=A0=C2=A0=C2=A0 - commit hash:=C2=A0 3ac864c2d9bb8608ee236e89bf5618116=
-13abfce
-> =C2=A0=C2=A0=C2=A0 - test id:=C2=A0 maestro:68a2ce76233e484a3f9e5dcc
->=20
->=20
-> #kernelci issue maestro:4a7604ad2b208f9142109c871e17a6453ee9ff9c
->=20
-> Reported-by: kernelci.org bot <bot@kernelci.org>
->=20
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
->=20
-> Made with love by the KernelCI team - https://kernelci.org
+Join from PC, Mac, iPad, or Android https://zoom-lfx.platform.linuxfoundati=
+on.org/meeting/94738189901?password=3D6279f2f6-9dad-4187-8294-8cfd474a6704=
+=20
+
+Or join via audio One tap mobile: US (iOS): +12532158782,,94738189901#,,,,*=
+162525# or +13462487799,,94738189901#,,,,*162525# US (Android): +1253215878=
+2;94738189901#;162525# or +13462487799;94738189901#;162525# Or dial: US: +1=
+ 253 215 8782 or +1 346 248 7799 or +1 669 900 6833 or +1 301 715 8592 or +=
+1 312 626 6799 or +1 646 374 8656 or 877 369 0926 (Toll Free) or 855 880 12=
+46 (Toll Free) Canada: +1 647 374 4685 or +1 647 558 0588 or +1 778 907 207=
+1 or +1 204 272 7920 or +1 438 809 7799 or +1 587 328 1099 or 855 703 8985 =
+(Toll Free) Meeting ID: 94738189901 Meeting Passcode: 162525 International =
+numbers: https://zoom.us/u/alwnPIaVT
+
+
+Looking forward to meeting you in the workshop!
+
+Best,
+
+- Gus
+
+
+--
+Gustavo Padovan
+
+Collabora Ltd.
+
+
+
+---- On Tue, 05 Aug 2025 08:57:50 -0300 Gustavo Padovan <gus@collabora.com>=
+ wrote ---
+
+ > Hello,=20
+ > =20
+ > Thanks to everyone who subscribed already!=20
+ > =20
+ > This is reminder for those who want to join the workshop. Follow the lin=
+k on the message below to subscribe.=20
+ > =20
+ > And let us know of any topics you might want to discuss.=20
+ > =20
+ > Best,=20
+ > =20
+ > - Gus=20
+ > =20
+ > --=20
+ > Gustavo Padovan=20
+ > =20
+ > Collabora Ltd.=20
+ > =20
+ > =20
+ > =20
+ > ---- On Mon, 14 Jul 2025 11:06:43 -0300 Gustavo Padovan <gus@collabora.c=
+om> wrote ---=20
+ > =20
+ >  > Hello everyone,=20
+ >  >=20
+ >  > We will run a KernelCI Workshop on August 28th right after Open Sourc=
+e Summit Europe(OSSEU) in Amsterdam. The location is not too far from the m=
+ain OSSEU venue.=20
+ >  >=20
+ >  > The goal of the workshop is to discuss the current architecture and r=
+oadmap of the project and refine our directions forward as a community. The=
+ workshop will run as an un-conference style with agenda discussed and deci=
+ded at the beginning of workshop.=20
+ >  >=20
+ >  > If you want to take part, please manifest your interest at:=20
+ >  > https://forms.gle/SwanWMQnwg6F6UAx9=20
+ >  >=20
+ >  > For any questions don't hesitate to reach out to me.=20
+ >  >=20
+ >  > - The KernelCI team=20
+ >  >=20
+ >  > --=20
+ >  > Gustavo Padovan=20
+ >  >=20
+ >  > Collabora Ltd.=20
+ >  >=20
+ >  >=20
+ >  >=20
+ > =20
+ > =20
+ >=20
 
