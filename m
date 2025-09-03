@@ -1,201 +1,117 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FF227472
-	for <kernelci@lists.linux.dev>; Wed,  3 Sep 2025 05:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DDE1EE7C6
+	for <kernelci@lists.linux.dev>; Wed,  3 Sep 2025 14:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756877096; cv=none; b=D32mIhl+/L2KvBns69wtoVVBip5AxuUVaid4fMwW4/l9J+FcNa6bw6186GP8AmvtP/j0CEasTTQ2RpXZBMOHcI9tMEIgB0wHvHo252QwM0m5Vg9/EOEp6hQbj1vfU+QBVNrI1yrTRGnLodCiZDblrtyQkSW2k23r4B5TCS6TsOU=
+	t=1756911526; cv=none; b=a0mEj5lL8XsxTqaGWk/3HLmCqBVoPYerIymcwVU/IV6a6W9E4gSYso4BPIllKevbcMZz+VGg01QuOIl0W6OniLI3jJAHUikxJF6OU4J8w63gV9+vDUX5VtGORAe+7uj2XJZZAQyDadz2pK4fk+2ATnn5162/oAqASCpO7hgVR8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756877096; c=relaxed/simple;
-	bh=bzPR94hhgUTxyJGfsoSeDPHqFwunfcpzOM1VHW8Ln9s=;
+	s=arc-20240116; t=1756911526; c=relaxed/simple;
+	bh=QDDAqwz3F4o4hb/ynBlmDlUS2yURGBNPT2irwubLC8c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GNSDEycuFbECNXbqDYD8kDg06ynz47FYGi4b2Pere+V4iXMXOALaVMpNJba+4s1CRxG2cgKycva0B1gJkQCJJOpX0cxVp3hk1gS4lpo/aXMuckSs/m9jM4BoTVPSbBLFxu7FWnylqBrzCPjieADf3ZGpFl6h0zl474vM1bXNjBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fz4zZzu0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 To:Cc:Content-Type; b=slr5JpYNCrl/htQJSxlBXRH9cavKbUqgATgFdLuVmd32dU4inoJLODIBuVGhXTSsoi1c4j/1CY8QQ1CJjqcQxnEZRqG7Rz8txQL+RKJZAeAVYRjE5ebyxIT7gzCLC/CeDJIStL1GpnItu/iqfZ9SdISkT/wWkUpPr2FxSFMVZ/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jRmSSNoa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fz4zZzu0"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5832HQ4Q019818
-	for <kernelci@lists.linux.dev>; Wed, 3 Sep 2025 05:24:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	bzPR94hhgUTxyJGfsoSeDPHqFwunfcpzOM1VHW8Ln9s=; b=fz4zZzu0Xwz+cueo
-	lwRmgnLUZ6q+zWD5eXxsjaEUFLIlz7L2GvziKA79qJFZ3NZZvuHLSD5pK9QI0e/j
-	HgG12e+/ChYb9yCLicqlwyddeaSgFbLWAg0hcrqw3ct8NkBJkiSttdviXx69QRBR
-	d79qEyV84jBuTM12rFa47pVqU3+FnF5F9a3+PlhhrDK3FX8l4NI33hNWMX2ON+7s
-	6Xnhx3hQkyj8RLyP57/iSltVaBftiq/PUbgjb2Ptc1rm1vKjHtmQyiu3Dmjw7mVV
-	RIj1b9jpJtZdsPMHfjAsnmUVRIYaUTIIa2XNLbxmuOX7Vosy8hcESbtiDyvMhvvs
-	5g3UHA==
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urw02b4q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kernelci@lists.linux.dev>; Wed, 03 Sep 2025 05:24:52 +0000 (GMT)
-Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-52ae22973feso566857137.2
-        for <kernelci@lists.linux.dev>; Tue, 02 Sep 2025 22:24:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jRmSSNoa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756911523;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QDDAqwz3F4o4hb/ynBlmDlUS2yURGBNPT2irwubLC8c=;
+	b=jRmSSNoaTkIGEff+DVBFhSNqf4RMl7Y0MTRSUiXigpD4IvCkt8K7U6MgD9GvAmxqCWNOBm
+	hhnDGiYc8l7nixYR/HVcWdbr+RcAqIiIdDY0G9peRbgnCPLy5ecWHKccggNf5guYQO56z9
+	bWtpGzI09qOnMLN7pQwIVaAT0oOmC2k=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-56c1xFNnPzmf2t43yBj7_w-1; Wed, 03 Sep 2025 10:58:41 -0400
+X-MC-Unique: 56c1xFNnPzmf2t43yBj7_w-1
+X-Mimecast-MFC-AGG-ID: 56c1xFNnPzmf2t43yBj7_w_1756911521
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-722693e327eso64557067b3.3
+        for <kernelci@lists.linux.dev>; Wed, 03 Sep 2025 07:58:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756877092; x=1757481892;
+        d=1e100.net; s=20230601; t=1756911521; x=1757516321;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bzPR94hhgUTxyJGfsoSeDPHqFwunfcpzOM1VHW8Ln9s=;
-        b=jB1RAAG0rIYXNgfDJEe4qiUE5Ltx8sxwy2VPP5R9c60pBo5QzSJOWPEzlU/CnnmKOt
-         pTC5KSGb+X5pt5bzuvXeS/OnYzMVA7R4+da5/x/noQURNDM6HKMSmaBZ1q1v6Adzw0UQ
-         o94ONumhzLgsh5143OU9zT1yLUUvN+A0J3zH2dLxTkZNi6yWqzGM4hkQZJZvr5dsOYPk
-         sdeJ4DaNRisTKxlsmZ70Zltk3Lh4UNL01FGZUvHmjR3Lyp/CniyP8t8jYVK2+UzPppaP
-         v1eM3pWgLJgAsthl26k7YYOzMP3IYqF5piT/5AooNMzJ/FGUvcc5nLxpaD8P4nFiN4Zn
-         yWLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGTpunpfQNj05j2EuEc/DRy78dB3leRWzDN42ne7+Fv5cTH9/ZzFKaot2Mh4hLdwbO6LOWEhRRMg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwII5oWrcwicUVVi+bS9c3qe6L+gxo5hZa189gMvTA4kCgSIrtL
-	uU91ZGtAN04jqXW1nuycK9dVDPyMisKS1FLbYAtr5OxOhCqlmEuQhJunSubbAMaT1ycZd9eTc5G
-	D0vRlw6bkXz36CmLReUCF1nsC8nO6eaQY+MmIS/dh2tVCZp4wn2mu7V3qhX7JLfYAuwi1mhEeaE
-	aCvTHHJrMgW5jiW+flMAxPc2ynzInPEB5JjWc=
-X-Gm-Gg: ASbGnctL0HaJgBK88k3hhn1lq8HgurTZVkjBYKVpmLvBBiV6jpd9IojfEode4dUDRv1
-	My5nq0GDMiIy8y52kVTflf1gx0lOtJ9N8KGgWos9svDHa9fE4w0ulnvLqX1KbmXkx2qdTP6nmpY
-	C3nkcG/jEJDCiM2MimdHdG
-X-Received: by 2002:a05:6102:5127:b0:4e6:d911:dd84 with SMTP id ada2fe7eead31-52b1b6f5b9dmr4277792137.22.1756877092008;
-        Tue, 02 Sep 2025 22:24:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPgKr8DKdFG7TCz79WpLldLydK6Owr7Sp4DMP5gbx9nMSuxDpLZgyZ1zNst7tqA0tKbfWzg25ICaub5uD7tT4=
-X-Received: by 2002:a05:6102:5127:b0:4e6:d911:dd84 with SMTP id
- ada2fe7eead31-52b1b6f5b9dmr4277784137.22.1756877091578; Tue, 02 Sep 2025
- 22:24:51 -0700 (PDT)
+        bh=QDDAqwz3F4o4hb/ynBlmDlUS2yURGBNPT2irwubLC8c=;
+        b=uHpc3R9YAkrBgNDpQvM2OoowVtmupPWplJMBcTrocHAvXesVfHpywl7fuWTn1YbPcg
+         GKmfSiY4nnRjFqmHX9okP2jIdSKBLT8LJ0NWtbQzi3a/KYX3RwxbecYlZqIqFwVIBWn2
+         1JM7EGVLcQCdX45Ay/LHX+7P9DTKlqeIgcHV9eUEuZgRCdJUp78UciInMa2H3fTVBiTl
+         rXGMPwzNUkTSgV62gCO/w282sTYuFvPGmFe8RNlMI0Y09yTeBmjBDbzLO8fuUUDMMmAf
+         EOFasifRh4L2LSbmVakUqy/xSJaf8R09S4wrudz0d8pe5RY4sf16wBqcv4ArnQqR2eOh
+         u/Cw==
+X-Gm-Message-State: AOJu0Yz5Da6jXqqhGgizRJ6UE7Lw/gNwV+lhty+xUe2IVDku00go/ZFI
+	udcLfvw+Yx9e9maMCGDz2VkOKDR6tlnzFpnVeUErtFqIrd3y5A0xqAMGtVFChbDW/pMZHqStx2H
+	ptA7EE1llqfZCSFquSH8tgPlqzUzCfEfey7W8smUgUJjscyB6ACz4S0xpj/PFvilGeJ23pvXXzc
+	5gGsVw7KrIvd0uamPbztVlR6+uPsL7HmQ9GHrmPunfgls=
+X-Gm-Gg: ASbGncsfPJgYM10tUSTEAVBrYL1M2utWJO2sRN84jIo5ddkWUuh6kpTbF0BZLitv3q8
+	TLWgYEM+i2N4jR8ailiSnVCy28pMK5aE8HzvK7RNz2kzjlQ/+ELNUox0yhtSDLcnn+nsg5VouVJ
+	sghkNCOWzr44IG6L4Q6uZqrQ==
+X-Received: by 2002:a05:690e:4258:b0:5fb:cfab:55a5 with SMTP id 956f58d0204a3-60175b9182fmr136254d50.11.1756911520617;
+        Wed, 03 Sep 2025 07:58:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJKAUn6ZxEIhi6F7orLwhy0cTWDMfGbXfizY8O/gBM9+zyqSnvlnLU1RtAST1e2NEuGNgZEFkgUBw2sPWrUGI=
+X-Received: by 2002:a05:690e:4258:b0:5fb:cfab:55a5 with SMTP id
+ 956f58d0204a3-60175b9182fmr136232d50.11.1756911520095; Wed, 03 Sep 2025
+ 07:58:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <199077d9fe2.7b4205005094745.5898848305828715448@collabora.com> <58ac950d-a253-a85a-4e50-6d758181232d@ti.com>
-In-Reply-To: <58ac950d-a253-a85a-4e50-6d758181232d@ti.com>
-From: Yogesh Lal <yogesh.lal@oss.qualcomm.com>
-Date: Wed, 3 Sep 2025 10:54:40 +0530
-X-Gm-Features: Ac12FXw4RkCPQI1ov4HDIWbCiu4Z8pysIUiLQySMYa6T3fkGuVv-XFxIZUY3LV8
-Message-ID: <CAOUSUDq936WYNsB=tRkYbqzm9z=q=tJEUXo7j565ii1AWGBBvw@mail.gmail.com>
-Subject: Re: KernelCI Labs Working Group
-To: Minas Hambardzumyan <minas@ti.com>
-Cc: Gustavo Padovan <gus@collabora.com>,
-        "kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
-        "chris.paterson2" <chris.paterson2@renesas.com>,
-        "ben.copeland" <ben.copeland@linaro.org>, cfi <cfi@pengutronix.de>,
-        broonie <broonie@kernel.org>, sjoerd <sjoerd@collabora.com>,
-        khilman <khilman@baylibre.com>, "f.pflug" <f.pflug@pengutronix.de>,
-        =?UTF-8?Q?Pawe=C5=82_Wieczorek?= <pawiecz@collabora.com>,
-        Tim Orling <tim.orling@konsulko.com>
+References: <CAK18DXZFCrvj-QK=45xVSkt+EJ6FSSPsxPxoeRBXPdDRySup9A@mail.gmail.com>
+In-Reply-To: <CAK18DXZFCrvj-QK=45xVSkt+EJ6FSSPsxPxoeRBXPdDRySup9A@mail.gmail.com>
+From: Donald Zickus <dzickus@redhat.com>
+Date: Wed, 3 Sep 2025 10:58:26 -0400
+X-Gm-Features: Ac12FXypvEags55g0xjqdgTeFexudYGBXZvO9nrRL0artXFv8s6VD1x9fU2bRmE
+Message-ID: <CAK18DXYv-eEirpb07c3LB7mr_VUXA+BHnwF=G_KA+rybaMQPCg@mail.gmail.com>
+Subject: Re: KernelCI TSC nomination request
+To: kernelci <kernelci@lists.linux.dev>
+Cc: Gustavo Padovan <gustavo.padovan@collabora.com>, mwaqar <mwaqar@linuxfoundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DXdxHw1AlP--lm6BbIqvTngAydlqglRR_e5b8WGwImU_1756911521
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: vUUDgEZKE7pTJkNAvDeOejMoWQQTjtZP
-X-Proofpoint-ORIG-GUID: vUUDgEZKE7pTJkNAvDeOejMoWQQTjtZP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNyBTYWx0ZWRfX8AJ3d1m20YBp
- d/Ho+16By3GIeGXjEZAX17QBQKQQxVMLd2MX1tpDBjY64EWCmh8NiW29tmS24m/ZIkafHWWDAhz
- uB8OMBbOrcpgTNRM2rHHRsqBF/NgdRtIf6U36VfoBhUqUWdmRzWI9xd7cRpnDT0iNWaGmFa4pDQ
- 6yns5D8JUzsgzoHq0HcfsWkFv16+r1HEzqwyDDrRRsb1EB0PI9J/+3C8bZ7L+f01/JFY2/wuWTl
- 4m2P2N6V7OsErVfvEbRFIieOzYpgyzAnCBxVHwXv/igKbYxOnue7Xe/I9e0Sms7aJE/8+wCwz0c
- P2Xxqbw1HKNb5kCsbt8OXU1rtjBioU2pY3Gj6kyg88IemKPLJKJoRvnFEVMqA4bUEEpAGICyur8
- 8e9S5OXw
-X-Authority-Analysis: v=2.4 cv=NrDRc9dJ c=1 sm=1 tr=0 ts=68b7d124 cx=c_pps
- a=P2rfLEam3zuxRRdjJWA2cw==:117 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10
- a=sozttTNsAAAA:8 a=Vu2j5zFU1t3VutZakRoA:9 a=QEXdDO2ut3YA:10
- a=ODZdjJIeia2B_SHc_B0f:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-03_01,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300027
 
-Hi Gustavo,
+Hi,
 
-This will work for me, and thanks for initiating this.
-
-Thanks
-Yogesh Lal
-
-
-
-On Tue, Sep 2, 2025 at 9:00=E2=80=AFPM Minas Hambardzumyan <minas@ti.com> w=
+On Tue, Sep 2, 2025 at 3:24=E2=80=AFPM Donald Zickus <dzickus@redhat.com> w=
 rote:
 >
-> Hello Gus,
+> (resending text/plain)
 >
-> On 9/1/25 17:54, Gustavo Padovan wrote:
-> > Following discussions at the KernelCI Workshop 2025 in Amsterdam, we're=
- establishing
-> > a Labs Working Group to address the challenges of executing testing thr=
-ough hardware
-> > labs in KernelCI.
-> >
-> > ## Working Group Scope
-> >
-> > The Labs WG will focus on improving how KernelCI integrates with and ma=
-nages
-> > hardware testing laboratories. Currently, we support only LAVA, but the=
-re's growing
-> > interest in expanding backend support and addressing various infrastruc=
-ture challenges.
-> >
-> >
-> > ## Key Areas of Focus
-> >
-> > - Labgrid Integration: Design and implement labgrid backend support alo=
-ngside existing
-> > LAVA integration
-> > - CI Ecosystem Labs: Better support for vendor labs (TI, Qualcomm, etc.=
-) through improved
-> > events API and shared rootfs images.
-> > - Alternative Backends: Explore integration with other lab management s=
-ystems like Tuxtest
-> > for virtualized testing
-> > - Lab Health Dashboard: Develop tools to monitor lab status and infrast=
-ructure issues
-> > - Failure Classification: Improve detection and reporting of infrastruc=
-ture failures vs. actual
-> > test failures
-> > - Lab Admin Guidelines: Create standards for lab administrators on devi=
-ce type differentiation
-> > and configuration facilitating accessing the same hardware across multi=
-ple labs.
-> > - Job Prioritization: Implement smarter job scheduling
-> > - Dependency Management: Avoid running dependent tests when prerequisit=
-es fail (e.g.,
-> > skip NFS-dependent tests if NFS boot fails)
-> >
-> > The Labs WG will work closely with the Infrastructure Working Group and=
- Technical
-> > Steering Committee to ensure our efforts align with KernelCI's overall =
-architecture and goals.
-> >
-> > Based on the interest during the workshop, we=E2=80=99d need to cover t=
-he West Coast timezone
-> > as well. So an initial proposal for these meetings is starting next wee=
-k on Thursday,
-> > September 11 at 7:30am PDT/4:30pm CEST.
+> Hello KernelCI community!
 >
-> Thanks for setting this up. This time should work for me.
+> We have recently revised the KernelCI TSC charter[0] to establish a
+> more effective approach for our future work. The TSC will continue to
+> monitor and provide technical direction for all activities and
+> services related to KernelCI. Additionally, with the inception of the
+> Infrastructure Working Group, the TSC will serve as the primary
+> interface between the KernelCI community and our key users (kernel
+> maintainers and developers, hardware/cloud vendors, etc.), translating
+> user needs to the Infrastructure WG.
 >
-> Regards,
-> Minas.
+> The updated charter requires a new committee to be elected, consisting
+> of no more than four members, each serving a one-year term, with only
+> one member per company.
 >
-> >
-> > We invite all interested community members, especially those running or=
- managing
-> > hardware labs, to participate in this working group. Please reply to th=
-is thread if
-> > you're interested in contributing or have specific use cases and requir=
-ements to discuss.
-> >
-> > Best,
-> >
-> > - Gus
-> >
-> > --
-> > Gustavo Padovan
-> >
-> > Collabora Ltd.
-> >
-> >
+> If you would like to nominate yourself for a committee position on the
+> TSC, please reply to this email with your nomination request.
+
+I forgot to add, we would like to finalize the nominations by Friday
+September 12th.
+
+Cheers,
+Don
+
 >
->
+> Cheers,
+> Don Zickus - Chair KernelCI Board
+
