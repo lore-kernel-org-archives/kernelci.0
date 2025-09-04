@@ -1,96 +1,94 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732AF3451AE
-	for <kernelci@lists.linux.dev>; Thu,  4 Sep 2025 18:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757010379; cv=pass; b=DBPFFvO1z5ih7RyUwbBIbqC9rG3Gzy7wTlDQdrZYjtSpg1rg1hw/THKbJ/NgQ0IEivTCZCsGJLXK0wJZba9/HCvtM9hAlDO1AVyHepoeB8p0wQB9qRQReGde0b+fcVKof/q6GLRgW1dnzkrUU8s0IMPY3zcYW7KrtL9q31xi5bI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757010379; c=relaxed/simple;
-	bh=aTGj8DWpl1dTvN+tZcTzrwZDBM+kv/JcJkJB+wwYdSk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=u/73956BNlu/+9LUG9+oqP0WTyWDlKnKVtxXQ2mqboKxQucbdeBZmUOtS7G11bnjX5R4dOE1Dqh7xp6CPX5GAIsPMjHeqoglcEHPovl2QJqN19dzN6bl/7QKb/POCGH9cg3vXCIAKE+WJA1OVxAQ0fbHE6/O5s8/Ugovu9rJ6qk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gustavo.padovan@collabora.com header.b=bxacKZbE; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E287A2405FD
+	for <kernelci@lists.linux.dev>; Thu,  4 Sep 2025 18:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757010544; cv=none; b=mE+v0omNoIv4s+3m2gh+XGmLZqtCrYp6rc5EdtbHTzVRswGvSMsv6k+S9F9E3vOm06dh+xQMiQvRgoIiFwp4A1xWmVQWNpPuFjWcjjbncdXGXIXUSp7rDYvD2cSk8xgRkGibS14u6E2uOyE9LCNvmaL/S6Z4OBnlMmPGb5S1SLc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757010544; c=relaxed/simple;
+	bh=1IhYcwGUl8SSxodcWMgicd9FHdKM5nYuChgkzGF1E/w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hQj4/qxiRuTLIFL3MvfKn1iDZS/SL9CPSHHDBlyU6YGjqOID/jEoCUd5WG4KZ0tFSA2kC0ab0v8oMNeH6UHp+NwXAC0wL8+eJ78JdCpIp9P1gsR1cqjzaOB7IA1yf9h/ll3VARQCyRNPXk/9+Hq4OqfjN6Y0lV2tpKVawtaMFJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=adHniR4n; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gustavo.padovan@collabora.com header.b="bxacKZbE"
-ARC-Seal: i=1; a=rsa-sha256; t=1757010370; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Ow0aK+Ul7nhfbwHXAKeonC4GcYkJxNogHnnPQ83sgmUG2BijWGDn0inyb0E6O35bWyZLkZv57BDIpXbtA2AmprDAMdioRW3tHjTsCA1yGuIQQWtyCWC5McL7fJUmMfTroo3nzgRfile0xML0zdX93/W33goZaEyGyD89E1pyrE0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757010370; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=QnhYy44fn0cVLLjf/HXv+BsXKl6j3wm+G5COSwinCx0=; 
-	b=MtSXk/P4Skan6wFf7yr7xQHzplOe+Khun8Z84JWeNFzQ4fy2W6LCO5ebUeRdKcBFY7W/kErnwULMugUNmUBFvlNa7Oys6rkuQAz72NJQEVACweqhAbLdEoDALpKUJ73yZJfqkdvJxvUdvtIvoVkoExvX0ibFtvj9wLjAtbWkxBM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gustavo.padovan@collabora.com;
-	dmarc=pass header.from=<gustavo.padovan@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757010370;
-	s=zohomail; d=collabora.com; i=gustavo.padovan@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=QnhYy44fn0cVLLjf/HXv+BsXKl6j3wm+G5COSwinCx0=;
-	b=bxacKZbEYLpNr5a3V0QLB540IPsQ5YYEOYsVvbXMsxLlIMKJYhTmnmfeZPAXnu7F
-	lKJbo4Q+aFpkdkR7JWF/7ZvzqgurIgS5s/BwiV9xZGd1AknT1HK7/IY+qneoEpm43nd
-	ocCT0T0pp3BhzFYX04thkwA5ed2AzZw4jxHhBQak=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1757010369016770.2023263580115; Thu, 4 Sep 2025 11:26:09 -0700 (PDT)
-Date: Thu, 04 Sep 2025 15:26:08 -0300
-From: Gustavo Padovan <gustavo.padovan@collabora.com>
-To: "Donald Zickus" <dzickus@redhat.com>
-Cc: "kernelci" <kernelci@lists.linux.dev>,
-	"mwaqar" <mwaqar@linuxfoundation.org>
-Message-ID: <19915fa99e5.7b0518867233639.6735313177092517749@collabora.com>
-In-Reply-To: <CAK18DXZFCrvj-QK=45xVSkt+EJ6FSSPsxPxoeRBXPdDRySup9A@mail.gmail.com>
-References: <CAK18DXZFCrvj-QK=45xVSkt+EJ6FSSPsxPxoeRBXPdDRySup9A@mail.gmail.com>
-Subject: Re: KernelCI TSC nomination request
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="adHniR4n"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d60501806so14001837b3.2
+        for <kernelci@lists.linux.dev>; Thu, 04 Sep 2025 11:29:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757010540; x=1757615340; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CTh8uZKE0aeg+MwTY9xwDMF/m2QVRsKWDeglS1YUU8o=;
+        b=adHniR4nMzTzo9I4MBUSFFcnfo19kk2hoOjZGp9QcELKm1ARzv/ULKETmbDyZIdZND
+         pDr0NI7SacTR/NE7J3fml6OwLQOX1Eof6YYWNs+9NhSjq671KL9EvylOzMydPDBGSrpX
+         0ffjTE2tcwUm0graphtH6lDk+5EpFZlG2tCOENoDB8k/kJ/gFRQwkjeELDHa9PbiEp0c
+         1uSk+JD5PIOq12eyWakjWKkZWNzLmtDEigX2DGubWi09wp6R/AGLjQjOtezgcPuT/C7v
+         4lfp/SYySimmPifI3suwoVxojpDfAIgQWveGEoZy6+65EZKRXZbtAfsY3p5Wt4ViJdiu
+         kiAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757010540; x=1757615340;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CTh8uZKE0aeg+MwTY9xwDMF/m2QVRsKWDeglS1YUU8o=;
+        b=ly8uMv4QktdujzCkU742UvS7TBA6zlzlKPJ594NNugd7QvuV/Rmdcd/p1U+bLD5KY7
+         WjoN46qsapBbo9RNZ2htN417gF0rPI+gMnk6g6V873qiEddHnUueFAPYOMK5s9Zu24hC
+         ybh9IGUd58E4zuNb+AvNWUdyI5HMqnXcnFx4NmHThnhQSekcYwrSO3nDQJlOh4hRtKlo
+         zsyuKqIqHjBEJS8lrRlokGpsakxw2oDtWjeHw9s4g1bQiniRSMAb+HvwbWKUw8DyR9Tr
+         H0zc1rKDB1UTWXHkZWFdRIHXKi1XwUh3HHdpKfpuIbOmECTlp+H6FhC5v6VrECCtOXFJ
+         0wHQ==
+X-Gm-Message-State: AOJu0YzFld/fjdHFc+ddeKXz9i83xQgqtd4tRF+YSdCCP+OgduRsYMsg
+	gp33wKC0J4Mlcpj6cLq9Jn5qYCWkbGO7KH2+t72TFNlRmkPoqcxB15ZK+m3wcsEreERcTHVAB/n
+	AgY+MzWelqvDVsM1a4LQtFu2JEszhYJlqdoGgDoGpsA==
+X-Gm-Gg: ASbGncv91dEPQeGX/DgpKmYqsJQj83pGQ2sXixUGXIGNo2t7he4Togl7qxUue/lut1D
+	nu4Y8PUokOKZgv14eps0qgKMdZJIEPAnO0J9zrA72BDli6hH0f8aIeSkUVyOOdt4ou840UBqUWq
+	bEnjwAULMG0PEIGhBzvrsxMnJMG57w6cczPrOMtWNHXheSOMTumYJopOJx16l2E3iz8cGCBiePt
+	X1NpFo5SOZp28MKKnM=
+X-Google-Smtp-Source: AGHT+IGKkpr2dFu3ii9jwdTUyRQQly6yeyIIpYHZF49bePfCQjoFUdGzSg8oZYfECsDGzXZuffKf/4RdDYd79TYfWOs=
+X-Received: by 2002:a05:690c:4a02:b0:723:b3d4:1cfd with SMTP id
+ 00721157ae682-723b3d4277amr94497857b3.54.1757010539433; Thu, 04 Sep 2025
+ 11:28:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <199077d9fe2.7b4205005094745.5898848305828715448@collabora.com>
+In-Reply-To: <199077d9fe2.7b4205005094745.5898848305828715448@collabora.com>
+From: Kevin Hilman <khilman@baylibre.com>
+Date: Thu, 4 Sep 2025 11:28:47 -0700
+X-Gm-Features: Ac12FXxCm87TQzeW7Hh8gctSVK153YZGyxgepxb5DrP-PSCG_XiqaJ1Fq2tndZw
+Message-ID: <CAOi56cVoV4GoidU=yP8w=p6KXL_8msye3mtmtxJnQFOzcmC6Rg@mail.gmail.com>
+Subject: Re: KernelCI Labs Working Group
+To: Gustavo Padovan <gus@collabora.com>
+Cc: "kernelci lists.linux.dev" <kernelci@lists.linux.dev>, 
+	"chris.paterson2" <chris.paterson2@renesas.com>, "ben.copeland" <ben.copeland@linaro.org>, 
+	cfi <cfi@pengutronix.de>, broonie <broonie@kernel.org>, sjoerd <sjoerd@collabora.com>, 
+	"f.pflug" <f.pflug@pengutronix.de>, =?UTF-8?Q?Pawe=C5=82_Wieczorek?= <pawiecz@collabora.com>, 
+	Tim Orling <tim.orling@konsulko.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Mon, Sep 1, 2025 at 3:55=E2=80=AFPM Gustavo Padovan <gus@collabora.com> =
+wrote:
+>
+> Based on the interest during the workshop, we=E2=80=99d need to cover the=
+ West Coast timezone
+> as well. So an initial proposal for these meetings is starting next week =
+on Thursday,
+> September 11 at 7:30am PDT/4:30pm CEST.
 
+I'll miss the first one due to travel, but generally speaking this
+slot works fine for me.
 
----- On Tue, 02 Sep 2025 16:24:13 -0300 Donald Zickus <dzickus@redhat.com> wrote ---
+Is the goal for this to be weekly?  bi-weekly?  monthly?
 
- > (resending text/plain) 
- >  
- > Hello KernelCI community! 
- >  
- > We have recently revised the KernelCI TSC charter[0] to establish a 
- > more effective approach for our future work. The TSC will continue to 
- > monitor and provide technical direction for all activities and 
- > services related to KernelCI. Additionally, with the inception of the 
- > Infrastructure Working Group, the TSC will serve as the primary 
- > interface between the KernelCI community and our key users (kernel 
- > maintainers and developers, hardware/cloud vendors, etc.), translating 
- > user needs to the Infrastructure WG. 
- >  
- > The updated charter requires a new committee to be elected, consisting 
- > of no more than four members, each serving a one-year term, with only 
- > one member per company. 
- >  
- > If you would like to nominate yourself for a committee position on the 
- > TSC, please reply to this email with your nomination request. 
+Thanks for organizing this Gustavo!
 
-I am adding my nomination too to run the elections for a TSC seat.
-
-In the past two years, I have been heavily involved in the strategic directions
-and technical architecture of KernelCI. During this time I have been representing
-the project in various conferences and community meetings. I am also a
-contributor to several projects in our github codebase.
-
-Best,
-
-- Gus
-
-
+Kevin
