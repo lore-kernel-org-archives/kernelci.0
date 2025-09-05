@@ -1,65 +1,64 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7473191CA
-	for <kernelci@lists.linux.dev>; Fri,  5 Sep 2025 17:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF70323E342
+	for <kernelci@lists.linux.dev>; Fri,  5 Sep 2025 17:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757093370; cv=none; b=RUMLacii7RZQgIHVWFGhQTToAbTY+rQS4u/4dXTCg+/+Zo9H40ZDBhgaD8foZdWQx9pS0H/f4sArrXD0UA4nsMC2xO71oHZ7poY1OmUtDNp5+IM/YFToqzhs3Xptru3daczaKZbP7vsyffIpRwRvJOTaeBhxCfsdXwyzRE6Si6I=
+	t=1757094641; cv=none; b=uwy1DMk/tW8gx3aTY/CIiCpQTkwSvDrnoz0ii8oBCRDSfT+VYrIQT4bHndy2BpYX6OkogE8+Q0fV6WiKcAlLhjfLrHL7UNzmUzfExSKoCD+ND7GJIde117qtzFmiDf7c1/5qmGNrRDEWM33Vl27evDkjfQnhPoGQojk7I5gvofY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757093370; c=relaxed/simple;
-	bh=Bq1mq1QvO9/bHoassoDAltaC2ISM3u1ZhHG1a/vZyo8=;
+	s=arc-20240116; t=1757094641; c=relaxed/simple;
+	bh=U9r/KVzDQgUE7XgRy4to0H11oTUFvVnZ0Zrb+KMY6nc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kwuz6fnNQX9XsUFqt0X+aV9HxSHiSy4VUJ3Y5V4fn2s/NTQEfxWr7TtLcHApIM/D3ZevI+1T+D1BbHs6sVEmzHDS9RoNfx4INV8FwNaCCBseMIEUWDqRCCvv1dgK8MDPGkT8RFvhChhtlsD7hhDR9Ajo3kdbmEaPgZftYnyPwSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HTk/qepX; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 To:Cc:Content-Type; b=OYA/HxQF40+7adDA/O+1YJ86sAny1aS09VLCYD9amDC8W+KUEiiMVnqp3LaPctpDJA2kptz2W1b7Vs0YZtYmzCsyJNbe/UProsknxELKSrrzB0kRC5vxDTJ7WG0rWs76RvaGL6nC4/c35WiOpif7tLFooO3t43qzo0lJw3mTb6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eoeObWna; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HTk/qepX"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585GJmXX031977
-	for <kernelci@lists.linux.dev>; Fri, 5 Sep 2025 17:29:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Bq1mq1QvO9/bHoassoDAltaC2ISM3u1ZhHG1a/vZyo8=; b=HTk/qepXHDcQIjse
-	4fqC0kWEKEB2cbypnE2b/iM/yzo+TW5u754RQAoFHAhnzdKnpXZ6M8mzOJGSda96
-	xqtrdQHRrkhDvOJJ/9H2jl3eVGfbE9MtqnuFFZeor+61GFKENCgZSvU5Y+HhzHvs
-	Mcrf4qfHuTBOmgLeL2A6kQE2sRNY4TgEkZSQyq3IMdOV5ELs4+LAJ8CEXrUBPlRS
-	Wo6rP34Bb5CVU7L3aT1/9kYlp5Ejjexww1XA3WzPWjamRCmxiUkJ2qZ1VsEmLrCM
-	wbmB/fgyIAJsJ/Sq7A2DCT7DiNXL/iD9QblbvRHMlt85YFqhLRrLTPke7Ze+DfrM
-	LOGwjA==
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com [209.85.217.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urw0c1r1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kernelci@lists.linux.dev>; Fri, 05 Sep 2025 17:29:27 +0000 (GMT)
-Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-52e090c943cso895958137.1
-        for <kernelci@lists.linux.dev>; Fri, 05 Sep 2025 10:29:27 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eoeObWna"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757094638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sklPpsVgaMx0RE6OE7HNs4HITPNMtLsOCxV7kgu0FEY=;
+	b=eoeObWnaC0es1XrCeZG9HyPwWWbxwbiMZ0yeJqh4gmM5fNYwLYGZ/myJJjJ2Us+gdaAL7w
+	Y+nrgikAbXsMNA7W5EQbliMbyFbEAk3VY8GLMBlXEMuZbmy5oYGPU0ydefdgM19gWDKGXj
+	RwTb8Sh/0539QikfL/piPENU4R/zr+U=
+Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
+ [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-92-AAbSWQVwN9e830HZ-8-fxg-1; Fri, 05 Sep 2025 13:50:37 -0400
+X-MC-Unique: AAbSWQVwN9e830HZ-8-fxg-1
+X-Mimecast-MFC-AGG-ID: AAbSWQVwN9e830HZ-8-fxg_1757094637
+Received: by mail-yb1-f199.google.com with SMTP id 3f1490d57ef6-e96d57eb1d0so4194770276.3
+        for <kernelci@lists.linux.dev>; Fri, 05 Sep 2025 10:50:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757093366; x=1757698166;
+        d=1e100.net; s=20230601; t=1757094636; x=1757699436;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Bq1mq1QvO9/bHoassoDAltaC2ISM3u1ZhHG1a/vZyo8=;
-        b=Sgqe4T9NPadxnTdGIjwmgD8cA/38maFvKt6p95ddfJybwulQchPnVijqae+l0eVa6z
-         A8qvuJQCAcFs1FD+IcIq6tlmhLKoDbXJKcXrLqJ25d4WPLO0Oecl4xw/s7s/n1JZauIy
-         7OtdHY5yUZKsGSQsBj63+ut9Ho8csZ6m6HpAGIiWomCg848/LqogR00DfE1XSHO0YCC4
-         08UZVhB2wrPj5djIKXqRLJZ7ieU740InNo9QwbIs9TpQo5eGTwlXHpEahRwbq93Q8Vm9
-         xM3gkcpQxtCEhN+xM7CaaUhfKjw5tqv1OmAOwFtpdMYXDzRLr4sJYIb1oCk/D65H2ozX
-         3NwQ==
-X-Gm-Message-State: AOJu0YzgrhhtSLwMrdt9xgkZtiZ4B8T150DLyM4T5X/6FMFj4i0y2a9G
-	Cr80yZPkdza1LmkIHtlzOstwblousylJwZsp6vs6X2C0gSWdEss9ckbqAdlxeEgX54GR6X7l9I5
-	EG6oaeYHtSxyBFxlRCNX/azxEOMTHmdSYEfF5IaubXaYi6lw69DImzucLIypeJW9+yrXXkO5URe
-	32In2hBG6fchycd4an2B+q7sLRgOb/1YB/6PU=
-X-Gm-Gg: ASbGncuUlr9iOSrd3s9N+lW+usuLpI3XwZNV8VucyHImwxWKqDoTfT19yiMS8e4nvRh
-	fjylCJH55xBPd8QaLsmLDN+FKPSgNkszkA4P8UZZccypZSy/BMX0T93/UqJZNyYIdnIPJm59lMM
-	O0cMZCYhSfnYS0I0BMaSw2
-X-Received: by 2002:a05:6102:4412:b0:523:712d:4499 with SMTP id ada2fe7eead31-52b1b90018amr7773124137.26.1757093366586;
-        Fri, 05 Sep 2025 10:29:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYyiwIu/Ed0LHQNrGCF7RH9kJf1icaDoEEZNSr5MirRcFQPd0aeXuB0ZEBRwqwyRgQpFSmQb2f9WEutQaxXJE=
-X-Received: by 2002:a05:6102:4412:b0:523:712d:4499 with SMTP id
- ada2fe7eead31-52b1b90018amr7773114137.26.1757093366172; Fri, 05 Sep 2025
- 10:29:26 -0700 (PDT)
+        bh=sklPpsVgaMx0RE6OE7HNs4HITPNMtLsOCxV7kgu0FEY=;
+        b=QuxwCuxKfwsqZHEVj26QLcvbM6CXjYWvJbIfaETYrLp1C0kD4wxfxJWVLzrlcS8Gub
+         nuSByXsCLa1FD12GFry70Si9zjFGkV3Z+1nTzURmiP4ZgYiEXlJnpt+3TcOyPUPOfxJa
+         +c50Gc4BpUZDjrQg9yJOQHQ38JmV3f/4c45nQXREc9sA2Nf3CCC/XxXfjAoqKHhwZW6s
+         Fu2BOeBYGDlXMVubO1uBaQBspKJLf6UNEIUXeJ4jMFYbzkxF8uwYfG95WfyhN0CCed7X
+         E9lYPLyMC0xVnBWS81muNNYcJd7Ob1erTHqdKqcEoeHvZpDGJq59x+LIY+LTc7vwMQab
+         UUAA==
+X-Gm-Message-State: AOJu0YxX4UlQOHPi5/E4Vdc47SwODAmUf8ae1rCHYBR4nS0AP8htbbOr
+	0lSSQjG5hI+byQAKZctcSZcuzM7jjMeg4qTVozGoeD7HrVikZOIjKanlHchr9ICq+AXIr2E562C
+	y57StpyTqOKOGPbBag9xnHMqQBW3XW3/Dqw3HHwlQ9EnTH+aIQu3pifrVEUOMEXw75Vac1o5Axb
+	3Erf6reJqPz2hWkkxIS6NsbGNVeKmfC8OJjo6LIn6O1mk=
+X-Gm-Gg: ASbGncuQiMeFbYhTsFg3hsOWwD31Nprcn7i0ns6xWNrhG7o+BHUtaIJ/a383pdSWFQ6
+	KQC4xyulfW9/kVV9hoOiotCPuM//F446yn+uUyfuU6VbxBmR4vZWDgImRGOm80MvOIGFkqyRb4q
+	tm/srNRRWjTR7E+1IGHnoVLuJdyhXbBghZsB6N59LpZIfcwz4JXyAU7EA=
+X-Received: by 2002:a05:690e:2492:b0:5fa:da4a:cea9 with SMTP id 956f58d0204a3-60177dd1d02mr5053369d50.31.1757094636474;
+        Fri, 05 Sep 2025 10:50:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0uGUcenlb9Pjlgom1P1aLBJzv1x4txpmD5EDNR4fQlZwZnpGZIH+eze0PFv6mdCyAc+baI8Lb3xfGvl7VfkE=
+X-Received: by 2002:a05:690e:2492:b0:5fa:da4a:cea9 with SMTP id
+ 956f58d0204a3-60177dd1d02mr5053352d50.31.1757094636071; Fri, 05 Sep 2025
+ 10:50:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -68,42 +67,26 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <CAK18DXZFCrvj-QK=45xVSkt+EJ6FSSPsxPxoeRBXPdDRySup9A@mail.gmail.com>
 In-Reply-To: <CAK18DXZFCrvj-QK=45xVSkt+EJ6FSSPsxPxoeRBXPdDRySup9A@mail.gmail.com>
-From: Yogesh Lal <yogesh.lal@oss.qualcomm.com>
-Date: Fri, 5 Sep 2025 22:59:15 +0530
-X-Gm-Features: Ac12FXy3E3JzehGiFD-IEf-DDpkd4xPu4nmTCExRYqmk4Vs7O2tMqmvDYQDqmFA
-Message-ID: <CAOUSUDr17QX3_dcGGn=umUsV-j84L020Q+hannp-dhX61mi-sg@mail.gmail.com>
+From: Donald Zickus <dzickus@redhat.com>
+Date: Fri, 5 Sep 2025 13:50:23 -0400
+X-Gm-Features: Ac12FXyth_0WfIMfZf5bQSrD94ZJMoTHvvj73yNE22q4eSHWMza4wdgjPDpfxn0
+Message-ID: <CAK18DXbDiXqiP_A+89h0D-1tFWOo0ezua2Np2VytbZ9DK5p=8w@mail.gmail.com>
 Subject: Re: KernelCI TSC nomination request
-To: Donald Zickus <dzickus@redhat.com>
-Cc: kernelci <kernelci@lists.linux.dev>,
-        Gustavo Padovan <gustavo.padovan@collabora.com>,
-        mwaqar <mwaqar@linuxfoundation.org>, trilok.soni@oss.qualcomm.com
+To: kernelci <kernelci@lists.linux.dev>
+Cc: Gustavo Padovan <gustavo.padovan@collabora.com>, mwaqar <mwaqar@linuxfoundation.org>, 
+	"Hambardzumyan, Minas" <minas@ti.com>, Greg KH <gregkh@linuxfoundation.org>, 
+	arisu.tachibana@miraclelinux.com, broonie@kernel.org, 
+	Guillaume Tucker <gtucker@gtucker.io>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: B-K1YCOPnADAF5Fw-dOxRZwbop5GtVE4vA9SYLOLBQU_1757094637
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: 7ocs7nYcyZAeHaebpdSuAx46P9Gj4F6q
-X-Proofpoint-ORIG-GUID: 7ocs7nYcyZAeHaebpdSuAx46P9Gj4F6q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNyBTYWx0ZWRfX6CYcuM9uIKZp
- UnYvMzo0+x7UXuagGpJJ+GPoLIlhv5rQZusw0YmYvthuHls3VOIhxOyb4c+rSg7hwUGBgTV8t9+
- KO/cAJU68NHFoFsYpzYjW/0w8wbIt8QsnxBDWq1GyXyV0SiQqaUd5fSk5YEQLG1QkzupWk9HhFR
- HSFXXtuyMQhII7Wc7JHpmrmar58VYw50DmPCWlAR0l9wftzV48wJffpfBIbcOTT0LMTTuxCRJnz
- 5EYKJE+YLjkk/KMbGzh8uSurfcPNzVwuLiijwtRtx+8kH8L4Jj8ymePD1Fv6q1r3a1xgxGgEKtf
- fABBOm7LdcNOWyh0EFSl1gUuD20WGRjahf2d1bsBu3AxnNm080FO4LTKdLu7kScGEfHAWKaowPF
- pE8ZIp0/
-X-Authority-Analysis: v=2.4 cv=NrDRc9dJ c=1 sm=1 tr=0 ts=68bb1df7 cx=c_pps
- a=DUEm7b3gzWu7BqY5nP7+9g==:117 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10
- a=KKAkSRfTAAAA:8 a=20KFwNOVAAAA:8 a=U0zfkUukAAAA:8 a=8nTepdsTWJm7l-CMkfkA:9
- a=QEXdDO2ut3YA:10 a=-aSRE8QhW-JAV6biHavz:22 a=cvBusfyB2V15izCimMoJ:22
- a=rXRU1dkEVDZ1dOovDhQH:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-05_06,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300027
 
-On Wed, Sep 3, 2025 at 12:54=E2=80=AFAM Donald Zickus <dzickus@redhat.com> =
-wrote:
+Hi,
+
+On Tue, Sep 2, 2025 at 3:24=E2=80=AFPM Donald Zickus <dzickus@redhat.com> w=
+rote:
 >
 > (resending text/plain)
 >
@@ -124,27 +107,19 @@ wrote:
 >
 > If you would like to nominate yourself for a committee position on the
 > TSC, please reply to this email with your nomination request.
+
+Additional request, can folks add a small paragraph (2-3 sentences)
+about their involvement in kernelci that will be provided during
+voting.  I will poke current nominees next week if they haven't
+provided something by then.
+I will use the ones provided by Gustavo and Yogesh for theirs.
+
+Thanks!
+
+Cheers,
+Don
+
 >
 > Cheers,
 > Don Zickus - Chair KernelCI Board
->
->
 
-I would like to nominate for a TSC seat.
-
-I am working with KernelCI community since a year now and actively
-involved in bring up first external kernelci-labs( Qualcomm ) on
-KernelCI2.0 model and since then maintaining Qualcomm kernelci-labs
-and Qualcomm SoC platform on it.
-
-Along with that I am working with the KernelCI community to streamline
-kernelci-labs and integrate it to KernelCI.org and scale up the test
-platform and plan to scale up the test coverage.
-
-Also presented Qualcomm kernelci-labs integration with KernelCI.org at
-Linaro Connect 2025
-(https://resources.linaro.org/en/resource/tTW1et2jS2ivYxP2umR1d1) and
-presented demo at Open Source Summit India, Hyderabad 2025.
-
-Thanks and Regard
-Yogesh Lal
