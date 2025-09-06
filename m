@@ -1,205 +1,110 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E802F22836C
-	for <kernelci@lists.linux.dev>; Fri,  5 Sep 2025 18:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEF31C6FF6
+	for <kernelci@lists.linux.dev>; Sat,  6 Sep 2025 12:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757098039; cv=none; b=BCKdCzW37whnpiuyCPeJQGpXLiG9VNdXpXuuDhX5CtbjU/NmUyMO9antabAeWLdDYI5sWsCxIMELevhqwxsb0uU8K4beEB4tLql1KETdUNsvcXZuSvlv3ZFaR+QtdzTVBJ1TQR1Hmhq/N39efJKdzvgfTF3xxg0FbsR8z/TyjEg=
+	t=1757160567; cv=none; b=FkL/EFhdyknvD1gPqBYO5708A5ZIs7oRedCO9ldd6boEMYq2eBXLb3PISI/4L0fs/O9wiLVpCs+iURHAK5pq9vRpgBnhoKjYbKUrgT6Gg1T+WA7FfcGkiaW7RxLBptovZ5ha146P99zFzYufBlrgSfThYaX3qVrMD7EESV8Ag44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757098039; c=relaxed/simple;
-	bh=20e7HPgRHLBye7NevZnGaj4ZygnYYOiLHmzPUA+TFhY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=WXe/2coXAjSELyTOlZpr0jdKGYgzJW95gJCwPWubXqsWBfkQS/wSHVzH9TiGFarYYSl7DeRDSLMW/g2+OVNZxFwAMVzhbnPu6uz5fPA7NJZsv9kqwhCiImi3YE/I1Ivh0ApGX/OTevdRVmWhuczSg/vRFTp8czbcp/moZ7gdjIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=n/KYSavU; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1757160567; c=relaxed/simple;
+	bh=NfSAV17gq6P49MDEiIAROen37Pr5jhSrH09siCYYgM8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=keyZCmdfRSRbjs1tQA6Jy8NI0Dvp8UOPBfUK1oYuYC0zhceKb0n2eIBVWKzFzJIgHlrO9y9YE9KoV2lIEE1YPdwiq5+TamL7qXXkH7Zy6HNW4SljCwlZns/xSfQA+VP85hTe2d4wqosmjcEXqXfoHlMB3HdkSNBHsNeEFzbvbrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=iI548alx; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="n/KYSavU"
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 585IlCo03314284;
-	Fri, 5 Sep 2025 13:47:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1757098032;
-	bh=vPq7Bd9GyPFWNionWzN/sky+5hiKST9q20WxBuyeW8E=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=n/KYSavUVoMpPkna/pGy1ikUtya8jfWqWfEKQKrxysKa6EMdUIn+hS5qmELshd9XT
-	 FN5mNnmYzz5vfAzJ5CUlpvlVq7Iqk/idlqu9T/LklIqKHHBz3seE37i7tWFQDflfCm
-	 2jbMeuGfR3hW17dYtvqEbYnW85kKHF7Bq9fgX8bM=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 585IlCxq1090001
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 5 Sep 2025 13:47:12 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 5
- Sep 2025 13:47:12 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 5 Sep 2025 13:47:12 -0500
-Received: from [128.247.81.151] (uda0271612.dhcp.ti.com [128.247.81.151])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 585IlCdk1164707;
-	Fri, 5 Sep 2025 13:47:12 -0500
-Message-ID: <19a887a9-c859-fbe9-6d4f-d607d85de69b@ti.com>
-Date: Fri, 5 Sep 2025 13:47:12 -0500
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="iI548alx"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1135443908;
+	Sat,  6 Sep 2025 12:09:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1757160556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c+sc5T3pRr9QuDSlUKq82ak64D/SPDpzIbLntRCuMzM=;
+	b=iI548alxLeR0E+LEC3tD0sN003499ocR8qzM8UrWpShk+FVjchWH0V1HosBltZ5Bwz+lcV
+	74w2StavtV0WPdiub2l6Fx4IQp+gg10FF1SDBXmokq21ZIrtIxsitzB9+RVPTrquk3UH2f
+	GqPGVJ5VyCykHB0598qKzIyYU678aVj47RXEqjCvj4Xh0gwrjLMplW+RCc8KwOiBYoXlLG
+	7F6VaKPbv+ufR16/8yB8b5ayrSqzC3zpNuZofZVnFqzBAbgIu0u4YAaXjrrPNc4r15dU/E
+	0aHnXtsSkRefkr4kof1ZenWt7NcE0h8CQkiq4hahtQ+OhQU1xNYKDirTybxMng==
+Message-ID: <de0ace4c-387d-49c6-98a9-d3b88aaf338d@gtucker.io>
+Date: Sat, 6 Sep 2025 14:09:15 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [EXTERNAL] Re: KernelCI TSC nomination request
-To: Donald Zickus <dzickus@redhat.com>, "Sheraw, Barry" <bsheraw@ti.com>
-CC: kernelci <kernelci@lists.linux.dev>,
-        Gustavo Padovan
-	<gustavo.padovan@collabora.com>,
-        mwaqar <mwaqar@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: KernelCI TSC nomination request
+From: Guillaume Tucker <gtucker@gtucker.io>
+To: Donald Zickus <dzickus@redhat.com>, kernelci <kernelci@lists.linux.dev>
+Cc: Gustavo Padovan <gustavo.padovan@collabora.com>,
+ mwaqar <mwaqar@linuxfoundation.org>
 References: <CAK18DXZFCrvj-QK=45xVSkt+EJ6FSSPsxPxoeRBXPdDRySup9A@mail.gmail.com>
- <CAK18DXYv-eEirpb07c3LB7mr_VUXA+BHnwF=G_KA+rybaMQPCg@mail.gmail.com>
- <270ee39772be4b268952f764e54e2c9b@ti.com>
- <CAK18DXZFbdh9+qX6e6onp1=S_GE_FybBVvo_JGO2rv_rEdGZ1g@mail.gmail.com>
+ <0cae39a1-03fc-430d-b8ab-cd0f1838df81@gtucker.io>
 Content-Language: en-US
-From: Minas Hambardzumyan <minas@ti.com>
-In-Reply-To: <CAK18DXZFbdh9+qX6e6onp1=S_GE_FybBVvo_JGO2rv_rEdGZ1g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+In-Reply-To: <0cae39a1-03fc-430d-b8ab-cd0f1838df81@gtucker.io>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduudejfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffhvfevfhgjtgfgsehtjeertddtvdejnecuhfhrohhmpefiuhhilhhlrghumhgvucfvuhgtkhgvrhcuoehgthhutghkvghrsehgthhutghkvghrrdhioheqnecuggftrfgrthhtvghrnhepfeffgeevudfguefhhfefheejkeduffeuveettdetueejhfeujeekhfegleefueeinecukfhppedujeeirddukedtrdelgedrfedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudejiedrudektddrleegrdeftddphhgvlhhopegludelvddrudeikedrieehrdeigegnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhnsggprhgtphhtthhopeegpdhrtghpthhtohepugiiihgtkhhushesrhgvughhrghtrdgtohhmpdhrtghpthhtohepkhgvrhhnvghltghisehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepghhushhtrghvohdrphgrughovhgrnhestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehmfigrqhgrrheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
+X-GND-Sasl: gtucker@gtucker.io
 
-Hi Don,
+Hello,
 
-On 9/5/25 12:27, Donald Zickus wrote:
-> Hi Minas,
+On 05/09/2025 9:27 am, Guillaume Tucker wrote:
+> Hi Don,
 > 
-> On Wed, Sep 3, 2025 at 5:45 PM Sheraw, Barry <bsheraw@ti.com 
-> <mailto:bsheraw@ti.com>> wrote:
+> On 02/09/2025 9:24 pm, Donald Zickus wrote:
+>> (resending text/plain)
+>>
+>> Hello KernelCI community!
+>>
+>> We have recently revised the KernelCI TSC charter[0] to establish a
 > 
->     Hello,____
+> It looks like the link to the charter is missing.
 > 
->     __ __
+>> more effective approach for our future work. The TSC will continue to
+>> monitor and provide technical direction for all activities and
+>> services related to KernelCI. Additionally, with the inception of the
+>> Infrastructure Working Group, the TSC will serve as the primary
+>> interface between the KernelCI community and our key users (kernel
+>> maintainers and developers, hardware/cloud vendors, etc.), translating
+>> user needs to the Infrastructure WG.
+>>
+>> The updated charter requires a new committee to be elected, consisting
+>> of no more than four members, each serving a one-year term, with only
+>> one member per company.
+>>
+>> If you would like to nominate yourself for a committee position on the
+>> TSC, please reply to this email with your nomination request.
 > 
->     I would like to nominate Minas Hambardzumyan (CC’d).
-> 
-> 
-> Do you accept this nomination?
+> Thank you, I would like to nominate myself.
 
-Yes, I accept the nomination.
+My first contribution to KernelCI was the automated bisection tool in
+2017, followed by the blueprints for the new API (now called Maestro)
+and more advanced bisection at LPC 2019 before focusing on Chromebook
+enablement at every level, from Depthcharge to a scalable LAVA lab
+with a dedicated instance running Chrome OS user-space.  In parallel,
+I was the initial TSC chair and then Board chair from 2020 to 2023
+during which time I initiated the Sysadmin WG (now Infrastructure),
+the community survey, the new API roadmap as well as the RFP for the
+new web dashboard.  Since I stepped down in early 2024, the KernelCI
+team has been through a healthy renewal while I pursued my own path
+and worked on a fork of the API called Renelick with several
+use-cases related to automated kernel testing in the continuation of
+my earlier work.
 
-Thanks,
-Minas
+As of today, I can dedicate some time to contribute relevant
+experience from an independent point of view and also expand the
+outreach of the project via my growing involvement with the LF Energy
+community since Linux is also present in electrical grids.
 
-
-> 
-> Cheers,
-> Don
-> 
->     ____
-> 
->     __ __
-> 
->     Barry____
-> 
->     __ __
-> 
->     *From:*Donald Zickus <dzickus@redhat.com <mailto:dzickus@redhat.com>>
->     *Sent:* Wednesday, September 3, 2025 9:58 AM
->     *To:* kernelci <kernelci@lists.linux.dev
->     <mailto:kernelci@lists.linux.dev>>
->     *Cc:* Gustavo Padovan <gustavo.padovan@collabora.com
->     <mailto:gustavo.padovan@collabora.com>>; mwaqar
->     <mwaqar@linuxfoundation.org <mailto:mwaqar@linuxfoundation.org>>
->     *Subject:* [EXTERNAL] Re: KernelCI TSC nomination request____
-> 
->     __ __
-> 
->     Hi, On Tue, Sep 2, 2025 at 3: 24 PM Donald Zickus <dzickus@ redhat.
->      com> wrote: > > (resending text/plain) > > Hello KernelCI
->     community! > > We have recently revised the KernelCI TSC charter[0]
->     to establish a > more effective____
-> 
->     ZjQcmQRYFpfptBannerStart____
-> 
->     *This message was sent from outside of Texas Instruments. ____*
-> 
->     Do not click links or open attachments unless you recognize the
->     source of this email and know the content is safe. ____
-> 
->     *  Report Suspicious *
->     <https://us-phishalarm-ewt.proofpoint.com/EWT/v1/G3vK!tDdkczjvV2OWJy6nln0o9Cb63ohME3-SeZJzDvOe-rheYoYGV8-d1RVNChzguAAWQLwW0DZZo7mx9ZulHAXPJUm5YPjvtoIHUUb2w1MO0-aKSUDHkbhLQH0$>  ‌ ____
-> 
->     ZjQcmQRYFpfptBannerEnd____
-> 
->     Hi,____
-> 
->     __ __
-> 
->     On Tue, Sep 2, 2025 at 3:24 PM Donald Zickus <dzickus@redhat.com
->     <mailto:dzickus@redhat.com>> wrote:____
-> 
->     >__ __
-> 
->     > (resending text/plain)____
-> 
->     >__ __
-> 
->     > Hello KernelCI community!____
-> 
->     >__ __
-> 
->     > We have recently revised the KernelCI TSC charter[0] to establish a____
-> 
->     > more effective approach for our future work. The TSC will continue to____
-> 
->     > monitor and provide technical direction for all activities and____
-> 
->     > services related to KernelCI. Additionally, with the inception of the____
-> 
->     > Infrastructure Working Group, the TSC will serve as the primary____
-> 
->     > interface between the KernelCI community and our key users (kernel____
-> 
->     > maintainers and developers, hardware/cloud vendors, etc.), translating____
-> 
->     > user needs to the Infrastructure WG.____
-> 
->     >__ __
-> 
->     > The updated charter requires a new committee to be elected, consisting____
-> 
->     > of no more than four members, each serving a one-year term, with only____
-> 
->     > one member per company.____
-> 
->     >__ __
-> 
->     > If you would like to nominate yourself for a committee position on the____
-> 
->     > TSC, please reply to this email with your nomination request.____
-> 
->     __ __
-> 
->     I forgot to add, we would like to finalize the nominations by Friday____
-> 
->     September 12th.____
-> 
->     __ __
-> 
->     Cheers,____
-> 
->     Don____
-> 
->     __ __
-> 
->     >__ __
-> 
->     > Cheers,____
-> 
->     > Don Zickus - Chair KernelCI Board____
-> 
->     __ __
-> 
->     __ __
-> 
+Best wishes,
+Guillaume
 
