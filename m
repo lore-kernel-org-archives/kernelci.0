@@ -1,245 +1,130 @@
-Received: from a27-195.smtp-out.us-west-2.amazonses.com (a27-195.smtp-out.us-west-2.amazonses.com [54.240.27.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630CB823DD
-	for <kernelci@lists.linux.dev>; Mon, 15 Sep 2025 18:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.27.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9BE315D3B
+	for <kernelci@lists.linux.dev>; Tue, 16 Sep 2025 14:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757959601; cv=none; b=il7hbDOsetuDNUBfl0i7KXzVWA6i3gLJkEIvsbfA1tAmlPwU8fxUjomrtYj1k4wt//b8BKZF5wU58SQcFNSzp/3geoW/YiNiGNOUBnD0wkr3uGVVPeB5Fj4xq3joMpZbS51CJaxAMwgc8GOvzUmQRMuO25mIT8H5DRViWimTzeM=
+	t=1758034328; cv=none; b=p1LSsgaDh9CSitarZBgycNk/wrfYJksuR690ifk6L+/MnkqgYg36THnsZ24Kj9CIUvxcCPPnWnnCNK5j4ZECSl56XL1LfQlqz3kJ0id7fL8o2md7qk/G2zbG0vNjxwAFoeflO5Ru7VMFA9wQZbF9tLvFy+d96T7FyN4rxAD7IYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757959601; c=relaxed/simple;
-	bh=R+Ss9PNEzT3YOwWaNmMk8LqHLPTuydv3dyrxcCbOh1Y=;
-	h=From:Date:Mime-Version:Content-Type:To:Subject:Message-ID; b=JaM6WwRE6lCezQ6JtX4rZrGR84YIxKRvhp1Iqbk130K3qQvZnNAjjVtJaKl+OdZIDSgqfAv4DTh7/8QibXZA/SOGsnHYn4IKu3L9xPhYJyPzpY44fs5Qp5siJtiFfRZ43F1ITudOqGxOm3fIusQD1ObK+5png+eSiueTPDFMKVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lfx.dev; spf=pass smtp.mailfrom=us-west-2.amazonses.com; dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b=hwdwsEkR; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=RuE6UlHb; arc=none smtp.client-ip=54.240.27.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lfx.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=us-west-2.amazonses.com
+	s=arc-20240116; t=1758034328; c=relaxed/simple;
+	bh=Ov1mFh1LES1qs1zLeDAS9Njc8jwLeFI08Kes1TU4GRo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=GYcmKl1IhrzGy0NxJNiuNKoW763XoCqHztxW3YY6lPH2NCL0/4BZXb+zLnt0SO9xYaWkbemsynj/k/b5UKPAzX8y5wJ7gK9NLCsGFL13IHkLFoiQCJrlVwO5nhzcEKVj+VI+3lko+z/vhPAJOZNgIo+MfVH7PQUa6+Mb11CL9ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b=TKUL20I4; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b="hwdwsEkR";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="RuE6UlHb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=pp2uh5dccwerhoiltpmvlpyy4uxdnm63; d=lfx.dev; t=1757959598;
-	h=From:Date:Mime-Version:Content-Type:To:Subject:Message-Id;
-	bh=R+Ss9PNEzT3YOwWaNmMk8LqHLPTuydv3dyrxcCbOh1Y=;
-	b=hwdwsEkRBEsjl3Sna3REdEkjYePCm4v4VvuJKfICFDU3eDq7i9G7/cYlw9PJvVXV
-	nqIaF3UQF5JpYgVxHKLwkIyEHLiOncP1+YCTSBreYsFvmAK+lFQ1WrB+viM5z+D4Shk
-	fnOVky06i/bPl4T4kb33xxBTbo4ReSDkUIgy1B4PXlZvtNhz7sKlnacyjvpjje1kZCp
-	wsZ+4CI0MPVPeVYluOgZweIRuTWdeYZLilP+dKHJvXs54zgEg/uq0hbTxfVejuxG7sW
-	HyrZ3Cg3vqLxjOJOIpxIqVQ8O7M58kN1fb9GyOTbliRYUOnyvGEO+nG4UIJOVfL50EF
-	5NdRdEOT/Q==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1757959598;
-	h=From:Date:Mime-Version:Content-Type:To:Subject:Message-Id:Feedback-ID;
-	bh=R+Ss9PNEzT3YOwWaNmMk8LqHLPTuydv3dyrxcCbOh1Y=;
-	b=RuE6UlHbQt24TTZjnXxOqW1Wnev2obSPBJesw4QhYPc0T6ZVcgQcEjAT+wInr9BX
-	3cnbblC1yilNOBXDaVe0m3tIg+J4vmHDj2T3HOm4bjd6sdpx7kW+1GAYPTLOFPD4/Zs
-	HI1OuY5j4ijOJ9E0bNsBriI/uUxG/YdpXikMZHys=
-From: kernelCI Initiative Fund - Meetings <meetings@lfx.dev>
-Date: Mon, 15 Sep 2025 18:06:38 +0000
+	dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b="TKUL20I4"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-57179617244so510536e87.1
+        for <kernelci@lists.linux.dev>; Tue, 16 Sep 2025 07:52:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profusion.mobi; s=google; t=1758034324; x=1758639124; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ov1mFh1LES1qs1zLeDAS9Njc8jwLeFI08Kes1TU4GRo=;
+        b=TKUL20I4NBXpn94eOAHDGL3H+UaDGzsB+UVSTXcNPaSs/BYnF+ILEjfsyPkDwV6gSs
+         omtDATR4ez6umvKijfS7pssoQbjmgUCZIJONbTzw69JPy3W6x0CRID1H+ZlA7JnepHNk
+         NvExQGWPD9n1LEvh09tuoa8tGLih4CJk9uQKRjWffK2n3Oh19kxjq3JRY+cjVV0JB0p/
+         ekePziIYcKWkLgKVLr3j0XFEIl2NbzjLsN5uSG+4l+5sLKfCHftWs5lW1K4V0AADNCWr
+         hjNHQZCZ7R7xb2kWU+qLMxU+fn30WMB2g8myJ9A40/VgS/xj6eGRNV+sJIFWyl/kjVbe
+         rx3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758034324; x=1758639124;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ov1mFh1LES1qs1zLeDAS9Njc8jwLeFI08Kes1TU4GRo=;
+        b=gBHF9Q7td9LQSwmN3aNsuiQ5vsE3RYekyTG/fDvjRNrUtJGw6llcfb8gWQooyiycLm
+         0MSebVlkSv/3x7zF3uk64cuM8z3qr4AsdYcdloaNXDtX0ryioyhGMSlLBYmQTaUthp60
+         9fzbK1RDJhPzzX1ZzixZlZppiixZxglXgnIMPg5yNGIpaE0PHxSkMOHDVu3HwSzk5h0W
+         g8t5sCZ2e0NVKnGSzGtEvlGN9S4BmcK3k0aIHrWUaU87GdvzY6QnhytJ69HVQQ7gPHPO
+         2MMTYwMyZninBRt5Z8AoFNWU6+AY92irph/UMiRfjfNJu97RSGNF4/hp3TiLVXFBbW3C
+         YcCg==
+X-Gm-Message-State: AOJu0Yx+4ypwhtniy05qvKx8KS2q8DrczTFaygz7nSI/vwKp2uJR5FO9
+	gyp4lufg2mYTt5J7PaTLXq8hN5P+3WVYBYd61pf0rillOdGb0IE8BxYE1r8Il2Cv5KmUWeszgB6
+	Sp8YywJN1wYa6/AdSGINCe0e/+wgdOj5pWZoICw93ZJji1xXaXcTe4YI=
+X-Gm-Gg: ASbGncvoJ1dpgiU6nczL1TgRtA706e+CPu77n8jbUksuQ6Os3xBiWT1DNCnPgM5wsBu
+	4RL2FUOuycfCOX/FGKvOil7i+DMHe9zTG5SVRlwBOirMShp1lQBFr/UKQMuGdn61FPVkaRLUr/5
+	RCqH9q6+nIlMYxMuz8ZXe0SdjOnsFzAomE2abMAGOcDKU5ow+7Za3nMjriq9OGzUXr9UHEAG6nW
+	YBC4RiUmQ==
+X-Google-Smtp-Source: AGHT+IGL9utvBlYa4MoGqMLN4SuSpBpdyv0jVPlQ6zS1bWnRHtJgrtSf3vNZmOeI3WRlWzk4DD4mWYtJPhReoddBQgs=
+X-Received: by 2002:a05:6512:2513:b0:55e:a69:f4a3 with SMTP id
+ 2adb3069b0e04-5704dd8eca5mr2386292e87.6.1758034323647; Tue, 16 Sep 2025
+ 07:52:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary=e8baea6a1c81d9759391a0146277478bacc46a8682ef9c65fbc92059e5b1
+MIME-Version: 1.0
+From: Marcelo Robert Santos <marcelo.santos@profusion.mobi>
+Date: Tue, 16 Sep 2025 11:51:51 -0300
+X-Gm-Features: AS18NWDfdRvXnQooFo0nebW8TWBqF-56hSWoswbuGdSRHivQ2jrFWTroOn1FRrY
+Message-ID: <CAMVAkEvPbx9s9BMPOQCH6rGyC9KRkSLyU0CK+LzX+e+i_0h7ow@mail.gmail.com>
+Subject: KernelCI Dashboard Report - September 01 - September 15, 2025
 To: kernelci@lists.linux.dev
-Subject: Updated Invitation: KernelCI Labs - deep dive section
-Message-ID: <010101994e8eb256-7f529dd6-744c-487e-bf84-33f3af488928-000000@us-west-2.amazonses.com>
-Feedback-ID: ::1.us-west-2.38rwtV0514CR+dj3ljxDerAe+nCn9watSKvSUQn1rXA=:AmazonSES
-X-SES-Outgoing: 2025.09.15-54.240.27.195
-
---e8baea6a1c81d9759391a0146277478bacc46a8682ef9c65fbc92059e5b1
+Cc: kernelci-webdashboard@groups.io
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset=UTF-8
 
-<html>
-    <head>
-        <style>
-        .join-meeting-btn {
-            background: #0099CC 0% 0% no-repeat padding-box;
-            border: 1px solid #0099CC;
-            border-radius: 30px;
-            opacity: 1;
-        }
-        .join-meeting-text {
-            text-align: left;
-            font: normal normal 600 14px/19px Open Sans;
-            letter-spacing: 0px;
-            color: white;
-            text-decoration: none;
-            text-transform: capitalize;
-            opacity: 1;
-        }
-        .tight-spacing {
-            letter-spacing: 0px;
-            line-height: 10px;
-            padding-bottom: 3px;
-        }
-        </style>
-    </head>
-    <body>
-        <div>
-           =20
-               =20
-                    <p><b>This meeting has changed times. The instructions =
-to join the call are the same.</b></p>
-               =20
-               =20
-           =20
-            <div>
-                <h2>KernelCI Labs - deep dive section</h2>
-                <div>
-                    <p>When: Wednesday, September 17th, 6:30 America/Los_An=
-geles</p>
-                </div>
-               =20
-                <div>
-                    <h3>Meeting Description:</h3>
-                    <p>deep dive section to understand some of the Maestro =
-internals for lab integration and the possibilities for labgrid integration
-See https://lore.kernel.org/kernelci/1993ea3bbde.627334c2425860.78539704272=
-32369784@collabora.com/T/#m17c07e8d790e12fc4874f79b03bb84ed9bc4f470
-Notes at: https://docs.google.com/document/d/1aoNpi69WRhn1nENbdAY1CPXYVkufb=
-VnG_lFoGfA0aM4/edit?pli=3D1</p>
-                </div>
-               =20
-            </div>
-        </div>
-        <div>
-            <h3>Ways to join meeting:</h3>
-            <div>
-                <div>
-                    <div>
-                        <h2>1. Join from PC, Mac, iPad, or Android</h2>
-                        <button class=3D"join-meeting-btn"><a class=3D"join=
--meeting-text" style=3D"color: white;" href=3D"https://zoom-lfx.platform.li=
-nuxfoundation.org/meeting/99980824166?password=3D2bce4530-30e1-4e5f-8eb2-7d=
-4f57e369c3">Join Meeting</a></button>
-                        <p>If the button above does not work, paste this in=
-to your browser: <a href=3D"https://zoom-lfx.platform.linuxfoundation.org/m=
-eeting/99980824166?password=3D2bce4530-30e1-4e5f-8eb2-7d4f57e369c3">https:/=
-/zoom-lfx.platform.linuxfoundation.org/meeting/99980824166?password=3D2bce4=
-530-30e1-4e5f-8eb2-7d4f57e369c3</a></p>
-                    </div>
-                </div>
-                <div>
-                    <h2>2. Join via audio</h2>
-                    <div class=3D"tight-spacing">
-                        <p><b>One tap mobile:</b></p>
-                        <p><b>US:</b> <a href=3D"tel:+12532158782,,99980824=
-166%23,,,,*620797%23">+12532158782,,99980824166#,,,,*620797#</a> or <a href=
-=3D"tel:+13462487799,,99980824166%23,,,,*620797%23">+13462487799,,999808241=
-66#,,,,*620797#</a></p>
-                    </div>
-                    <div class=3D"tight-spacing">
-                        <p><b>Or dial: </b></p>
-                        <p><b>US:</b> +1 253 215 8782 or +1 346 248 7799 or=
- +1 669 900 6833 or +1 301 715 8592 or +1 312 626 6799 or +1 646 374 8656 o=
-r 877 369 0926 (Toll Free) or 855 880 1246 (Toll Free)</p>
-                        <p><b>Canada:</b> +1 647 374 4685 or +1 647 558 058=
-8 or +1 778 907 2071 or +1 204 272 7920 or +1 438 809 7799 or +1 587 328 10=
-99 or 855 703 8985 (Toll Free)</p>
-                    </div>
-                    <p>Meeting ID: 99980824166</p>
-                   =20
-                    <p>Meeting Passcode: 620797</p>
-                   =20
-                    <a href=3D'https://zoom.us/u/alwnPIaVT'>International n=
-umbers</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+Hello everyone,
 
---e8baea6a1c81d9759391a0146277478bacc46a8682ef9c65fbc92059e5b1
-Content-Disposition: attachment;
- filename="invite.ics"
-Content-Id: <invite.ics>
-Content-Transfer-Encoding: base64
-Content-Type: text/calendar; method=REQUEST
+We are back on track with our updates. Our database has been switched
+from Google Cloud to Azure, but we are still in the moving process so
+we haven=E2=80=99t disabled our use of GCloud yet. Apart from that, we have=
+ a
+couple of improvements, some bugfixes and we are preparing some
+changes to the database already. Here are the changes in the last
+weeks:
 
-QkVHSU46VkNBTEVOREFSDQpNRVRIT0Q6UkVRVUVTVA0KUFJPRElEOi0vL0xpbnV4IEZvdW5kYXRp
-b24vL01lZXRpbmcgTWFuYWdlbWVudA0KVkVSU0lPTjoyLjANCkJFR0lOOlZUSU1FWk9ORQpUWklE
-OkFtZXJpY2EvTG9zX0FuZ2VsZXMKTEFTVC1NT0RJRklFRDoyMDIyMTAyOVQwMjEwMjlaClRaVVJM
-Omh0dHA6Ly90enVybC5vcmcvem9uZWluZm8vQW1lcmljYS9Mb3NfQW5nZWxlcwpYLUxJQy1MT0NB
-VElPTjpBbWVyaWNhL0xvc19BbmdlbGVzClgtUFJPTEVQVElDLVRaTkFNRTpMTVQKQkVHSU46U1RB
-TkRBUkQKVFpOQU1FOlBTVApUWk9GRlNFVEZST006LTA3NTI1OApUWk9GRlNFVFRPOi0wODAwCkRU
-U1RBUlQ6MTg4MzExMThUMTIwNzAyCkVORDpTVEFOREFSRApCRUdJTjpEQVlMSUdIVApUWk5BTUU6
-UERUClRaT0ZGU0VURlJPTTotMDgwMApUWk9GRlNFVFRPOi0wNzAwCkRUU1RBUlQ6MTkxODAzMzFU
-MDIwMDAwClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9MztCWURBWT0tMVNVO1VOVElMPTE5MTkw
-MzMwVDEwMDAwMFoKRU5EOkRBWUxJR0hUCkJFR0lOOlNUQU5EQVJEClRaTkFNRTpQU1QKVFpPRkZT
-RVRGUk9NOi0wNzAwClRaT0ZGU0VUVE86LTA4MDAKRFRTVEFSVDoxOTE4MTAyN1QwMjAwMDAKUlJV
-TEU6RlJFUT1ZRUFSTFk7QllNT05USD0xMDtCWURBWT0tMVNVO1VOVElMPTE5MTkxMDI2VDA5MDAw
-MFoKRU5EOlNUQU5EQVJECkJFR0lOOkRBWUxJR0hUClRaTkFNRTpQV1QKVFpPRkZTRVRGUk9NOi0w
-ODAwClRaT0ZGU0VUVE86LTA3MDAKRFRTVEFSVDoxOTQyMDIwOVQwMjAwMDAKRU5EOkRBWUxJR0hU
-CkJFR0lOOkRBWUxJR0hUClRaTkFNRTpQUFQKVFpPRkZTRVRGUk9NOi0wNzAwClRaT0ZGU0VUVE86
-LTA3MDAKRFRTVEFSVDoxOTQ1MDgxNFQxNjAwMDAKRU5EOkRBWUxJR0hUCkJFR0lOOlNUQU5EQVJE
-ClRaTkFNRTpQU1QKVFpPRkZTRVRGUk9NOi0wNzAwClRaT0ZGU0VUVE86LTA4MDAKRFRTVEFSVDox
-OTQ1MDkzMFQwMjAwMDAKUkRBVEU6MTk0OTAxMDFUMDIwMDAwCkVORDpTVEFOREFSRApCRUdJTjpE
-QVlMSUdIVApUWk5BTUU6UERUClRaT0ZGU0VURlJPTTotMDgwMApUWk9GRlNFVFRPOi0wNzAwCkRU
-U1RBUlQ6MTk0ODAzMTRUMDIwMTAwClJEQVRFOjE5NzQwMTA2VDAyMDAwMApSREFURToxOTc1MDIy
-M1QwMjAwMDAKRU5EOkRBWUxJR0hUCkJFR0lOOkRBWUxJR0hUClRaTkFNRTpQRFQKVFpPRkZTRVRG
-Uk9NOi0wODAwClRaT0ZGU0VUVE86LTA3MDAKRFRTVEFSVDoxOTUwMDQzMFQwMTAwMDAKUlJVTEU6
-RlJFUT1ZRUFSTFk7QllNT05USD00O0JZREFZPS0xU1U7VU5USUw9MTk2NjA0MjRUMDkwMDAwWgpF
-TkQ6REFZTElHSFQKQkVHSU46U1RBTkRBUkQKVFpOQU1FOlBTVApUWk9GRlNFVEZST006LTA3MDAK
-VFpPRkZTRVRUTzotMDgwMApEVFNUQVJUOjE5NTAwOTI0VDAyMDAwMApSUlVMRTpGUkVRPVlFQVJM
-WTtCWU1PTlRIPTk7QllEQVk9LTFTVTtVTlRJTD0xOTYxMDkyNFQwOTAwMDBaCkVORDpTVEFOREFS
-RApCRUdJTjpTVEFOREFSRApUWk5BTUU6UFNUClRaT0ZGU0VURlJPTTotMDcwMApUWk9GRlNFVFRP
-Oi0wODAwCkRUU1RBUlQ6MTk2MjEwMjhUMDIwMDAwClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9
-MTA7QllEQVk9LTFTVTtVTlRJTD0yMDA2MTAyOVQwOTAwMDBaCkVORDpTVEFOREFSRApCRUdJTjpE
-QVlMSUdIVApUWk5BTUU6UERUClRaT0ZGU0VURlJPTTotMDgwMApUWk9GRlNFVFRPOi0wNzAwCkRU
-U1RBUlQ6MTk2NzA0MzBUMDIwMDAwClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9NDtCWURBWT0t
-MVNVO1VOVElMPTE5NzMwNDI5VDEwMDAwMFoKRU5EOkRBWUxJR0hUCkJFR0lOOkRBWUxJR0hUClRa
-TkFNRTpQRFQKVFpPRkZTRVRGUk9NOi0wODAwClRaT0ZGU0VUVE86LTA3MDAKRFRTVEFSVDoxOTc2
-MDQyNVQwMjAwMDAKUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD00O0JZREFZPS0xU1U7VU5USUw9
-MTk4NjA0MjdUMTAwMDAwWgpFTkQ6REFZTElHSFQKQkVHSU46REFZTElHSFQKVFpOQU1FOlBEVApU
-Wk9GRlNFVEZST006LTA4MDAKVFpPRkZTRVRUTzotMDcwMApEVFNUQVJUOjE5ODcwNDA1VDAyMDAw
-MApSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRIPTQ7QllEQVk9MVNVO1VOVElMPTIwMDYwNDAyVDEw
-MDAwMFoKRU5EOkRBWUxJR0hUCkJFR0lOOkRBWUxJR0hUClRaTkFNRTpQRFQKVFpPRkZTRVRGUk9N
-Oi0wODAwClRaT0ZGU0VUVE86LTA3MDAKRFRTVEFSVDoyMDA3MDMxMVQwMjAwMDAKUlJVTEU6RlJF
-UT1ZRUFSTFk7QllNT05USD0zO0JZREFZPTJTVQpFTkQ6REFZTElHSFQKQkVHSU46U1RBTkRBUkQK
-VFpOQU1FOlBTVApUWk9GRlNFVEZST006LTA3MDAKVFpPRkZTRVRUTzotMDgwMApEVFNUQVJUOjIw
-MDcxMTA0VDAyMDAwMApSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRIPTExO0JZREFZPTFTVQpFTkQ6
-U1RBTkRBUkQKRU5EOlZUSU1FWk9ORQpCRUdJTjpWRVZFTlQNCkFUVEVOREVFO1ZBTFVFPVRFWFQ6
-a2VybmVsY2lAbGlzdHMubGludXguZGV2DQpDUkVBVEVEO1RaSUQ9QW1lcmljYS9Mb3NfQW5nZWxl
-czoyMDI1MDkxNVQxMTA2MzgNCkRFU0NSSVBUSU9OOlxuWW91IGhhdmUgYmVlbiBpbnZpdGVkIHRv
-IGEgbWVldGluZyBmb3Iga2VybmVsQ0kgSW5pdGlhdGl2ZSBGdW5kXG5cbmRlZXAgZGl2ZSBzZWN0
-aW9uIHRvIHVuZGVyc3RhbmQgc29tZSBvZiB0aGUgTWFlc3RybyBpbnRlcm5hbHMgZm9yIGxhYiBp
-bnRlZ3JhdGlvbiBhbmQgdGhlIHBvc3NpYmlsaXRpZXMgZm9yIGxhYmdyaWQgaW50ZWdyYXRpb25c
-blNlZSBodHRwczovL2xvcmUua2VybmVsLm9yZy9rZXJuZWxjaS8xOTkzZWEzYmJkZS42MjczMzRj
-MjQyNTg2MC43ODUzOTcwNDI3MjMyMzY5Nzg0QGNvbGxhYm9yYS5jb20vVC8jbTE3YzA3ZThkNzkw
-ZTEyZmM0ODc0Zjc5YjAzYmI4NGVkOWJjNGY0NzBcbk5vdGVzIGF0OiBodHRwczovL2RvY3MuZ29v
-Z2xlLmNvbS9kb2N1bWVudC9kLzFhb05waTY5V1JobjFuRU5iZEFZMUNQWFlWa3VmYlZuR19sRm9H
-ZkEwYU00L2VkaXQ/cGxpPTFcblxuV2F5cyB0byBqb2luIG1lZXRpbmc6XG5cbjEuIEpvaW4gZnJv
-bSBQQ1wsIE1hY1wsIGlQYWRcLCBvciBBbmRyb2lkXG5cbmh0dHBzOi8vem9vbS1sZngucGxhdGZv
-cm0ubGludXhmb3VuZGF0aW9uLm9yZy9tZWV0aW5nLzk5OTgwODI0MTY2P3Bhc3N3b3JkPTJiY2U0
-NTMwLTMwZTEtNGU1Zi04ZWIyLTdkNGY1N2UzNjljM1xuXG4yLiBKb2luIHZpYSBhdWRpb1xuXG5P
-bmUgdGFwIG1vYmlsZTpcblVTIChpT1MpOiArMTI1MzIxNTg3ODJcLFwsOTk5ODA4MjQxNjYjXCxc
-LFwsXCwqNjIwNzk3IyBvciArMTM0NjI0ODc3OTlcLFwsOTk5ODA4MjQxNjYjXCxcLFwsXCwqNjIw
-Nzk3I1xuVVMgKEFuZHJvaWQpOiArMTI1MzIxNTg3ODJcOzk5OTgwODI0MTY2I1w7NjIwNzk3IyBv
-ciArMTM0NjI0ODc3OTlcOzk5OTgwODI0MTY2I1w7NjIwNzk3I1xuXG5PciBkaWFsOlxuVVM6ICsx
-IDI1MyAyMTUgODc4MiBvciArMSAzNDYgMjQ4IDc3OTkgb3IgKzEgNjY5IDkwMCA2ODMzIG9yICsx
-IDMwMSA3MTUgODU5MiBvciArMSAzMTIgNjI2IDY3OTkgb3IgKzEgNjQ2IDM3NCA4NjU2IG9yIDg3
-NyAzNjkgMDkyNiAoVG9sbCBGcmVlKSBvciA4NTUgODgwIDEyNDYgKFRvbGwgRnJlZSlcbkNhbmFk
-YTogKzEgNjQ3IDM3NCA0Njg1IG9yICsxIDY0NyA1NTggMDU4OCBvciArMSA3NzggOTA3IDIwNzEg
-b3IgKzEgMjA0IDI3MiA3OTIwIG9yICsxIDQzOCA4MDkgNzc5OSBvciArMSA1ODcgMzI4IDEwOTkg
-b3IgODU1IDcwMyA4OTg1IChUb2xsIEZyZWUpXG5cbk1lZXRpbmcgSUQ6IDk5OTgwODI0MTY2XG5c
-bk1lZXRpbmcgUGFzc2NvZGU6IDYyMDc5N1xuXG5cbkludGVybmF0aW9uYWwgbnVtYmVyczogaHR0
-cHM6Ly96b29tLnVzL3UvYWx3blBJYVZUXG4NCkRURU5EO1RaSUQ9QW1lcmljYS9Mb3NfQW5nZWxl
-czoyMDI1MDkxN1QwODAwMDANCkRUU1RBTVA7VFpJRD1BbWVyaWNhL0xvc19BbmdlbGVzOjIwMjUw
-OTE1VDExMDYzOA0KRFRTVEFSVDtUWklEPUFtZXJpY2EvTG9zX0FuZ2VsZXM6MjAyNTA5MTdUMDYz
-MDAwDQpMQVNULU1PRElGSUVEO1RaSUQ9QW1lcmljYS9Mb3NfQW5nZWxlczoyMDI1MDkxNVQxMTA2
-MzgNCkxPQ0FUSU9OOmh0dHBzOi8vem9vbS1sZngucGxhdGZvcm0ubGludXhmb3VuZGF0aW9uLm9y
-Zy9tZWV0aW5nLzk5OTgwODI0MTY2P3Bhc3N3b3JkPTJiY2U0NTMwLTMwZTEtNGU1Zi04ZWIyLTdk
-NGY1N2UzNjljMw0KT1JHQU5JWkVSO0NOPWtlcm5lbENJIEluaXRpYXRpdmUgRnVuZDpNQUlMVE86
-bWVldGluZ3NAbGZ4LmRldg0KU1VNTUFSWTpLZXJuZWxDSSBMYWJzIC0gZGVlcCBkaXZlIHNlY3Rp
-b24NClRaSUQ6QW1lcmljYS9Mb3NfQW5nZWxlcw0KVFpOQU1FOkFtZXJpY2EvTG9zX0FuZ2VsZXMN
-ClVJRDo5OTk4MDgyNDE2Ng0KVVJMO1ZBTFVFPVRFWFQ6aHR0cHM6Ly96b29tLWxmeC5wbGF0Zm9y
-bS5saW51eGZvdW5kYXRpb24ub3JnL21lZXRpbmcvOTk5ODA4MjQxNjY/cGFzc3dvcmQ9MmJjZTQ1
-MzAtMzBlMS00ZTVmLThlYjItN2Q0ZjU3ZTM2OWMzDQpYLU1FRVRJTkctSUQ6OTk5ODA4MjQxNjYN
-ClgtT0NDVVJSRU5DRS1JRDoNClgtUkVHSVNUUkFOVC1JRDo1MDU4OWJmZS1hNDJkLTRiZTYtODYw
-OS02ZGNhODg1YzhlNWYNCkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVINCg==
+## Docs
+- The documents for onboarding and backend were updated in order to be
+clearer. [1]
 
---e8baea6a1c81d9759391a0146277478bacc46a8682ef9c65fbc92059e5b1--
+## Improvements
+- The Hardware Details page now has a better way of selecting related
+trees, also supporting deselecting all trees in order to pick a
+specific one to inspect. [2]
+- A test coverage badge was added to the backend readme, showing our
+progress towards covering 100% of the functions and methods of the
+backend. [3]
+- A small UI fix to test, build and issue details pages, where long
+titles wouldn=E2=80=99t wrap their text - Thanks to @khanheric2003. [4]
+
+## Bug Fixes
+- The cache for tree listing entries was not working correctly,
+allowing old checkouts to be shown instead of the most recent one. [5]
+- When selecting the specific commit for a tree related to a hardware
+in the hardware details pages, some commits were shown repeatedly. [6]
+- Some very specific trees had the =E2=80=9C/=E2=80=9D character on their b=
+ranch and
+weren=E2=80=99t parsing correctly. [7]
+- In order to keep our security, we updated a lot of packages on our
+frontend, this led to the search bar not working, which was quickly
+fixed. [8]
+- While fixing the search bar, another bug was fixed where links were
+being nested inside other links. [9]
+- With our move to a new database, our GitHub CI was missing data for
+its integration tests, but it was fixed. [10]
+
+## Future Changes
+We have some tests to do with our database now that we can manage it
+directly with Django, starting with some simple new fields which might
+speed up some endpoints. We are also moving our CI to a local DB
+approach, meaning that it will be faster and more reliable to test on
+every PR, including ones coming from forks. And on that note, we also
+expect to increase our backend test coverage progressively, in order
+to have a solid codebase.
+
+
+## References
+[1] https://github.com/kernelci/dashboard/issues/1471
+[2] https://github.com/kernelci/dashboard/issues/614
+[3] https://github.com/kernelci/dashboard/issues/1443
+[4] https://github.com/kernelci/dashboard/issues/1434
+[5] https://github.com/kernelci/dashboard/issues/1457
+[6] https://github.com/kernelci/dashboard/issues/1445
+[7] https://github.com/kernelci/dashboard/issues/1468
+[8] https://github.com/kernelci/dashboard/issues/1466
+[9] https://github.com/kernelci/dashboard/issues/1470
+[10] https://github.com/kernelci/dashboard/issues/1455
