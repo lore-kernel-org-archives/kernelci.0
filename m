@@ -1,85 +1,63 @@
-Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694F4313D71
-	for <kernelci@lists.linux.dev>; Fri, 19 Sep 2025 14:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE302940D;
+	Sun, 21 Sep 2025 18:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758293614; cv=none; b=Du1gPxCETGc6lUjDR5fiLiXBgQudbjr9sbLKqmLK+8exNkn1fqhPfZTWrL/hDklg1JNUNIV7kmkEsj/ME8Rpe+flPQwoPHs0080rjxN0S5gio+zgMd6Q3VrrVKeZULQnjIswJIMgu1DZfz02LiAW+/5kIGMxzLD544rXAb9B794=
+	t=1758478034; cv=none; b=kpg/Mjzo0ZEHldcM/R+uY9gp21ayQi6EEJ15kwRson8ykKHPQsS4JaJd8W7Hm8i5QsuJ34kRp5P3lMW8Z0CB3oea9ZMaxkReeMRGjYEQSMFaP0TJdFOl77YCO+z9nLyINmdxUzBGaS4QZXg1T9sCSkwImEkogWTrzNTF2u0D8GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758293614; c=relaxed/simple;
-	bh=n0qTiSm6kNJQyMXoheKYcuDuZV4FCAGWL0Qgi8XVMzI=;
-	h=Message-ID:Date:Content-Type:MIME-Version:From:To:Subject; b=hUMQ0YtyIsDeD6W68V2Vq2raidXXql/GBubELHu+Mq0ycg7T21EGunsfhMC2J9YxvIefuvs2ezPdbpXLqawhDcti92RGixRFwGJZsrLx9aRJumjRFUKUITnj9RQKT7IFQ+bijnEQGwcGiIeMEIoAqgZXZz1JWzNLTRUEqLFoMIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoYMzfN2; arc=none smtp.client-ip=209.85.210.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758478034; c=relaxed/simple;
+	bh=pa2WC7yfAfVWbt4k6CeSwbBCdF7ZFQ7FE81XX8Dk+dM=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=gHeAGb9AKq90Bb8wN6c5SkxIvKlwFNvq4cHEq3xRnZsytEOX7P/uv5WTBB6O+fU307Kg1KcHnjwN305fWW1V0/J835QRVWaCctMBqi4OG3O73NFNLp0k8BVsZwpPQqIVwQ03/3NCYTliwShR+C29SDOQ7OlkOKMtysC9yRTSGq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+urJkm+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoYMzfN2"
-Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-77251d7cca6so2294564b3a.3
-        for <kernelci@lists.linux.dev>; Fri, 19 Sep 2025 07:53:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758293612; x=1758898412; darn=lists.linux.dev;
-        h=subject:to:from:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n0qTiSm6kNJQyMXoheKYcuDuZV4FCAGWL0Qgi8XVMzI=;
-        b=RoYMzfN26NRhCsmtYOD12ORyoWo+ynNF6kFMKZIOd303c+tc3r/fJrg4o2iyBBYkHa
-         EU+uveGharNAwjZ0tUihWZ9gO/yHbd+6SJz+1Og9MyM5ebnRu+Pmz/BoIR5ufweYi9F3
-         qNuOtLPugf4fKIkik0d/fiPnV7Sa4RxM3Ra99gBRXyzQGCiMrflmZAprBDzmISrVpQhe
-         MF8R6gje6DdDaWtVA7LfMnl003t0W0d8FJyEpUEzRB/p4EnwA3xtRDmhy49FbOTZjdcL
-         tnW2QPvjgEHm5CiAfj+6V6gXtMRPH0wxEg6pEJN3EPbAhfKN9Qo/zpuywnzsHUTqGVXv
-         kKFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758293612; x=1758898412;
-        h=subject:to:from:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n0qTiSm6kNJQyMXoheKYcuDuZV4FCAGWL0Qgi8XVMzI=;
-        b=CTBnYCNMBVsi04zNUCXLW8pVPQSg+YSDHIs0T0ng8wXlBHFvWLd3xeiDDjgYboRglX
-         6f5A52BzBI3yOOE9cV6gJbQqh/cfT5M+qlVH9A7yRwSEtbfEdiR+sBx1hKQHP9rZXXzi
-         EF9GWM5m8YPFD/Cvs31hS8UMk+9mTAFlVXBQ3elhBKBi4gTjkB1uoV26zxZAGkhR5u03
-         rckE7IeSyLl+IZalTtnPBmyZMOT1s0Vf25ugWsLu49EvZLwH6D1jFju/UA7Tzo7+9F76
-         lzfoauFzPbPwBjrdstNzR125myYlCzFyIJa9YRmTWvPlCEl2SVI4cJ45CSaiLeLGqKrv
-         CGxg==
-X-Gm-Message-State: AOJu0Yw8QaHdffW8UCPs41GHCriu03RtbWsXrN9QT/3jq6Hmt+8RKIOB
-	1BVdjKEfVS53JYFOX75F/dnWdkRKER3D8gjWk6xkJrGrydZiOF7qQdlIE9rlzWNpLQ2QPpUS
-X-Gm-Gg: ASbGncvWwNEArABTT6Vu2VYLxwTjfh0zH8ilh1GepAlZoTeje0w0TUdRzMhGbKwQPj5
-	LoRmH8wpux8lYIlUdKX7sO0GY49lC2MuO8WsU6tNDUoYiOdDB6XHThs2WI0F5dOgyta/T8tsK8j
-	TH17PoMcL/bljl7aOX+Z13B4sePzYYMWrKMwhnqdaq+MlQfBpNtlPTqAAzP/PTcAFyUmaHW2jPV
-	eij9F+XBU2aFCbCCNJuTTJmNecheteNEfWps0tPM4EEqYyK7ZQFsBxZcAsKoM3WPGrJVF2vCzD+
-	GKmWBiwBDHh9gZM/mkEWaa7gxQP/NqaFSkJoBdRbYuBTk+kY60GG8V9lhPFJc3ROKg5CloqtVtV
-	yfUaw9/RBD1f3bQUub4SibVtu3Jld2rsmTK/hjhkmEeoY0IVzkTT7RT1qiazwpRzWNUezPSeBKs
-	iR64JD9iMvcMuK7flBhUkZyW/tyDnAW1Cu6b0ChfkzBE9ct8fVFhe0Ag==
-X-Google-Smtp-Source: AGHT+IEZdZ6m/6pb/uRdmNEl7+94mzR7cw4pqLvAjNjkoYHrcU/SkLsNH933tq4PHUxd1npZ9dAnAQ==
-X-Received: by 2002:a05:6a20:394b:b0:246:354:e100 with SMTP id adf61e73a8af0-29257ff9b28mr6030821637.6.1758293612242;
-        Fri, 19 Sep 2025 07:53:32 -0700 (PDT)
-Received: from [192.168.29.44] ([2405:201:c00c:f0a5:cc06:c1bd:24ab:6d8d])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b55268e73f6sm1256286a12.21.2025.09.19.07.53.31
-        for <kernelci@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 07:53:31 -0700 (PDT)
-Message-ID: <68cd6e6b.630a0220.419fa.4f15@mx.google.com>
-Date: Fri, 19 Sep 2025 07:53:31 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="===============3282503060743809066=="
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+urJkm+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7225C4CEE7;
+	Sun, 21 Sep 2025 18:07:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758478033;
+	bh=pa2WC7yfAfVWbt4k6CeSwbBCdF7ZFQ7FE81XX8Dk+dM=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=f+urJkm+WQud0i0WqDcilhtMS9pfJ63ZGprvZbvGxHPn7WAi1DO81Mwt61Ip0bZJO
+	 3Jle5HhrtCoqdeL5pYQ2EyGiKUIOZoWM4xRNpstuh3zgyo6xHMI0XvGHxEijZEaLEJ
+	 wC6Vimin1D4byn1AjCYXI8/QXMGmsT5svIELYHSsgM5Ij9eU0dkDLFnXchgi4q2NFA
+	 Z1W93IungxB2z1c280zupjdwW9h0c/h1agKQZeIjna7fYPxIMiEpbmOGwMjs9OQshb
+	 lF4wZW8iXXoWIk2oQd0H7D3umaR72J4CPo4tU2833pF4z4ElmDVS7Bgzyheg2DxU/z
+	 rKOFeIETT1siw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: dhruvg1529@gmail.com
-To: kernelci@lists.linux.dev
-Subject: Security Concern
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <175847754602.596.4377149237007455593@166871acc15a>
+References: <175847754602.596.4377149237007455593@166871acc15a>
+Subject: Re: [REGRESSION] clk/clk-next: (build) =?utf-8?b?4oCYbXRrX3BsbF9yb3VuZF9yYXRl4oCZ?= undeclared here (not in a function); did you ...
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: gus@collabora.com, linux-clk@vger.kernel.org
+To: KernelCI bot <bot@kernelci.org>, kernelci-results@groups.io, kernelci@lists.linux.dev
+Date: Sun, 21 Sep 2025 11:07:12 -0700
+Message-ID: <175847803221.4354.483699676036796745@lazor>
+User-Agent: alot/0.11
 
---===============3282503060743809066==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Quoting KernelCI bot (2025-09-21 10:59:06)
+>=20
+>=20
+>=20
+>=20
+> Hello,
+>=20
+> New build issue found on clk/clk-next:
+>=20
+> ---
+>  =E2=80=98mtk_pll_round_rate=E2=80=99 undeclared here (not in a function)=
+; did you mean =E2=80=98mtk_pll_set_rate=E2=80=99? in drivers/clk/mediatek/=
+clk-pll.o (drivers/clk/mediatek/clk-pll.c) [logspec:kbuild,kbuild.compiler.=
+error]
+> ---
 
-Hello,
-
-I'm Dhruv, a cybersecurity researcher and bug hunter. I've discovered a significant bug on your website. Could you confirm if you have a bug bounty program?
-I'd like to responsibly disclose the details in exchange for a bounty to prevent any potential misuse.
-
-Thanks & Regards,
-Dhruv
-
---===============3282503060743809066==--
+Thanks. I'll fix it in the merge.
