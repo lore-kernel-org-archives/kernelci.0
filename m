@@ -1,63 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE302940D;
-	Sun, 21 Sep 2025 18:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844B5242D6C
+	for <kernelci@lists.linux.dev>; Tue, 23 Sep 2025 15:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758478034; cv=none; b=kpg/Mjzo0ZEHldcM/R+uY9gp21ayQi6EEJ15kwRson8ykKHPQsS4JaJd8W7Hm8i5QsuJ34kRp5P3lMW8Z0CB3oea9ZMaxkReeMRGjYEQSMFaP0TJdFOl77YCO+z9nLyINmdxUzBGaS4QZXg1T9sCSkwImEkogWTrzNTF2u0D8GQ=
+	t=1758641038; cv=none; b=LkAKKKkjVncAAvwIn0652zXvP5N/0xDjGlfrgmQxSwjDckFSwyDkfCqFul+mnYL09+zbA9uNK68OR0iHiHrV5BdMGnJ8Dfcf7cRe+vsNYxux9RsoGxBUxnQennzm/Svk8qW9ts+sq2nVTeiw+VlwgAztIuC6AHJtkE8wwGYvOX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758478034; c=relaxed/simple;
-	bh=pa2WC7yfAfVWbt4k6CeSwbBCdF7ZFQ7FE81XX8Dk+dM=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=gHeAGb9AKq90Bb8wN6c5SkxIvKlwFNvq4cHEq3xRnZsytEOX7P/uv5WTBB6O+fU307Kg1KcHnjwN305fWW1V0/J835QRVWaCctMBqi4OG3O73NFNLp0k8BVsZwpPQqIVwQ03/3NCYTliwShR+C29SDOQ7OlkOKMtysC9yRTSGq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+urJkm+; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+urJkm+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7225C4CEE7;
-	Sun, 21 Sep 2025 18:07:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758478033;
-	bh=pa2WC7yfAfVWbt4k6CeSwbBCdF7ZFQ7FE81XX8Dk+dM=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=f+urJkm+WQud0i0WqDcilhtMS9pfJ63ZGprvZbvGxHPn7WAi1DO81Mwt61Ip0bZJO
-	 3Jle5HhrtCoqdeL5pYQ2EyGiKUIOZoWM4xRNpstuh3zgyo6xHMI0XvGHxEijZEaLEJ
-	 wC6Vimin1D4byn1AjCYXI8/QXMGmsT5svIELYHSsgM5Ij9eU0dkDLFnXchgi4q2NFA
-	 Z1W93IungxB2z1c280zupjdwW9h0c/h1agKQZeIjna7fYPxIMiEpbmOGwMjs9OQshb
-	 lF4wZW8iXXoWIk2oQd0H7D3umaR72J4CPo4tU2833pF4z4ElmDVS7Bgzyheg2DxU/z
-	 rKOFeIETT1siw==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1758641038; c=relaxed/simple;
+	bh=It4UYPZc+w0a69rurXLvw2s9pdWu2agzMzlwrwR2KYs=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=T+c6sxTYzMLS6OexD4dj7B9cq7EK90fIXCM2Qs19k7k/ohzhm7oiHYcCx5RQlqHcJ6NAj57q3VVEd788JjZH6slzleP6dnoou4XYkxwnsflQv+t3ayMhHrMN6ekSeSEL0YDHTRK6cTupVLu6kXPaItzehM2AMZCih7UUvfq7Us4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <f.pflug@pengutronix.de>)
+	id 1v14ru-0000A3-3u
+	for kernelci@lists.linux.dev; Tue, 23 Sep 2025 17:23:50 +0200
+Message-ID: <8558dd0f24dc76633cf02f5835c4b1e234f1ca43.camel@pengutronix.de>
+Subject: Grafana Dashboard issue
+From: Fabian Pflug <f.pflug@pengutronix.de>
+To: kernelci@lists.linux.dev
+Date: Tue, 23 Sep 2025 17:23:49 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <175847754602.596.4377149237007455593@166871acc15a>
-References: <175847754602.596.4377149237007455593@166871acc15a>
-Subject: Re: [REGRESSION] clk/clk-next: (build) =?utf-8?b?4oCYbXRrX3BsbF9yb3VuZF9yYXRl4oCZ?= undeclared here (not in a function); did you ...
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: gus@collabora.com, linux-clk@vger.kernel.org
-To: KernelCI bot <bot@kernelci.org>, kernelci-results@groups.io, kernelci@lists.linux.dev
-Date: Sun, 21 Sep 2025 11:07:12 -0700
-Message-ID: <175847803221.4354.483699676036796745@lazor>
-User-Agent: alot/0.11
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: f.pflug@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernelci@lists.linux.dev
 
-Quoting KernelCI bot (2025-09-21 10:59:06)
->=20
->=20
->=20
->=20
-> Hello,
->=20
-> New build issue found on clk/clk-next:
->=20
-> ---
->  =E2=80=98mtk_pll_round_rate=E2=80=99 undeclared here (not in a function)=
-; did you mean =E2=80=98mtk_pll_set_rate=E2=80=99? in drivers/clk/mediatek/=
-clk-pll.o (drivers/clk/mediatek/clk-pll.c) [logspec:kbuild,kbuild.compiler.=
-error]
-> ---
+Hey,
 
-Thanks. I'll fix it in the merge.
+Not sure if this is the right place to file the issue, but when checking ou=
+t the grafana dashboard today, I noticed,
+that "Infra issues analysis" is only showing entries from before 2025-09-08=
+ and not after that.
+
+https://grafana.kernelci.org/d/maestro-boot-stats/infra-issues-analysis?fro=
+m=3Dnow-30d&to=3Dnow&timezone=3Dbrowser&var-database=3Dedquppk2ghfcwc&var-p=
+ath=3Dboot&var-runtime=3D$__all&var-tree=3D$__all&var-origin=3Dmaestro
+
+I don't think that is intended behaviour.
+
+Kind regards
+Fabian Pflug
