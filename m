@@ -1,150 +1,142 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C947C33F9;
-	Mon, 29 Sep 2025 04:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26962571C2;
+	Mon, 29 Sep 2025 11:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759119338; cv=pass; b=lL8zGD3x3Uc1O/ViJd3jA5VxRIWQZfD5m+qyNoQhpHxON+qEcK5Z9ek+fHjCUuI7/x1daztcfUbdEvqwkh/NPiQibW1n0wrwNdvcM0Mc9MySgpVuVyZZreeKlrSViME8FHPWxLqaayUJVQubPvoISd4SG3LZUa7CqcV+2dELvac=
+	t=1759146040; cv=pass; b=E1NyYf8y36dGoEfrk05oLr9EfdLGdULI1Phn0bseR/7GBIsOyXa/Y7Xv4UrEEBDRC6OwriNs4KfngNgujiuaTvHGSj3FQeiPlJTEgALOwwpPXFUQOzevSdNEWCY2ORjCZRbB0kaXE/EdA8MIQ79j9NkYcWgfzMtzQ5qJp743e2s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759119338; c=relaxed/simple;
-	bh=4VGHV4/A319H/0sQtCBFb7zsNGq2H+CR9M+BkV8xXOw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AjCL2gs4jsExtvKXCVtUtvOXI3y9I32eqeOMMIrbQMtfSX5pmN1Sq337aeIGD+C+QuF/RJnQsw81JqOrb/Zaf6RTN+UIErAXk1Ej55tRPOLlg8+VLfNuoNfU/BFoUXskwP8rteP8x4evmgOxJaXkwfWtiBSsR/deDfzhgWi6I9o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b=aAn1LdMe; arc=pass smtp.client-ip=136.143.188.12
+	s=arc-20240116; t=1759146040; c=relaxed/simple;
+	bh=t4HPCmbSZ7KPxv+YtKRZJV8CeOnbdMb3auZdX+/t21Q=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Q7dHGe917monYl3bGqDinD3YqBOHfJZIFc+zu5ux383Bk/19IsOiA5ue2ugxnGBX6pbOI9Yh4AQA0NLj0vzIW7PmOD7PlAHLPm6hn1icepOeYF9KgZiHYceQy4gx/Z4hxf54axYG0t1yE89hgq+VJpIg7KGW9IaYW4EEOuX4qt0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=UGZGCrE6; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=denys.f@collabora.com header.b="aAn1LdMe"
-ARC-Seal: i=1; a=rsa-sha256; t=1759119331; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="UGZGCrE6"
+ARC-Seal: i=1; a=rsa-sha256; t=1759146037; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Vh089FZjQ2qtMyvXrcHAQIe+HVCm19NtZSmTK3kQH4Uj1unesXsg2Pb4i8W8wGm2bTor0W6h8z9uHdDp43p/NrDUzATK3c36uUFxZMX0JXRl3sqwBbJBn9HGBYaSIcksJMWVxXrNZS2/Zgq69cKA6UpMF9IPgipXQRIXJXE2Tpk=
+	b=UbVEbJgwLhbGImFUlkOne36D2RyeEWPmWu4B+ppghdGnU3PJBepaazRU/VHVYOBHML/4UBJRCuSeg6xEbitZrcH9mt+HLCB4CWlNxGOA6atTxOr5W/F8WXBYZeep0O3tagPk5pRoIf1jfsit11dQujSJsUiQ8BSn4ZjvVHB+C9Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1759119331; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=4VGHV4/A319H/0sQtCBFb7zsNGq2H+CR9M+BkV8xXOw=; 
-	b=DIVuZ1pmm/NMjgxW/paaZOr8vejdAnbYrk9EFgxpzx39ThePgK5FMpCxEKq7waFaVi9TdohLPnYZbDyYyfmYj7jS9IxNf+wnKIG+946RRr0cDBVN9FF1Fq28AQ6uX38G/PFDCUbwdX8yuuBLG9S+1+Xezsaou5m84dhti0pk5y8=
+	t=1759146037; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Gr2ud+7pnO2idJUfZ1ygGkUOU5cQ7t6/cfA+nmLSymo=; 
+	b=dd1FXqMpWqJr0kWou5Cq2HqYo+zksh4Zmhg12GPN9OlbpBdeApLOuV39QfsefGwf0oDv1dUm+N+y3UuBSZyCeu8JYW+LhniFcsyW1UNXz4xhqw0Kzk04aCefZng2iFP6SO/k4o7ac9u+g6Vbyh/fbGTXafdMG7CJwu09yiX7uKU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=denys.f@collabora.com;
-	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759119331;
-	s=zohomail; d=collabora.com; i=denys.f@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=4VGHV4/A319H/0sQtCBFb7zsNGq2H+CR9M+BkV8xXOw=;
-	b=aAn1LdMebKOOUpLZv0Q2MJ4ftaPK9BzbelFpKYbKnHC74U8owgjpMvkYKp7bfWHk
-	M8XAGk1qC9qi6w+9u/C+PP9Wy7f1SESHgbTSn75aHzgdSUIILfVBf/u+boaUi1gQd9D
-	Mi5OqIoSGDVHIBHazR2XOsVMiPZ9mU7DqNfKLrOA=
-Received: by mx.zohomail.com with SMTPS id 1759119327847600.3374137196645;
-	Sun, 28 Sep 2025 21:15:27 -0700 (PDT)
-Message-ID: <b10bcf92dfd2fc13ed90b4da6e9ab8a3b61ce724.camel@collabora.com>
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759146037;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Gr2ud+7pnO2idJUfZ1ygGkUOU5cQ7t6/cfA+nmLSymo=;
+	b=UGZGCrE6N7JFklL67np+On1mkDFZ6tcfz90YhoRlS11Z3skTbyokJDSrt4CJPWW8
+	QgOucRxa2uptleyHmppMgfEi3KVAuqCUlpVgtqQGvA514bhLPHWSXRfQU/3eFpYtnVo
+	FE9g+ZgyUlSiBu2st4lUMTEh9jgZsIpuix3wJux0=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1759146036779787.570110356764; Mon, 29 Sep 2025 04:40:36 -0700 (PDT)
+Date: Mon, 29 Sep 2025 08:40:36 -0300
+From: Gustavo Padovan <gus@collabora.com>
+To: "Denys Fedoryshchenko" <denys.f@collabora.com>
+Cc: "Randy Dunlap" <rdunlap@infradead.org>,
+	"kernelci" <kernelci@lists.linux.dev>,
+	"kernelci-results" <kernelci-results@groups.io>,
+	"regressions" <regressions@lists.linux.dev>,
+	"linux-next" <linux-next@vger.kernel.org>
+Message-ID: <19995464e11.7f75fad1483203.4516273948739211660@collabora.com>
+In-Reply-To: <b10bcf92dfd2fc13ed90b4da6e9ab8a3b61ce724.camel@collabora.com>
+References: <175890594349.36.5014274970333071394@1e895cdadf47>
+	 <bb21b532-b68f-4c02-a9bd-7e8aa3c07258@infradead.org> <b10bcf92dfd2fc13ed90b4da6e9ab8a3b61ce724.camel@collabora.com>
 Subject: Re: [REGRESSION] next/master: (build) undefined reference to
  `pm_hibernation_mode_is_suspend' in vmlinux...
-From: Denys Fedoryshchenko <denys.f@collabora.com>
-To: Randy Dunlap <rdunlap@infradead.org>, kernelci@lists.linux.dev, 
-	kernelci-results@groups.io
-Cc: regressions@lists.linux.dev, gus@collabora.com,
- linux-next@vger.kernel.org
-Date: Mon, 29 Sep 2025 07:15:24 +0300
-In-Reply-To: <bb21b532-b68f-4c02-a9bd-7e8aa3c07258@infradead.org>
-References: <175890594349.36.5014274970333071394@1e895cdadf47>
-	 <bb21b532-b68f-4c02-a9bd-7e8aa3c07258@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
 Hi Randy,
 
-On Sun, 2025-09-28 at 18:13 -0700, Randy Dunlap wrote:
-> Hi,
->=20
-> On 9/26/25 9:59 AM, KernelCI bot wrote:
-> >=20
-> >=20
-> >=20
-> >=20
-> > Hello,
-> >=20
-> > New build issue found on next/master:
-> >=20
-> > ---
-> > =C2=A0undefined reference to `pm_hibernation_mode_is_suspend' in
-> > vmlinux.unstripped (drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c)
-> > [logspec:kbuild,kbuild.compiler.linker_error]
-> > ---
-> >=20
-> > - dashboard:
-> > https://d.kernelci.org/i/maestro:74f8fe195e9e78290f1dae54754bf5b8d4b2a8=
-93
-> > - giturl:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> > - commit HEAD:=C2=A0 262858079afde6d367ce3db183c74d8a43a0e83f
-> > - tags: next-20250926
-> >=20
-> >=20
-> > Log excerpt:
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> > =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .tmp_vmlinux1
-> > ld: drivers/gpu/drm/amd/amdgpu/amdgpu_drv.o: in function
-> > `amdgpu_pmops_thaw':
-> > /tmp/kci/linux/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c:2677:
-> > undefined reference to `pm_hibernation_mode_is_suspend'
-> >=20
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> >=20
-> >=20
-> > # Builds where the incident occurred:
-> >=20
-> > ## cros://chromeos-6.6/x86_64/chromeos-amd-
-> > stoneyridge.flavour.config+lab-setup+x86-
-> > board+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy on
-> > (x86_64):
-> > - compiler: gcc-12
-> > - dashboard:
-> > https://d.kernelci.org/build/maestro:68d6bd56aabea828fddae00b
-> >=20
-> > ## cros://chromeos-6.6/x86_64/chromeos-intel-
-> > pineview.flavour.config+lab-setup+x86-
-> > board+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy on
-> > (x86_64):
-> > - compiler: gcc-12
-> > - dashboard:
-> > https://d.kernelci.org/build/maestro:68d6bd59aabea828fddae00e
-> >=20
->=20
-> Is there a URL for the .config file that causes the
-> build error?
-Yes,
-https://files.kernelci.org/kbuild-gcc-12-x86-chromeos-intel-68d6bd59aabea82=
-8fddae00e/.config
 
-You can safely disable the firmware files option. The build error will
-still be reproducible.
+---- On Mon, 29 Sep 2025 01:15:24 -0300 Denys Fedoryshchenko <denys.f@collabora.com> wrote ---
 
-Thank you for feedback!
+ > Hi Randy, 
+ >  
+ > On Sun, 2025-09-28 at 18:13 -0700, Randy Dunlap wrote: 
+ > > Hi, 
+ > > 
+ > > On 9/26/25 9:59 AM, KernelCI bot wrote: 
+ > > > 
+ > > > 
+ > > > 
+ > > > 
+ > > > Hello, 
+ > > > 
+ > > > New build issue found on next/master: 
+ > > > 
+ > > > --- 
+ > > >  undefined reference to `pm_hibernation_mode_is_suspend' in 
+ > > > vmlinux.unstripped (drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c) 
+ > > > [logspec:kbuild,kbuild.compiler.linker_error] 
+ > > > --- 
+ > > > 
+ > > > - dashboard: 
+ > > > https://d.kernelci.org/i/maestro:74f8fe195e9e78290f1dae54754bf5b8d4b2a893 
+ > > > - giturl: 
+ > > > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git 
+ > > > - commit HEAD:  262858079afde6d367ce3db183c74d8a43a0e83f 
+ > > > - tags: next-20250926 
+ > > > 
+ > > > 
+ > > > Log excerpt: 
+ > > > ===================================================== 
+ > > >   LD      .tmp_vmlinux1 
+ > > > ld: drivers/gpu/drm/amd/amdgpu/amdgpu_drv.o: in function 
+ > > > `amdgpu_pmops_thaw': 
+ > > > /tmp/kci/linux/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c:2677: 
+ > > > undefined reference to `pm_hibernation_mode_is_suspend' 
+ > > > 
+ > > > ===================================================== 
+ > > > 
+ > > > 
+ > > > # Builds where the incident occurred: 
+ > > > 
+ > > > ## cros://chromeos-6.6/x86_64/chromeos-amd- 
+ > > > stoneyridge.flavour.config+lab-setup+x86- 
+ > > > board+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on 
+ > > > (x86_64): 
+ > > > - compiler: gcc-12 
+ > > > - dashboard: 
+ > > > https://d.kernelci.org/build/maestro:68d6bd56aabea828fddae00b 
+ > > > 
+ > > > ## cros://chromeos-6.6/x86_64/chromeos-intel- 
+ > > > pineview.flavour.config+lab-setup+x86- 
+ > > > board+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on 
+ > > > (x86_64): 
+ > > > - compiler: gcc-12 
+ > > > - dashboard: 
+ > > > https://d.kernelci.org/build/maestro:68d6bd59aabea828fddae00e 
+ > > > 
+ > > 
+ > > Is there a URL for the .config file that causes the 
+ > > build error? 
+ > Yes, 
+ > https://files.kernelci.org/kbuild-gcc-12-x86-chromeos-intel-68d6bd59aabea828fddae00e/.config 
+ 
+Out of curiosity,  have you tried to find the config in our Dashboard? We added basic information in
+the email report and then the Dashboard link take you to our comprehensive report.
 
 
->=20
-> Thanks.
->=20
-> >=20
-> > #kernelci issue maestro:74f8fe195e9e78290f1dae54754bf5b8d4b2a893
-> >=20
-> > Reported-by: kernelci.org bot <bot@kernelci.org>
-> >=20
-> > --
-> > This is an experimental report format. Please send feedback in!
-> > Talk to us at kernelci@lists.linux.dev
-> >=20
-> > Made with love by the KernelCI team - https://kernelci.org
-> >=20
+Any feedback here?
+
+
+Best,
+
+- Gus
