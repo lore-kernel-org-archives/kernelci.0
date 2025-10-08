@@ -1,156 +1,85 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566C01E511;
-	Mon,  6 Oct 2025 17:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1156D208994
+	for <kernelci@lists.linux.dev>; Wed,  8 Oct 2025 21:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759770098; cv=none; b=P1pZ3EPIPM9v0ID1gG6W6WHRO3MEvB40m/e1heOCWv52xgU9Et9ZmSd6OSOhmcwDunjWOX+v60qTv/XeT/mYN8vMvJX2ehNcIMnINWH8KWND78AkI9q9YmZ/dVH1ZGByoDi+tbJgD/brnwTscJr/o9fH75heTOkfSQu8rkag8OY=
+	t=1759958444; cv=none; b=b4F3htoN6nlaNMjmfofLEF0IPgApB8mk4/E+TamyCr+kmWjDWadTXL6B5AG5rQ041Gd+DFCt/vENGtNevbZ6aPY8wZAIQ9Y3iJwjmitsKqhoBcQ0rTjgakI7iIO9yo1sh1y1XXi7JGuYZLKvArBq+FVZXgYypp70lGk78V+sNJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759770098; c=relaxed/simple;
-	bh=mSGJpWVMwqmei3jnFIqacJ3yt0a9bNeXh43G34OLMZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r6NZAbveUCwVBuh3NXyhzzDPlySV6kWbvl63kqDkxeQTKsfl7V+WZi6+HFAdycUCd+omCSjIEsCjf8MQrYdb9XDpCnFDDgEoiDecixeLJQ0WdfNxx2lvnZxJZkwZtAvtfzUt6HGCERdjze8qb+/u4qS/Tdv4pu5ZMbAZreSH1Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Mi/FXNGc; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1759958444; c=relaxed/simple;
+	bh=cDZwvB4CaVh0UhPQZMX1Jye+rNaLG+iMypEYJ4BePUo=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GSSf738EacbHKVtSeOT2L55GyoFYkOxBBcDHSt6vFJY+rN0ghdUdUlqrpzMnszpMtefbaYfL6YeulMM0pPoqRu4PwEQt/AM6SBYr0F20lg8yOeFVtFYIBuEqIuefU6gopxh5na2ZNxEpXsXNywlVVs3onMuMWblrO00TqyH9klM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jbZPCR3R; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Mi/FXNGc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ibvsxNWOKhqN7prjOMCLqscrF1yMv6pMnUjk0+GRm7s=; b=Mi/FXNGclxvoNlyvHzqnjyHr4V
-	3Eh3WQ9iCfh5Re4bdLClHAIi/ZW+GwFRP8t8HOzIdqchvOf5/jUsL0NQzqBNHOhXjm/f6K+eWrE1F
-	zH/JhhjQqMJ0TsceYfxrWl8AWnOgrXB1WsCYOktDfTpBZZeXqwTFToswEw6r/tlK8Fs2lWjhveJEm
-	3Qq2/5ZOyrYS83kd3ZJTTsrTAdXea9/xiB93aer9B6usILWh99XmDz4PYiG6PR6VczuuTQzHOJM0e
-	PWSkr3I3XBOIA/z0Xa1HZvdzYXQNzvIvc6HFqJQSv/y+ND0KJmW7J06tVEH2OKbCuI7pD7Z2UDwvI
-	hWWVljbg==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v5oad-00000000Sq2-1CfD;
-	Mon, 06 Oct 2025 17:01:35 +0000
-Message-ID: <df364e20-9f6b-4e26-87cc-077732a9d5b4@infradead.org>
-Date: Mon, 6 Oct 2025 10:01:34 -0700
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jbZPCR3R"
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 598LKe5O311819
+	for <kernelci@lists.linux.dev>; Wed, 8 Oct 2025 16:20:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1759958440;
+	bh=cDZwvB4CaVh0UhPQZMX1Jye+rNaLG+iMypEYJ4BePUo=;
+	h=From:To:CC:Subject:Date;
+	b=jbZPCR3RtGTFPna2dsVjq49WrqRumYgnCRWUx7N1rTSZ44I24EqWnQDy6nyo+rqt+
+	 WsmBJqlTvTC1qZXyWxM4ATBoNib5nhnMT/VLO6UBVPrpAP4hrT0Dl9mZBNY0Of67e9
+	 /a42p5ilj11IoqonEHJKSwfIiPMctqyoTOk3je6c=
+Received: from DLEE213.ent.ti.com (dlee213.ent.ti.com [157.170.170.116])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 598LKenx1742891
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL)
+	for <kernelci@lists.linux.dev>; Wed, 8 Oct 2025 16:20:40 -0500
+Received: from DLEE211.ent.ti.com (157.170.170.113) by DLEE213.ent.ti.com
+ (157.170.170.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Oct
+ 2025 16:20:40 -0500
+Received: from DLEE211.ent.ti.com ([fe80::4e9d:7340:5514:6ecf]) by
+ DLEE211.ent.ti.com ([fe80::4e9d:7340:5514:6ecf%6]) with mapi id
+ 15.02.2562.020; Wed, 8 Oct 2025 16:20:40 -0500
+From: "Hambardzumyan, Minas" <minas@ti.com>
+To: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+CC: "Menon, Nishanth" <nm@ti.com>, "Sheraw, Barry" <bsheraw@ti.com>
+Subject: Hardware registry schema proposal
+Thread-Topic: Hardware registry schema proposal
+Thread-Index: Adw4mWU5Adz+DFykSCOFi+5fSFOIpQ==
+Date: Wed, 8 Oct 2025 21:20:40 +0000
+Message-ID: <4e471946538c47cd9d000fa7ba31044e@ti.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-c2processedorg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] next/master: (build) undefined reference to
- `pm_hibernation_mode_is_suspend' in vmlinux...
-To: Gustavo Padovan <gus@collabora.com>
-Cc: Denys Fedoryshchenko <denys.f@collabora.com>,
- kernelci <kernelci@lists.linux.dev>,
- kernelci-results <kernelci-results@groups.io>,
- regressions <regressions@lists.linux.dev>,
- linux-next <linux-next@vger.kernel.org>
-References: <175890594349.36.5014274970333071394@1e895cdadf47>
- <bb21b532-b68f-4c02-a9bd-7e8aa3c07258@infradead.org>
- <b10bcf92dfd2fc13ed90b4da6e9ab8a3b61ce724.camel@collabora.com>
- <19995464e11.7f75fad1483203.4516273948739211660@collabora.com>
- <bccbcccb-a3db-4b34-962c-14e79cc8bece@infradead.org>
- <199b978f4fb.49020b682270448.1218727940872425598@collabora.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <199b978f4fb.49020b682270448.1218727940872425598@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Hello,
 
+I signed up a couple of weeks ago to propose a schema for organizing inform=
+ation about the hardware tested in Kernel-CI labs.
 
-On 10/6/25 5:22 AM, Gustavo Padovan wrote:
-> 
-> 
-> ---- On Mon, 29 Sep 2025 12:34:02 -0300 Randy Dunlap <rdunlap@infradead.org> wrote ---
-> 
->  > Hi, 
->  >  
->  > On 9/29/25 4:40 AM, Gustavo Padovan wrote: 
->  > > Hi Randy, 
->  > > 
->  > > 
->  > > ---- On Mon, 29 Sep 2025 01:15:24 -0300 Denys Fedoryshchenko <denys.f@collabora.com> wrote --- 
->  > > 
->  > >  > Hi Randy, 
->  > >  > 
->  > >  > On Sun, 2025-09-28 at 18:13 -0700, Randy Dunlap wrote: 
->  > >  > > Hi, 
->  > >  > > 
->  > >  > > On 9/26/25 9:59 AM, KernelCI bot wrote: 
->  > >  > > > 
->  > >  > > > 
->  > >  > > > 
->  > >  > > > 
->  > >  > > > Hello, 
->  > >  > > > 
->  > >  > > > New build issue found on next/master: 
->  > >  > > > 
->  > >  > > > --- 
->  > >  > > >  undefined reference to `pm_hibernation_mode_is_suspend' in 
->  > >  > > > vmlinux.unstripped (drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c) 
->  > >  > > > [logspec:kbuild,kbuild.compiler.linker_error] 
->  > >  > > > --- 
->  > >  > > > 
->  > >  > > > - dashboard: 
->  > >  > > > https://d.kernelci.org/i/maestro:74f8fe195e9e78290f1dae54754bf5b8d4b2a893 
->  > >  > > > - giturl: 
->  > >  > > > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git 
->  > >  > > > - commit HEAD:  262858079afde6d367ce3db183c74d8a43a0e83f 
->  > >  > > > - tags: next-20250926 
->  > >  > > > 
->  > >  > > > 
->  > >  > > > Log excerpt: 
->  > >  > > > ===================================================== 
->  > >  > > >   LD      .tmp_vmlinux1 
->  > >  > > > ld: drivers/gpu/drm/amd/amdgpu/amdgpu_drv.o: in function 
->  > >  > > > `amdgpu_pmops_thaw': 
->  > >  > > > /tmp/kci/linux/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c:2677: 
->  > >  > > > undefined reference to `pm_hibernation_mode_is_suspend' 
->  > >  > > > 
->  > >  > > > ===================================================== 
->  > >  > > > 
->  > >  > > > 
->  > >  > > > # Builds where the incident occurred: 
->  > >  > > > 
->  > >  > > > ## cros://chromeos-6.6/x86_64/chromeos-amd- 
->  > >  > > > stoneyridge.flavour.config+lab-setup+x86- 
->  > >  > > > board+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on 
->  > >  > > > (x86_64): 
->  > >  > > > - compiler: gcc-12 
->  > >  > > > - dashboard: 
->  > >  > > > https://d.kernelci.org/build/maestro:68d6bd56aabea828fddae00b 
->  > >  > > > 
->  > >  > > > ## cros://chromeos-6.6/x86_64/chromeos-intel- 
->  > >  > > > pineview.flavour.config+lab-setup+x86- 
->  > >  > > > board+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on 
->  > >  > > > (x86_64): 
->  > >  > > > - compiler: gcc-12 
->  > >  > > > - dashboard: 
->  > >  > > > https://d.kernelci.org/build/maestro:68d6bd59aabea828fddae00e 
->  > >  > > > 
->  > >  > > 
->  > >  > > Is there a URL for the .config file that causes the 
->  > >  > > build error? 
->  > >  > Yes, 
->  > >  > https://files.kernelci.org/kbuild-gcc-12-x86-chromeos-intel-68d6bd59aabea828fddae00e/.config 
->  > > 
->  > > Out of curiosity,  have you tried to find the config in our Dashboard? We added basic information in 
->  > > the email report and then the Dashboard link take you to our comprehensive report. 
->  > > 
->  >  
->  > I did look at the Dashboard first but it seems that I overlooked the config file info. 
->  >  
->  > > 
->  > > Any feedback here? 
->  > I would rather not use the Dashboard until I need to dig deeperinto the problem. IOW, I prefer to have the config file URL 
->  > in the email report. 
-> 
-> Thanks for the feedback. We will work on it this week.
-> 
-> I created https://github.com/kernelci/dashboard/issues/1551 for following the progress.
+Please review and share your comments on a proposed schema here:
+https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/mai=
+n/hardware_registry/hardware_registry_schema.yaml
 
-Thanks. That proposal looks good.
+along with an example yaml file here:
+https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/mai=
+n/hardware_registry/hardware_registry.yaml
 
+In summary, the schema defines following main sections with cross reference=
+s:
+
+* silicon_vendors: A collection of silicon vendors (processors, SOCs)
+* platform_vendors: A collection of platform vendors (servers, laptops, boa=
+rds, etc.)
+* processors: A collection of processors used on tested platforms
+* system_modules: A collection of system modules (SoMs, SiPs)=20
+* platforms: A collection of platforms tested in labs
+
+Regards,
+Minas.
