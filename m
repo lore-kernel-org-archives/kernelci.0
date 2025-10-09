@@ -1,77 +1,105 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A3A1B4F1F
-	for <kernelci@lists.linux.dev>; Thu,  9 Oct 2025 08:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759997249; cv=pass; b=aa+JGq+WLTUcwdbgRqxDDt7NjFUBarePo52dOL2xnS7vNaQknAzYERUXazAK1YRjUtGWpnekVEyLH4+NwetahWoOYvz7+f9dELZtvB9jMjewzohxeH0zdUtW3YO3csxIdmyI2BdB+A5JhVTuKtvyd9ONuHj/odFYpEk8OBA5XLQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759997249; c=relaxed/simple;
-	bh=1TqJKoNjn4ByF2OBPsOxZSrUxIxSHN1fOI8Af51L3tI=;
-	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type; b=q85MFTTJSZMw/OzHTrCb+Csb899RIRNfJ7StvEo6J0qlLF+W03aG3WF23KrHcRJ+A3hbck8VDzxK8n4uxS+Qb38SQJHBau55JZgBJWDtsq7JvERQ+UsfAdiPnsFbpFMk2HjJzaTNHnOE3HS77wwRAE1oyNHLm8Vtlj1LNIPMtMg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=jeny.sadadia@collabora.com header.b=gU7qMnTi; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466381F7569
+	for <kernelci@lists.linux.dev>; Thu,  9 Oct 2025 08:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759997991; cv=none; b=PY9Ip3+AB+2Ez0lqFSNkWI4EaW+4zmYCAzahfjGO2yzpZldfZEFhgH5gDmJW7Eo18j3uVsCLaTyveO9wT/1SpzipqQBcYrIdX/X56vAxMK+QGZtyYjUXRMJw/5ZAk6DIewKcYkq8LWvSuyeMTTAXzvl+/DIu6fMcAbclV00EARk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759997991; c=relaxed/simple;
+	bh=gKMasaJgnST+gSNq4bwPdzLlWw2n/Gz2/XeOLnzeZ1c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pm6JIlxQ0BYcZCcQWUROmfDCeUcHumwivHv3YN9vQbJKqTpO7tblzCCR+guWQVVkYnSmckhWKP8YVwImHj+nA3TSoIY26Ewc9+zYYDwlTANdtlsVapE1frT6E/8wVHyRU/j7JQyAnkIUfRYQ64DAGszD6JEs+TOvr/3NsUyQN3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kbxbY32e; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=jeny.sadadia@collabora.com header.b="gU7qMnTi"
-ARC-Seal: i=1; a=rsa-sha256; t=1759997246; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=HWm+Q0DUlNswCeu8tdWIszKtWikE0XN0s4k/DiDmasL9O/Lip1/9Mnz38JoS2EQIrSEynUjWnLCAdG414DZ3ja48L2SAtpRnZv4AjYZSNca7AcF5Eg+YqBBQX9HPIsOCBK2WMisdVHX2hXWeio+i1wlaABdWgSLS7zVBGwTmaIM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1759997246; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=x8svHb6yuc1S8dctiui6bkh0b1fGXHADHkGDiAQEQMg=; 
-	b=Ha109OUl8dyPeYYN3m9FLLK8q7voQcQpH0ph/lSP0PxAbkfTI4wAGss4H1X/TroPTQzTFazRj+djUzminLO4MlGdM6zz5jH5YbCnrvmnN6k3SvbUyI2RTp661EQL0U1HAyEpZlwgai8Q4OqXFBt6ZYbVVjPieTui7nwP8QBSVPw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=jeny.sadadia@collabora.com;
-	dmarc=pass header.from=<jeny.sadadia@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759997246;
-	s=zohomail; d=collabora.com; i=jeny.sadadia@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=x8svHb6yuc1S8dctiui6bkh0b1fGXHADHkGDiAQEQMg=;
-	b=gU7qMnTi4sgbonZNTVXUiXy3Cljx4lkvSopNqNtoD4Mcd27h5cFnO9Hk9j3V95wf
-	ma/FpNprtpoIQvt9sUWC0EfcB0ceu34zoZV5eRpz9MRRRCiSbEVEwIC6BIr8oyxPozx
-	koI7cL7CVOaDvmAFNcyh1/lkDjDneNNCUO75+F4E=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1759997244207180.55987407903524; Thu, 9 Oct 2025 01:07:24 -0700 (PDT)
-Date: Thu, 09 Oct 2025 13:37:24 +0530
-From: Jeny Sheth <jeny.sadadia@collabora.com>
-To: "kernelci" <kernelci@lists.linux.dev>
-Cc: "Gustavo Padovan" <gustavo.padovan@collabora.com>,
-	"Denys Fedoryshchenko" <denys.f@collabora.com>
-Message-ID: <199c802b31a.87bfe0c3749015.1897839108561675072@collabora.com>
-Subject: Core pipeline discussion topics
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kbxbY32e"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-78f30dac856so7958756d6.2
+        for <kernelci@lists.linux.dev>; Thu, 09 Oct 2025 01:19:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1759997989; x=1760602789; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gKMasaJgnST+gSNq4bwPdzLlWw2n/Gz2/XeOLnzeZ1c=;
+        b=kbxbY32ewGeA0i4o5z09MWWeq/PKjQZkxKvfeR/vsBu69Rqkk0aiIwDLmOk9b2f2e0
+         CNrqoa+iNUJA7LfGJn4Q/9eFhSTldXZhbUgvvqRkQI554mWI43y575htfGMi9AL3Vh+R
+         dDE6fmFRqZDHMHK16jQcxi6qZSmRfrXr0vz3Q65+ZwAbxFbNr/oPFPSYeyB57bCvaOK4
+         hjGef1+sqE4wUyy9MPUEw6nvpHdu//olxKoDMzKr6xUA5ETmLvMbzIZlJ718e/I4OjmU
+         cTNMr1msXY+u/vQgak6R2mcGS6f2PhlQarw56xc092kzp+/wmR28Qp8+HsQZ3pUUS2jP
+         L9dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759997989; x=1760602789;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gKMasaJgnST+gSNq4bwPdzLlWw2n/Gz2/XeOLnzeZ1c=;
+        b=Br1ZSkSpsB/5fTHAkGXVmH80C7N2cDzQO2jkFJlhovSCOcvx4sGxFCmIlZV4FdlwhR
+         u7sTVPeRJjv7sV7aI5s9sdK1r6UVzNPUiPyp9YWZlmua/bbsRUR8cIgtohdCmZ93pN2M
+         TTHrrvVcsupsg6aSDBnpX/pLXo/oH4YAYkAeLKdj4+uWgB0zlDG8r2ajHN03etkcAsBM
+         GhMHdYLLO/pLnLKxPiz3t32eeYaNEpEkilQmHSr2C7pOPZ877D004td6s/EKp0UAM9hm
+         qa/F2Hq+1f+OtVrxYTEW4SJeB3nCmzzuOVhqmzWtmDxo/d/X3GBpxzMNLxqSdVD/ZDfU
+         UEyQ==
+X-Gm-Message-State: AOJu0Yz8Cy2uipAkIkTGehxY3t1RV2G3BdewcWr+uDjXxuoe/w4PnH0E
+	v3zX3uzvOd3O/hZO5rcK8POIBMzWTsM4Oq2d58l9YKYr3iOJ2Q7dg3Uk/7tbcTZLJrxnS9fmMRF
+	H+K1ZuGw7+D83uNHF++T4segYK+3cqELpnONPTDLj
+X-Gm-Gg: ASbGncuUdKCOqu/dTch5RT4kZQqWqxaZgmml9QIGMr0pj0lxFbX40/Huq292i3x2b5T
+	T1nYX3pZmRD+hhiPx1o3heY1MZS4JMI0ZhVC5QdSfvQFg4808jlwgP56z/LgGLEpSW9Yj0sMswz
+	GN9gexHiXfxNRUdHVUCAwI9XFtoyyJAZnZm46GwRv/vKFE/R4t1WA1Zd+KbymO9neCyRlJfTfSE
+	F+SO7RY2kWEoFnE7570gqXRgZDhXIOE
+X-Google-Smtp-Source: AGHT+IEf52Zdjarhj98xrutH3+2jaqbCL2dEBtvU8zks20nf0gusBayFr6ODG5nwIco0tNEdZTOc9vbrAJbL3epAtoU=
+X-Received: by 2002:ad4:5764:0:b0:823:f922:8f10 with SMTP id
+ 6a1803df08f44-87b210ab14cmr112334116d6.30.1759997989088; Thu, 09 Oct 2025
+ 01:19:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <4e471946538c47cd9d000fa7ba31044e@ti.com>
+In-Reply-To: <4e471946538c47cd9d000fa7ba31044e@ti.com>
+From: Ben Copeland <ben.copeland@linaro.org>
+Date: Thu, 9 Oct 2025 09:19:38 +0100
+X-Gm-Features: AS18NWD-OZaNreK2Z85z4GFFT2r5Q6hPe2GDmrZAHLKPWxs7VfcQitl6RIMPK1w
+Message-ID: <CAL0q8a5Wu0x2+bxnRCTEgfefPdsT2PvCvoQLAQ=2sMuWgXBhvQ@mail.gmail.com>
+Subject: Re: Hardware registry schema proposal
+To: "Hambardzumyan, Minas" <minas@ti.com>
+Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>, "Menon, Nishanth" <nm@ti.com>, 
+	"Sheraw, Barry" <bsheraw@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
 
-Hello,
- 
-As a part of KernelCI roadmap 2026, we have listed down a few
-discussion topics.
-Here is the link to the document: 
-https://docs.google.com/document/d/1VVD1bSIv2Y9_dMiNrnwrr8kaf3v8F_t-m4LtrEWDQJs/edit?usp=sharing
+Hello Minas,
 
-We would like to bring this up in the community meeting today
-as a part of Infrastructure WG discussion. The aim is to gather
-feedback/suggestions from the community and improve KernelCI core
-pipeline accordingly, to deliver quality results.
+On Wed, 8 Oct 2025 at 22:20, Hambardzumyan, Minas <minas@ti.com> wrote:
+>
+> Hello,
+>
+> I signed up a couple of weeks ago to propose a schema for organizing information about the hardware tested in Kernel-CI labs.
+>
+> Please review and share your comments on a proposed schema here:
+> https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/main/hardware_registry/hardware_registry_schema.yaml
+>
+> along with an example yaml file here:
+> https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/main/hardware_registry/hardware_registry.yaml
+>
+> In summary, the schema defines following main sections with cross references:
+>
+> * silicon_vendors: A collection of silicon vendors (processors, SOCs)
+> * platform_vendors: A collection of platform vendors (servers, laptops, boards, etc.)
+> * processors: A collection of processors used on tested platforms
+> * system_modules: A collection of system modules (SoMs, SiPs)
+> * platforms: A collection of platforms tested in labs
 
-Feel free to take a look at the document and add your suggestions/comments.
+I think it would also make sense to add revisions in.
 
-Thanks,
-Jeny
-Collabora Ltd.
+If you look at LAVA, you can see the messiness of not having revisions
+https://gitlab.com/lava/lava/-/tree/master/etc/dispatcher-config/device-types?ref_type=heads
 
+Ben
 
-
-
+>
+> Regards,
+> Minas.
+>
