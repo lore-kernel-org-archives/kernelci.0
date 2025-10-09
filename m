@@ -1,105 +1,86 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466381F7569
-	for <kernelci@lists.linux.dev>; Thu,  9 Oct 2025 08:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EC02D781F
+	for <kernelci@lists.linux.dev>; Thu,  9 Oct 2025 09:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759997991; cv=none; b=PY9Ip3+AB+2Ez0lqFSNkWI4EaW+4zmYCAzahfjGO2yzpZldfZEFhgH5gDmJW7Eo18j3uVsCLaTyveO9wT/1SpzipqQBcYrIdX/X56vAxMK+QGZtyYjUXRMJw/5ZAk6DIewKcYkq8LWvSuyeMTTAXzvl+/DIu6fMcAbclV00EARk=
+	t=1760003905; cv=none; b=pxTBllI1qFpwBm2lCUxLqhzKxYwPVT3bmpdpLBGxDmnKj00W6OOvYO5lhmJGqRja47tQn8DokFoJBWVeGFQAYq1cjraKnmV32NlbVg6vZaT2asVvJw7AoQ/K4pu51AyI7OgPfM+fiSkKEh47HbQI+67icJrnjRyI/oEG3ssyeRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759997991; c=relaxed/simple;
-	bh=gKMasaJgnST+gSNq4bwPdzLlWw2n/Gz2/XeOLnzeZ1c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pm6JIlxQ0BYcZCcQWUROmfDCeUcHumwivHv3YN9vQbJKqTpO7tblzCCR+guWQVVkYnSmckhWKP8YVwImHj+nA3TSoIY26Ewc9+zYYDwlTANdtlsVapE1frT6E/8wVHyRU/j7JQyAnkIUfRYQ64DAGszD6JEs+TOvr/3NsUyQN3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kbxbY32e; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kbxbY32e"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-78f30dac856so7958756d6.2
-        for <kernelci@lists.linux.dev>; Thu, 09 Oct 2025 01:19:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759997989; x=1760602789; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gKMasaJgnST+gSNq4bwPdzLlWw2n/Gz2/XeOLnzeZ1c=;
-        b=kbxbY32ewGeA0i4o5z09MWWeq/PKjQZkxKvfeR/vsBu69Rqkk0aiIwDLmOk9b2f2e0
-         CNrqoa+iNUJA7LfGJn4Q/9eFhSTldXZhbUgvvqRkQI554mWI43y575htfGMi9AL3Vh+R
-         dDE6fmFRqZDHMHK16jQcxi6qZSmRfrXr0vz3Q65+ZwAbxFbNr/oPFPSYeyB57bCvaOK4
-         hjGef1+sqE4wUyy9MPUEw6nvpHdu//olxKoDMzKr6xUA5ETmLvMbzIZlJ718e/I4OjmU
-         cTNMr1msXY+u/vQgak6R2mcGS6f2PhlQarw56xc092kzp+/wmR28Qp8+HsQZ3pUUS2jP
-         L9dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759997989; x=1760602789;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gKMasaJgnST+gSNq4bwPdzLlWw2n/Gz2/XeOLnzeZ1c=;
-        b=Br1ZSkSpsB/5fTHAkGXVmH80C7N2cDzQO2jkFJlhovSCOcvx4sGxFCmIlZV4FdlwhR
-         u7sTVPeRJjv7sV7aI5s9sdK1r6UVzNPUiPyp9YWZlmua/bbsRUR8cIgtohdCmZ93pN2M
-         TTHrrvVcsupsg6aSDBnpX/pLXo/oH4YAYkAeLKdj4+uWgB0zlDG8r2ajHN03etkcAsBM
-         GhMHdYLLO/pLnLKxPiz3t32eeYaNEpEkilQmHSr2C7pOPZ877D004td6s/EKp0UAM9hm
-         qa/F2Hq+1f+OtVrxYTEW4SJeB3nCmzzuOVhqmzWtmDxo/d/X3GBpxzMNLxqSdVD/ZDfU
-         UEyQ==
-X-Gm-Message-State: AOJu0Yz8Cy2uipAkIkTGehxY3t1RV2G3BdewcWr+uDjXxuoe/w4PnH0E
-	v3zX3uzvOd3O/hZO5rcK8POIBMzWTsM4Oq2d58l9YKYr3iOJ2Q7dg3Uk/7tbcTZLJrxnS9fmMRF
-	H+K1ZuGw7+D83uNHF++T4segYK+3cqELpnONPTDLj
-X-Gm-Gg: ASbGncuUdKCOqu/dTch5RT4kZQqWqxaZgmml9QIGMr0pj0lxFbX40/Huq292i3x2b5T
-	T1nYX3pZmRD+hhiPx1o3heY1MZS4JMI0ZhVC5QdSfvQFg4808jlwgP56z/LgGLEpSW9Yj0sMswz
-	GN9gexHiXfxNRUdHVUCAwI9XFtoyyJAZnZm46GwRv/vKFE/R4t1WA1Zd+KbymO9neCyRlJfTfSE
-	F+SO7RY2kWEoFnE7570gqXRgZDhXIOE
-X-Google-Smtp-Source: AGHT+IEf52Zdjarhj98xrutH3+2jaqbCL2dEBtvU8zks20nf0gusBayFr6ODG5nwIco0tNEdZTOc9vbrAJbL3epAtoU=
-X-Received: by 2002:ad4:5764:0:b0:823:f922:8f10 with SMTP id
- 6a1803df08f44-87b210ab14cmr112334116d6.30.1759997989088; Thu, 09 Oct 2025
- 01:19:49 -0700 (PDT)
+	s=arc-20240116; t=1760003905; c=relaxed/simple;
+	bh=7wV8rXqEBPEPB7trcxnS2ecaqbraPG7quYgJoP4rdag=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ASacUy4M/rw9GA0plwdfvB5Dc/i6UZulHH0aBtlcnGbIPRuF5PG1msN0S6u56zXQV6x/THakfBe4qiPXe6Va1VhpHyAfLy29NsnYTE4ByOJNHg0nbbViSxsuz0hWN18olDJHxwOQvvm9j3ruJDsD+B7/R4ooe5fNsafBlLuo9OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1v6nPh-0004KU-33; Thu, 09 Oct 2025 11:58:21 +0200
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1v6nPg-002iAU-0q;
+	Thu, 09 Oct 2025 11:58:20 +0200
+Received: from localhost ([127.0.0.1] helo=[IPv6:::1])
+	by ptz.office.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1v6nPf-00000001StZ-1IkM;
+	Thu, 09 Oct 2025 11:58:20 +0200
+Message-ID: <2c821447e222e825b36bcc19917e6527d8358e8f.camel@pengutronix.de>
+Subject: Re: Hardware registry schema proposal
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+To: "Hambardzumyan, Minas" <minas@ti.com>, "kernelci@lists.linux.dev"
+	 <kernelci@lists.linux.dev>
+Cc: "Menon, Nishanth" <nm@ti.com>, "Sheraw, Barry" <bsheraw@ti.com>
+Date: Thu, 09 Oct 2025 11:58:19 +0200
+In-Reply-To: <4e471946538c47cd9d000fa7ba31044e@ti.com>
+References: <4e471946538c47cd9d000fa7ba31044e@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <4e471946538c47cd9d000fa7ba31044e@ti.com>
-In-Reply-To: <4e471946538c47cd9d000fa7ba31044e@ti.com>
-From: Ben Copeland <ben.copeland@linaro.org>
-Date: Thu, 9 Oct 2025 09:19:38 +0100
-X-Gm-Features: AS18NWD-OZaNreK2Z85z4GFFT2r5Q6hPe2GDmrZAHLKPWxs7VfcQitl6RIMPK1w
-Message-ID: <CAL0q8a5Wu0x2+bxnRCTEgfefPdsT2PvCvoQLAQ=2sMuWgXBhvQ@mail.gmail.com>
-Subject: Re: Hardware registry schema proposal
-To: "Hambardzumyan, Minas" <minas@ti.com>
-Cc: "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>, "Menon, Nishanth" <nm@ti.com>, 
-	"Sheraw, Barry" <bsheraw@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: jlu@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernelci@lists.linux.dev
 
-Hello Minas,
-
-On Wed, 8 Oct 2025 at 22:20, Hambardzumyan, Minas <minas@ti.com> wrote:
->
+On Wed, 2025-10-08 at 21:20 +0000, Hambardzumyan, Minas wrote:
 > Hello,
->
-> I signed up a couple of weeks ago to propose a schema for organizing information about the hardware tested in Kernel-CI labs.
->
+>=20
+> I signed up a couple of weeks ago to propose a schema for organizing info=
+rmation about the hardware tested in Kernel-CI labs.
+>=20
 > Please review and share your comments on a proposed schema here:
-> https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/main/hardware_registry/hardware_registry_schema.yaml
->
+> https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/m=
+ain/hardware_registry/hardware_registry_schema.yaml
+>=20
 > along with an example yaml file here:
-> https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/main/hardware_registry/hardware_registry.yaml
->
-> In summary, the schema defines following main sections with cross references:
->
+> https://github.com/TexasInstruments-Sandbox/KernelCi-collaboration/blob/m=
+ain/hardware_registry/hardware_registry.yaml
+>=20
+> In summary, the schema defines following main sections with cross referen=
+ces:
+>=20
 > * silicon_vendors: A collection of silicon vendors (processors, SOCs)
-> * platform_vendors: A collection of platform vendors (servers, laptops, boards, etc.)
+> * platform_vendors: A collection of platform vendors (servers, laptops, b=
+oards, etc.)
 > * processors: A collection of processors used on tested platforms
-> * system_modules: A collection of system modules (SoMs, SiPs)
+> * system_modules: A collection of system modules (SoMs, SiPs)=20
 > * platforms: A collection of platforms tested in labs
 
-I think it would also make sense to add revisions in.
+You have an `id` property which seems to always match the mapping entry nam=
+e.
+Can they be different? If not, it seems redundant and the property could be
+removed.
 
-If you look at LAVA, you can see the messiness of not having revisions
-https://gitlab.com/lava/lava/-/tree/master/etc/dispatcher-config/device-types?ref_type=heads
-
-Ben
-
->
-> Regards,
-> Minas.
->
+Regards,
+Jan
