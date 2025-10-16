@@ -1,87 +1,163 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574F12ECEAB
-	for <kernelci@lists.linux.dev>; Tue, 14 Oct 2025 14:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4896B79EA;
+	Thu, 16 Oct 2025 03:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760453035; cv=none; b=Qh1dilDkPA77v9uvLaRdrZaQhwUktAqloC9+eNa8Rmtv9C8C8SVmG77Oiwviuuht0Hda0c3gb1TpTDvBAfOFuG0vhBCpHIXe297BeBmtlQFNr23vHXrkyTKL4TMoPQ6GBVO+rgWiFNjbw44o7hJo2JMHD/fuFZ5+D6RtHmTR/cE=
+	t=1760586459; cv=none; b=D8MG9palBer94DgIm+24FBtNIk8ndy/PVN6hjxzldfTJYuMsIAm7VdJQvmREw+Kb6X87xf9YRENyXz+x/T9F4d4W/5ccp7dBbHKwIqtZfM6VCP4yzWJWORR+lZgh3wFUG8iitsy6DDc5s1Qlcf7MlUZFGoy1lQJXQAZi51BOM7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760453035; c=relaxed/simple;
-	bh=3HQnhaut91Lg3DY1RuIN9i0inl0S5dhob6+3u5sO84A=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=JHJ25e4X+EroaSGupKuc3zSKmTHsHUlpsxD5Jr5nCcAAFgLnTKiK3AXfWUwG7Gvkr0nnaJBgTy07AQCC0hkSu5AgUVHFpPEfsIYSYXUJ2502pcUuFCtWenNjQxjmOeWcV4Y5N7szmFpRkdB8RG/adajVdN4qzyGnhS1iJho4DRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlsYnzZq; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1760586459; c=relaxed/simple;
+	bh=fDVMB66xBJBVR45tXuzzDYoE49mTuxeqU5TwkZr13JM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XzJ0vf2t51tNslo0B7+mhdVXLcKNLkv1i2aPQ+YasoPi45+0XIZE0gCm+Fb/Ot1jfR5ZR/f7N5+HD+zLsB6tLPpVAqCPd7wFXYvVXlYlvZ8y7pTh9ZfswRLls1VLI6JGPoHb9hv6LH1U/ExP6dITBoqal5BTCQeHnhj8PfdE8zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Dl4ikj7Q; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlsYnzZq"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-36527ac0750so45248721fa.3
-        for <kernelci@lists.linux.dev>; Tue, 14 Oct 2025 07:43:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1760453031; x=1761057831; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3HQnhaut91Lg3DY1RuIN9i0inl0S5dhob6+3u5sO84A=;
-        b=OlsYnzZqCmk+KQyaHYqeHSwCrDpOlQGEt1vInAjxsUH5lR0SozqEknNwfwYVTyeCPU
-         2sRyCQtw9LRGlKLGwIWzn9immLvCerC50S8PgM8QTWhI8fQJo1SL2mYANTbh5yngfcCV
-         JhFDwsey2LuhqtvOcW3J6/xTIxmJmombZ0bAU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760453031; x=1761057831;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3HQnhaut91Lg3DY1RuIN9i0inl0S5dhob6+3u5sO84A=;
-        b=I1aggq1/CYjUz6Pv3NV2ySvmG2ynjtqG4iLGLCPCi3RqtX993gk3TsThrtYSbqyYjw
-         KWU2jKofJp7TM2ZXBf2/JZxpbuUyWV2tChb9JkyJn+3iX9s8yrHnsfgMm6lXVZvhOENq
-         biTpZGEP4qKDXam7b140o3Vq38Ln1rfZUgcoHXyVMljmW9Frz42VF4qXnSYtjqU7zujv
-         wM9I7Ov/a+WoLdajqViz1fK9DrYdGkPAWqZGwnNNQAsqSmPn1C4hhbUZhLUHA2Hz2Abc
-         d1pNwwYw6c5LPpL2eiyH+8a1xlk9ZMmKRL/WNobJQjVm+DUx+bUGysk1fl9Ll0Np+Cad
-         MrnA==
-X-Gm-Message-State: AOJu0Yyl45dYMo8Au1qJxT38JBq3l2s7dUeiIadxYhEgA/Q36+QUpElO
-	X14kIq+xoakgmIudKJmBZct3r52qqrTP4rnuKitfEVM5xq59P1PKrtHwJrXr4PuzWX1L169suOp
-	i1UJneHQ/t9SpT9TDMp4JjRmHU8oAfs/I/OISvd01ZzJgYkxzW+uNC00=
-X-Gm-Gg: ASbGncsI1dPUR7Jd8M1vp/L88PA/ReMMjl/23J7YOj6XB+VWvvckCZOg6MLputNF6Ih
-	iVZJChRl/XXbtF18y/N/zcUqfikKREWQFPN5QQkDEtyY7zfvjWPPhSotqnKFSDn8RZlvMcuKJp6
-	8immDLf3ludMJsxijkRgtXWjtpuoZmqb0c1psLSv8yaW8ycs6CQUzJgWlb0S/sEodiPQdlkwMSY
-	E1MEqzUVVvKTivbJbW15AvH74hSVttvaOdyhzrJyz7FbCbyUOt4GRzksAM=
-X-Google-Smtp-Source: AGHT+IHpIS1BiX0OG6lqhybekENw4kDdDnRJ/ampfQXhn+RPMkCerQSXVtw8cRH5Zd2Z8ExkEck4TIYsXz7f/g+dJSw=
-X-Received: by 2002:a05:651c:1ca:b0:36b:8361:15c7 with SMTP id
- 38308e7fff4ca-37609ee797dmr64631361fa.42.1760453030835; Tue, 14 Oct 2025
- 07:43:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Dl4ikj7Q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=VYnOzVAo189qACLxZPi2fkIHZ9ILF4coMgi0fOVPQqA=; b=Dl4ikj7Q+qUO9+evLrU25F4nYq
+	zbPGlpmXxYEIzp+siu+wnA3OAUQwuQrhCg4uqOjfDrXUqI4BVyFT04YUEHlIGvC/eQECNOgeJOPss
+	qO5aJt/wmEn4PqO61XnsVVyLdu36FHQXgsqEHdUfCbR+b5KEKgZVmAe5VXsTuwPoySMZ4m/w64jIC
+	9KqSxZEkk7aA9Le5pPzKJF259/yJfZhVoDNQ6z+vVkc/IlRaHAOErOXc80YV1LTmfwV2VBEGFxBJH
+	Je2shJLuPDBmqWOVPtFQd1Ib3j4w49+alBu84t4HfrOkut5b676BcYf6wxqAEiCgaEjQKUhjgGrDC
+	u6xXcEmw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v9Exj-00000003NpN-3BbF;
+	Thu, 16 Oct 2025 03:47:35 +0000
+Message-ID: <73bf512e-fe5f-420c-8d47-eccfa079af99@infradead.org>
+Date: Wed, 15 Oct 2025 20:47:35 -0700
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Reply-To: mwaqar@linuxfoundation.org
-From: Yasmeen Waqar <mwaqar@linuxfoundation.org>
-Date: Tue, 14 Oct 2025 10:43:39 -0400
-X-Gm-Features: AS18NWDdX5SIZeNCgfhSBP5XxLWFh8qBp9EYjZ6BF5W8UetTiIDU4-bVaGvSxhM
-Message-ID: <CA+bPUKbS8gBdvvDzX-SzMgQ6Yg8XWjKpbE+vF+PAFnTyHJYqfA@mail.gmail.com>
-Subject: KernelCI TSC Election 2025 Results
-To: kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] next/master: (build) undefined reference to
+ `devm_backlight_device_register' in vmlinux...
+To: kernelci@lists.linux.dev, kernelci-results@groups.io,
+ =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, dri-devel@lists.freedesktop.org,
+ phone-devel@vger.kernel.org
+Cc: regressions@lists.linux.dev, gus@collabora.com, linux-next@vger.kernel.org
+References: <176045034384.1788.868853922191153052@15dd6324cc71>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <176045034384.1788.868853922191153052@15dd6324cc71>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Dear KernelCI Community,
+Guido,
 
-Thank you to everyone who participated in the KernelCI Technical
-Steering Committee (TSC) Election 2025. We appreciate your engagement
-and contributions to this important community process.
+Looks like this driver needs
 
-After reviewing the voting, the following candidates have been elected
-to serve on the TSC:
++	depends on BACKLIGHT_CLASS_DEVICE
 
-Greg KH
-Yogesh Lal
-Mark Brown
-Gustavo Padovan
+to fix the build.
 
-We thank all candidates for their willingness to contribute and
-everyone who voted for helping shape the direction of KernelCI.
+@Gus- please read comments near bottom/end.
 
-Best regards,
-Yasmeen Waqar
-Program Manager =E2=80=93 The Linux Foundation
-On behalf of the KernelCI Team
+
+On 10/14/25 6:59 AM, KernelCI bot wrote:
+> 
+> 
+> 
+> 
+> Hello,
+> 
+> New build issue found on next/master:
+> 
+> ---
+>  undefined reference to `devm_backlight_device_register' in vmlinux.unstripped (drivers/gpu/drm/panel/panel-visionox-rm69299.c) [logspec:kbuild,kbuild.compiler.linker_error]
+> ---
+> 
+> - dashboard: https://d.kernelci.org/i/maestro:c1e01dcc5d8b9be9ec47f44bbdb346c2464c0f02
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+> - commit HEAD:  13863a59e410cab46d26751941980dc8f088b9b3
+> - tags: next-20251014
+> 
+> 
+> Log excerpt:
+> =====================================================
+>   LD      .tmp_vmlinux1
+> aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected!
+> aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected!
+> aarch64-linux-gnu-ld: drivers/gpu/drm/panel/panel-visionox-rm69299.o: in function `visionox_rm69299_create_backlight':
+> /tmp/kci/linux/drivers/gpu/drm/panel/panel-visionox-rm69299.c:343: undefined reference to `devm_backlight_device_register'
+> 
+> =====================================================
+> 
+> 
+> # Builds where the incident occurred:
+> 
+> ## defconfig+arm64-chromebook+CONFIG_ARM64_16K_PAGES=y on (arm64):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm64-16k_pages-68ee4f14a6dc7c71db9fda21/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68ee4f14a6dc7c71db9fda21
+> 
+> ## defconfig+arm64-chromebook+CONFIG_ARM64_64K_PAGES=y on (arm64):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm64-64k_pages-68ee4f17a6dc7c71db9fda24/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68ee4f17a6dc7c71db9fda24
+> 
+> ## defconfig+arm64-chromebook+CONFIG_CPU_BIG_ENDIAN=y+debug+kselftest+tinyconfig on (arm64):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm64-mainline-big_endian-68ee4f32a6dc7c71db9fda39/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68ee4f32a6dc7c71db9fda39
+> 
+> ## defconfig+arm64-chromebook+CONFIG_RANDOMIZE_BASE=y on (arm64):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm64-randomize-68ee4f1fa6dc7c71db9fda2a/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68ee4f1fa6dc7c71db9fda2a
+> 
+> ## defconfig+arm64-chromebook+kcidebug+lab-setup on (arm64):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm64-chromebook-kcidebug-68ee4f2ba6dc7c71db9fda33/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68ee4f2ba6dc7c71db9fda33
+> 
+> ## defconfig+arm64-chromebook+kselftest on (arm64):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm64-kselftest-16k_pages-68ee4f23a6dc7c71db9fda2d/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68ee4f23a6dc7c71db9fda2d
+> 
+> ## defconfig+arm64-chromebook+preempt_rt on (arm64):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm64-preempt_rt_chromebook-68ee4f3aa6dc7c71db9fda3f/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68ee4f3aa6dc7c71db9fda3f
+> 
+> 
+> #kernelci issue maestro:c1e01dcc5d8b9be9ec47f44bbdb346c2464c0f02
+> 
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+> 
+> --
+> This is an experimental report format. Please send feedback in!
+> Talk to us at kernelci@lists.linux.dev
+> 
+> Made with love by the KernelCI team - https://kernelci.org
+> 
+
+Gus, the CI reporter needs to learn how to do a few things because developers
+(other than me ?) don't scrounge mailing lists to look for problems.
+
+a. find the commit that caused the problem (or the email series)
+
+b. send the report (Cc:) to whoever wrote the patch and to the
+appropriate mailing list.
+
+I expect that b. is easier than a., so do it first.
+
+And I'm sure that I have missed a thing or two that could be
+added as well.
+
+Thanks.
+
+-- 
+~Randy
+
