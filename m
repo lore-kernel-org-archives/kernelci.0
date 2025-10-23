@@ -1,190 +1,165 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28C3354AE7;
-	Fri, 17 Oct 2025 23:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E36257845;
+	Thu, 23 Oct 2025 06:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760743433; cv=none; b=qSadDpASytR9lLFEu2Ft1r5Edpj4HplQaCo1z9okU+USe+04SXEAUtiG7s7QjtYMYsOI/xI0zYrWxrn0jXHZDzKfDpNj0QJtgmBucRFIzByg3TC0853aLkjwQhNTT6gV3NOvHVIUgw1U4RoW3nSM+YGojmy4RtDMmNuWWU01MH0=
+	t=1761199759; cv=none; b=D8UwyRyPxixX13slmTNojZm21k0MDpNxwbP2k3aTxIFFmcoMpEagad1Wubj3FoKIBkK1cFh0liX6gPXB9YPcqrFGR34CgHKgnwLyt+zX3cpIFaXN4rfANUDvzhEKQPIVur2Ghd6QLgpVbZYJJ4T7xS6djBoOWXaWntA8bHVhFrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760743433; c=relaxed/simple;
-	bh=j+T35DDmo2x9L/4MQL7KUQ2x4Cz27hhgGbZXn6ev2tA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RZrob086APeNHFfSBM/Py0Sj8YTJ/7so2gw59APKruzDUNEtIIPY42JH8XRHi20P3DUZuSXfFLdQOM7MUgqkvGB3Se24d8hqNUaUZJGVpfyOoDxTxfE6/IWyRQCol4jwURW0CRlpP99EXmBfVdNUw60DcGHXwoER6GeoTsjxcb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cATijpfp; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1761199759; c=relaxed/simple;
+	bh=6DWcxa3Fk6kyEVM84D3o5xuwcS0X4vu1fpxKfa7WNoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L0OO0L7ZDFHEzHCvUrqWK9jt92SwlZr3AzTK28/br/66/L21JlJyRtS0lSNUrGIOLQ3Xo8bTic3foa2bBoLVPAaBRVza45kklth5RlZBu9tPstuPhgHyV9HAyx/Md+zn4Zjrw6/N4ZGFBHUsXI5QVg6etolGnjSQdoOCi/yxPQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=Z5KnDsGy; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cATijpfp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=+kSTjgG+lIjQZOuH6P1ABDb8BSSN4vnO26YFIvHPP1U=; b=cATijpfpwuBU3G19ZDpYqs2/rj
-	1eNq9nzfksMCe7s6399AKG/3M0qTRvZReCfFENObbRJSwERQI70tKrWDWSFuQ+SfUOlBtextSgF1q
-	mNa19Yy1A+4VeMTZwrCg3tuIXk25siPi6QUUgWmBP+PZhIU/gFH1z1WVtR/f6LZ0cOhP5rpQ3sxLU
-	cB+IzvBndKUHNp/4yipDe8gSIsA71Hy6hdV/8wG0Det2WqcMBR7ybVFnsvzWHOXPySZETV71cMJuu
-	7fnBeYQy/XudKazK+pAZPOd7JvaHwFbUg0S7ry9W8y/F6vnfzCHRj79zxpXapsBa5hqJV3/yew0SH
-	+gQFeKqg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9tnX-00000009BCi-1pvu;
-	Fri, 17 Oct 2025 23:23:47 +0000
-Message-ID: <022e9853-6973-4000-940f-12f3bf68b50d@infradead.org>
-Date: Fri, 17 Oct 2025 16:23:46 -0700
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="Z5KnDsGy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1761199752;
+	bh=1wXffLfgIhUvJRJbQgaKhWdMJRfdXLUbo+zZz01PuJc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Z5KnDsGy+95a7nCMI4pHgIQW44gqYVLcxp09CZq4nSNoZu1c1wrSmlbAm0M+q4jK/
+	 p40GDjkamPiEg3ggxpn4z2wybnYf28lUUd4dPWXEzRCCSwt//YoX6i2LHGubQeW9M6
+	 JgTTVno3nOUBRXqSY307gzVFyRNym4LV8tJJpT9Uz3rd8VS66F6cu7zkawIzo8tEZz
+	 68eYqYk2y4DjuiJC7Tx7MB8ceYr5orZzo3WNKBnSFkF6pqDKXSUflMMGM9Ut9LKg59
+	 65fZAKzrQmtXDh5wlBq2/LOk8Q/OcvpsPvZJz9BxqMFTYMtRetxlvzvTyz+mYT20zx
+	 vSYNbz5ILVJ+g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4csbG00zdCz4wM5;
+	Thu, 23 Oct 2025 17:09:12 +1100 (AEDT)
+Date: Thu, 23 Oct 2025 17:09:11 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: KernelCI bot <bot@kernelci.org>, kernelci@lists.linux.dev,
+ kernelci-results@groups.io, regressions@lists.linux.dev, gus@collabora.com,
+ linux-next@vger.kernel.org
+Subject: Re: [REGRESSION] next/master: (build) cannot jump from this goto
+ statement to its label in drivers/opp/o...
+Message-ID: <20251023170911.0df27b1d@canb.auug.org.au>
+In-Reply-To: <176119914391.5792.9020817346274859760@15dd6324cc71>
+References: <176119914391.5792.9020817346274859760@15dd6324cc71>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] next/master: (build) undefined reference to
- `devm_backlight_device_register' in vmlinux...
-To: Gustavo Padovan <gus@collabora.com>
-Cc: kernelci <kernelci@lists.linux.dev>,
- kernelci-results <kernelci-results@groups.io>,
- =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- phone-devel <phone-devel@vger.kernel.org>,
- regressions <regressions@lists.linux.dev>,
- linux-next <linux-next@vger.kernel.org>
-References: <176045034384.1788.868853922191153052@15dd6324cc71>
- <73bf512e-fe5f-420c-8d47-eccfa079af99@infradead.org>
- <199ec75cce1.3f69ac7c921986.1695662047481478034@collabora.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <199ec75cce1.3f69ac7c921986.1695662047481478034@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/t6qvvKV6QCzv7pnBW3d0XQM";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
+--Sig_/t6qvvKV6QCzv7pnBW3d0XQM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
 
-On 10/16/25 2:59 AM, Gustavo Padovan wrote:
-> Hi Randy,
-> 
-> 
-> ---- On Thu, 16 Oct 2025 00:47:35 -0300 Randy Dunlap <rdunlap@infradead.org> wrote ---
-> 
->  > Guido, 
->  >  
->  > Looks like this driver needs 
->  >  
->  > +    depends on BACKLIGHT_CLASS_DEVICE 
->  >  
->  > to fix the build. 
->  >  
->  > @Gus- please read comments near bottom/end. 
->  >  
->  >  
->  > On 10/14/25 6:59 AM, KernelCI bot wrote: 
->  > > 
->  > > 
->  > > 
->  > > 
->  > > Hello, 
->  > > 
->  > > New build issue found on next/master: 
->  > > 
->  > > --- 
->  > >  undefined reference to `devm_backlight_device_register' in vmlinux.unstripped (drivers/gpu/drm/panel/panel-visionox-rm69299.c) [logspec:kbuild,kbuild.compiler.linker_error] 
->  > > --- 
->  > > 
->  > > - dashboard: https://d.kernelci.org/i/maestro:c1e01dcc5d8b9be9ec47f44bbdb346c2464c0f02 
->  > > - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git 
->  > > - commit HEAD:  13863a59e410cab46d26751941980dc8f088b9b3 
->  > > - tags: next-20251014 
->  > > 
->  > > 
->  > > Log excerpt: 
->  > > ===================================================== 
->  > >   LD      .tmp_vmlinux1 
->  > > aarch64-linux-gnu-ld: Unexpected GOT/PLT entries detected! 
->  > > aarch64-linux-gnu-ld: Unexpected run-time procedure linkages detected! 
->  > > aarch64-linux-gnu-ld: drivers/gpu/drm/panel/panel-visionox-rm69299.o: in function `visionox_rm69299_create_backlight': 
->  > > /tmp/kci/linux/drivers/gpu/drm/panel/panel-visionox-rm69299.c:343: undefined reference to `devm_backlight_device_register' 
->  > > 
->  > > ===================================================== 
->  > > 
->  > > 
->  > > # Builds where the incident occurred: 
->  > > 
->  > > ## defconfig+arm64-chromebook+CONFIG_ARM64_16K_PAGES=y on (arm64): 
->  > > - compiler: gcc-12 
->  > > - config: https://files.kernelci.org/kbuild-gcc-12-arm64-16k_pages-68ee4f14a6dc7c71db9fda21/.config 
->  > > - dashboard: https://d.kernelci.org/build/maestro:68ee4f14a6dc7c71db9fda21 
->  > > 
->  > > ## defconfig+arm64-chromebook+CONFIG_ARM64_64K_PAGES=y on (arm64): 
->  > > - compiler: gcc-12 
->  > > - config: https://files.kernelci.org/kbuild-gcc-12-arm64-64k_pages-68ee4f17a6dc7c71db9fda24/.config 
->  > > - dashboard: https://d.kernelci.org/build/maestro:68ee4f17a6dc7c71db9fda24 
->  > > 
->  > > ## defconfig+arm64-chromebook+CONFIG_CPU_BIG_ENDIAN=y+debug+kselftest+tinyconfig on (arm64): 
->  > > - compiler: gcc-12 
->  > > - config: https://files.kernelci.org/kbuild-gcc-12-arm64-mainline-big_endian-68ee4f32a6dc7c71db9fda39/.config 
->  > > - dashboard: https://d.kernelci.org/build/maestro:68ee4f32a6dc7c71db9fda39 
->  > > 
->  > > ## defconfig+arm64-chromebook+CONFIG_RANDOMIZE_BASE=y on (arm64): 
->  > > - compiler: gcc-12 
->  > > - config: https://files.kernelci.org/kbuild-gcc-12-arm64-randomize-68ee4f1fa6dc7c71db9fda2a/.config 
->  > > - dashboard: https://d.kernelci.org/build/maestro:68ee4f1fa6dc7c71db9fda2a 
->  > > 
->  > > ## defconfig+arm64-chromebook+kcidebug+lab-setup on (arm64): 
->  > > - compiler: gcc-12 
->  > > - config: https://files.kernelci.org/kbuild-gcc-12-arm64-chromebook-kcidebug-68ee4f2ba6dc7c71db9fda33/.config 
->  > > - dashboard: https://d.kernelci.org/build/maestro:68ee4f2ba6dc7c71db9fda33 
->  > > 
->  > > ## defconfig+arm64-chromebook+kselftest on (arm64): 
->  > > - compiler: gcc-12 
->  > > - config: https://files.kernelci.org/kbuild-gcc-12-arm64-kselftest-16k_pages-68ee4f23a6dc7c71db9fda2d/.config 
->  > > - dashboard: https://d.kernelci.org/build/maestro:68ee4f23a6dc7c71db9fda2d 
->  > > 
->  > > ## defconfig+arm64-chromebook+preempt_rt on (arm64): 
->  > > - compiler: gcc-12 
->  > > - config: https://files.kernelci.org/kbuild-gcc-12-arm64-preempt_rt_chromebook-68ee4f3aa6dc7c71db9fda3f/.config 
->  > > - dashboard: https://d.kernelci.org/build/maestro:68ee4f3aa6dc7c71db9fda3f 
->  > > 
->  > > 
->  > > #kernelci issue maestro:c1e01dcc5d8b9be9ec47f44bbdb346c2464c0f02 
->  > > 
->  > > Reported-by: kernelci.org bot <bot@kernelci.org> 
->  > > 
->  > > -- 
->  > > This is an experimental report format. Please send feedback in! 
->  > > Talk to us at kernelci@lists.linux.dev 
->  > > 
->  > > Made with love by the KernelCI team - https://kernelci.org 
->  > > 
->  >  
->  > Gus, the CI reporter needs to learn how to do a few things because developers 
->  > (other than me ?) don't scrounge mailing lists to look for problems. 
-> 
-> Absolutely. Our goal is to automate as many steps as possible!
->  
->  > a. find the commit that caused the problem (or the email series) 
->  >  
->  > b. send the report (Cc:) to whoever wrote the patch and to the 
->  > appropriate mailing list. 
->  >  
->  > I expect that b. is easier than a., so do it first. 
-> 
-> b. is easier that a. yes, but I don't think we can do it first because we
-> need to figure the patch first. Essentially, you are asking us for
-> build bisections. Something that is already on our roadmap, but
-> we didn't had the time to tackle yet, but should come to it in the
-> coming months.
+[Cc'ing the OPP maintainer]
 
-Sometimes a bisect could be required. For cases such as this report,
-a simple git blame or git log will show the culprit. Although coding
-that is not as simple as a human looking at the screen.
+On Thu, 23 Oct 2025 05:59:04 -0000 KernelCI bot <bot@kernelci.org> wrote:
+>
+> Hello,
+>=20
+> New build issue found on next/master:
+>=20
+> ---
+>  cannot jump from this goto statement to its label in drivers/opp/of.o (d=
+rivers/opp/of.c) [logspec:kbuild,kbuild.compiler.error]
+> ---
+>=20
+> - dashboard: https://d.kernelci.org/i/maestro:992b985637471b20dfed6cb78dc=
+938315a3ba8b6
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
+.git
+> - commit HEAD:  efb26a23ed5f5dc3554886ab398f559dcb1de96b
+> - tags: next-20251023
+>=20
+>=20
+> Log excerpt:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+> drivers/opp/of.c:1545:3: error: cannot jump from this goto statement to i=
+ts label
+>  1545 |                 goto register_em;
+>       |                 ^
+> drivers/opp/of.c:1548:22: note: jump bypasses initialization of variable =
+with __attribute__((cleanup))
+>  1548 |         struct device_node *np __free(device_node) =3D of_node_ge=
+t(dev->of_node);
+>       |                             ^
+> drivers/opp/of.c:1539:3: error: cannot jump from this goto statement to i=
+ts label
+>  1539 |                 goto failed;
+>       |                 ^
+> drivers/opp/of.c:1548:22: note: jump bypasses initialization of variable =
+with __attribute__((cleanup))
+>  1548 |         struct device_node *np __free(device_node) =3D of_node_ge=
+t(dev->of_node);
+>       |                             ^
+> drivers/opp/of.c:1533:3: error: cannot jump from this goto statement to i=
+ts label
+>  1533 |                 goto failed;
+>       |                 ^
+> drivers/opp/of.c:1548:22: note: jump bypasses initialization of variable =
+with __attribute__((cleanup))
+>  1548 |         struct device_node *np __free(device_node) =3D of_node_ge=
+t(dev->of_node);
+>       |                             ^
+> 3 errors generated.
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+>=20
+>=20
+> # Builds where the incident occurred:
+>=20
+> ## defconfig+CONFIG_ARM64_64K_PAGES=3Dy on (arm64):
+> - compiler: clang-17
+> - config: https://files.kernelci.org/kbuild-clang-17-arm64-mainline-64K_P=
+AGES-68f9a84f9533132a189903f3/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68f9a84f9533132a189903f3
+>=20
+> ## multi_v5_defconfig on (arm):
+> - compiler: clang-17
+> - config: https://files.kernelci.org/kbuild-clang-17-arm-mainline-multi_v=
+5-68f9a85f9533132a18990405/.config
+> - dashboard: https://d.kernelci.org/build/maestro:68f9a85f9533132a18990405
+>=20
+>=20
+> #kernelci issue maestro:992b985637471b20dfed6cb78dc938315a3ba8b6
+>=20
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+>=20
+> --
+> This is an experimental report format. Please send feedback in!
+> Talk to us at kernelci@lists.linux.dev
+>=20
+> Made with love by the KernelCI team - https://kernelci.org
 
->  >  
->  > And I'm sure that I have missed a thing or two that could be 
->  > added as well. 
-> 
-> Please keep the feedback coming!
+--=20
+Cheers,
+Stephen Rothwell
 
--- 
-~Randy
+--Sig_/t6qvvKV6QCzv7pnBW3d0XQM
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmj5xocACgkQAVBC80lX
+0Gxe3Af/cozP7Cha9IlLHRLec9WUa7yFW3kHCLQFDkj4C7ajQ+c3sw5zC2lPssj3
+3pvqcSTN0yw3IQTZsh+HlgDF1+hg5BilqyZ3h6sJT7yxeLLFlZzEhqhThbDzCSKF
+K3lImy/zRv+ixzHzag6jausdE8u5Cd1lAVbPsc5b/Uj5J0YBpiQtDQGV0laa2/5i
+eG36krxBI60rRIkqmIWHWZ2Y5uivsNhEQpVaf/qRWX/hPM/U56EzFenV+hRH/sik
+icroP+McO+GGnauhMuBZzGSDOHGEOwHCvqb4VcNz5PsuQ+XrBgTDdvIgTq+jW9pL
+Iq7cu5iyVeKzoO6Dm7uNFgTnKqiW2g==
+=8z85
+-----END PGP SIGNATURE-----
+
+--Sig_/t6qvvKV6QCzv7pnBW3d0XQM--
