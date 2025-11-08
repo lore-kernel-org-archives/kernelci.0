@@ -1,101 +1,117 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE26281370
-	for <kernelci@lists.linux.dev>; Fri,  7 Nov 2025 05:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A008B2D061D;
+	Sat,  8 Nov 2025 03:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762493409; cv=none; b=JYXMt+Vr7S1Hq+bDWcBHUaViiA4ybFt3V6MsYnrWII2dLhkgLrs7iRY4vUNGYB/p9aZxWek2JPfm8KEQLxVUxeoaQwJ67oVVs4X7J7xjElGPFW9/CmOwPX6QcZsm3HniddNYjZYnUMA5IptN2wXwA5pG2XC4H7iQYlLNfZ5pCuc=
+	t=1762571515; cv=none; b=odtQpMYN4bfaDf9YdFJQAPWLP2hsJgazHcKcsc+xEvdiz1ekOx1xZ/F30kTFW/YULv70GF8PyMTxnit0zH5yIRcySw5KvmZeeckM1z94f8mB1IbMypzqbqjM2500kzjl8boNVEBwKVo87rsZPEeSALV0Txt9gNTLuXN/xUZLr0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762493409; c=relaxed/simple;
-	bh=Gfa74bvT8g21TTG6UeYJUX49YlH6I28Q/5rLnsXNtu4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WyWKeTf1Nu6EhpL+2uFuw4fZGvRXOSYoplvtYMgKF00rOlxfIY+zDQA602fxx3RvRqomi5264FoxUSLjwKMkAKCX43Uj5nWUegHtLrgvE2WBUcaO3IIPzu6/J08RNhYyp1AhPzzii6VO4ywVlHgpCKwIjqD8j7hN/vVdElTfwcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rmoar.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ynwWHMS/; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rmoar.bounces.google.com
+	s=arc-20240116; t=1762571515; c=relaxed/simple;
+	bh=KwBm3CuWFonyxdteWe4qUpDdFRGos477BmUdFE8Sqa4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OvsdAhVf2PKr2RC7FIktDAzjFTeW2wmoHT59L6VExW5IJwG/cVQNgOdhjEIfIC/tYJfsy7jGv68gOx60DSbFvK7H3u8IPvz/GStjrhwK42B2LUNsIrEUDPhXZpFOllklEzFrFb92HsZikmDIdU5SUauOy8PSv3eaBTdlrD6FVmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Fgeyepys; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ynwWHMS/"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-76c0ad16289so4419557b3.3
-        for <kernelci@lists.linux.dev>; Thu, 06 Nov 2025 21:30:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762493406; x=1763098206; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0gxyC8GUOhbymd0hZW1Wc7AlwN6X8GVnWJwQLTO+kr4=;
-        b=ynwWHMS/ex9C35uGp60hnkDeLRmsdLbRi4EsmGYbfAN4HiwrAfU20W4Wt6xIDPb0Zq
-         Pv9O8YdFDclHn9eQYHgCSyquYhXRIizOgRgbBKQUAMOqBASR5qiD7V+8Fv7arLPAuJnf
-         9yPAQ1eD97WA17GkyL3JV0m4F1humJgA9wzsFmmer5fKjcAdYzSG6Pn4Ub4YeAfZr5Sj
-         xCcf//6s82+lzS0vVnciIYumDRPoju1AzNNqEH0QWLJjGRwbSiIIUbJicE0GvSMmEcsi
-         e+/KmED71PiSrPLsMSnsPuaRgUDXAYrHzTfOL1LTAC21GV0RBg4CPT5uOczHOqTAqZj2
-         KHKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762493406; x=1763098206;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0gxyC8GUOhbymd0hZW1Wc7AlwN6X8GVnWJwQLTO+kr4=;
-        b=HuTxUmfgwfo8v72AcwxqsewcVnacywMFigoxDXfzoG/pOZ9rT6mhFEXf4ZN/eT979O
-         B+HsxQbj260Q8r0xz37A4UwaHLE7djedTscVJEWA+IjqX2n3dfSY/vK3d4Rao6w7Llyo
-         2gKHldBdIBrfNFgsqjiadP2aipaorTLBtRxhHxgos1EugGwn3wzCU6wo5Qbib9BHNam9
-         rcIIp/NhSwUxZQK3enfJqy6lvAa1agl9UdjsMzxdemlxVGafzj4ykBREvf82wuIwB6pH
-         /A15VcTXqHr3PaMy02pHN9HIlQgavSIaD5xPQVGzuymY514pTJbWEvVr6eodRTPvAJfh
-         2lyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGq/HTytGKVIpa2idAr1RuT7YvJVXOMW1n9MKDKEokF+GH/Em8onzxVwpHv8A5RwoteGavSqSrNw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywab4hVlQB/APmX5ZExDgHGv4gjX3W8+zYXTqaCfjalEtgISNob
-	G5IRuTn5cR9EkOj9N1vKRYh0xEEBuyRI5pm3iEJBIYVpgNIDEUXHYsji2u3nXG3EpwJlmsmc3d9
-	JWQ==
-X-Google-Smtp-Source: AGHT+IFyTML4kwjlT8XJq9ynWGzbE9ai1eUBXHm+9uVGmQAwTAKz9Wy9ddid4pLEgQKt5V9M2r2fUt9K2g==
-X-Received: from ywbkl8.prod.google.com ([2002:a05:690c:5048:b0:784:9edd:65d8])
- (user=rmoar job=prod-delivery.src-stubby-dispatcher) by 2002:a05:690c:f89:b0:787:c612:f0f6
- with SMTP id 00721157ae682-787c61305eamr15892597b3.1.1762493406390; Thu, 06
- Nov 2025 21:30:06 -0800 (PST)
-Date: Fri,  7 Nov 2025 05:29:26 +0000
-In-Reply-To: <20251107052926.3403265-1-rmoar@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Fgeyepys"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=AUhKXEzeGCikYXmExWl1kA2dGxV0NSVJEQeamA4bzzI=; b=FgeyepysRo2+ivQN6pbAOkkyLB
+	55OcFUQizzTJb41eysAF8l7hdmplgV7cz1+OfD4+V546hgTQqQvFbDPRtSpjyAY+NOmx19OYpT5yD
+	Ifc4YNyvoUaa1UuFXFbfeDwHHgKH/5km5RXaOAAR/170uJx3kZ8qsmPeBEdyqPr7ZsGQf3clkF8y2
+	v4pbI7rlJeshXdEd7GeAkE09eieLd5UFrOr1heEP6TeaUNruvg1ahPI5YXnDjV4ucfSJcmd2ts4lD
+	wRhfV2bC+mPS812WMUN2igMzhUb2uReGvsmWkWgu6i5J/qf8pcqtpSb3ereZ4SzCoduZIArPeGkG+
+	oPmlykdA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vHZMk-00000002GYP-3Jce;
+	Sat, 08 Nov 2025 03:11:50 +0000
+Message-ID: <c13574f7-b13c-42e0-9b35-a2acb594af33@infradead.org>
+Date: Fri, 7 Nov 2025 19:11:49 -0800
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251107052926.3403265-1-rmoar@google.com>
-X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
-Message-ID: <20251107052926.3403265-6-rmoar@google.com>
-Subject: [PATCH RESEND 5/5] ktap_v2: change version to 2 in KTAP specification
-From: Rae Moar <rmoar@google.com>
-To: frowand.list@gmail.com, davidgow@google.com, keescook@chromium.org, 
-	raemoar63@gmail.com, Tim.Bird@sony.com, shuah@kernel.org
-Cc: tytso@google.com, gustavo.padovan@collabora.com, 
-	ricardo.canuelo@collabora.com, corbet@lwn.net, kernelci@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Rae Moar <rmoar@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=5BREGRESSION=5D_next/master=3A_=28build=29_implici?=
+ =?UTF-8?Q?t_declaration_of_function_=E2=80=98topology=5Fcore=5Fhas=5Fsmt?=
+ =?UTF-8?B?4oCZOyBkaWQgeW91IC4uLg==?=
+To: kernelci@lists.linux.dev, kernelci-results@groups.io,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ linux-perf-users@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>
+Cc: regressions@lists.linux.dev, gus@collabora.com, linux-next@vger.kernel.org
+References: <176225394342.3644.6412596085150396269@efdf33580483>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <176225394342.3644.6412596085150396269@efdf33580483>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Prepare KTAP specification for the final release of version 2 by
-removing "-rc" in the title. This would previously cause a Sphinx
-warning.
+[verified still present in linux-next 20251107]
+[adding CCs]
 
-This series represents the final version of KTAP version 2 that includes
-the major addition of test metadata.
 
-Signed-off-by: Rae Moar <rmoar@google.com>
----
- Documentation/dev-tools/ktap.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 11/4/25 2:59 AM, KernelCI bot wrote:
+> 
+> 
+> 
+> 
+> Hello,
+> 
+> New build issue found on next/master:
+> 
+> ---
+>  implicit declaration of function ‘topology_core_has_smt’; did you mean ‘topology_core_cpumask’? [-Werror=implicit-function-declaration] in drivers/perf/arm_pmu.o (drivers/perf/arm_pmu.c) [logspec:kbuild,kbuild.compiler.error]
+> ---
+> 
+> - dashboard: https://d.kernelci.org/i/maestro:b25c03bf6acc100aaa7e71de7eb2cb32868b54f5
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+> - commit HEAD:  17490bd0527f59d841168457b245581f314b5fa0
+> - tags: next-20251104
+> 
+> 
+> Log excerpt:
+> =====================================================
+> drivers/perf/arm_pmu.c:935:24: error: implicit declaration of function ‘topology_core_has_smt’; did you mean ‘topology_core_cpumask’? [-Werror=implicit-function-declaration]
+>   935 |         pmu->has_smt = topology_core_has_smt(cpumask_first(&pmu->supported_cpus));
+>       |                        ^~~~~~~~~~~~~~~~~~~~~
+>       |                        topology_core_cpumask
+>   CC      drivers/iio/adc/bcm_iproc_adc.o
+>   CC      drivers/devfreq/governor_simpleondemand.o
+>   CC      drivers/memory/tegra/tegra124.o
+>   CC      drivers/memory/brcmstb_dpfe.o
+> cc1: some warnings being treated as errors
+>   CC      drivers/memory/tegra/tegra20-emc.o
+> 
+> =====================================================
+> 
+> 
+> # Builds where the incident occurred:
+> 
+> ## multi_v7_defconfig+CONFIG_SMP=n on (arm):
+> - compiler: gcc-12
+> - config: https://files.kernelci.org/kbuild-gcc-12-arm-SMP-6909cb01f21f07610dca0839/.config
+> - dashboard: https://d.kernelci.org/build/maestro:6909cb01f21f07610dca0839
+> 
+> 
+> #kernelci issue maestro:b25c03bf6acc100aaa7e71de7eb2cb32868b54f5
+> 
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+> 
+> --
+> This is an experimental report format. Please send feedback in!
+> Talk to us at kernelci@lists.linux.dev
+> 
+> Made with love by the KernelCI team - https://kernelci.org
+> 
 
-diff --git a/Documentation/dev-tools/ktap.rst b/Documentation/dev-tools/ktap.rst
-index d118119910f8..1abb30887008 100644
---- a/Documentation/dev-tools/ktap.rst
-+++ b/Documentation/dev-tools/ktap.rst
-@@ -1,7 +1,7 @@
- .. SPDX-License-Identifier: GPL-2.0
- 
- ===================================================
--The Kernel Test Anything Protocol (KTAP), version 2-rc
-+The Kernel Test Anything Protocol (KTAP), version 2
- ===================================================
- 
- TAP, or the Test Anything Protocol is a format for specifying test results used
 -- 
-2.51.2.1041.gc1ab5b90ca-goog
+~Randy
 
