@@ -1,117 +1,61 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A008B2D061D;
-	Sat,  8 Nov 2025 03:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7B02E173B;
+	Mon, 10 Nov 2025 11:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762571515; cv=none; b=odtQpMYN4bfaDf9YdFJQAPWLP2hsJgazHcKcsc+xEvdiz1ekOx1xZ/F30kTFW/YULv70GF8PyMTxnit0zH5yIRcySw5KvmZeeckM1z94f8mB1IbMypzqbqjM2500kzjl8boNVEBwKVo87rsZPEeSALV0Txt9gNTLuXN/xUZLr0U=
+	t=1762773733; cv=none; b=EYwCbIpJhaqtaTiyL0CODZchL69ly7ooM695kDpaBH8NWCJt9YxNodzpTvga6HBMkZbJeWq8U/U5C7Mw1RpJKJrmWEhyo3f4LTKUYTqkWJYvYaO67G0DaCTk1j4GX+BcB6etibDhhIN+e9IAzEaR3bUP5vm7l23W6gT3tqAt8kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762571515; c=relaxed/simple;
-	bh=KwBm3CuWFonyxdteWe4qUpDdFRGos477BmUdFE8Sqa4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OvsdAhVf2PKr2RC7FIktDAzjFTeW2wmoHT59L6VExW5IJwG/cVQNgOdhjEIfIC/tYJfsy7jGv68gOx60DSbFvK7H3u8IPvz/GStjrhwK42B2LUNsIrEUDPhXZpFOllklEzFrFb92HsZikmDIdU5SUauOy8PSv3eaBTdlrD6FVmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Fgeyepys; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1762773733; c=relaxed/simple;
+	bh=S/6Rr5vew5ydQvjFw7Rv9F5E1IYomQauBG1EVTvft9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YCmLHC81Hb9x0NqvobrfqQsdPjmFooCeoANnHYA8wW3Oznp+6KdTz0AVPR6b9uNDpP1WvS2bIcL4Iy4paNhHcZ5wgfI16phDE8Jzj/Obm6mKhw15sbfi/ej5gnR6JrluFPXIJTHWemY+WbXw0+cxnOFTNZtH9+zrLL+dGze1vaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERdsz9v5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Fgeyepys"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=AUhKXEzeGCikYXmExWl1kA2dGxV0NSVJEQeamA4bzzI=; b=FgeyepysRo2+ivQN6pbAOkkyLB
-	55OcFUQizzTJb41eysAF8l7hdmplgV7cz1+OfD4+V546hgTQqQvFbDPRtSpjyAY+NOmx19OYpT5yD
-	Ifc4YNyvoUaa1UuFXFbfeDwHHgKH/5km5RXaOAAR/170uJx3kZ8qsmPeBEdyqPr7ZsGQf3clkF8y2
-	v4pbI7rlJeshXdEd7GeAkE09eieLd5UFrOr1heEP6TeaUNruvg1ahPI5YXnDjV4ucfSJcmd2ts4lD
-	wRhfV2bC+mPS812WMUN2igMzhUb2uReGvsmWkWgu6i5J/qf8pcqtpSb3ereZ4SzCoduZIArPeGkG+
-	oPmlykdA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vHZMk-00000002GYP-3Jce;
-	Sat, 08 Nov 2025 03:11:50 +0000
-Message-ID: <c13574f7-b13c-42e0-9b35-a2acb594af33@infradead.org>
-Date: Fri, 7 Nov 2025 19:11:49 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERdsz9v5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7800CC113D0;
+	Mon, 10 Nov 2025 11:22:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762773730;
+	bh=S/6Rr5vew5ydQvjFw7Rv9F5E1IYomQauBG1EVTvft9Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ERdsz9v5AaHjd0vq+7PXumuP2I04xsTwwjLJX/tXHq6Ttima7t0QpsY9chu2IGQiW
+	 peFMpzB/Zw8Or+Gyosw7jubrETZZMVD2UJnKwbKZBQ0EXrXKr2apcxq3cR30b5gt/n
+	 k4VAJPKBtjwIkC24+4U1dTzbSH+VCzLpSrHZj4NJ1u+75nzzIsWVYVFhwNwXMiFCuf
+	 KEiPiT7we6o1Kc3qdQlbipsUv1HouHkkxOPV9ZxDMgkGoY0xWVISCe+Gx3oQHBEkfA
+	 rIGVTQ5cUtp+UMtkG71m7xisHoXrL4itx9A948jAF3LRF4Ilh14SdijXNoHCUBoBsn
+	 1LTRjosrgIlNA==
+Date: Mon, 10 Nov 2025 11:22:05 +0000
+From: Will Deacon <will@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: kernelci@lists.linux.dev, kernelci-results@groups.io,
+	Linux ARM <linux-arm-kernel@lists.infradead.org>,
+	linux-perf-users@vger.kernel.org,
+	Mark Rutland <mark.rutland@arm.com>, regressions@lists.linux.dev,
+	gus@collabora.com, linux-next@vger.kernel.org
+Subject: Re: [REGRESSION] =?utf-8?Q?next=2Fmaster?=
+ =?utf-8?Q?=3A_=28build=29_implicit_declaration_of_function_=E2=80=98topol?=
+ =?utf-8?B?b2d5X2NvcmVfaGFzX3NtdOKAmTs=?= did you ...
+Message-ID: <aRHK3RPjNq8nbltp@willie-the-truck>
+References: <176225394342.3644.6412596085150396269@efdf33580483>
+ <c13574f7-b13c-42e0-9b35-a2acb594af33@infradead.org>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=5BREGRESSION=5D_next/master=3A_=28build=29_implici?=
- =?UTF-8?Q?t_declaration_of_function_=E2=80=98topology=5Fcore=5Fhas=5Fsmt?=
- =?UTF-8?B?4oCZOyBkaWQgeW91IC4uLg==?=
-To: kernelci@lists.linux.dev, kernelci-results@groups.io,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- linux-perf-users@vger.kernel.org, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>
-Cc: regressions@lists.linux.dev, gus@collabora.com, linux-next@vger.kernel.org
-References: <176225394342.3644.6412596085150396269@efdf33580483>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <176225394342.3644.6412596085150396269@efdf33580483>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c13574f7-b13c-42e0-9b35-a2acb594af33@infradead.org>
 
-[verified still present in linux-next 20251107]
-[adding CCs]
+On Fri, Nov 07, 2025 at 07:11:49PM -0800, Randy Dunlap wrote:
+> [verified still present in linux-next 20251107]
+> [adding CCs]
 
+Should be fixed by 7ab06ea41af5 ("arch_topology: Provide a stub
+topology_core_has_smt() for !CONFIG_GENERIC_ARCH_TOPOLOGY") in the Arm
+perf tree (which is merged into -next).
 
-On 11/4/25 2:59 AM, KernelCI bot wrote:
-> 
-> 
-> 
-> 
-> Hello,
-> 
-> New build issue found on next/master:
-> 
-> ---
->  implicit declaration of function ‘topology_core_has_smt’; did you mean ‘topology_core_cpumask’? [-Werror=implicit-function-declaration] in drivers/perf/arm_pmu.o (drivers/perf/arm_pmu.c) [logspec:kbuild,kbuild.compiler.error]
-> ---
-> 
-> - dashboard: https://d.kernelci.org/i/maestro:b25c03bf6acc100aaa7e71de7eb2cb32868b54f5
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> - commit HEAD:  17490bd0527f59d841168457b245581f314b5fa0
-> - tags: next-20251104
-> 
-> 
-> Log excerpt:
-> =====================================================
-> drivers/perf/arm_pmu.c:935:24: error: implicit declaration of function ‘topology_core_has_smt’; did you mean ‘topology_core_cpumask’? [-Werror=implicit-function-declaration]
->   935 |         pmu->has_smt = topology_core_has_smt(cpumask_first(&pmu->supported_cpus));
->       |                        ^~~~~~~~~~~~~~~~~~~~~
->       |                        topology_core_cpumask
->   CC      drivers/iio/adc/bcm_iproc_adc.o
->   CC      drivers/devfreq/governor_simpleondemand.o
->   CC      drivers/memory/tegra/tegra124.o
->   CC      drivers/memory/brcmstb_dpfe.o
-> cc1: some warnings being treated as errors
->   CC      drivers/memory/tegra/tegra20-emc.o
-> 
-> =====================================================
-> 
-> 
-> # Builds where the incident occurred:
-> 
-> ## multi_v7_defconfig+CONFIG_SMP=n on (arm):
-> - compiler: gcc-12
-> - config: https://files.kernelci.org/kbuild-gcc-12-arm-SMP-6909cb01f21f07610dca0839/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6909cb01f21f07610dca0839
-> 
-> 
-> #kernelci issue maestro:b25c03bf6acc100aaa7e71de7eb2cb32868b54f5
-> 
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> 
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
-> 
-> Made with love by the KernelCI team - https://kernelci.org
-> 
-
--- 
-~Randy
-
+Will
