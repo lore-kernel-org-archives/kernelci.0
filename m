@@ -1,44 +1,52 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C17251793;
-	Mon, 24 Nov 2025 22:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88EA2D0C97;
+	Tue, 25 Nov 2025 07:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764024051; cv=none; b=pZYLdObxINlV9WsRFGKdkYgi/sDZE9r5EpOGk1gELi23qjJsAj9dDKCE871kItdOtIwFu+v2N3FylY5m4mH1/BFxpnD2+0u2xSZOZIDZ0LwbbaZClVOo9nzXcmkNjutoYm9Y6G8fWMEUGr1GdkXZDXyu9QC5e8FALdcCLe9Dyjw=
+	t=1764055204; cv=none; b=m4e6N15QFSs3aiK0kLAJk/xD4Gn6w4YvQVF+mgmVKUsJZPUGfR9DexDNmrK/p4LI6jJK1dQeQStJXvrpFSzUXjXKM0Txy5dGwve8e0/RMb4qNhD8RgbC9psnue9tuw/ZDSL3J7NzgyZaRLS4E3svU00z1TkMaX5ZA+pGOMqU7rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764024051; c=relaxed/simple;
-	bh=EEzp2ogUOzRXGQs0s5wKs0XxUYNtoSdF1XXYvxAS9L8=;
+	s=arc-20240116; t=1764055204; c=relaxed/simple;
+	bh=l1KGnfdEWgQxo8EMnEA85k3oluDT2w+FPDsczBPBX2Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OejjvKQ77brFFiKPjUimmgYQnGCOaJKlQig59NMgL/z4G/P0mBQVUpef4oOYJCaKDajfgOErf1D/B3wtfODM/ZTKkU9oIH5DtWCbf5j/dHi4eMLNzxSDQLa9NSOJCrGzEWqhrQoqXt3UbQaZ3wE28R4UWeoJI1Upp4GMB+R83U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r2KG0uby; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=M6adqQJXVDKnSppzZfhECau+VZtYeDV3fVTlCSSWRdhG00CGyqaiWyqWSCe5zoB0gweretb7Z4zuiTo8cdO1bXQ6cuyx5kBYuYxbDUpwYLp/3uw5goIXcK1K+z3EeIgmVVsMm6OSeTtnIL+14eRQWaqBdqy2k1sSqYBfLmrBNCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YC/40B95; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cSdtw+IE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r2KG0uby"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69977C4CEF1;
-	Mon, 24 Nov 2025 22:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764024050;
-	bh=EEzp2ogUOzRXGQs0s5wKs0XxUYNtoSdF1XXYvxAS9L8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r2KG0ubyztpOJHoPgUvYMkophb1B6wonRo4SFMeSwsgTDnwTckv3OCCBDIPsW/Joj
-	 /prMmXgUCbXDsqghAMvsmwGw4Kd4YA0+kEZjm7qZrNkyXbhwa+uZe5eoo4W7k+NZKb
-	 mgFYhVTy3YRDfJ8OwHKGOHaaXqU7xe5aYLiWs3DvU3rXfkpIE/bbwdRHrxOUg7Yp+W
-	 W4ma/2paTJbCa5/tBAMiAbvR6OcVRVl+xz3v0cwFk1uUY+GX874bxKi4O/kFZk2lNW
-	 3JfaZKwYEL3F2U3m4sggRdPFAL7KzRK3g6FqD+b1s4rsJln/GGfGY+ZR5Y1UwR0cCK
-	 vE3ayXBiCitlw==
-Date: Mon, 24 Nov 2025 15:40:46 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Guenter Roeck <groeck@google.com>
-Cc: kernelci@lists.linux.dev, kernelci-results@groups.io, gus@collabora.com,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-staging@lists.linux.dev
-Subject: Re: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
- uninitialized when passed as a const pointer arg...
-Message-ID: <20251124224046.GA3142687@ax162>
-References: <176398914850.89.13888454130518102455@f771fd7c9232>
- <20251124220404.GA2853001@ax162>
- <CABXOdTfbsoNdv6xMCppMq=JsfNBarp6YyFV4por3eA3cSWdT7g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YC/40B95";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cSdtw+IE"
+Date: Tue, 25 Nov 2025 08:19:52 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764055193;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EwwTrnevq8aBMZChM8n9BVFSmn/5A2CW3uQTKd2Zf8s=;
+	b=YC/40B958OVz7kyyVkiAdOPN8BjF8uAJ3wSGuHryXxkFZ/YIbwvAGm7wrhmCcS2uPLGGh8
+	DItusX7ufRCz1dIxtrI9LS4hULp5nzdvFUIwDpCOlKd2+ugRDhefyZc5K2Ua/pK+zl3VBp
+	aoXMcVlro5yTibWFT46DfzwBe/0Uq9uIQfb/qNHz3QeR3wMMHTQVLIPWDyNTyB8J65k0fu
+	k6BXMQ3V8+Ut91SPSM5O++r7aTznHCkvtDMp2yloeCRGfbNCWzRVNzfSsGevqkMX0FU+P3
+	JswEbGhkFKTux+XUEPTAiApih7UXzM3XNPJiG4LE5PSex+U2DqJ8i3ltl1aBew==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764055193;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EwwTrnevq8aBMZChM8n9BVFSmn/5A2CW3uQTKd2Zf8s=;
+	b=cSdtw+IEfkBAvysHW4p6Zt0uRCpvrh93EUK7uwX3AJ1s6XxNo9zn9H4bn6ZMce7Zirnmin
+	gG914HjDPXZF5xCw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io, gus@collabora.com,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [REGRESSION] stable-rt/v6.1-rt-next: (build)
+ ./include/net/ip.h:456:14: error: default initialization of an obj...
+Message-ID: <20251125071952.lq2vP2n8@linutronix.de>
+References: <176403954885.358.6925837698022425297@f771fd7c9232>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -47,70 +55,41 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABXOdTfbsoNdv6xMCppMq=JsfNBarp6YyFV4por3eA3cSWdT7g@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <176403954885.358.6925837698022425297@f771fd7c9232>
 
-On Mon, Nov 24, 2025 at 02:35:26PM -0800, Guenter Roeck wrote:
-> On Mon, Nov 24, 2025 at 2:04 PM Nathan Chancellor <nathan@kernel.org> wrote:
-> >
-> > On Mon, Nov 24, 2025 at 12:59:08PM -0000, KernelCI bot wrote:
-> > > Hello,
-> > >
-> > > New build issue found on stable-rc/linux-6.12.y:
-> > >
-> > > ---
-> > >  variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer] in drivers/staging/rtl8712/rtl8712_cmd.o (drivers/staging/rtl8712/rtl8712_cmd.c) [logspec:kbuild,kbuild.compiler.error]
-> > > ---
-> > >
-> > > - dashboard: https://d.kernelci.org/i/maestro:5b83acc62508c670164c5fceb3079a2d7d74e154
-> > > - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> > > - commit HEAD:  d5dc97879a97b328a89ec092271faa3db9f2bff3
-> > > - tags: v6.12.59
-> > >
-> > >
-> > > Log excerpt:
-> > > =====================================================
-> > > drivers/staging/rtl8712/rtl8712_cmd.c:148:28: error: variable 'val' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-> > >   148 |                 memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
-> > >       |                                          ^~~
-> > > 1 error generated.
-> >
-> > This comes from a new subwarning of -Wuninitialized introduced in
-> > clang-21:
-> >
-> >   https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e
-> >
-> > This driver was removed upstream in commit 41e883c137eb ("staging:
-> > rtl8712: Remove driver using deprecated API wext") in 6.13 so this only
-> > impacts stable.
-> >
-> > This certainly does look broken...
-> >
-> >   static u8 read_rfreg_hdl(struct _adapter *padapter, u8 *pbuf)
-> >   {
-> >       u32 val;
-> >       void (*pcmd_callback)(struct _adapter *dev, struct cmd_obj *pcmd);
-> >       struct cmd_obj *pcmd  = (struct cmd_obj *)pbuf;
-> >
-> >       if (pcmd->rsp && pcmd->rspsz > 0)
-> >           memcpy(pcmd->rsp, (u8 *)&val, pcmd->rspsz);
-> >
-> > Presumably this is never actually hit? It is rather hard to follow the
-> > indirection in this driver but it does not seem like _Read_RFREG is ever
-> > set as a cmdcode? Unfortunately, the only maintainer I see listed for
-> > this file is Florian Schilhabel but a glance at lore shows no recent
-> > activity so that probably won't be too much help. At the very least, we
-> > could just zero initialize val, it cannot be any worse than what it is
-> > currently doing and copying stack garbage?
-> >
-> 
-> Or backport the patch removing the driver ? It is in staging, after
-> all, so I don't know if there is value in trying to keep it alive in
-> 6.12.y.
+On 2025-11-25 02:59:09 [-0000], KernelCI bot wrote:
+> Hello,
+Hi,
 
-That would likely not be the end of the world for 6.12.y but this
-warning appears all the way back to at least 5.15 (the point I start
-caring about warnings because of CONFIG_WERROR).
+> New build issue found on stable-rt/v6.1-rt-next:
 
-Cheers,
-Nathan
+Thank you.
+
+> ---
+>  ./include/net/ip.h:456:14: error: default initialization of an object of=
+ type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the obj=
+ect uninitialized [-Werror,-Wdefault-const-init-var-unsafe] in security/sel=
+inux/avc.o (security/selinux/avc.c) [logspec:kbuild,kbuild.compiler.error]
+> ---
+>=20
+> - dashboard: https://d.kernelci.org/i/maestro:dabc8a89dbfbb7a418c712c2c6c=
+82e29bd2c9573
+> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-stable=
+-rt.git
+> - commit HEAD:  14fd3f12318030025dddcaf840092144c3a99e89
+> - tags: v6.1.46-rt14-rc1
+
+This one has been "fixed" by commit d0afcfeb9e381 ("kbuild: Disable
+-Wdefault-const-init-unsafe"). It is also part of v6.1.141-rt52 and
+later.
+=E2=80=A6
+> This is an experimental report format. Please send feedback in!
+> Talk to us at kernelci@lists.linux.dev
+
+For RT, or kernels in general, it should be enough to test the last
+kernel/ tag from each release branch. The older ones, such at as this
+one, may contain bugs which will not be fixed in "this" release but a
+subsequent release may contains a fix if possible.
+
+Sebastian
