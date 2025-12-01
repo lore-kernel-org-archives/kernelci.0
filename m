@@ -1,85 +1,77 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BA91391
-	for <kernelci@lists.linux.dev>; Sat, 29 Nov 2025 09:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FC025EFBB
+	for <kernelci@lists.linux.dev>; Mon,  1 Dec 2025 20:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764410185; cv=none; b=OfOd/K2lfERF3sJyfyKacKlFvAlkbFlIEydtlhnJgs/ibKthbzKH/vdaPzrYeT8vbD4FNDByK89/ah4+0QX3GtGGTdLpvoHktIFoznoaY7ruwpLuGfFLSC6941DT8gX+r050PZvCvwBvhQv4zv2H02GZ+LyTbQJRbw6Rp/mQ5RU=
+	t=1764622468; cv=none; b=RXI57qeuysPu/XK5Mnhm1IHu/I/xrDnh43gCFdBwU+XYPnzOOREXw8a2yEYWovH3Jl91TiHznWlwiG+d36z6tmsuj1Q5S86mMZcb5eOvL1oTFWH8b3rXCMdhIKg57aXWqAlWZKZT/0gpYHaodVegQPADv5dmjDznQMXrbTvJIhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764410185; c=relaxed/simple;
-	bh=Q2Y3IPmwBn5oD4B92Exd9qbDGmi7LPEOGdwRf/VLEqU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=r9V6qQ126DUVY6NcOEgyw9J0tHbzn006U0SxMfUYx354vdz+bE6de9EliEmBs+5WrL63+dHX5gwSvZEgxPmAdE7Ri8Ufznrjl2F7eaMjoFat6whnNyG155xyW4CbFRicT5NsRGKDO7/DjB4+D0H8F9j/QEMOoGMFRtHKDQQ+l0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=miraclelinux.com; spf=pass smtp.mailfrom=miraclelinux.com; dkim=pass (2048-bit key) header.d=miraclelinux-com.20230601.gappssmtp.com header.i=@miraclelinux-com.20230601.gappssmtp.com header.b=TNF7HIl4; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=miraclelinux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraclelinux.com
+	s=arc-20240116; t=1764622468; c=relaxed/simple;
+	bh=kpaAN6+uD6ePMSb81xbgaM3vbQC38y7urjfsX37Yazg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q82BEgaKyd/rfqcS35fMAXW4uAnUouXfv0WLn0OoVTqO6hLzVzNpGlQr/pbmuytspx+glYhI2TNSKf8spevjFFo7xI1u897fATb+77P6fRtktk1sOcgGDwXkwNoTK/rTBH56nkyKslahN7Yh/XV2QaBiDwd8Vi9qEaJxXoJe6R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gpGPH/Xf; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=miraclelinux-com.20230601.gappssmtp.com header.i=@miraclelinux-com.20230601.gappssmtp.com header.b="TNF7HIl4"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3437c093ef5so2766745a91.0
-        for <kernelci@lists.linux.dev>; Sat, 29 Nov 2025 01:56:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gpGPH/Xf"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5942bac322dso5153709e87.0
+        for <kernelci@lists.linux.dev>; Mon, 01 Dec 2025 12:54:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=miraclelinux-com.20230601.gappssmtp.com; s=20230601; t=1764410181; x=1765014981; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=google.com; s=20230601; t=1764622464; x=1765227264; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZ+4n7TrCCrIhsz/ZxnczyxMY49o6E2jMnRyBh4r488=;
-        b=TNF7HIl4YlRZSBvLqHl1dBVPN6gJN1Z1Vl5+/DDHDExgucHLfxGgLUS71t/i1BpdkZ
-         vvZlfvvgxt8GZFvawojOg4py5EtRGJoJ4APLgYdCizZ2MMhQ+ck8StmupuPr1rEMPBlt
-         esHdYAGpMkb/H1HvNsYCkFz3ClAsvQvdhkM7O+rdUhrIhx0JkCpsaQWYlqjeGIkoeHv6
-         e6AoWAACG95klySuN7nV02p3PbBE1MDki9hxNj0QtYD76ZBBaphRfjRJEWGlddSEscgs
-         yOoCf/t6UhtwfG82RvYsVmNS2vuIEELSFRT6YvUEFEvWA2Mjuh7UsTp1Cj6yb3Y12ds/
-         ElUA==
+        bh=kpaAN6+uD6ePMSb81xbgaM3vbQC38y7urjfsX37Yazg=;
+        b=gpGPH/XfHUQ9sw5gnlQs6qVMHuyZW/Q6hCSaJs6nNsrtbkWoPHYfRA+iYrsDW3naLt
+         0qSKD62iJz1ZTjlcsX2tc7IDvkALWlHkuU0rD22/rP08Thg2Uh650YcXuAQ6hPB/0p/W
+         tg9+htaCX/gRSew3OL2xqMz5EtTNGZhGoWw8jgcOs7tEqE4dtO1DrAX5hINKj/c0xUQz
+         2vGkoXlT4MXRsB/ANKFncWdXdeiybEOblWZGyDahOAcUNIL2jvQBOMTM16zDBDmXf7Un
+         7RjuNlzGpqSz5aP9u+ypwrrVj1nchJNVOwAQRBSHR8BVME9BWICk/dY3t+P2pjMiVcmE
+         p6Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764410181; x=1765014981;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1764622464; x=1765227264;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FZ+4n7TrCCrIhsz/ZxnczyxMY49o6E2jMnRyBh4r488=;
-        b=HYeg83p6bDgALsbFSiaVaj44yjkR/MLLv4LaSNMzPpuqZf152Vtb3h3nY32LnH0Vqg
-         Q3LFJ30iYEEfrTFESylyzIuLAVpPPAfuFpcer0mU80Wc0vbSYKDnSQHnAbq4+80W2VoU
-         ltXv5cUnJRcA80GFqjZ5qP8dc/M0MKDhQUoYPWbnvVWXgk1XSASmyMMIDLbeGE5juMcT
-         NY3Qy1MjfqJyppFyI5Sy+HKJS8fhQkZKgIUGOlCVb1sP8U6X3OwVdTQNUWAaB5S2VX6h
-         FOuO43FnHupGauraI+i5DOueAdq86WsAp00ugQGlL8qWOIcD5epvTu6x3WXjl6CqCk0S
-         fSIQ==
-X-Gm-Message-State: AOJu0Yx3XkMzRRZRfQy+O5ix9d80Z1DdN7A3nK/w8UEPx92YJ/Xa06OX
-	Vj3qf43XyocFPl+Emw/x4YPBy1MgPfIkv8vtXk7yW4AEhjmFAkO4Eunn2s8zaouOmNbxsbYC8fK
-	QU/caMg3WdzdtECtu8Fzux1SpcUI4tV1yyjQ8BGaVQPqjUvbGjuI/zw==
-X-Gm-Gg: ASbGncvfXTX+DcH7yfg5wxqy3+ABmpqUXfdvlKqQnm9/nAehSy+vfwyCf/cdysGCR+L
-	CJKznZ7K+uSsrxkVIh7yXehhp4lhIXurH/k1+oeuEonpqahXvlRxjn7ekk6QvfBRfGnX8hrwS9r
-	L/rv6hoSFKC2pFdkIrgWDPIAj0wI1kEpw4H322/cBldSKp4VS4HAYQs7uMlX11fPC+PzzZFoMZD
-	uIqizAd7dgA+fJLr/s+y2VzPykNQJI6TWkg65jGoUkEq9mPug3EXhk+AHp53P0adFhPWvc=
-X-Google-Smtp-Source: AGHT+IHLg+lZLkXXTOcfTIlMDbE5mk/B7Kywc8sZ8HY6nIQf8xn2mQXrmd/+kZaPDvzhCBlT+14ALt0eaxpxtlyUQ4I=
-X-Received: by 2002:a17:90b:3c91:b0:340:be4d:8980 with SMTP id
- 98e67ed59e1d1-34733e4dcd2mr32690165a91.14.1764410180051; Sat, 29 Nov 2025
- 01:56:20 -0800 (PST)
+        bh=kpaAN6+uD6ePMSb81xbgaM3vbQC38y7urjfsX37Yazg=;
+        b=fUQuSOQod9wvJTY83iyp7ewSzGlVhKuiuR2r0b11H7yt+xQwoChzlWAsMSbqxAQdcD
+         BKR0M3X49lhOA1F0EnC3uV0GVieREzvLh+ZV5S3pvb8JRKP2wgYkiYBzxUrmM2Z9+gIY
+         M0aqSNBgwBe/8/KnstubmPLcQ/7kVouG7fcoqHOv4hRsnlI9MVoDNu/DoNro52DZHjLp
+         Whe7t1KxRz2s7Mv/jkjRRsUXBij50evCxwftTrBuctwbSzA9/Gf9wJB9U2V3QENpKjBW
+         pWGStJPBqMdsK5IQRY34H+qcAZy2vUCF58TKbBsuwZ6QXaOPLdvdvIBmf2WV6d9uFAcH
+         hTZA==
+X-Gm-Message-State: AOJu0YwLbjYAyhRc7wI0Ndb0SPkzoZN+6WoBhQSc9yH6nPaNyth2DNrk
+	lC/OcSBGJ+oa3ZCigfHh/c3fdxv0Rk9dXujssWtiY7S5mZ58+sCo6pDluBRqWqur/hFV+zW4pLQ
+	sTD3tiL4p+yt8u13lIfPZDbpHv6kfHn35S2wMb5Yz+yi8LVs7Q1bFWg==
+X-Gm-Gg: ASbGncuSE2uvEsvPM8bLExDAopvxphWRi0pKTVxjbikAPZYBz/rcxf0LQGC4Y/iIUoa
+	CMWUVuvoWNGGazKdO6nEh4anwMlVsYSFAfzaNMnpPVGtCvyD9/AVWqLZKhWIaEb+r3IiLUYQ3+y
+	/8A3KEt5eUBtRQ/OUTWrUbcwMs0ySQBRyISPOB5SmHDCYcF1cTHgbGUoKaXOb2IsDyifgGvnyUi
+	HlwsZtZCtmE0edwsqn2t9vqw/WnzCV+yFHAe8sBz4ewCEsmExQfN22dHfw0aPXtcCKlbAMcBjYu
+	BvSMGx+IKqQ7TI6tSs9BDaAyfslaA2CzD/QPSQ==
+X-Google-Smtp-Source: AGHT+IEu4wX6MOCKkNoHqv7MlFlU+5qQWiAYI0GUc7TA10wTa68Nhlm9qFLIazEe2FIe1t7/qWCl0M/hYNJx02HHG58=
+X-Received: by 2002:a05:6512:1395:b0:594:2475:a160 with SMTP id
+ 2adb3069b0e04-596a3ec427bmr12830895e87.26.1764622464219; Mon, 01 Dec 2025
+ 12:54:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Arisu Tachibana <arisu.tachibana@miraclelinux.com>
-Date: Sat, 29 Nov 2025 18:55:43 +0900
-X-Gm-Features: AWmQ_bkI6Tgfh9F3IchaeAnFW52jfLvNWzSWRAWXIGu9OnjUf7TQARa2I1eSI5U
-Message-ID: <CANgtXuNsJwWHerEwbjPocFHF_ydaPtS-Ojn+3rCfJFPXt9RWAA@mail.gmail.com>
-Subject: kci-dev real usage examples
+References: <CAHRSSEx3vyonQonF0cXOvnFS4=nZh_G4yRgpf1EsMNnXDrdTsQ@mail.gmail.com>
+ <CAHRSSEx21B9g1nO8izBf1aNesfKLj5DcHgHLd7txtZQaysptaw@mail.gmail.com>
+In-Reply-To: <CAHRSSEx21B9g1nO8izBf1aNesfKLj5DcHgHLd7txtZQaysptaw@mail.gmail.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Mon, 1 Dec 2025 12:54:12 -0800
+X-Gm-Features: AWmQ_bmornca9tqCDPG2WuRUV_TwObLlMoyzLAyzAKleI9PDiW9-3PZ6H_M7E6w
+Message-ID: <CAHRSSEzYxAYwX8N+eLWjtJRpSTKi+CoMYnEDR74V7_K9Dok2Yg@mail.gmail.com>
+Subject: please add android17-6.18
 To: kernelci@lists.linux.dev
+Cc: Betty Zhou <bettyzhou@google.com>, Tiffany Yang <ynaffit@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Please add the new android17-6.18 branch to kernelci testing:
 
-I=E2=80=99m giving a talk at OSS Japan 2025  about the new KernelCI CLI too=
-ls
-(kci-dev and kci-deploy), and I=E2=80=99d like to include a few short
-real-world examples of how people are using kci-dev.
-
-If you or your team are using kci-dev, could you share a quick reply on:
-- Your context (e.g. vendor kernel team, distro, lab, etc.)
-- Which kci-dev commands / workflows you actually use
-- What it replaced (manual web UI, curl+jq, custom scripts, etc.)
-- If it is possible the repository/code using kci-dev
-- Anything that still feels painful or missing
-
---=20
-thanks,
-arisut
+repo: https://android.googlesource.com/kernel/common
+branch: android17-6.18
