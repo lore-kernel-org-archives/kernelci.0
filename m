@@ -1,74 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FD7242D7C;
-	Thu,  4 Dec 2025 02:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C783F200110
+	for <kernelci@lists.linux.dev>; Wed, 10 Dec 2025 04:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764814569; cv=none; b=E07WD+am+jKDMlVnJGgIV7g3LPgQlGwrHVgl+FBhw0/FkkRSA+pjkvImz8bcZXCMxbBK7oeDEr79mgfmKQ9is3QHEPD6lmghU/TTc01Czud8fraMdLtIna5RinY5aMNcewr3YY7VW9KrZkBbgm7jFfDt9xqXTsEZufMGeGyTvSE=
+	t=1765341710; cv=none; b=EdCVUQv33HNLDXpSBauMxTVVt/lbUFcsWRkZOWitH0nSPzgP+wNSdNOemaPl+ryzDNMHGPmSKvHKPLLcyRkYvE6COg4RTwZHkRIK/rHsFoovOZAXDj8VNBl131GFwJVzBrm3Eno7QVK8vJ6nRHlHZjpc4z52A8bZfcnS31a0B0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764814569; c=relaxed/simple;
-	bh=T15PtGF00DzrjFAYoJw6/IiAfJIIc0eMQ+kihWcWEN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s6+DLiWZnEv4vBH/On4eOA3aPeV5YP4FQSVp8bnWIH3ocYKCWUvfEpfAbjQUTM42o3OEXsHQ7pvPfe/RgOLmo1dvf8Gi6niSKSO7oibS36qb2p9Rp4OkKBhwLdSFatHT5X1YfPdR4XPjnWmJHS+1iBVQ4MhnFpPO/p9slrIwnd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l2cCq+Dx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765341710; c=relaxed/simple;
+	bh=rKDnrcTeVD0ANO2/RXYLgFAflIhrXiIC+Xj1F0+TfpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=tvBXWSVwJ3IEwwe6KOPuLtn2/elPaCqEb3YF96aKEXA+8uS/nM6KveMKChwP1jcyg8ZmdJDAuGcLewU5KfZIb2M3914FU3CD+SmBkd/Zo/7H10JoqtEsUHNMFeJDA6mkLHv4lfg7GuhoTFTvqC46AtdT5IiM+oNc2mUsrtLMoBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYnfcc5g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l2cCq+Dx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DDAC4CEF5;
-	Thu,  4 Dec 2025 02:16:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYnfcc5g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A032C4CEF1;
+	Wed, 10 Dec 2025 04:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764814568;
-	bh=T15PtGF00DzrjFAYoJw6/IiAfJIIc0eMQ+kihWcWEN0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l2cCq+DxsxcQMMsk2X4H39rqkEWu5THMfLfy2lgZ3WyUojgNHPlcDI3SC+/RJn1N7
-	 UDNW5ysGHCkS+p5tn/GSQvRqZrJIQSkZl+mWMT3O35FgEXZP8DZg/IMCi4h8xk/khs
-	 otAd6YBSke4alV+PuFeOw+eCKSeSKjBCvs7DHhwyKMi3ws1HKEoAzhGl737qd8LeoH
-	 u9YZ4RZnisGRVdj7wxmHC8TmniCbrq6vsY8HPPBTyxyXZAZeu/ZOg4lA/NexP1Jo/u
-	 Cpi/L8EHHzpGOAWIzjntHnV/4R29kLGhmXoyGXJ4nww6dhe1fR3JD3ifYM8I/mHpV0
-	 hBA4wDIVLRZTA==
-Date: Wed, 3 Dec 2025 19:16:04 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Guenter Roeck <groeck@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	kernelci@lists.linux.dev, kernelci-results@groups.io,
-	gus@collabora.com, stable@vger.kernel.org,
-	linux-staging@lists.linux.dev
-Subject: Re: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
- uninitialized when passed as a const pointer arg...
-Message-ID: <20251204021604.GA843400@ax162>
-References: <176398914850.89.13888454130518102455@f771fd7c9232>
- <20251124220404.GA2853001@ax162>
- <CABXOdTfbsoNdv6xMCppMq=JsfNBarp6YyFV4por3eA3cSWdT7g@mail.gmail.com>
- <20251124224046.GA3142687@ax162>
- <2025112730-sterilize-roaming-5c71@gregkh>
- <20251204004314.GA1390678@ax162>
- <CABXOdTfd9C06i8Q8fGMDyMMoTtZ=fwDTvWnM=Yx7g5-ABaAvcg@mail.gmail.com>
+	s=k20201202; t=1765341710;
+	bh=rKDnrcTeVD0ANO2/RXYLgFAflIhrXiIC+Xj1F0+TfpE=;
+	h=Date:From:To:Cc:Subject:From;
+	b=bYnfcc5g5swjBGetIHm2JMHkeFYeAt2sy46Pr/YRIg6QzD0zgSTU5W/cuOUfpCZiX
+	 c09EC3Pn7XsSNnr1eOGFlVoi4fuFM4FsVR02rJ/F+J5Z892MWQ+erfeLmywTDfQIEC
+	 d/nxYlHysY1fCzts/yba51cDVlmlYFx4irwGsKZ4rjMNWM+k2r/Zm6/SlLEH8aOOVJ
+	 Zm8kPC8Q2R3ALFe2kxltzUMPs7nq8oE6Gc9V+HxNgIp8wEsGGlWwAL29ryN7Ld9bIA
+	 L2dcurPX7Wh2EVc1JqaMegxTtz6j4ZSfUgDao/CCDXd6FxN5rz+CCDpZmneqs0NAh4
+	 yvPdVtoX4UbmA==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 1AFCB1ACB974; Wed, 10 Dec 2025 04:41:48 +0000 (GMT)
+Date: Wed, 10 Dec 2025 13:41:47 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: tools@kernel.org, kernelci@lists.linux.dev
+Subject: b4 pr checks for KernelCI results
+Message-ID: <aTj6C69JzDUJUVP4@sirena.co.uk>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eb2nJQW6Aode4U6a"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABXOdTfd9C06i8Q8fGMDyMMoTtZ=fwDTvWnM=Yx7g5-ABaAvcg@mail.gmail.com>
+X-Cookie: It's clever, but is it art?
 
-On Wed, Dec 03, 2025 at 05:03:24PM -0800, Guenter Roeck wrote:
-> On Wed, Dec 3, 2025 at 4:43 PM Nathan Chancellor <nathan@kernel.org> wrote:
-> >
-> > On Thu, Nov 27, 2025 at 02:22:46PM +0100, Greg Kroah-Hartman wrote:
-> > > No objection from me to delete the driver from all of the stable trees :)
-> >
-> > Sounds rather nuclear for the issue at hand :) but I can send the
-> > backports for that change and we can see who complains before trying a
-> > more localized (even if wrong) fix.
-> >
-> 
-> Already done (and queued for the next stable releases). Sorry, I
-> wanted to copy you but ended up copying myself.
 
-Ah great, one less thing for me to do :)
+--eb2nJQW6Aode4U6a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Cheers,
-Nathan
+Hi Konstantin,
+
+It'd be really handy to have integration in b4 for querying the KernelCI
+APIs for test results when both sending and pulling in PRs to see what
+the testing state for the head commit for the PR is.  There's some docs
+for the API here:
+
+   https://docs.kernelci.org/
+
+Possibly this could just be pointing at the dashboard if there's result
+there, that'd be a start - there's a bunch of UI issues with starting to
+get more complex.
+
+Thanks,
+Mark
+
+--eb2nJQW6Aode4U6a
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmk4+ggACgkQJNaLcl1U
+h9AmFAf/WtXIwH0okguevIgDqcXhyS4MX3PB138GWJ18mJTx3buQC5UuHCL/5xvM
+IP70OfC3T3M6LcxFUh8A5Ssi9Q+29hw4r7ckIxdgQZwtZvlWRJLisVlG2BXsZx0d
+BowzUrEdoHxMm6XsehqXvrVclbbPwBJBRu2M24JLaGGjHdkUeaSW/trVFUZ2PVEo
+ChMyYUdFsqic064v2rwCGMx23AX1186bxzm4EU/Mo17ejcPnpuPuQLmEi4dkEWKX
+xInbVG+gFldhEb9KDqUdbR/v5zDfZwPBpgX4Vz3yEgSm4B/FI1R6yziK+yv85oME
+j90IKampeexySZFt3pDJQzCKKAkRRg==
+=5BTq
+-----END PGP SIGNATURE-----
+
+--eb2nJQW6Aode4U6a--
