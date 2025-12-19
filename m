@@ -1,80 +1,123 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70E430E83F;
-	Wed, 17 Dec 2025 17:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678DB1E520C
+	for <kernelci@lists.linux.dev>; Fri, 19 Dec 2025 21:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765992674; cv=none; b=eTD5Is39EKlqwP0s1SZK+3Uzpg3MosTOMNIIidmKQJEXd3cEaQyj2WqJx8xHsfovRowIXfp+EDW1uULOPa3IJcr/qJudOw2CdO+aGphAEzseBCdYIwdgY51+Q4kNjvloH45zVPNTe8KEO2Ni1EjzIJWlGAAluMIh2nS8bQnv+XQ=
+	t=1766178485; cv=none; b=pvBEh74iKbQQzUZd7RERdOGYAF5kyGwG8MV9X8ncVjhR90VSSf732NOzK0mbX5G8069NsU3Iq/44b1alNPe0dQhZTTJkGyb6PASChD1/rjcjS7KBiHenB1VYbFVq1lqvZuyipFsWg+dYNSbPV7tJ9XoKRsnlrFtJ1E74Tc+h9MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765992674; c=relaxed/simple;
-	bh=hQsYAIqDrRXg0r8g4XwZdF1T2e2CQF4iC1hiQjxadf0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=h87Y38iR1r/gHu/55eHBwcAkUP7gco0dDD5ZpEGkpNkviAcROcbMIRBjf9MMTlCzgaxa9sNGK2EDyMHN11zTYVXdDsXshf4ZSWSiFyyJGuJtk9DO9/hEeCgJxkg5Hcf9AqOCkGxrJJ/w6YQ1gF1PtC//6bDNE4COtP7YitXicpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RFV61cwy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qWWjo1wJ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1766178485; c=relaxed/simple;
+	bh=49a+TZsqszrvkWiDpeFHPwyY6eLsyfZBt3Si50x83Mo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=i423EXBrhEYXKj7RR8ogDyeB/eY7hep4l4rKCCNVKUpHLH4j2CPzraG5sf4faXP6trc14Ky35hUMe735lGBrwLJ83111fiya5LNon+1PB74pVmgnQkvf1NA/HhyjnTCX4uH9TzieEHAlUelRCojl88JN5JCAL7ou3bq72LF4zrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b=FEqRKNLA; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RFV61cwy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qWWjo1wJ"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765992671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PqeMNGjJyPXkpcP70Kvy/xsxscAUTTtTXVs7cAEpLtU=;
-	b=RFV61cwybx5GgFTsxF68RkL4jlucFNo6yj5wFmxAaw7ZTzp12j1WR4tMSlleXnmQgt18vF
-	Xn863h9abC6EPXJJeIYHkiT+GUjG2XoGxtgzwP5m7KzuxgJ/GBgypgGpMIT9wUOG7Pgg/t
-	+fAOxCaETIv/pwjq2NfGDm3dM6JtwfVAnqKY1keBcbFTfpgjOJllq5mvEUGV29MZgWBAuC
-	S2+1H393TH1FKj5a18JPg/lJb2doiuhSUmC6iNTXOW8KQCVS6tVk105cy8NeBRtQxDs27+
-	eaAUodmwlmhES5eEzC1mkWfRzB3cMg4s6uPzrn7jiFqk1Vl7VCyWRyr1YyB39Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765992671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PqeMNGjJyPXkpcP70Kvy/xsxscAUTTtTXVs7cAEpLtU=;
-	b=qWWjo1wJN2ulua4vHced8Jns5JZrKjwiHl/gU+Ih7LCqrnmA4BXnuyT3qgUDT6rO0fDjEi
-	CBXlhytb3Sa0ZQCg==
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Ingo Molnar <mingo@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: KernelCI bot <bot@kernelci.org>, kernelci@lists.linux.dev,
- kernelci-results@groups.io, regressions@lists.linux.dev,
- gus@collabora.com, linux-next@vger.kernel.org, Nick Hu
- <nick.hu@sifive.com>
-Subject: Re: [REGRESSION] next/master: (build) initialization of
- =?utf-8?Q?=E2=80=98int?=
- (*)(void =?utf-8?Q?*=29=E2=80=99?= from incompatible pointer type...
-In-Reply-To: <20251217164346.37b36bea@canb.auug.org.au>
-References: <176594754327.3108.9546235188357594114@77bfb67944a2>
- <20251217164346.37b36bea@canb.auug.org.au>
-Date: Wed, 17 Dec 2025 18:31:09 +0100
-Message-ID: <878qf1c8wy.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b="FEqRKNLA"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-34c902f6845so2864150a91.2
+        for <kernelci@lists.linux.dev>; Fri, 19 Dec 2025 13:08:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profusion.mobi; s=google; t=1766178482; x=1766783282; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=49a+TZsqszrvkWiDpeFHPwyY6eLsyfZBt3Si50x83Mo=;
+        b=FEqRKNLAu2/QwQESmgGgwx3DUVuWbmerQYAbuZhEkdQ5aI13KdJ1PsMaOiKFRJhiJz
+         sgC1npyyUeAStgvpTkeyyylNtxPfvme+EIVBM55/dM1R+mZDoma2PKFubhyL7qkJGTis
+         Q6amvXgWKBEvjlFd89Sv8Zn5F1l804BziPtyeanOFGXBo6MCEOXCQZ97RrCZlXy3+FSM
+         NMxchAUPdciunsU5wAq5yhyArxXC31BzKo6z50DLxVycZnBM2tjZJl9S/27RhyM1XSTq
+         4HbNYqd4mNepBECWwq2uQgzXBtxd0QuvnFDu2rnmziSg4OIRi3abZyYgO0STVaEObuud
+         gzYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766178482; x=1766783282;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=49a+TZsqszrvkWiDpeFHPwyY6eLsyfZBt3Si50x83Mo=;
+        b=AFP14GWm1SSwc0PrKghxJQlv+3PLRXs/OVwRtmWCCZg1HgsTvs4iWLVFUy83rrBph4
+         ZeMxvJ8vSiuZD0eRcBpUMiWWRI+6o8mn/EERRUrl/G3MyK04Ph6kqWlYiHDViBXtqpTL
+         NYhnzTzO016SNzxD66fPe1UmqonCOzypI/CrwDAZ0w6ZQKjqEUI0e30mtP/A6/xT1ELR
+         hFNh16DY7MQRaQNhZK/6JgnlA6GKroO+Vgkwj2LgExJKaIlQI/u5beJ0b9tjF9I/eQSs
+         pUU9l3bs55rPvR2oMcfdxN2GyfU+XLuQ0FQCLGSs4KmhEuSOxq6bY92yjgAQuSotXaLg
+         qTfQ==
+X-Gm-Message-State: AOJu0YypxDaf5648bt4xDzFd8SrFTC2ZP1/4MeCCZWmSq9hvrCz/VJxA
+	QpabhTqJB07fPTTyJuzt4YwRDaJ4lfAZZqfU233BYxe1/okuN8RvN7Jmg/JfaephJ1q/xySXHge
+	zHy6AXs2xCYAoLzmdtVvRqTlcJWNevhDGeEIz6TdCIpu24Esrlzs4uW8=
+X-Gm-Gg: AY/fxX7l5gET/J7w6cN9WpEz895PtsbYg4+oGg3G6L7wZju+ameRU4YdzvOVr/Otvnr
+	Mdv/+o8hOSuPbXHIfUtkdhQvnGnIcvnjyeqwV0pA6Mg14Fs2tPCzD8r0O2mFwEwGAH5Q0tXizkn
+	oIFABtWxI83r3xRCd5Yj8yaR2nX1PS8iOveZhlD77ewt8x5MwTFKNFJs/o+KPMv9TrQ0vUik6OT
+	4GzTBrKaE3UMw7D4pAJn7R8tlM3W0Rogvzyy/R/ipU4BVhxIsHHTNgDJCqn6W/f3a2ye9ZO
+X-Google-Smtp-Source: AGHT+IFaYmw3UUZfCPUjaIhtVD/TMPsqMPMcrz8v6MA0TsmC9jCaOlAn/e/G+jI9GOdKEW/WPqWNyQVqVm57f2qkhiM=
+X-Received: by 2002:a17:90b:3015:b0:34a:b4a2:f0c8 with SMTP id
+ 98e67ed59e1d1-34e921ccb4cmr2589630a91.30.1766178482192; Fri, 19 Dec 2025
+ 13:08:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Gustavo Flores <gustavo.flores@profusion.mobi>
+Date: Fri, 19 Dec 2025 18:07:51 -0300
+X-Gm-Features: AQt7F2qv5V7B08Gk6RiCdQsysPyv9h0MjfyCgGP-kOzIDNrcNYGYEBVsSeEfGns
+Message-ID: <CAB31pVmWr-=4-fQa4ivp03e8=y=cVAt-aq6K=BEVd_vVEt0BKw@mail.gmail.com>
+Subject: KernelCI Dashboard Report - December 08 - December 19, 2025
+To: kernelci@lists.linux.dev
+Cc: kernelci-webdashboard@groups.io
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 17 2025 at 16:43, Stephen Rothwell wrote:
-> Caused by commit
->
->   1c546bb43361 ("irqchip/riscv-aplic: Preserve APLIC states across suspend/resume")
->
-> From the tip tree
-> (https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git#master).
->
-> The call back arguments and the registration method changed in
-> v6.19-rc1 in commit
->
->   a97fbc3ee3e2 ("syscore: Pass context data to callbacks")
+Hello everyone,
 
-Right. Geert pointed that out already and it's fixed in the offending
-commit.
+Over the last two weeks we focused on improving ingester observability
+and reliability, extending metrics, and advancing the hardware view
+improvements, including starting the rollout of a significantly faster
+/hardware view (currently staging-only at
+https://staging.dashboard.kernelci.org:9000/hardware-new), no existing
+endpoints/routes changed, we only added a new backend endpoint and a
+new frontend route, feel free to test it out!
 
-Thanks,
+This will be the last report of the year, as we=E2=80=99ll be taking a brea=
+k
+for Christmas and New Year=E2=80=99s Eve. We=E2=80=99ll resume reports in t=
+he new
+year.
 
-        tglx
+## Ingester
+
+- Added submissions and items-created Prometheus metrics. [1]
+- Switched the ingester execution model from threads to processes. [2]
+- Reported ingester queue size via OpenMetrics. [3]
+- Added a `pending_retry` folder to improve handling of retryable
+ingestion failures. [4]
+- Fixed log excerpt handling by ensuring `log_excerpt` is set to an
+empty string after conversion. [5]
+
+## UI
+
+- Added a lab filter to the hardware details view. [6]
+- Added a new hardware listing view backed by the hardware-v2 endpoint. [7]
+
+## Notifications
+
+- Added a metrics summary notification and template. [8]
+- Fixed the metrics notification recipient configuration. [9]
+
+## Database
+
+- Updated the latest_checkout table primary key via migration. [10]
+
+## References
+
+[1] - https://github.com/kernelci/dashboard/pull/1660
+[2] - https://github.com/kernelci/dashboard/pull/1670
+[3] - https://github.com/kernelci/dashboard/pull/1677
+[4] - https://github.com/kernelci/dashboard/pull/1678
+[5] - https://github.com/kernelci/dashboard/pull/1682
+[6] - https://github.com/kernelci/dashboard/pull/1671
+[7] - https://github.com/kernelci/dashboard/pull/1685
+[8] - https://github.com/kernelci/dashboard/pull/1646
+[9] - https://github.com/kernelci/dashboard/pull/1683
+[10] - https://github.com/kernelci/dashboard/pull/1681
+
+Merry christmas and happy new year!
