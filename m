@@ -1,123 +1,127 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678DB1E520C
-	for <kernelci@lists.linux.dev>; Fri, 19 Dec 2025 21:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20A424EAB1
+	for <kernelci@lists.linux.dev>; Sun, 28 Dec 2025 05:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766178485; cv=none; b=pvBEh74iKbQQzUZd7RERdOGYAF5kyGwG8MV9X8ncVjhR90VSSf732NOzK0mbX5G8069NsU3Iq/44b1alNPe0dQhZTTJkGyb6PASChD1/rjcjS7KBiHenB1VYbFVq1lqvZuyipFsWg+dYNSbPV7tJ9XoKRsnlrFtJ1E74Tc+h9MI=
+	t=1766900911; cv=none; b=nuAcZ1gY3vj/x+AQcPmCpJdo4+5VjZKrSQ+pdUJ3k3sVbmbZ1SiS/bPkEhUkbZHZYapRBlAiUVwzBXuaYI5wyO4IvOiPxQLCrXPvj2Nntl2LTO21xUVjA+YRqTpfRXjWpSpvzQdwCSh0MtJt/kxiHMLVEiDML4ml3l807Vuw5d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766178485; c=relaxed/simple;
-	bh=49a+TZsqszrvkWiDpeFHPwyY6eLsyfZBt3Si50x83Mo=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=i423EXBrhEYXKj7RR8ogDyeB/eY7hep4l4rKCCNVKUpHLH4j2CPzraG5sf4faXP6trc14Ky35hUMe735lGBrwLJ83111fiya5LNon+1PB74pVmgnQkvf1NA/HhyjnTCX4uH9TzieEHAlUelRCojl88JN5JCAL7ou3bq72LF4zrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b=FEqRKNLA; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
+	s=arc-20240116; t=1766900911; c=relaxed/simple;
+	bh=1pJCobo7skl3IqJjut1/aoDj5JGv6MK8u9FvD8pNb2M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xv3y8S+zKS/iC8FLYwR+JkUK+XRX2YyvClE7hq7WD/pVlDpEx7hj9R7pOwHkvyQFrsR9ZclzHhxzUxMU61iDoKlFoaAnbbA+AW0copBAkFOTs/5drCX7uh13cttncv3JVr+rqw5CqI9p5pT1c5I7Ei22cWM5bobmV7LxPlog6ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gG/WwWnt; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=profusion.mobi header.i=@profusion.mobi header.b="FEqRKNLA"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-34c902f6845so2864150a91.2
-        for <kernelci@lists.linux.dev>; Fri, 19 Dec 2025 13:08:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gG/WwWnt"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59911cb8c3cso9096213e87.2
+        for <kernelci@lists.linux.dev>; Sat, 27 Dec 2025 21:48:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=profusion.mobi; s=google; t=1766178482; x=1766783282; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=49a+TZsqszrvkWiDpeFHPwyY6eLsyfZBt3Si50x83Mo=;
-        b=FEqRKNLAu2/QwQESmgGgwx3DUVuWbmerQYAbuZhEkdQ5aI13KdJ1PsMaOiKFRJhiJz
-         sgC1npyyUeAStgvpTkeyyylNtxPfvme+EIVBM55/dM1R+mZDoma2PKFubhyL7qkJGTis
-         Q6amvXgWKBEvjlFd89Sv8Zn5F1l804BziPtyeanOFGXBo6MCEOXCQZ97RrCZlXy3+FSM
-         NMxchAUPdciunsU5wAq5yhyArxXC31BzKo6z50DLxVycZnBM2tjZJl9S/27RhyM1XSTq
-         4HbNYqd4mNepBECWwq2uQgzXBtxd0QuvnFDu2rnmziSg4OIRi3abZyYgO0STVaEObuud
-         gzYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766178482; x=1766783282;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1766900908; x=1767505708; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=49a+TZsqszrvkWiDpeFHPwyY6eLsyfZBt3Si50x83Mo=;
-        b=AFP14GWm1SSwc0PrKghxJQlv+3PLRXs/OVwRtmWCCZg1HgsTvs4iWLVFUy83rrBph4
-         ZeMxvJ8vSiuZD0eRcBpUMiWWRI+6o8mn/EERRUrl/G3MyK04Ph6kqWlYiHDViBXtqpTL
-         NYhnzTzO016SNzxD66fPe1UmqonCOzypI/CrwDAZ0w6ZQKjqEUI0e30mtP/A6/xT1ELR
-         hFNh16DY7MQRaQNhZK/6JgnlA6GKroO+Vgkwj2LgExJKaIlQI/u5beJ0b9tjF9I/eQSs
-         pUU9l3bs55rPvR2oMcfdxN2GyfU+XLuQ0FQCLGSs4KmhEuSOxq6bY92yjgAQuSotXaLg
-         qTfQ==
-X-Gm-Message-State: AOJu0YypxDaf5648bt4xDzFd8SrFTC2ZP1/4MeCCZWmSq9hvrCz/VJxA
-	QpabhTqJB07fPTTyJuzt4YwRDaJ4lfAZZqfU233BYxe1/okuN8RvN7Jmg/JfaephJ1q/xySXHge
-	zHy6AXs2xCYAoLzmdtVvRqTlcJWNevhDGeEIz6TdCIpu24Esrlzs4uW8=
-X-Gm-Gg: AY/fxX7l5gET/J7w6cN9WpEz895PtsbYg4+oGg3G6L7wZju+ameRU4YdzvOVr/Otvnr
-	Mdv/+o8hOSuPbXHIfUtkdhQvnGnIcvnjyeqwV0pA6Mg14Fs2tPCzD8r0O2mFwEwGAH5Q0tXizkn
-	oIFABtWxI83r3xRCd5Yj8yaR2nX1PS8iOveZhlD77ewt8x5MwTFKNFJs/o+KPMv9TrQ0vUik6OT
-	4GzTBrKaE3UMw7D4pAJn7R8tlM3W0Rogvzyy/R/ipU4BVhxIsHHTNgDJCqn6W/f3a2ye9ZO
-X-Google-Smtp-Source: AGHT+IFaYmw3UUZfCPUjaIhtVD/TMPsqMPMcrz8v6MA0TsmC9jCaOlAn/e/G+jI9GOdKEW/WPqWNyQVqVm57f2qkhiM=
-X-Received: by 2002:a17:90b:3015:b0:34a:b4a2:f0c8 with SMTP id
- 98e67ed59e1d1-34e921ccb4cmr2589630a91.30.1766178482192; Fri, 19 Dec 2025
- 13:08:02 -0800 (PST)
+        bh=gpbqpIsug6MH33BRSdVEMnAsF4zSM1dpRpn6fI+y1V8=;
+        b=gG/WwWntj7ekiUCDOjIuRNzgm1OvvLxtfa0cgvii+d44EyGw2876+/+AP2LuwZj402
+         e0PLvxM0WpEaxSdskEm7nhG+A04EoeAocrQ39yfBZv0Ue14HyMG/oA697JLhFCvOB89o
+         Ege26ObhhbTJl4AfNfeuwYSL5gwsZkPjXAyb5xyVNxM0+MX18OWYnyZguVD7st00jmc0
+         NSTqHHHO6N1rYW3dMBV+z2JRPWqSKC6aMpWg3hBAAgHDzsfZEigmBifokfV+p/8cIJBz
+         ptbeG8KTi8HXLQqjA14gHHCuBUPq78ohjhT5BHPLKVQhq5IH6GPjPqtGWLUx3Y0V5Pub
+         HSvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766900908; x=1767505708;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gpbqpIsug6MH33BRSdVEMnAsF4zSM1dpRpn6fI+y1V8=;
+        b=AvOLZayjTNaVRhvgvDKG7s9GaW+xtMkjuy8cQ0EJGO4EHnMQyv7JdU3VoDNws7KqQ8
+         myk0zhD04+RHRuZag1SHUQemiRhrUXiwJFioL+KxKdrFyZFwp0xFfGzafuXImRRDEvy9
+         acxaA8DrKYHZU7HILw5AeqCdcePW24sOyJ2M4hvagA5j9NpXwj2JCvl7XEh4Krnb1vh3
+         G92YfMUVIrzHlR58eJWrMmgWqQwfi6Pf+rEIC8oceRMc3BC62NuHDimURPIs4D8zJnNK
+         Ns0zMgc9vFoYf2aN1HERJ8oS7/2bzGxW00rEp9Y5sLCRkxKHu634pV6pjY27wh4UVZEw
+         4VGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQCjWL87/KuWR5i3zceIHbZgUNEpjlhbyTeW1B9m/5KJ3k+56uPw/AmGkDYVhXWhaz3gIGuFUGbA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwV2APY2kc4o11FAzhiV7tQH2AhmqWC1MFkPBVd3Yqr6draTU5Z
+	yJKLy/+acmQ2ZMd2IrR5aXiAmh232x5jbbYhJjCxzYebCG0ArQ1Tq/7C
+X-Gm-Gg: AY/fxX7YDGqGObVepncdbGXdpQL8qr0EiHLXSctBERJ+9C8YNor1YQqm5d+qdedTSJa
+	OhuBPkyEdeJX2vcy4BkaGDdNidd/7xVtr4E0PBaH2/5qcbLMAoCsXrzBQbLoGS50Sk5DZcb1wZU
+	C8Em6zwMe+g6qXlMI9yKxLJD9Vvr5Rx50/Bj+tQMnVaffdT4L88fwsFdxibb4MjrSvJBUZ+THyn
+	H1wTD9qfNVhQTG0Eg+4FZMfkJmUfJejie4tjhsm2q/dlEJABROXSG67TuBQ0ofbA8+MwWwvz+Zv
+	LWtReBrBFJYpXImtJXHDcdSGQ0ulyY42tyI7FeEutBJmAmxDXhECLEp8Y5JL7088FE+krYuJmf+
+	4c1jREvs9edoIXJbaQ8PscE409i9ClvD4rVI1X08Bv3OGydqzQWW54GDLnUc/uoabnEBzH0ISIO
+	Zhwsj/gAGBtE3I5ta3kOE=
+X-Google-Smtp-Source: AGHT+IHbwDkZ0ZrkYZSKb3xcvqlBhmZdaEoQdezjtjNsk1jz3+5apfKEePyLYdpuFJXN8OT07eFG0Q==
+X-Received: by 2002:a05:6512:3b9f:b0:595:7cb9:8e51 with SMTP id 2adb3069b0e04-59a17d1fa1dmr9400930e87.12.1766900907593;
+        Sat, 27 Dec 2025 21:48:27 -0800 (PST)
+Received: from localhost ([194.190.17.114])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-59a185d5ee4sm8077427e87.17.2025.12.27.21.48.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Dec 2025 21:48:27 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: nfraprado@collabora.com
+Cc: Tim.Bird@sony.com,
+	bhelgaas@google.com,
+	dan.carpenter@linaro.org,
+	davidgow@google.com,
+	devicetree@vger.kernel.org,
+	dianders@chromium.org,
+	gregkh@linuxfoundation.org,
+	groeck@chromium.org,
+	kernel@collabora.com,
+	kernelci@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	robh+dt@kernel.org,
+	saravanak@google.com,
+	shuah@kernel.org
+Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS 13 9300
+Date: Sun, 28 Dec 2025 08:47:42 +0300
+Message-ID: <20251228054804.2515185-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
+References: <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Gustavo Flores <gustavo.flores@profusion.mobi>
-Date: Fri, 19 Dec 2025 18:07:51 -0300
-X-Gm-Features: AQt7F2qv5V7B08Gk6RiCdQsysPyv9h0MjfyCgGP-kOzIDNrcNYGYEBVsSeEfGns
-Message-ID: <CAB31pVmWr-=4-fQa4ivp03e8=y=cVAt-aq6K=BEVd_vVEt0BKw@mail.gmail.com>
-Subject: KernelCI Dashboard Report - December 08 - December 19, 2025
-To: kernelci@lists.linux.dev
-Cc: kernelci-webdashboard@groups.io
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello everyone,
+"Nícolas F. R. A. Prado" <nfraprado@collabora.com>:
+> Add a sample board file describing the file's format and with the list
+> of devices expected to be probed on the XPS 13 9300 machine as an
+> example x86 platform.
 
-Over the last two weeks we focused on improving ingester observability
-and reliability, extending metrics, and advancing the hardware view
-improvements, including starting the rollout of a significantly faster
-/hardware view (currently staging-only at
-https://staging.dashboard.kernelci.org:9000/hardware-new), no existing
-endpoints/routes changed, we only added a new backend endpoint and a
-new frontend route, feel free to test it out!
+And now "Dell Inc.,XPS 13 9300.yaml" became the only file in the repository,
+which has space in its name:
 
-This will be the last report of the year, as we=E2=80=99ll be taking a brea=
-k
-for Christmas and New Year=E2=80=99s Eve. We=E2=80=99ll resume reports in t=
-he new
-year.
+$ find . -name '* *'
+./tools/testing/selftests/devices/probe/boards/Dell Inc.,XPS 13 9300.yaml
 
-## Ingester
+I kindly ask you to rename file. New name should not contain space or comma
+in it.
 
-- Added submissions and items-created Prometheus metrics. [1]
-- Switched the ingester execution model from threads to processes. [2]
-- Reported ingester queue size via OpenMetrics. [3]
-- Added a `pending_retry` folder to improve handling of retryable
-ingestion failures. [4]
-- Fixed log excerpt handling by ensuring `log_excerpt` is set to an
-empty string after conversion. [5]
+The file name in its current form breaks tools. For example, it breaks
+"xargs".
 
-## UI
+For example, the following will work in "fs" directory:
 
-- Added a lab filter to the hardware details view. [6]
-- Added a new hardware listing view backed by the hardware-v2 endpoint. [7]
+stable/fs$ find . | xargs chmod -w
 
-## Notifications
+But it will not work in root of source tree because of this
+"Dell Inc.,XPS 13 9300.yaml" file:
 
-- Added a metrics summary notification and template. [8]
-- Fixed the metrics notification recipient configuration. [9]
+stable$ find . | xargs chmod -w
+chmod: cannot access './tools/testing/selftests/devices/probe/boards/Dell': No such file or directory
+chmod: cannot access 'Inc.,XPS': No such file or directory
+chmod: cannot access '13': No such file or directory
+chmod: cannot access '9300.yaml': No such file or directory
 
-## Database
-
-- Updated the latest_checkout table primary key via migration. [10]
-
-## References
-
-[1] - https://github.com/kernelci/dashboard/pull/1660
-[2] - https://github.com/kernelci/dashboard/pull/1670
-[3] - https://github.com/kernelci/dashboard/pull/1677
-[4] - https://github.com/kernelci/dashboard/pull/1678
-[5] - https://github.com/kernelci/dashboard/pull/1682
-[6] - https://github.com/kernelci/dashboard/pull/1671
-[7] - https://github.com/kernelci/dashboard/pull/1685
-[8] - https://github.com/kernelci/dashboard/pull/1646
-[9] - https://github.com/kernelci/dashboard/pull/1683
-[10] - https://github.com/kernelci/dashboard/pull/1681
-
-Merry christmas and happy new year!
+-- 
+Askar Safin
