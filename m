@@ -1,127 +1,123 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o10.zoho.com (sender4-op-o10.zoho.com [136.143.188.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20A424EAB1
-	for <kernelci@lists.linux.dev>; Sun, 28 Dec 2025 05:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766900911; cv=none; b=nuAcZ1gY3vj/x+AQcPmCpJdo4+5VjZKrSQ+pdUJ3k3sVbmbZ1SiS/bPkEhUkbZHZYapRBlAiUVwzBXuaYI5wyO4IvOiPxQLCrXPvj2Nntl2LTO21xUVjA+YRqTpfRXjWpSpvzQdwCSh0MtJt/kxiHMLVEiDML4ml3l807Vuw5d8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766900911; c=relaxed/simple;
-	bh=1pJCobo7skl3IqJjut1/aoDj5JGv6MK8u9FvD8pNb2M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xv3y8S+zKS/iC8FLYwR+JkUK+XRX2YyvClE7hq7WD/pVlDpEx7hj9R7pOwHkvyQFrsR9ZclzHhxzUxMU61iDoKlFoaAnbbA+AW0copBAkFOTs/5drCX7uh13cttncv3JVr+rqw5CqI9p5pT1c5I7Ei22cWM5bobmV7LxPlog6ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gG/WwWnt; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B7715E97
+	for <kernelci@lists.linux.dev>; Mon, 29 Dec 2025 13:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767015760; cv=pass; b=XnJm2dNkTFpI41YejdkAJF5OFsfaNGUZtWauswyrWSmGbXJ7ZbdGqMYBR3WG1RA3VXqhiiEg2RlQ+idc+S+oaGV0/ow2j13k5DBc15kBwTASi0xIsrdu/am8XoWxX+XSeULfl3u7ss9pwcRkbETBLHOGQpWX5JEIM4E58Y46Mrg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767015760; c=relaxed/simple;
+	bh=loCDhH16hbvH6uwGQ8ZSORTaqZeAjRiHnxvhaBLqn4E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=egMxBd0S+OUU1OuMd2m90OBqzG8ChP8mfi3cn3xI45JHPm95juqTtl3MZeyLx5xvkBVrBQnTmDf74BY/75FniJ3DHoF7+xz9KqsB8BsPH6xkK9kkVGiJnLqVjkIQjkmVEv1iOTXrGAWD6NmtA+dHGbElBLaeihbT+M5uL4bYQGA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b=bC783KNG; arc=pass smtp.client-ip=136.143.188.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gG/WwWnt"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59911cb8c3cso9096213e87.2
-        for <kernelci@lists.linux.dev>; Sat, 27 Dec 2025 21:48:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766900908; x=1767505708; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gpbqpIsug6MH33BRSdVEMnAsF4zSM1dpRpn6fI+y1V8=;
-        b=gG/WwWntj7ekiUCDOjIuRNzgm1OvvLxtfa0cgvii+d44EyGw2876+/+AP2LuwZj402
-         e0PLvxM0WpEaxSdskEm7nhG+A04EoeAocrQ39yfBZv0Ue14HyMG/oA697JLhFCvOB89o
-         Ege26ObhhbTJl4AfNfeuwYSL5gwsZkPjXAyb5xyVNxM0+MX18OWYnyZguVD7st00jmc0
-         NSTqHHHO6N1rYW3dMBV+z2JRPWqSKC6aMpWg3hBAAgHDzsfZEigmBifokfV+p/8cIJBz
-         ptbeG8KTi8HXLQqjA14gHHCuBUPq78ohjhT5BHPLKVQhq5IH6GPjPqtGWLUx3Y0V5Pub
-         HSvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766900908; x=1767505708;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gpbqpIsug6MH33BRSdVEMnAsF4zSM1dpRpn6fI+y1V8=;
-        b=AvOLZayjTNaVRhvgvDKG7s9GaW+xtMkjuy8cQ0EJGO4EHnMQyv7JdU3VoDNws7KqQ8
-         myk0zhD04+RHRuZag1SHUQemiRhrUXiwJFioL+KxKdrFyZFwp0xFfGzafuXImRRDEvy9
-         acxaA8DrKYHZU7HILw5AeqCdcePW24sOyJ2M4hvagA5j9NpXwj2JCvl7XEh4Krnb1vh3
-         G92YfMUVIrzHlR58eJWrMmgWqQwfi6Pf+rEIC8oceRMc3BC62NuHDimURPIs4D8zJnNK
-         Ns0zMgc9vFoYf2aN1HERJ8oS7/2bzGxW00rEp9Y5sLCRkxKHu634pV6pjY27wh4UVZEw
-         4VGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQCjWL87/KuWR5i3zceIHbZgUNEpjlhbyTeW1B9m/5KJ3k+56uPw/AmGkDYVhXWhaz3gIGuFUGbA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwV2APY2kc4o11FAzhiV7tQH2AhmqWC1MFkPBVd3Yqr6draTU5Z
-	yJKLy/+acmQ2ZMd2IrR5aXiAmh232x5jbbYhJjCxzYebCG0ArQ1Tq/7C
-X-Gm-Gg: AY/fxX7YDGqGObVepncdbGXdpQL8qr0EiHLXSctBERJ+9C8YNor1YQqm5d+qdedTSJa
-	OhuBPkyEdeJX2vcy4BkaGDdNidd/7xVtr4E0PBaH2/5qcbLMAoCsXrzBQbLoGS50Sk5DZcb1wZU
-	C8Em6zwMe+g6qXlMI9yKxLJD9Vvr5Rx50/Bj+tQMnVaffdT4L88fwsFdxibb4MjrSvJBUZ+THyn
-	H1wTD9qfNVhQTG0Eg+4FZMfkJmUfJejie4tjhsm2q/dlEJABROXSG67TuBQ0ofbA8+MwWwvz+Zv
-	LWtReBrBFJYpXImtJXHDcdSGQ0ulyY42tyI7FeEutBJmAmxDXhECLEp8Y5JL7088FE+krYuJmf+
-	4c1jREvs9edoIXJbaQ8PscE409i9ClvD4rVI1X08Bv3OGydqzQWW54GDLnUc/uoabnEBzH0ISIO
-	Zhwsj/gAGBtE3I5ta3kOE=
-X-Google-Smtp-Source: AGHT+IHbwDkZ0ZrkYZSKb3xcvqlBhmZdaEoQdezjtjNsk1jz3+5apfKEePyLYdpuFJXN8OT07eFG0Q==
-X-Received: by 2002:a05:6512:3b9f:b0:595:7cb9:8e51 with SMTP id 2adb3069b0e04-59a17d1fa1dmr9400930e87.12.1766900907593;
-        Sat, 27 Dec 2025 21:48:27 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-59a185d5ee4sm8077427e87.17.2025.12.27.21.48.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Dec 2025 21:48:27 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: nfraprado@collabora.com
-Cc: Tim.Bird@sony.com,
-	bhelgaas@google.com,
-	dan.carpenter@linaro.org,
-	davidgow@google.com,
-	devicetree@vger.kernel.org,
-	dianders@chromium.org,
-	gregkh@linuxfoundation.org,
-	groeck@chromium.org,
-	kernel@collabora.com,
-	kernelci@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	robh+dt@kernel.org,
-	saravanak@google.com,
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b="bC783KNG"
+ARC-Seal: i=1; a=rsa-sha256; t=1767015748; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DPWRYSMaaqsR9iLHuzeqRrSSXj/wQvdIqJnuhyfrriWbQwcK0TCOX3fDWbIrILheiGdZOBIGN1i+alM46y4dPbrkWFmzfpUk5ZuyPpFUVSIEcFnxxjjsdmkrTVV//uQZvr/8b1G/eI4jbKR48gtFvIgY+EkbmsPI8D6t0BOaqDA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1767015748; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=loCDhH16hbvH6uwGQ8ZSORTaqZeAjRiHnxvhaBLqn4E=; 
+	b=JCtK0jgedzPwFGeo2Fgk5J84uuogg5MYhx+0qrKm4N33b7vRfQMpTWzZENVxT1hoifIau/cMhJ0rdNzIMWh0XDuX7lHdt/Ytuvpp05rf1urq7rsjunug8LeZ7FQAE9AoY76/0EmkG1M4CPc/YKKPZj+KtYBUW90itdbrwFTW9EY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nfraprado@collabora.com;
+	dmarc=pass header.from=<nfraprado@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767015748;
+	s=zohomail; d=collabora.com; i=nfraprado@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=loCDhH16hbvH6uwGQ8ZSORTaqZeAjRiHnxvhaBLqn4E=;
+	b=bC783KNGrgv9DveVtr5RCCqZ6mUyzC+OoHS6PCY/4kKXGA7e94MvQM/YHjrK0IaY
+	59nb3lRUMP5ZrrgXZwHfwo5tyaMJYEnJpHpqzeLFsOZTf3kIYw9OJWzRinDL9whtgcM
+	lUA9WLOfYeVBdqeSVUrymyFns+ZHjLZQ3Vg5UkFw=
+Received: by mx.zohomail.com with SMTPS id 1767015745491743.7293494404073;
+	Mon, 29 Dec 2025 05:42:25 -0800 (PST)
+Message-ID: <78b4f1f60563fc854f5f4a54b42e0bac60715070.camel@collabora.com>
+Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for
+ XPS 13 9300
+From: =?ISO-8859-1?Q?N=EDcolas?= "F. R. A. Prado" <nfraprado@collabora.com>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Tim.Bird@sony.com, bhelgaas@google.com, dan.carpenter@linaro.org, 
+	davidgow@google.com, devicetree@vger.kernel.org, dianders@chromium.org, 
+	gregkh@linuxfoundation.org, groeck@chromium.org, kernel@collabora.com, 
+	kernelci@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-usb@vger.kernel.org, robh+dt@kernel.org, saravanak@google.com, 
 	shuah@kernel.org
-Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS 13 9300
-Date: Sun, 28 Dec 2025 08:47:42 +0300
-Message-ID: <20251228054804.2515185-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
-References: <20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
+Date: Mon, 29 Dec 2025 10:42:17 -0300
+In-Reply-To: <20251228054804.2515185-1-safinaskar@gmail.com>
+References: 
+	<20240122-discoverable-devs-ksft-v4-3-d602e1df4aa2@collabora.com>
+	 <20251228054804.2515185-1-safinaskar@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-7 
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-"Nícolas F. R. A. Prado" <nfraprado@collabora.com>:
-> Add a sample board file describing the file's format and with the list
-> of devices expected to be probed on the XPS 13 9300 machine as an
-> example x86 platform.
+On Sun, 2025-12-28 at 08:47 +0300, Askar Safin wrote:
+> "N=C3=ADcolas F. R. A. Prado" <nfraprado@collabora.com>:
+> > Add a sample board file describing the file's format and with the
+> > list
+> > of devices expected to be probed on the XPS 13 9300 machine as an
+> > example x86 platform.
+>=20
+> And now "Dell Inc.,XPS 13 9300.yaml" became the only file in the
+> repository,
+> which has space in its name:
+>=20
+> $ find . -name '* *'
+> ./tools/testing/selftests/devices/probe/boards/Dell Inc.,XPS 13
+> 9300.yaml
+>=20
+> I kindly ask you to rename file. New name should not contain space or
+> comma
+> in it.
 
-And now "Dell Inc.,XPS 13 9300.yaml" became the only file in the repository,
-which has space in its name:
+While I understand it might be inconvenient that this is the only file
+with a space in its name, that is exactly the string that is reported
+by DMI, so it is natural that it would be used for the filename.
 
-$ find . -name '* *'
-./tools/testing/selftests/devices/probe/boards/Dell Inc.,XPS 13 9300.yaml
+Besides, I'm not aware of there being a style guide rule that prohibits
+space in filenames in the kernel tree, or that could have easily be
+detected by checkpatch during submission.
 
-I kindly ask you to rename file. New name should not contain space or comma
-in it.
+Furthermore, not containing a comma is not even feasible, there are
+tons of dt-binding filenames containing commas in the tree.
 
-The file name in its current form breaks tools. For example, it breaks
-"xargs".
+>=20
+> The file name in its current form breaks tools. For example, it
+> breaks
+> "xargs".
+>=20
+> For example, the following will work in "fs" directory:
+>=20
+> stable/fs$ find . | xargs chmod -w
+>=20
+> But it will not work in root of source tree because of this
+> "Dell Inc.,XPS 13 9300.yaml" file:
+>=20
+> stable$ find . | xargs chmod -w
+> chmod: cannot access
+> './tools/testing/selftests/devices/probe/boards/Dell': No such file
+> or directory
+> chmod: cannot access 'Inc.,XPS': No such file or directory
+> chmod: cannot access '13': No such file or directory
+> chmod: cannot access '9300.yaml': No such file or directory
 
-For example, the following will work in "fs" directory:
+You can use 'find -print0' and 'xargs -0' instead so the space in the
+filename is not an issue.
 
-stable/fs$ find . | xargs chmod -w
+--=20
+Thanks,
 
-But it will not work in root of source tree because of this
-"Dell Inc.,XPS 13 9300.yaml" file:
-
-stable$ find . | xargs chmod -w
-chmod: cannot access './tools/testing/selftests/devices/probe/boards/Dell': No such file or directory
-chmod: cannot access 'Inc.,XPS': No such file or directory
-chmod: cannot access '13': No such file or directory
-chmod: cannot access '9300.yaml': No such file or directory
-
--- 
-Askar Safin
+N=C3=ADcolas
