@@ -1,102 +1,145 @@
-Received: from sender4-op-o10.zoho.com (sender4-op-o10.zoho.com [136.143.188.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF678821
-	for <kernelci@lists.linux.dev>; Mon, 29 Dec 2025 14:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767017768; cv=pass; b=ihS+E2OL/cRfZOa8pC35vD1IXhxYyr24odjrg4ECWKqJKCc3oZ8Jv9xB5aQ8w2YLklChiPq03Xt9/k321ku8UcJ2aUU+sQqx1n8E0w5xgz3DslJPhh1I7+NdDQAMREwU4V579ZOmqHF2LrGogyD/bxUZNlgJJfchwk36jbpEPA4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767017768; c=relaxed/simple;
-	bh=gcGoEnrtXDIB7GOHQw70PHm1fFbRAHrLIr2ZLda2Sbo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kz0jtAOUp73Xlhx4ibWXkP4nSmPBlvMfDc4dburiDtRSSdqUp6YTXyyt1O0v4bExovmKCKuV2/fQY5zTVuBGkmS9vIi9zpG/8ehGB4ZbeB8hjNTF6R35HsRj00CRqFd68QohRhMq9zi0Msn9+LuiYW2moCES1B09na6N7eKypu4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b=Nw5xg1z3; arc=pass smtp.client-ip=136.143.188.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8502C2C08D5
+	for <kernelci@lists.linux.dev>; Tue, 30 Dec 2025 11:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767094624; cv=none; b=tZuuxXGNjD/Y8+gyg5SKF1Vg+/WyYsZk+MspssTv/BjvaNkqrq4NYdXYt8gnjOQMHuzKM+kexsBs5L6tBpZSfh08Yv39fz00XRbabp7KsHryS1LhXhdi54ZF5f3ZoohYLaheuf6J2+A4ObocA17cZ8Icq3UhT2mWHdwzNRuYfL0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767094624; c=relaxed/simple;
+	bh=8n8WP6t0YcDAYZ7kg3FzA+7B5fDmDzd8BrdVQJVpcRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kZ04g0wut2oNGJPNCGGi+9C8VlOMtytkjofHLLjr9Grw0YbEER35lSUZCJMTcTu4GDtbKcdK3lObTC6WFNvD0mh8sghRyyd2ZvdK3uiXslEyQtFnAbvzJ4QyQxRgRxQddD+kjKuPXXK2o3Me8/2GmazjhYNuEIgqbFSVRC4x2Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NM0WnWix; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b="Nw5xg1z3"
-ARC-Seal: i=1; a=rsa-sha256; t=1767017706; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=c132D8Q3MEQnj5rQMTMNFyDLvy0qPgMPOnZFF6uXrKqrOFvOuLUxaxJrTk8oZVx+zbWusYPdz1g5cXYskX82leIo4qnkaCZi8gWWtNCaZ7KrBeCrEj8J+X8ku2vddzZznHZkon/31rhzfOG0xfqvJjKDLj7wgZa3o5rWZXZAHYo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1767017706; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=gcGoEnrtXDIB7GOHQw70PHm1fFbRAHrLIr2ZLda2Sbo=; 
-	b=JhuqOJfKnmx3A9WVjIxKVMMWNjnDyjI01DYzYK0gQkWvTka0Qr9UB45AC3+R4hJNAl20YAPM0tmLkABCS1jh+ehrxmcsaH4ljpo9K73B5rqEpmeFl5Nr6/0yDa3LmT3SGJyJeNHtUN7ISAC3wO4GJoxA63UxQWQrKD3cmETF5kM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nfraprado@collabora.com;
-	dmarc=pass header.from=<nfraprado@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767017706;
-	s=zohomail; d=collabora.com; i=nfraprado@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=gcGoEnrtXDIB7GOHQw70PHm1fFbRAHrLIr2ZLda2Sbo=;
-	b=Nw5xg1z3cLP9VkYemFCEQnqUxQv87FIyfwExUfFBbW16Efglq8oL6Ap19gxrpL6K
-	xKRbcDf0GPyPD/FM63TQJaq/1vZSOXRL+p+gIpSwEHmNUF79r4ko21rz8ymMR5GB8Rr
-	CH6VE0CvnupjDedRSQa/XHi30VA2XJuY9SAC9fNo=
-Received: by mx.zohomail.com with SMTPS id 1767017705278437.0577963304597;
-	Mon, 29 Dec 2025 06:15:05 -0800 (PST)
-Message-ID: <8caf35529d2825ba98a8f7ea63ce03d23007292a.camel@collabora.com>
-Subject: Re: [PATCH v4 1/3] kselftest: Add test to verify probe of devices
- from discoverable buses
-From: =?ISO-8859-1?Q?N=EDcolas?= "F. R. A. Prado" <nfraprado@collabora.com>
-To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Shuah Khan <shuah@kernel.org>, Greg Kroah-Hartman	
- <gregkh@linuxfoundation.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	kernelci@lists.linux.dev, kernel@collabora.com, Tim Bird
- <Tim.Bird@sony.com>, 	linux-pci@vger.kernel.org, David Gow
- <davidgow@google.com>, 	linux-kselftest@vger.kernel.org, Rob Herring
- <robh+dt@kernel.org>, Doug Anderson	 <dianders@chromium.org>,
- linux-usb@vger.kernel.org, Saravana Kannan	 <saravanak@google.com>, Dan
- Carpenter <dan.carpenter@linaro.org>, Guenter Roeck	 <groeck@chromium.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 29 Dec 2025 11:14:59 -0300
-In-Reply-To: <20251229145542-059157e7-1864-4407-8734-0a32589f9b0b@linutronix.de>
-References: 
-	<20240122-discoverable-devs-ksft-v4-0-d602e1df4aa2@collabora.com>
-	 <20240122-discoverable-devs-ksft-v4-1-d602e1df4aa2@collabora.com>
-	 <20251229145542-059157e7-1864-4407-8734-0a32589f9b0b@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-7 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NM0WnWix"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37b97e59520so84900851fa.2
+        for <kernelci@lists.linux.dev>; Tue, 30 Dec 2025 03:37:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767094621; x=1767699421; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4CmAFwrYbDuyMoa/BPWjtX3r2mUHX5vgd3DvqkBcFzk=;
+        b=NM0WnWixzZJzX6ocgSPBcsi1bDWRrVMmv5ytrCItFKEKCVPoZabK426+DuTRUL6AB6
+         j2H0Onuw4qy8DaaZoPDar6DRdumrgp1EdT1gT6syrHCSNSD3Vc1ny+8t194zDguAcvFf
+         6AHj8BLTXxy5cGiSOGxJF9WrAmSfLpRk+VzCpqApMmwoxsl2fdkhW6bEQ7DQ0j164xt3
+         4c9eFJb90DL9Y7iB+z1BSoA7e9NKMBTk2gC3shsCs50o+YYbSCQ/f1q8CVgTuAXqUYTO
+         rHC1TUcBpKzVsDdmL51jWyYL0peoqZQ4J9VDHLcCnqU72HVoAS2dakpafk4rgceTN6u/
+         rTFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767094621; x=1767699421;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4CmAFwrYbDuyMoa/BPWjtX3r2mUHX5vgd3DvqkBcFzk=;
+        b=wmba2mdgnA/7kTHzCz7Za7bcfoJNPyyv9ge85z3OZvDkWFT8JqSMH+TG633NL856rA
+         BnQbjIEkVMq0OzvxwlMsnuGiOVx+6lQ2J9kJx00gOERp33xSwLlo4sumnfWoGKcR+mOf
+         8lP2E2HmlFAUlvrKq37Ylt3WR9G8SjgDp0l1vZ33b3l8MozvjQf6/NoL6QXP6B9WxEHp
+         cx8OwqNnwJ6cpAATc+TokSSRyl0pBcKVgl8EP2LLOlbkn6wEJ2fGXeMtDizT6XQMiwz6
+         ZN0oBw5JSG5M2TbiXIEXUS5v3FnLM0KpGC7RSsTKX/6mjb14q7DIv2oKWZGT4LDnh+tq
+         1rng==
+X-Forwarded-Encrypted: i=1; AJvYcCVCzIAmJxqlFOJbyPyH2Q97lLTpdHgXkHXz15NMjGd3Z31AGyegOVkJ7k6OY/bQAckhoK/SeLPNEg==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzjy+BTt8BAoyJ6V9RrymKV1ubQkKpyo7BOPLe0qvH71akto3TC
+	fz4G6qabzM+qXG9jbKEeGJCauXDiLP3gdTLuqhCUFUr5b4GPCJDk9I2A
+X-Gm-Gg: AY/fxX6/kBuApUbCwUavM5jFOOIKDU6fsov2lQdiFZY1+rQZEYkX4SkknF1Rm0Nrotn
+	rgiBHc3VrCwL30BTAQasYqvWe8jSP1d5GfACY+fYMFcEtU2Nd8fIGBEXedJ1mffcnQvF9WrBzpo
+	WXOjxcm6L/neNjmM1cWNCJa0aQaaRO3IrOxwX/S0O0hTJ304CXdSBdbTSoIbZ7gquPaDsk3fmSl
+	FkwErZsrjRaIPoHYVpEAsNVMYXd/uMcc0Emv83wyfmd7TOQUO+OvWYPWdlumg6NL7j+4cfd4tJU
+	Kgth5gKl7SMTpsWTs0v48CZBKWxMwZFHeu9l8a5VLv2RE1zwEa76r8x8jThShJUEu7ZDB8Mu+J3
+	8DoTBH3Je4wiZiXz55899YG0SFQ7O2nigpTy2OIWWCoFnwc3SPQAKRNXqLf59xStUDjAo7UezGa
+	HQKR35521d
+X-Google-Smtp-Source: AGHT+IGF3gFGUozf4G9zt9Om+vstcNbw0h6yAp0aZ++ChCDii30yTV/4I9FiaTW4YuEjPjrGwT/sFw==
+X-Received: by 2002:a05:651c:f02:b0:37f:8bb4:88 with SMTP id 38308e7fff4ca-381216bd8cfmr102647771fa.41.1767094620457;
+        Tue, 30 Dec 2025 03:37:00 -0800 (PST)
+Received: from localhost ([194.190.17.114])
+        by smtp.gmail.com with UTF8SMTPSA id 38308e7fff4ca-381224de728sm89285781fa.5.2025.12.30.03.36.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Dec 2025 03:37:00 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: nfraprado@collabora.com
+Cc: Tim.Bird@sony.com,
+	bhelgaas@google.com,
+	dan.carpenter@linaro.org,
+	davidgow@google.com,
+	devicetree@vger.kernel.org,
+	dianders@chromium.org,
+	gregkh@linuxfoundation.org,
+	groeck@chromium.org,
+	kernel@collabora.com,
+	kernelci@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	robh+dt@kernel.org,
+	saravanak@google.com,
+	shuah@kernel.org
+Subject: Re: [PATCH v4 3/3] kselftest: devices: Add sample board file for XPS 13 9300
+Date: Tue, 30 Dec 2025 14:36:16 +0300
+Message-ID: <20251230113655.1817727-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <78b4f1f60563fc854f5f4a54b42e0bac60715070.camel@collabora.com>
+References: <78b4f1f60563fc854f5f4a54b42e0bac60715070.camel@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2025-12-29 at 14:57 +0100, Thomas Wei=C3=9Fschuh wrote:
-> On Mon, Jan 22, 2024 at 03:53:21PM -0300, N=C3=ADcolas F. R. A. Prado
-> wrote:
-> > Add a new test to verify that a list of expected devices from
-> > discoverable buses (ie USB, PCI) have been successfully
-> > instantiated and
-> > probed by a driver.
-> >=20
-> > The per-platform list of expected devices is selected from the ones
-> > under the boards/ directory based on the DT compatible or the DMI
-> > IDs.
-> >=20
-> > Signed-off-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
-> > ---
-> > =C2=A0tools/testing/selftests/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- |=C2=A0=C2=A0 1 +
-> > =C2=A0tools/testing/selftests/devices/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +
->=20
-> > =C2=A0tools/testing/selftests/devices/ksft.py=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 90 ++++++
->=20
-> This seems to be a copy of tools/testing/selftests/kselftest/ksft.py.
-> Instead of copying the file, try to use it from the standard
-> location.
+"Nícolas F. R. A. Prado" <nfraprado@collabora.com>:
+> While I understand it might be inconvenient that this is the only file
 
-This series is almost 1 year old and has long ago been merged :)
+As well as I understand, it is intended that more files will be added
+to tools/testing/selftests/devices/boards with various vendor names and
+product names.
 
---=20
-Thanks,
+So I did some further research. I grepped Linux source and found some
+vendor names and product names with undesirable chars.
 
-N=C3=ADcolas
+Let's go.
+
+/rbt/linux/arch/x86/kernel/apm_32.c:2097:                       DMI_MATCH(DMI_PRODUCT_NAME, "PC-PJ/AX"),
+/rbt/linux/arch/x86/kernel/reboot.c:396:                        DMI_MATCH(DMI_PRODUCT_NAME, "PowerEdge 300/"),
+/rbt/linux/drivers/platform/x86/samsung-laptop.c:1633:          DMI_MATCH(DMI_PRODUCT_NAME, "R40/R41"),
+
+Here we see / chars, which are simply forbidden in Linux filesystems.
+
+I also found a lot of others undesirable chars, such as "(" ")" "'" "&" "#" "*",
+which surely will break a lot of tools. In particular, "'" is used in bash
+to quote something verbatim.
+
+Here is extended result of my research:
+https://zerobin.net/?d1f2655a979acd3f#oBhwIedQvBL/iB9Src65aRYuyjaye2GQBNL3+6yfvGg=
+
+Unfortunately, I'm not sure which of these names refer to whole "board",
+and which of them refer to merely some particular device, such as USB device.
+
+BUT for 3 instances of / chars given in the top of this email I'm totally
+sure that they refer to whole "boards", so we have at least 3 totally
+legitime cases, where we have / in product name, which simply cannot appear
+in UNIX filesystem at all.
+
+So, conclusion: if it is indeed intended that further examples of boards
+will be added to tools/testing/selftests/devices/boards, then they
+will contain all sorts of undesirable chars and notably "/", which cannot
+appear in filename at all.
+
+For all these reasons I ask you to change name convention for this directory.
+For example, use some kind of sanitized vendor/product names.
+
+> there are
+> tons of dt-binding filenames containing commas in the tree.
+
+Okay, I agree with this point. There already are a lot of files with commas.
+But I still don't like spaces and all sorts of characters, which are present
+in DMI vendor names and product names ( "(" ")" "'" "&" "#" "*" "/" ).
+
+-- 
+Askar Safin
