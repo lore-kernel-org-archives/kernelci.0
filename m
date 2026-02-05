@@ -1,127 +1,123 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63C822156A
-	for <kernelci@lists.linux.dev>; Sat, 31 Jan 2026 00:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769817610; cv=none; b=sxONZ+Vs3dGIafgKa77cjxX+H0d/ANROl2OnlvqOLqVRNx1J5HKgZe8Va0198SZ/LLR9yrNVAW6xMQ8gvwskcHUA+5wX4Dm0pQUhjx9eu7VGetsIXg6q2dyLwJ9KOohdAK6F9FHhoB2TNLo++sQ2BsZoAbI+9MP48sbfCjg5gQ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769817610; c=relaxed/simple;
-	bh=Y62bvWL8xoL7MEHfzLf6jaJJ7lFzD0zcoLb/JEbfqzs=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=i9i5QqNb/EfE4FiPS86vMWzZVkJwW3SqgFFh9mPjTqgyppoAiMgVyqmngADy4PGXzBwgIj66q5cWULWJBGwP9fzrhPE0Bo44bIm5OkKgApqLqAIj9h00eKYeqiPZh/6fp0NOjh4kAEl6YRcCXD0S88QLISWA3vTDM50MVzuKtKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=DIZancNh; arc=none smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5E2257843
+	for <kernelci@lists.linux.dev>; Thu,  5 Feb 2026 02:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770259811; cv=pass; b=rf3VwxuMnXIOFoxw9fFeYWLpB9CAB4/hvwYMSi4USP7S9zTT5aGyh+MCEwh68t9cAi3eUCFEYg/s2i158yz5SBby730blnPGGjWiHkHAPm9syfFe93sdBsYmfzed4MiM6Um0aNoj30/vF+4Rg1u2spc/m9EAzH5B4kVuoQPVqjs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770259811; c=relaxed/simple;
+	bh=kOmKKJjfUNJ9GdvD7XwSHYKDtT4mOhGtWZYc5vWpaxk=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=bkRj1rZCIoQ1XDaSKv6LEZIK85v1XhIeQM6XgLJIb/ycvQ/YFFCEfVp3IAXD8iHZ9qSs5AkBHqEtiSgkuaTezvzKlbjD4eFNycIkC7ec4SjFvBhBB7JNUkImIICSIq+e0xfHsXhdBR+q11Ej7L6bq/ws9j9Qt4R9ULsujhGRcgo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pebblebed.com; spf=fail smtp.mailfrom=pebblebed.com; dkim=pass (2048-bit key) header.d=pebblebed-com.20230601.gappssmtp.com header.i=@pebblebed-com.20230601.gappssmtp.com header.b=DK/tsI7f; arc=pass smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pebblebed.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=pebblebed.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="DIZancNh"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b72e49776eso4936939eec.1
-        for <kernelci@lists.linux.dev>; Fri, 30 Jan 2026 16:00:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=pebblebed-com.20230601.gappssmtp.com header.i=@pebblebed-com.20230601.gappssmtp.com header.b="DK/tsI7f"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4801c2fae63so2724545e9.2
+        for <kernelci@lists.linux.dev>; Wed, 04 Feb 2026 18:50:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770259809; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TLJYtCC/EHAFAsiy8+7n4+bWLNW1oavYTsH39vKuq4pMQ4Cdhwv5wNgEU8MqBvihqM
+         rWw3gIXKJd9+7sTQmvQXGb5rwqDO+rmLTj6Qo0raD+WhdQxzNhetm8Oh1MNl/vU+oaFr
+         20qtYxiU/QWjPxc0oVLM7QJhzppZJY7NwdZ6ibZYVA0Ue0jHzl6WeDG4uneY/4a65r/K
+         9Rh5P/oGLzmqD3s4evqU5LpjwPEI9noF6WG5+fpVay/npK80ktQFskOywRf6ecFuvpW9
+         eesQwC8ScwMnggY8VNlhaR0xOdXQRCRZdeU8SOCGpBzXSC3WIIHcGVitPmSxenuvP1/0
+         X5Ug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=kOmKKJjfUNJ9GdvD7XwSHYKDtT4mOhGtWZYc5vWpaxk=;
+        fh=rmq/YLFzDAglBwji5AmBmtb7cJxq3EZCkg46fu2xnLc=;
+        b=JZHUz5pCvNI4hN4PM0fYNY3Jr/LhtS0OPhQi7jyRok1U0k0kYK0FfUgGP/o3FCM5TM
+         2QU4LGZvhotkNO6J44Ej2PeycaIMDzTd0kYzwnWaNeUNWSGgOsj7UrgLOYzpbm7SpbYz
+         vfd8nS7WtnwpA3NbZx/jL5TwDeycK/vbOe26T2hjod4GLDeSSccGqbPDUb2K6VqBRx2l
+         o+tK3B5WCl3pmlJyKxRp7kQdTP0LnxdpjrKFyEkp/wgW+Lej+24kNymoRYSP6MqTlTi7
+         gaFeft+xvMmrmPA8I9E/nFRZBi5yxVWIQxedgcOU/xHoZYRcLBL/LULWvQspe/XbjSh1
+         fc2Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1769817607; x=1770422407; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+        d=pebblebed-com.20230601.gappssmtp.com; s=20230601; t=1770259809; x=1770864609; darn=lists.linux.dev;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qg/g5kDOviKQ/b+vPWv5WWyHkVYyWI2CMQPecrGFJu0=;
-        b=DIZancNhG9hjrEgF6jkNer2Do4hzWvSQXuf3QvgS1Um6DW/XcUdbOK/W++2ObeB3ES
-         vhSIVJMdRBILT2QQmONZVXESzRzCaAexU7Y+0bCBQL7AvMchYl+huC993AOGmgPe4YFX
-         omiW0gonrML/1yf6cjSeICAKx/7xePHXMw31VXmoNmhnDLd4f89L6254n4/QIQzTz3q+
-         DH2QPAtZxNZQGKAJWYHKz+2ZDPcqC31nvFnqLaCJXMn4b/xZc1MvnYhMmnTxMC+iBxGd
-         sPwS4OJtaVwyTRQH6KqXAAFSIIzxNnKTIx7MwbP+ri7YpNxO/uxQrbWUq7vsmr1WNcVD
-         PQMg==
+        bh=kOmKKJjfUNJ9GdvD7XwSHYKDtT4mOhGtWZYc5vWpaxk=;
+        b=DK/tsI7f4XPsZWkhN1F15L8/5Ta/sT4850EzESSFy39RH+smqMw7P9Guv3JB+WjT9X
+         4mOljM0JGRQgz27sJ/wVKfS55qL78cE5Eib2i5882Z62nIqiy4FDmdMUojW3dGIOt8PF
+         ufeqG9Q+YcTnjey/RDrqX8kW6+nojWI7xiZ0LObWJZjXMBEmHRSYAACHriqY+24N8WLB
+         oyEheQ5F7/CT7mTVt/EX+Vmwa/1Ht5f42fB6LG3QyW6qkn9/0OVs06ORzPAnwNNvlQVB
+         U8Gh/PQPdxUqkL/N5SbHJRXBdkc17bJgEIuD27XHHrH3JAFb8A9MmXe5zvHZCuVtF7IT
+         Hfrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769817607; x=1770422407;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+        d=1e100.net; s=20230601; t=1770259809; x=1770864609;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qg/g5kDOviKQ/b+vPWv5WWyHkVYyWI2CMQPecrGFJu0=;
-        b=coGMk18JME+2eLKyKyIXpxNdwRFQvsXebNEZugVD0mP6UGldBerPIY8eJFZXyE6xRy
-         Rlp8mEKmLYobo7qbjzNA8ZkqfWDxEAR+h6Ix1F+WgP2xRiIBNOjnVvhpv+Q8JhkJx2L2
-         5ZcuFrEF/Azsj2P3nTkdUzDK0cS0gAr4UfspxVq8Mh90j2o/CzMsJGhENnt1IgJYl0qk
-         fhdNs7FOHLRwaWKgVMXURRZFgjwww4sdMCblFOKcTn+/RiWZvp9Hr/jz4RflpMnalwbk
-         TbT5g/ByRx1x2a4eDrzGuji80qPKu1CF18usRbe/CnttiYA4KLHO8m0/Dv2/Xf8Vjmh8
-         ZmsA==
-X-Gm-Message-State: AOJu0YzGkssgvh4xUFZRAlmkARRFTjPzYWRrpUmhYsjRMpa41nGgDAu1
-	U0m/TPbvHrutsjcfqeDSVG/7w0Nn1VsVg55MrB4WYHJv2zOOmYqOW1PulR4HJ+RD1Y5iouE5XL0
-	Hz2Mtg7E=
-X-Gm-Gg: AZuq6aLYAYdlUSFLM7lKdAyhKjBg3FI8xroRV2g+0ukYCU4M+N9nRPCiy1nU3PZF/bN
-	0Kj7+WfC6f91h3g8eYbK/u2MTQpDPanr/3zJIOPc/re4mC9bEAqVZv8d0h/lpMfA2nHBKx4A+Xu
-	58N/H2ehb6zcPzjaOgXUkAWV2woYUk6yKYupVa1jjcVR0QcawFM2U3D25tx1tO/BaPpO75FX17V
-	v0+pLriGq8da6pk2H9A0LO74j92aqfsFvN6cnFC9/PFtxGEpcjOIbTF8grgpVQDQwIvJuJe+VC4
-	RK8zAhFD+Cj74BGCtaLH8UikJeifmtFdx/uo2pcP9jhXVIg5qkJdxD9St08kSN5lcE2r1Q1Ty4R
-	lugjYk+2o3NOrDBDTScye/EtGPaT60zvp6KKkTQnpnPv7NA8u1cWqvmhYt86/HM4gmyz7mtc5CL
-	9ug2zK
-X-Received: by 2002:a05:693c:3944:b0:2b7:24ad:5c56 with SMTP id 5a478bee46e88-2b7c88d9586mr2262248eec.24.1769817607031;
-        Fri, 30 Jan 2026 16:00:07 -0800 (PST)
-Received: from 22d5995788c3 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16d01c4sm13253011eec.2.2026.01.30.16.00.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 16:00:06 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        bh=kOmKKJjfUNJ9GdvD7XwSHYKDtT4mOhGtWZYc5vWpaxk=;
+        b=vHNPxajMLmnZ8cmWey2vUX423RvtJ6Cgi7Qzc2afhwYDsQFAESzt6dx6UG91CThKCD
+         dR4XhQTKLgXnUnURadXY293YiC+psqRvvyCFjaHJ1e4/srgdSiB6ke2KT2inr8SAAhZX
+         3wY2R5ewNSjd/C4ww+fbZdlTBTZfCeKibfj6WSMX8PDMAkp41zSUdCbD/c6US7UTeNCL
+         lnaP6mKJ/TdxGnYstM90gkxU1W8Rhrgp7cwQkd5sG4aSOQ22DWC1rs6NuhtSt1KbJujz
+         vLC+ACLCuQ/lKNUJeJvbN+wSf2Pip3SuEHdBCBaD6Yl5KqMlzyzrfE2RexECrq1j+j2u
+         eixg==
+X-Gm-Message-State: AOJu0YzWTsf7QSoluN1VF5oFxymRTuaErgi7e3LXKmVwu9f/cXzg9gvt
+	n6tdEW/Tb7dGLFUAk76blwWPV54vzWCTOkzBTFlR2mNWHmCYyzgfLmD6r8E8Hf3Cln726toEkWI
+	VYq5Yy/AiPWAoGUNoAWkEXOlprA3W/zRXORvG36lZUHOqs+DOS9CmwABz9g==
+X-Gm-Gg: AZuq6aJbZgeIqob0StuaMq7FCfEZ6eojc/JOkX015z5CO0holG6iMaYAXHC3v1Ua8yK
+	AO+ak0bojNPnMN22smH8N0CmKEnq2gugNL8tB1woG0gkIaFgXLfcdVQ8Hj1h+IlwKsBcya6c2rB
+	2/EvHQGSDWcCokK8F/8DNxqxNBqGR7aSI1gOZOOXxZvCiIQoR2B2Spll9ghXNcvIGBzQsO3wjsA
+	9B5i2l0VSjds2ZhUWsKEqJjnZNkns6Nb6sEdVRfLKdZLtkmxmTcJyJTG0JzDEBffSnpWnDSr8HG
+	afCMkvfGZv1TTrdlnox76/4rhRo=
+X-Received: by 2002:a05:600c:8712:b0:480:4be7:4f53 with SMTP id
+ 5b1f17b1804b1-4830e99333amr83394245e9.31.1770259808798; Wed, 04 Feb 2026
+ 18:50:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-01-31 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
+From: Jenny Qu <jenny@pebblebed.com>
+Date: Wed, 4 Feb 2026 18:49:57 -0800
+X-Gm-Features: AZwV_Qh4bDRb2aM4c1xZXSIJtqPV_qDrmKVXKujqw4NSb18pqwNG5yIZvAbBpvE
+Message-ID: <CAPBP3tRAnaV=NmTZ_yFK+w3GtfTTXtZ3XtpyK+AzvfnCHb8AxQ@mail.gmail.com>
+Subject: Talk proposal: What 125K kernel bugs tell us about testing gaps
 To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 31 Jan 2026 00:00:06 -0000
-Message-ID: <176981760560.4790.1247184820196738391@22d5995788c3>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
+I'm a security researcher working on automated kernel vulnerability
+detection. I'd love to present at an upcoming Thursday call if there's
+interest.
 
-KernelCI Metrics Summary
-========================
-Period: 2026-01-24 00:00 UTC to 2026-01-31 00:00 UTC
+I analyzed every Fixes: tag in the kernel's 20-year git history (125K
+bug-fix pairs) and built a model to catch vulnerabilities at commit
+time. Some findings that might be relevant to KernelCI's testing
+strategy:
 
+- Security bugs hide for 2.1 years on average; race conditions persist 5.0 =
+years
+- 117 "super-reviewers" (including Dan Carpenter, who invented the
+Fixes: tag) catch bugs 47% faster
+- Subsystems like CAN bus (4.2 years) and SCTP (4.0 years) have
+dramatically longer bug lifetimes than gpu/i915 (1.4 years)
+- Weekend commits are 8% less likely to introduce bugs, but take 45%
+longer to fix (review coverage effect)
 
-ACTIVITY
---------
-   342 issues
-  2067 incidents
-  3169 checkouts
- 10699 builds
-573984 tests
+The model (VulnBERT) achieves 92% recall at 1.2% false positive rate
+on held-out 2024 data. I'm also working on SmartKuang, an RL-based
+system that has reproduced CVE-2022-34918 autonomously.
 
+Happy to do 15-20 min on whatever slice would be most useful=E2=80=94the
+dataset findings, the detection approach, or how this could complement
+KernelCI's coverage.
 
-BUILD REGRESSIONS
------------------
-Incidents are any occurrences of an issue.
-New regressions are the first incident of an issue.
+Writeups:
+- https://pebblebed.com/blog/kernel-bugs
+- https://pebblebed.com/blog/kernel-bugs-part2
 
-Origin      Total Incidents    New Regressions
-──────────────────────────────────────────────
-maestro     540                7
-microsoft   2                  1
-redhat      5                  0
-
-
-LAB ACTIVITY
-------------
-There were 10 labs registered. Incidents reported per lab:
-
-Origin      Lab                    Builds    Boots     Tests
-────────────────────────────────────────────────────────────
-maestro     k8s-all                7571      0         3438
-maestro     k8s-gke-eu-west4       0         0         69691
-maestro     lava-broonie           0         313       139274
-maestro     lava-cip               0         413       38
-maestro     lava-collabora         0         3151      288481
-maestro     lava-foundriesio       0         22        0
-maestro     lava-kci-qualcomm      0         95        41928
-maestro     lava-kontron           0         46        0
-maestro     lava-pengutronix       0         83        0
-ti          opentest-ti            0         1147      0
-────────────────────────────────────────────────────────────
-Total                              7571      5270      542850
-
-
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Jenny
+jenny@pebblebed.com
