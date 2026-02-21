@@ -1,98 +1,125 @@
-Received: from sv2220.xserver.jp (sv2220.xserver.jp [183.90.240.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16741548C
-	for <kernelci@lists.linux.dev>; Sun, 15 Feb 2026 17:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.90.240.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FF192B90
+	for <kernelci@lists.linux.dev>; Sat, 21 Feb 2026 00:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771176774; cv=none; b=RLfZw3g1L56HJXz5f/CmLu26Q1BtB8/rSKm3v2VBkMiNbu0N4qJ3BQ68Ph6aIb4V4VWF0tZ6TJKjJ4gc+8VVdkKeweblEb/y4Qk2oi4LdcbjomzaxnikkS5spV3DKD9OG0pG+04iS2ynPNcnw8IfZZBCcyH3J/+YUC1159UH8kk=
+	t=1771632014; cv=none; b=VfMMtSFjpwA+UyYKumkEiKQrJWfz9jEPv3eftziiWOnJ4VqcFUTBsSNGfmgh0EjoPb8KtItMeoCf3176cQSUunqBKM9FnUXjOwcFReUhOkaTSHnWr4x7Hxei+CoDfww/nqckHVoO8LYtDfbVWgIOBOuFrHzMdQfjyrpVs3/TVrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771176774; c=relaxed/simple;
-	bh=5oDVRWN5zkM9XzZez/ePafBb/iQpeTPWGVoLezc3crU=;
-	h=Date:To:Subject:From:MIME-Version:Content-Type:Message-Id; b=ddqPLGVHoJs8zlg6BjkmhzUXF3EBwpb6h+/3VEoTW6eKWWEjK+wkxEiFypdRAG0sL4aEbnwGj9iYL6y03dYs6/OaGYVkk9Ocleid1vImSjS6J6hlWRutSEG+fjwN2jAaX/JFh6+Bl/unaUI0DYlYMQXL/J2axqvoWsi670SXKh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitstrong.co.jp; spf=pass smtp.mailfrom=bitstrong.co.jp; dkim=pass (2048-bit key) header.d=bitstrong.co.jp header.i=@bitstrong.co.jp header.b=YOqHpHUG; arc=none smtp.client-ip=183.90.240.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitstrong.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitstrong.co.jp
+	s=arc-20240116; t=1771632014; c=relaxed/simple;
+	bh=zsLwOxqdAGe5ofn/YfYOaRApNSz+AhMovakZDYmbZsA=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=t4Qrpfaf/BATWM1ZxLYdv2bISBCtHUyisDOIQuNaaH31MJjzjR2jC5uZqShu/aBl9PpnMxsJ5jSoxf9jYXajeH023ydCHlqSQc7IN3MynkrsDa8izZZgmlT3sRuBcBfWNoseRbJ7aX8rVytcvWZmcO6BxdMiyDX1ckQCfTSO2WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=hmAC37yf; arc=none smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bitstrong.co.jp header.i=@bitstrong.co.jp header.b="YOqHpHUG"
-X-Virus-Status: scanned (With Secure/Atlant/virusgw2212.xserver.jp/)
-Received: from DESKTOP-QQ8VIH0 (117.102.199.170.static.zoot.jp [117.102.199.170])
-	by sv2220.xserver.jp (Postfix) with ESMTPSA id 59ECF9819E4D30
-	for <kernelci@lists.linux.dev>; Mon, 16 Feb 2026 02:25:59 +0900 (JST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bitstrong.co.jp;
-	s=default; t=1771176359;
-	bh=Mlraj0EGkBTmDvkM7F8vH1P3CFR1u7Wv2wHBkfZTUWk=;
-	h=Date:To:Subject:From:From;
-	b=YOqHpHUGckvEBmIn6cDzydgQV0BTJodbzQQyi6CTn0jhxnPRJm61Pvzptlr9srprk
-	 DfK08priAf5ywOuU/y5/3BztmPhSeltKp+UaSzm+y0te8CJS/058QC9KPeM2gXwYBg
-	 ggcNBd0wpoUrO24geg3347+Fhs1ysc2hr8RLsYGAAWXW5lTjHSyzt5+gptR059YAQK
-	 0kDlzajvLlJKZYqXjgAfTRM9iOwsvH0GmysHu9+IcqdbIH01GGurPr8OS+YoauCMFI
-	 Lvv1KYA9s1ZjUCJA8tkjkKdB4m9T1qFR/yNUOYl30hyPjZzfx7nxZQNrC9CTBA8F3Y
-	 43ZmdbuLYCAjg==
-Date: Mon, 16 Feb 2026 02:26:00 +0900
-To: kernelci@lists.linux.dev
-Subject: =?ISO-2022-JP?B?GyRCM3Q8MDJxPFIlUyVDJUglOSVI?=
- =?ISO-2022-JP?B?JW0lcyUwISElYSE8JWslXiUsJTglc0F3SVUkSyREJCQkRiROOGYwRkZi?=
- =?ISO-2022-JP?B?GyhC?=
-From:=?ISO-2022-JP?B?GyRCM3Q8MDJxPFIlUyVDJUglOSVIJW0lcyUwGyhCIBskQjJoQXwbKEI=?=
- =?ISO-2022-JP?B?GyRCO3Y2SEl0GyhC?=<admin_m@bitstrong.co.jp>
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="hmAC37yf"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2baa6ec5638so1228667eec.0
+        for <kernelci@lists.linux.dev>; Fri, 20 Feb 2026 16:00:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1771632011; x=1772236811; darn=lists.linux.dev;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q+bm7gBqtDjrFB1sztGCvvY2ahfL7BiPFIA8dH5/Hew=;
+        b=hmAC37yfpNi70purH3SmLQ8fN59zFjywoW0PNRLAyP/38LoObnb2vz4oZnZSm5iFvw
+         W2cMvRAY0WUZfLolmMSRxCy2ttzzebNB00PrgCroTw09WWFJcn6vhnvUdRfDLLVDSM8b
+         1cy/kKgj1QRxUrZ6+MCKsPVRL/VCOBuPPyjApDlqhXgS23cf0bN8mkQtJf+M/yj3xeB/
+         fY4r4mjCFxSDzQe5KQ0KXGnEQCeRnWCXPnyWRDpFXfu1+e7e3wGYOj7AeLJPJWM41ed+
+         r7Q5Lm5BOEDe8dPvVM++J7gSg8UJbYZtNt+s9NBEi784y2KIaJnFvYSKSPNItSAqQh6g
+         /j8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771632011; x=1772236811;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q+bm7gBqtDjrFB1sztGCvvY2ahfL7BiPFIA8dH5/Hew=;
+        b=rK8EkaPTsG/KHX+JYgIYNQbg8t/3Ggk/6x7TZDOwus7MT+hgx/9mscMeeY3FCWmF5n
+         eL4gH8XpHSGctX3OsET0F1Fp04Nqri8zY2u1mw7bwlBPoGBd3qFGNW+EkQ0qvdpPrb+7
+         AHoT3aA972V9XcP3Kqus903qLKb/kbwNu0dAzafXeSY7T62YHDY10Q2OIBuq6rQO20MS
+         dQ+vtif8SXA7ncI8GZj1LMPOI4QqUrtJhepa5DxzfRJ8au8EXTcL5RIZ/8JNXXO58saT
+         YlTT6MEx14hcUNOe7k2w8Um6JaGdLGv8/6w4sV7fU9IRXyQMsNX6gqseyXShs9xbfC3a
+         k/2g==
+X-Gm-Message-State: AOJu0Yw7mCJTps+qJweT7H+vxDJJWJEFFyx3l0EeJuz8tS1h5oKIL3j/
+	LKqic4s4vnLs+W6pWIp0gr/0oOoT7aQRHlNQUdwkck1WtSrHs25dYwYJAhS20+Ha4U+MP+5Ub8B
+	NCYJP
+X-Gm-Gg: AZuq6aKVQOW91w3JuUGERovtdbBkq6fWQmBVqN91W45bfX9dN7xmHx7znzvSzoomO4W
+	z+uzZ+eMEfgGPqKYBMH8Fim6E9oR840ZGD+9Buucn77gL/B5JgyNGxlJxcERYJzSu3xYlg45ySs
+	K3iw9vIOtawwhZkk527021PfZomE5efkzA0Dciy8m8opoeUC1WPFpxVst/i6ZGnqkTonQX3WGtX
+	r9H12ao3s4Ncd9QG91dhMst7zT5/lwlkM38Zx02P8JZwZ7eATO9+wZKf80FzeqSklCb03c5+4NA
+	2+5gem10xUiEHCssQHEdB7S6UATfWPoGmSHs0utrpVgvJv3sbokqXHMGWW1VYoksDs+3CGfr3af
+	6UkdIbZVma1txu2dgDMEJ8+5BOtmqoCac5u6GY6nWPtMvp+qR4jmsOF3YzwL4px+yDxu5X1bB7E
+	/rDtn8uSc/oRVWolS2
+X-Received: by 2002:a05:7301:6794:b0:2ba:9e39:23ad with SMTP id 5a478bee46e88-2bd7b893b81mr705823eec.13.1771632010788;
+        Fri, 20 Feb 2026 16:00:10 -0800 (PST)
+Received: from d14e337afe00 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bd7da45537sm443633eec.7.2026.02.20.16.00.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 16:00:10 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="__PHPRECIPE__"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260215172559.59ECF9819E4D30@sv2220.xserver.jp>
-
---__PHPRECIPE__
-Content-Type: text/plain; charset="ISO-2022-JP"
-
-$B$*5RMM3F0L(B
-$B$3$N%a!<%k$O%[!<%`%Z!<%8$K7G:\$5$l$F$$$kJ}!"2a5n$KEv<R$N=>6H0w$HL>;I8r49$5$;$F$$$?$@$$$?J}!"%[!<%`%Z!<%8Ey$K$*Ld9g$;$$$?$@$$$?J}!"%;%_%J!<$dE8<(2q!"FbMw2qEy$K$4;22C$$$?$@$$$?J}$J$I$K$*FO$1$7$F$$$^$9!#(B
-
-$B$$$D$b$*@$OC$K$J$C$F$*$j$^$9!#%S%C%H%9%H%m%s%02hA|;v6HIt$G$9!#(B
-
-$B$3$N$?$S!"Ev<R$G$O!"Ev<R$N>pJs$rI}9-$/$_$J$5$^$K$*EA$($7$F$$$/$?$a$K%a!<%k%^%,%8%s$r3+;O$9$k$3$H$K$J$j$^$7$?!#(B
-$B:G?7$N%K%e!<%9%j%j!<%9$d?7@=IJ>pJs$d8x<0(BSNS$B%A%c%s%M%k$N$4>R2pEy%S%C%H%9%H%m%s%0$,H/?.$9$k3F<o>pJs$N:G?7HG$r$4>R2p$7$F;2$j$^$9!#(B
-
-$BDj4|G[?.$O(B3$B$+7nA08e(B1$B2s!"$=$NB>NW;~JX$J$I$bG[?.$7$F$$$/M=Dj$G$9!#$I$&$>3Z$7$_$K$*BT$A$/$@$5$$!#(B
-
-$B$3$N%a!<%k%"%I%l%9$K?4Ev$?$j$,$J$$>l9g!"<c$7$/$O!"$3$N%a!<%k%^%,%8%s$,ITMW$N>l9g$O!"BgJQ$*<j?t$G$9$,!"0J2<$N<j=g$K$FG[?.Dd;_$N$4O"Mm$r$*4j$$$$$?$7$^$9!#(B
-
-$B"!%a!<%kG[?.Dd;_(B
-$B%a!<%kG[?.Dd;_$r$44uK>$N>l9g$O!"2<5-(BURL$B$r%/%j%C%/$7$F$*<jB3$-$r$*4j$$$7$^$9!#(B
-https://bitstrong.co.jp/admin/contact.html
-
-$B!J$[$+$N<j:n6H$K$h$k$4BP1~$G=hM}O3$l$,H/@8$9$k>l9g$,$"$k$?$a!"$G$-$k$@$1>e5-(BURL$B$+$iG[?.2r=|$r$*4j$$$7$^$9!#!K(B
-
-$B"!8D?M>pJsJ]8n$K$D$$$F(B
-$B$*5RMM$N8D?M>pJs$O!"I,MW$JJ]8nA<CV$r9T$C$?>e$G!"J@<R$N8D?M>pJsJ]8nJ}?K$K=>$C$FE,@Z$K$*<h$j07$$$r$7$F$*$j$^$9!#(B
-$B"(8D?M>pJsJ]8n$K$D$$$F2<5-(BURL$B$K5-:\$7$F$*$j$^$9!#(B
-https://www.bitstrong.com/jp/privacy/
-
-$B:#8e$H$b3t<02q<R%S%C%H%9%H%m%s%0$r59$7$/$*4j$$$$$?$7$^$9!#(B
+Content-Transfer-Encoding: 8bit
+Subject: KernelCI Metrics Report - 2026-02-21 00:00 UTC
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io
+Date: Sat, 21 Feb 2026 00:00:10 -0000
+Message-ID: <177163200960.717.16941897657809166050@d14e337afe00>
 
 
-$B"!$*Ld$$9g$;$K$D$$$F(B
-$B@=IJ$dK\%a!<%k$K4X$9$k$*Ld9g$;!&$40U8+$O0J2<(BURL$B$h$j$*4j$$$$$?$7$^$9!#(B
-https://www.bitstrong.com/jp/support-info/support/ 
 
-==============================================
-$BAw?.85!'(B
-$B3t<02q<R%S%C%H%9%H%m%s%0!!(B
-$B2hA|;v6HIt9-JsC4Ev(B
-TEL$B!'(B03-3868-5605
-mail$B!'(Badmin_m@bitstrong.co.jp
-$B")(B112-0002$BEl5~ETJ85~6h>.@P@n(B2-25-16$B!!%Q!<%=%J%k%O%&%9(B 2F
-https://www.bitstrong.co.jp
-===============================================
+KernelCI Metrics Summary
+========================
+Period: 2026-02-14 00:00 UTC to 2026-02-21 00:00 UTC
 
-$B(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(B
-$B"#(B $B%a!<%kG[?.Dd;_$r$44uK>$NJ}$O0J2<$N%j%s%/$r%/%j%C%/$7$F$/$@$5$$!#(B
-https://bitstrong.co.jp/admin/contact.html?email=kernelci%40lists.linux.dev
-$B(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(B
 
---__PHPRECIPE__
+ACTIVITY
+--------
+   250 issues
+  2585 incidents
+  1964 checkouts
+  7156 builds
+834382 tests
 
+
+BUILD REGRESSIONS
+-----------------
+Incidents are any occurrences of an issue.
+New regressions are the first incident of an issue.
+
+Origin      Total Incidents    New Regressions
+──────────────────────────────────────────────
+maestro     66                 3
+microsoft   0                  0
+redhat      9                  0
+
+
+LAB ACTIVITY
+------------
+There were 8 labs registered. Incidents reported per lab:
+
+Origin      Lab                    Builds    Boots     Tests
+────────────────────────────────────────────────────────────
+maestro     lava-broonie           0         913       342553
+maestro     lava-cip               0         654       79
+maestro     lava-collabora         0         5998      403889
+maestro     lava-foundriesio       0         64        0
+maestro     lava-kci-qualcomm      0         15        12628
+maestro     lava-kontron           0         60        0
+maestro     lava-pengutronix       0         246       0
+ti          opentest-ti            0         1323      0
+────────────────────────────────────────────────────────────
+Total                              0         9273      759149
+
+
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
