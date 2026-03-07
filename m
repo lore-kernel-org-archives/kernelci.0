@@ -1,59 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC42229B12
-	for <kernelci@lists.linux.dev>; Fri,  6 Mar 2026 21:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD01382F36
+	for <kernelci@lists.linux.dev>; Sat,  7 Mar 2026 07:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772831721; cv=none; b=frAQEuNrUVpD5x+lLMo5ckR/rdBJR/RNgti6igX6b/e1vru4uyhFXJ3gjFAd0yDibTsERQG5lHtP0GQow3HVX9nVmU1HNGneT10aUnaRxA4tUi73uY+qf39by8cwpL8i7/eDyLzdW2PoKiE7hs113GlK1itGz0e/pEpCjMIuZrE=
+	t=1772870204; cv=none; b=Otsir7GHYFu2l//Fx0TwhX33KIDCm0dC8hFEGFGgtXqtmb+4oKdIvWYtA+1jHSw8YcnE+i+cXFbqaNTCXfrAp5oMHNDn0cc475bUJNyyTau3Mb+its2UN8mCb5zygsodT0YSEHtzHe9fA+bEiMF9xvUBe3lj9jsoegpaD0A5x5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772831721; c=relaxed/simple;
-	bh=U8tiEFGD8hzWRhiZza8CPTa4tbVmgjRwBsFUEKBk/ys=;
-	h=MIME-Version:Content-Type:From:To:Message-ID:In-Reply-To:
-	 References:Subject:Date; b=LnkifXxEnVTKhTx9ow/bcp6Xb868QI6rgCZt52APXRhl39XfhxLNIxfK/JokQdbuJUmLVsLDxZ5k9sF1q3dFACVT+xbwJOJ9Aq5haUM4i1c07tiFwbNdRlgfZDT5NdUg2SpotkSbvETo2gs9yFQdmT4PJr7KonDucliutdmc4/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p16mRk4L; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772870204; c=relaxed/simple;
+	bh=PHwciIX6SNEO9BV3Ml/+wuhPYm0O+KCZPVO+4NP4SGw=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=M9cpExF5ndv/0sxJuTBcWDoQQx0jB1odNqPaW1zEyEjXgwi5tTZLTgrb1InPiOoksoXMwInIm/0/xIKJM5vpODMoG41M0Os0IImxdZ4K4gTpjNxbisiXeN38kU8LiPwWrGJFRfsLQNMNYUR39NW9J4vZFkRjaSCU47fRzGma5Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwbcGZ5C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p16mRk4L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384A6C4CEF7;
-	Fri,  6 Mar 2026 21:15:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwbcGZ5C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C986EC2BCB0
+	for <kernelci@lists.linux.dev>; Sat,  7 Mar 2026 07:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772831721;
-	bh=U8tiEFGD8hzWRhiZza8CPTa4tbVmgjRwBsFUEKBk/ys=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=p16mRk4LP9UPYVLCGA2B7rXlMYh+EvwrJVtBHMBSVKHGoVEcKLoSYl+tHCdLlqjVc
-	 gtIGx930cMpGUaNQrbrWyfYZDBx3P8vLg5Ljwbe1bNuIinvVMatK4NBCKhz0okjwcu
-	 yh/rdIKJQSw4A1K2N2RIcLi00ZXaZKhBjqgbAjp9FsCCuQ9baLivb8VI+mJ1b02ygS
-	 eRJ8g1976KIH/SkiUKMSCsmjTtBthBaw4CG1jFpXcuJCVVFp2X+weL61srLMJFZHu4
-	 NNomp99rJS6DSHN7PuyNcW/gZrZpXYdNn1K8+YzNVZgcr/Ee/JW7jd8Ms/8/vdsEia
-	 GziyIevZN1fYA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7FD783808200;
-	Fri,  6 Mar 2026 21:15:21 +0000 (UTC)
+	s=k20201202; t=1772870203;
+	bh=PHwciIX6SNEO9BV3Ml/+wuhPYm0O+KCZPVO+4NP4SGw=;
+	h=Date:From:To:Subject:From;
+	b=rwbcGZ5C8HNn+4yy9UyxCVaMOTZF6B6t4vBzOfF0cggSQclAvyvLZE6mW28zapIb/
+	 1L9QPlhW8ArZHP8y9ETAV/HgYC20q4rEtTOhUTf98S6BUgAgVkXRSvtPzhWXB0dfYJ
+	 oWki3KwtpZQxAUmHR8iR3HO0emsbuifNMWpfUUjTW3TpZFCEcLV94r+Yg72iANQRjc
+	 YS6pChO3EIACZtQwCwRzuGpotkW3dcRz/AQxidz7neKMlFrGx4EgpCM9pNb1pM8lO8
+	 WIt8KAaOCokzA4MrYGsUXZjye/JEQOIDxtzE5nMNilEH/V6b1tFv8sTPdJTeVkXPgV
+	 mYhe+XcxtMkZA==
+Date: Fri, 6 Mar 2026 23:55:46 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: kernelci@lists.linux.dev
+Subject: Enabling additional KUnit tests in KernelCI?
+Message-ID: <20260307075546.GA19654@sol>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-From: B4 Bugbot <bugbot+b4@kernel.org>
-To: broonie@kernel.org, kernelci@lists.linux.dev, tools@kernel.org, 
- konstantin@linuxfoundation.org
-Message-ID: <20260306-b46d2ce4-33c55758ba7d@git.kernel.org>
-In-Reply-To: <aTj6C69JzDUJUVP4@sirena.co.uk>
-References: <aTj6C69JzDUJUVP4@sirena.co.uk>
-Subject: Re: b4 pr checks for KernelCI results
-X-Git-Bug-Id: 46d2ce461ddc5826f87e69e3ef0b1e666c49645a563e0d1506ad598b3f6177e2
-X-Mailer: bugspray 0.1-dev
-Date: Fri,  6 Mar 2026 21:15:21 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello:
+Hi,
 
-This conversation is now tracked by b4 bug tracker.
-There is no need to do anything else, just keep talking.
+I would like the KUnit tests in lib/crypto/tests/ and lib/crc/tests/ to
+run in KernelCI and have any failures reported to
+linux-crypto@vger.kernel.org.  Preferably on all platforms, not just
+UML, since UML doesn't cover all the code.  Is there a way to do this?
+What is the status of KUnit in KernelCI?  I'm having a hard time finding
+information about this, and looking at the latest mainline test results
+(https://dashboard.kernelci.org/tree/mainline/master/4ae12d8bd9a830799db335ee661d6cbc6597f838?p=t)
+there seem to be no KUnit tests running at all.
 
---
-Deet-doot-dot, I am a bot.
-b4 bug tracker (bugspray 0.1-dev)
+Thanks,
 
+- Eric
