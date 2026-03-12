@@ -1,196 +1,153 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828AB35D5F8
-	for <kernelci@lists.linux.dev>; Wed, 11 Mar 2026 21:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D82032861F
+	for <kernelci@lists.linux.dev>; Thu, 12 Mar 2026 00:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773263220; cv=none; b=ixQPSCU6IzHKKskx4D0ECHeKWGMsNMRZqpE4n5wOCPsgOoPvShdg2esg8iuICRknTWZQELx/oJvaWdXmXgMunVIU0SfXcwQdanPYk9QCwvXJsSrUfkLnO49FoFEYJNQIhOKAzsEZuCrc05pysj3bhm00tCjOQOG9JBFmBBH3nT4=
+	t=1773275041; cv=none; b=uFPFNu3j7CZW7FQDrkbfBw4eEnsYTuPFvIgUVd1rja1A4EM7On8+f9SBO41yzDkxYeIf7DHl7dkded9Woc1WOVUwg6nXYr8yJwk/SlQv2m1w73RLmve7qD++qsM7dbcQI2A423ht22B4/PMpUaZp6SVPt+sY76mipIKfw3rpyLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773263220; c=relaxed/simple;
-	bh=ouXs2qsCrMXIhn4lRs6EJ+6IgsHzRzUuapk5VL5/BFY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=qJhiV8dPxRJGRzw92pKHgXMms5W/aF4S82qAcSnjmPy6Esx0yWWgwPH+s1QOZLhcdSXEFmf9cHeRf163nsz5p/xweuMaO+MiVUQ9bypmi3fVOCNVR3Xw6w26PDv7Zan1lrIce3EggWpoL44dXZVdnd1fXiY+fH5gqhmQgAXE/xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=K35Ttjmb; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1773275041; c=relaxed/simple;
+	bh=sXTKKT8PiTDIT8bXeRFWURzMt8B0L4hTFAd81akDw9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sAggp9n7451QVs7sA2wXjng8aKn4GA05p/zKW6tFUBOz2offIb/VHR6CNoiCKLXC+mP5SDTbd8Krj3nQiD9wnKP1zZx+Tju6qvLfPDKXRcBxcHqf1m11L/vSvWsRSVYYItdgxSTIgzCPyufsgxt/AgECytcT/cZ2hsKSJnBJu74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XInXPGAK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="K35Ttjmb"
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 78BA058236B
-	for <kernelci@lists.linux.dev>; Wed, 11 Mar 2026 21:01:17 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 95FC344326;
-	Wed, 11 Mar 2026 21:01:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1773262870;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=84Sl8+URoPaPeYJLV5bRzvBSah0ETNTWT6qV36K1Trg=;
-	b=K35Ttjmb7cpwL++5cpDt1xoqzBQ2Pz+9Vk5UPtIb/DkMdN08pcJCZ/+a0hTItywOIqWrJh
-	DsMi8VfIYugpMJQaR6z6739i75W7LIxeeS9kEP+iF3n/0Pj3WDc9yn2PBIJ2/YVB7Srql+
-	gkx0tB44kO/qXYIt6iS5CZMFKieoZopKz8SaIm6F7V1mtqZEb2kIYTmWN+rpT1qoiYF537
-	CemWq0fqLucsSWZR2PZRxb+lI+HezAu+e3Wp5+ISTAifhaVoRkNMEEVp0OGbjQIDLv3tWz
-	HhHRslN0BFzJ1+lNl+iHW+j+Qavv5hdLYUOshzwm/DYsCPzONzpPxthuCLD9Cg==
-Message-ID: <060dfaa0-4686-48da-8995-b03823b6d97d@gtucker.io>
-Date: Wed, 11 Mar 2026 22:01:08 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XInXPGAK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61D1C4CEF7;
+	Thu, 12 Mar 2026 00:24:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773275040;
+	bh=sXTKKT8PiTDIT8bXeRFWURzMt8B0L4hTFAd81akDw9E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XInXPGAKyYSqXiRVgJx0HWH6X8YFCWw8ClE4H10MYGF3H1F6r+b2sof9W+5v6/aq+
+	 02Q9pNObLmv8wZ2wqcbu/GXn9RkUiRGfzPWgRjgAPiOv+bZJw7kGaGyn1//x0Lq+df
+	 a+UESxpUiKWE9V/8XLPIsvtrsZvROa7Kvgo0BT4YVdtnTjVGDHr8JOuoBp1OgvnwoX
+	 W/MT15yjYEwndHnLzPg6DwlE32ENwWa2ZMqrfEdkn2pThIS90gQBHTG7uP9ikm4RcT
+	 CCTvlhSslnWBguM2Y6KUnHIA+EhvagGdKRL4m4nf56/MzqpSm7s4T+027z26UDOIxj
+	 3LWHfbll3HTlw==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id E611E1AC57EF; Thu, 12 Mar 2026 00:23:57 +0000 (GMT)
+Date: Thu, 12 Mar 2026 00:23:57 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Ben Copeland <ben.copeland@linaro.org>,
+	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>
+Subject: Re: Meeting proposal for KernelCI Bisection
+Message-ID: <abIHnXct64ninKSh@sirena.co.uk>
+References: <CAL0q8a67TOQVyDMpdFdgqJmyC9snDoTJaG8Fhf2OqKS1wc=S8g@mail.gmail.com>
+ <dc1c30c3-823d-4feb-b381-82260f0db6f4@gtucker.io>
+ <060dfaa0-4686-48da-8995-b03823b6d97d@gtucker.io>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Meeting proposal for KernelCI Bisection
-From: Guillaume Tucker <gtucker@gtucker.io>
-To: Ben Copeland <ben.copeland@linaro.org>,
- "kernelci lists.linux.dev" <kernelci@lists.linux.dev>
-References: <CAL0q8a67TOQVyDMpdFdgqJmyC9snDoTJaG8Fhf2OqKS1wc=S8g@mail.gmail.com>
- <dc1c30c3-823d-4feb-b381-82260f0db6f4@gtucker.io>
-Content-Language: en-US
-In-Reply-To: <dc1c30c3-823d-4feb-b381-82260f0db6f4@gtucker.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvkeegleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuhffvfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefiuhhilhhlrghumhgvucfvuhgtkhgvrhcuoehgthhutghkvghrsehgthhutghkvghrrdhioheqnecuggftrfgrthhtvghrnhepkedvkeejtedtgfdvffeltdduvdfggeefgfefffejtefhkeegieettddvueeuheeunecuffhomhgrihhnpehgthhutghkvghrrdhiohenucfkphepkedtrddvudehrdeliedrudejudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeektddrvdduhedrleeirddujedupdhhvghloheplgduledvrdduieekrdduheejrdeigegnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhqihgupeelhefhveefgeegfedviedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepsggvnhdrtghophgvlhgrnhgusehlihhnrghrohdrohhrghdprhgtphhtthhopehkvghrnhgvlhgtiheslhhishhtshdrlhhinhhugidruggvvh
-X-GND-State: clean
-X-GND-Score: -100
-
-Hello,
-
-On 05/03/2026 5:47 pm, Guillaume Tucker wrote:
-> Hi Ben,
-> 
-> On 04/03/2026 6:28 pm, Ben Copeland wrote:
->> Hello all,
->>
->> On the KernelCI roadmap, I propose we start a discussion on adding
->> Automated Bisection into KernelCI.
->>
->> We have many options and have learnt many lessons from past
->> experiences. KernelCI today lacks the ability to do automated
->> bisection. So I would like to put the meeting together to cover
->>
->>   - What bisection in Kernelci should look like
->>   - How do we go about Bisection at an efficient computational cost
->>   - What are the options for automation
->>   - Put together actions list
->>
->> Bisection needs to fit into KernelCI V2 tooling (i.e., Kubernetes,
->> kci-dev). We also want to provide bisected results to the Maestro
->> mailing list.
->>
->> I have a list of people to include on a call. If you are interested,
->> please let me know, and I will add you to the meeting.
->>
->> I propose the meeting for Thursday, 19 March, at 15:00 UTC.
-> 
-> Many thanks for starting this thread.  I'm available to join the
-> meeting and I would be happy to collaborate on this topic.
-> 
-> As some of you already know, I've independently made an automated
-> bisection PoC[1] based on the lessons learnt from previous KernelCI
-> implementations and community feedback.  This addresses several key
-> issues that have been identified over the years.  I'm now working on
-> a first stable release and a roadmap with extra features.  I can
-> prepare a breakdown of how this may apply to KernelCI as it currently
-> stands ahead of the meeting.
-> 
-> I believe this is related but not quite the same use case as enabling
-> developers to run bisections locally while accessing hardware remote
-> labs, which would seem like where kci-dev would help.  I'd be good if
-> we could share some logic with a common library if applicable and
-> coordinate these various efforts as much as we can in general.
-
-Based on the humble experience I gathered over the years on this
-topic, here's a high-level proposal for developing an automated
-bisection feature in incremental steps within the KernelCI context:
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sRUg/N4PsNSAFS4u"
+Content-Disposition: inline
+In-Reply-To: <060dfaa0-4686-48da-8995-b03823b6d97d@gtucker.io>
+X-Cookie: Identify your visitor.
 
 
-Stage 1: the basics
--------------------
+--sRUg/N4PsNSAFS4u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The first step is to implement the same kind of bisection as was
-initially done in Jenkins but this time with Maestro:
+On Wed, Mar 11, 2026 at 10:01:08PM +0100, Guillaume Tucker wrote:
 
-* only for LAVA test regressions
-* triggered once all the results for a particular revision are in
-* removing duplicates with simple criteria
-* optimising builder usage while waiting for runtime test results
+> Stage 1: the basics
+> -------------------
 
-The pipeline logic boils down to this:
+> The first step is to implement the same kind of bisection as was
+> initially done in Jenkins but this time with Maestro:
 
-1. look for base 'good' commit with reference branch (i.e. mainline)
-2. check bad / good commits
-3. iterate with git bisect
-4. check found commit and revert in place to check it fixes the issue
-5. send email report in reply to the original patch thread
-    (or alternatively build a list of recipients from the commit)
+> * only for LAVA test regressions
+> * triggered once all the results for a particular revision are in
+> * removing duplicates with simple criteria
+> * optimising builder usage while waiting for runtime test results
 
-It would be wise to send reports to a fixed audience initially for
-moderation until it's deemed good enough for automated replies.
+> The pipeline logic boils down to this:
 
+> 1. look for base 'good' commit with reference branch (i.e. mainline)
+> 2. check bad / good commits
+> 3. iterate with git bisect
+> 4. check found commit and revert in place to check it fixes the issue
+> 5. send email report in reply to the original patch thread
+>    (or alternatively build a list of recipients from the commit)
 
-Stage 2: expanded coverage
---------------------------
+> It would be wise to send reports to a fixed audience initially for
+> moderation until it's deemed good enough for automated replies.
 
-Once this is in place, a number of options are available to go beyond
-the basics.  Deciding which items to work on first would depend on
-the priorities within the ecosystem.  Here are a few things to
-consider:
+I think there's a bunch of stuff we can do a lot better here than the v1
+stuff did - the big one is sharing the builds and test runs between
+multiple bisections.  Especially with the builds it's relatively common
+to be able to share at least the first step or two of a set of
+bisections (eg, if two tests fail on the same build we can reuse the
+build), and it's not uncommon for multiple tests in the same test job
+fail at once with the same or closely related causes.  You can get
+something a whole lot more responsive that's still very simple in
+implementation.
 
-* enable bisecting any results from Maestro, not just LAVA
-* add support for running bisections with KCIDB, not just Maestro
-* support arbitrary patches to verify fixes and isolate issues
-* add primitive support for metrics-based results e.g. thresholds
-* run the tests again with instrumented builds e.g. DEBUG and KASAN
-* inspect the errors and automate typical debugging e.g. addr2line
-* compare results with varying parameters e.g. toolchain, platform
+Doing builds and tests as Maestro jobs probably gets us a lot of the way
+there, what Arisu has implemented already in kci-dev but rearranged a
+bit with more of a server focus (eg, driving multiple bisects in
+parallel).
 
+> Stage 2: expanded coverage
+> --------------------------
 
-Stage 3: advanced features
---------------------------
+> * add primitive support for metrics-based results e.g. thresholds
 
-Using 'git bisect' has its own limitations.  It's great during
-development but automated systems have different use cases.  A more
-advanced algorithm can be implemented based on the early Scalpel PoC
-using the Git history as a DAG and keeping track of statistics for
-each test on each commit.  This allows bisecting performance issues
-or any test producing absolute measurements and helps avoid false
-positives by design.  It also makes it possible to run a tree of
-bisections in parallel when new issues are found while bisecting.
+BTW throwing https://otava.apache.org/ out there in case people haven't
+seen it.  More relevantly there's also the fastpath bisection stuff.
 
-Running bisections can then be integrated with the orchestration
-logic, to initially run a smaller number of short-lived tests then
-gradually allocate more resources when an issue has been identified.
-It becomes part of what a dynamic orchestrator would do, to scan
-broadly first and then focus on problems.
+> Stage 3: advanced features
+> --------------------------
 
+> Using 'git bisect' has its own limitations.  It's great during
+> development but automated systems have different use cases.  A more
 
-There are of course many other things that can be done beyond this,
-for example to generate a fix and verify it automatically.  The
-foundations need to be stable enough first as it takes a lot of
-sustained effort to get this working well.  Each bisection is like a
-little unique story of its own.  One key aspect is to provide high
-quality information to developers as there is very low tolerance for
-noisy automated emails in the kernel community in particular.  It's
-also critical to get good regression data first before starting to
-bisect, a typical thing maintainers want to know is whether the issue
-is already present in the mainline revision from which they based
-their tree (e.g. -rc2 tag).  Semi-automated bisections is also
-something to explore, with a command line that 'git bisect' can run
-on each iteration and the ability to trigger fully automated ones
-manually.
+There's also stuff like mining history and throwing test results that we
+already have in the range at the bisect (eg, if we've tested commits on
+a different branch or as part of another bisect), not particularly smart
+in terms of the bisect algorithms or anything but making use of the
+data set that KernelCI is building up to try to improve their performance.
 
-So this is a bit of a brainstom or braindump exercise without
-actually diving into anything in much detail.  It'll be interesting
-to see how this combines with others' experience of automated
-bisections in various environments.  Hope this helps!
+Another idea that's getting more into trying to be actually clever would
+be looking at the builds we've already got and testing those if they're
+somehow close enough to what we might have otherwise chosen rather than
+spending time doing another build.
 
-Best wishes,
-Guillaume
+> their tree (e.g. -rc2 tag).  Semi-automated bisections is also
+> something to explore, with a command line that 'git bisect' can run
+> on each iteration and the ability to trigger fully automated ones
+> manually.
 
+There's the bisect stuff Arisu did in kci-dev that I mentioned for the
+first bit.
 
-> [1] https://gtucker.io/posts/2026-02-02-vixi-and-renelick/
+> So this is a bit of a brainstom or braindump exercise without
+> actually diving into anything in much detail.  It'll be interesting
+> to see how this combines with others' experience of automated
+> bisections in various environments.  Hope this helps!
 
+Yeah, likewise.
+
+--sRUg/N4PsNSAFS4u
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmyB5oACgkQJNaLcl1U
+h9BO6wf8DIjFM2QWgE9IXkquY5//VMfsTZq+A4L/6bazmIt8toOatT8lBSGK60QX
+kZPFWNVM8OtLfWLC5YOTbVT+sgSQhO3Sn5HF+Lxb5Y0Jz9vr4ucar8sOTKmiOBcs
+qwmjpan5KeJKMXCU/q6myVDnMnL3a7r7TroLXLAp5ijMVToEgA1uFyRZ0yRKyTQD
+fPOl4LgjA7phoeUe3EMlFm0pyFWJ1s3Rml2nPdyHB1yhXGLfkZHhBExCDEkhC1T0
+9+0FASYFRwfclAd5N2WCuore9hNE4W2u5IiJsgxrBPAqZMk7ei8MCrr+Zy8uv6kN
+3tvgRwN1hIzk5oitDS987RMQCOHrhw==
+=Xxv5
+-----END PGP SIGNATURE-----
+
+--sRUg/N4PsNSAFS4u--
