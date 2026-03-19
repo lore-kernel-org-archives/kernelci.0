@@ -1,136 +1,98 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8321B1BF
-	for <kernelci@lists.linux.dev>; Thu, 19 Mar 2026 11:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773918635; cv=pass; b=CEuYcUsVZJ8zo/DaoAHWyAIit/L2bVg/mm4cyhKYxcIc64seNtZA3NITOqy0CdgsCWyeH9bUSxawKETY//ay4vhsA1XH9jq/HTIs4BbGWalBViSqWLa2eswVL7kvgZnKvdjEiFE/5FqQj2sZRf5c2xlvVfpPKXBYMk62Ti9SkRQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773918635; c=relaxed/simple;
-	bh=Q28JNE3zOrnDMPOslKlKb31VcOPAQPXKgyip4TutYZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i6yskeyQyPkLhxLoxHegq84d3Rpm3N8fRtuCORQsCl3zPlRSYCD34lVArPAM99cmxltaN1IQTI9XKGr1YJnLzGdscx3lcB2sPZikQYWyrqDgYUmy0R9eSZFhKXmmr9yCMEBLBMmzupwsRIBY5yAhCPxtNvpNseFH6wIoJ6SH4WQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9qbR4kM; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F0733A9C6
+	for <kernelci@lists.linux.dev>; Thu, 19 Mar 2026 14:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773929818; cv=none; b=fnaJW7y3BdqAGAN70oFipM2RZG5d32XFpivLM3Ddg+xdUzjkOe+rf0z7h/phOQaSYpFNnlsbrAXKt1GFJLI+cyEjQgvUipqpiK2x6KLtDgQ/0DkeJN5Ns7L8fOjnAf12oPDMlVqdcJDcmxLyCqsXu+mmdOgmB7rDQizkpmzQIQI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773929818; c=relaxed/simple;
+	bh=YNGZJ6XCgjAwYGlSCtIo9lbxg1XznFBN6PvEWeER8ro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WSEKiuE3hWyMpEk3NYDyhtOvroMfIaRTzo5CE+5/UQ3DLmBGuzLVa6rzA6p5nnQonyAqbQ3nvK3BpIRE+vtnjfjjku9ILV6OiIz/sDYMPGKWkAeD32/pPKxfNphUO5n1K2drmZLGoe+xjqz+x8FO96EB94tlFxndXbHd1xy222A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=YYnUGP2Y; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9qbR4kM"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b8095668ebso51543eec.2
-        for <kernelci@lists.linux.dev>; Thu, 19 Mar 2026 04:10:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773918632; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FYAD97vNBYrd8FFziD6gu6JBtiwMdPPKvI2TFU7ekl6Ru4JmLR+v5dHWmSEk0/8Uhd
-         BbblVB/Tvs3rz4x9vGslQYgjxdUBi+BLWprMCZLO7WG2DTFHOoG9gZiUqFShEXJHFa1r
-         lo7adgMVLNNbGLYzxsMKWfTAl6iJGX6Yg0ezJAreQmC4nsXz3UqMSs+l8r0sClKjSW3l
-         nk+OtyfZzUKohVQqlNalRc3qUej5GmxWthkTarOXQhQRt8/f7ZOnJrguIGwL+BU1jmqr
-         9WhMtIdhgkSAMxTRUU5rVZwx6KnPllPTzdNXMMadawW2em58VrS+nhcrMGtsdtcEH3mt
-         RZJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q28JNE3zOrnDMPOslKlKb31VcOPAQPXKgyip4TutYZs=;
-        fh=GU/0T8MHPw+k/WUByoR5WcmsBmtaLtmOyMWXFEHW5Dg=;
-        b=lp0nPcsEHRjE5DhA/vhsxNZRtOyg2JWt1d0eibPGexSLL/yGb5bk4xg1BHY99vnDGT
-         AyGj80QOr8lhV20VbYF6409EHm7O7tJFz3yC/6/RaMjokRp7FK4gBasgyqUyrNVju95s
-         MhClK8QJXtwdDzgcMlugjCjv2avAEj5xNKZ8uCd4E5zIwJDyCIO83gVFhelKHLzclQ/T
-         c/Ilo2vr2Kv64uMAi4BhVSSgOMwj0uxA2uuVw+OgqxWklGE8JVUryWiaEjYp3l1DeoGw
-         A6SsRKUvPkI9TG/rwB6y9yRxYZscQI1YQVur9mvfI8FiY2dWpBMVZnB/5N0+vIVFk7SX
-         faWQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773918632; x=1774523432; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q28JNE3zOrnDMPOslKlKb31VcOPAQPXKgyip4TutYZs=;
-        b=N9qbR4kMeAzxUXkqMH4QhwfnbMka0RRaWhIpWAQ6zrwJX2v82uP/aqY45FquY3YOBo
-         8C7Qpf67TzPHZQwjFZf8T08IbtKqkhMU65qrbEs087Bqs/nsqYxxeE5a0lIfBwGk/xbr
-         eYmwcs/YOISc7CmByonkYnvId28scPx9PjDuhD+TNQh7E0EkGV9w3szz84pwSDUPcWe6
-         o1MY57NIEOJ9+LKOjh9ts9Ef/xFJRF+aDiG4S5CIcUxbqxjsA8oOtUNXsTWz8hzsvgBK
-         TD2JvHu8C8IFkiHiT615IGqFrlHUc0rv1kZJX+q+8OOqbBsr9cEFrq2alCcrSTO09P8C
-         Xy3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773918632; x=1774523432;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q28JNE3zOrnDMPOslKlKb31VcOPAQPXKgyip4TutYZs=;
-        b=Po/uIMjZA3bWG6HYgiJQRznjt0PIf+KRnBz+eIUNwOIv0xtlse8tfTECzaQq1PJLLP
-         F1iQMs+s14XiF18Jpf7/MlE6F2L5n3znR0MJk0gCfD6MdZoB3hXuwqpa1duYGiF6dGlp
-         vjlwuQmokEFXArvMn+z2ZJHuPCFQgbTgZ+m+AnLG1vmYq61rk1zIqCYvOMzOj0TCXxk1
-         x2N3HmhqSXG3jXfsRm0qZL8FziPXXvWi5IhFJzRZj+HwW2qvVA2+SKbaUZ3GgGGJ2NuV
-         U+j4WuQJbPSTOIOlQCgVucSoO4sTYFdnEiJXr6SMXJxiEltNkkWA8N3/P67F5KGZHlMX
-         p1Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCVj9/+5/yHA4I6VtXAxqP5aOtODuQFM9Ph8qT3PhtsMIHF/4i1N1AcCJjPEJajduvzxOfg7rgA58w==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzt/os2Iv5Al1xfJrAMxVxmlBVFmYSt4zoyRG3lqQ6Ssk3CdQif
-	J7P85yp6dXfs7OOf8XR5gmm5n4Rmsa1eU9jJALEg7t/9ruubuJ9mBB6keBDMdr/d5TCNiw0LaGn
-	svIgN3gkbyOAgDzz9homQkUhdFzaVMTg=
-X-Gm-Gg: ATEYQzwL13Ocy8WV4CtOj5eWhLokpCGlLtir21hfR3mfbw4uUB/KxIBzVj9gPxpe8Bn
-	fP0icOCjAFrkUGM7EOAUH0Vr89WhbVrqAJJqiaxNGTfzSb16rSJQU1jzRrymVGuIA7Pcr9tItSl
-	q3/uP5xfTHIcoJ6GMLGnabGbk7Ce3il5B2aj+IdaF5KNYRYU0j8YK877R0b4tFybEsAnHqF+vTr
-	iTuihgZw6PLKHar/fvqIp+VyaYSVsrTX8O6W0w7BwLp1S1/OexCMXzW8W0fn2r17eGMp6HzXShP
-	2bYu1Cm7nXUsAZxeQkhvW0tccrknavUJ2vcpRVd+/pzWrTdu+hGH/EbpGYr8TD085gMR92Tx5cT
-	O7iwg/ptFs6Lfm/3xc8yjOIg=
-X-Received: by 2002:a05:7301:1285:b0:2bd:db75:c28b with SMTP id
- 5a478bee46e88-2c0e528a5d4mr1401381eec.7.1773918632327; Thu, 19 Mar 2026
- 04:10:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="YYnUGP2Y"
+Received: from macsyma.thunk.org (pool-173-48-82-102.bstnma.fios.verizon.net [173.48.82.102])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 62JEGY3h014315
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Mar 2026 10:16:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1773929798; bh=QuVo8WgC5e4f9ry0DKcs1GXKCBbv3o6T5S0V/1huSK8=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=YYnUGP2YTrIH/xDmvNY5ECQpgjkAn16edDOJaghE4MEck9YLOziKudTuxfVyZZLJu
+	 n3RBwSSo1S88LHOjYuh2nhSEvTsGEDCzJogN9B6a1OYSHidMBQRQQyFLHk9poE6zev
+	 fY0qHdGEZJP4Jsc2cHyTp3chB0P5GorgiGhBLpCCanj8uHGTFRNGGuGAWAmSRr85xe
+	 7X52yB8GqE9C9U9u2o4ZkgVFJlo4gQ+MH5e1MijloB1Uv820pOQtxsN76AomR2NPgd
+	 dlU01ed1T3GfyG+2feyrd5gRBb1Is2bD+LZ3UQ4hpgSZCISTgBLTWpHEm0CKmpuoyf
+	 eFQMX05+xw0lg==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id A212E5E4A73F; Thu, 19 Mar 2026 10:15:34 -0400 (EDT)
+Date: Thu, 19 Mar 2026 10:15:34 -0400
+From: "Theodore Tso" <tytso@mit.edu>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Guillaume Tucker <gtucker@gtucker.io>,
+        Ben Copeland <ben.copeland@linaro.org>,
+        Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+        Nicolas Schier <nsc@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        workflows@vger.kernel.org, automated-testing@lists.yoctoproject.org,
+        "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+Subject: Re: Hosting first-party kernel.org container images
+Message-ID: <20260319141534.GB91368@macsyma-wired.lan>
+References: <cc737636-2a43-4a97-975e-4725733f7ee4@gtucker.io>
+ <CAL0q8a7mepGUdgrLsQhCUdLVP8VcxB9x_oBRCWAYNeoVAUb=7A@mail.gmail.com>
+ <78adef0e-81b0-47d4-be20-32f42ab8ec04@gtucker.io>
+ <CANiq72=t=q4__vwTFjg+gQyjKLUEJrZBngr3cAnnKiTNM5uteg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cc737636-2a43-4a97-975e-4725733f7ee4@gtucker.io>
- <CAL0q8a7mepGUdgrLsQhCUdLVP8VcxB9x_oBRCWAYNeoVAUb=7A@mail.gmail.com> <78adef0e-81b0-47d4-be20-32f42ab8ec04@gtucker.io>
-In-Reply-To: <78adef0e-81b0-47d4-be20-32f42ab8ec04@gtucker.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 19 Mar 2026 12:10:19 +0100
-X-Gm-Features: AaiRm50fomumEtRa1rcztbB8_A65g2UTx_UuAfqMwTNqyrG_bjS2Jj1Lf32hxKs
-Message-ID: <CANiq72=t=q4__vwTFjg+gQyjKLUEJrZBngr3cAnnKiTNM5uteg@mail.gmail.com>
-Subject: Re: Hosting first-party kernel.org container images
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Ben Copeland <ben.copeland@linaro.org>, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, workflows@vger.kernel.org, 
-	automated-testing@lists.yoctoproject.org, 
-	"kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=t=q4__vwTFjg+gQyjKLUEJrZBngr3cAnnKiTNM5uteg@mail.gmail.com>
 
-On Wed, Feb 25, 2026 at 3:44=E2=80=AFPM Guillaume Tucker <gtucker@gtucker.i=
-o> wrote:
->
-> Nathan, Nicolas, Miguel - what are your thoughts on this?
+On Thu, Mar 19, 2026 at 12:10:19PM +0100, Miguel Ojeda wrote:
+> 
+> While many kernel developers may not use them (mostly because everyone
+> has their own setup already), if we had a set of "base" images that
+> are maintained by someone trusted (including publishing them in the
+> usual registries for easy use), then I think a bunch of us would
+> actually use them for CI and possibly other tasks; just like some of
+> us already use the kernel.org toolchains "manually" anyway etc.
 
-I agree with Nathan that `Containerfile`s on git.kernel.org sounds good.
+I publish test appliance images suitable for use by kvm-xfstests and
+android-xfstests on www.kernel.org[1], and have for years.  A
+description of how they are generated, and what I do in order to keep
+the GPL complaint can be described in this slide deck[2].  In
+particular, note how I am very careful to explicitly specify where the
+corresponding source can be found in a README file[3].  This is
+required by the GPL, so that someone can recreate the binary image
+using the exact sources that were used to generate them.  I've noted
+that not all container / docker images seem to follow the letter of
+the law, and fortunately various groups such as the SFLC hasn't gone
+after people who publish these images.... but I think it's better to
+be careful about such things.
 
-While many kernel developers may not use them (mostly because everyone
-has their own setup already), if we had a set of "base" images that
-are maintained by someone trusted (including publishing them in the
-usual registries for easy use), then I think a bunch of us would
-actually use them for CI and possibly other tasks; just like some of
-us already use the kernel.org toolchains "manually" anyway etc.
+[1] https://www.kernel.org/pub/linux/kernel/people/tytso/kvm-xfstests/
+[2] https://thunk.org/gce-xfstests
+[3] https://www.kernel.org/pub/linux/kernel/people/tytso/kvm-xfstests/README
 
-It could serve as an entry point to discover the different toolchains
-and software offered by kernel.org, i.e. not just the GCC and LLVM and
-LLVM+Rust toolchains, but also perhaps `b4` pre-installed and so on.
-Even things like `tc-build` or the latest and greatest set of AI
-context text files could be considered too.
-
-It could also perhaps simplify a tiny bit giving quick reproducers
-compared to giving the instructions for a distro base image + extra
-things to install. It could also be a good thing to give newcomers
-(i.e. how to set up all the development environment is a common
-question) and LLMs.
-
-I mean, all this is nothing new of course, but sometimes trust and
-convenience go a long way.
-
-I hope that helps!
+My kvm-xfstests images are relatively small, and I don't update them
+all that often, so I haven't had any complaints from the folks who
+manage kernel.org about.  So aside from the GPL compliance issues, if
+you think that you might be making a large number of images, which
+might be potentially large, you might want to check with them first.
 
 Cheers,
-Miguel
+
+					- Ted
