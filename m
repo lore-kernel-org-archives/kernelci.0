@@ -1,110 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC578397699
-	for <kernelci@lists.linux.dev>; Fri, 13 Mar 2026 12:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A9E3B0AD2
+	for <kernelci@lists.linux.dev>; Thu, 19 Mar 2026 10:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773405105; cv=none; b=UOFzMYzeg92v49dKSb/qEowRj6rILWcrxE1wocG51/eAqCzHJReo1gkqgTjiHIpX33ZeehhgEkkoLrMVpAWgFTFKv8bsdEzfwyOwc9E2wZjxWq4ZoMURF5Vg6f4WjlssuBcxw1k4bFDcF6nE3V/qCSBbefkMPl9Oi3KPt3ohZ+4=
+	t=1773916638; cv=none; b=O3OwWlBqpDbxdMdjwA0HHc228fjx4/hD2YuLyCX4hQ7hfUABOj7qecz5RSxmHQeuc79ZhCb28Z5OnXpBFXGMlN0Np9lYBiPvPGCmaZB47YcHmtnP4QFo1/7iH4P/j1/DugCaWjhwlkj6rXiGjxp8nuYGcuEkxLtfghM5Y+F9gqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773405105; c=relaxed/simple;
-	bh=h8UNT2qehXv+2kRRDkK6RK3Zo8UUEY/5NLQvhc6rAYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NXvzNfZOlP+pCqzrIFXJzwNeNoRpuvIjkgJQKWPelMzmnqUVQj0w8HOjvHwZbESlIz+r5mULptWm4Cn/VTd7kQytN+8qfOy3AXWHrTjp2eTfr0U/iG3OMx8m3SMyGPv+QPH4YO5CkSM84tunJUaEhRjsjhCk3rncvRLAf7lvzlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEJ4muRx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773916638; c=relaxed/simple;
+	bh=4RNjjiymWwbOr3wxhuyz7qkwTVm0dOg0QO4FOy3IBT8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YHVY7SSbRBh+/98G1VJXBDH33aIvHv8cZNQ6aKNg0o6OQ2HRbfzur73I4np1Wqrhm8zVdWYiNlvRPNQsIxQZLtZsdn8UqHvIyPoeuL0d0FFLHHzZkCHu+Iw28tZSmj3lvIGMC+4zZYZFLkoelUc2UcH02vZ2+NRVL5RqHlBg4GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=EtCumurJ; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEJ4muRx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EE9C2BC86;
-	Fri, 13 Mar 2026 12:31:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773405105;
-	bh=h8UNT2qehXv+2kRRDkK6RK3Zo8UUEY/5NLQvhc6rAYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LEJ4muRxMfPj51tSrqHbWSPuajtJIhsO8sm22QXRs1BGHqf+qc7vVqWZxPAo2jEdK
-	 ECtnLdIf/ou+tiIZvoIyiZMuMsPClgu5iHBg3aKiFSZrm9a0rRiZccdZVeREJKsKtc
-	 vTjNw4Hs6qp2/phDCf9Jc5t7D2cxqWfk5dAyl4L+gmeKl4UCgrPSNvchOUkIW1ZtQ8
-	 5sTz9vphVdR/3FaKdcyMDD4gB+UExDRdG3FkZagxcc9b5Ia67pX97PIHJ/4nC2cAkQ
-	 III4YInvyWVcfbVNPWbiTizixWlfrLvQs3jWJciXWiysTlFREQWwaStBs0cjFSVs25
-	 xeADGtr2idHPg==
-Date: Fri, 13 Mar 2026 12:31:41 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: kernelci@lists.linux.dev
-Subject: Re: Enabling additional KUnit tests in KernelCI?
-Message-ID: <4fd302e0-ffa7-4bbf-a94a-c8879fde32f4@sirena.org.uk>
-References: <20260307075546.GA19654@sol>
- <d2c55e92-5210-4d12-86f4-a24b64ab0fb9@sirena.org.uk>
- <20260312215145.GA4805@quark>
- <3da07ee3-f3e4-49b1-bcf4-fe9c55eaeb41@sirena.org.uk>
- <20260313010456.GA1458907@google.com>
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="EtCumurJ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4439B3EBBA;
+	Thu, 19 Mar 2026 10:37:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1773916628;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vsy8MtHkIqSDCVwD8U9hBJLdViUy3psVdXn0LP3qlek=;
+	b=EtCumurJrQ1fncBc+fReJ9BE6S/F1Z3fgoxWUivaFeRICQe/jfvCZBA8HjswbUF26kpc57
+	0ecdON4OhXs5QptdbvSeiWsICV9+tQ06d55jEDKrTU067zcVzMs0kwYAB2sgxAJ7njWUPG
+	o1WAv4551xfsa9Cecfxs4UGePpzA3wgX3jH8dGQOMOLTOwRBXJzMJb5qKqGo3OG5O725Kw
+	ATBEDBjafDx6zFPpU1V1XxgzDVzLswabuT8AbuQWfZ4N+ptPT1JWe7OVBmlomcCaXQBafj
+	wvqr+5Gs9t3MpiWVJzeK9Jz85kfbor5bAWsAVsqDkujY2ZTQwLiCt6uGVcyvFw==
+Message-ID: <81522f93-6fe2-48e0-b95f-654a83f8b6ba@gtucker.io>
+Date: Thu, 19 Mar 2026 11:37:04 +0100
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Po24HKR3YMAV6BWk"
-Content-Disposition: inline
-In-Reply-To: <20260313010456.GA1458907@google.com>
-X-Cookie: Monitor not included.
+User-Agent: Mozilla Thunderbird
+Subject: Re: Hosting first-party kernel.org container images
+To: Nathan Chancellor <nathan@kernel.org>,
+ Ben Copeland <ben.copeland@linaro.org>,
+ Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ workflows@vger.kernel.org, automated-testing@lists.yoctoproject.org,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+References: <cc737636-2a43-4a97-975e-4725733f7ee4@gtucker.io>
+ <CAL0q8a7mepGUdgrLsQhCUdLVP8VcxB9x_oBRCWAYNeoVAUb=7A@mail.gmail.com>
+ <78adef0e-81b0-47d4-be20-32f42ab8ec04@gtucker.io>
+ <20260310004815.GA3293460@ax162>
+Content-Language: en-US
+From: Guillaume Tucker <gtucker@gtucker.io>
+In-Reply-To: <20260310004815.GA3293460@ax162>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdeijeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepifhuihhllhgruhhmvgcuvfhutghkvghruceoghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhoqeenucggtffrrghtthgvrhhnpeetteduieffheeivedvkeejveefheeggedvuddtheetgfekffeivdeljefhveefhfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdguohgtkhgvrhdrtghomhenucfkphepudejiedrudehledrjedurdegleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedujeeirdduheelrdejuddrgeelpdhhvghloheplgduledvrdduieekrdduheejrdeigegnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhqihgupeeggeefleeufefgueeutedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsggvnhdrtghophgvlhgrnhgusehlihhnrghrohdrohhrghdprhgtphhtthhopehkohhnshhtrghnthhinheslhhinhhugihfohhunhgurghtihhonhdrohhrghdpr
+ hgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehnshgtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggv
 
+Hi Nathan et al,
 
---Po24HKR3YMAV6BWk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 10/03/2026 1:48 am, Nathan Chancellor wrote:
+> Hi Guillaume,
+> 
+> On Wed, Feb 25, 2026 at 03:44:13PM +0100, Guillaume Tucker wrote:
+>> This boils things down to a few practical options:
+>>
+>> 1. treating TuxMake images with kernel.org toolchains as the de facto
+>>     stardard,
+>>
+>> 2. creating a repository from scratch on git.kernel.org with
+>>     independent hosting for base images,
+>>
+>> 3. some middle ground to be defined which would remove the risks
+>>     associated with third parties without duplicating efforts.
+>>
+>> I feel it would be good to have more maintainers' feedback though.
+>>
+>> Nathan, Nicolas, Miguel - what are your thoughts on this?
+> 
+> To be entirely honest, I do not really have a strong opinion here. I
+> generally agree with your thoughts around branded container images,
+> although I do think that TuxMake's images tend to be fairly lean, so
+> those easily could become the recommended images without many downsides
+> aside from maybe where they are hosted and how they are maintained.
+> Having a clean set of Containerfiles on git.kernel.org does not sound
+> like a bad idea, especially if they would be structured in such a way
+> that other entities could customize them for their use case further. I
+> guess its usefulness really depends on the other stakeholders like
+> KernelCI. It seems like there has to be some sort of buy in from the
+> kernel.org administrators around hosting built container images
+> somewhere on kernel.org though, as I don't think the regular developer
+> is going to want to build images locally. Not really sure what that
+> looks like.
 
-On Fri, Mar 13, 2026 at 01:04:56AM +0000, Eric Biggers wrote:
-> On Thu, Mar 12, 2026 at 11:34:51PM +0000, Mark Brown wrote:
+Thank you for the feedback, it's very valuable even without a strong
+opinion regarding the 3 options in my previous email.  It also tends
+to confirm that the risks I mentioned aren't too critical to get
+started, having some developer adoption is more important for now.
 
-> > Whatever is enabled by the KUnit runner tools/testing/kunit/kunit.py
-> > (which makes x86_64 a bit of an unfortunate choice given how slim theilr
-> > defconfig is).  The theory is that the KUnit configs will do the right
+With all this in mind, I believe we can follow a step-by-step
+approach to start simple and deploy more tailored solutions as and
+when the need arises.  This can be seen as a bit of a Beta testing
+phase until there is enough momentum to look into the longer term.
 
-> Yes, the tests run by kunit.py depend on the args passed to it.  It
-> looks like without any arguments it runs all tests available with
-> defconfig + tools/testing/kunit/configs/default.config.  With
-> --alltests, it runs all tests available with defconfig +
-> tools/testing/kunit/configs/all_tests.config.  Both set
-> "CONFIG_KUNIT_ALL_TESTS=y", so the difference is just what additional
-> options get enabled to fulfill the test dependencies.  all_tests.config
-> enables more dependencies than default.config.
+So here's what I would like to propose for the short term:
 
-Yes, exactly.
+1. review current TuxMake kernel.org toolchain images[1] and
+    determine what needs to be added or changed there (e.g. I don't
+    see any GCC ones right now)
 
-> So I think KernelCI should start passing --alltests to kunit.py, and I
-> should get the dependencies for all the crypto and CRC tests added to
-> tools/testing/kunit/configs/all_tests.config.  Then KernelCI would pick
-> them up automatically.
+2. update the scripts/container tool to rely on tuxmake korg images
+    with default entries in a reference user settings file
 
-That sounds like a plan.
+3. encourage kernel developers to go and try it out and provide
+    feedback, maybe even run a small community survey
 
-> > The KUnit runner uses qemu as standard which I guess is probably fine
-> > for an initial pass, we would need to do a bunch more plumbing to run on
-> > actual hardware and pull the results out.  We'd also be restricted by
-> > what's available to us, at the minute we've got arm, arm64, riscv and
-> > x86 systems with a bit of an embedded focus.
+4. review the situation after a while e.g. once v7.1-rc2 is out and
+    decide what steps to take next based on community priorities
 
-> It seems kunit.py uses UML by default, though it accepts an --arch
-> argument which enables QEMU.  So something to think about for KernelCI
-> would be to run all KUnit tests with different combinations of --arch.
+I believe there aren't any blockers here so we can probably just give
+it a try as an experiment and see how it goes, unless someone has
+anything else to suggest.
 
-Right, and UML only works with an x86 host which is fun.  qemu is the
-standard way of running for a specific architecture.
+Things like moving the Containerfiles to git.kernel.org or hosting
+the images in a dedicated registry etc. should eventually emerge by
+themselves if there is a real need for them.
 
---Po24HKR3YMAV6BWk
-Content-Type: application/pgp-signature; name="signature.asc"
+Best wishes,
+Guillaume
 
------BEGIN PGP SIGNATURE-----
+[1] https://hub.docker.com/u/tuxmake?search=korg
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm0A6wACgkQJNaLcl1U
-h9DwJAf8DxjIWGzC15EUwpndpzSTFqKA8BbVsCXFjejA/80M75l31xfbja/4aJku
-SJZKk1CcFi7f9K19ywfwFNrg7UzGI/MrXPvL7qya9KXl90y58Rzl81l5/QgoqyRk
-7NaA8JuietgYWvBmwlgrpKVLqkEdRut9Y+nbOwtkcJ995BEHGOsELK9nYH84eTkE
-8yB9DLgZs8EGKj09hbRf1Athx2RFOxTet9xzwAC13joVMYbwZd0xIcjxtnia3NVw
-bLCwE5Q27KVUqp8w50hL60T4EHUtLuyVOD5NJgU1O8nF0RcrsP9aL/0u4Y7bj4Ec
-EjoaVS30tkBDp91D5vZhZbtIebE1LA==
-=PDf4
------END PGP SIGNATURE-----
-
---Po24HKR3YMAV6BWk--
