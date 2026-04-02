@@ -1,42 +1,38 @@
-Received: from a27-60.smtp-out.us-west-2.amazonses.com (a27-60.smtp-out.us-west-2.amazonses.com [54.240.27.60])
+Received: from a27-195.smtp-out.us-west-2.amazonses.com (a27-195.smtp-out.us-west-2.amazonses.com [54.240.27.195])
 	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663142FE591
-	for <kernelci@lists.linux.dev>; Thu,  2 Apr 2026 15:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.27.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7BE313283
+	for <kernelci@lists.linux.dev>; Thu,  2 Apr 2026 15:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.27.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775142574; cv=none; b=hxN9DSTKirxR+hpgfMNN9jSWP1SXfZyBjA2fJbwPYdacEkYosNCCd6TTdOny8tW2IeevMb/lbCgHRhaLCzdpcLpOzbzC6D03OScoEDW3EOoh0DwYA+3f6t0G2RFUJgBFqyCGt3LyJ4EMOdzUg9PObbs75i/47fzqwz+Dct01iY8=
+	t=1775142600; cv=none; b=uvTmTqzMxmSMU3fvxanfx7GzvJ9vaCvuOZ5pmXSMucbN/yB+JMxGPJ+pbnzUfXQGcubgpyzMU9jZu8kgKZ0yoSlHb3WReJJprcjd9R/7RhfFwT8kuU2yUfnliTKKHOsQ8ZlBz5rhgoUxTphFx5/eeDUC+pw7gFslPQDnC2LAZZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775142574; c=relaxed/simple;
-	bh=Jk2ovPEOWdBmNpCINc7CPnqecQ8RSMRjkyixYen2U/Q=;
-	h=Subject:Message-ID:From:Date:Mime-Version:Content-Type:To; b=YQtjmPa16T0qSY+JLmwRhFo8ZWh8YRg6r9SO1awEbevQMVvTYqvvCClrGMlZ74a3nCoZ49Rx+HICH0E90CkxvOczTUNABJSzGOeZwASF7/QZu18Udr7PYgCgf6BrRFx42qgkfIp9kWRVOFiGUPnFWzLNzUA/D8doHmXeMfVGVLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lfx.dev; spf=pass smtp.mailfrom=us-west-2.amazonses.com; dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b=HAG7lGXW; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=bRzK5L7W; arc=none smtp.client-ip=54.240.27.60
+	s=arc-20240116; t=1775142600; c=relaxed/simple;
+	bh=T1mxM2bOzV8VxCU6S8tTJdn73i8qkqYNkvwSXOnOkIk=;
+	h=Mime-Version:Content-Type:To:Subject:Message-ID:From:Date; b=Pu/hviw5yGvRJQeYi4p7XOoH6bMyyogko63ZoeWfOjFOiwASFK5Sb0VwklouZ662Qp0TXyECTYGP3G8WtXASxPkLCdxb1rlpTbQZx2WhpYFg71SmUsvbCHwqjHh1e2kAQEDAPwF2M2ZHgjTtTIntLm4jiBsi+p5IpH/EMM3nndo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lfx.dev; spf=pass smtp.mailfrom=us-west-2.amazonses.com; dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b=sDTLcapU; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=qFYNfRFb; arc=none smtp.client-ip=54.240.27.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lfx.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=us-west-2.amazonses.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b="HAG7lGXW";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="bRzK5L7W"
+	dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b="sDTLcapU";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="qFYNfRFb"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=wiot63u4yih6mdmjibnoe7kp43vbumdg; d=lfx.dev; t=1775142572;
-	h=Subject:Message-Id:From:Date:Mime-Version:Content-Type:To;
-	bh=Jk2ovPEOWdBmNpCINc7CPnqecQ8RSMRjkyixYen2U/Q=;
-	b=HAG7lGXWEQNe3X07Qe67Ntbc7iOyv4cYLkknBEm8FnR560StNmbVcNHMGMkq1O7q
-	+8atvkRA3jGRYpnCfL3ZqEYQY1/4+QZpf4dvjLi0dwz3LfrkLgUJKV2gpny58ghOzWU
-	s3Ufox3CnCJ6MKy4XcBByGTX8920VQVlfSY+3YEcSvDWYFmza8Sd57a8/I2YS4KS2lI
-	bESwft/wIbAh4mDTrTNNbB7OeClZBPP9cc5b6ct9/spwdebFc5x9bZ09T7htz/UlFqg
-	vA6wiqwBH0n6COyaGgXfMNLiX5JDqZTEaRXswfMnYCSCMiPtbxnt6hmPk9PZbGOf4b5
-	35BK22dCYw==
+	s=wiot63u4yih6mdmjibnoe7kp43vbumdg; d=lfx.dev; t=1775142598;
+	h=Mime-Version:Content-Type:To:Subject:Message-Id:From:Date;
+	bh=T1mxM2bOzV8VxCU6S8tTJdn73i8qkqYNkvwSXOnOkIk=;
+	b=sDTLcapU69nI1xB9WnU+96qyRcteG+WGMfArs0rD7dB/a1z7zG+kmpEgRFZQnTWA
+	BdMNzOnZ1G2cRLm18TnJpw1rDyBzhhDL2y+buj5vXIerVt2hrhEzwwb+Zf+et8B3OiW
+	7GNcTbqaQ+4VuhvJ9ME+kfp+vXIdORgOryZNppQRsoHn/XIVzyjO97PLiCiut/V1iiL
+	RKaFDrlqUlC5MIOPlzuhF+i9c0BUkDNwQ5SIVTVv7UXBcQmulUW/45x83EzDJkvU9lD
+	uUY5oeXKRe3ULHECDnVv46k8+EAF+hpE/B+TSbjp0KClVUQq4UPRb+L34erpfbJFzlM
+	Zngxdp2jMg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1775142572;
-	h=Subject:Message-Id:From:Date:Mime-Version:Content-Type:To:Feedback-ID;
-	bh=Jk2ovPEOWdBmNpCINc7CPnqecQ8RSMRjkyixYen2U/Q=;
-	b=bRzK5L7Whj+iATh2wtFRRpYf4PVtXZu+YWvU4vsP6PQHFKeUqPEiAgWNf6JwoE9J
-	ZDvi6wCJSrkNjz5oIOD3i8SQ2CkeW5SIx3H0Xbhqe2j+k1UZiSGwBQYaeDhfqwmSE73
-	kLsFFbdzrVgRJqGhBpPcr+EK0qvE5gn/BIzbWRCQ=
-Subject: Invitation: Copy of KernelCI Bisection Introduction
-Message-ID: <0101019d4ebe12fa-59aacbaf-10fa-4c11-aa99-eadc0b484642-000000@us-west-2.amazonses.com>
-From: KernelCI Foundation - Meetings <meetings@lfx.dev>
-Date: Thu, 2 Apr 2026 15:09:32 +0000
+	s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1775142598;
+	h=Mime-Version:Content-Type:To:Subject:Message-Id:From:Date:Feedback-ID;
+	bh=T1mxM2bOzV8VxCU6S8tTJdn73i8qkqYNkvwSXOnOkIk=;
+	b=qFYNfRFbEgxS9Cmc1rMu7M1q12rbRYkCPspSSQKPa73YJwdn21xXy5dtXt+t3D2i
+	7DwK3jfraCiCEQF9WQntSL5hjFWDilKQtYdfv5fzopERK7GsgL7yjn2iSETGztO4YW8
+	qLNt9cwtrU7TW8RK3Zzm3j0bJopqCQQWpo9vyJno=
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -44,12 +40,16 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Type: multipart/mixed;
- boundary=349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad
+ boundary=5edfbee2c99068a99a44cb284fadb45d8f974b400eff1b4e6b37c8a26df4
 To: kernelci@lists.linux.dev
+Subject: Updated Invitation: KernelCI Bisection Introduction
+Message-ID: <0101019d4ebe77a6-ea7d66eb-7e75-48cf-9cf2-2b2eac633e4b-000000@us-west-2.amazonses.com>
+From: KernelCI Foundation - Meetings <meetings@lfx.dev>
+Date: Thu, 2 Apr 2026 15:09:58 +0000
 Feedback-ID: ::1.us-west-2.38rwtV0514CR+dj3ljxDerAe+nCn9watSKvSUQn1rXA=:AmazonSES
-X-SES-Outgoing: 2026.04.02-54.240.27.60
+X-SES-Outgoing: 2026.04.02-54.240.27.195
 
---349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad
+--5edfbee2c99068a99a44cb284fadb45d8f974b400eff1b4e6b37c8a26df4
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/html; charset=UTF-8
 
@@ -96,12 +96,14 @@ Content-Type: text/html; charset=UTF-8
     <body>
         <div>
            =20
-                <p>Hello kernelci mailing list,</p>
-                <p>You have been invited to a meeting for KernelCI Foundati=
-on</p>
+               =20
+               =20
+                    <p><b>This meeting has changed descriptions. The instru=
+ctions to join the call are the same.</b></p>
+               =20
            =20
             <div>
-                <h2>Copy of KernelCI Bisection Introduction</h2>
+                <h2>KernelCI Bisection Introduction</h2>
                 <div>
                     <p>When: Thursday, April 23rd, 16:30 Europe/London</p>
                 </div>
@@ -170,7 +172,7 @@ umbers</a>
     </body>
 </html>
 
---349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad
+--5edfbee2c99068a99a44cb284fadb45d8f974b400eff1b4e6b37c8a26df4
 Content-Disposition: attachment;
  filename="invite.ics"
 Content-Id: <invite.ics>
@@ -290,7 +292,7 @@ UkQNClRaTkFNRTpHTVQNClRaT0ZGU0VURlJPTTorMDEwMA0KVFpPRkZTRVRUTzorMDAwMA0KRFRT
 VEFSVDoxOTk2MTAyN1QwMjAwMDANClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9MTA7QllEQVk9
 LTFTVQ0KRU5EOlNUQU5EQVJEDQpFTkQ6VlRJTUVaT05FDQpCRUdJTjpWRVZFTlQNCkFUVEVOREVF
 O1ZBTFVFPVRFWFQ6a2VybmVsY2lAbGlzdHMubGludXguZGV2DQpDUkVBVEVEO1RaSUQ9RXVyb3Bl
-L0xvbmRvbjoyMDI2MDQwMlQxNjA5MzINCkRFU0NSSVBUSU9OOlxuWW91IGhhdmUgYmVlbiBpbnZp
+L0xvbmRvbjoyMDI2MDQwMlQxNjA5NTgNCkRFU0NSSVBUSU9OOlxuWW91IGhhdmUgYmVlbiBpbnZp
 dGVkIHRvIGEgbWVldGluZyBmb3IgS2VybmVsQ0kgRm91bmRhdGkNCiBvblxuXG5XZSBoYXZlIG1h
 bnkgb3B0aW9ucyBhbmQgaGF2ZSBsZWFybnQgbWFueSBsZXNzb25zIGZyb20gcGFzdFxuZXhwDQog
 ZXJpZW5jZXMuIEtlcm5lbENJIHRvZGF5IGxhY2tzIHRoZSBhYmlsaXR5IHRvIGRvIGF1dG9tYXRl
@@ -316,19 +318,19 @@ MzggODA5IDc3DQogOTkgb3IgKzEgNTg3IDMyOCAxMDk5IG9yIDg1NSA3MDMgODk4NSAoVG9sbCBG
 cmVlKVxuXG5NZWV0aW5nIElEOiA5MzU5MQ0KIDgxNDgyM1xuXG5NZWV0aW5nIFBhc3Njb2RlOiAz
 MDcxNTlcblxuXG5JbnRlcm5hdGlvbmFsIG51bWJlcnM6IGh0dHBzOi8NCiAvem9vbS51cy91L2Fs
 d25QSWFWVFxuDQpEVEVORDtUWklEPUV1cm9wZS9Mb25kb246MjAyNjA0MjNUMTczMDAwDQpEVFNU
-QU1QO1RaSUQ9RXVyb3BlL0xvbmRvbjoyMDI2MDQwMlQxNjA5MzINCkRUU1RBUlQ7VFpJRD1FdXJv
+QU1QO1RaSUQ9RXVyb3BlL0xvbmRvbjoyMDI2MDQwMlQxNjA5NTgNCkRUU1RBUlQ7VFpJRD1FdXJv
 cGUvTG9uZG9uOjIwMjYwNDIzVDE2MzAwMA0KTEFTVC1NT0RJRklFRDtUWklEPUV1cm9wZS9Mb25k
-b246MjAyNjA0MDJUMTYwOTMyDQpMT0NBVElPTjpodHRwczovL3pvb20tbGZ4LnBsYXRmb3JtLmxp
+b246MjAyNjA0MDJUMTYwOTU4DQpMT0NBVElPTjpodHRwczovL3pvb20tbGZ4LnBsYXRmb3JtLmxp
 bnV4Zm91bmRhdGlvbi5vcmcvbWVldGluZy85MzU5MTgxDQogNDgyMz9wYXNzd29yZD1mOTMxYjJj
 MS1iZmY2LTQ0ZjktODlhYS01YmFkYjdmN2UxZTYNCk9SR0FOSVpFUjtDTj1LZXJuZWxDSSBGb3Vu
-ZGF0aW9uOk1BSUxUTzptZWV0aW5nc0BsZnguZGV2DQpTVU1NQVJZOkNvcHkgb2YgS2VybmVsQ0kg
-QmlzZWN0aW9uIEludHJvZHVjdGlvbg0KVFpJRDpFdXJvcGUvTG9uZG9uDQpUWk5BTUU6RXVyb3Bl
-L0xvbmRvbg0KVUlEOjkzNTkxODE0ODIzDQpVUkw7VkFMVUU9VEVYVDpodHRwczovL3pvb20tbGZ4
-LnBsYXRmb3JtLmxpbnV4Zm91bmRhdGlvbi5vcmcvbWVldGluZy85DQogMzU5MTgxNDgyMz9wYXNz
-d29yZD1mOTMxYjJjMS1iZmY2LTQ0ZjktODlhYS01YmFkYjdmN2UxZTYNClgtTUVFVElORy1JRDo5
-MzU5MTgxNDgyMw0KWC1PQ0NVUlJFTkNFLUlEOg0KWC1SRUdJU1RSQU5ULUlEOmRhMmM1MTJlLTY5
-NWItNDEzNi1iOTQyLWFkMzMwMmIxZmM0Nw0KQkVHSU46VkFMQVJNDQpBQ1RJT046RElTUExBWQ0K
-REVTQ1JJUFRJT046TWVldGluZyByZW1pbmRlcg0KVFJJR0dFUjotUFQxME0NCkVORDpWQUxBUk0N
-CkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVINCg==
+ZGF0aW9uOk1BSUxUTzptZWV0aW5nc0BsZnguZGV2DQpTVU1NQVJZOktlcm5lbENJIEJpc2VjdGlv
+biBJbnRyb2R1Y3Rpb24NClRaSUQ6RXVyb3BlL0xvbmRvbg0KVFpOQU1FOkV1cm9wZS9Mb25kb24N
+ClVJRDo5MzU5MTgxNDgyMw0KVVJMO1ZBTFVFPVRFWFQ6aHR0cHM6Ly96b29tLWxmeC5wbGF0Zm9y
+bS5saW51eGZvdW5kYXRpb24ub3JnL21lZXRpbmcvOQ0KIDM1OTE4MTQ4MjM/cGFzc3dvcmQ9Zjkz
+MWIyYzEtYmZmNi00NGY5LTg5YWEtNWJhZGI3ZjdlMWU2DQpYLU1FRVRJTkctSUQ6OTM1OTE4MTQ4
+MjMNClgtT0NDVVJSRU5DRS1JRDoNClgtUkVHSVNUUkFOVC1JRDpkYTJjNTEyZS02OTViLTQxMzYt
+Yjk0Mi1hZDMzMDJiMWZjNDcNCkJFR0lOOlZBTEFSTQ0KQUNUSU9OOkRJU1BMQVkNCkRFU0NSSVBU
+SU9OOk1lZXRpbmcgcmVtaW5kZXINClRSSUdHRVI6LVBUMTBNDQpFTkQ6VkFMQVJNDQpFTkQ6VkVW
+RU5UDQpFTkQ6VkNBTEVOREFSDQo=
 
---349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad--
+--5edfbee2c99068a99a44cb284fadb45d8f974b400eff1b4e6b37c8a26df4--
