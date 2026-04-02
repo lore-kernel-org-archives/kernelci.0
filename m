@@ -1,104 +1,334 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a27-60.smtp-out.us-west-2.amazonses.com (a27-60.smtp-out.us-west-2.amazonses.com [54.240.27.60])
+	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA07F33B97B;
-	Mon, 30 Mar 2026 17:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663142FE591
+	for <kernelci@lists.linux.dev>; Thu,  2 Apr 2026 15:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.27.60
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774890875; cv=none; b=MODXg194kJywyUsaPHN1zOSbJN8wyK7ECt6rljo578asin8c6uLeCGi+GtTZYM8JfSrNxNoEGenjq/kTA0J7cJGZnoRIsN3aNCkAC8KbGObSS0ta/5Q0KdoTIad1FOeIBwOQjBeSxXCEysnD4feAFImhLvIQ4nUuMUCbaoP9Frg=
+	t=1775142574; cv=none; b=hxN9DSTKirxR+hpgfMNN9jSWP1SXfZyBjA2fJbwPYdacEkYosNCCd6TTdOny8tW2IeevMb/lbCgHRhaLCzdpcLpOzbzC6D03OScoEDW3EOoh0DwYA+3f6t0G2RFUJgBFqyCGt3LyJ4EMOdzUg9PObbs75i/47fzqwz+Dct01iY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774890875; c=relaxed/simple;
-	bh=q9h/syO7kNCfJ58ERVsTRXaw2C0cY3Gdps0OmK3fpio=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=UIhrtoCP72W/aiV9oIo2XNiFThWB0RKN5M5+SWpZiHAmZbF+zbcMMU16RoRIKDInwSW9Farz/8lt1k1dwiMLxP1nJPO91WpCNxzLjAOWB8bFv9GP1dAfl6BMN74vfLk02ZFPM1h7duoxHSFcDfzn/56Yr7OaEy8WTduiZx0xlmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFHmgSuF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775142574; c=relaxed/simple;
+	bh=Jk2ovPEOWdBmNpCINc7CPnqecQ8RSMRjkyixYen2U/Q=;
+	h=Subject:Message-ID:From:Date:Mime-Version:Content-Type:To; b=YQtjmPa16T0qSY+JLmwRhFo8ZWh8YRg6r9SO1awEbevQMVvTYqvvCClrGMlZ74a3nCoZ49Rx+HICH0E90CkxvOczTUNABJSzGOeZwASF7/QZu18Udr7PYgCgf6BrRFx42qgkfIp9kWRVOFiGUPnFWzLNzUA/D8doHmXeMfVGVLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lfx.dev; spf=pass smtp.mailfrom=us-west-2.amazonses.com; dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b=HAG7lGXW; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=bRzK5L7W; arc=none smtp.client-ip=54.240.27.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lfx.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=us-west-2.amazonses.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFHmgSuF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF868C4CEF7;
-	Mon, 30 Mar 2026 17:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774890874;
-	bh=q9h/syO7kNCfJ58ERVsTRXaw2C0cY3Gdps0OmK3fpio=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=SFHmgSuFT1Wgn8xn5rmuDSa5zbAEcQUo7HP1DpZcKVNC5dxQzQAKIC8JgnCbVhCrD
-	 lppTGF5CdH5gcQEGYZzn5JiWWy+MpbHjx56AW7N5O7/l93BF0AcQbF/WnN6/T4HWz4
-	 v4h2S8rFlfUBG9k+OnHkw87XuD+f9TJY9tWfhUVkFi9azrNULsj69wcX2OlxvO5axC
-	 DYfoY5EccTq8i/G0Zm/SK3PhT2Wr7ELKrC3XIbirvvUpWyuQ/wKWItHMsZwIFv8nvR
-	 vZ9KD7XPDPyMPWZ0yE1PdzG1cvWVdkT4f/lG13Xuj6mHKhunPJF/iciyaT902zDjck
-	 RT3VzJcned09w==
-Date: Mon, 30 Mar 2026 12:14:33 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io, gus@collabora.com,
-	linux-pci@vger.kernel.org
-Subject: Re: [REGRESSION] =?utf-8?Q?linux-pci=2Fnex?=
- =?utf-8?Q?t=3A_=28build=29_ignoring_return_value_of_=E2=80=98vga=5Fget=5F?=
- =?utf-8?Q?uninterruptible=E2=80=99?= declared with a...
-Message-ID: <20260330171433.GA84073@bhelgaas>
+	dkim=pass (2048-bit key) header.d=lfx.dev header.i=@lfx.dev header.b="HAG7lGXW";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="bRzK5L7W"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=wiot63u4yih6mdmjibnoe7kp43vbumdg; d=lfx.dev; t=1775142572;
+	h=Subject:Message-Id:From:Date:Mime-Version:Content-Type:To;
+	bh=Jk2ovPEOWdBmNpCINc7CPnqecQ8RSMRjkyixYen2U/Q=;
+	b=HAG7lGXWEQNe3X07Qe67Ntbc7iOyv4cYLkknBEm8FnR560StNmbVcNHMGMkq1O7q
+	+8atvkRA3jGRYpnCfL3ZqEYQY1/4+QZpf4dvjLi0dwz3LfrkLgUJKV2gpny58ghOzWU
+	s3Ufox3CnCJ6MKy4XcBByGTX8920VQVlfSY+3YEcSvDWYFmza8Sd57a8/I2YS4KS2lI
+	bESwft/wIbAh4mDTrTNNbB7OeClZBPP9cc5b6ct9/spwdebFc5x9bZ09T7htz/UlFqg
+	vA6wiqwBH0n6COyaGgXfMNLiX5JDqZTEaRXswfMnYCSCMiPtbxnt6hmPk9PZbGOf4b5
+	35BK22dCYw==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1775142572;
+	h=Subject:Message-Id:From:Date:Mime-Version:Content-Type:To:Feedback-ID;
+	bh=Jk2ovPEOWdBmNpCINc7CPnqecQ8RSMRjkyixYen2U/Q=;
+	b=bRzK5L7Whj+iATh2wtFRRpYf4PVtXZu+YWvU4vsP6PQHFKeUqPEiAgWNf6JwoE9J
+	ZDvi6wCJSrkNjz5oIOD3i8SQ2CkeW5SIx3H0Xbhqe2j+k1UZiSGwBQYaeDhfqwmSE73
+	kLsFFbdzrVgRJqGhBpPcr+EK0qvE5gn/BIzbWRCQ=
+Subject: Invitation: Copy of KernelCI Bisection Introduction
+Message-ID: <0101019d4ebe12fa-59aacbaf-10fa-4c11-aa99-eadc0b484642-000000@us-west-2.amazonses.com>
+From: KernelCI Foundation - Meetings <meetings@lfx.dev>
+Date: Thu, 2 Apr 2026 15:09:32 +0000
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <177463434509.1554.4896275539353552635@0d12152ffbcd>
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary=349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad
+To: kernelci@lists.linux.dev
+Feedback-ID: ::1.us-west-2.38rwtV0514CR+dj3ljxDerAe+nCn9watSKvSUQn1rXA=:AmazonSES
+X-SES-Outgoing: 2026.04.02-54.240.27.60
 
-On Fri, Mar 27, 2026 at 05:59:05PM -0000, KernelCI bot wrote:
-> 
-> 
-> 
-> 
-> Hello,
-> 
-> New build issue found on linux-pci/next:
-> 
-> ---
->  ignoring return value of ‘vga_get_uninterruptible’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result] in drivers/gpu/drm/i915/display/intel_vga.o (drivers/gpu/drm/i915/display/intel_vga.c) [logspec:kbuild,kbuild.compiler.error]
-> ---
-> 
-> - dashboard: https://d.kernelci.org/i/maestro:f670fdf443306495220d2cea8670ce85a80aed1e
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
-> - commit HEAD:  50451816531d66141cafe2347f9a896bd4dcb2b3
+--349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
 
-Dropped the commits related to this, see
-https://lore.kernel.org/all/20260330161802.GA79047@bhelgaas
+<html>
+    <head>
+        <style>
+        .join-meeting-btn {
+            background: #0099CC 0% 0% no-repeat padding-box;
+            border: 1px solid #0099CC;
+            border-radius: 30px;
+            opacity: 1;
+        }
+        .join-meeting-text {
+            text-align: left;
+            font: normal normal 600 14px/19px Open Sans;
+            letter-spacing: 0px;
+            color: white;
+            text-decoration: none;
+            text-transform: capitalize;
+            opacity: 1;
+        }
+        .manage-meeting-btn {
+            background: #0099CC 0% 0% no-repeat padding-box;
+            border: 1px solid #0099CC;
+            border-radius: 30px;
+            opacity: 1;
+        }
+        .manage-meeting-text {
+            text-align: left;
+            font: normal normal 600 14px/19px Open Sans;
+            letter-spacing: 0px;
+            color: white;
+            text-decoration: none;
+            text-transform: capitalize;
+            opacity: 1;
+        }
+        .tight-spacing {
+            letter-spacing: 0px;
+            line-height: 10px;
+            padding-bottom: 3px;
+        }
+        </style>
+    </head>
+    <body>
+        <div>
+           =20
+                <p>Hello kernelci mailing list,</p>
+                <p>You have been invited to a meeting for KernelCI Foundati=
+on</p>
+           =20
+            <div>
+                <h2>Copy of KernelCI Bisection Introduction</h2>
+                <div>
+                    <p>When: Thursday, April 23rd, 16:30 Europe/London</p>
+                </div>
+               =20
+                <div>
+                    <h3>Meeting Description:</h3>
+                    <p>We have many options and have learnt many lessons fr=
+om past
+experiences. KernelCI today lacks the ability to do automated
+bisection. So I would like to put the meeting together to cover
+ - What bisection in Kernelci should look like
+ - How do we go about Bisection at an efficient computational cost
+ - What are the options for automation
+ - What exisiting tools we should use
+ - Put together actions list</p>
+                </div>
+               =20
+               =20
+            </div>
+        </div>
+       =20
+        <div>
+            <h3>Ways to join meeting:</h3>
+            <div>
+                <div>
+                    <div>
+                        <h2>1. Join from PC, Mac, iPad, or Android</h2>
+                        <button class=3D"join-meeting-btn"><a class=3D"join=
+-meeting-text" style=3D"color: white;" href=3D"https://zoom-lfx.platform.li=
+nuxfoundation.org/meeting/93591814823?password=3Df931b2c1-bff6-44f9-89aa-5b=
+adb7f7e1e6">Join Meeting</a></button>
+                        <p>If the button above does not work, paste this in=
+to your browser: <a href=3D"https://zoom-lfx.platform.linuxfoundation.org/m=
+eeting/93591814823?password=3Df931b2c1-bff6-44f9-89aa-5badb7f7e1e6">https:/=
+/zoom-lfx.platform.linuxfoundation.org/meeting/93591814823?password=3Df931b=
+2c1-bff6-44f9-89aa-5badb7f7e1e6</a></p>
+                    </div>
+                </div>
+                <div>
+                    <h2>2. Join via audio</h2>
+                    <div class=3D"tight-spacing">
+                        <p><b>One tap mobile:</b></p>
+                        <p><b>US:</b> <a href=3D"tel:+12532158782,,93591814=
+823%23,,,,*307159%23">+12532158782,,93591814823#,,,,*307159#</a> or <a href=
+=3D"tel:+13462487799,,93591814823%23,,,,*307159%23">+13462487799,,935918148=
+23#,,,,*307159#</a></p>
+                    </div>
+                    <div class=3D"tight-spacing">
+                        <p><b>Or dial: </b></p>
+                        <p><b>US:</b> +1 253 215 8782 or +1 346 248 7799 or=
+ +1 669 900 6833 or +1 301 715 8592 or +1 312 626 6799 or +1 646 374 8656 o=
+r 877 369 0926 (Toll Free) or 855 880 1246 (Toll Free)</p>
+                        <p><b>Canada:</b> +1 647 374 4685 or +1 647 558 058=
+8 or +1 778 907 2071 or +1 204 272 7920 or +1 438 809 7799 or +1 587 328 10=
+99 or 855 703 8985 (Toll Free)</p>
+                    </div>
+                    <p>Meeting ID: 93591814823</p>
+                   =20
+                    <p>Meeting Passcode: 307159</p>
+                   =20
+                    <a href=3D'https://zoom.us/u/alwnPIaVT'>International n=
+umbers</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
 
-> 
-> 
-> Please include the KernelCI tag when submitting a fix:
-> 
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> 
-> 
-> Log excerpt:
-> =====================================================
-> /tmp/kci/linux/drivers/gpu/drm/i915/display/intel_vga.c:68:9: error: ignoring return value of ‘vga_get_uninterruptible’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
->    68 |         vga_get_uninterruptible(pdev, VGA_RSRC_LEGACY_IO);
->       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> /tmp/kci/linux/drivers/gpu/drm/i915/display/intel_vga.c: In function ‘intel_vga_reset_io_mem’:
-> /tmp/kci/linux/drivers/gpu/drm/i915/display/intel_vga.c:93:9: error: ignoring return value of ‘vga_get_uninterruptible’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
->    93 |         vga_get_uninterruptible(pdev, VGA_RSRC_LEGACY_IO);
->       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
-> 
-> =====================================================
-> 
-> 
-> # Builds where the incident occurred:
-> 
-> ## x86_64_defconfig+kselftest on (x86_64):
-> - compiler: gcc-14
-> - config: None
-> - dashboard: https://d.kernelci.org/build/maestro:69c6b9023712df3240c2a985
-> 
-> 
-> #kernelci issue maestro:f670fdf443306495220d2cea8670ce85a80aed1e
-> 
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
-> 
-> Made with love by the KernelCI team - https://kernelci.org
+--349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad
+Content-Disposition: attachment;
+ filename="invite.ics"
+Content-Id: <invite.ics>
+Content-Transfer-Encoding: base64
+Content-Type: text/calendar; method=REQUEST
+
+QkVHSU46VkNBTEVOREFSDQpNRVRIT0Q6UkVRVUVTVA0KUFJPRElEOi0vL0xpbnV4IEZvdW5kYXRp
+b24vL01lZXRpbmcgTWFuYWdlbWVudA0KVkVSU0lPTjoyLjANCkJFR0lOOlZUSU1FWk9ORQ0KVFpJ
+RDpFdXJvcGUvTG9uZG9uDQpMQVNULU1PRElGSUVEOjIwMjIxMDI5VDAyMTAyOVoNClRaVVJMOmh0
+dHA6Ly90enVybC5vcmcvem9uZWluZm8vRXVyb3BlL0xvbmRvbg0KWC1MSUMtTE9DQVRJT046RXVy
+b3BlL0xvbmRvbg0KWC1QUk9MRVBUSUMtVFpOQU1FOkxNVA0KQkVHSU46U1RBTkRBUkQNClRaTkFN
+RTpHTVQNClRaT0ZGU0VURlJPTTotMDAwMTE1DQpUWk9GRlNFVFRPOiswMDAwDQpEVFNUQVJUOjE4
+NDcxMjAxVDAwMDAwMA0KRU5EOlNUQU5EQVJEDQpCRUdJTjpEQVlMSUdIVA0KVFpOQU1FOkJTVA0K
+VFpPRkZTRVRGUk9NOiswMDAwDQpUWk9GRlNFVFRPOiswMTAwDQpEVFNUQVJUOjE5MTYwNTIxVDAy
+MDAwMA0KUkRBVEU6MTkxNzA0MDhUMDIwMDAwDQpSREFURToxOTE4MDMyNFQwMjAwMDANClJEQVRF
+OjE5MTkwMzMwVDAyMDAwMA0KUkRBVEU6MTkyMDAzMjhUMDIwMDAwDQpSREFURToxOTIxMDQwM1Qw
+MjAwMDANClJEQVRFOjE5MjIwMzI2VDAyMDAwMA0KUkRBVEU6MTkyMzA0MjJUMDIwMDAwDQpSREFU
+RToxOTI0MDQxM1QwMjAwMDANClJEQVRFOjE5MjcwNDEwVDAyMDAwMA0KUkRBVEU6MTkzMDA0MTNU
+MDIwMDAwDQpSREFURToxOTMzMDQwOVQwMjAwMDANClJEQVRFOjE5MzQwNDIyVDAyMDAwMA0KUkRB
+VEU6MTkzNTA0MTRUMDIwMDAwDQpSREFURToxOTM4MDQxMFQwMjAwMDANClJEQVRFOjE5MzkwNDE2
+VDAyMDAwMA0KUkRBVEU6MTk0MDAyMjVUMDIwMDAwDQpSREFURToxOTQ2MDQxNFQwMjAwMDANClJE
+QVRFOjE5NDcwMzE2VDAyMDAwMA0KUkRBVEU6MTk0ODAzMTRUMDIwMDAwDQpSREFURToxOTQ5MDQw
+M1QwMjAwMDANClJEQVRFOjE5NTMwNDE5VDAyMDAwMA0KUkRBVEU6MTk1NDA0MTFUMDIwMDAwDQpS
+REFURToxOTU3MDQxNFQwMjAwMDANClJEQVRFOjE5NjAwNDEwVDAyMDAwMA0KUkRBVEU6MTk2ODAy
+MThUMDIwMDAwDQpFTkQ6REFZTElHSFQNCkJFR0lOOlNUQU5EQVJEDQpUWk5BTUU6R01UDQpUWk9G
+RlNFVEZST006KzAxMDANClRaT0ZGU0VUVE86KzAwMDANCkRUU1RBUlQ6MTkxNjEwMDFUMDMwMDAw
+DQpSREFURToxOTE3MDkxN1QwMzAwMDANClJEQVRFOjE5MTgwOTMwVDAzMDAwMA0KUkRBVEU6MTkx
+OTA5MjlUMDMwMDAwDQpSREFURToxOTIwMTAyNVQwMzAwMDANClJEQVRFOjE5MjExMDAzVDAzMDAw
+MA0KUkRBVEU6MTkyMjEwMDhUMDMwMDAwDQpSREFURToxOTM5MTExOVQwMzAwMDANClJEQVRFOjE5
+NDcxMTAyVDAzMDAwMA0KUkRBVEU6MTk0ODEwMzFUMDMwMDAwDQpSREFURToxOTQ5MTAzMFQwMzAw
+MDANClJEQVRFOjE5NzExMDMxVDAzMDAwMA0KRU5EOlNUQU5EQVJEDQpCRUdJTjpTVEFOREFSRA0K
+VFpOQU1FOkdNVA0KVFpPRkZTRVRGUk9NOiswMTAwDQpUWk9GRlNFVFRPOiswMDAwDQpEVFNUQVJU
+OjE5MjMwOTE2VDAzMDAwMA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD05O0JZTU9OVEhEQVk9
+MTYsMTcsMTgsMTksMjAsMjEsMjI7QllEQVk9U1U7VQ0KIE5USUw9MTkyNDA5MjFUMDIwMDAwWg0K
+RU5EOlNUQU5EQVJEDQpCRUdJTjpEQVlMSUdIVA0KVFpOQU1FOkJTVA0KVFpPRkZTRVRGUk9NOisw
+MDAwDQpUWk9GRlNFVFRPOiswMTAwDQpEVFNUQVJUOjE5MjUwNDE5VDAyMDAwMA0KUlJVTEU6RlJF
+UT1ZRUFSTFk7QllNT05USD00O0JZTU9OVEhEQVk9MTYsMTcsMTgsMTksMjAsMjEsMjI7QllEQVk9
+U1U7VQ0KIE5USUw9MTkyNjA0MThUMDIwMDAwWg0KRU5EOkRBWUxJR0hUDQpCRUdJTjpTVEFOREFS
+RA0KVFpOQU1FOkdNVA0KVFpPRkZTRVRGUk9NOiswMTAwDQpUWk9GRlNFVFRPOiswMDAwDQpEVFNU
+QVJUOjE5MjUxMDA0VDAzMDAwMA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD0xMDtCWU1PTlRI
+REFZPTIsMyw0LDUsNiw3LDg7QllEQVk9U1U7VU5USUw9MQ0KIDkzODEwMDJUMDIwMDAwWg0KRU5E
+OlNUQU5EQVJEDQpCRUdJTjpEQVlMSUdIVA0KVFpOQU1FOkJTVA0KVFpPRkZTRVRGUk9NOiswMDAw
+DQpUWk9GRlNFVFRPOiswMTAwDQpEVFNUQVJUOjE5MjgwNDIyVDAyMDAwMA0KUlJVTEU6RlJFUT1Z
+RUFSTFk7QllNT05USD00O0JZTU9OVEhEQVk9MTYsMTcsMTgsMTksMjAsMjEsMjI7QllEQVk9U1U7
+VQ0KIE5USUw9MTkyOTA0MjFUMDIwMDAwWg0KRU5EOkRBWUxJR0hUDQpCRUdJTjpEQVlMSUdIVA0K
+VFpOQU1FOkJTVA0KVFpPRkZTRVRGUk9NOiswMDAwDQpUWk9GRlNFVFRPOiswMTAwDQpEVFNUQVJU
+OjE5MzEwNDE5VDAyMDAwMA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD00O0JZTU9OVEhEQVk9
+MTYsMTcsMTgsMTksMjAsMjEsMjI7QllEQVk9U1U7VQ0KIE5USUw9MTkzMjA0MTdUMDIwMDAwWg0K
+RU5EOkRBWUxJR0hUDQpCRUdJTjpEQVlMSUdIVA0KVFpOQU1FOkJTVA0KVFpPRkZTRVRGUk9NOisw
+MDAwDQpUWk9GRlNFVFRPOiswMTAwDQpEVFNUQVJUOjE5MzYwNDE5VDAyMDAwMA0KUlJVTEU6RlJF
+UT1ZRUFSTFk7QllNT05USD00O0JZTU9OVEhEQVk9MTYsMTcsMTgsMTksMjAsMjEsMjI7QllEQVk9
+U1U7VQ0KIE5USUw9MTkzNzA0MThUMDIwMDAwWg0KRU5EOkRBWUxJR0hUDQpCRUdJTjpEQVlMSUdI
+VA0KVFpOQU1FOkJEU1QNClRaT0ZGU0VURlJPTTorMDEwMA0KVFpPRkZTRVRUTzorMDIwMA0KRFRT
+VEFSVDoxOTQxMDUwNFQwMjAwMDANClJEQVRFOjE5NDUwNDAyVDAyMDAwMA0KUkRBVEU6MTk0NzA0
+MTNUMDIwMDAwDQpFTkQ6REFZTElHSFQNCkJFR0lOOkRBWUxJR0hUDQpUWk5BTUU6QlNUDQpUWk9G
+RlNFVEZST006KzAyMDANClRaT0ZGU0VUVE86KzAxMDANCkRUU1RBUlQ6MTk0MTA4MTBUMDMwMDAw
+DQpSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRIPTg7QllNT05USERBWT05LDEwLDExLDEyLDEzLDE0
+LDE1O0JZREFZPVNVO1VODQogVElMPTE5NDMwODE1VDAxMDAwMFoNCkVORDpEQVlMSUdIVA0KQkVH
+SU46REFZTElHSFQNClRaTkFNRTpCRFNUDQpUWk9GRlNFVEZST006KzAxMDANClRaT0ZGU0VUVE86
+KzAyMDANCkRUU1RBUlQ6MTk0MjA0MDVUMDIwMDAwDQpSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRI
+PTQ7QllNT05USERBWT0yLDMsNCw1LDYsNyw4O0JZREFZPVNVO1VOVElMPTE5DQogNDQwNDAyVDAx
+MDAwMFoNCkVORDpEQVlMSUdIVA0KQkVHSU46REFZTElHSFQNClRaTkFNRTpCU1QNClRaT0ZGU0VU
+RlJPTTorMDIwMA0KVFpPRkZTRVRUTzorMDEwMA0KRFRTVEFSVDoxOTQ0MDkxN1QwMzAwMDANClJE
+QVRFOjE5NDUwNzE1VDAzMDAwMA0KUkRBVEU6MTk0NzA4MTBUMDMwMDAwDQpFTkQ6REFZTElHSFQN
+CkJFR0lOOlNUQU5EQVJEDQpUWk5BTUU6R01UDQpUWk9GRlNFVEZST006KzAxMDANClRaT0ZGU0VU
+VE86KzAwMDANCkRUU1RBUlQ6MTk0NTEwMDdUMDMwMDAwDQpSUlVMRTpGUkVRPVlFQVJMWTtCWU1P
+TlRIPTEwO0JZTU9OVEhEQVk9MiwzLDQsNSw2LDcsODtCWURBWT1TVTtVTlRJTD0xDQogOTQ2MTAw
+NlQwMjAwMDBaDQpFTkQ6U1RBTkRBUkQNCkJFR0lOOkRBWUxJR0hUDQpUWk5BTUU6QlNUDQpUWk9G
+RlNFVEZST006KzAwMDANClRaT0ZGU0VUVE86KzAxMDANCkRUU1RBUlQ6MTk1MDA0MTZUMDIwMDAw
+DQpSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRIPTQ7QllNT05USERBWT0xNCwxNSwxNiwxNywxOCwx
+OSwyMDtCWURBWT1TVTtVDQogTlRJTD0xOTUyMDQyMFQwMjAwMDBaDQpFTkQ6REFZTElHSFQNCkJF
+R0lOOlNUQU5EQVJEDQpUWk5BTUU6R01UDQpUWk9GRlNFVEZST006KzAxMDANClRaT0ZGU0VUVE86
+KzAwMDANCkRUU1RBUlQ6MTk1MDEwMjJUMDMwMDAwDQpSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRI
+PTEwO0JZTU9OVEhEQVk9MjEsMjIsMjMsMjQsMjUsMjYsMjc7QllEQVk9U1U7DQogVU5USUw9MTk1
+MjEwMjZUMDIwMDAwWg0KRU5EOlNUQU5EQVJEDQpCRUdJTjpTVEFOREFSRA0KVFpOQU1FOkdNVA0K
+VFpPRkZTRVRGUk9NOiswMTAwDQpUWk9GRlNFVFRPOiswMDAwDQpEVFNUQVJUOjE5NTMxMDA0VDAz
+MDAwMA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD0xMDtCWU1PTlRIREFZPTIsMyw0LDUsNiw3
+LDg7QllEQVk9U1U7VU5USUw9MQ0KIDk2MDEwMDJUMDIwMDAwWg0KRU5EOlNUQU5EQVJEDQpCRUdJ
+TjpEQVlMSUdIVA0KVFpOQU1FOkJTVA0KVFpPRkZTRVRGUk9NOiswMDAwDQpUWk9GRlNFVFRPOisw
+MTAwDQpEVFNUQVJUOjE5NTUwNDE3VDAyMDAwMA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD00
+O0JZTU9OVEhEQVk9MTYsMTcsMTgsMTksMjAsMjEsMjI7QllEQVk9U1U7VQ0KIE5USUw9MTk1NjA0
+MjJUMDIwMDAwWg0KRU5EOkRBWUxJR0hUDQpCRUdJTjpEQVlMSUdIVA0KVFpOQU1FOkJTVA0KVFpP
+RkZTRVRGUk9NOiswMDAwDQpUWk9GRlNFVFRPOiswMTAwDQpEVFNUQVJUOjE5NTgwNDIwVDAyMDAw
+MA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD00O0JZTU9OVEhEQVk9MTYsMTcsMTgsMTksMjAs
+MjEsMjI7QllEQVk9U1U7VQ0KIE5USUw9MTk1OTA0MTlUMDIwMDAwWg0KRU5EOkRBWUxJR0hUDQpC
+RUdJTjpEQVlMSUdIVA0KVFpOQU1FOkJTVA0KVFpPRkZTRVRGUk9NOiswMDAwDQpUWk9GRlNFVFRP
+OiswMTAwDQpEVFNUQVJUOjE5NjEwMzI2VDAyMDAwMA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05U
+SD0zO0JZREFZPS0xU1U7VU5USUw9MTk2MzAzMzFUMDIwMDAwWg0KRU5EOkRBWUxJR0hUDQpCRUdJ
+TjpTVEFOREFSRA0KVFpOQU1FOkdNVA0KVFpPRkZTRVRGUk9NOiswMTAwDQpUWk9GRlNFVFRPOisw
+MDAwDQpEVFNUQVJUOjE5NjExMDI5VDAzMDAwMA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD0x
+MDtCWU1PTlRIREFZPTIzLDI0LDI1LDI2LDI3LDI4LDI5O0JZREFZPVNVOw0KIFVOVElMPTE5Njcx
+MDI5VDAyMDAwMFoNCkVORDpTVEFOREFSRA0KQkVHSU46REFZTElHSFQNClRaTkFNRTpCU1QNClRa
+T0ZGU0VURlJPTTorMDAwMA0KVFpPRkZTRVRUTzorMDEwMA0KRFRTVEFSVDoxOTY0MDMyMlQwMjAw
+MDANClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9MztCWU1PTlRIREFZPTE5LDIwLDIxLDIyLDIz
+LDI0LDI1O0JZREFZPVNVO1UNCiBOVElMPTE5NjcwMzE5VDAyMDAwMFoNCkVORDpEQVlMSUdIVA0K
+QkVHSU46U1RBTkRBUkQNClRaTkFNRTpCU1QNClRaT0ZGU0VURlJPTTorMDEwMA0KVFpPRkZTRVRU
+TzorMDEwMA0KRFRTVEFSVDoxOTY4MTAyN1QwMDAwMDANCkVORDpTVEFOREFSRA0KQkVHSU46REFZ
+TElHSFQNClRaTkFNRTpCU1QNClRaT0ZGU0VURlJPTTorMDAwMA0KVFpPRkZTRVRUTzorMDEwMA0K
+RFRTVEFSVDoxOTcyMDMxOVQwMjAwMDANClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9MztCWU1P
+TlRIREFZPTE2LDE3LDE4LDE5LDIwLDIxLDIyO0JZREFZPVNVO1UNCiBOVElMPTE5ODAwMzE2VDAy
+MDAwMFoNCkVORDpEQVlMSUdIVA0KQkVHSU46U1RBTkRBUkQNClRaTkFNRTpHTVQNClRaT0ZGU0VU
+RlJPTTorMDEwMA0KVFpPRkZTRVRUTzorMDAwMA0KRFRTVEFSVDoxOTcyMTAyOVQwMzAwMDANClJS
+VUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9MTA7QllNT05USERBWT0yMywyNCwyNSwyNiwyNywyOCwy
+OTtCWURBWT1TVTsNCiBVTlRJTD0xOTgwMTAyNlQwMjAwMDBaDQpFTkQ6U1RBTkRBUkQNCkJFR0lO
+OkRBWUxJR0hUDQpUWk5BTUU6QlNUDQpUWk9GRlNFVEZST006KzAwMDANClRaT0ZGU0VUVE86KzAx
+MDANCkRUU1RBUlQ6MTk4MTAzMjlUMDEwMDAwDQpSUlVMRTpGUkVRPVlFQVJMWTtCWU1PTlRIPTM7
+QllEQVk9LTFTVQ0KRU5EOkRBWUxJR0hUDQpCRUdJTjpTVEFOREFSRA0KVFpOQU1FOkdNVA0KVFpP
+RkZTRVRGUk9NOiswMTAwDQpUWk9GRlNFVFRPOiswMDAwDQpEVFNUQVJUOjE5ODExMDI1VDAyMDAw
+MA0KUlJVTEU6RlJFUT1ZRUFSTFk7QllNT05USD0xMDtCWU1PTlRIREFZPTIzLDI0LDI1LDI2LDI3
+LDI4LDI5O0JZREFZPVNVOw0KIFVOVElMPTE5ODkxMDI5VDAxMDAwMFoNCkVORDpTVEFOREFSRA0K
+QkVHSU46U1RBTkRBUkQNClRaTkFNRTpHTVQNClRaT0ZGU0VURlJPTTorMDEwMA0KVFpPRkZTRVRU
+TzorMDAwMA0KRFRTVEFSVDoxOTkwMTAyOFQwMjAwMDANClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9O
+VEg9MTA7QllEQVk9NFNVO1VOVElMPTE5OTUxMDIyVDAxMDAwMFoNCkVORDpTVEFOREFSRA0KQkVH
+SU46U1RBTkRBUkQNClRaTkFNRTpHTVQNClRaT0ZGU0VURlJPTTorMDAwMA0KVFpPRkZTRVRUTzor
+MDAwMA0KRFRTVEFSVDoxOTk2MDEwMVQwMDAwMDANCkVORDpTVEFOREFSRA0KQkVHSU46U1RBTkRB
+UkQNClRaTkFNRTpHTVQNClRaT0ZGU0VURlJPTTorMDEwMA0KVFpPRkZTRVRUTzorMDAwMA0KRFRT
+VEFSVDoxOTk2MTAyN1QwMjAwMDANClJSVUxFOkZSRVE9WUVBUkxZO0JZTU9OVEg9MTA7QllEQVk9
+LTFTVQ0KRU5EOlNUQU5EQVJEDQpFTkQ6VlRJTUVaT05FDQpCRUdJTjpWRVZFTlQNCkFUVEVOREVF
+O1ZBTFVFPVRFWFQ6a2VybmVsY2lAbGlzdHMubGludXguZGV2DQpDUkVBVEVEO1RaSUQ9RXVyb3Bl
+L0xvbmRvbjoyMDI2MDQwMlQxNjA5MzINCkRFU0NSSVBUSU9OOlxuWW91IGhhdmUgYmVlbiBpbnZp
+dGVkIHRvIGEgbWVldGluZyBmb3IgS2VybmVsQ0kgRm91bmRhdGkNCiBvblxuXG5XZSBoYXZlIG1h
+bnkgb3B0aW9ucyBhbmQgaGF2ZSBsZWFybnQgbWFueSBsZXNzb25zIGZyb20gcGFzdFxuZXhwDQog
+ZXJpZW5jZXMuIEtlcm5lbENJIHRvZGF5IGxhY2tzIHRoZSBhYmlsaXR5IHRvIGRvIGF1dG9tYXRl
+ZFxuYmlzZWN0aW9uLg0KICBTbyBJIHdvdWxkIGxpa2UgdG8gcHV0IHRoZSBtZWV0aW5nIHRvZ2V0
+aGVyIHRvIGNvdmVyXG4gLSBXaGF0IGJpc2VjdGkNCiBvbiBpbiBLZXJuZWxjaSBzaG91bGQgbG9v
+ayBsaWtlXG4gLSBIb3cgZG8gd2UgZ28gYWJvdXQgQmlzZWN0aW9uIGF0IGFuDQogIGVmZmljaWVu
+dCBjb21wdXRhdGlvbmFsIGNvc3RcbiAtIFdoYXQgYXJlIHRoZSBvcHRpb25zIGZvciBhdXRvbWF0
+aW9uXA0KIG4gLSBXaGF0IGV4aXNpdGluZyB0b29scyB3ZSBzaG91bGQgdXNlXG4gLSBQdXQgdG9n
+ZXRoZXIgYWN0aW9ucyBsaXN0XG4NCiBcbldheXMgdG8gam9pbiBtZWV0aW5nOlxuXG4xLiBKb2lu
+IGZyb20gUENcLCBNYWNcLCBpUGFkXCwgb3IgQW5kcm9pZFxuDQogXG5odHRwczovL3pvb20tbGZ4
+LnBsYXRmb3JtLmxpbnV4Zm91bmRhdGlvbi5vcmcvbWVldGluZy85MzU5MTgxNDgyMz9wYQ0KIHNz
+d29yZD1mOTMxYjJjMS1iZmY2LTQ0ZjktODlhYS01YmFkYjdmN2UxZTZcblxuMi4gSm9pbiB2aWEg
+YXVkaW9cblxuT24NCiBlIHRhcCBtb2JpbGU6XG5VUyAoaU9TKTogKzEyNTMyMTU4NzgyXCxcLDkz
+NTkxODE0ODIzI1wsXCxcLFwsKjMwNzE1OSMgDQogb3IgKzEzNDYyNDg3Nzk5XCxcLDkzNTkxODE0
+ODIzI1wsXCxcLFwsKjMwNzE1OSNcblVTIChBbmRyb2lkKTogKzEyNTMyMQ0KIDU4NzgyXDs5MzU5
+MTgxNDgyMyNcOzMwNzE1OSMgb3IgKzEzNDYyNDg3Nzk5XDs5MzU5MTgxNDgyMyNcOzMwNzE1OSNc
+blwNCiBuT3IgZGlhbDpcblVTOiArMSAyNTMgMjE1IDg3ODIgb3IgKzEgMzQ2IDI0OCA3Nzk5IG9y
+ICsxIDY2OSA5MDAgNjgzMyBvDQogciArMSAzMDEgNzE1IDg1OTIgb3IgKzEgMzEyIDYyNiA2Nzk5
+IG9yICsxIDY0NiAzNzQgODY1NiBvciA4NzcgMzY5IDA5Mg0KIDYgKFRvbGwgRnJlZSkgb3IgODU1
+IDg4MCAxMjQ2IChUb2xsIEZyZWUpXG5DYW5hZGE6ICsxIDY0NyAzNzQgNDY4NSBvciANCiArMSA2
+NDcgNTU4IDA1ODggb3IgKzEgNzc4IDkwNyAyMDcxIG9yICsxIDIwNCAyNzIgNzkyMCBvciArMSA0
+MzggODA5IDc3DQogOTkgb3IgKzEgNTg3IDMyOCAxMDk5IG9yIDg1NSA3MDMgODk4NSAoVG9sbCBG
+cmVlKVxuXG5NZWV0aW5nIElEOiA5MzU5MQ0KIDgxNDgyM1xuXG5NZWV0aW5nIFBhc3Njb2RlOiAz
+MDcxNTlcblxuXG5JbnRlcm5hdGlvbmFsIG51bWJlcnM6IGh0dHBzOi8NCiAvem9vbS51cy91L2Fs
+d25QSWFWVFxuDQpEVEVORDtUWklEPUV1cm9wZS9Mb25kb246MjAyNjA0MjNUMTczMDAwDQpEVFNU
+QU1QO1RaSUQ9RXVyb3BlL0xvbmRvbjoyMDI2MDQwMlQxNjA5MzINCkRUU1RBUlQ7VFpJRD1FdXJv
+cGUvTG9uZG9uOjIwMjYwNDIzVDE2MzAwMA0KTEFTVC1NT0RJRklFRDtUWklEPUV1cm9wZS9Mb25k
+b246MjAyNjA0MDJUMTYwOTMyDQpMT0NBVElPTjpodHRwczovL3pvb20tbGZ4LnBsYXRmb3JtLmxp
+bnV4Zm91bmRhdGlvbi5vcmcvbWVldGluZy85MzU5MTgxDQogNDgyMz9wYXNzd29yZD1mOTMxYjJj
+MS1iZmY2LTQ0ZjktODlhYS01YmFkYjdmN2UxZTYNCk9SR0FOSVpFUjtDTj1LZXJuZWxDSSBGb3Vu
+ZGF0aW9uOk1BSUxUTzptZWV0aW5nc0BsZnguZGV2DQpTVU1NQVJZOkNvcHkgb2YgS2VybmVsQ0kg
+QmlzZWN0aW9uIEludHJvZHVjdGlvbg0KVFpJRDpFdXJvcGUvTG9uZG9uDQpUWk5BTUU6RXVyb3Bl
+L0xvbmRvbg0KVUlEOjkzNTkxODE0ODIzDQpVUkw7VkFMVUU9VEVYVDpodHRwczovL3pvb20tbGZ4
+LnBsYXRmb3JtLmxpbnV4Zm91bmRhdGlvbi5vcmcvbWVldGluZy85DQogMzU5MTgxNDgyMz9wYXNz
+d29yZD1mOTMxYjJjMS1iZmY2LTQ0ZjktODlhYS01YmFkYjdmN2UxZTYNClgtTUVFVElORy1JRDo5
+MzU5MTgxNDgyMw0KWC1PQ0NVUlJFTkNFLUlEOg0KWC1SRUdJU1RSQU5ULUlEOmRhMmM1MTJlLTY5
+NWItNDEzNi1iOTQyLWFkMzMwMmIxZmM0Nw0KQkVHSU46VkFMQVJNDQpBQ1RJT046RElTUExBWQ0K
+REVTQ1JJUFRJT046TWVldGluZyByZW1pbmRlcg0KVFJJR0dFUjotUFQxME0NCkVORDpWQUxBUk0N
+CkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVINCg==
+
+--349129eee21fcbe9313196cdfd945e03b283df999758e1a3059e4cfd2bad--
