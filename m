@@ -1,129 +1,119 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BD637F01F
-	for <kernelci@lists.linux.dev>; Sat, 11 Apr 2026 00:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A0E3BD237;
+	Wed, 15 Apr 2026 13:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775865622; cv=none; b=jjgxLBCLDlwTlTdBGeDmqMnjvCXqn4Hvela6Jd32DsLzcudHNaY5Wh93w6FcgQkJfZxd/2ujPfU0vJyXbk7yjQSNV2D7jrmyVfq3DTyr1E9KaU3NgwR4/pEFVOnXu6m43bnv0ngqV3/NDnrgz8pjzr/UZ6xfn8zrKhsFiy2GO/I=
+	t=1776261500; cv=none; b=YgNGShk6lszoL5I+v8A4zcw8/Mou0EHuJjv6uQJgoQ3kzYnIus4pLea7jSjmQy+3zcWdwkCbSDkNa3kZ3TTcfusqDbiVQfN0ewpAUNrOSd5zA392FS7GE1Qq2uz4z0M395/awfRdACiguXP9IThBZEt3GAzJzdZwMEMvIdwy6Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775865622; c=relaxed/simple;
-	bh=AetQlrnjw7hBLtlOABuFwVgn6UqOnl/0s7Qp44xOGCA=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=N7FspZXIuYJphGMgdFpU4sfvhaBRGG/VWs1b4VRnlYK8k7KdPx28ifGq6bC7MWaG3bObuWi70Qb64qWiOKB0uUSUPJ5jDj8MGUOms2RZrtTsRS0WCy9bEuxx+Xqt8uINV8QNWpEPXaCwcJYzg3FJIKzOIZ4HGiQjQGDdxPHM9kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20251104.gappssmtp.com header.i=@kernelci-org.20251104.gappssmtp.com header.b=h0kmwyQ+; arc=none smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+	s=arc-20240116; t=1776261500; c=relaxed/simple;
+	bh=UXY9ERp6NRhi1/tb6upj2ujVl6Aw9w6faxCGb2DC5DM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lSuGivBqdI6wfZ08WiDrfPVj56E3WCHQJpaLk6vJs0JxAbxWi8HZcCr6Eb9sxYw7sgdxyx8xbE4soYMQfGfI4djRKvMO+W2Ci+T/WlWzofoJjOGuyHsHJALlYvpC5uGd1Q8aIlP6i6J1BzJBGL6l95v+sHyzgA1CgUwULSwA7VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kV6vjY/R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20251104.gappssmtp.com header.i=@kernelci-org.20251104.gappssmtp.com header.b="h0kmwyQ+"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2d52c7f92b1so1999707eec.0
-        for <kernelci@lists.linux.dev>; Fri, 10 Apr 2026 17:00:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20251104.gappssmtp.com; s=20251104; t=1775865620; x=1776470420; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AB8ZMQN7pR+S7szSvJc7wvYsEdbQRUAZf+dVyortb2w=;
-        b=h0kmwyQ+zkwT0kV7U9cQZutIp5InPCWrJ4naWidGVtMY8P5tFNgEtz3EyezIYxiVEb
-         wssKeDy7nSyKegMY3ezLUjSdq4XmeDqaSzd3as829TMYYXXCVnbkPg/s2oFJJsbt0K8a
-         tdNL3wfE9QuacG4QuDxpd3dHMnPd7evdaZ1v5behpSLVNoOD/ZNCffMcCWRMERhsB272
-         JECUEKkC7p/5pO/CAGE7IG6vZWGWacd8pX487+HtHg57+N55mAcBhwc1b5dIu9HPaxOF
-         im4MDIgU4KVPQxJSzZJ686lp1/aZOASQtoawM4YJVz/GAeeM97rIKTgZnum/UgnIJTfM
-         MLHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775865620; x=1776470420;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AB8ZMQN7pR+S7szSvJc7wvYsEdbQRUAZf+dVyortb2w=;
-        b=hCUjff30crESVwhu2PVMGRxaqCEplN3MHdJamiFhFb94DiRw3kyB0raGUQUYDbmp/j
-         Fyscs37ShWo5I94mnk+wDb/3WKyiu9m6K0YSlm1bNi5A5iVy4vttiq+3ckKdpY1cTyeo
-         e0yEOkYAXQwQ+PF4nkS6p0ZdlX9rcP6YFLnS9YCZuKgGF4YhwvNaDRv/7GVIqtsctiyV
-         D1UQNJMU2I1S7eZ6UzdYDqK2kXvHZc/HFfP2ztk++tghLEb/1wHuuhwkpFyNYEKqZG8/
-         Ybptir0XQkhiaBnvyBI+kymNGoP/Qcho3Uj+lJUuRIk+lyVvwzpCSDfs62YBASPa9pm4
-         +hHQ==
-X-Gm-Message-State: AOJu0YyOHCYS0hcXH76Cx8WLQiXF3IK6J6l6kZr62VhELuYh7nOZz4gP
-	PWTwVlrqm/k6gzpEP4U0WQH8gOqV1tQZDs0JG2HxYCZGsYnauCcq5rxiFKLUccpbHssZe0p8HmW
-	Pjny+
-X-Gm-Gg: AeBDietOvPUDUHQtOnObE25Et4RK5h+A2rDFieTvhancTJkZPVcSkSRH2q3ZhR1ZhsL
-	ibWmLzspjae74tHEnzfbhge+VArnY2I7TZ+qeyt0WeJBWvSjmW1lkp3LvMGMKYXTEUQ83Cic+Px
-	lzOUU4f0Bao+8VkRbnJZHEswRgUT+4EG7OHj4Z8dfZLhhMWQwap9CEaMg01fXbEqydQZ/6F1ujt
-	E//AJYV9yckaiylXCqSffG9UcE4hrpcztbHU7oomByLdpgJ91IFjtYQWd5pCKM4Ljz8V/+L2AJQ
-	RfMrHYKbYf+bFy9h7E+X0UStbRVeXhZcvhdl7Up6qwJKji1HC4AQzFNe0xg0qAqi40xxAda9Lbt
-	T2jw4Ml8Sg/gzOrv7HZn6tQ2YQcLzUip5S65ndNdMuW0xedzUdxrh5MDWTLV4IH9RBXTUOThScY
-	5zV21X6qZiMTWBixYQ
-X-Received: by 2002:a05:7300:8606:b0:2cb:88b5:a93e with SMTP id 5a478bee46e88-2d588e8584dmr3067132eec.17.1775865614681;
-        Fri, 10 Apr 2026 17:00:14 -0700 (PDT)
-Received: from 8692ffc4d55e ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d562db64c4sm6370670eec.27.2026.04.10.17.00.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 17:00:13 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kV6vjY/R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6439C19424;
+	Wed, 15 Apr 2026 13:58:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776261500;
+	bh=UXY9ERp6NRhi1/tb6upj2ujVl6Aw9w6faxCGb2DC5DM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kV6vjY/Rjtcp7Rgh0FDsCp80JHgxM2T7/iq85pBGnQ2ugeZolQvgq7tfRjslM/YlW
+	 hA4029zQAVdv/fhX3SxCMk6JNEx++XFjwR2qY2YnmxN4rK6YXxWAi6fwMfOeori3Y2
+	 7zzE4b2gSn6Cx6583qEUCImxE/ihMwOqCvvWycvWuXq26ZGSbkIJ7YdSqYH2gSHOBf
+	 683xWEMKuv2ALD+bh8GKdkDW3vqgHsPSX0TIxJ6Wik8bSYESxq3v3viFx5Ar8HmP0w
+	 9Ha4VrBCzlchqd5Xg38J7hiViyOmCN9MSFl50oOwu7N8eI9sFaCRrJCkeiUS5osRrU
+	 ingdbAX7kRkxw==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id B889D1AC57F4; Wed, 15 Apr 2026 14:58:14 +0100 (BST)
+Date: Wed, 15 Apr 2026 14:58:14 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Ricardo =?iso-8859-1?Q?B=2E_Marli=E8re?= <rbm@suse.com>,
+	torvalds@linux-foundation.org, Shuah Khan <shuah@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, Aishwarya.TCV@arm.com,
+	ben.copeland@linaro.org, kernelci@lists.linux.dev
+Subject: Re: [PATCH 5/6] selftests: Preserve subtarget failures in all/install
+Message-ID: <ad-ZdjzQZXNgkpwv@sirena.co.uk>
+References: <20260320-selftests-fixes-v1-0-79144f76be01@suse.com>
+ <20260320-selftests-fixes-v1-5-79144f76be01@suse.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-04-11 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 11 Apr 2026 00:00:13 -0000
-Message-ID: <177586561312.3969.12424919795760711930@8692ffc4d55e>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="R0pF+WDKtWvscPso"
+Content-Disposition: inline
+In-Reply-To: <20260320-selftests-fixes-v1-5-79144f76be01@suse.com>
+X-Cookie: Allow 6 to 8 weeks for delivery.
 
 
+--R0pF+WDKtWvscPso
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-KernelCI Metrics Summary
-========================
-Period: 2026-04-04 00:00 UTC to 2026-04-11 00:00 UTC
+On Fri, Mar 20, 2026 at 03:29:20PM -0300, Ricardo B. Marli=E8re wrote:
+> Track failures explicitly in the top-level selftests all/install loops.
+>=20
+> The current code multiplies `ret` by each sub-make exit status. For
+> example, with `TARGETS=3Dnet`, the implicit `net/lib` dependency runs aft=
+er
+> `net`, so a failed `net` build can be followed by a successful `net/lib`
+> build and reset the final result to success.
+>=20
+> Set `ret` to 1 on any non-zero sub-make exit code and keep it sticky, so
+> the top-level make returns failure when any selected selftest target
+> fails.
 
+This patch, which is now in mainline as 7e47389142b8, is breaking a
+bunch of CI systems - at least KernelCI, our Arm internal CI and my
+personal stuff.  It causes the equivalent of FORCE_TARGETS behaviour in
+the top level Makefile, the prior behaviour where the exit status of the
+top level Makefile ignores failures from individual directories is
+desirable since by default we try to build almost all the selftests but
+between quality issues and build time dependencies it's very common for
+at least one of them to fail.  With this commit unless the user has
+configured a more restricted set of selftests it would be surprising if
+we manage to get a successful build and install.
 
-  COVERAGE
-  --------
-                      This week    Last week    Change
-                      ─────────    ─────────    ──────
-  Trees monitored     41           44           -3
-  Checkouts           4,273        4,061        +212  (+5%)
-  Builds              10,163       8,096        +2,067  (+26%)
-  Tests               413,170      560,091      -146,921  (-26%)
+As well as being a poor default due to the very high likelyhood of build
+failures this also has the undesirable effect of causing a build failure
+in one selftest to cause the whole install target to fail, meaning that
+the build failure is escallated to a complete lost of coverge for all
+selftests in common CI usage.
 
+This wasn't showing up in my -next build tests since I set FORCE_TARGETS
+and explicitly choose a restricted set of kselftests which actually
+build with my system and configuration.  It was less obvious than it
+should have been with the other systems since they did not expect there
+to be a complete failure to generate a kselftest tarball and variously
+masked the error or reported it in a manner that looked like an
+infrastructure issue.
 
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is a newly detected failure (first occurrence).
-  An "occurrence" is each subsequent hit of that same failure.
+It would be really nice to get to the point where we can reasonably do
+this but we're simply not there at the current time.  At the moment if
+people want to see build failures reported at the top level that really
+needs to be opt in, we have FORCE_TARGETS for that.
 
-  Origin      Occurrences    New regressions
-  ────────────────────────────────────────────
-  maestro     981            17
-  redhat      9              0
-  ────────────────────────────────────────────
-  Total       990            17
+--R0pF+WDKtWvscPso
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-  LAB ACTIVITY
-  ------------
-  9 labs reported results this week (1 more than last week).
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnfmXEACgkQJNaLcl1U
+h9Bz6wf8C/yq5aL8RQNgyvkNdVsgvLfYNWtlturQ3ejxHG1pNVBCpEWrnrHE8XOs
+owgKYvOIg5tPgnMFGqWZ9WJnJIUtYA/ngJYoXJQQS8UYVHsaYTu6tkidAvt5KDAR
+lTunKj1KeQJX1jH9JouJin3eIF6BU0FcHmEfRYchbUq2vme2Co3v+qGspCJcZLpa
+beLwZ2vx8wmlpw5Xr+iTx/QSAPUox3jIGCs5VqAMKk+QrAZK3TSyeLf/BBhqasP5
+a2gb4rXrz38NqZUBa8ID4oq8/91EDnqjL3BfmqX6+ljvUcMEBd0Y2b+V7v1pHx0q
+IFqr1TZuBStd+waVFDn1Jp2rxhA7Kg==
+=lRPp
+-----END PGP SIGNATURE-----
 
-  Labs marked with an asterisk (*) are new.
-  Labs that stopped reporting are shown with a -100% change.
-
-  Origin            Lab                      Builds   Boots    Tests          Change (tests)
-  ──────────────────────────────────────────────────────────────────────────────────────────
-  maestro           lava-broonie             0        1,064    138,974        -48,430  (-26%)
-  maestro           lava-cip                 0        1,075    373            +202  (+118%)
-  maestro           lava-collabora           0        3,290    119,856        -100,462  (-46%)
-  maestro           lava-foundriesio         0        127      0              0  (0%)
-  maestro           lava-kci-qualcomm        0        89       60,547         -14,451  (-19%)
-  maestro           lava-kontron *           0        411      0              0  (0%)
-  maestro           lava-pengutronix         0        475      0              0  (0%)
-  ti                opentest-ti              0        773      383            +348  (+994%)
-  maestro           pull-labs-demo           0        129      87             -34  (-28%)
-  ──────────────────────────────────────────────────────────────────────────────────────────
-  Total                                      0        7,433    320,220        -162,827  (-34%)
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+--R0pF+WDKtWvscPso--
