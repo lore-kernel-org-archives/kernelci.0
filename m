@@ -1,151 +1,96 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2ADC1A9FB7
-	for <kernelci@lists.linux.dev>; Sat, 18 Apr 2026 00:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E364D2DF68
+	for <kernelci@lists.linux.dev>; Sun, 19 Apr 2026 00:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776470419; cv=none; b=TatfijChfITrAw3y0SEr+F23GBn6nW6Gm7R8c3eWGLYq89X9AE7Z9qbgS7aEf/RUgp7k1zEqIBDxDvr0bNPLDj1GaaTTjD3nbJR2hcPtnl2xsHTON7HYaXiU4ZxTN44NJBKQK8g2M0cnY82m4p4YODZfUuAVW2uiM2GOOHf/yQk=
+	t=1776559822; cv=none; b=cXpzuHHtRAbjE9jhCymP6vjhoXu96yEtpjlog47bfChLBNUUlzSCkU2k5LppZvm++br9GS7lufJin1dPpXBqn8BeAwk4zdo1S3Rlo2BYukuUvAjvM2hk7OpHv0IgEwYJ4mNm8Tqu6HiHkDwv6ooffZGGf+NnnpOl/PobdPA7nXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776470419; c=relaxed/simple;
-	bh=rpRaMQPKoX/VQvExAyppDJj/Qu7+IGEFulyNHwfHcmE=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=B67XFrMRCis/y/iFTHsufAUp53cymaa1plhM4f760qfDnjVb51IgQIcmqaEwcVkdBstHo6yiMln9az73nLppqwUjnUx3R2a36T+O+MixXeYeeZth/q3mx0ssUgNv6ICoEePjkU/6ozqIBF85LEFddcVlTaAo2Y4leOeMXLYyp9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=gMpisDi7; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+	s=arc-20240116; t=1776559822; c=relaxed/simple;
+	bh=GnjBkyQXPQuAvZh/pdbLk5HIXkNySsKPF6x7BCpB6tg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l6BYcB1pknN7z6vufTwijnH14yoQx/4BFqi2QGV/HxRUfm6wTHIbT9zoRe+sqyvaUu9coSavhOC3Y51cv/Yw6gDxBPVMcY32a61DqczN5+7540hddDgvwM9dMYm+c0Qxb/NizsyapxgEzwjhN2DTEYfOT0jurCG5281P1fMHZTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GB/5F53B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="gMpisDi7"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12c42a23c8eso1420281c88.1
-        for <kernelci@lists.linux.dev>; Fri, 17 Apr 2026 17:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1776470416; x=1777075216; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZuOT8o6ZlkX0YH0hEUCsL8+bqySaNfUQ51bDc0rnADk=;
-        b=gMpisDi7RBlQj9KXVF6yY1GPgtAjfPy1TlmEnFheT6yHjgZl+Fq/lN3pBPIMkiv0ez
-         7xaAmk5QNMRFimjU9gWoMO77NvZNHflypNTweUoNRQQUi1m+faaIJaZ6OZbWtc3seIxA
-         9qlXikBy3sMQYDQDYJUPltrfdy/e3naN7yzcUbKl0+lsIToyM7MyDSfjPZ/MkxE5a13m
-         tbHu78B1GdxQ7y1wMgTbTQ0gvHziOQDhbWp0vRROv0rqm2CBWMEVm2ufO6AQYfPRxrYR
-         l2O7vCf9arsVZGwToiOCry/5fQQNV47GTYKdY00o4ovtPquTVbyzHVNJt2IYXT0BDaXw
-         i5mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776470416; x=1777075216;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZuOT8o6ZlkX0YH0hEUCsL8+bqySaNfUQ51bDc0rnADk=;
-        b=h9DzLQzM7LAT0jZ+s3nYhoyaSGbBHuGJuDAGiPcxC7x6wdqBu8AsWb4oSnUcqvnRA6
-         qsGFloIhDQjubcDfLsb2R2FXV7Ou7oGSxKsO+LFVSOYUQnE4W+Xixat0BO6Jy5f11U0S
-         i4tcu+tVy6tSCYD1Zq4EmA+gmfalEfsIdY0e8JYkfFS9iWJbFCqDj4UR7RyiO+otsx5g
-         Dgl4CD8FfACgeCG48ELMCU4ppnPVSB8lygm/kgyvybQVrLVWIvcDakhxhTD7xYUnyE+7
-         9gST8DCuKL9MfHd9unAaEgw4RCaKX+m5ouUWptB/9pytC9HRee0kpTXyXORYCJhcpDBS
-         ALBg==
-X-Gm-Message-State: AOJu0Yw9yF9ZHcbfnCfm7poQ1ssaRQdKlmTq75tfy8/kr2xAXi9Y9v1t
-	WJP3Tc5VER8f/ukn0V3NRMVlcMIA3GDXjr8/e5IcjqcwtSQuq5vaWf5UbAlyjUS3xXbLE+58NgF
-	YW6j3
-X-Gm-Gg: AeBDievle91aOLBHQt3ReU8anjgJ3KRvLBwgOlmjWAp2lR/1C2g43W5736R94OWxrOv
-	YYQJZICexZwQ/Y4kSaaMaNLrmXNDvdPumQcDsgsZShDP44/HUulbjkn5ehBCKWjpqWX8XtujwHY
-	/+modRgddJjD0T+tTktHarQx9V18V815Qpyt7kI7KYZTq/zhqh95DPJh+8x4pCdFsRgD1yK21Og
-	2VpHnF0HQ+u/le/ciGTtDsk+V9UuiWTAvf65JD1UuOcmUrEPRDGDQBb8NFSWgvhwBsJKCI6YucP
-	oE5AbgYCw2UtdTf467vjvdQwYjnLmTG5fykNIhu+sgbZb2wmMdHRF/XZlpAa2ic3a2jJrocwptE
-	4DyGdNxj/WwabSIxzRlUi70KLihejzz5Cs/LAtecCD3Rsx9L5MAyZZqvS0vAB/tkREGqPAwLsaj
-	kcK7kTfD1Q/30PQPnVHX9Gcv5MBGI=
-X-Received: by 2002:a05:7022:6725:b0:12b:fa3d:e03c with SMTP id a92af1059eb24-12c73f70e92mr2164244c88.8.1776470411297;
-        Fri, 17 Apr 2026 17:00:11 -0700 (PDT)
-Received: from 062ea10430ee ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a20eb5sm5531753c88.14.2026.04.17.17.00.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 17:00:10 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GB/5F53B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601D3C19424;
+	Sun, 19 Apr 2026 00:50:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776559821;
+	bh=GnjBkyQXPQuAvZh/pdbLk5HIXkNySsKPF6x7BCpB6tg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GB/5F53BlTeD0e51/T0lGm7LFCZvlK5/gI/TOxxy48doJBt3Syk2KUwUxnIhpcgWH
+	 TRrIjePv7BUdMrUeqins5oua8O9VbRlpW40C7sreTBNbyj1mQFHHGdu7QngSEYk12M
+	 sGuO/z/xsucdBwoGeWejCDX/vuS95psJuXos7BLrwwJATRqeGirlWhm6t4w/eqig/r
+	 QGZPOdF7KbtVq8eA6f5W5ec1ZcBef2GgYmPLSlu9QGGzzwzE/vZc1aNEuHaRxILxsa
+	 CpkaI6N4NT5ENQTEEhQHA3cp5LqbVEPUJ7EnumpAQ0XF4HFv3rpBZR2WbvWiqpA0pN
+	 wnRonVh62nnYg==
+Date: Sat, 18 Apr 2026 17:50:19 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: kernelci@lists.linux.dev
+Subject: Re: Enabling additional KUnit tests in KernelCI?
+Message-ID: <20260419005019.GA18115@quark>
+References: <20260307075546.GA19654@sol>
+ <d2c55e92-5210-4d12-86f4-a24b64ab0fb9@sirena.org.uk>
+ <20260312215145.GA4805@quark>
+ <3da07ee3-f3e4-49b1-bcf4-fe9c55eaeb41@sirena.org.uk>
+ <20260313010456.GA1458907@google.com>
+ <4fd302e0-ffa7-4bbf-a94a-c8879fde32f4@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-04-18 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 18 Apr 2026 00:00:10 -0000
-Message-ID: <177647041005.179.527924923580090915@062ea10430ee>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4fd302e0-ffa7-4bbf-a94a-c8879fde32f4@sirena.org.uk>
 
+On Fri, Mar 13, 2026 at 12:31:41PM +0000, Mark Brown wrote:
+> On Fri, Mar 13, 2026 at 01:04:56AM +0000, Eric Biggers wrote:
+> > On Thu, Mar 12, 2026 at 11:34:51PM +0000, Mark Brown wrote:
+> 
+> > > Whatever is enabled by the KUnit runner tools/testing/kunit/kunit.py
+> > > (which makes x86_64 a bit of an unfortunate choice given how slim theilr
+> > > defconfig is).  The theory is that the KUnit configs will do the right
+> 
+> > Yes, the tests run by kunit.py depend on the args passed to it.  It
+> > looks like without any arguments it runs all tests available with
+> > defconfig + tools/testing/kunit/configs/default.config.  With
+> > --alltests, it runs all tests available with defconfig +
+> > tools/testing/kunit/configs/all_tests.config.  Both set
+> > "CONFIG_KUNIT_ALL_TESTS=y", so the difference is just what additional
+> > options get enabled to fulfill the test dependencies.  all_tests.config
+> > enables more dependencies than default.config.
+> 
+> Yes, exactly.
+> 
+> > So I think KernelCI should start passing --alltests to kunit.py, and I
+> > should get the dependencies for all the crypto and CRC tests added to
+> > tools/testing/kunit/configs/all_tests.config.  Then KernelCI would pick
+> > them up automatically.
+> 
+> That sounds like a plan.
+> 
+> > > The KUnit runner uses qemu as standard which I guess is probably fine
+> > > for an initial pass, we would need to do a bunch more plumbing to run on
+> > > actual hardware and pull the results out.  We'd also be restricted by
+> > > what's available to us, at the minute we've got arm, arm64, riscv and
+> > > x86 systems with a bit of an embedded focus.
+> 
+> > It seems kunit.py uses UML by default, though it accepts an --arch
+> > argument which enables QEMU.  So something to think about for KernelCI
+> > would be to run all KUnit tests with different combinations of --arch.
+> 
+> Right, and UML only works with an x86 host which is fun.  qemu is the
+> standard way of running for a specific architecture.
 
+Just to follow up on this, in mainline 'kunit.py run --alltests' now
+runs all the CRC and crypto library KUnit tests.
 
-KernelCI Metrics Summary
-========================
-Period: 2026-04-11 00:00 UTC to 2026-04-18 00:00 UTC
+It looks like the kunit job on KernelCI is still running only on the 6.1
+kernel.  Will it be enabled on newer kernels?
 
-
-  COVERAGE
-  --------
-                      This week    Last week    Change
-                      ─────────    ─────────    ──────
-  Trees monitored     36           41           -5
-  Checkouts           3,184        4,266        -1,082  (-25%)
-  Builds              9,058        10,138       -1,080  (-11%)
-  Tests               488,944      413,168      +75,776  (+18%)
-
-
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is defined as a reported problem affecting 0 or multiple builds.
-
-  Origin    Regressions       Affected           Affected builds by top issues
-            (known + new)     Builds (total)     #1      #2      #3
-  ─────────────────────────────────────────────────────────────────────────
-  maestro   37  + 7   = 44    1,490              524     81      73      
-  redhat    2   + 0   = 2     7                  5       2       
-  ─────────────────────────────────────────────────────────────────────────
-  Total     39  + 7   = 46    1,497
-
-
-  TOP REGRESSIONS PER ORIGIN
-  --------------------------
-  maestro:
-    #1 (524 occurrences) -  in /tmp/kci/artifacts/build/kselftest/drivers/ntsync/ntsync (../.....
-      Dashboard: https://d.kernelci.org/issue/maestro:35ab4ac04ad0aeedaed6c04e99aebaa8954e6ec2?iv=1
-    #2 (81 occurrences) -  implicit declaration of function ‘drm_fb_helper_gem_is_fb’; did yo...
-      Dashboard: https://d.kernelci.org/issue/maestro:d0858e23012d44ea7b9a8ffe620de278ff702a34?iv=1
-    #3 (73 occurrences) -  in testcases/fake_sigreturn_bad_magic (Makefile:31) [logspec:kbuil...
-      Dashboard: https://d.kernelci.org/issue/maestro:5220c2e06a566676f041c198857665ab175b9ef8?iv=1
-  
-  redhat:
-    #1 (5 occurrences) -  error: target emulation unknown: -m or at least one .o file requir...
-      Dashboard: https://d.kernelci.org/issue/redhat:a8b090056d8e6bc4eee9ffa4389946c992a6e989?iv=1
-    #2 (2 occurrences) -  openssl/engine.h: No such file or directory in scripts/sign-file (...
-      Dashboard: https://d.kernelci.org/issue/redhat:54dfb8887344e76e107b693682922a26eb7678e4?iv=1
-  
-
-  TEST LABS ACTIVITY
-  ------------------
-  15 labs reported results this week (6 more than last week).
-
-  Labs marked with an asterisk (*) are new.
-
-  Lab                   Covered builds  Boots    Tests          Change (tests)
-  ────────────────────────────────────────────────────────────────────────────────
-  broonie *             877             0        4,606          +4,606
-  lava-broonie          240             782      162,202        +23,228  (+17%)
-  lava-cip              328             805      137            -236  (-63%)
-  lava-collabora        540             3,048    218,578        +98,722  (+82%)
-  lava-foundriesio      70              97       0              0  (0%)
-  lava-kci-qualcomm     27              66       41,942         -18,605  (-31%)
-  lava-kontron          155             303      0              0  (0%)
-  lava-pengutronix      153             361      0              0  (0%)
-  linaro *              30              60       540            +540
-  maestro *             929             0        31,549         +31,549
-  microsoft *           65              417      7,565          +7,565
-  opentest-ti           49              1,510    756            +373  (+97%)
-  pull-labs-demo        355             498      1,897          +776  (+69%)
-  redhat *              293             0        6,233          +6,233
-  syzbot *              38              0        46             +46
-  ────────────────────────────────────────────────────────────────────────────────
-  Total                 4,149           7,947    476,051        +154,797  (+48%)
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+- Eric
