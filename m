@@ -1,95 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA413D171E
-	for <kernelci@lists.linux.dev>; Tue, 21 Apr 2026 12:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0C6EEBA
+	for <kernelci@lists.linux.dev>; Sat, 25 Apr 2026 00:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776774887; cv=none; b=hu2+uBgr/5Us8PzXXJ9gecX0MuJqU0wOJReeghQsBrEHYfBAM04OhWOLeTx0uv7rNnTej+7UMz9vI5+4Qz94h+RhDW8h1VTTeOqhvQeLhWsSuzgRlZaZNv2htPMgPXtgl3dsv41bvU8Ydr+LQfPEzMJ+S1Ig1qvBexqWBiuf014=
+	t=1777075247; cv=none; b=XpEiEnTmRp20ZFB8w4JvIaOLEoXKQVXu6ZkXXQFFcf4zWlFb9afk/sQsIKknI3j4bYCseHjLjpX4+TS0WSg8z0BN1MeDtoW+f5QlZUkZnMNY+0XojTrS8x1+tH4NLryGDeZwt9aPnA3J6FgVQGGXyuVZjhJhtzWz0kw1P5rTEmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776774887; c=relaxed/simple;
-	bh=824n/Nmm/vvgC1c0b8HvTLPuh/YzdHgTuluvY+uv0c0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYdmkVRGfFd2odsMokTlWT0VSRfmuhVYISgQ9nqWALw8VPNhek405klSBrutjQZ2n194cP1OuTli188AV46y+i+ZEBdQfooK8Yjla58z3etDwDz6kIMjE++MtPhBkIN7l5Ge5q9NOmRNW6BimT6TymFI6VDrhJVFWvHgtGwyf+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMl9CVq8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777075247; c=relaxed/simple;
+	bh=vMClF83DQK+NAzcr415yKI5Fw/XfI4MFGvHC6xClpS8=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=rat61tSSWwB+7Yv1jv9gYtl0gkkN2Ij/EGA2rPx0VzAyzr8oiRDOge0jEGMyiVf8YhzAUj3CDpB+aEm9xvSoIOkFvpen6LpX1pq187MwdFSG/h9a4MkX0/Z5StkrVQkar8bxxlezA7vVvUYhHdh4KYI0mpzJdMI7B8wpeWxfFR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=hvF8b3/u; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMl9CVq8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA11DC2BCB0;
-	Tue, 21 Apr 2026 12:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776774887;
-	bh=824n/Nmm/vvgC1c0b8HvTLPuh/YzdHgTuluvY+uv0c0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OMl9CVq8zpCyWB48gFktKfFq9wji73AiT5piJGeqjxAuu+N2J0uaerfId/UDdQPtX
-	 tHsadQrMY8itqEEk1XoHRfzc3ouMNm/be9K+pyQSEn0Q4KgJyuHqDLy1g5GpEYJmcN
-	 lE0aynStZ/EuaY6N7mjIyOw6ziq9cJMk8RYRrUgJCL+FIpARmhUuoFy4vMrkvgXsya
-	 u8LJMVOwvedIlsSXRsyVU6tV4Z4M+F4bCEflJOD8gM2K4Fmm1U54mF1wSU0m2yt97W
-	 kwMOkitb21peeu/nirNqwvPQYcMQh+Y+xDI/f1kWC1BwjEq2pLS1CnULR1U8Zt+uJ/
-	 +DW+eyAZDfmkQ==
-Date: Tue, 21 Apr 2026 13:34:43 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: kernelci@lists.linux.dev
-Subject: Re: Enabling additional KUnit tests in KernelCI?
-Message-ID: <4e0fa31c-81f2-4890-a9b8-df86d243f139@sirena.org.uk>
-References: <20260307075546.GA19654@sol>
- <d2c55e92-5210-4d12-86f4-a24b64ab0fb9@sirena.org.uk>
- <20260312215145.GA4805@quark>
- <3da07ee3-f3e4-49b1-bcf4-fe9c55eaeb41@sirena.org.uk>
- <20260313010456.GA1458907@google.com>
- <4fd302e0-ffa7-4bbf-a94a-c8879fde32f4@sirena.org.uk>
- <20260419005019.GA18115@quark>
- <a78d492c-028e-4f56-a0f8-0e3d28daf84a@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="hvF8b3/u"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-12c6df0b9bbso5866168c88.1
+        for <kernelci@lists.linux.dev>; Fri, 24 Apr 2026 17:00:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci.org; s=google; t=1777075245; x=1777680045; darn=lists.linux.dev;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=83f0bwsvCH7qcmYZl+ZFzxpieEVYC6f9YGt3GuFc1ss=;
+        b=hvF8b3/u7tI1sXQuCEHq9yqbp/2KEn27BO1F4gIoTbdLqFRNEdFLgqetNgWsrXCzGi
+         yVKbuIXqPhAuRjRNfO/WXQNXwaV5g3bny6wck3hZfQb1r71ayNa57oIUQtFt0kja31bG
+         v/j8f9I+lHDewkuBzbjbiSUDR4nNds1TjGjaPOxCL92U+xtVh4JqcWI8qCzkT/JC0Xgx
+         cVsAx5Cain7F+ZoAbCJEx9SvQXAg3p8hgDYxoujmxs6E8sce3z76SXGwni0VHpttReCJ
+         DVjio7C28B3BIl9EdXK+foG/W6pjICvOEhVF8fGRJxwjbbi9k0jIXHOoARU3Smva/MQK
+         B0dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777075245; x=1777680045;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=83f0bwsvCH7qcmYZl+ZFzxpieEVYC6f9YGt3GuFc1ss=;
+        b=dfaH5yVQBgroUHrqdpYB8xKqDJ4dbw0lz+v/ta7rSlxhJaE/rd05+V9VuHE+1uzii1
+         2cY3pcPUw4gPYOBRzZoYeCnHriTn38+iPG8B93e4AAF3txO3jmiSVWRgL139gxGP7ces
+         EnE/gQlK8S2OMYWSJtLFebn376x1VX0Zl7ldqwo9OBuXie2RNlBd4I5vIawdnXsH3bWP
+         jh0njwmNAY3GOXZNHqu9gtb8KRct9wPzyvJxfZCDsvBuOfYgu1fxpUiMU2Ccizox/1wG
+         9B4Dls+0ypoDRBTpRb7I3mROnhlD/X7Koi92Yfnuti8NprAdqz+StlavpB8DWM8b8o7k
+         ZEPQ==
+X-Gm-Message-State: AOJu0Yx8Tu5GnbwLxEMYyflqDknc6w7YQCseSuPenIlUUAQA/kmXXh5Q
+	jgx+TKUJmI7YZUp9fcJ7G0W5s4274PxFOxrsz3LtD0q39/TKOgy+eDTfdCzFp4thTO+TaNP9lVW
+	g/3xU
+X-Gm-Gg: AeBDiesa7mapYv8YkbYNVlyxQUUjR+CnHtp3loBrhvQ7DUWJxNZTV1oKoOgjJPxpTk5
+	gvmtoJw9t1MiR8NN7U3CbUe9Ty2C8EO2FIhfmKAT3UMG08prtD2K+240R+VH7v9vYwgu0WAxeOD
+	+IyX2O8XSYUgWdBN6ITDgEI8HJjjn33txW4y9kEksTxJDy4lcH4fmBDncSTpGfsodEHiA9cQiME
+	pvnFYsXU+gc+LwZmxVpZPtX+MI9ssrec09DRLTdyupuSaFwDDnGCORGjZ86XR1hl7gQdiJ1YB6G
+	A1NI8OZ5fFP0aZi/c/eH/uHL/NeWPAfdPMiaHohIBjuA/ZMDwvriseKf9MtTSJjf0/iQ7eiaBIv
+	U6SjmAukLa+85oAnvulC6gpnkvIVI/px+l4GHkwE1V+WyeBFQ1wlTx4L4bWj/AvdNelt736ybBi
+	HbgZHHJmbAWbd2KV67+nFiN0mYGZ0=
+X-Received: by 2002:a05:7022:11c:b0:12b:ec67:3523 with SMTP id a92af1059eb24-12c73f726eamr17326883c88.9.1777075240114;
+        Fri, 24 Apr 2026 17:00:40 -0700 (PDT)
+Received: from 7f5f57871823 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12da8b8fbc4sm29485675c88.4.2026.04.24.17.00.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 17:00:39 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="X/aB4G1NsbcLS9WD"
-Content-Disposition: inline
-In-Reply-To: <a78d492c-028e-4f56-a0f8-0e3d28daf84a@sirena.org.uk>
-X-Cookie: Jenkinson's Law:
+Content-Transfer-Encoding: 8bit
+Subject: KernelCI Metrics Report - 2026-04-25 00:00 UTC
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io
+Date: Sat, 25 Apr 2026 00:00:39 -0000
+Message-ID: <177707523878.146.532156086811429249@7f5f57871823>
 
 
---X/aB4G1NsbcLS9WD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Mon, Apr 20, 2026 at 03:16:54PM +0100, Mark Brown wrote:
-> On Sat, Apr 18, 2026 at 05:50:19PM -0700, Eric Biggers wrote:
+KernelCI Metrics Summary
+========================
+Period: 2026-04-18 00:00 UTC to 2026-04-25 00:00 UTC
 
-> > It looks like the kunit job on KernelCI is still running only on the 6.1
-> > kernel.  Will it be enabled on newer kernels?
 
-> Huh.  That's weird and not intentional, looking at the config I can't
-> see why it's happening.  Thanks for spotting this, I've filed an issue:
+  COVERAGE
+  --------
+                      This week    Last week    Change
+                      ─────────    ─────────    ──────
+  Trees monitored     29           36           -7
+  Checkouts           4,602        3,174        +1,428  (+45%)
+  Builds              11,085       9,049        +2,036  (+22%)
+  Tests               1,237,875    488,941      +748,934  (+153%)
 
->    https://github.com/kernelci/kernelci-pipeline/issues/1466
 
-> so it doesn't get lost, hopefully it'll be something obvious but it's
-> not obvious enough for me right now :/ .
+  BUILD REGRESSIONS
+  -----------------
+  A "regression" is defined as a reported problem affecting 0 or multiple builds.
 
-This should be sorting itself now - Denys realised that the results were
-getting produced but stuck in processing, it's one of the biggest suites
-which triggered some infrastructure problems.  I'm seeing results
-appearing for mainline and -next now, hopefully everything else should
-start populating as well.
+  Origin    Regressions       Affected           Affected builds by top issues
+            (known + new)     Builds (total)     #1      #2      #3
+  ─────────────────────────────────────────────────────────────────────────
+  maestro   33  + 7   = 40    978                205     146     54      
+  redhat    1   + 0   = 1     7                  7       
+  ─────────────────────────────────────────────────────────────────────────
+  Total     34  + 7   = 41    985
 
---X/aB4G1NsbcLS9WD
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+  TOP REGRESSIONS PER ORIGIN
+  --------------------------
+  maestro:
+    #1 (205 occurrences) -  in /tmp/kci/artifacts/build/kselftest/drivers/ntsync/ntsync (../.....
+      Dashboard: https://d.kernelci.org/issue/maestro:35ab4ac04ad0aeedaed6c04e99aebaa8954e6ec2?iv=1
+    #2 (146 occurrences) -  implicit declaration of function ‘drm_fb_helper_gem_is_fb’; did yo...
+      Dashboard: https://d.kernelci.org/issue/maestro:d0858e23012d44ea7b9a8ffe620de278ff702a34?iv=1
+    #3 (54 occurrences) -  module configfs uses symbol iunique from namespace ANDROID_GKI_VFS...
+      Dashboard: https://d.kernelci.org/issue/maestro:40963bed4a8ddb0f7f18882babcfe876a844f49d?iv=1
+  
+  redhat:
+    #1 (7 occurrences) -  error: target emulation unknown: -m or at least one .o file requir...
+      Dashboard: https://d.kernelci.org/issue/redhat:a8b090056d8e6bc4eee9ffa4389946c992a6e989?iv=1
+  
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnnbuMACgkQJNaLcl1U
-h9ASjwf/duRfx8wYM/2W3C8NuO2kKtd2g0ptHW8X9AnUTRQVe63bytJeRk3JL/fd
-NCoOKSfk22P18CLNNEpKY9NwhPgL7lHo4bUXRTXCfDI93+Ice99VLRDhk6gcjXa2
-OT/uqcZ2DJ7Ko6Vo+f2dQBnjAqUzgrLDqC7S1i0FgUKHpBpt3HgJw7W+nbT5/X7W
-4HXrDfsPC8J8Y43hCcZuNqoJf6RI82BQYnN0DcJ+W19Dza14WMqZ/Q3Zy6JcqVp8
-34GPQgGCapotQalVYqEblikChzD4YlqGff70bUmTC+J4P60KGr6NmaMNa77yycwW
-2BdvF38mqqguF1MwsHT5shZwjcQbQQ==
-=GR6s
------END PGP SIGNATURE-----
+  TEST LABS ACTIVITY
+  ------------------
+  15 labs reported results this week (unchanged from last week).
 
---X/aB4G1NsbcLS9WD--
+  Labs marked with an asterisk (*) are new.
+
+  Lab                   Covered builds  Boots    Tests          Change (tests)
+  ────────────────────────────────────────────────────────────────────────────────
+  broonie               2,038           0        11,837         +7,231  (+157%)
+  lava-broonie          246             783      266,153        +103,951  (+64%)
+  lava-cip              308             760      153            +16  (+12%)
+  lava-collabora        520             2,708    159,872        -58,706  (-27%)
+  lava-foundriesio      57              73       0              0  (0%)
+  lava-kci-qualcomm     64              113      96,902         +54,960  (+131%)
+  lava-kontron          121             185      0              0  (0%)
+  lava-pengutronix      125             335      0              0  (0%)
+  linaro                30              59       360            -180  (-33%)
+  maestro               371             0        681,493        +649,944  (+2060%)
+  microsoft             54              277      5,648          -1,917  (-25%)
+  opentest-ti           59              1,802    884            +128  (+17%)
+  pull-labs-demo        213             225      889            -1,008  (-53%)
+  redhat                316             0        6,294          +61  (+1%)
+  syzbot                55              0        71             +25  (+54%)
+  ────────────────────────────────────────────────────────────────────────────────
+  Total                 4,577           7,320    1,230,556      +754,505  (+158%)
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
