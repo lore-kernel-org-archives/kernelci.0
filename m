@@ -1,154 +1,98 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B967BF4F1
-	for <kernelci@lists.linux.dev>; Sat, 23 May 2026 00:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779494473; cv=none; b=bOFG9zdBuiz+y4zRr/dU6MzIcjIBtZVe0nqaq1DZFHipEDSmqaMq3vSAm/fc30SyfoRYSgV4yKF6UG43+N+ZPjEiT834mDG2lxPEftntJani+kbQMbkLWhqbyCdnFyqiyJCgXmP0xkIyudluKMqiOWJSlpzBWMgdwuDexk5xBXY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779494473; c=relaxed/simple;
-	bh=WBt/EuMO7Sj0rp/GMXmgxvHP40sXz0UusEJeWJ2D3+s=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=HfECyothDLJifTmX0N+X1GDe0xQrgkECwhKqSiQrMhyNksd+P74syZyX0Xj/BKXmd136IzgJfd4wrc+1tQYTKg9jBcX1GD1yyopoUJ/c1qfyM4EjvEqpIBCjwNvAWApvWj8JIcFuZROpnj0EKxRmwnsHouOtceHCvXkTpYK7AcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=Iy2BT8gG; arc=none smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7320E343890
+	for <kernelci@lists.linux.dev>; Sat, 23 May 2026 04:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779509199; cv=pass; b=WoeMyKy3CoCGTlhmUDEf8/2Wtsy5FMXEq1aeWtxjuFa5QI1ViN+gLJe65PyqGSuGEty91ciPRLW3af+s4VMaD7KpSajDbZInl2y37Pwb4rd5yXW/DRzUMjs4TUzdQKtwN9Nq+u3MMeMkrKhPOgSKt0RVakyLatGLfH/RdBJv8S8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779509199; c=relaxed/simple;
+	bh=qSilDaClV/MnvguDmgNjAAWl2qpnPDngfvtr/WcAtO8=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=TDrcU1uAkAKFdf8fcYuN4r+XLyzn1ujkVR1pS/BPAxoxgRBh9pIvoFwOV4sFLU5qnk5tta6KBUKjPYh8TANq++Dlq/v6GW0LVLmbbh5hR9dJbhW5ISebEj2uU7jQHYNwQ6Sw3DQn9yVa2RdCqHwpbtrmHTiQB41jPZ6mw6DDiWg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com; spf=pass smtp.mailfrom=tenstorrent.com; dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b=OXPI/YET; arc=pass smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tenstorrent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="Iy2BT8gG"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3044857f09aso2632304eec.1
-        for <kernelci@lists.linux.dev>; Fri, 22 May 2026 17:01:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b="OXPI/YET"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-65c7efdb7d8so8480999d50.3
+        for <kernelci@lists.linux.dev>; Fri, 22 May 2026 21:06:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779509196; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dG8mJujpI3Q2lLHMeV1IYIpfnEzJj6zyyCgbng+QRc/bnswDozKu3rPkeLKKJzrjRU
+         iEdin9mksHONax9yFynI5NyZ94nQ7DdUmSbqrAP8repa55dm4o7zgbFwwqRCPad0wreI
+         VnYJxirbcn+ivMOWhuJHF5MVHOdMRb6HrKSMszNtLiFaFqlzJ2uG1tBU7Wqg9dy1D3Q+
+         gzUSDIs+PZNspcbZ5PScoLbUyEjfhx7H1dBqgc/GIWcp8Kg4keGYhPHrSrekRcGgn/vn
+         tXv7n1kZac89NrukgpbDoOIplMmkhpPQa65szOLxe3B09unlr1qQcfyrisaVIwz+xDwd
+         aTcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=qSilDaClV/MnvguDmgNjAAWl2qpnPDngfvtr/WcAtO8=;
+        fh=rmq/YLFzDAglBwji5AmBmtb7cJxq3EZCkg46fu2xnLc=;
+        b=W5xqUAfIKjy1DvtJabWKGwAHyFTdJtQssCyNs+ZnrPtr6actVjQSoMm3+UIeadhnmU
+         0MWez18esh1XVqOiK7ijzhFfAy7khDNeyRPflLGt+iuMuK1BTrbyjDdijZ+rbU4D3pa8
+         U4PlWhMMIZeJVK24MRTMsh2GwO8H/zD7FoG7DQSpZ73gegGgEDF1kgWkzq5xu7CTKHg4
+         YRELwBzUGKPiCMVsQZe2qorfhp0if4y3MoUXrmx3EHoZ+5C+MQ9SoX+F67oWOXMQ1EYc
+         0aKErclVgMa8L3NnbE/5GrttiuZL63jx6rC+AMuWUX5UH3YKd8kQCdOz7Czi4sv3WkXI
+         qp1Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1779494471; x=1780099271; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BjJxM2DoKlmGrIdqU7pzaVGD1qr8Ip1iWWd3CPKGSXg=;
-        b=Iy2BT8gGWjtT3JLopFGTtrWW3ofGOcsczYGHk1zsffQKdcmIaRYpKWN0sxEoSA+aPr
-         f+F3qPJsPsm3MGBHaJbkSddJuI+EIg3qdMtHC+2Me3X8dHGUosa0tCQUZREdEQgOc2xl
-         gvGTqorswzagvuwyZt/qol3UT7W8d+/l3ZAvveGymZu9yOYqcxWYzTdonTQqK0qmGzzf
-         WHPQ/z9XePl10H9AekbEKGeo+7dCiDEna9JiLuejKhLMizunHcek9+F8y1lJ44iZxWkK
-         vI2u0XTDgxzbv/lKoJbcT0x7X2h76uOUFD6+MAex5HBH7BfqHfI4K7jT+JWXwB+jN8tQ
-         0M6A==
+        d=tenstorrent.com; s=google; t=1779509196; x=1780113996; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qSilDaClV/MnvguDmgNjAAWl2qpnPDngfvtr/WcAtO8=;
+        b=OXPI/YETTt2aYS/TTvrGhW8nsVERxy4ug8dnUB1J17g8FQcF/Uyyswz+IFtUEUtdB6
+         RDQp+dTl+7IFgnOwtboOqzVHElci/0wKwr74lkvtTVQHnvDQSad5oi/IVTJ9ybRG6zJN
+         9oxOtuHKmEPcRmBVj+vGButIxeVr9rpNKDECw0UzJP3bRgAMxztOo6ylKGC6kP99qa+J
+         wi5ZGSUUl38nt6LYe/rQGYYDDhghGqgMmGI6+R+CMVXr2X/HIpYlVBTbMBXSHI054my1
+         kFRpN3HHyo2s5YB6H4sw25RGiL/4FCDS4iuweLSxvPRPinidiWKOVcmTO8Ll8qDukpc+
+         ohzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779494471; x=1780099271;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BjJxM2DoKlmGrIdqU7pzaVGD1qr8Ip1iWWd3CPKGSXg=;
-        b=lWoKIl+K1J6tCpN9FMnaj4NEcg65rsDct8pzY2o9/7rcu2furMOlF+Kc7P6vLd6Amc
-         BP/dDVHPPQrANSwrWtgg7cGHcVo2bTipMKZJM8ElnNUMKTqktuOMesI49XvzsBlrQAkV
-         7kvdKiLaCeL11WADKHicpfl0bHux9eKV/jTzB4740i+RezOI2mmHjjHoblK8xvgmmIki
-         qzXa50xKg1q3uiXF8Iz9JZth92nQA39pUIcZepL8nPpuFpFu/m4eQnDY7KcY6hb8efyZ
-         Ty56arOOi8N+E/OJmaq4areE5hy2+ztMUbfZITtaXgrIB4YZ5OwJtzqaE7x3fY2LGtbU
-         TdDg==
-X-Gm-Message-State: AOJu0YxR9PpqlRGOiMgoPsDdmufvHTMS7REt/Ai+wqSgN9Fv4yKid38x
-	rVTX2UUMXCQ+VxFh98iW5QTZnXOtq+RJo3LOQvTdo9RrSSX4QfvPOzvB/8fej1Pfp0rQnctGDqV
-	LUIuq
-X-Gm-Gg: Acq92OHfh3FEKQevrmlBIGlGX2+eeObVAdZlG6iE+pvEJG8+CMxvQMN6iOzyOXNgfrB
-	hkWa2QjKlbG2T/XMNaY9p3AhPmr+QgL37wQwEpc+C3/3/VO8ITrAW2U+7K3dT1wdpZu5vWB/0+x
-	XHFbytH+h7506osDYDkdMTRt9gA3EWUT0bc5KoUhSQFhB7e/mm7FfXFTDEE19JYqUIGTr3YLUU/
-	apa/1FNU46OY9s69tja9ehBFwx9st8fdlPZ0qbFtBX92SZS+nCMZnjWqvQZmD+LpCjIIhtlQaAM
-	1rTfCHqLKgqNloOOXWlbDM96vvyYWC/WyxZj8AmaEWaxOd+s+Soad6UtU4/3DfjwxVoPjqnK3Zf
-	Kmx7BrGjxFo6EcQsxLIfXZ6J7cqunM3p1khIOhkQEM4R/5Ugsq33J8aGtkuq7ziY+fCOQhSJe6x
-	aFtLjOuuq7oHAOIgY0XY3mVDr4imY=
-X-Received: by 2002:a05:7300:6417:b0:304:29dd:70b6 with SMTP id 5a478bee46e88-30448f5173amr2774162eec.13.1779494470573;
-        Fri, 22 May 2026 17:01:10 -0700 (PDT)
-Received: from 330cfa3079ca ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30452230f1bsm2075135eec.14.2026.05.22.17.01.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 17:01:09 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20251104; t=1779509196; x=1780113996;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qSilDaClV/MnvguDmgNjAAWl2qpnPDngfvtr/WcAtO8=;
+        b=Rr0cS+YHVkpLTGJoaXeaF0mnLhWajufia/iKTBqUUV/V7875vApKw2XX/U575ljbTY
+         rNCVQRVrTxAUb1jG3k9cskLGvT7rBkIUvmYIXV+K6wFfTKCkyJvG5VAVf5mog0nfc1DO
+         YyRuDJry1TmFqmO3JG95raihxE+l7I42dcDOka+fQ9d/l7nX8dHbpCDzrX8+S1Nj2X1T
+         uIcLzxdOE2aecO9MCUCsI6D2hKRpYe8N2e8GGlm1REkAmJmjCYnJ7COdQG9dZ6odH8+4
+         rslhiHaHvK5R4z57dozAuPG+cLeZyFlZZpRum4IJSTs8HZzCHyn4MarKMn02/GfnZKwF
+         P/Cw==
+X-Gm-Message-State: AOJu0YyZ7tiRo8FKdhMqTC8+SYPenDW6mCiJstJxxjzW6jmfCVItJ0R5
+	77jWNl5pE4wyusT8P5Ks4PS191vPGzm4lmxKMt05q6OuFqP16VNeJyao9qZp+7/eeh5+uBGOpLn
+	PL1C/GRcGLBpP1ZzG/0FLOir8ofTpIjcev5zoOQn3rG2Y0oiqzg2FazU=
+X-Gm-Gg: Acq92OGgEiUfIg8FCXco55Zh61GEeABqSIw7jsbSxnQT/EYN3/NFACy5yjYGC+G6Kmv
+	gQL40u8+xV5Cuti9OUV87SaH9iEN4KHK1u0z2pVyMYFOieyRQTSBuXpsJBa06uOaHbkBFNAuMXa
+	CIYb0hj5ICAmrRsquWlZxYd4L+VTZdB1oDrac+TFaheEx1tejsHwKKqkNsaPPTGuxlLig4uDDZD
+	C4jzk5DYBL2pEIQz0W0FfjhIUsdgpZcBooGXxklBE41uQTF+DVEZel+Y5N0KpR6JHs9g+wbedaC
+	j0EgqJDbcK4/7QdNGm9xPoFg8B7z1RZ6axwuHFrxO8TPns+R2ygjyOlBWGVKQFIKVjYzYlEP
+X-Received: by 2002:a05:690e:d4a:b0:65c:2738:c6ad with SMTP id
+ 956f58d0204a3-65ec97cb3ddmr6719463d50.17.1779509196384; Fri, 22 May 2026
+ 21:06:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-05-23 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
+From: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
+Date: Fri, 22 May 2026 23:06:25 -0500
+X-Gm-Features: AVHnY4JT4RHS858Ps1qwWkz3BA65lPWpZegb8Zo_8MiLguyEwGnGHHxMPMvhk3E
+Message-ID: <CAEev2e-Rc=hhieAWmM59jAyNLc-o_ZVA27UQG=YkcbZAEnXYFg@mail.gmail.com>
+Subject: trixie riscv64 rootfs builds for kselftest
 To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 23 May 2026 00:01:09 -0000
-Message-ID: <177949446915.4398.14566578930665046103@330cfa3079ca>
+Content-Type: text/plain; charset="UTF-8"
 
+Hi,
 
+I see here [1] that there aren't any riscv64 debian rootfs images for
+NFS booting and running kselftest. Is it possible to add these builds?
 
-KernelCI Metrics Summary
-========================
-Period: 2026-05-16 00:00 UTC to 2026-05-23 00:00 UTC
+I've been doing test boots of linux-next on some riscv boards and was
+hoping to run kselftest on them too. This would be useful for that.
 
+[1] https://storage.kernelci.org/images/rootfs/debian/trixie-kselftest/20260219.0/
 
-  COVERAGE
-  --------
-                      This week    Last week    Change
-                      ─────────    ─────────    ──────
-  Trees monitored     39           36           +3
-  Checkouts           5,746        6,192        -446  (-7%)
-  Builds              11,456       8,690        +2,766  (+32%)
-  Tests               2,344,779    1,471,576    +873,203  (+59%)
-
-
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is defined as a reported problem affecting 0 or multiple builds.
-
-  Origin    Regressions       Affected           Affected builds by top issues
-            (known + new)     Builds (total)     #1      #2      #3
-  ─────────────────────────────────────────────────────────────────────────
-  maestro   15  + 7   = 22    234                39      34      33      
-  redhat    2   + 0   = 2     10                 8       2       
-  ─────────────────────────────────────────────────────────────────────────
-  Total     17  + 7   = 24    244
-
-
-  TOP REGRESSIONS PER ORIGIN
-  --------------------------
-  maestro:
-    #1 (39 occurrences) -  'HMAC_Update' is deprecated [-Wdeprecated-declarations] in crypto/...
-      Dashboard: https://d.kernelci.org/issue/maestro:cfb7db7bad026f784ab5093df91515e27c634b34?iv=1
-    #2 (34 occurrences) -  implicit declaration of function ‘drm_fb_helper_gem_is_fb’; did yo...
-      Dashboard: https://d.kernelci.org/issue/maestro:d0858e23012d44ea7b9a8ffe620de278ff702a34?iv=1
-    #3 (33 occurrences) -  the frame size of 1056 bytes is larger than 1024 bytes [-Werror=fr...
-      Dashboard: https://d.kernelci.org/issue/maestro:2d2c5f1e10db58dfd3e3dede1ad14b9b83331a14?iv=1
-  
-  redhat:
-    #1 (8 occurrences) -  error: target emulation unknown: -m or at least one .o file requir...
-      Dashboard: https://d.kernelci.org/issue/redhat:a8b090056d8e6bc4eee9ffa4389946c992a6e989?iv=1
-    #2 (2 occurrences) -  openssl/engine.h: No such file or directory in scripts/sign-file (...
-      Dashboard: https://d.kernelci.org/issue/redhat:54dfb8887344e76e107b693682922a26eb7678e4?iv=1
-  
-
-  TEST LABS ACTIVITY
-  ------------------
-  18 labs reported results this week (3 more than last week).
-
-  Labs marked with an asterisk (*) are new.
-
-  Lab                        Covered builds  Boots    Tests          Change (tests)
-  ────────────────────────────────────────────────────────────────────────────────
-  broonie                    1,516           0        6,942          +122  (+2%)
-  lava-broonie               418             1,881    363,056        +93,349  (+35%)
-  lava-cip                   477             1,155    98             +17  (+21%)
-  lava-collabora             766             4,402    276,137        +93,059  (+51%)
-  lava-foundriesio           127             173      0              0  (0%)
-  lava-kci-qualcomm          101             74       3,122          -8,103  (-72%)
-  lava-kontron               281             419      0              0  (0%)
-  lava-pengutronix           281             740      0              0  (0%)
-  linaro                     27              42       324            +108  (+50%)
-  maestro                    1,208           0        1,669,319      +691,444  (+71%)
-  microsoft                  47              277      5,250          -678  (-11%)
-  opentest-ti                72              2,141    669            +61  (+10%)
-  pull-labs-aws-ec2 *        53              53       0              0  (0%)
-  pull-labs-demo             799             1,233    1,912          +476  (+33%)
-  pull_labs_aws_ec2 *        6               5        1              +1
-  pullab_cloud_aws_arm64 *   11              0        11             +11
-  redhat                     310             0        5,277          -907  (-15%)
-  syzbot                     57              0        65             +8  (+14%)
-  ────────────────────────────────────────────────────────────────────────────────
-  Total                      6,557           12,595   2,332,183      +868,968  (+59%)
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Regards
+Anirudh Srinivasan
