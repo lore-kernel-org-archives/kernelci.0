@@ -1,78 +1,79 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E54239E7E
-	for <kernelci@lists.linux.dev>; Sat, 23 May 2026 07:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014893438B6
+	for <kernelci@lists.linux.dev>; Sat, 23 May 2026 14:48:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779520926; cv=pass; b=WyZzrn55EwNwCkEScQqk+7O3mwaiLu3wd3I89YocpJ8I//bHtb1ywRMYjg+UiiEH4sIJ3TLYfroXY0jJzYT2ak9aQ8wzhAEK8bV+wrWigwKdGjYYe+UHIBo1Hfr5UJnzWjJgb7IvmqMbeH1y+q72D7JOgZ9Gc8h+ycLFE6BMqQM=
+	t=1779547696; cv=pass; b=f7e9yO+BibDjfMVjPgZz/4ARdJ5zdV601rhgjIgXueUxxP/rpyEpX+L5MeXdujXZO4HJishe4WQaSQKDp9yBkXFTXGq36TkJKVury+HdeCsPZm/aUF688sOdEAICo4M7anXlpdta6+/o57ScPUmNNXNV+tOFWiyZi5BoFcbGiDY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779520926; c=relaxed/simple;
-	bh=BbQRoXHVRldIv8v0zEmXGAsOPHjTtmdBF3G6vkkWU4w=;
+	s=arc-20240116; t=1779547696; c=relaxed/simple;
+	bh=vUhiKdySh9i/AizhQcHXGw5yVjN0TU+UNgFlA7e5OJs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LzZjH0MnsUoMB8o627BzuB7iQ/1PqY4kq2SfkgPNMxJseSprITUURrKFx5O8pC1ZKe3NGM53a8Y0twwVax7xEoy067mkE7QuvfJmexT9+2r7nsJaY33ybKbP14WVi1jmqsIZt3/OyuUbLI9L+AzvI4qvvMX0yOtfFGHHs04bl68=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sFyd2fJY; arc=pass smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=UDc0Iv/EYaxudjNDLeT0yR744CZ08F10z9up3Bn8/aWFgdeqFM8IPbCAjdz6fI01vx3oxyQta6BM1uoaacPA+zutkvvVqUZ/NlWa7hiURK413nmH1yTReL+bI0IYuP8f098yTNIycWPO20xMBUmC+N9G1hJALB74sbchGIDMjcw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tenstorrent.com; spf=pass smtp.mailfrom=tenstorrent.com; dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b=QiKT/vA8; arc=pass smtp.client-ip=74.125.224.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tenstorrent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tenstorrent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sFyd2fJY"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8bb09239328so62536626d6.3
-        for <kernelci@lists.linux.dev>; Sat, 23 May 2026 00:22:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779520924; cv=none;
+	dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b="QiKT/vA8"
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-65c37eafcbeso8713567d50.1
+        for <kernelci@lists.linux.dev>; Sat, 23 May 2026 07:48:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779547694; cv=none;
         d=google.com; s=arc-20240605;
-        b=Be1FOHg9gzSlMQSWOKGs9AfS4Ug//oNB6EWR+eqxVqiIajkI+I6uIkC+k3jCm9YrCv
-         uhUO77DckSDsfSSRjputVnoPyhpPfQt/Z5RUG5BmJTbJYKzqjzLP3rTV3gWK5EMYcWZo
-         INSGQIxRAtDBLBOCmz4+Bu83dEQMPdZsLCxec+9XS+vSMvLmxrBQnibMbPkJ0U5tV2Bw
-         PTLiWlFIrCD87oF1mx8Yo2opdSsTqtaLTQSkG6CaY6EnYz5yPJFWKmxLkKYy0HRmQ/GT
-         0QNCNWykQfJB9Iw+hgw2mYTe/sSjfh6dyllg4VM7kK7Ff27yK672o7d4CnemNkSE5g9M
-         3naA==
+        b=J9xvS2U3SirKnuPHaBImTovkjrTQOsKTDl7P2C42taiRPnm6CwF4caLUedI+xtpqM+
+         VG5rn3hNzUvpzTy9ScMzn7t0vNApM+qc5KvbaRuAa3QKAiEMLlyv8TYYrdIzX0ZxZCz2
+         qmMNpqk0PsVl8TQGTvvxwNmqmCy1TIhcLrj9kjN7heBgy9e9fnOuh5r96vONnEm4aQvj
+         gKuz2b886s3ubRkLMnII7VvmUtOSfXEbm+GFpGwvSkgHFtwGoP2W7cVxcLh6umGUGyhF
+         0rn35MTdkoHogHcqjepUIfa21+7Xfl7gqRP1lkm1hJ6hnFjm3KQWoT45b9XYKTcwlHna
+         FGFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=BbQRoXHVRldIv8v0zEmXGAsOPHjTtmdBF3G6vkkWU4w=;
-        fh=+Mbc0ruhQf32l4J0cA3U+p6Wwk32I4laq68aMyJ1uA0=;
-        b=T+gfJbLwKLciHjWX9eScDaNMrLI1AyU6kB5GcTSFiTu0OB5h7dQiIHdBBsQQEU1iCP
-         EGyv4w0Boq1OMLimII7k3QQOv+zRF146zkbUjJ7lG/jsoAfSIhWcQx+lhRp29SQlz+Mq
-         x7gueXjtSiMNGoi0GdaWHfCzYJr+zKsrmpPLalWyfHv81kLogHE4Hwo2vNzEALYLBf87
-         GY8elye/5J5FK70eucRGeaBKcVkQQ7WOm/KgDIjsk8jplal1e/9VDOyNRLVo4/7KQiPM
-         GndqQwclvmOWUEe26c6Dqbl6dBJQOLcpH10eHTKI9E7Mhy2xP5hLTxMpVX1Qo94l43UR
-         Qjjg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vUhiKdySh9i/AizhQcHXGw5yVjN0TU+UNgFlA7e5OJs=;
+        fh=FyYv4mk07hA8ZXv1kI7/KkyYBsyOl07IIACFTE50GJI=;
+        b=FuEjhMoVW7lyMXXwbdmBhJG64fA5PjMYyjvKstf1cPMnwXz050QIAC58zI3yuQV39N
+         v4XHugiGMMGrC3+KKynh+TRHckkYUL8FIdTqAUHRpmx3Zo8I21UKZNhg/bGUIdhVLuoE
+         OjMqBVun90xd59iXeWRnGH/cHogroqVOLMGrj43Gn9nAWt+QqdD7n4l9sxhFxw0OHm+v
+         KE8gX55QTNO5GES1W6JLDUaW/QZBxnzYL0rY4mtoPDabg/SC+NCpatl09h0vhnv1WVMD
+         e4AoW7lktwCiYoquLMGQltAKDdnqCP+UMXX4F+zU1WTu1hOzcTqOtLjKWzgOUYD8IZoY
+         8MHg==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1779520924; x=1780125724; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BbQRoXHVRldIv8v0zEmXGAsOPHjTtmdBF3G6vkkWU4w=;
-        b=sFyd2fJY9xE+iK4p+pqvrwM7Vfeb+h2oa+ajrhhAQ0FR7HxmtVR1MdQaOOliRsrNwp
-         nS0aLlRfPy8EBRDr/nOhQOtMqyXHP962p+4hE3AZ/lzlul9KekF1eZT/PhlJDv1AnFNN
-         wN5PB0GuwgvXO0n3gdXaUCPKfa/Bx6Ld1xYHswtGNyqtBnUD0zdTQ/lPwT3IWHoNs+s6
-         noZglhp93LRILlvsRyMFEHYPSd26XPodmgXGSCXy8okvTLz/Dryx/u1pYN0lH6kMk56E
-         X0ZpZ0BaNbhsPV6lH2YKmr00haqfUJdN5V4u2Gl8vboH+i6UwJ7ZryydjmcRwtAmwp8V
-         uzfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779520924; x=1780125724;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=tenstorrent.com; s=google; t=1779547694; x=1780152494; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BbQRoXHVRldIv8v0zEmXGAsOPHjTtmdBF3G6vkkWU4w=;
-        b=TWcVBFMU+3EUSooTWbhinQI+4BW/RP18GsAdwgSmlUKvaHxPE+Xs8VENFD9jS42RNf
-         JnU3HFieYnmLPWRTg9u5HU2rcn4Rd25UCru60/N+lpWB1tkrOPZU9s90zvoE8jdC9lbD
-         IMqy9XiRBWrRmWVqno2sBHFqaYYg5aRyuf1u0epHT/Cp4OHBhcHfyGDb+mXNtzs5Q3Mk
-         MdNZ4YNEIUbfB4oOHk/AA6jFfldDam9bf/T06Kb7x6P4DdMNvyvj9s2TcaZ/BSv7uiHS
-         s179s6bwo+wRq7J9Y/yLmPtlzI6Csc+talleYwWKJZ/dC4iAgQmM2OyYoGJNXw9miyu0
-         Yitg==
-X-Gm-Message-State: AOJu0Yy1mH0qXL1+o3BTUo3HEoR51xj8mIXjdpLIZfF/DSIAMdtz/XJr
-	i4zZcpYP2q0tER5hqMM0b6TPlTVZOKlkcn9sdawoshivt63guoa/BYF3YvPs0yspyyZWv9HPZ/3
-	QS7g9vE8vuNBYEJ0jPGsB7tis+iJgIPgMzvh4SLq1M7Kruqs+4pOFdroIHzDhcg==
-X-Gm-Gg: Acq92OFk9UHA7fcJ8Lwd8BsNPMOxcaFICnKGGcrR/RdZ0MveQmD28SIuqs7NbyW7Rsf
-	EGy34A0Of2z3oqhEFnTyGcvZQU/2fGuS7hDzMYjc+jvuYwUhQDu3Xv8a4efpQZIXuCx2FwUsHVW
-	Ftfk5eLwZeAx2lOT1fn86P8958PEtRUdl498H11R5K9tP7jhnfjCeTRxQl/maM/8aMWA8Q7RokH
-	vQgSsNzG2o4G1EIHz2g+5qAlLx5hFzyNbxbnzouIJ234saB0qUP7a81eNCxmyvbH/2SJjrbAgE/
-	wJm7Nbgp6gedoJlZpPxTn8O+UrBgfQKJMzG7czKt7aH/Qybzesu7DGxH1LJK
-X-Received: by 2002:a05:6214:ccd:b0:8bb:2e70:7a2b with SMTP id
- 6a1803df08f44-8cc7b60af4cmr113342136d6.15.1779520923540; Sat, 23 May 2026
- 00:22:03 -0700 (PDT)
+        bh=vUhiKdySh9i/AizhQcHXGw5yVjN0TU+UNgFlA7e5OJs=;
+        b=QiKT/vA8cSwH+zyxFsqPciZPlZu8v1UDi1raW+GdMvEw/1Xj7/dalJFne0THs2WxGo
+         xPB5Ko5Du3/LTRmTOE/2fKxsrDBtNUhkSr3+BL8tJ/duhYiLepFbtKoqJGx3n+yjCXkS
+         IFVJYH+5MixpL6ABv9nmY6JDShaEYNssby9TREjAEkJVSvv6CUYT9E25Lv2+KoId5rGW
+         FFeABiaNwrgOCh29IpZ0+pRsYZlkFHXWAFsvxkRW9aL6UM220CZ6a9oW2f6RKuAtHArb
+         U9vCM/NDLCWOnrsu6yUBsE463erig5GBpaiNNtoZaRDNe7SBTEMikcmAxQ5jtPyFe2X0
+         PbsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779547694; x=1780152494;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vUhiKdySh9i/AizhQcHXGw5yVjN0TU+UNgFlA7e5OJs=;
+        b=iTvdOK1nalBxxl5hi/V15Tj08jZPk8V+kTMpxSH5wWMLEwf50VIw5rkJvUqnV65Kg1
+         k3Uq3K0FOjfa4uJBQxPIFUP14v4OzQ9vryLcr1IG3Lqov+W9qjPT6RTIGRFJX+FZKxcF
+         9AuVNGrzqBkOI70CUmeDxGhuBYwVnvl5Z+igZ+YxPVcwn9mtHPSsXRJ14xBb84sFF77X
+         fwxG7ibT84HP4qAjTZctBzsB2/QV/fT1Nkagy+1om6PIQWshuXW1kBhF6YxiROI7uapL
+         mht42CjIlhiPmRu2b9bj0WhAcvNoK4fIL12/7MDbMI2FEN89Q6OCPHJ6Z+hBZ47CZQtz
+         Tb+Q==
+X-Gm-Message-State: AOJu0YyO/rb2OeUdAMMTFcL7Zb0pGPX1k5db45Xw6ds1YMH55DkSHmYV
+	DIyafE2krrWZvGTPTbWXe7XWTZZDGargESDr+UUAhCObIZ2f7EKSUCPBj4PzoEumJx7ioe+NvIn
+	N+P3q9Lri8zuyoUSPlzoi8lciXftpEwUA4iudxSkWcw==
+X-Gm-Gg: Acq92OG9JIjelZszy9qDz7NKVbPJkogpFL4JEZ1cXKG0gSgZXPcj2dsyGNDyRsVO7x2
+	4Scbuzxvb3zICp6pD/k3pDEnLIAGnw+WQw6zGH103ZbMYF31neJn6DfHhj0SaGAsWeTRr4pnexf
+	DwpNF+VB8LCs8a1mnnnhenqeAN6IddbSCiCWXjea5eFCj1P7Us3QY5B5AY4bww26CYxD07u2pxr
+	dfpsCkhCO4cagnzUecmGkzLzdAt1P7ihmr4OJkM9gMCmuEKBPKlLx9lb0VPPXbDAmlXc99q+zjU
+	Kw2bYyzJB3go/+lkrtCP9a/ElwELhLmTyI7XBEEdfLmpqej2eIQSz/8zs2faC2a7vpBO+iA=
+X-Received: by 2002:a05:690e:251a:20b0:651:c160:1c06 with SMTP id
+ 956f58d0204a3-65ec9a1ec26mr6345100d50.58.1779547694007; Sat, 23 May 2026
+ 07:48:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -80,41 +81,35 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <CAEev2e-Rc=hhieAWmM59jAyNLc-o_ZVA27UQG=YkcbZAEnXYFg@mail.gmail.com>
-In-Reply-To: <CAEev2e-Rc=hhieAWmM59jAyNLc-o_ZVA27UQG=YkcbZAEnXYFg@mail.gmail.com>
-From: Ben Copeland <ben.copeland@linaro.org>
-Date: Sat, 23 May 2026 08:21:52 +0100
-X-Gm-Features: AVHnY4L8bUoWwpwzDrzMKg7lGuiZMGqtvbJ-Et6tldcnuE4njdNyWFWpMlncNyk
-Message-ID: <CAL0q8a7BAV7KgM2K4ii21qFXrhKieyJsM2wG7_Y=p459ec10jQ@mail.gmail.com>
+ <CAL0q8a7BAV7KgM2K4ii21qFXrhKieyJsM2wG7_Y=p459ec10jQ@mail.gmail.com>
+In-Reply-To: <CAL0q8a7BAV7KgM2K4ii21qFXrhKieyJsM2wG7_Y=p459ec10jQ@mail.gmail.com>
+From: Anirudh Srinivasan <asrinivasan@tenstorrent.com>
+Date: Sat, 23 May 2026 09:48:03 -0500
+X-Gm-Features: AVHnY4I30ztec229B2EeNcvh8QJMrQ4aeEuseRc1LsQ7mQcr-zDHeJ1bPRv6YGM
+Message-ID: <CAEev2e_bLhfSAjq3Jwwfqy2bXhgNQ6Dygu=zSHqw39U1taTUEg@mail.gmail.com>
 Subject: Re: trixie riscv64 rootfs builds for kselftest
-To: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
+To: Ben Copeland <ben.copeland@linaro.org>
 Cc: kernelci@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Anirudh,
+Hi Ben,
 
-Thanks for the email. I have opened a PR at
-https://github.com/kernelci/kernelci-core/pull/3102 to add it here.
-
-I tested it locally. If you want to give it a try beforehand, I can
-send it over; it'll appear in the next production release.
-
-Regards
-
-Ben
-
-On Sat, 23 May 2026 at 05:06, Anirudh Srinivasan
-<asrinivasan@oss.tenstorrent.com> wrote:
+On Sat, May 23, 2026 at 2:22=E2=80=AFAM Ben Copeland <ben.copeland@linaro.o=
+rg> wrote:
 >
-> Hi,
+> Hello Anirudh,
 >
-> I see here [1] that there aren't any riscv64 debian rootfs images for
-> NFS booting and running kselftest. Is it possible to add these builds?
+> Thanks for the email. I have opened a PR at
+> https://github.com/kernelci/kernelci-core/pull/3102 to add it here.
 >
-> I've been doing test boots of linux-next on some riscv boards and was
-> hoping to run kselftest on them too. This would be useful for that.
->
-> [1] https://storage.kernelci.org/images/rootfs/debian/trixie-kselftest/20260219.0/
+> I tested it locally. If you want to give it a try beforehand, I can
+> send it over; it'll appear in the next production release.
+
+Looks good. If you have the built assets somewhere, please share them.
+I will try it out.
+
 >
 > Regards
-> Anirudh Srinivasan
 >
+> Ben
