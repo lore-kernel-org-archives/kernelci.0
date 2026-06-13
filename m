@@ -1,162 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C12E13A258;
-	Tue,  9 Jun 2026 00:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169461C01
+	for <kernelci@lists.linux.dev>; Sat, 13 Jun 2026 00:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780965165; cv=none; b=cfnIm1N1gKFOkKPN5Y77SPy+H7vppT8SVH1VnZiqwaUNTxgnXCZMF+/nhjjlu7kTtPGpQItxqKEkDDoDhQ6ExIJ2sm+6YnlQLKN13xrdLYIxezc/z8PokJ8H4zHpTM2xw5h4FA0ZBXgnAtMmgDHvg9YHfIZZaEOkGHB1h2XUL/E=
+	t=1781308947; cv=none; b=DiuawzTrZkd+DlEmdQtTZRwPnTQqFJpLoszo4HtLJByraT1RFKVKWL1vRayLf0fO4eJ6UvrAQP/fqsENv7LwQenoS+hx1fShOLmQD2rw/W/tbG9blGgMIxVbv21DfhkVKuXMO0U/X5uFMwljNRd8MYXj6NIJu2bLnhnRRudppv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780965165; c=relaxed/simple;
-	bh=8t5HE1DLdIUEFSwA61TFs0DG6Iv1WK6pOKa5bnHPuic=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FosrpShJz9tAs+NJwPWB3Nw33hSEDPIsNVyFJTcmGcQ1r1R2/xd4igHx3TcHzoeCjIp7K6U0iYDNlQ2v76T8HiyzJtpE16N4MGNkaYV82RAZxLZx72h9L4BLl9BC8thMBYCkCBGNFHW7LhaiMAs63o+El90qUjJyf2H99H3v1h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iC0V95KY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781308947; c=relaxed/simple;
+	bh=Rhg7jyJ/OlIdpJgLNRqXFdM0YAzWdBjkjWy83mWtgKQ=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=SNWkU2gyQjwqiASQIQv093j9BDLtJFZnM84T5h8uix8gnGj1hXNWgeBPLsK96esDmWIVMQh4PZcOv6Z/HDYdyxgUOWLv/BScApJ1ElIj8OoW68GqoXgO5vhF+YH/Y16puYAL/LYQOIkBq0EtTR1K06i7wypFY+CkXuSqzVqDEdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=gWERR1s8; arc=none smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iC0V95KY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ECB1F00893;
-	Tue,  9 Jun 2026 00:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780965163;
-	bh=AWqrUcAU/dt3Yzxo/R4IB34ld94Wfxn8b7jvT0dbAR0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iC0V95KY4ScnH68l4HJawJ7OVP+VZbg+jO22tdeMTc+tE3J2rXsQomUEWBDN97mkP
-	 cNGwSbxlEqSjPnipuOzPbdHBkPy2kejeOsMZKFVHOo1gyNc10B+S8vH4vNQ/uI4IY7
-	 DHHqh1mDA4+XS8bluWat2bI5d9tUATl8R2oDysK+wIO0mRyE0Q53Vl80ZSK4CPoq4j
-	 5/zhQ0bOM+gOww0m7KM/3CyQAKfYZPq1hq1Jtp2hbr4kSlTf9vxxshGc6nQZM4QBvm
-	 5CS3weUw/0szJ6rN7YhoBh0I2zWai8X1w/WB3zomAMLmvEvZgscNJdNs21/zXpwgLZ
-	 kZzpBTNUkdRRA==
-Date: Mon, 8 Jun 2026 17:32:38 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: kernelci-results@groups.io, regressions@lists.linux.dev,
-	kernelci@lists.linux.dev, gus@collabora.com,
-	linux-next@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
-	amd-gfx@lists.freedesktop.org,
-	Gaghik Khachatrian <gaghik.khachatrian@amd.com>,
-	James Lin <pinglei.lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, llvm@lists.linux.dev
-Subject: Re: [REGRESSION] next/master: (build) stack frame size (2088)
- exceeds limit (2048) in 'dml31_ModeSupport...
-Message-ID: <20260609003238.GA3576576@ax162>
-References: <178059594388.10259.8984887956034576074@330cfa3079ca>
- <6bdbbc1b-9934-462c-b9aa-afaf0605c2a0@infradead.org>
- <5f2d4707-ae11-44f3-ad09-1c0580abde91@leemhuis.info>
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="gWERR1s8"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1384eb94d20so1795187c88.1
+        for <kernelci@lists.linux.dev>; Fri, 12 Jun 2026 17:02:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci.org; s=google; t=1781308945; x=1781913745; darn=lists.linux.dev;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=n7jI3mADF60tP+0hD4nf+e8lzj3NOjAdbheaesXKrCo=;
+        b=gWERR1s8PXH0FhfLpsoaqSenlt2+DaPF833PMoU8eRFFx4KI4uegI5tgNuxnhTYlaE
+         XJAt0a5fK4QhjL7aFNmD4MVCVIclgnYHE2wjOnyWAZRa/rvG47zqwDMozjsUCH3qb479
+         HArmHGFNkNAQylkLejtHrwHBJm6r7VaaO9QTHz014m/0YHyzemDo58x4DIBQ41m/9JRr
+         hF0m9g4ZZ9jM24aJHOFqbp1Gi9PlOm2SUHd2HiAVzPZ74GRWsQnl5CoaGwKLRbpdwoR8
+         EvzxxCTDaqYkP4lN2+UqEEyS5ycVliVu8JPdxGyB+gmf7H66k68vaqB+fEadtbydqVCT
+         ZIQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781308945; x=1781913745;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n7jI3mADF60tP+0hD4nf+e8lzj3NOjAdbheaesXKrCo=;
+        b=sgQT+x0rI6HDowO4oU+n5lH/V8Qua/QuY18qnA0A3wxg2ONdsZsOyIVmOt7NB7ys2X
+         KjDy2zYzUUtO30unRH49JkaUHRgBLcOpAZ44CgAjqCJa5jKdDPvBNoZITXfGP7RrKegx
+         F3ElJeu88F8hqiZ3mdhM3dil9TQkjoHsoVezfCXQz4Mfc3yYbNyGUvzZ7i94xMAf7/1z
+         lZhQi/vNgy0lIQOG4BWJs/evDE+/1ceqNLJj0x6L/U6nre5SvC3NhZWOkxas7ZiuWQYV
+         qNYB7vnThpmMWH6//AgM9mvoWOUQh4I0OaRvbdbUq4Sa2V54NO+7wNF36eLs2JCaEkQm
+         4skQ==
+X-Gm-Message-State: AOJu0YxF2PDK9PA12bx7SzJsPt//rvr9yjtveXV1nXsPg/4AjowicReV
+	oYdQFaxr/+z15GgHD8hj+KofHQslWhzJl4BrFChX65p1WO0EVgkPFrAo3E4qlOStSBeIvC3TGH5
+	C31hT
+X-Gm-Gg: Acq92OEI/9DZ75o2LLAyAqVl+Km+YLF0y0A5zgAM665VAwxIqmBAJelJJ9V+bQwuzv7
+	s2TIaqGIqZ0JL9h3X/jITMbh82mJZniz/HUy6s0hctL2u+Wu9G2Bpvp9l/K30OJyZ2hjv4SsV5u
+	TLFR0jjxR2wfxZI/q4AeGv3Drgj6WI5/maRJ8S7oLq8+QlClnNg52yjMSdQhdPDARuACQ6I9TZa
+	AyW0fAzv3ejLtAKjU32PmSq9qaH0WcUMWFRe4yyPOysGHG38evbR7RYjOrFoTUy7By98xC9AvJQ
+	GrSEiygrdsn5gUzmUL+3kttXwFwWDr5CbfDaR5pXcwVKx+DrFzzZ0NqltFUI0dgGadtgHbGC8UH
+	2EmjtiN3VZ8fHqNZ9iAPoVKsx2X1qw3iWys8TnVukcX3e6EY71n90gqfPo2n7FAyzrzCia3gR20
+	WfgMztDVMuzxaFtKcx
+X-Received: by 2002:a05:7022:6ba4:b0:138:2a54:f6d9 with SMTP id a92af1059eb24-1386f38e674mr855401c88.25.1781308945011;
+        Fri, 12 Jun 2026 17:02:25 -0700 (PDT)
+Received: from 330cfa3079ca ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1384b97bf09sm3868288c88.14.2026.06.12.17.02.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 17:02:24 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f2d4707-ae11-44f3-ad09-1c0580abde91@leemhuis.info>
+Subject: KernelCI Metrics Report - 2026-06-13 00:00 UTC
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io
+Date: Sat, 13 Jun 2026 00:02:24 -0000
+Message-ID: <178130894388.14053.11570807505247459259@330cfa3079ca>
 
-On Mon, Jun 08, 2026 at 01:24:32PM +0200, Thorsten Leemhuis wrote:
-> On 6/5/26 06:23, Randy Dunlap wrote:
-> > [adding amd-gfx]
-> 
-> [+Nathan -- I'm also wondering if we should CC the amdgpu maintainers,
-> but lets wait with that for a moment]
 
-Thanks for the CC. Bringing in more folks based on my bisect below.
 
-> Nathan afaics saw this problem a few weeks ago already and filed and
-> issue for tracking: https://github.com/ClangBuiltLinux/linux/issues/2161
-> 
-> To quote from there: ""After LLVM commit 8ac9461e48e0 ("[SLP] Reject
-> 2-element vectorization when vector inst count exceeds scalar",
-> 2026-04-11), I am seeing two new -Wframe-larger-than instances from
-> drivers/gpu/drm/amd/display […]""
-> 
-> Side note: I wonder if that LLVM commit somehow made it to the KernelCI
-> env, or if something in the amdgpu code in -next changed and made the
-> problem worse.
+KernelCI Metrics Summary
+========================
+Period: 2026-06-06 00:00 UTC to 2026-06-13 00:00 UTC
 
-So I think these are two separate but perhaps related issues (i.e., the
-latter of the "side note" comment), as that LLVM commit is only in LLVM
-main (currently 23.0.0) but this instance that KernelCI flags is visible
-with clang-21.
 
-With clang-22 and a distribution configuration, I see:
+  COVERAGE
+  --------
+                      This week    Last week    Change
+                      ─────────    ─────────    ──────
+  Trees monitored     36           34           +2
+  Checkouts           8,742        6,782        +1,960  (+29%)
+  Builds              10,653       9,496        +1,157  (+12%)
+  Tests               2,447,880    1,885,455    +562,425  (+30%)
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn30/display_mode_vba_30.c:3381:6: warning: stack frame size (2312) exceeds limit (2048) in 'dml30_ModeSupportAndSystemConfigurationFull' [-Wframe-larger-than]
-   3381 | void dml30_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 warning generated.
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c:3800:6: warning: stack frame size (2128) exceeds limit (2048) in 'dml31_ModeSupportAndSystemConfigurationFull' [-Wframe-larger-than]
-   3800 | void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 warning generated.
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/display_mode_vba_314.c:3892:6: warning: stack frame size (2136) exceeds limit (2048) in 'dml314_ModeSupportAndSystemConfigurationFull' [-Wframe-larger-than]
-   3892 | void dml314_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 warning generated.
 
-My bisect lands on commit faaeeecef94a ("drm/amd/display: Fix type
-mismatches in DML and normalize loop bounds") in -next, which makes
-sense. I have not looked into this super closely but I suspect that
-change makes it easier for LLVM to inline or unroll loops, which can
-result in more stack usage (especially as this code has some functions
-with many tens of parameters). It is rather hard to look at and modify
-this drm/amd/display code so I have not prioritized it...
+  BUILD REGRESSIONS
+  -----------------
+  A "regression" is defined as a reported problem affecting 0 or multiple builds.
 
-I wonder if
+  Origin    Regressions       Affected           Affected builds by top issues
+            (known + new)     Builds (total)     #1      #2      #3
+  ─────────────────────────────────────────────────────────────────────────
+  maestro   11  + 7   = 18    172                34      24      23      
+  redhat    2   + 0   = 2     11                 7       4       
+  ─────────────────────────────────────────────────────────────────────────
+  Total     13  + 7   = 20    183
 
-  https://github.com/llvm/llvm-project/issues/115862
-  https://github.com/llvm/llvm-project/issues/143908
 
-are related, even if KASAN is not enabled here.
+  TOP REGRESSIONS PER ORIGIN
+  --------------------------
+  maestro:
+    #1 (34 occurrences) -  'HMAC_Update' is deprecated [-Wdeprecated-declarations] in crypto/...
+      Dashboard: https://d.kernelci.org/issue/maestro:cfb7db7bad026f784ab5093df91515e27c634b34?iv=1
+    #2 (24 occurrences) -  'HMAC_Update' is deprecated [-Werror,-Wdeprecated-declarations] in...
+      Dashboard: https://d.kernelci.org/issue/maestro:021b40dfd5975368e21597a2c6562227b2764716?iv=1
+    #3 (23 occurrences) -  the frame size of 1056 bytes is larger than 1024 bytes [-Werror=fr...
+      Dashboard: https://d.kernelci.org/issue/maestro:2d2c5f1e10db58dfd3e3dede1ad14b9b83331a14?iv=1
+  
+  redhat:
+    #1 (7 occurrences) -  error: target emulation unknown: -m or at least one .o file requir...
+      Dashboard: https://d.kernelci.org/issue/redhat:a8b090056d8e6bc4eee9ffa4389946c992a6e989?iv=1
+    #2 (4 occurrences) -  openssl/engine.h: No such file or directory in scripts/sign-file (...
+      Dashboard: https://d.kernelci.org/issue/redhat:54dfb8887344e76e107b693682922a26eb7678e4?iv=1
+  
 
-> > On 6/4/26 10:59 AM, KernelCI bot wrote:
-> >> Hello,
-> >>
-> >> New build issue found on next/master:
-> >>
-> >> ---
-> >>  stack frame size (2088) exceeds limit (2048) in 'dml31_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than] in drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.o (drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c) [logspec:kbuild,kbuild.compiler.error]
-> >> ---
-> >>
-> >> - dashboard: https://d.kernelci.org/i/maestro:96417cd30041ab8f3153128d0120c6cd70782d99
-> >> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-> >> - commit HEAD:  b99ae45861eccff1e1d8c7b05a13650be805d437
-> >> - tags: next-20260604
-> >>
-> >> Please include the KernelCI tag when submitting a fix:
-> >>
-> >> Reported-by: kernelci.org bot <bot@kernelci.org>
-> >>
-> >>
-> >> Log excerpt:
-> >> =====================================================
-> >> /tmp/kci/linux/drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c:3872:6: error: stack frame size (2088) exceeds limit (2048) in 'dml31_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-> >>  3872 | void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-> >>       |      ^
-> >> 1 error generated.
-> >>
-> >> =====================================================
-> >>
-> >>
-> >> # Builds where the incident occurred:
-> >>
-> >> ## x86_64_defconfig+kselftest+x86-board on (x86_64):
-> >> - compiler: clang-21
-> >> - config: None
-> >> - dashboard: https://d.kernelci.org/build/maestro:6a21abf22cc72b6e94bf3c60
-> >>
-> >>
-> >> #kernelci issue maestro:96417cd30041ab8f3153128d0120c6cd70782d99
-> >>
-> >> --
-> >> This is an experimental report format. Please send feedback in!
-> >> Talk to us at kernelci@lists.linux.dev
-> >>
-> >> Made with love by the KernelCI team - https://kernelci.org
-> >>
-> > 
-> 
+  TEST LABS ACTIVITY
+  ------------------
+  16 labs reported results this week (unchanged from last week).
 
--- 
-Cheers,
-Nathan
+  Labs marked with an asterisk (*) are new.
+
+  Lab                   Covered builds  Boots    Tests          Change (tests)
+  ────────────────────────────────────────────────────────────────────────────────
+  broonie               1,654           0        7,808          +754  (+11%)
+  lava-broonie          353             1,296    189,795        -59,275  (-24%)
+  lava-cip              425             1,153    130            +130
+  lava-collabora        663             3,572    209,244        -19,818  (-9%)
+  lava-foundriesio      98              98       0              0  (0%)
+  lava-kci-qualcomm     88              138      52,640         +51,341  (+3952%)
+  lava-kontron          227             386      0              0  (0%)
+  lava-pengutronix      227             587      0              0  (0%)
+  linaro                30              30       0              0  (0%)
+  maestro               3,705           0        1,848,958      +475,440  (+35%)
+  microsoft             46              281      5,331          -3,646  (-41%)
+  opentest-ti           61              1,587    523            -128  (-20%)
+  pull-labs-aws-ec2     62              62       0              0  (0%)
+  pull-labs-demo        668             1,182    117,112        +115,134  (+5821%)
+  redhat                345             0        6,413          +2,909  (+83%)
+  syzbot                38              0        48             -13  (-21%)
+  ────────────────────────────────────────────────────────────────────────────────
+  Total                 8,690           10,372   2,438,002      +562,828  (+30%)
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
