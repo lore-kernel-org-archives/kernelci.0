@@ -1,124 +1,153 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89353E1718
-	for <kernelci@lists.linux.dev>; Thu, 25 Jun 2026 12:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FF526ADC
+	for <kernelci@lists.linux.dev>; Sat, 27 Jun 2026 00:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782390674; cv=none; b=dWLiO9bhrYmAZTXXGBQ9+0DwrnqwXG9MnArpiMFmkG+QSd4w8TigkKB9BN5Qpik0AAhjXea1YduvxfyxxqaJMBDR0GwauZ0F4nOTBpzz9VMoPcnb96hX6QaP+PYJ09BXKbCgemq7cM5WSkmb6s6zNGDxTXnEGOMnmwjMilniPoo=
+	t=1782518489; cv=none; b=e7SQeGzs7xozD6YFPjL+n9X/yeOhmofitBxtm7LN1wl653zPH2VDCv7vMtKa3CMOUcGNaRSK5sBZoqAd3KH2tdqHe4/s4m+rqrKctCFC+vBpBpuXujXviku/Pyj61ErnIM5S22/lLt48rRtaRloJovL2m8PG6AHY4E550lICMxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782390674; c=relaxed/simple;
-	bh=5xy8h636tmtCopoxuXzUZkd3JJK5P0fFfNE178+TpLg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SBoSWU7PDHKkyqu3rb4AhNdL+KZLUGAUshZsQjqX3fRDh/9IrbYae0bf6PNy2Wxx6mAJXOuyrfRNRIyIO2SdwMp7VvAPnbog6XNNoIdzBEX4x2xJa3CTTgMGLzuYCx58ptRVEIA9RRp29GSZ0ag4l86s83flusLexPTGfUR6iBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=YE4w6uHD; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1782518489; c=relaxed/simple;
+	bh=82Xz0CURBuRRCFsnS/9cMwJbgqgQPbYuI8NJBdSbxhc=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=gBo2gFDCYoKdXXijkAVu0Z/vbbBe+lyFKU5pTYR5H7sThL5juA0x/KG0LlWVuFP/SkquqojldSJDIedXqbLvFjJuLEDVy7OQ12GQMxZqIy6jTRnQvN3wVWxN0tncDW3R5rTIY61AOWrzGz8FfHHPehaY/T+XAoxBp5XQ10QSqJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=hbhzu+TH; arc=none smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="YE4w6uHD"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4AF8D3ED96;
-	Thu, 25 Jun 2026 12:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1782390663;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0/JVB+W7sCf7Gi/CyFGpUxCh0l8gAFhKDGHEk2hQoJc=;
-	b=YE4w6uHDsRSzpd5ImGoFCmdhvfJjeFAkDaY45U7yqYkJrCzELZUpAyEQX/2KRgtT0s6Qpk
-	HCIG2GoHK9QG3aJQvIEHNT0TJQwfBYaimZJCGcg6GlfTcuV3+9ctm1kvJf0srhqBT0lvRP
-	4fnLRwm/yUNLnFt/WEhg9cZq891pgfFd1GQfNWDGOPkFRN/34TjhFzD9pn61clA/8Ozrdu
-	/QTnBInVgbnou+/IG/AlW3FETRjz/60U8rQ5OQtfuJSZsDieOzOkZ/Ep+PApHvTbIiPpNA
-	ubR1653fdIrE80t0pq88v9LtT8iMVzXO+0VfE0CCUFfNGi7R/4S57V23jCHeww==
-Message-ID: <00735150-06ec-4274-a66a-c1d1052482a5@gtucker.io>
-Date: Thu, 25 Jun 2026 14:31:01 +0200
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="hbhzu+TH"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-30c8b23420bso2554912eec.0
+        for <kernelci@lists.linux.dev>; Fri, 26 Jun 2026 17:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci.org; s=google; t=1782518486; x=1783123286; darn=lists.linux.dev;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IgEkzW33Z6IBu8cGnr8KeU5rKyDPrvx+23V6KEcPbhU=;
+        b=hbhzu+THPvvu2OIoTfT6EsGgmObi4rEfBrpT/M2eREszeVbSD/7+6CPvyq18hO3Rhy
+         znCJL/6XCi+lpjEsnPlajJlX3+oRgaGNBJqTLtYsgPd7/2NBotwOz3AK/O1LQkt0S1Oj
+         0bE9Lss1RDfii18Gch+yu5QalofD0VlzgwpBZ6sJ+7qddFhNlD7bCkELWN67KQ3qe8mJ
+         OIBzmO1sjBOKr9YjHofQ/iE9Tnzsigxbr8/u3UNP4vQ9IUoZ8J4Gqzc24IVltfFuQDnV
+         Sr7QysmgBcg9cZYnJDQzs6HbUSl4jerxKkXbl4PjwjgaEItpMiCepK1Tac4tR4XP11tM
+         UPbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782518486; x=1783123286;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IgEkzW33Z6IBu8cGnr8KeU5rKyDPrvx+23V6KEcPbhU=;
+        b=Vji3gaKrqZo/d3mM4aQmCovEuhNImBB8ePmJm4Crtv/mY/qhA0M1qWqmFjHSuW5rab
+         6dgfjstkC1bIan2RlRXbjUins0e9jF67l48O1vzG0AQSZbWGPg58JWfXzNmxCQJlcjXs
+         t/dPsmNamKtVzfUo14VUp9ytvUhpld0eEiuGKA4VEVpMeZTGkyk0cmCynT5TXL1u+lUn
+         6Vu7djWl3B8z3w3d2zz7958z+kOsal9clhlocIG/szn67ZQCZV0P2LCtSzbLArBIQAVK
+         PCH0s9ONrvNybutRLwBEHY/QG5IiNPXpqVhUPPvo+KqRWKrrnhp/7YBthBQv0ibfTVs4
+         BvuQ==
+X-Gm-Message-State: AOJu0Yzhaj1xgNy9RxNr9Aal/6WcJWI1yLd+tFj1gPK5S59HgkRBdIm7
+	oXh3fV7+KwQp3IfxR+CMCh+cqj5+B80V1D7lssygXJ3dTW/FyHG2GzxDO/rw60sti35gMS4+rhJ
+	gUpGC
+X-Gm-Gg: AfdE7cn7xi+mhVPlTF6ciyf10gtqYgk5F8qsfGS4RGDNjPwA5FpJkHL0ICfmVhMx37x
+	2qn2PmtmTrhd8xYHc392M7cjgZ6Eg3AOs8xII//Q/AkewJKYo+f7rJ4lZYsHcX3ZvtZwLiO94HK
+	FoIoFZQ06/NdRHMPuGQGZfvqWF0Ab4zMuE3YYxIEoHjYnlrAbSHh++b7UekAJVLe2X0MbnPZsmJ
+	esax/2eNb+g6GLIiARdkq8wrxez3mn8XF7wO4EEQ0g7ttZSk0wcIx+EXYQ44tgT2r/NAKBh26IS
+	CPIz9r7Hksiof7Vh7ro1nmXWFNf+kR/+d4fLmgPhuN/aawTA4FQAhbzWN3Y6iYRuZqGSngTKusx
+	voZ6fIqqv/F37gaLIkt5e+XsCV1L4HBMxB4/EIZ1JPY9x4G7Y1EHXKv7irs6zc7pU2HMCZOVhsD
+	H7zwv3/g==
+X-Received: by 2002:a05:7301:1930:b0:30c:639f:ff8f with SMTP id 5a478bee46e88-30c84d75564mr8721741eec.8.1782518486342;
+        Fri, 26 Jun 2026 17:01:26 -0700 (PDT)
+Received: from 963b246bc1b3 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-139d90e95c6sm32163753c88.11.2026.06.26.17.01.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 17:01:25 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Hosting first-party kernel.org container images
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Ben Copeland <ben.copeland@linaro.org>,
- Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
- Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- workflows@vger.kernel.org, automated-testing@lists.yoctoproject.org,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-References: <cc737636-2a43-4a97-975e-4725733f7ee4@gtucker.io>
- <CAL0q8a7mepGUdgrLsQhCUdLVP8VcxB9x_oBRCWAYNeoVAUb=7A@mail.gmail.com>
- <78adef0e-81b0-47d4-be20-32f42ab8ec04@gtucker.io>
- <CANiq72=t=q4__vwTFjg+gQyjKLUEJrZBngr3cAnnKiTNM5uteg@mail.gmail.com>
-Content-Language: en-GB
-From: Guillaume Tucker <gtucker@gtucker.io>
-Organization: gtucker.io
-In-Reply-To: <CANiq72=t=q4__vwTFjg+gQyjKLUEJrZBngr3cAnnKiTNM5uteg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTFo3v66VJpNjhW3/jKHwEKcUvhtc2Ace844iZNYuGRBUCPHz2RWlFpYtFfI/Jjq6uDs8AwIw4DAPKsj3d/5p3J2wJAAvjs6HVsIf8voEr+47OCdR0wBkzlhly++wxPFzAW3iO1QHkxpSi2ma1uJUXC+4901uzyOoQYVkPp24ZxVEvW6S0OcVSP6AMES85erL7wQIzSpsswbrLITbJajBu76TcYfRcyChGGPGehwc3RUwGbYcc2cZSFg2vsuuRZbJaGNq8s5js+1LotiICPMd6gtGDi1IwDzSK4K8hUBeDIVj9eKDCJLD5TqvFHRSGMg6AndXCRDj12sS5ZmRqtXebD0izxXyu6EFdmfSps1Ih6UZD4DoJod9mkHh2JzEnt51y6c5QtPI0XPBlkWwDGee+/T6s+DaRlFRCc98BGRFQglsNgPtO3SovC1b0mHDcR2xblofyox2wMSmIO8ifGVB1ONWCknUZW7gyLpTjbkzXd9cI/1Aa2d0rG4fgfjwKxeIql8CEH+W7qMytPM9xey4DqQLmCYID7e/mG+5+sYgE7OPJLEFoMXzyR7sKbpi1JmIwVp3xJNyRGeCimOjxojnIZirDVjRFCSpMhOK+kHx2BDSdIcBjiQD0gfjs0X7QA9mdaP+gP190POjb0khVZhtJnUbYWmSgbbJlWXDLzGodWiYA
+Subject: KernelCI Metrics Report - 2026-06-27 00:00 UTC
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io
+Date: Sat, 27 Jun 2026 00:01:25 -0000
+Message-ID: <178251848510.226.12739329362296868992@963b246bc1b3>
 
-Hi Miguel,
+KernelCI Metrics Summary
+========================
+Period: 2026-06-20 00:00 UTC to 2026-06-26 23:59 UTC
 
-(sorry, picking this up again after a long pause)
 
-On 19/03/2026 12:10, Miguel Ojeda wrote:
-> On Wed, Feb 25, 2026 at 3:44 PM Guillaume Tucker <gtucker@gtucker.io> wrote:
->>
->> Nathan, Nicolas, Miguel - what are your thoughts on this?
-> 
-> I agree with Nathan that `Containerfile`s on git.kernel.org sounds good.
+  COVERAGE
+  --------
+                      This week    Last week    Change
+                      ─────────    ─────────    ──────
+  Trees monitored     29           34           -5
+  Checkouts           25,042       58,570       -33,528  (-57%)
+  Builds              6,616        8,862        -2,246  (-25%)
+  Tests               1,806,249    2,905,508    -1,099,259  (-38%)
 
-Thanks for your feedback.  My understanding of Nathan's reply is that
-it's more about looking for what users need in practice to drive
-decisions rather than any strong opinion regarding this approach, but
-I think we all agree at some level.
 
-> While many kernel developers may not use them (mostly because everyone
-> has their own setup already), if we had a set of "base" images that
-> are maintained by someone trusted (including publishing them in the
-> usual registries for easy use), then I think a bunch of us would
-> actually use them for CI and possibly other tasks; just like some of
-> us already use the kernel.org toolchains "manually" anyway etc.
-> 
-> It could serve as an entry point to discover the different toolchains
-> and software offered by kernel.org, i.e. not just the GCC and LLVM and
-> LLVM+Rust toolchains, but also perhaps `b4` pre-installed and so on.
-> Even things like `tc-build` or the latest and greatest set of AI
-> context text files could be considered too.
-> 
-> It could also perhaps simplify a tiny bit giving quick reproducers
-> compared to giving the instructions for a distro base image + extra
-> things to install. It could also be a good thing to give newcomers
-> (i.e. how to set up all the development environment is a common
-> question) and LLMs.
-> 
-> I mean, all this is nothing new of course, but sometimes trust and
-> convenience go a long way.
+  BUILD REGRESSIONS
+  -----------------
+  A "regression" is defined as a reported problem affecting 0 or multiple builds.
 
-Yes I believe there's a solid list of reasons why this would be a
-good thing to have, and also no compelling reason to do it right now.
-As I happen to have some R&D time available to spend on this again,
-we can resume progress and aim for a first goal.
+  Origin    Regressions       Affected           Affected builds by top issues
+            (known + new)     Builds (total)     #1      #2      #3
+  ─────────────────────────────────────────────────────────────────────────
+  maestro   10  + 3   = 13    140                29      21      21      
+  redhat    2   + 6   = 8     13                 5       2       1       
+  ─────────────────────────────────────────────────────────────────────────
+  Total     12  + 9   = 21    153
 
-What I'm proposing next is to make it trivial for developers to use
-scripts/container with the TuxMake images that include the kernel.org
-toolchains via either built-in defaults in the tool or a standard
-user config file.  I'm under the impression that at least a few
-people have started using the tool so I think there's a real growing
-interest there.  The TuxMake images can further facilitate adoption.
 
-Then as a separate initiative, we can consider keeping Containerfiles
-on git.kernel.org if developers feel it would make sense and maybe
-even images in a dedicated registry.  These things aren't on the
-critical path for using the tool, they're more like potential
-consequences of people using it.  So we'll see how this goes.
+  TOP REGRESSIONS PER ORIGIN
+  --------------------------
+  maestro:
+    #1 (29 occurrences) -  stack frame size (2088) exceeds limit (2048) in 'dml31_ModeSupport...
+      Dashboard: https://d.kernelci.org/issue/maestro:96417cd30041ab8f3153128d0120c6cd70782d99?iv=1
+    #2 (21 occurrences) -  ./arch/x86/include/asm/checksum_32.h:149:6: error: inline assembly...
+      Dashboard: https://d.kernelci.org/issue/maestro:cda3cc6e84621dd79dcc795d5d11509fe0f841c1?iv=1
+    #3 (21 occurrences) -  'HMAC_Update' is deprecated [-Wdeprecated-declarations] in crypto/...
+      Dashboard: https://d.kernelci.org/issue/maestro:cfb7db7bad026f784ab5093df91515e27c634b34?iv=1
+  
+  redhat:
+    #1 (5 occurrences) -  error: target emulation unknown: -m or at least one .o file requir...
+      Dashboard: https://d.kernelci.org/issue/redhat:a8b090056d8e6bc4eee9ffa4389946c992a6e989?iv=1
+    #2 (2 occurrences) -  openssl/engine.h: No such file or directory in scripts/sign-file (...
+      Dashboard: https://d.kernelci.org/issue/redhat:54dfb8887344e76e107b693682922a26eb7678e4?iv=1
+    #3 (1 occurrences) -  in /tmp/rpmbuild/BUILD/kernel-7.1.0-build/kernel-7.1/linux-7.1.0-9...
+      Dashboard: https://d.kernelci.org/issue/redhat:e8464f1eea373ba65c76b7eca7b9730f925d666e?iv=1
+  
 
-Best wishes,
-Guillaume
+  TEST LABS ACTIVITY
+  ------------------
+  17 labs reported results this week (unchanged from last week).
+
+  Labs marked with an asterisk (*) are new.
+
+  Lab                   Covered builds  Boots    Tests          Change (tests)
+  ────────────────────────────────────────────────────────────────────────────────
+  broonie               1,308           0        9,884          +5,038  (+104%)
+  lava-broonie          214             590      209,599        -104,309  (-33%)
+  lava-cip              211             593      0              -74  (-100%)
+  lava-collabora        405             2,030    249,099        -146,730  (-37%)
+  lava-foundriesio      42              42       0              0  (0%)
+  lava-kci-qualcomm     114             233      293,770        +19,836  (+7%)
+  lava-kontron          106             205      0              0  (0%)
+  lava-pengutronix      100             255      0              0  (0%)
+  linaro                27              27       0              0  (0%)
+  maestro               2,455           0        912,597        -749,002  (-45%)
+  microsoft             64              343      10,806         -1,060  (-9%)
+  opentest-ti           83              2,179    979            -477  (-33%)
+  pull-labs-aws-ec2     59              59       0              0  (0%)
+  pull-labs-demo        262             614      107,827        -115,814  (-52%)
+  pull-pengutronix      13              13       0              0  (0%)
+  redhat                228             0        4,455          -876  (-16%)
+  syzbot                41              0        50             -5  (-9%)
+  ────────────────────────────────────────────────────────────────────────────────
+  Total                 5,732           7,183    1,799,066      -1,093,473  (-38%)
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
