@@ -1,155 +1,140 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B5820125F;
-	Tue, 18 Aug 2026 06:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.102
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787032868; cv=none; b=i2khbfHgn/4YfEZgMAboGYJi+PQd3p5cWWReGzkUCf72scZextfVJR7rYwTvWRuOOORzXYVynH5RNFW0wBaf6b89ycC17HgvRhK+tRKk/IZ0/+cmy76FK1yz1IFV5FuZxDUNSVny52iR52YtY4fFPBKdyqMV9O18g1aBZi6AWJc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787032868; c=relaxed/simple;
-	bh=R9Y3pBCagqDn/Krz09l2AqOd1Twkpi9BhXM57zBnFvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pjVsichR4ljnX5KU8tJcumr2atADahM+OGJ47PwJK4NjA4Sz9cLOamONLLOjXbMFTk7NThsLrDGb7nfQlhHBzT+rCDdkPGx3sMbNiiTOTmkhy8+Tmjifjx6UEh11LzYcWhltr03fFx4eIWtsJeHTc9o8oStW1sFW3pN53VKvgYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Gdqm+Ebr; arc=none smtp.client-ip=188.68.63.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF73469835
+	for <kernelci@lists.linux.dev>; Tue, 18 Aug 2026 13:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787061411; cv=pass; b=cATF7W312rydRn7jMDquU5F2ejqCvP5BqSCvH59J4csRbLn9p3QytZDEW4JigfR6go0Wt315VD2buVYrPdoLLzrZCAJg4L3AZIfCspi+V/SlNvh87aqRhWlzKsoQpdJXdfFVBE/eI5pgzBGbbVoK7r3TfODh+/832C/bTPjE7h4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787061411; c=relaxed/simple;
+	bh=KFS8aazQh3PE4iC/nnOIHJbsf9UEkgWtzOCotMRTkKg=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=s1NKVQJSgIM7WYBPzEb4/0NcKaPbaJiAQ2HSnKFR44NZxMDGywbN+EkC1/q1xrlpOOfhbzpPkggABWvsy/W+vzQXuEtGd3n0lgC8KuOxY4QxscOMm0fzOhoa/F9FpjdA1OT4OJYt8frCPFx0wrHnw2KXGphbrGp3VzFSqqKQUIg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b=wsqgNNRR; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Gdqm+Ebr"
-Received: from mors-relay-2502.netcup.net (localhost [127.0.0.1])
-	by mors-relay-2502.netcup.net (Postfix) with ESMTPS id 4hPJvg4hQYz6F9x;
-	Tue, 18 Aug 2026 08:00:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1787032815;
-	bh=R9Y3pBCagqDn/Krz09l2AqOd1Twkpi9BhXM57zBnFvw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gdqm+Ebrolj/wgsD+SUprfXf89GLxVK5ArQ5Uz0gdzGAHSzsSbUVirhO2B7KiWa61
-	 6LXQdSpfJEWy5RBq7hbvtdExKkFjED8OMiO0hfvKBFBNw7wjjfnT7PVDrnMMF4Ixy5
-	 zvKALN9r+ioClCYxjd8upAkU4sHqjZn8HX2H/a3yzwJbzBEx/0uSA8MErnipTzdKXG
-	 cgweYIw32USOyllFmPNSnXPVRMEAoLD07umdTFMjadYEg3kI2g0V8nDaltvSx0l5nC
-	 uope1Z4WW3R4vCoIgQ3+xNLWzs5VJIoZclWP0vSfeTThBO42F0qKAP80EAsv0YMrxU
-	 sBMcfL0VmyeIg==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-2502.netcup.net (Postfix) with ESMTPS id 4hPJvd4Vpqz4xts;
-	Tue, 18 Aug 2026 08:00:13 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.897
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4hPJvb2Mm6z8tcd;
-	Tue, 18 Aug 2026 08:00:11 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 4A78B5FAAF;
-	Tue, 18 Aug 2026 08:00:06 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <c9ba4aeb-a288-4597-b13a-9da55666f96a@leemhuis.info>
-Date: Tue, 18 Aug 2026 08:00:05 +0200
+	dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b="wsqgNNRR"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d01663d816so41328795ad.1
+        for <kernelci@lists.linux.dev>; Tue, 18 Aug 2026 06:56:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787061410; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PCxNz/WiWsgECkIE0Mt1adK7Y++DrKRNwZTqFabKHJktKD6IAci6o5xfepm8P7Zr0X
+         Fxf6XcvFJQdGtFEGO89jyvbhT+F/YfG9iJEqStDAUfL+HbqWiFDVLU/DA752Wr1abcW0
+         uB4S56B896xLlb8x62VoYo3ojfEuVVs9Rfc943fCtqkeOHaufPlQOqWPg8LZzxkIJFIV
+         voOHvnRN/WAxSYFEO6sMV5R9fGF23LF+kRGk4GlItrBtbQICSceFFeKMP0HhvaBSsd07
+         2FnPwWFY8CS9LWBuh+wahcY3L3GMNNaxGnIvuL2jwaHOJ13LE2+1vRQR+HScMYkIAfWM
+         YniA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=KFS8aazQh3PE4iC/nnOIHJbsf9UEkgWtzOCotMRTkKg=;
+        fh=rmq/YLFzDAglBwji5AmBmtb7cJxq3EZCkg46fu2xnLc=;
+        b=Nsiu1aMpH3wbaBZOaMu+b0xZwer62WQqhJgy7rtzgN4vAAGKZuh1i/mvn3adaj4RkK
+         M30/TgcrEAQLbvdXEQIgsdT8gDZAz5Pqx6rqdQLa1KcZOx0CuPwFzAQ+GTXOKQAGyo7A
+         ElhlVZg6/5TzT/0NrbADHXnhuKH3hXx6o0XMwFzeI8zXo96x7LYRtXp2/NN0UPFmJBrw
+         UPYKynKYuYhtF/8MnrlxK+j+Q0CgLvuxFagj+juQGDmdFw5bMsQej0mW48gqKvsVlFfm
+         T/N76VgBz1tq/Nea/uXBoHWgm5XF+vRyXBbYOjpmMDL+sPr1UqJbN7iwSaJmVy0i/LoT
+         J1Ww==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profusion-mobi.20251104.gappssmtp.com; s=20251104; t=1787061410; x=1787666210; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KFS8aazQh3PE4iC/nnOIHJbsf9UEkgWtzOCotMRTkKg=;
+        b=wsqgNNRRkaWWGFMKjsH3wv01QApdqodyysle1S6eH8nJJ9xvRnvsnUdbOX4C4KmFkJ
+         Y8hbNcXw+G1OtZ0kyTUVj45sg0N2zt+9gy8PIYJeDIMKwle+4JHB/66evJxGZN8kkulj
+         k+0zGSuLHMTYBsfJ8BQ+71qRshIp4TeTMA+nf/me9R6B1D4zX0405WYBPPBXJGMs1S+R
+         jOSpPPxwFAIMiaXRjdl5fT2nVNUzh9kRPrl7sm9Egje0foHasNmeKt1+xYcFG4IBFTue
+         WVED9wZmCGA5qlQwwWpNmenqBvlF2Tg9YexCSMivLEe0kSV8quKtltnHB8XhYUzaYND+
+         uOKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787061410; x=1787666210;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KFS8aazQh3PE4iC/nnOIHJbsf9UEkgWtzOCotMRTkKg=;
+        b=hAIjLrDLDw62SrryeLbmVw/kvlbOQySmA4nsocXcGE6EqQGE9Vn+Jghc6/ZJXw+L6a
+         yBoZP8hIBvTe9/lCavlOSlhc4QwwSKQfA7QH58GsfpNN8cZvVIK+oVVcDr/qguYCTZzk
+         HbD376Uyzgg/unP7R1/hV50Q8jkSZG07rSPEADqydXuXuBFwj4NOe3zTF39YVWHc2PGX
+         y7cqt0k/g0tfz/EW4X8yrvQPXa6Ly5kFBySLvuEB1Kjwwt3gQfSTX5ILFJJMjPvyT8gN
+         p6WzumDwvMRZeGqktm6wpd5twHQGL7q+qT0wPHHP4TU94WaNi53lzsYjUrftFC/zPg07
+         kCtg==
+X-Gm-Message-State: AOJu0YyRuCpk4lw96dC6abfojDopvqatWRJmzVg5R503WWV5fpfhrAz9
+	DbMiiTsPPEYfAk9hz6bBKML+IULvZixnHRry0EJ2wfh4emjgsSTNBj3l74f7z8pXhQYf12IcJp7
+	FuaCqEF8Sg5GowazwZqWC6HxX93yyqby+KtWoPQW8j0OSxnfYeAaIj8WJ5A==
+X-Gm-Gg: AR+sD133VVvVuMeLpkqZsZ4R1xVWOA4cxwXAxofnMZerZ9MSxpiuV3M2Ch+lDtAmOKH
+	BkI1nOZOYvqXmHhKNvUBHLBdpzjWH2hCEwd1GRHJjeHgANdP+K77wUXMes1GzfPw5I41LqdJUmZ
+	HICQdXcFTS0IQoNJTHGp2nvMx6m7GO4c48ix8u9lBgaVlbRdlv5c7s9nlj7zgEsxj1Sg7FFwapY
+	IX8eClcSa5qs0LnIKw8sK5SPPwbudi3UpjfL8mpX8IYFnMvpYXsnDtujluEq2FRlV5jDIWaR1VC
+	2JO0rEL4D5F+/F+7XceoU/CHn9u8BU2m7r8N4GRXTFUiTg==
+X-Received: by 2002:a17:903:13cf:b0:2d0:8b28:51ab with SMTP id
+ d9443c01a7336-2d3b0c312d5mr403824875ad.7.1787061409719; Tue, 18 Aug 2026
+ 06:56:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] mainline/master: (build) in
- arch/arm/kernel/entry-common.o (/tmp/kci/linux/scripts/Makefile...
-To: Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>
-Cc: regressions@lists.linux.dev, laura.nao@collabora.com,
- shreeya.patel@collabora.com, broonie@kernel.org, kernelci-results@groups.io,
- kernelci@lists.linux.dev
-References: <178701474442.5156.12765087253678603047@kernelci.org>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <178701474442.5156.12765087253678603047@kernelci.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <178703280674.3289961.9845272905440892117@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: 4A78B5FAAF
-X-NC-CID: 5dfDT5eBpiF2aL5jqJqGm2D5x/l11iP7YWWVUq/jiJEr+3GF7lE=
+From: Alan Zanoni Peixinho <alan.peixinho@profusion.mobi>
+Date: Tue, 18 Aug 2026 10:56:38 -0300
+X-Gm-Features: AcwNN1VznzM5CCWcCs0Y30OU_MYyl-E94nd1VkO4uU6WaHfK8m3sghxCWn5dnJ0
+Message-ID: <CAKKBm2sgXvwMdT45Se-57VEJpp01ro5wNenOCyu67UkHhE4_pw@mail.gmail.com>
+Subject: =?UTF-8?Q?Subject=3A=C2=A0Dashboard_Updates=3A_UX_improvements_and_Ing?=
+	=?UTF-8?Q?ester_Robustness=2E?=
+To: kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/18/26 02:59, KernelCI bot wrote:
-> New build issue found on mainline/master:
-> 
-> ---
->  in arch/arm/kernel/entry-common.o (/tmp/kci/linux/scripts/Makefile.build:435) [logspec:kbuild,kbuild.compiler]
-> ---
-> 
-> Log excerpt:
-> =====================================================
+Hello KernelCI community,
 
-Missing for some reason. See below for one, grabbed it from
-https://d.kernelci.org/log-viewer?itemId=maestro%3A6a838f2962f33761c0d6680b&type=build&url=https%3A%2F%2Ffiles.kernelci.org%2Fkbuild-clang-21-arm-allmodconfig-6a838f2962f33761c0d6680b%2Fbuild.log.gz
+We have deployed a few updates and fixes to the dashboard. You can
+check out the live site here: https://dashboard.kernelci.org.
 
-Nathan, Nick, do you still care about clang problems like this? And do
-you by chance know what's wrong here?
+UX
 
-"""
-<instantiation>:2:11: error: out of range pc-relative fixup value
- ldr r10, =__per_cpu_offset
-          ^
-<instantiation>:2:11: error: out of range pc-relative fixup value
- ldr tsk, =__current
-          ^
-<instantiation>:2:11: error: out of range pc-relative fixup value
- ldr tsk, =__current
-          ^
-make[5]: *** [/tmp/kci/linux/scripts/Makefile.build:435:
-arch/arm/kernel/entry-common.o] Error 1
-make[5]: Target 'arch/arm/kernel/' not remade because of errors.
-make[4]: *** [/tmp/kci/linux/scripts/Makefile.build:549:
-arch/arm/kernel] Error 2
-make[4]: Target 'arch/arm/' not remade because of errors.
-make[3]: *** [/tmp/kci/linux/scripts/Makefile.build:549: arch/arm] Error 2
-make[3]: Target './' not remade because of errors.
-make[2]: *** [/tmp/kci/linux/Makefile:2187: .] Error 2
-make[2]: Target '__all' not remade because of errors.
-make[1]: *** [/tmp/kci/linux/Makefile:248: __sub-make] Error 2
-make[1]: Target '__all' not remade because of errors.
-make: *** [Makefile:248: __sub-make] Error 2
-make: Target '__all' not remade because of errors.
-"""
-Ciao, Thorsten
+ =E2=80=A2 The Issues table now defaults to sorting by First seen, newest f=
+irst.
+
+ =E2=80=A2 Sort order is now saved in the URL across all listing tables
+(issues, builds, boots, tests, hardware, trees), so links you share or
+bookmark open with the same sorting applied.
+
+ =E2=80=A2 Clicking a column header repeatedly no longer drops back to an
+unsorted state. The tree listing still keeps pinned trees (mainline,
+next, stable) on top when no column sort is active, and switching
+detail tabs clears stale sort params.
 
 
-> =====================================================
-> 
-> When fixing this issue, please attribute this report according to the
-> patch submission rules:
-> 
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> Link: https://lore.kernel.org/all/178701474442.5156.12765087253678603047@kernelci.org/
-> 
-> For complete logs and details about the environment used, see the issue
-> on the KernelCI dashboard:
-> 
-> - dashboard: https://d.kernelci.org/i/maestro:5d5ba40a9374919c6038ec3e50f54dbe70a37c03
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> - commit HEAD:  ff68e5f557f69a08fdcfa4ce8b1b809d63bd4f45
-> 
-> # Builds where the incident occurred:
-> 
-> ## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
-> - compiler: clang-21
-> - config: None
-> - dashboard: https://d.kernelci.org/build/maestro:6a838f2962f33761c0d6680b
-> 
-> #regzbot introduced: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f..ff68e5f557f69a08fdcfa4ce8b1b809d63bd4f45
-> #regzbot link: https://d.kernelci.org/i/maestro:5d5ba40a9374919c6038ec3e50f54dbe70a37c03
-> 
-> #kernelci issue maestro:5d5ba40a9374919c6038ec3e50f54dbe70a37c03
-> 
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
-> 
-> Made with love by the KernelCI team - https://kernelci.org
-> 
+ TREE DETAILS/TESTS
 
+ =E2=80=A2 The tests table uses a single unified hierarchical layout instea=
+d
+of nested subtable.
+Expanded groups share one header, single-item paths collapse
+automatically, and there are Expand all / Collapse all / Disable
+grouping controls.
+
+ =E2=80=A2 Test pages without a meaningful status history now show a clear
+message instead of a long spinner that eventually fails.
+
+BACKEND
+
+ =E2=80=A2 All production HTTP requests now use explicit timeouts, so a hun=
+g
+remote call can no longer stall the ingester indefinitely.
+
+ =E2=80=A2 The ingester now exits with an error when all workers die with w=
+ork
+still queued, instead of waiting forever.
+
+ =E2=80=A2 Backend dependencies were updated, including switching kcidb-io =
+to
+the published PyPI version.
+
+Best,
+Alan Peixinho
+KCI Dashboard Team
