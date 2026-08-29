@@ -1,155 +1,101 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B291A267
-	for <kernelci@lists.linux.dev>; Sat, 29 Aug 2026 00:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A6A3A257E
+	for <kernelci@lists.linux.dev>; Sat, 29 Aug 2026 08:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787961797; cv=none; b=cGD6IHBCyJg/7HF9DYMDo/3rhBVwQOvmKuuxAYsegqPNCLnEJ2vsEMsYgc21jMMpuwgGbjohCigiREfg5tZBGMPAeA4lxC9rV4KP1cwMosZj63GU/frsni0/F8WGmXPrcKWjV0t3jFr+RPXFLMey3IAfuPHaNFiEgoHQpJ7qMvI=
+	t=1787993821; cv=none; b=t1pJq91Gi2cMFY6oG/t3PGVxt3n+WmgEmpqJJuPIbsEbuocELu1bR7FIpZvK9rmoPOKzc8RdL/ZsNTdpJx7Ep8onyQq5C+G5ioFHsQZ5wrtidbwMZA89aURiX2JTYvGtrRARBQYFZR7u/fwEu4uBwTpyBGJEw9yX7yaFTJfx394=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787961797; c=relaxed/simple;
-	bh=Yccx8w7Yg3i4RrerpX+/cpOxGm3UC6C/+lhGian0/TA=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=V+QYNsZqbbdzbqhALHp15JVBOmiOhPRkqUPGp5pgXCKCmORiRLOudN3RdZfyHOEwnT31TrXMi1+EC7ILS2RmTUfhT2szOhsZuUTc26Ih3sPDTkVcMylVv7qvYdbVikaIFT8++BmvLcacJcSnyP68NCjZ3KmLDWk19i7Z3wcHdko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=ZCAT3ixm; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+	s=arc-20240116; t=1787993821; c=relaxed/simple;
+	bh=LGACgt+8Df37Y3JPPTb1rL1JX2ET15vTRLVxMOSpkqw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C9oLLscGRgKNJOTpDvyXgAZKJm9CYgll5Q/8nLpkoNnIxWkyYB0WVDGDPOAw3s9WiFGFUN7Vl8FP7+5RqLe97j4IeJGV7EKrr2WYzlC64Q2h1YN5bJo1CJ9tZRYC0mWsNTV6qkfDQ0PNvuLQe6QfUdIq9svwYTL3hydci9R4zSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=ERwauQZq; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="ZCAT3ixm"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d71a50caa9so19182735ad.0
-        for <kernelci@lists.linux.dev>; Fri, 28 Aug 2026 17:03:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1787961795; x=1788566595; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yCPdGC7r1VGNI9en0HzGYrXUzQpmYMaKgpL4EDfCA78=;
-        b=ZCAT3ixmXvaJ1OHZKSNtH/XzSv9pCEo2IHfEZA4YHWnimUVQ0lb8SYdZ7F4Llgo80K
-         2H/qZgFS31a4B9cg0nFnImK4JHCHwZgyyH2isugCxpwbfGL4a3RDNeTyQc95ntfQHOGY
-         crJf3PWScPcoabFzZ8zqsuaWMl3WyPEkQDY1Rh317sp/5DIVnZuXQK7Vr2HBohbpxjpD
-         Ysg4M40ciB/xC9IBnKE8yABtY6wxdeV+SqwH8Tm/dQUJfaI5e0bCwrDY4xywxifkW6uF
-         gH6M0QmKJO7eLBS9/3DG+deevZsBoGPuSqeg6ZMRqziHg+mMXqUk8gVc/6IXMZvPGBvY
-         6Jnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787961795; x=1788566595;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yCPdGC7r1VGNI9en0HzGYrXUzQpmYMaKgpL4EDfCA78=;
-        b=P5Ii8ViywsNAdo+fmbvBQQU9PLReOi6I6nEtFQMhGF6O0OFPuoTOR1DprYz4OmKbA5
-         +TBS32wBNLKYeJn9mp50qcKy+qYqbDU+2ew3JlDAd4pbbCG7H6wFNnEXG7y527zhE5Fh
-         Nnf4KLG2SvGW0ile9mVQDkKMD/wu44xF6aHm4t+aQix9pYiMOFRNwilbBVV/AqdBbggw
-         lbrzNWmGevhnq7BagE4LKXH39Qk2QB8GNtrGYzM0G+pA5JBDjX6nAxfY3FaH0SqzHrEV
-         dlsLYN8CiTLQvhQmZf/p+QrTFi6DTwOMd+Rv+bPW45lDTa+zKrTHJ+YwykHuewfrkhk7
-         yZ+g==
-X-Gm-Message-State: AFuF++nGmPSJrXot/rxb0TIeU1JRHzUhvpbwi1joHCoyepzE4KgHf0Pe
-	P0mE3ShniV3oidR5APzrFonnnMysIvfCsge1+hTXY0Rq83FuUysJ5vUZW7nJbmGZcf2lUZF9enh
-	HWBPq
-X-Gm-Gg: AYBFou2/0dD/oYKy3/zypfjFbssUFmAcXT7VQlQsdu8RLGJePwxPo8DccTl8L3ebn3N
-	H49tLq4GgktrnxB2ScIokOJSi+DS08RIlYgSb2a8fbql28wum0Mj9f6VrdILRy8Mn5nmtKTQxEk
-	0Iq+1v5zhY8WQErZ6UBW9592e1Nj55jhhQjD+G1x4VtxShUynH4Fq4eO5X63IQsNgFF6LDrFn+5
-	UJLrrpDeKIg05w+eekBtzTfRNpeSrz7BOCLND5G4mwp2wL4KGQH/zrGlUC3dCvs8Jyh8TIiAYT2
-	3wptvfh+XkFoZt5OG1xbUR3wvtKrbneE8wSk7Y8dfC3r1fmNIV/9zEXoYTC1rOmtUeYbAS7f37Z
-	mdGzjGXOO6i1/K2VwJLEhFTn+RkCbIhWefq2d5ldBXjY+LzdminfCRgTZCjjy/Yl+q3H+jrwUUQ
-	uAJ+zeoGXWrj0KEDo6ki5so7wtwgQCdTX27WScBU+PVHuP2cApMlbY
-X-Received: by 2002:a17:90b:2b90:b0:38a:c3f:3b87 with SMTP id 98e67ed59e1d1-396d0fce294mr20886463a91.12.1787961795124;
-        Fri, 28 Aug 2026 17:03:15 -0700 (PDT)
-Received: from b455de3d9de8 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0de4de3sm13236733c88.12.2026.08.28.17.03.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 17:03:14 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="ERwauQZq"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6C3FB3EB86;
+	Sat, 29 Aug 2026 08:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1787993810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y+CpA5GAaRjy3INgxdWrQaq/dl9yZxsAV6OWAodl4SI=;
+	b=ERwauQZq5v/JxXo0++DXBPYJ1nC5x6lxfoj5NA84VfazDKD03CsWHlZtxDylaPWhvVTh3G
+	/AtcxXnK33qFDHWfv+lWmbzYGeAJd6f2EpNrY1UKnygCRNwywdmtpFXkU3QtNOR5t/CLYL
+	1c5AOsfzWPcGe+UqdqVSgSyAYBca6q+68HYVQrXpXb7Vx1DW88w1SAl0+dhu+xJ97ynJM6
+	GBcFKtjgBqrp9ycsXm54FnQH7myICAT9wHvHmDLDQqPcilSI/XB4JFk88k0dVF4Vi/Lvgh
+	nhNhMaa94dSIIk+WQNByI5u5S76U+/4kXBk1NDZQumJBiMh4PzAgiCGRbb7nWw==
+Message-ID: <faa022bc-bda5-47ee-9984-4e8ff067c6e1@gtucker.io>
+Date: Sat, 29 Aug 2026 10:56:47 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] scripts: add TOML config to container tool
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ linux-doc@vger.kernel.org, workflows@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ automated-testing@lists.yoctoproject.org,
+ "kernelci lists.linux.dev" <kernelci@lists.linux.dev>
+References: <7d8ba914cd174d716340bb2b88723bef0f330627.1787565460.git.gtucker@gtucker.io>
+ <apG3hwaPA8f7SJeI@levanger> <b45e7864-928c-4b3c-aa62-64f4f63d85c7@gtucker.io>
+ <CANiq72k6T9Y_Vubih6pFMQBxju2xQq0VQkCXT1WL0qSyCXKxyA@mail.gmail.com>
+Content-Language: en-US
+From: Guillaume Tucker <gtucker@gtucker.io>
+In-Reply-To: <CANiq72k6T9Y_Vubih6pFMQBxju2xQq0VQkCXT1WL0qSyCXKxyA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-08-29 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 29 Aug 2026 00:03:14 -0000
-Message-ID: <178796179359.6164.1701936555835723508@b455de3d9de8>
+X-GND-Sasl: gtucker@gtucker.io
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTE1dvSdG2yLVPvYEeDPLpZvAqI4U17AliU/2sONyT60xA9QjvCGHnYlEEn9XGIt3XbuHahlbWdvwXEWRImKnijMDijjF2iSVw6SqEgNXE/BrKi7EEDrX8+WbrF59CL2xLw0pS6tQP9xXF8O52/ynmGpOHva4BnOei9JSPVRSE+k+TSCD9P0CW1zOsWTKk+uSqXBqJCS2BRzojx8J0iCiaCfT9qHvVDYNDnOHw2yCWfDPYN2Ufu5sl/oKs5pxXqo0dmSjctTpcBZRUhE1JQ28sQftLyHKp31QfSW0mthak4nsb/QNkpYXs71gNZfoYCf8rxDEkrg/b6ZKUBKCsCuaIBqqfsrrC6Kh+OvfU1PFK7MYd62ghSoEreATXwdQTSDdEay7t7VoVeXCLFx2eAJrpWqhQ2OcKonA5A+t6x8yZ22ngtl6BSoQTMRZAJjKVcRBc3l7GsaiNhuW5vBqehUbaOeVqQ6YI7NJqYWv1OIixd9H9NChW6W23/i1g0vTLP0u9TkLE5uyfPAdVRE/fUQh9UPdh8jIMha4OTgQ/IcHyF9eNw02GzScnTcz8kVnnZ75h80i9rHHAi1Q1LDKQn56ffRooY+vmP+baIyC1SAXUofDKwSMeRK6D3q3ciNB27e+JVZTS5lEWVyLQ2EDs9DRNjLF8MuNOXEBG5N/9Xl4kA9/g
 
-KernelCI Metrics Summary
-========================
-Period: 2026-08-22 00:00 UTC to 2026-08-28 23:59 UTC
+Hi Miguel,
 
+On 28/08/2026 7:35 pm, Miguel Ojeda wrote:
+> On Fri, Aug 28, 2026 at 7:25 PM Guillaume Tucker <gtucker@gtucker.io> wrote:
+>>
+>> It states Python 3.9 which was already older than the 3.10 minimum
+>> set when the container tool was merged.  Also my understanding is
+>> that it's not a hard requirement for all the kernel tools, only for
+>> building and producing a functioning kernel.  If I misunderstood this
+> 
+> I didn't check at the moment, but at least back when the "(optional)"
+> tag was removed, it was only required for certain configurations from
+> what I understand (I am not sure why the tag was removed).
+> 
+> In any case, it is nice if we could just say that it is required -- it
+> is quite useful to have around, especially due to its standard
+> library.
 
-  COVERAGE
-  --------
-                   This week  Last week           Change
-                   ─────────  ─────────  ───────────────
-  Trees monitored         26         31               -5
-  Checkouts           13,742     84,440   -70,698 (-84%)
-  Builds               9,875     11,937    -2,062 (-17%)
-  Tests            2,388,299  2,671,052  -282,753 (-11%)
+OK so I'll leave this part as-is for now unless someone makes a
+strong case for downgrading to v3.9, thanks for confirming.
 
+> And regarding the minimum version, it would be nice to eventually have
+> a single minimum for all Python scripts, no? Debian oldstable is
+> already at 3.11, so I think we could perhaps bump the minimum already.
+> And Debian stable is 3.13, which from your list would be enough for
+> everything on your list, right? So we could perhaps set that as the
+> actual minimum for everything in the future.
 
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is defined as a reported problem affecting 0 or multiple builds.
+I was wondering about this too, especially since v3.10 is soon going
+to reach end-of-life which means no more security patches.  In
+principle newer, version should be backwards compatible so if we just
+bumped the minimum to v3.13 older scripts that were written for v3.9
+should still work - but it'd be nice to have a way to test that.
 
-  Origin           Regressions        Affected  Affected builds by top issues
-                 (known + new)  Builds (total)         #1        #2        #3
-  ───────────────────────────────────────────────────────────────────────────
-  maestro     22 +   0 =    22             604        124        97        56
-  microsoft    1 +   0 =     1              16         16
-  redhat       1 +   0 =     1               2          2
-  ───────────────────────────────────────────────────────────────────────────
-  Total       24 +   0 =    24             622
+Well that's beyond this series anyway, maybe something for KernelCI?
 
+Guillaume
 
-  TOP REGRESSIONS PER ORIGIN
-  --------------------------
-  maestro:
-    #1 (124 occurrences) -  ‘key_pass’ undeclared (first use in this function) in certs/extrac...
-      Dashboard: https://d.kernelci.org/issue/maestro:c8d36aa6848ceeb5f21060331b3fcc14fe6c4896?iv=1
-    #2 (97 occurrences) -  use of undeclared identifier 'key_pass' in certs/extract-cert (cer...
-      Dashboard: https://d.kernelci.org/issue/maestro:3f4a6e9267e202205cf56c65e64d2cb3d3f4f4b6?iv=1
-    #3 (56 occurrences) -  ‘key_pass’ undeclared (first use in this function) in certs/extrac...
-      Dashboard: https://d.kernelci.org/issue/maestro:1bc31bdc5afab00de98efd0c67ef8653e5385a69?iv=1
-  
-  microsoft:
-    #1 (16 occurrences) -  implicit declaration of function ‘macb_alloc_tieoff’ [-Werror=impl...
-      Dashboard: https://d.kernelci.org/issue/microsoft:ab342dde3ba45ce2efa0c064a3051aa43ce98e30?iv=1
-  
-  redhat:
-    #1 (2 occurrences) -  openssl/engine.h: No such file or directory in scripts/sign-file (...
-      Dashboard: https://d.kernelci.org/issue/redhat:54dfb8887344e76e107b693682922a26eb7678e4?iv=1
-  
-
-  TEST LABS ACTIVITY
-  ------------------
-  16 labs reported results this week (1 fewer than last week).
-
-  Labs marked with an asterisk (*) are new.
-
-  Lab                    Covered builds   Boots       Tests     Change (tests)
-  ────────────────────────────────────────────────────────────────────────────
-  aspeed                             42      42           0                  0
-  broonie                         1,207       0       9,628         -595 (-6%)
-  lava-broonie                      279     687     293,254    -106,448 (-27%)
-  lava-cip                          302     818         126         -74 (-37%)
-  lava-collabora                    550   3,487     265,740    -129,413 (-33%)
-  lava-foundriesio                   65      69           0                  0
-  lava-kci-qualcomm                  96     394     364,830   +326,364 (+848%)
-  lava-kontron                      126     240           0                  0
-  lava-pengutronix                  170     410           0                  0
-  maestro                         3,834       0   1,210,143    -302,476 (-20%)
-  microsoft                          74     391      16,437         -125 (-1%)
-  opentest-ti                        79   2,090         946        -296 (-24%)
-  pull-labs-aws-ec2                  83      83          83         -27 (-25%)
-  pull-labs-demo                    320   1,555     213,457     -65,211 (-23%)
-  redhat                            251       0       3,244        -450 (-12%)
-  syzbot                            105       0         145         -18 (-11%)
-  riscv                               0       0           0     -1,286 (-100%)
-  ────────────────────────────────────────────────────────────────────────────
-  Total                           7,583  10,266   2,378,033    -280,055 (-11%)
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
