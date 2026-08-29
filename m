@@ -1,160 +1,155 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6FD3F39E2;
-	Mon, 24 Aug 2026 11:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B291A267
+	for <kernelci@lists.linux.dev>; Sat, 29 Aug 2026 00:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787570696; cv=none; b=iH4lMS+uNkWj02Pb4HVIuv9H29hYK4u1mSo6APWrjFZx58KNYF18bJisJvfa/LeE3vT7q74/pn40f2LA742arzREfS+7vpvhL+VWfY0NPlwJ9+SOE6o0H5C0x1AwAdPgENY/1FA1A/CAQCkbstM9/snOD18UH8x3dTrV4Xb8D7s=
+	t=1787961797; cv=none; b=cGD6IHBCyJg/7HF9DYMDo/3rhBVwQOvmKuuxAYsegqPNCLnEJ2vsEMsYgc21jMMpuwgGbjohCigiREfg5tZBGMPAeA4lxC9rV4KP1cwMosZj63GU/frsni0/F8WGmXPrcKWjV0t3jFr+RPXFLMey3IAfuPHaNFiEgoHQpJ7qMvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787570696; c=relaxed/simple;
-	bh=vPtS+SirOAHTJmrsjx/3NIEP7gHXB4AGBLiZryizuDA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bPKFBzMFPzIs4oeJYZIgraiEVDz2vmYaUa2eCtpyZPCQbYsX0NcfUvENIXb4C1wcMiNbpVLdLhApmSEarAbS98c/N4TR1/DKMnau/n6esl+gFGH4x4toT2du3yYqLA0Xg8Ibt9iQZ1GGigDtQblxarUDzBz/PxE+gLI4WnmJveg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=YGWVP3QR; arc=none smtp.client-ip=188.68.63.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1787961797; c=relaxed/simple;
+	bh=Yccx8w7Yg3i4RrerpX+/cpOxGm3UC6C/+lhGian0/TA=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=V+QYNsZqbbdzbqhALHp15JVBOmiOhPRkqUPGp5pgXCKCmORiRLOudN3RdZfyHOEwnT31TrXMi1+EC7ILS2RmTUfhT2szOhsZuUTc26Ih3sPDTkVcMylVv7qvYdbVikaIFT8++BmvLcacJcSnyP68NCjZ3KmLDWk19i7Z3wcHdko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=ZCAT3ixm; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="YGWVP3QR"
-Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hT7pt4v4Gz3xNs;
-	Mon, 24 Aug 2026 13:24:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1787570662;
-	bh=vPtS+SirOAHTJmrsjx/3NIEP7gHXB4AGBLiZryizuDA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YGWVP3QRpKIIumc0YRbPmG2aNe3oNJlq4OjBuy7oMO/rv2GgBF0E8ZxFs+E9nVC/X
-	 zNmeFk69Ano+KeZ7a44Zahr4dftrASF+STom0cmeuotwMDm4PqBai+wHh4M2vgULaW
-	 ld7qZ8ULRf6Mvgor8OKF+LJSZWOcsqKlF3m0bpdiw5lSzzQ1TZFjAsrWO0G7pDgMsW
-	 Y0yMglz/nCvL3rIc6AonR0PjqVshGK/gsj7AFJj56Dh3wsStldR5nMmY23EG54GezK
-	 pa6QFdGFlUjtfFkmM4XbSluISmUQEpIlJ2swDE7as+XVVIgZlwjkSdm/n3y+sZ9XeI
-	 edh1Ut9b7ONkw==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hT7nk6Jkdz3yDJ;
-	Mon, 24 Aug 2026 13:23:22 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.897
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4hT7ng6mfYz8tZp;
-	Mon, 24 Aug 2026 13:23:19 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 4CF605FA57;
-	Mon, 24 Aug 2026 13:23:19 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <057e0b88-4fa9-461c-8fa7-67fb598109da@leemhuis.info>
-Date: Mon, 24 Aug 2026 13:23:15 +0200
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="ZCAT3ixm"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d71a50caa9so19182735ad.0
+        for <kernelci@lists.linux.dev>; Fri, 28 Aug 2026 17:03:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci.org; s=google; t=1787961795; x=1788566595; darn=lists.linux.dev;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:content-type:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=yCPdGC7r1VGNI9en0HzGYrXUzQpmYMaKgpL4EDfCA78=;
+        b=ZCAT3ixmXvaJ1OHZKSNtH/XzSv9pCEo2IHfEZA4YHWnimUVQ0lb8SYdZ7F4Llgo80K
+         2H/qZgFS31a4B9cg0nFnImK4JHCHwZgyyH2isugCxpwbfGL4a3RDNeTyQc95ntfQHOGY
+         crJf3PWScPcoabFzZ8zqsuaWMl3WyPEkQDY1Rh317sp/5DIVnZuXQK7Vr2HBohbpxjpD
+         Ysg4M40ciB/xC9IBnKE8yABtY6wxdeV+SqwH8Tm/dQUJfaI5e0bCwrDY4xywxifkW6uF
+         gH6M0QmKJO7eLBS9/3DG+deevZsBoGPuSqeg6ZMRqziHg+mMXqUk8gVc/6IXMZvPGBvY
+         6Jnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787961795; x=1788566595;
+        h=message-id:date:cc:to:from:subject:content-transfer-encoding
+         :mime-version:content-type:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=yCPdGC7r1VGNI9en0HzGYrXUzQpmYMaKgpL4EDfCA78=;
+        b=P5Ii8ViywsNAdo+fmbvBQQU9PLReOi6I6nEtFQMhGF6O0OFPuoTOR1DprYz4OmKbA5
+         +TBS32wBNLKYeJn9mp50qcKy+qYqbDU+2ew3JlDAd4pbbCG7H6wFNnEXG7y527zhE5Fh
+         Nnf4KLG2SvGW0ile9mVQDkKMD/wu44xF6aHm4t+aQix9pYiMOFRNwilbBVV/AqdBbggw
+         lbrzNWmGevhnq7BagE4LKXH39Qk2QB8GNtrGYzM0G+pA5JBDjX6nAxfY3FaH0SqzHrEV
+         dlsLYN8CiTLQvhQmZf/p+QrTFi6DTwOMd+Rv+bPW45lDTa+zKrTHJ+YwykHuewfrkhk7
+         yZ+g==
+X-Gm-Message-State: AFuF++nGmPSJrXot/rxb0TIeU1JRHzUhvpbwi1joHCoyepzE4KgHf0Pe
+	P0mE3ShniV3oidR5APzrFonnnMysIvfCsge1+hTXY0Rq83FuUysJ5vUZW7nJbmGZcf2lUZF9enh
+	HWBPq
+X-Gm-Gg: AYBFou2/0dD/oYKy3/zypfjFbssUFmAcXT7VQlQsdu8RLGJePwxPo8DccTl8L3ebn3N
+	H49tLq4GgktrnxB2ScIokOJSi+DS08RIlYgSb2a8fbql28wum0Mj9f6VrdILRy8Mn5nmtKTQxEk
+	0Iq+1v5zhY8WQErZ6UBW9592e1Nj55jhhQjD+G1x4VtxShUynH4Fq4eO5X63IQsNgFF6LDrFn+5
+	UJLrrpDeKIg05w+eekBtzTfRNpeSrz7BOCLND5G4mwp2wL4KGQH/zrGlUC3dCvs8Jyh8TIiAYT2
+	3wptvfh+XkFoZt5OG1xbUR3wvtKrbneE8wSk7Y8dfC3r1fmNIV/9zEXoYTC1rOmtUeYbAS7f37Z
+	mdGzjGXOO6i1/K2VwJLEhFTn+RkCbIhWefq2d5ldBXjY+LzdminfCRgTZCjjy/Yl+q3H+jrwUUQ
+	uAJ+zeoGXWrj0KEDo6ki5so7wtwgQCdTX27WScBU+PVHuP2cApMlbY
+X-Received: by 2002:a17:90b:2b90:b0:38a:c3f:3b87 with SMTP id 98e67ed59e1d1-396d0fce294mr20886463a91.12.1787961795124;
+        Fri, 28 Aug 2026 17:03:15 -0700 (PDT)
+Received: from b455de3d9de8 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0de4de3sm13236733c88.12.2026.08.28.17.03.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 17:03:14 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] mainline/master: (build) in
- arch/x86/include/generated/asm/cpufeaturemasks.h (arch/x86/Make...
-To: kernelci@lists.linux.dev, kernelci-results@groups.io
-Cc: regressions@lists.linux.dev, laura.nao@collabora.com, broonie@kernel.org
-References: <178733874460.1338.14907565015998697320@kernelci.org>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <178733874460.1338.14907565015998697320@kernelci.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <178757059962.2592322.2663405393479305221@mxe9fb.netcup.net>
-X-NC-CID: rbQ9hEEG5CWc6IirX0Qef+ghcCrGMC5CSJn/V4/foUq8tHn2oPA=
+Content-Transfer-Encoding: 8bit
+Subject: KernelCI Metrics Report - 2026-08-29 00:00 UTC
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io
+Date: Sat, 29 Aug 2026 00:03:14 -0000
+Message-ID: <178796179359.6164.1701936555835723508@b455de3d9de8>
 
-On 8/21/26 20:59, KernelCI bot wrote:
-> New build issue found on mainline/master:
-> 
-> ---
->  in arch/x86/include/generated/asm/cpufeaturemasks.h (arch/x86/Makefile:269) [logspec:kbuild,kbuild.other]
-> ---
-> 
-> Log excerpt:
+KernelCI Metrics Summary
+========================
+Period: 2026-08-22 00:00 UTC to 2026-08-28 23:59 UTC
 
-Hmmm, nobody else reported this -- and I failed when I briefly tried to
-to reproduce this. Wondering if something with the test setup is going
-sideways here.
 
-Furthermore, these two seem to be related or the same error:
+  COVERAGE
+  --------
+                   This week  Last week           Change
+                   ─────────  ─────────  ───────────────
+  Trees monitored         26         31               -5
+  Checkouts           13,742     84,440   -70,698 (-84%)
+  Builds               9,875     11,937    -2,062 (-17%)
+  Tests            2,388,299  2,671,052  -282,753 (-11%)
 
-https://d.kernelci.org/issue/maestro%3Ae019eff33641f280144d13719cbbf59eb379327c
-https://d.kernelci.org/issue/maestro%3A4f457c5cde619e65f938d53b68735abd5858719f
 
-Anybody any idea what's wrong here?
+  BUILD REGRESSIONS
+  -----------------
+  A "regression" is defined as a reported problem affecting 0 or multiple builds.
 
-Ciao, THorsten
+  Origin           Regressions        Affected  Affected builds by top issues
+                 (known + new)  Builds (total)         #1        #2        #3
+  ───────────────────────────────────────────────────────────────────────────
+  maestro     22 +   0 =    22             604        124        97        56
+  microsoft    1 +   0 =     1              16         16
+  redhat       1 +   0 =     1               2          2
+  ───────────────────────────────────────────────────────────────────────────
+  Total       24 +   0 =    24             622
 
-> =====================================================
-> Kernel: arch/x86/boot/bzImage is ready  (#1)
-> + stage=2
-> + cd ..
-> + echo job:build_kernel=done
-> ++ date +%s
-> + echo jobets:build_kernel=1787335473
-> + echo -----log:build_modules-----
-> -----log:build_modules-----
-> + echo job:build_modules=running
-> ++ date +%s
-> + echo jobsts:build_modules=1787335473
-> + cd /tmp/kci/linux
-> + set +eE -o pipefail
-> + trap - ERR
-> + grep CONFIG_MODULES=y .config
-> CONFIG_MODULES=y
-> + '[' 0 -eq 0 ']'
-> + set -eE -o pipefail
-> + trap 'case $stage in
-> + stage=1
-> ++ nproc
-> + make -j16 modules
-> ++ tee /tmp/kci/artifacts/build_modules.log
-> ++ tee /tmp/kci/artifacts/build_modules_stderr.log
-> mv: cannot stat 'arch/x86/include/generated/asm/.tmp_cpufeaturemasks.h': No such file or directory
-> 
-> =====================================================
-> 
-> When fixing this issue, please attribute this report according to the
-> patch submission rules:
-> 
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> Link: https://lore.kernel.org/all/178733874460.1338.14907565015998697320@kernelci.org/
-> 
-> For complete logs and details about the environment used, see the issue
-> on the KernelCI dashboard:
-> 
-> - dashboard: https://d.kernelci.org/i/maestro:4f457c5cde619e65f938d53b68735abd5858719f
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> - commit HEAD:  531ed942bb0df04f6747983fecdedce76a22d07f
-> 
-> # Builds where the incident occurred:
-> 
-> ## i386_defconfig+allnoconfig on (i386):
-> - compiler: clang-21
-> - config: https://files.kernelci.org/kbuild-clang-21-i386-allnoconfig-6a888db362f33761c0fe21dc/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6a888db362f33761c0fe21dc
-> 
-> ## i386_defconfig+kselftest on (i386):
-> - compiler: gcc-14
-> - config: https://files.kernelci.org/kbuild-gcc-14-i386-kselftest-6a888e4262f33761c0fe2442/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6a888e4262f33761c0fe2442
-> 
-> #regzbot introduced: 818bebeb63dd6bf5f4e07e145f6cdbace520a34c..531ed942bb0df04f6747983fecdedce76a22d07f
-> #regzbot link: https://d.kernelci.org/i/maestro:4f457c5cde619e65f938d53b68735abd5858719f
-> 
-> #kernelci issue maestro:4f457c5cde619e65f938d53b68735abd5858719f
-> 
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
-> 
-> Made with love by the KernelCI team - https://kernelci.org
-> 
 
+  TOP REGRESSIONS PER ORIGIN
+  --------------------------
+  maestro:
+    #1 (124 occurrences) -  ‘key_pass’ undeclared (first use in this function) in certs/extrac...
+      Dashboard: https://d.kernelci.org/issue/maestro:c8d36aa6848ceeb5f21060331b3fcc14fe6c4896?iv=1
+    #2 (97 occurrences) -  use of undeclared identifier 'key_pass' in certs/extract-cert (cer...
+      Dashboard: https://d.kernelci.org/issue/maestro:3f4a6e9267e202205cf56c65e64d2cb3d3f4f4b6?iv=1
+    #3 (56 occurrences) -  ‘key_pass’ undeclared (first use in this function) in certs/extrac...
+      Dashboard: https://d.kernelci.org/issue/maestro:1bc31bdc5afab00de98efd0c67ef8653e5385a69?iv=1
+  
+  microsoft:
+    #1 (16 occurrences) -  implicit declaration of function ‘macb_alloc_tieoff’ [-Werror=impl...
+      Dashboard: https://d.kernelci.org/issue/microsoft:ab342dde3ba45ce2efa0c064a3051aa43ce98e30?iv=1
+  
+  redhat:
+    #1 (2 occurrences) -  openssl/engine.h: No such file or directory in scripts/sign-file (...
+      Dashboard: https://d.kernelci.org/issue/redhat:54dfb8887344e76e107b693682922a26eb7678e4?iv=1
+  
+
+  TEST LABS ACTIVITY
+  ------------------
+  16 labs reported results this week (1 fewer than last week).
+
+  Labs marked with an asterisk (*) are new.
+
+  Lab                    Covered builds   Boots       Tests     Change (tests)
+  ────────────────────────────────────────────────────────────────────────────
+  aspeed                             42      42           0                  0
+  broonie                         1,207       0       9,628         -595 (-6%)
+  lava-broonie                      279     687     293,254    -106,448 (-27%)
+  lava-cip                          302     818         126         -74 (-37%)
+  lava-collabora                    550   3,487     265,740    -129,413 (-33%)
+  lava-foundriesio                   65      69           0                  0
+  lava-kci-qualcomm                  96     394     364,830   +326,364 (+848%)
+  lava-kontron                      126     240           0                  0
+  lava-pengutronix                  170     410           0                  0
+  maestro                         3,834       0   1,210,143    -302,476 (-20%)
+  microsoft                          74     391      16,437         -125 (-1%)
+  opentest-ti                        79   2,090         946        -296 (-24%)
+  pull-labs-aws-ec2                  83      83          83         -27 (-25%)
+  pull-labs-demo                    320   1,555     213,457     -65,211 (-23%)
+  redhat                            251       0       3,244        -450 (-12%)
+  syzbot                            105       0         145         -18 (-11%)
+  riscv                               0       0           0     -1,286 (-100%)
+  ────────────────────────────────────────────────────────────────────────────
+  Total                           7,583  10,266   2,378,033    -280,055 (-11%)
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
