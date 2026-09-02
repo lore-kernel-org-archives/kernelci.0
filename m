@@ -1,35 +1,35 @@
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764D341F35C
-	for <kernelci@lists.linux.dev>; Wed,  2 Sep 2026 09:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA46409279
+	for <kernelci@lists.linux.dev>; Wed,  2 Sep 2026 09:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788341600; cv=none; b=KegGUvdEGvkBUE0ZqUIj0v/HtA7djqIR6FFTir+Udxje+GSA1q0zOr9lCorgJdGxZUrbmomm2RVcXa0LBqFMzuoMJww8NJ12A54fRNOTwDZJrgqQw6uu8t1W3r2foCGTWT9dY6ctZft6v9cOZIdew324vzLiTAQuU2RvFFrsDeo=
+	t=1788341601; cv=none; b=dIjSX5VHfckUzg1I8KcxTn8vYz+aDpMqRRY7X9bO0+wGdGXC/GmH/ThRVBUA0XtWG3+lBr12rdSUD2PIoxV5BDc5F5rPLFl27CH3stqUhNNFcGtnUkPmr9x6C3pgUwbNXLUPIXIWYE+pwXiQ5CXAtv+PwBEd6HtsW2sjC3FrnV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788341600; c=relaxed/simple;
-	bh=jhmBSzkaPXIEkolqeuBtA5PUJcUvKWa1AHjY7732QK4=;
+	s=arc-20240116; t=1788341601; c=relaxed/simple;
+	bh=9fgii5oxFWezoBPxGNv/mPjDMS0RVeH9/bCgpl86ygw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdItheuDv401U29QIms5vAmgPqvQNiZZEr1PZ7FQVX1cp1pJlGajSafFFrSSIKDc1uakdkOOzUd1fg+c4dRJQQ9C4apaPu9yvXVxCdgGCKytRgqKPZCZxgMdkyz1dTadmLy6rR4klcPA9wiayby51sr6PcPs+OXqisKL0X8K0nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=UpuuGutf; arc=none smtp.client-ip=217.70.183.200
+	 MIME-Version; b=I+OG8IrYegq5FFyI2oKXVnEDexuGkMQVx5eLJVZCnt6D7VRHRfv2sTyivo5/M31zHWyoCW29T+GQFzM27160YU2d6MmRsjDgB/gttpJLdrX6EJdythT0zGdbeij0Cr8B/MvqPaHzmxhx74MdF+SGr4Hktxsi3sU2dp36GmPLEsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=Q/jE4Qgy; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="UpuuGutf"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0EF393EBFA;
-	Wed,  2 Sep 2026 09:33:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="Q/jE4Qgy"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 964A33EBF7;
+	Wed,  2 Sep 2026 09:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1788341590;
+	t=1788341591;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UguNOgLS/8DT9/UBXVW6GtKIgDgrsggBCJBgLqBDTTg=;
-	b=UpuuGutfxBZgzW+Pk4K3qGc/6d7YccDiEhmIJxZ7SCczqtMuwndT/ClWRDnOTcT2d7jaPQ
-	+j6He6HH+nKCqNSqnJbFJJTHIlp0NfInAjIC/Jzv1ehQuTpwcisYe70JDBmdXGSFmqVH51
-	IaNdfI2z/2HogDVMgRzO4d+0YqGatWdVcGBqs/NlimL9di/7DNe1BrRulHbl6mSEwGVkJY
-	ESw4ah8EuuR2xzjGNCW78xvbqLPQpY9gT/CtLIqCEtysWLDNqoupsEPAn61Lwi/fkx6cGk
-	xjLGzMm/1z0+LI8ST9FNhejpOvwPfzBlG+0sUQTOWM1p4B8BDL4/TGhebdT8qQ==
+	bh=NOqu7m3MlMrEpV2ZScTC3mnAQ9ooA6zUfLyd9PxMQ/g=;
+	b=Q/jE4QgyeIfWBEl9nCQOIhkn3GmOrSHGEQVgiHX7eUOXunVVcIVxGDLINFhKpzYGUTfK96
+	XAaCRYBfwEKy8TbSJX9nr0WLB2jfI3EwLGAFXImwp9yD2kbL7ziQ4O/H+CRWhWjL5i0wmk
+	pfYRLaHboIT/gkqkciqqKva+RAdwR4KEcngjAswII2rbOKeTM4H6sfluopFpWfE3aLcCCg
+	qgjw2ez7y8xG0kB8XdJ1fMOAjqBD9bRqSCb9KQ+63Yujrnwewxb0RbpWxuxYSCm1RFS8RR
+	jGf7Ehmcrjo2fLYYDJM99fTq8v/pDsoBGK22vVK8W9bQQvvoZuXkWNGm0z/wZg==
 From: Guillaume Tucker <gtucker@gtucker.io>
 To: Nathan Chancellor <nathan@kernel.org>,
 	Nicolas Schier <nsc@kernel.org>,
@@ -44,9 +44,9 @@ Cc: Guillaume Tucker <gtucker@gtucker.io>,
 	linux-kbuild@vger.kernel.org,
 	kernelci@lists.linux.dev,
 	automated-testing@lists.yoctoproject.org
-Subject: [PATCH RESEND v3 2/3] Documentation: dev-tools: update container.rst with config file
-Date: Wed,  2 Sep 2026 11:33:01 +0200
-Message-ID: <483be70a3d4827e44c780d123b2d25eb2855c8ed.1788341513.git.gtucker@gtucker.io>
+Subject: [PATCH RESEND v3 3/3] Documentation: dev-tools: refer to user ID rather than id
+Date: Wed,  2 Sep 2026 11:33:02 +0200
+Message-ID: <5829187a983bede8359f66ace420a6eb1eeb9ebb.1788341513.git.gtucker@gtucker.io>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <0a88d9d0ebd73a9f6e72399f93705ebc7b49ae9c.1788341513.git.gtucker@gtucker.io>
 References: <0a88d9d0ebd73a9f6e72399f93705ebc7b49ae9c.1788341513.git.gtucker@gtucker.io>
@@ -59,181 +59,108 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: gtucker@gtucker.io
 X-GND-Score: -100
-X-GND-Cause: dmFkZTF6RtQNvJOwTxK/+zM0Guwd29IKjK6CHmvo7aLGCRP4jJpo9fM9B6BVKrcidMW+zPwwY7uxjHmgR9e8nOF9LjBxU8RB37QSjvvnjQWmjWSyzlmV7PLGbJYHfES1iFz0XT3vEpkrTQdkaf8h9g+nm6Pj/O1YqFTv09snoh6u6gWMd5f7UWvvljT9PXQV5frieBtQQ3gsFSOLFkuMEEs+EnS35lG3++q3sQ2pJc91Ui7FBDpOOW2DIsRrx/tN3bg3kfcWNGQWDMgTo/khCd4LNhOe8aXUKhX6yZHu2eZsp/DiwIBPVFOf14yBBPji+XZdrFRmjwvcTWmjjb+RmweXTUaBBoHlFN8DX18nCV+d3C4jo+mv18EfKq7aJJZfSELSuADqCGzVtnh6cLRpp1SzL/UaKD7mbjni9PV9aqK+ZcOza+TdTmds29H7bB2iH7NimXJ4hyXG9z2lo2AXnbZ8ykuf5gxa2UOFt2jA15BSYOIPynyowLZIFTuY1YO3C7Ck3biwRl9aGmDz8+CCtqlLr9/ph/Md234sDXMFzKeXVWO7c/q3AmsCTdnJtVCceo1zLqjT6d3ReDoPLb2mdA4bVjclvkEhnq+eoM2U/HwOI/hyV968AzzKoIeXPKEESANzXFJNoEHBXIslDujo+d3GlrmGmLAjG5uyOyw32NxyswOaJQ
+X-GND-Cause: dmFkZTEphWDMvmke5kmiADlfZRoDWT0imwdr8sYVBDHMNGSBeOaAHt4Wqa8mN46tuI7SZEHsHlJb0XZJIdLpmMWB1o5aYPm1iOaa1bQ2s/FnbuqnmaJ1b8GCacVxKgANuz3Kfxkm23n10xxXeQS4BC5x5GlJC/snTtduSOEHhzJY5HBhP7DUzvF1E1eKl7gngYZXhdBNi+mLaKRIws6X3xSuN/rSI9X/IjQ7+MbXHOi/QOEKeqW/9IeiAoLYaxPd8dIqXH10zkzpXnZNI6/CES6glBE4rnYccy4oxuvGZWIeJfphTaLwj8uE2k4+tZPCH/w+pxVpr5frU6iEq/T+aMPAg3KesmXsSGIBQ6Gl6qKYJJMsJDpCDEsLKuYWyOmI2K9yA3oRBBGq1luWi3njeJhZsaVZgqk0Dtezrjf0/q9XeLpOV5O/38Wzvqt5gol+2t7h0Ua9hTqVwjveU0o885BJur+8xpiIzoQlc/a4ExDSSJ/EkOdlb/07Lhp4znTg7ewAN9mdl7nto3FhGZwTUMqXn2bmCSJVrY9erU0O262EsBoLAMxkG4ztasdoj3HfIKfmbn6RlGovv+ad7JAQMf+dmUWnmL3Q4IsVAggFo3xPkK4sjqAvGl4ywiI6josOIZvwyhvzP17LV9dStUT4ilc3vRGut4t/2OmCtcckJrZfSfa/kA
 X-GND-State: clean
 
-Update the container.rst documentation page with a new section for the
-TOML configuration file, its associated command line options and an
-intro paragraph.  Also clarify how UIDs and GIDs are used as a GID can
-be set in the config file while a UID is provided on the command line.
-
-Provide a sample config using the TuxMake images with an example to
-show how to simplify the command line syntax.
-
-Bump the requirement from Python 3.10 to 3.11 which is when tomllib
-was introduced since it is a new dependency.
+User and group identifiers are commonly known as IDs i.e. UID and GID
+written in capital letters rather than lowercase 'id'.  Update the
+scripts/container documentation accordingly.
 
 Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
 ---
 
 Notes:
-    Changes in v2:
-    - fix typo in configuration file section
-    
     Changes in v3:
-    - clarify how UID gets used as default value for GID
+    - added as extra patch to clean up documentation
 
- Documentation/dev-tools/container.rst | 103 +++++++++++++++++++++++++-
- 1 file changed, 100 insertions(+), 3 deletions(-)
+ Documentation/dev-tools/container.rst | 30 +++++++++++++--------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
 diff --git a/Documentation/dev-tools/container.rst b/Documentation/dev-tools/container.rst
-index 9e23f79d5ae1..bc74ed9d3de0 100644
+index bc74ed9d3de0..5910a74c3d77 100644
 --- a/Documentation/dev-tools/container.rst
 +++ b/Documentation/dev-tools/container.rst
-@@ -26,6 +26,11 @@ Command line syntax::
+@@ -11,7 +11,7 @@ various platforms, for example when a test bot has reported an issue which
+ requires a specific version of a compiler or an external test suite.  While
+ this can already be done by users who are familiar with containers, having a
+ dedicated tool in the kernel tree lowers the barrier to entry by solving common
+-problems once and for all (e.g. user id management).  It also makes it easier
++problems once and for all (e.g. user ID management).  It also makes it easier
+ to share an exact command line leading to a particular result.  The main use
+ case is likely to be kernel builds but virtually anything can be run: KUnit,
+ checkpatch etc. provided a suitable image is available.
+@@ -37,7 +37,7 @@ Available options:
  
- Available options:
+ ``-g, --gid GID``
  
-+``-c, --config-file CONFIG_FILE``
-+
-+    Path to the config file.  If not specified, the default is to look for
-+    ``.container.toml`` in the current working directory.
-+
- ``-e, --env-file ENV_FILE``
+-    Group id to use inside the container.
++    Group ID to use inside the container.
  
-     Path to an environment file to load in the container.
-@@ -38,6 +43,11 @@ Available options:
+ ``-i, --image IMAGE``
  
-     Container image name (required).
+@@ -61,10 +61,10 @@ Available options:
  
-+``-p, --config-profile CONFIG_PROFILE``
-+
-+    Profile section to use in the config file.  This will override any values
-+    defined in the ``DEFAULT`` section.
-+
- ``-r, --runtime RUNTIME``
+ ``-u, --uid UID``
  
-     Container runtime name.  Supported runtimes: ``podman``, ``docker``.
-@@ -53,8 +63,8 @@ Available options:
+-    User id to use inside the container.
++    User ID to use inside the container.
  
-     User id to use inside the container.
- 
--    If the ``-g`` option is not specified, the user id will also be used for
--    the group id.
-+    If the ``-g`` option is not specified and no group id is defined in the
-+    configuration file, the user id will also be set as the group id.
+-    If the ``-g`` option is not specified and no group id is defined in the
+-    configuration file, the user id will also be set as the group id.
++    If the ``-g`` option is not specified and no group ID is defined in the
++    configuration file, the user ID will also be set as the group ID.
  
  ``-v, --verbose``
  
-@@ -86,9 +96,13 @@ container with SIGINT (Ctrl-C).  To run commands interactively with a TTY, the
- shell directly rather than the parent ``container`` process.  To exit an
- interactive shell, use Ctrl-D or ``exit``.
+@@ -81,7 +81,7 @@ Usage
+ It's entirely up to the user to choose which image to use and the ``CMD``
+ arguments are passed directly as an arbitrary command line to run in the
+ container.  The tool will take care of mounting the source tree as the current
+-working directory and adjust the user and group id as needed.
++working directory and adjust the user and group ID as needed.
  
-+A :ref:`configuration file<config_file>` may be used to facilitate running
-+containers for various use cases.  It also removes the burden of repeatedly
-+providing the same options on the command line.
-+
- .. note::
+ The container image which would typically include a compiler toolchain is
+ provided by the user and selected via the ``-i`` option.  The container runtime
+@@ -145,22 +145,22 @@ User IDs
  
--   The only host requirement aside from a container runtime is Python 3.10 or
-+   The only host requirement aside from a container runtime is Python 3.11 or
-    later.
+ This is an area where the behaviour will vary slightly depending on the
+ container runtime.  The goal is to run commands as the user invoking the tool.
+-With Podman, a namespace is created to map the current user id to a different
++With Podman, a namespace is created to map the current user ID to a different
+ one in the container (1000 by default).  With Docker, while this is also
+ possible with recent versions it requires a special feature to be enabled in
+ the daemon so it's not used here for simplicity.  Instead, the container is run
+-with the current user id directly.  In both cases, this will provide the same
++with the current user ID directly.  In both cases, this will provide the same
+ file permissions for the kernel source tree mounted as a volume.  The only
+-difference is that when using Docker without a namespace, the user id may not
++difference is that when using Docker without a namespace, the user ID may not
+ be the same as the default one set in the image.
  
- .. note::
-@@ -151,6 +165,11 @@ with user id 1234 which can access the files in the volume but not in the user
+-Say, we're using an image which sets up a default user with id 1000 and the
+-current user calling the ``container`` tool has id 1234.  The kernel source
++Say, we're using an image which sets up a default user with ID 1000 and the
++current user calling the ``container`` tool has ID 1234.  The kernel source
+ tree was checked out by this same user so the files belong to user 1234.  With
+-Podman, the container will be running as user id 1000 with a mapping to id 1234
+-so that the files from the mounted volume appear to belong to id 1000 inside
++Podman, the container will be running as user ID 1000 with a mapping to ID 1234
++so that the files from the mounted volume appear to belong to ID 1000 inside
+ the container.  With Docker and no namespace, the container will be running
+-with user id 1234 which can access the files in the volume but not in the user
++with user ID 1234 which can access the files in the volume but not in the user
+ 1000 home directory.  This shouldn't be an issue when running commands only in
  the kernel tree but it is worth highlighting here as it might matter for
  special corner cases.
+@@ -288,7 +288,7 @@ Supported options in each section are:
  
-+Group IDs (GID) follow the same logic as user IDs (UID).  When specifying a UID
-+via the ``--uid`` option or in the configuration file, the GID takes the same
-+value as the UID by default.  A specific GID can be set via ``--gid`` or the
-+configuration file.
-+
- .. note::
+ ``uid`` / ``gid`` (integers)
  
-    Podman's `Docker compatibility
-@@ -225,3 +244,81 @@ To build the HTML documentation, which requires the ``kdocs`` image built with
- ``make PREFIX=kernel.org/ extra`` as it's not a compiler toolchain::
+-    User and group id numbers to use inside the container, equivalents to the
++    User and group ID numbers to use inside the container, equivalents to the
+     ``-u`` and ``-g`` command line options respectively.
  
-   scripts/container -i kernel.org/kdocs make htmldocs
-+
-+.. _config_file:
-+
-+Configuration File
-+==================
-+
-+By default, the tool will look for a configuration file named
-+``.container.toml`` in the current working directory.  If not found, it will be
-+silently ignored as it's not required.  Alternatively, any other path can be
-+specified with the ``-c`` option in which case the file needs to be present or
-+an error will be raised.
-+
-+Its data follows the standard TOML format and is made up of different sections
-+with ``DEFAULT`` as the default one.  Other sections may be used to define
-+alternative profiles under arbitrary names which can be selected by the ``-p``
-+option.  Command line options take precedence over configuration values, and
-+profile sections take precedence over the default one.
-+
-+Supported options in each section are:
-+
-+``env_file``
-+
-+    Path to an environment file to load in the container, equivalent to the
-+    ``-e`` command line option.
-+
-+``image``
-+
-+    Name of the container image to use, equivalent to the ``-i`` command line
-+    option.
-+
-+``registry``
-+
-+    Name of the container image registry to use.  This will be used as a prefix
-+    before the image name with a ``/`` separator.
-+
-+    For example, a ``docker.io`` registry and a ``myuser/myimage`` image will
-+    result in ``docker.io/myuser/myimage`` as the full image path.
-+
-+``runtime``
-+
-+    Name of the container runtime, equivalent to the ``-r`` command line option.
-+
-+``uid`` / ``gid`` (integers)
-+
-+    User and group id numbers to use inside the container, equivalents to the
-+    ``-u`` and ``-g`` command line options respectively.
-+
-+
-+Here's a sample configuration with an extra ``clang`` profile::
-+
-+  [DEFAULT]
-+  runtime = "podman"
-+  registry = "docker.io"
-+  image = "tuxmake/korg-gcc"
-+
-+  [clang]
-+  image = "tuxmake/korg-clang"
-+  env_file = ".clang.env"
-+
-+It mentions a ``.clang.env`` file which simply contains this flag::
-+
-+  LLVM=1
-+
-+Let's take a look again at this example mentioned earlier::
-+
-+  scripts/container -i docker.io/tuxmake/korg-clang -- make LLVM=1 defconfig
-+
-+Using the configuration file, it can now be simplified into this::
-+
-+  scripts/container -p clang -- make defconfig
-+
-+Then to override the default runtime, the ``-r`` option can still be used::
-+
-+  scripts/container -p clang -r docker -- make defconfig
-+
-+This also illustrates how values take precedence over each other: the registry
-+is loaded from the ``DEFAULT`` section, the image from the ``clang`` section
-+and the runtime from the command line ``-r`` option.
+ 
 -- 
 2.47.3
 
