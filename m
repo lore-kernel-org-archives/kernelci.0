@@ -1,84 +1,126 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A641E47ECFB
-	for <kernelci@lists.linux.dev>; Wed,  2 Sep 2026 10:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788346458; cv=none; b=qa7DCsJDyF7EmSwZtvy4Q21KpIcl9zmWSJgxcYNhBFJg9y4LC9ugTd6QqbHQ+uFtfUe9/MhfvRRwcMyXGSyxH/xmYVD43kJ9pSw7FnRgwCMt4iNtqHkImI8+GKjvV2ABDqVqqTIaq8RJWsZ1l9rFzltPkzqjfS33oGJhteTFImo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788346458; c=relaxed/simple;
-	bh=CN1unyH/hIb+Y8YiaPvwEJCnakyQmFPwizdxVbaRSV0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lxuyqs8E9iJYGICX84QzzX2fWDleaflNqNig+VfoRPSerIpf6n7Bbx0BUq3aY7uDbF3bu03wSmft/hZIyQ4hfSwrCbgaBXNDZp69o1pf9HBSLcvL+mp3Thad3qexRrMzWw1G6LsW6MIHa4ejQR+luwVLQeQdRKnX7yT1s192p44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=HsrqOuKS; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE21637AA7E
+	for <kernelci@lists.linux.dev>; Wed,  2 Sep 2026 17:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788371324; cv=pass; b=fzIfRpGoVpsE3AeePuXqYs9OkMaQBOOgHSOX5PfhIW0/jMxCU1yhLLrmFEmtZWe+bG05ydEssTAtomDDUuMYMc7QHgS5CNcUOChxosa54agVzU5r5JB5MA3+aifZ4pilxGtVl40mOA/8ugp64MoatfA0Kg/+kiFXoRVsl57avCU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788371324; c=relaxed/simple;
+	bh=PzoR5mbA/WHbadcXExhqc5YgIWCAUIVWgUpWGSTZezA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=j5Mp3mIhNownGIZFe3HxV6a9KK7RVnWu3crd2JzBnYo18y+Fg1PtDb8BytBynxWddqky8TAA39xrVqOleVX3GmXswd/7ByxI2ojOF9rkSzsGrTu5HzVV7H2S5o7dgv2UbfGQ80zLo9+cy5+TYoyRXy9+fycaIt0rnPIApq7pJs0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b=mi+CvE7S; arc=pass smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="HsrqOuKS"
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id AE1F858361A
-	for <kernelci@lists.linux.dev>; Wed,  2 Sep 2026 09:37:41 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9E9CC3EC34;
-	Wed,  2 Sep 2026 09:37:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1788341854;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G1+QrDuN7d/J1hIpiEah3cLGmlih4zk6g8I3G9jEmS8=;
-	b=HsrqOuKSjlK+/HVReCnOiiq8ptX1fxavY6kKvmZ2cjQmNHFaFwhcAGvD9+aoIYmevL1qrd
-	GyAVnH1ahdFnWBEpX9kH6dSO7OhIPOWy/lD1fXUpbVkjLHyOgpQUpzYvItYKW+tQOLNa6G
-	PFjXri2X8VdlBrAf1OwpMcXlCKLvoB3wwq5l99Z1cZXcyRDKrY08CzXyp1lbxTGwUVs6Tp
-	FFPPqL8zR1o4kBVo2rm22VnSDFDeX0OkoZuyltrn2a+NlwQ6BAdwctkN9zgiAFKcfKSGV8
-	1ya7SD2rwB4aGfMD612BSX2nPUTCxwoPaM3QKplUnR556/k8hpNdH3jAYUbuFg==
-Message-ID: <f90aa8e8-abc4-477f-ab52-839e42eadf70@gtucker.io>
-Date: Wed, 2 Sep 2026 11:37:32 +0200
+	dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b="mi+CvE7S"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc1b838f9b6so1575761a12.3
+        for <kernelci@lists.linux.dev>; Wed, 02 Sep 2026 10:48:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788371322; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iUOV6n+w9vgyN+AEmAZouC2mnPDedh81uF9o3idSurvij4Un+nf8C6l+nzbCy1iir6
+         VrRmy5JC+NO+Q59eyIJi2zJ6iNI3yl7NrL83YIeRibxUH6g0BTKzdShFEdkNkeL8jITx
+         8b1GiAEiKIuyR0sbO9Tgjol0ETfAq3D7r6dOCxdfhnuUCZVOnwh2B5Y2pntFJcW3Q6sv
+         X5P8IZepCUMyeeeWRT8O86WTfbjrpN2ybdQBcqglX32Kf+kl/Bc0PM7poqHl4gcBd0Q0
+         wpnvfD6ZilqRRRRR97VibDDiglFBqFUCmW0u7oBptp28ni9WM9qEic+AlA840JpxyDjV
+         54KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=MXLnExoyx4QtEGXUyhYbes6C4++8CIQkkV+ntcYD78c=;
+        fh=rmq/YLFzDAglBwji5AmBmtb7cJxq3EZCkg46fu2xnLc=;
+        b=HMKOee5Ixtuo43Gu4ami8XNOwQWlif07PqhNHEinEpLxzExMGJLOe73YQaTdvy3Gmz
+         y7E0PhUrQM2e57WhUJgj5xmiaYSk1oKziZhIrnW49hfWTOT9cBj6tRcas6HQ3gh1PxfP
+         1eBuyBH/XFXhUV3i+OadPNiw9tClNKNE0+Pdw2Qyq9EiVHzwiEMU3pLC1ntBSfx61sPl
+         lO6mUj7CEVTWLzI3uG+eurYiYWI0Ggzv/IdpIuedaPgtfIn5o5VAt497w3wQvnYGSLVF
+         k9WEyNc+ucg4tynhPha7Txf22A9IDllPqxFdF6MhEaobOjWFGsTwz9PBx9UogBxQFj17
+         bEFw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profusion-mobi.20251104.gappssmtp.com; s=20251104; t=1788371322; x=1788976122; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MXLnExoyx4QtEGXUyhYbes6C4++8CIQkkV+ntcYD78c=;
+        b=mi+CvE7Ssb+vZpnuhNaRYOPF77YQk4vZepnR8s/xzHdJKFE40uOUrfJM2eM/pzsT55
+         Jdc1/oAsS9VlDm2R9diFhZAm8O+kcN57EHBK4ixjOYR/u+Qtp6g5zmqEIwdmd/VAJeNc
+         izqwnU3b/b2rbAyHOOziUN4CAWdrYlSZZHIIR1WxZ8TrhN7PPcz2gaV1X9L76b/Ln/aO
+         1SBV1RLb45Kzw+OYrFToSXk+8vGXPkJpve5hcSW01mQvs/pmmgWKPVAsFyfn5PZ15w14
+         cRbCHuE5XqDXAnYssv7qrhZFlayae71Ay6tM9AKcqvU7e2dwRqLGMOzAIqjRaBo3mmRi
+         8F0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788371322; x=1788976122;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MXLnExoyx4QtEGXUyhYbes6C4++8CIQkkV+ntcYD78c=;
+        b=Ls1KpskTbFnURpJuWPDQa08wwKILY/PPGRPbmfnpdpoR2eIA1qajnQfTuWdAT1Fcn0
+         e+g79LigBtYQegNqvPSyuS+Y37Tt4JodjcANAusqa4dZMzh/3w7AvczZL2+c/ISmleyc
+         qRxka7ds2hqoOfjrVR5Qv6jqVxZGqyqSTRBWKI0fu08h8gqh1avh0didGj8I86O0DrOp
+         rcMErwRfHOfA/5QT32icSmPw/SsqxiyyDgpI9b6qCR5i3+VdsCOM34/L8P0Fgw9xtG5g
+         UTjZL4u2CLoTJxhiOxekX+54Dz4bHAx/d95CVuBS4tEpuUJmsenfXzeqM0DmQLCC7t/s
+         czbw==
+X-Gm-Message-State: AFuF++kkA/G13IaUOJDhYzMc8iAZtWGTUn805TWQYk8dMKAluk/PK/KX
+	XyyHq5WxOk99sJHPt2+xfmvdr9TitE5RWfdARuXhcCNHnAky18O9W+n7r3uVFvBwHL/drpFJcRW
+	9k5ldsoWQAZG+JEGBAsiWlbKd5jrD4gTCJ9EM4H4xw+Bk15cuUq/z4a2xgQ==
+X-Gm-Gg: AYBFou1HKPHvMkIThmk+azhLATmazpPfP+rqASE+Jz+SbPOBtrmXYvJwtvvcDeYCVgd
+	yuBhnl1uAkSO9vuyVcL2U0Qxwwqa2cVKWcjqcFXu6lRiQcFYoxZhhkT9FaSJVZ8g9c/YzIKt0pf
+	zxH3d9cKQwQiipwxAbE9wDyxEwZEHf5jDPFNorrOWBs5IcP9G5S/zpJvOtJqVgntEmAWR0jbITr
+	Tn1UPIulsfUZolB+Vjl4Ceej1ztArxOqOuHy7N8r4rfjrSO2+wwVN/VNGXKd5+8Nuvvz78Pvjet
+	lKYw1uZP3eDStCeJjVO9R1Jt6jURd5NDfdtJLGVRkFTA+A==
+X-Received: by 2002:a17:90b:528b:b0:398:b88c:2b7b with SMTP id
+ 98e67ed59e1d1-39aedfb9a0bmr10826173a91.8.1788371320150; Wed, 02 Sep 2026
+ 10:48:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] Documentation: dev-tools: update container.rst
- with config file
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- linux-doc@vger.kernel.org, workflows@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- kernelci@lists.linux.dev, automated-testing@lists.yoctoproject.org
-References: <570dac1c8d7a2befb5578cdd8a2ed63b3769c4c8.1788340031.git.gtucker@gtucker.io>
- <adc9eeb418f026ba2b18c4b2aa1e52443bf6f210.1788340031.git.gtucker@gtucker.io>
-Content-Language: en-GB
-From: Guillaume Tucker <gtucker@gtucker.io>
-Organization: gtucker.io
-In-Reply-To: <adc9eeb418f026ba2b18c4b2aa1e52443bf6f210.1788340031.git.gtucker@gtucker.io>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-Cause: dmFkZTF9QjDxzIdrhTfD1WLDC2OkkzEhLpazCn/BC9x7TeIdF79s9sf4dKq1Asdkp0WYf4CviRn4UsoJdKkBWavV87Jvp2QSFU8TM3I3AeLJEl0u1IvNe9lYJsHepNnyTb/Cm1G5YCw7fJRMrqPk72ltvTJsURd5ummtwW6uZiFlUGd0adhnwWc5oL8raOL4ND1K3wwWFhE0/UfdoqWI7aFUEXG+HcjQuSZvG0LryZC5KN/pCn5x4TnAb/9bqTASmJsG0lOFbqRF2EdPlL9Jn2MDJWCeDQIiFvRa7i13mczooTnN6cr6saq61Q0C5P/7X+xnDBZ8zu0SQT9VV5nY2Drmpfu2RPuRWQxje5+roogoeIB5cPAzh5ecLBipDd6Xw0xiavZdd+qnIaNbKIGGXJmoulsDFOTEVbOv9HapQEbDJ0kM++GJyZTouHPwk9k4nV4VfWZJm9n7OYRxPgtxMGV284ldydigaaVgQ9W9oujb6bxXXG1YCWk44wiHkEJG0yOrsRPiftJYA0Uqzk8udb0jYfiAkLg7xWWRvoEHNIz9Gg1ji62gKjb+5Hez2LpRkZQg8BGU2hF3WnX5F1ZsaMF4T8ZydZAHcjpiS1M9lIBDnakW5+Jv76WZeWzraliacqf0j2QsQWMRTMB2N3U24Aw3aeNyNz0tYu4ig+v+IxE1KeJ+yA
-X-GND-State: clean
-X-GND-Score: -100
+From: Alan Zanoni Peixinho <alan.peixinho@profusion.mobi>
+Date: Wed, 2 Sep 2026 14:48:28 -0300
+X-Gm-Features: AcwNN1UwZbybEY0Ijs97DQAZk7_jl_Nw-yCRvkR7cWPzu3M3Q0ICoJprzktQDs4
+Message-ID: <CAKKBm2tcCasKYq72u=dBxzKxPUhK7tJWtxThEht2Hpd+bG9FrA@mail.gmail.com>
+Subject: Dashboard Updates: UX / CI improvements and Lab consistency.
+To: kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 02/09/2026 11:07, Guillaume Tucker wrote:
->  ``-r, --runtime RUNTIME``
->  
->      Container runtime name.  Supported runtimes: ``docker``, ``podman``.
-> @@ -53,8 +63,8 @@ Available options:
->  
->      User id to use inside the container.
->  
-> -    If the ``-g`` option is not specified, the user id will also be used for
-> -    the group id.
-> +    If the ``-g`` option is not specified and no group id is defined in the
-> +    configuration file, the user id will also be set as the group id.
+Hello KernelCI community,
 
-This chunk didn't apply cleanly on top of v7.2 so I've resent the
-series after a rebase on v7.3-rc1.  The rebase was trivial though.
+We have deployed a few updates and fixes to the dashboard. You can
+check out the live site here: https://dashboard.kernelci.org.
 
-Guillaume
+ UX
+    =E2=80=A2 Trees now have a Compare page: pick two checkouts and see sta=
+tus
+summary counts, plus builds, boots, and tests that were added,
+removed, or changed status between A and B.
+    =E2=80=A2 Issue details now show first/last seen per tree, and a link t=
+o
+the first good checkout after the issue appeared, so you can tell
+whether a failure is tree-specific and where it cleared.
+    =E2=80=A2 Cosmetic enhancements on the commit history plot.
+    =E2=80=A2 Bugfix on tests table to keep column widths stable while sort=
+ing
+and paging.
+    =E2=80=A2 Bugfix on stale frontend cache. Avoiding frontend crash on sc=
+hema updates.
+    =E2=80=A2 Hardware revision selectors work correctly for cross-origin b=
+uilds/tests.
 
+  BACKEND
+    =E2=80=A2 Builds and tests are now tied to labs in the database, so lab
+filtering and display should be more consistent as data backfills.
+
+CI
+    =E2=80=A2 Schema migrations are safer on large shared Postgres, a timeo=
+ut
+for lock avoid that new deploys cause a lock contention on production
+database.
+
+  Best,
+  Alan Peixinho
+  KCI Dashboard Team
