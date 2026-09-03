@@ -1,65 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD6F4AE8AD
-	for <kernelci@lists.linux.dev>; Wed,  2 Sep 2026 21:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788384296; cv=none; b=V3fDJ3FIPAHyqDaUR2zXEhUEFsP+yeClR7xsPOZVtvng+N2huOlak/n+7FVhrEwsA8378o46RRchi93w1r8EM9X/uLD09k/Gsjm4yI6n8HqRZjh1IeaM+2XAiV0/v5gYjykFW7s9XR+dbB48MiTS8sky/92PHg6AGYaUlDzGbAY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788384296; c=relaxed/simple;
-	bh=bG9eK7IV/z0sYufLfLk/AhqH+PBHHmaj8aQo8OUzC3s=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611054A8A3E
+	for <kernelci@lists.linux.dev>; Thu,  3 Sep 2026 13:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788440808; cv=pass; b=ln7Pe0HOUkR9Pi5lEl7I1H7HBLRaQ8mhcJg9HHMLH9SS7NyG/jVN1T9JcMJttU3B0nvAZP9NuBnRo/IE3WmdwhxJBWw3VFsDC6a8tPs54CAF50g1Hsz68i6GV+nmKWLDeKiIeCh/mZMnwYhXftiDAa+0SyNamn0nPvmOK29Zyog=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788440808; c=relaxed/simple;
+	bh=11J7HV0c34cSY3p4jWMliNvy3JWe02dlvsHA53imXlQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ITR6SYr1ghV2K87eunQOBDKGqjEO+RATB3mUvm9AFDQo6yAe/IToCh+zsAvrYi5IM6zQWf3WXRG2OzuEbsAXNjOoA+JTH//I1S+6Kca3TCjgu8nSu2ochmDE+zhylODsWcVC8/0kkJUremoBTdlfY4JIXQi1+577haqhDP6M6QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FVV/crEF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=CxGY7oKPX1t5Yppcvarv0VTmsR2I+TE+JeecHcTYBTP5n/gQy+46MG1ps1p4KlkFikbmXaL6UKDk/tB13lH7oXtaw7Y1NTur4Yqq13tEzZCibXGoosIjPKioyCysb2oY9SWEJHfwMe3UPjnLpMjjVI4UWbnbxF1rDLONCE0qScU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b=YKcSrsem; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FVV/crEF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788384289;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nb5GQz80jpxP88BxAkfhnCDQ1bUosHVUulU5wn0czO8=;
-	b=FVV/crEFjhb5EJwZi+ShKR/ObhpNA2iKNwAyrqpLKmqVdBj6UZprsseBfIo8OZFOTQCmqU
-	z3ZsOzT0yWO2aOaIghg1O5Vy/AbA5sv2aTNBHdYwI7xn9giWXxlLmuiSOF+QHLB8EcK76n
-	BLDMaftz0JKv3waPe1IqPBfjVlUp6Cg=
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
- [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-GYt8H7plNSC6k_NEYMKrqA-1; Wed, 02 Sep 2026 17:24:48 -0400
-X-MC-Unique: GYt8H7plNSC6k_NEYMKrqA-1
-X-Mimecast-MFC-AGG-ID: GYt8H7plNSC6k_NEYMKrqA_1788384288
-Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-7828cdd1214so265005137.3
-        for <kernelci@lists.linux.dev>; Wed, 02 Sep 2026 14:24:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b="YKcSrsem"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3969e82ff8fso2798893a91.0
+        for <kernelci@lists.linux.dev>; Thu, 03 Sep 2026 06:06:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788440796; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CXwD0apdjzei679HoFslPR8DYoxBOTYEKiH4vd3wGYjcgALUwQHXi95TXSJDG5HfSm
+         bc7fY/y2ayx/cKjAW6ddiPFUFbEhheNwMaQHqei1rMKvR4kOXbXmIuNocax7C9mC9ELd
+         2FMx5weLMs4c9xCzTYb4WWG3T2X7OERfo7FzeIkXpVvXHpTmGX5MJ33YvV4f8N2+1N64
+         S3ICp5LHqiR5/onjBeeChsnFE9ef/7wJOwM7Ek8lctsrSKSPuj/biL5UlYdCxp4TQJ1/
+         /bQM5jHySf8qpx1FB5nkalIFb6LaBQTQAYJ9pUDOHzyp7mjvYmp1EcVXjyjoTt/ebzTX
+         LrEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=11J7HV0c34cSY3p4jWMliNvy3JWe02dlvsHA53imXlQ=;
+        fh=woMNpk07x/dGV7VvtKm/Z7mhA1vVPSoXalZfQSEEcf4=;
+        b=m+RN0qMKHlf3gDrKJpOw1rV+NRpDV7YdAmbld4rQIFtd32GjImvXo89kzrCO7A56tb
+         w3xO14vGo1fEAgPUW8z40SFelff217zksOxGCIhDUjRyVN6OkH2Hpr6c1v6EsJNU2hml
+         wCmrSFX6KT1OCs83okJ5V0e8llSOT9WK2fRu83pgagoGh6vlW3/ijFDcgLFVEdMjUa6G
+         0iRishaJG1P5h2D8/OXEP1Aw94ApYNUZSeo919qbyuTmxymw5ozIouFLrakIDqqiNMtZ
+         59aT+AMIEDID8Lgcq4QhQo3Csefg8X+gUvD/Nbszf9EIDU1dDVHCZe3aYMB7wpkO9DnT
+         4jAA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profusion-mobi.20251104.gappssmtp.com; s=20251104; t=1788440796; x=1789045596; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=11J7HV0c34cSY3p4jWMliNvy3JWe02dlvsHA53imXlQ=;
+        b=YKcSrsemKdvdrwtuqEbRnwul2h1elg828T0U4YydFuoX1MAHDqvbQi6K5YCJpWfbaw
+         XmSOTjv3hUyNPUz7LFzMheVRBOaMc40TAghJe3ZyzDJ2zzMQWILh8OxEflXG58YSiiMz
+         azjDh8WgkVAey0z1sev9e9eCFWKiMb3Jj2E6bJSfLkK2bXyTx+CpG6FPKABwK+kVvtrP
+         jX3xrDNTTwG+cDDQjNPKI2eFMsL1t89N+5Izz0qvI7Z8xNKVMnLiwMn4+0M+gX4T9wIx
+         Ejwaic0ufBAfiQcM/dXnNsd59h64hO7fsVZd3wAvICjwSFEYyS29b1XXvbqc6SoAd0Fz
+         Acag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788384288; x=1788989088;
+        d=1e100.net; s=20251104; t=1788440796; x=1789045596;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Nb5GQz80jpxP88BxAkfhnCDQ1bUosHVUulU5wn0czO8=;
-        b=cjXb1NtNItHDl0Rl3fbXi6WC/DWGjBJr3CYVFfznxPmT5cbAnf1oZq7n5uchbrcxLa
-         4OZjtUDdqM2qQXWih/eenZQIMKfFAF5UhYRYSvq1nnQ+7TtPw3+jg2gjJ+/zsW0VlxaQ
-         epeoRNfoPbxmJVxVBgG2Vym+2wNWFj5FYeBDokBBFsP3DAuTIYOfg/PmSu5JQkdgjrxA
-         OBHA6BYF//a13vb8dLFCpXspSkX4V/5NgpYoMgZxXylQV4eZ/NxfXZ0t4XK55bTDAGYJ
-         omIwtrWOd8mnbHooK+UjPz/G+8OHUnHiqAHOMYoNkZECiCXJio+b7+u3Nluqsb9xfks5
-         pY4A==
-X-Gm-Message-State: AFuF++lm0CG7CP4eVKyBcexTCfqJ2dGIXPT9+I+HG6JlEh1FNr99JIKN
-	PvyMTgZfMqG8+K45dRxh4hvmeGSkaLFSmVPpeyR4jk95pRI6auX9g5tVPnvj1U8r3CsLOAooW45
-	M136oQGhTxOrVcgzmMSVSFgFKlc2DUtIOL3PsRe/FXjf3IHwk48IaZpH4gYDy+thigX9QbU53Wc
-	9zUpN6ikPElsIb3XINI5dBlX6xQMU+CUPQ9No=
-X-Gm-Gg: AYBFou2N1dl1vm6v2BpGkM1uO/EnJ5xbBV01Ajh14n4q1bYNsrdfTvJ9p40wjsYLEac
-	6AVMhcVrOVNM5csRUdb4x9yucxUSme4tyjDrgCeypLkpiRS6LUaLiQJd6uH1IfA4wY2mI+p7Wxh
-	JUxjDM37LSnpHnMDc4zjDfbR4vcm4iI2vYMEYn9ghi1yAR3BpLsenwMbEKItDIZMc58qDllX+ru
-	ibksAn1O1EBv2eLBK113GriHZRLQVjzMld8Z4qhhmwNTINweg==
-X-Received: by 2002:a05:6102:fa0:b0:789:100e:3d1c with SMTP id ada2fe7eead31-78a1f26c9b1mr2530395137.5.1788384287909;
-        Wed, 02 Sep 2026 14:24:47 -0700 (PDT)
-X-Received: by 2002:a05:6102:fa0:b0:789:100e:3d1c with SMTP id
- ada2fe7eead31-78a1f26c9b1mr2530387137.5.1788384287412; Wed, 02 Sep 2026
- 14:24:47 -0700 (PDT)
+        bh=11J7HV0c34cSY3p4jWMliNvy3JWe02dlvsHA53imXlQ=;
+        b=SYbKccK+ajByjwhkTppuAqx3niyZ3pGob7v2zkSOP7qLcqeLix67OHNp6ku/8J0zAy
+         KCUVTJEMfJkcXl23jQnFWZGyBANOFfI2kKoaRJ0rPAf8dVOcgSA0l5pzJq+UiXpFcY98
+         EO3BZimF3mZFDohFjMF9N656eQiW579he9k1yRBjoQJ0pUTp9Zqq4R6nYQ8L7zmVucUe
+         OZOmT8odYxsEhp8QRkNRmwFdAxk37CzvMSdRA6rBq8tK1r0sGm5rJeWplsri61sut0AI
+         WDuUqQ73qwoIU8837QSOsKGjKCpNCOELhQjnUnk8KEK0W1BNCIGrBH3SlIe6hCYtqxiM
+         +ozQ==
+X-Gm-Message-State: AFuF++mJxMW9HlPlPyeJavLUsWtDPxtUw2uFYuiTMAcnWrbBbs6IVHe/
+	uAKzE0zeTvFnCwUQqOyyO7UkpsW6+vacfp84voRdrKCicGoX5IqRzAZzkH8GA1gp2kTtwukscl8
+	7Lta/KYAhG+ahmKnfhcWLICoL0OHT9ke8ogjQEbbBpA==
+X-Gm-Gg: AYBFou1UdXj+w7pIOA4cFZ5ZNEHK9MxmWyVz1QivWXMnpY0p/ytSuEaxLK9jvXsHEen
+	qlGIP0L5skRB1VKT1sex3q5QE/lxnoNDI9bVFm1Ex5l5D6o7TVfay57kPGmhaCn1isVVkabb4w4
+	iWPEznBJBsQAIKW1X5EsXj9pYPlLG3mX06SUjmJlNDrDg/QdSfb9UwBwwEO26cE1XYQHgqjifVQ
+	/OvbJL8zKZLl1alIjhUICopLcQAIpY75iEuB/ZoY1L10PcvI9g9GsawbRRFTmGv7pNICwIGOsqt
+	Dke6DVYLvOz6QTgthmM6S/T4f6RDMJ6ogIh+zi+QWdOVuNm96pQ3fSlO2b1Sv/PIiNxPgwe7D7f
+	aDeSSpoZWzFzR
+X-Received: by 2002:a17:90a:d00f:b0:38f:5869:387b with SMTP id
+ 98e67ed59e1d1-39aedee7737mr20131370a91.9.1788440795568; Thu, 03 Sep 2026
+ 06:06:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -67,65 +83,24 @@ List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <CAKKBm2tcCasKYq72u=dBxzKxPUhK7tJWtxThEht2Hpd+bG9FrA@mail.gmail.com>
-In-Reply-To: <CAKKBm2tcCasKYq72u=dBxzKxPUhK7tJWtxThEht2Hpd+bG9FrA@mail.gmail.com>
-From: Tales da Aparecida <tales.aparecida@redhat.com>
-Date: Wed, 2 Sep 2026 18:24:11 -0300
-X-Gm-Features: AcwNN1W6ekTyZ49sF2Ir455IDiZB2skrRsLGAvSmJTaw8IalWKeFCwaE0ziMHVs
-Message-ID: <CAPo4OxT0kiCP5uFSDXN-96a71iVao5A-iGvzzOT3sKdgYe9WNg@mail.gmail.com>
+ <CAPo4OxT0kiCP5uFSDXN-96a71iVao5A-iGvzzOT3sKdgYe9WNg@mail.gmail.com>
+In-Reply-To: <CAPo4OxT0kiCP5uFSDXN-96a71iVao5A-iGvzzOT3sKdgYe9WNg@mail.gmail.com>
+From: Alan Zanoni Peixinho <alan.peixinho@profusion.mobi>
+Date: Thu, 3 Sep 2026 10:06:23 -0300
+X-Gm-Features: AcwNN1X6i8nnLU8RoPRMCb_Q2XBgXb_b0tcFVtjMsV2qNG5xKZ4wsOQxh9pNmkM
+Message-ID: <CAKKBm2vOdkvFAW70CxJ4iH1yCgxPnzM5xz5hzg53Wv3x_H7zzw@mail.gmail.com>
 Subject: Re: Dashboard Updates: UX / CI improvements and Lab consistency.
-To: Alan Zanoni Peixinho <alan.peixinho@profusion.mobi>
+To: Tales da Aparecida <tales.aparecida@redhat.com>
 Cc: kernelci@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PcJbYgEjfB27a9OSArIDdz8IL_HlmWbLvgUFZMcFNgw_1788384288
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 2, 2026 at 6:18=E2=80=AFPM Alan Zanoni Peixinho
-<alan.peixinho@profusion.mobi> wrote:
->
-> Hello KernelCI community,
->
-> We have deployed a few updates and fixes to the dashboard. You can
-> check out the live site here: https://dashboard.kernelci.org.
->
->  UX
->     =E2=80=A2 Trees now have a Compare page: pick two checkouts and see s=
-tatus
-> summary counts, plus builds, boots, and tests that were added,
-> removed, or changed status between A and B.
+Absolutely.
+The best place to discuss A/B comparison is the RFC on GitHub:
+https://github.com/kernelci/dashboard/issues/1951. That is where we
+are collecting feedback on scope, UX, and implementation.
+But if you have something that doesn=E2=80=99t fit that thread (a bug, a
+distinct follow-up), feel free to create a new issue.
 
-This is a fun one! Are you collecting feedback in a github ticket?
-
->     =E2=80=A2 Issue details now show first/last seen per tree, and a link=
- to
-> the first good checkout after the issue appeared, so you can tell
-> whether a failure is tree-specific and where it cleared.
->     =E2=80=A2 Cosmetic enhancements on the commit history plot.
->     =E2=80=A2 Bugfix on tests table to keep column widths stable while so=
-rting
-> and paging.
->     =E2=80=A2 Bugfix on stale frontend cache. Avoiding frontend crash on =
-schema updates.
->     =E2=80=A2 Hardware revision selectors work correctly for cross-origin=
- builds/tests.
->
->   BACKEND
->     =E2=80=A2 Builds and tests are now tied to labs in the database, so l=
-ab
-> filtering and display should be more consistent as data backfills.
->
-> CI
->     =E2=80=A2 Schema migrations are safer on large shared Postgres, a tim=
-eout
-> for lock avoid that new deploys cause a lock contention on production
-> database.
->
->   Best,
->   Alan Peixinho
->   KCI Dashboard Team
->
-
---=20
-Tales
-
+Att
+Alan Peixinho
