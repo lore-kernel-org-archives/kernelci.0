@@ -1,52 +1,53 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DDF362154
-	for <kernelci@lists.linux.dev>; Tue, 15 Sep 2026 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1973B47FB
+	for <kernelci@lists.linux.dev>; Tue, 15 Sep 2026 14:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789481344; cv=none; b=PQkGhEs/e8kRfHStT0jC24KeNefLOry07/g0fj6xEllyhd3RGPMj82TjSQr7q1XXbS00+0DkEIGq7fz/+I7GEMIb5/x6mtRU+/J2q64xWJrzeyiug0I5eEMQIUuQxLCpYySsAD7lOXaQJPg+vd110z4Jfcb1amlDvJZVwqvW/uA=
+	t=1789482499; cv=none; b=YZACn7axOhe0C6eaPr3yOYa9kltLmT3DYKG2L5kQRisaYcubtd3rkhV8cChRmagjNn03QeW2b4iTQHkGnKfMH1Q4kyPZZtL0Wn2qKt3ZR4T5BW6u1Y4H0sxM0OZ1MJ7MG8SEluB40MqJn5gWu0kJjencW8pWJTb1U1sF+Yqge+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789481344; c=relaxed/simple;
-	bh=+FYueeoLe7CB6r0ffmkucB90kJoCHiWq48g9dkvRcBA=;
+	s=arc-20240116; t=1789482499; c=relaxed/simple;
+	bh=cCK9IzaSCGq0nUWIikjWr99k5WhuR0M8DFgQHwe+RUw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SxeVq1dwjV+XMP1TJztiLcXyaDYqTF4JFh3eECjTGWWCnScSJjF71V3kN0I+iRqw1JlMCOTBo6HEZlFXO5OofZvEmzxRCMLgtj71UT0d8n1zEtkKR1ybr4wKqWC/8JQ6fdsOJo7jKGZAaNEd/86qJlu309uAHY3w8hFPdYxxQIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VIydSeuW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8o1tGgLi; arc=none smtp.client-ip=193.142.43.55
+	 Content-Type:Content-Disposition:In-Reply-To; b=cvc60c+5inCMVApI0tMlo6p2TM8S0C0GBjgEN43vq10IRXwbycRVLKWfSA8PIEsv7EwssniY0MNmHKANgeyXquhHdIwI2CrxDBXoIh/Wc9SQ22tFfk9fyEDHvj+t9XTx9GEB0C4ET5268dkPulShxz4F3jDgGRrfnqF/phbBlcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZmdTbXmU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WxFfnVm1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VIydSeuW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8o1tGgLi"
-Date: Tue, 15 Sep 2026 16:08:58 +0200
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZmdTbXmU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WxFfnVm1"
+Date: Tue, 15 Sep 2026 16:28:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1789481340;
+	s=2020; t=1789482495;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+FYueeoLe7CB6r0ffmkucB90kJoCHiWq48g9dkvRcBA=;
-	b=VIydSeuWgQlnkUxb6qaMr2jyK2nS27LSnMA/QMgXYH6l9vVSpAqUzc4ASKW0765aT0grBw
-	iPJhwSbZrr1T5N8BOwLdgGM2z/KizrdEd6/1lkwSHq8p5n48JZ/GJsY2F5W6Nzm7Dpxiu6
-	S3Xqe8K3jbZI6HUAc06sgyRdtjiqWAfD/q5gtxAQHq0uA6NqBP6Y33luZTbx7AZbOzc5T+
-	Q/5NC2Rx2cx4gvBtPCEf75tiffyBFfSTEhJseNOLVeUS8NjQaSKRDlC6SDmXBruhWVR77d
-	xVHVCK+B8kswyeeKOnwv1z9Hw3JL5N0IU9Mq/iIgzURNGMbh1ApAaCqgc8+dng==
+	bh=eyP82m//iKUB3RGOoPn6Wdr7wtTit2+ydqdc0+LTQxI=;
+	b=ZmdTbXmUrB/MOY1yrvNLRuUKASna9R0/ZE/raAbLL4lErK2VqPN0xFXYLJg0prBnCKfhxy
+	FAksV5RmaRAWpWWuplLucucVt+IbqVQKGVTjFxtTexPqdbyCykRHF+sc5nJQWOwqDv/8Hu
+	9T/hSPIyoDj+7Rf436ZvFmisgt3OuQk80BSFaAEABGfRKkB4AoixTZbwRcsohcO/6ucp2/
+	pBOTRRZ28aW+B1z73kPG/AMooFTX1c6EGICmizL1HCXgJ4mhre2wXBXr4k4yQfczXyredd
+	2vp5Jjcrbf7H10kPgsdcm36pZwpXJHqIb9UtE0DAu/91eT8xuOraC/NYyblMDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1789481340;
+	s=2020e; t=1789482495;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+FYueeoLe7CB6r0ffmkucB90kJoCHiWq48g9dkvRcBA=;
-	b=8o1tGgLirOfU83pyU0NP9Obeu7RjSnV+a+Sd3xOzUjKv3LkI5eHoECe7GzNGPV4NQlz/xZ
-	oKLvCKAzo3H41+Bw==
+	bh=eyP82m//iKUB3RGOoPn6Wdr7wtTit2+ydqdc0+LTQxI=;
+	b=WxFfnVm1gPysEhXIQ78qVWAEqOgN7fDfsbuE1rsDC3joU7tDsm2aSpE2Bz1Gmb1k6IVS+N
+	tqb8U2zxAes6XXAA==
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Alan Zanoni Peixinho <alan.peixinho@profusion.mobi>
-Cc: kernelci@lists.linux.dev, kernelci-webdashboard@groups.io,
+To: Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: Alan Zanoni Peixinho <alan.peixinho@profusion.mobi>,
+	kernelci <kernelci@lists.linux.dev>,
+	kernelci-webdashboard <kernelci-webdashboard@groups.io>,
 	John Ogness <john.ogness@linutronix.de>
 Subject: Re: kernelci test results
-Message-ID: <20260915140858.W5JzUKyx@linutronix.de>
+Message-ID: <20260915142813.WZeSH-ck@linutronix.de>
 References: <20260903154354.rXZZL6F9@linutronix.de>
  <CAKKBm2t3EoD4cRiBJzLqpE79ehRs+Xs-Ypb5ta3Y7rC=0jjyKA@mail.gmail.com>
+ <1a06ad7a5bf.36f8f8422502097.1545856430736765843@collabora.com>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -55,68 +56,42 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAKKBm2t3EoD4cRiBJzLqpE79ehRs+Xs-Ypb5ta3Y7rC=0jjyKA@mail.gmail.com>
+In-Reply-To: <1a06ad7a5bf.36f8f8422502097.1545856430736765843@collabora.com>
 
-On 2026-09-03 15:37:09 [-0300], Alan Zanoni Peixinho wrote:
-> Hi Sebastian, I work with the dashboard team, so I hope I am able to help=
- you.
-Hi Alan,
+On 2026-09-04 08:15:12 [+0300], Denys Fedoryshchenko wrote:
+> Hi Sebastian, Alan
+Hi,
 
-> First of all, thanks for using the dashboard, and for taking time to
-> write this up. Scenarios like this one are exactly what help us find
-> the UX gaps for improvement.
->=20
-> The dashboard is mostly organized around tree checkouts first.
-> If i understood it properly you might be able to achieve what you are
-> looking for via:
-> 1. Selecting a tree (ie stable-rt/v6.6-rt).
-> 2. Clicking on the filters button on the right. There we can apply
-> filters for configs (defconfig+preempt_rt, etc).
-> 3. We click on the tests tab (default tab is for builds).
-> 4. On the list of tests you can search for test paths (cyclictest,
-> rt-tests, etc).
+> The system currently creates a short log extract only when a build or
+> boot test is marked as failed. This job completed successfully,
+> including the boot and cyclictest, so the log was stored but not
+> automatically analyzed for an extract.
+> The kernel warning is present in the full log and our analyzer can
+> recognize it, but it was missed because the overall job passed. This
+> is a limitation in the current reporting flow.
+> We initially chose to create log extracts only for failed builds or
+> boot tests because successful boots often contain harmless or known
+> warnings, such as spurious IRQ messages. Reporting every warning as an
+> issue could create substantial noise that kernel developers may not
+> find actionable.
+> We could review this policy and maintain an ignore list for known,
+> non-actionable messages. That would let us highlight new or unexpected
+> warnings without creating unnecessary noise for kernel developers.
 
-Oh, okay. This makes things a bit easier.
-Now that I clicked next tree and filter the preempt_rt builds I see
-"builds", "boots" and "tests". Now clicking below I can get all the
-cyclictest results for all the boards.
-The confusing part is that "boots" says 0 but then I can download the
-complete log for one of the boards where the test did run. So I guess
-"boot" is something else here.
+Okay. So this might look okay since the tests pass. With my kernel
+developer hat on, I have to say that there should be warnings of any
+kind. Looking at log from
+	https://dashboard.kernelci.org/test/maestro%3A6aa88a0d20239ade9037b72f
 
-> Link for the view:
-> https://dashboard.kernelci.org/tree/stable-rt/v6.6-rt/84925bb144f49eb0d5f=
-4c5c29f690b4bbf84903b?df|c|defconfig%2Bpreempt_rt=3Dtrue&p=3Dt
->=20
-> That list is for that checkout across hardware, so you do not have to
-> go board by board. (Unfortunately there is still no search for =E2=80=9Ct=
-his
-> test on this device over time=E2=80=9D across all trees.)
+reminds that I poked at the first error "Event mtu3_gadget_ep_set_halt
+has double dereference" but it is still there so I need to poke again.
+There there is
+|Unable to handle kernel NULL pointer dereference at virtual address 0000000000000019
+which is definitely not normal.
+Someone with hardware should look at this. I will try to forward it,
+maybe it goes away :)
 
-I see.
-
-> About the other questions.
->=20
-> All the logs presented are the ones that have been submitted via KCI
-> submissions, so there might be some missing information when not
-> reported.
-
-Okay. What I see that the "kubernetes" seem not to submit anything but
-the actual tests do.
-
-> On the topic of notifying on log errors, this is a feature on active
-> discussion, to automate notification for first for boots and later for
-> test failures as well. Today we only notify registered issues.
->=20
-> We are actually looking for some feedback of dashboard users to help
-> us steer on the roadmap for new features, and your help would be much
-> appreciated.
-
-Is there something you want me to do?
-
-> Att
-> Alan Peixinho
-> KernelCI Dashboard Team
+Even the "spurious IRQ messages" is a sign of bad driver/ hardware setup
+and shouldn't be ignored.
 
 Sebastian
