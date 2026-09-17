@@ -1,82 +1,82 @@
 Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377D7598C16
-	for <kernelci@lists.linux.dev>; Thu, 17 Sep 2026 14:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665E95921F7
+	for <kernelci@lists.linux.dev>; Thu, 17 Sep 2026 14:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789655587; cv=none; b=f/REDSpCw8wrSlme7a+Ji9OTgc2kI/A5UzL17YieliDF/pt+taf/uGaYM3qCszvevdMkdeHJh7apNmISKxskrFMw3ja04IWRBkhFz4T8/osMIqo36NgPudzJSOTr+mYPuzmsghRKXMYI1JSB7Lo2hMT65EImMEoOpZ3CpopucwY=
+	t=1789655731; cv=none; b=m3cR5UAKc3hWygmakmyBvgQB4pWzmrWE7N0+cv5d+Ncuh+zdXNCjRXVZ4M5+V0rdKGU0xLCo4/6ZtJqDLlwevOj9zOCk2HFs4QpeacWL7WchP51bctob/doO/Ikrlb1xBTW7Df+NzvWvOABS4AeH9bdeuBAbUJttbij+msnjUvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789655587; c=relaxed/simple;
-	bh=vPVgmDiDDtwo5zhkLZsV8LO1+WdOYVqm1EEMNK0zPvE=;
+	s=arc-20240116; t=1789655731; c=relaxed/simple;
+	bh=RXPUpqBV0EdVnMaslQGmJTUUacidp3JbY6/4OUJnovc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CDagJCOnH6sEGufYvfqrdbxhVv9U+Yys3uUe2HKLsJrB/S1eXkwsQPTWD5V3gvED+eLqQUoTWHx0ST4SDqJhNUCdRBnncgacJL8C7RXaixD0Aci7G/I3Hi3nTWzLG7C/3UjRcrFmC2EbG9m3428pS6kpGqaig7q68jNyoVjrlOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=cMXjDCEm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=t0ta6Bnf; arc=none smtp.client-ip=202.12.124.148
+	 Content-Type:Content-Disposition:In-Reply-To; b=bwHWfRCMVMmaczRcJiKRKQr2n0+97WTkfoLWFIVHRhmR6u27xfubc39itLuq0Tx/bavPrkg1CCR0ydiKUci2Qa/2l/zrFBeR/JfkwXSlNqc9JG5wCY5O6RfK+x3XQrk/tuw/q78QS0y2wY0kRtCc92rXZjg+S0S1CtDF6l/D0xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=J9dnoowk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nW96NBMU; arc=none smtp.client-ip=202.12.124.148
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="cMXjDCEm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="t0ta6Bnf"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2052B1D00132;
-	Thu, 17 Sep 2026 10:33:03 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Thu, 17 Sep 2026 10:33:03 -0400
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="J9dnoowk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nW96NBMU"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 6C6681D000CA;
+	Thu, 17 Sep 2026 10:35:28 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 17 Sep 2026 10:35:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1789655582;
-	 x=1789741982; bh=IS4czLJ5SOp6rGL3kS+PS3pp+tKF7nr2OEX4ALKkM3w=; b=
-	cMXjDCEmn6K8EJ0mfGagfhwH0lEcGTS75tnb9YxLZVQ74iGEDQs5qI6ieFcLjDHF
-	06V8J+43EwR1sjaujM0GMLNgwHDQ85fUVEXal8jtR2Ao2IK/DAoUZDBl5S17UjI3
-	3UyAeJoF/naVLzKi9UWielHitY3dHD36q1DrlwoTCkWa4/nnHFItj59eK5taXLay
-	aGFspCEAJS/JdUW1nilVpamXbFrXKxadD14bQetFLb/z0aK0DeKMM6y2ep981Evw
-	AgE1zIBUD5AD1m6KsmyEqNQTPTVs4hg3xGqLMmCSmXkr1sA7IhknC3cF2+E7DUAE
-	vrdNFLywhHJsuqaAr4rUSg==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1789655728;
+	 x=1789742128; bh=W4mhKT180sx3H8YUpcgd2R3Z/cnF3MM1bECLEarhK7s=; b=
+	J9dnoowkifI9ZSCTH59BZVDiwwRsXAUT4Z+LdAXEpVVcpcKXxYt1DVPTexgytlNU
+	LgyvXYFFwnCLsHxYRdKMGQNSt4+evCfZ2JdpOXaTYlBW4b4u9IkPn4aJC4UH9422
+	I/O2aNCnnIZ3GvRutfyuV8IYixBzeTTKnmkh8UJqBBU1ASAlEJb/1aYfkR+z4YtD
+	ekAGxeEB4SSO8V8kX3EmSrg19I6gaESD2rZSPHekC6Dkoh5H2UUJuEog8epiaBrz
+	qxo2pzrekU34D/kkdFe9X5bZ/e/9S3MN+YQMMS50cVgWnlgor3fRdJLTVECbNseD
+	QtfvgncCvwOWELtDenI4Bw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789655582; x=
-	1789741982; bh=IS4czLJ5SOp6rGL3kS+PS3pp+tKF7nr2OEX4ALKkM3w=; b=t
-	0ta6BnfHzrexkOu7tV/HWTIzYPnkb9j+/83GQsRPt6RITwV/a1x0KhPu0YD/HGCn
-	1sNxhXTFP5eOtEkYRwKewScd5OdrfQbmXz6kCjo99KMTeOiYkjHrtSvDtCzaXEyR
-	UfOJUpSqu1GFftl4WuNJRdKnmnSQMt42CskvN3vR+NPIOxhGJ/3WMAVrf2I8Qynk
-	78k854LxZfrD3jdKLRV5NHT7H2AEVuD5BVTWD9/4+tjbsXXnHSkkx/Us0sQ1NisH
-	2lzp0QV4FPP2AE5eiA9lg5spKRKQuJakEJCsON4bOAMLyBzmEv17kM9Q5z4OV3cd
-	XVY2C9ITIadd89r16k6MA==
-X-ME-Sender: <xms:HvqranCdgJXH2LVXUhfoeiaWradyLaynU5Soe4mDEqXW8AfR5T7_QA>
-    <xme:HvqravysQ3djd4VT0QUzscOAiybXckf4KKGR8kEpXGJI54Ju9tdb-3MyNKNosqJ_W
-    N6lCfzqlurL4OaFmydi6LgDpOBRbrOBnjgzu_jp0y2mmEbn>
-X-ME-Received: <xmr:Hvqrak3rzoA6wCnJ_XYnv90ZqWN16iCDbvtco7ZsM2HZK06tSR08fJ2wI_LW>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789655728; x=
+	1789742128; bh=W4mhKT180sx3H8YUpcgd2R3Z/cnF3MM1bECLEarhK7s=; b=n
+	W96NBMUR7fCXEX4mZJhttRasTqA2miE4J4E3qv5xlJ46U0TcACHfk+Tz2zhRB4lI
+	rggV4RnS9jmFc2fI3Le7MIlzwITmf7RA1X24qNw0GdGyvSBB53SqyoezCwh3aQNA
+	vAXpyB7Mkbhdih+C+wlrkpPVRiqMBbsmpYEowoNs39w0flvXcgCZlGbW1ROUJww3
+	XWyjCc4EUJsMVEN1wTIxu6IxV+r1L99k0bZwEclwR4mdrrYMDRB0E5PTIFT400Ez
+	RjwUPPcbyWm06VbdMoIoTIK2Q50YCXIxFalW81g7TMPujJ6ifd/OM10czlA+kAlQ
+	LXhuGC/kiDLQ+zFoXx91g==
+X-ME-Sender: <xms:sPqragAKap0oCViLiLNKC0l5fAUO3_uxSBmJqfO-YZ9XS-HchQbxgQ>
+    <xme:sPqrakxG8IGHbdI6axOABxAEWRrcf_7wZ9PiRbJWP3Ix3mZAt6mz8GsfQ9Sd5kDy8
+    NjtZeLeKGotfpQQx44Ohtm3o5xyV6B6kxkP3bSsTDG3TZnh>
+X-ME-Received: <xmr:sPqral0SytMOjxS1lXu8BI6zuRnenGRNpetiX-N_P9uFN3d_TWDh93jb1vA0>
 X-ME-Proxy-Cause: dmFkZTFTPoz4QrNoLJ0PWVY/pNWcCyXmrTqGiGLTTyKFcLQQjV9eJrUKzMxYi/DhMQ+QcR
     Bt9DEX1HdVnWYX4egI0Rz8btIgqc0lDhWW4Z1l4z71ydXYihSin9J4UL3URIyRRtzVSUPH
     gK3ormbiryjUYKopiNDPkATMnVa89dqjEy8Pvxn56zaGM2rIFEC30+95jnWATvMzzl52C/
     RyJOafw5kfcoKFIF1N46Gv6ha94y7GT9NpKHDKS0/A9Gbqkgpfsr09y5VArToFf3obugzR
-    VPjS8SUOr/LeSN2ZA9ZU65OlikshSy9EZAGuigY0BcYvOxFL/3dbTJtGWrtQ13R5UFC3QK
-    oqv8zoV6mpVM+b9G+Gtsby6mcmrfhtL0Xt4EwgTzC4PMIJDnhNdFzvEVyPYNmV9ZPZE4bA
-    mh9Lvf86p9VueCr89iFUymXga+K55/Rh/Wnk5LwuRCfSCS5AKRjnC64eUceexOklJCJMCY
-    IyoeBfBvxhPEI4ogWPPTvW/XdWlv9cQHQwFmqVmUfX5PjLajQPGmfg8xWx7EUiiwdjsdyC
-    JdkDsYfo495x15+z4wsRKtYmkdHWbP+bP6GiJfL1APrMsFaGvw5gyFpkGmKA8xzT/APMIt
-    c7R/dbRaN77o6+c+fW7EYpgjHOJ1nxj6uh0NXQlRXDGA5xwg2rRR7GdlQ9bQ
-X-ME-Proxy: <xmx:HvqravzLLP8q6NV9HttZ6Meg7P8g7tgtGj16QyHnEq4vjnVM1EDNMQ>
-    <xmx:HvqrarEWXMGhWczRQTLdC3T0BEBESVNLw3PUTliYqG2ZmegftP3uuQ>
-    <xmx:HvqraiYPEswjKh3ZLhq9kaYlrpv-UopSvJ2eFDZPqQ7M--wRFC982w>
-    <xmx:HvqratDyLnyRnb_ZNwlPO-XU9glsaAgjatZfAd5SEwQRdgp1qUJlcQ>
-    <xmx:HvqrahY9HBqUstl_-hC5uOzVcGsL4OW6IXsBxAqjN_Ek-5zZweUr36MY>
+    VPjS8SUOr/LeSN2ZA9ZU65OlikshSy9EZAGuigY0BcYvOxFL/3dbTJtGWrtQ13R5UFC3dE
+    cIml1nxoEpg+Ne0TXLC5ChxKgE4reyHeKYzSgd4HD9HskA+JgnYsKGXwQtWC5ph6qxHlH5
+    hu78iLkYrC6umVVvmEm2DQzsARfsOWW7ZTfcfOLoI01OlkDH30jqi4jyE2EFPUzvaCFmPN
+    Kz/LbnYXi08gI3luMSOkV8R0e8s5Qnp2zE/NRQFe7XNIFRLmfz/vpuRIbD0kb+o+oTQD4E
+    /QIqWCtSu24ScJ5gl5rHJIq/UZzZkIiins0uyMeRE8FgC6uMLWiWhRgo9vQcyZZXjuUxsf
+    /oQ5HG3wzcDQa4AHj/8LAsJVq+HBaxIeCmNZ60ClxP2SVm17cxacodW/vt/g
+X-ME-Proxy: <xmx:sPqraszN9NvhqrqXZ0wCWSv9MVEs2HbxOIDTM62SiCKPmbHGYWyMDg>
+    <xmx:sPqrakG85X89GzFq1nfLBMc_O9GpDjBimKaVIhLULeJPSfi271xlWQ>
+    <xmx:sPqranbtLBgIAnNss7pEejc8wmGlL9oFl2TitKxbj-gGTBk3pnDlcQ>
+    <xmx:sPqrauB6G1mgy5_i42IdITPYMxXl9WAp4x3w2EthlsdU74bdOlhcGQ>
+    <xmx:sPqraqbqt8Q3na2Eb8gS3fvP9CdfwgVXKPuyoK-sGyorThxp-NSVXULV>
 Feedback-ID: i787e41f1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Sep 2026 10:33:02 -0400 (EDT)
-Date: Thu, 17 Sep 2026 15:31:06 +0100
+ 17 Sep 2026 10:35:27 -0400 (EDT)
+Date: Thu, 17 Sep 2026 15:33:32 +0100
 From: Greg KH <greg@kroah.com>
 To: kernelci@lists.linux.dev
 Cc: kernelci-results@groups.io, stable@vger.kernel.org
 Subject: Re: [REGRESSION] =?utf-8?Q?stable-rc=2Flin?=
- =?utf-8?Q?ux-6=2E12=2Ey=3A_=28build=29passing_argument_1_of_=E2=80=98link?=
- =?utf-8?B?bW9kZV9maWxs4oCZ?= makes pointer from integer wi...
-Message-ID: <2026091702-widely-stubble-44f6@gregkh>
-References: <178965354504.144182.1209886168149833440@kernelci.org>
+ =?utf-8?B?dXgtNi4xMi55OiAoYnVpbGQpa2VybmVsL3NjaGVkL2V4dC5jOjM4Mzg6MTM6?=
+ =?utf-8?B?IGVycm9yOiDigJhzY3hfaW5pdF90YXNrX2VuYWJsZWTigJk=?= undeclar...
+Message-ID: <2026091727-sterilize-hurler-7868@gregkh>
+References: <178965354733.144182.3599012631280321500@kernelci.org>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
@@ -86,29 +86,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <178965354504.144182.1209886168149833440@kernelci.org>
+In-Reply-To: <178965354733.144182.3599012631280321500@kernelci.org>
 
-On Thu, Sep 17, 2026 at 01:59:05PM -0000, KernelCI bot wrote:
+On Thu, Sep 17, 2026 at 01:59:07PM -0000, KernelCI bot wrote:
 > New build issue found on stable-rc/linux-6.12.y:
 > 
 > ---
-> passing argument 1 of ‘linkmode_fill’ makes pointer from integer without a cast [-Wint-conversion] in drivers/net/phy/phy_device.o (drivers/net/phy/phy_device.c) [logspec:kbuild,kbuild.compiler.error]
+> kernel/sched/ext.c:3838:13: error: ‘scx_init_task_enabled’ undeclared (first use in this function); did you mean ‘scx_ops_init_task_enabled’? in kernel/sched/build_policy.o (kernel/sched/build_policy.c) [logspec:kbuild,kbuild.compiler.error]
 > ---
 > 
 > Log excerpt:
 > =====================================================
-> /tmp/kci/linux/drivers/net/phy/phy_device.c:3059:29: error: passing argument 1 of ‘linkmode_fill’ makes pointer from integer without a cast [-Wint-conversion]
->  3059 |         linkmode_fill(phydev->eee_broken_modes);
->       |                       ~~~~~~^~~~~~~~~~~~~~~~~~
->       |                             |
->       |                             u32 {aka unsigned int}
-> In file included from /tmp/kci/linux/include/linux/mii.h:13,
->                  from /tmp/kci/linux/include/uapi/linux/mdio.h:15,
->                  from /tmp/kci/linux/include/linux/mdio.h:9,
->                  from /tmp/kci/linux/drivers/net/phy/phy_device.c:23:
-> /tmp/kci/linux/include/linux/linkmode.h:13:49: note: expected ‘long unsigned int *’ but argument is of type ‘u32’ {aka ‘unsigned int’}
->    13 | static inline void linkmode_fill(unsigned long *dst)
->       |                                  ~~~~~~~~~~~~~~~^~~
+> In file included from kernel/sched/build_policy.c:63:
+> kernel/sched/ext.c: In function ‘scx_cancel_fork’:
+> kernel/sched/ext.c:3838:13: error: ‘scx_init_task_enabled’ undeclared (first use in this function); did you mean ‘scx_ops_init_task_enabled’?
+>  3838 |         if (scx_init_task_enabled) {
+>       |             ^~~~~~~~~~~~~~~~~~~~~
+>       |             scx_ops_init_task_enabled
+> kernel/sched/ext.c:3838:13: note: each undeclared identifier is reported only once for each function it appears in
+>   CC      io_uring/poll.o
 > 
 > =====================================================
 > 
@@ -120,28 +116,18 @@ On Thu, Sep 17, 2026 at 01:59:05PM -0000, KernelCI bot wrote:
 > For complete logs and details about the environment used, see the issue
 > on the KernelCI dashboard:
 > 
-> - dashboard: https://d.kernelci.org/i/maestro:bdb28b77374b282063c23c44b336428b1a4691fb
+> - dashboard: https://d.kernelci.org/i/maestro:bea4dd538099462d8c92badd44596b9958bf40cc
 > - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
 > - commit HEAD:  09da4c7d441294e4264cc4804d8bc76433d5e0c1
 > 
 > # Builds where the incident occurred:
 > 
-> ## defconfig on (riscv):
+> ## defconfig+netdev+nfs-root-boot+kselftest on (arm64):
 > - compiler: gcc-14
-> - config: None
-> - dashboard: https://d.kernelci.org/build/maestro:6aabeb69fc1857a999df1355
+> - config: https://files.kernelci.org/kbuild-gcc-14-arm64-nfsboot-6aabeb25fc1857a999df12dc/.config
+> - dashboard: https://d.kernelci.org/build/maestro:6aabeb25fc1857a999df12dc
 > 
-> ## defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on (arm64):
-> - compiler: gcc-14
-> - config: https://files.kernelci.org/kbuild-gcc-14-arm64-chromebook-6aabeab8fc1857a999df0f48/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6aabeab8fc1857a999df0f48
-> 
-> ## x86_64_defconfig+aws-ec2 on (x86_64):
-> - compiler: gcc-15
-> - config: None
-> - dashboard: https://d.kernelci.org/build/maestro:6aabeb88fc1857a999df1404
-> 
-> #kernelci issue maestro:bdb28b77374b282063c23c44b336428b1a4691fb
+> #kernelci issue maestro:bea4dd538099462d8c92badd44596b9958bf40cc
 > 
 > --
 > This is an experimental report format. Please send feedback in!
@@ -150,4 +136,6 @@ On Thu, Sep 17, 2026 at 01:59:05PM -0000, KernelCI bot wrote:
 > Made with love by the KernelCI team - https://kernelci.org
 > 
 
-Now fixed, thanks!
+Now fixed, thanks.
+
+greg k-h
