@@ -1,141 +1,109 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665E95921F7
-	for <kernelci@lists.linux.dev>; Thu, 17 Sep 2026 14:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0EB47ECCE
+	for <kernelci@lists.linux.dev>; Fri, 18 Sep 2026 10:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789655731; cv=none; b=m3cR5UAKc3hWygmakmyBvgQB4pWzmrWE7N0+cv5d+Ncuh+zdXNCjRXVZ4M5+V0rdKGU0xLCo4/6ZtJqDLlwevOj9zOCk2HFs4QpeacWL7WchP51bctob/doO/Ikrlb1xBTW7Df+NzvWvOABS4AeH9bdeuBAbUJttbij+msnjUvM=
+	t=1789725857; cv=none; b=PdoREKkAj3eneq27GCFlrsI9xulOn3mQoX790jV226GBvKldR/aJonfn4eXILO5rRHe6M/M3v2lpBf2rWFcJ9xu+PRIARByL9Gx0SFopq++Ga0bIVhJsFNSj12m3vNYHz9Zud8ut+J7dA5t6wNaknrDhft0dRIMm87+7Z4N6kts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789655731; c=relaxed/simple;
-	bh=RXPUpqBV0EdVnMaslQGmJTUUacidp3JbY6/4OUJnovc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bwHWfRCMVMmaczRcJiKRKQr2n0+97WTkfoLWFIVHRhmR6u27xfubc39itLuq0Tx/bavPrkg1CCR0ydiKUci2Qa/2l/zrFBeR/JfkwXSlNqc9JG5wCY5O6RfK+x3XQrk/tuw/q78QS0y2wY0kRtCc92rXZjg+S0S1CtDF6l/D0xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=J9dnoowk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nW96NBMU; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	s=arc-20240116; t=1789725857; c=relaxed/simple;
+	bh=Ysypt3jaDk9LX7+TGymG8tHempYw1fVXIlZASODTJug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tLeYuBV7OHTJGofzwRndkjd7UrCZz+M5wat/77vbKEUpOcHJD1d/MOGz7LliE2NlEbVB4bmJjWj/4tBd39OsiGMkbj+21nsmp+8PlWtT0ctAFruIqQCsvBPxpgs9zOkQou8Sk7ewcsnDw8pNhSZacyLWO6nY2CpECgRCJsnJnF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=JIHeV+9/; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="J9dnoowk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nW96NBMU"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 6C6681D000CA;
-	Thu, 17 Sep 2026 10:35:28 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 17 Sep 2026 10:35:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1789655728;
-	 x=1789742128; bh=W4mhKT180sx3H8YUpcgd2R3Z/cnF3MM1bECLEarhK7s=; b=
-	J9dnoowkifI9ZSCTH59BZVDiwwRsXAUT4Z+LdAXEpVVcpcKXxYt1DVPTexgytlNU
-	LgyvXYFFwnCLsHxYRdKMGQNSt4+evCfZ2JdpOXaTYlBW4b4u9IkPn4aJC4UH9422
-	I/O2aNCnnIZ3GvRutfyuV8IYixBzeTTKnmkh8UJqBBU1ASAlEJb/1aYfkR+z4YtD
-	ekAGxeEB4SSO8V8kX3EmSrg19I6gaESD2rZSPHekC6Dkoh5H2UUJuEog8epiaBrz
-	qxo2pzrekU34D/kkdFe9X5bZ/e/9S3MN+YQMMS50cVgWnlgor3fRdJLTVECbNseD
-	QtfvgncCvwOWELtDenI4Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789655728; x=
-	1789742128; bh=W4mhKT180sx3H8YUpcgd2R3Z/cnF3MM1bECLEarhK7s=; b=n
-	W96NBMUR7fCXEX4mZJhttRasTqA2miE4J4E3qv5xlJ46U0TcACHfk+Tz2zhRB4lI
-	rggV4RnS9jmFc2fI3Le7MIlzwITmf7RA1X24qNw0GdGyvSBB53SqyoezCwh3aQNA
-	vAXpyB7Mkbhdih+C+wlrkpPVRiqMBbsmpYEowoNs39w0flvXcgCZlGbW1ROUJww3
-	XWyjCc4EUJsMVEN1wTIxu6IxV+r1L99k0bZwEclwR4mdrrYMDRB0E5PTIFT400Ez
-	RjwUPPcbyWm06VbdMoIoTIK2Q50YCXIxFalW81g7TMPujJ6ifd/OM10czlA+kAlQ
-	LXhuGC/kiDLQ+zFoXx91g==
-X-ME-Sender: <xms:sPqragAKap0oCViLiLNKC0l5fAUO3_uxSBmJqfO-YZ9XS-HchQbxgQ>
-    <xme:sPqrakxG8IGHbdI6axOABxAEWRrcf_7wZ9PiRbJWP3Ix3mZAt6mz8GsfQ9Sd5kDy8
-    NjtZeLeKGotfpQQx44Ohtm3o5xyV6B6kxkP3bSsTDG3TZnh>
-X-ME-Received: <xmr:sPqral0SytMOjxS1lXu8BI6zuRnenGRNpetiX-N_P9uFN3d_TWDh93jb1vA0>
-X-ME-Proxy-Cause: dmFkZTFTPoz4QrNoLJ0PWVY/pNWcCyXmrTqGiGLTTyKFcLQQjV9eJrUKzMxYi/DhMQ+QcR
-    Bt9DEX1HdVnWYX4egI0Rz8btIgqc0lDhWW4Z1l4z71ydXYihSin9J4UL3URIyRRtzVSUPH
-    gK3ormbiryjUYKopiNDPkATMnVa89dqjEy8Pvxn56zaGM2rIFEC30+95jnWATvMzzl52C/
-    RyJOafw5kfcoKFIF1N46Gv6ha94y7GT9NpKHDKS0/A9Gbqkgpfsr09y5VArToFf3obugzR
-    VPjS8SUOr/LeSN2ZA9ZU65OlikshSy9EZAGuigY0BcYvOxFL/3dbTJtGWrtQ13R5UFC3dE
-    cIml1nxoEpg+Ne0TXLC5ChxKgE4reyHeKYzSgd4HD9HskA+JgnYsKGXwQtWC5ph6qxHlH5
-    hu78iLkYrC6umVVvmEm2DQzsARfsOWW7ZTfcfOLoI01OlkDH30jqi4jyE2EFPUzvaCFmPN
-    Kz/LbnYXi08gI3luMSOkV8R0e8s5Qnp2zE/NRQFe7XNIFRLmfz/vpuRIbD0kb+o+oTQD4E
-    /QIqWCtSu24ScJ5gl5rHJIq/UZzZkIiins0uyMeRE8FgC6uMLWiWhRgo9vQcyZZXjuUxsf
-    /oQ5HG3wzcDQa4AHj/8LAsJVq+HBaxIeCmNZ60ClxP2SVm17cxacodW/vt/g
-X-ME-Proxy: <xmx:sPqraszN9NvhqrqXZ0wCWSv9MVEs2HbxOIDTM62SiCKPmbHGYWyMDg>
-    <xmx:sPqrakG85X89GzFq1nfLBMc_O9GpDjBimKaVIhLULeJPSfi271xlWQ>
-    <xmx:sPqranbtLBgIAnNss7pEejc8wmGlL9oFl2TitKxbj-gGTBk3pnDlcQ>
-    <xmx:sPqrauB6G1mgy5_i42IdITPYMxXl9WAp4x3w2EthlsdU74bdOlhcGQ>
-    <xmx:sPqraqbqt8Q3na2Eb8gS3fvP9CdfwgVXKPuyoK-sGyorThxp-NSVXULV>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Sep 2026 10:35:27 -0400 (EDT)
-Date: Thu, 17 Sep 2026 15:33:32 +0100
-From: Greg KH <greg@kroah.com>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io, stable@vger.kernel.org
-Subject: Re: [REGRESSION] =?utf-8?Q?stable-rc=2Flin?=
- =?utf-8?B?dXgtNi4xMi55OiAoYnVpbGQpa2VybmVsL3NjaGVkL2V4dC5jOjM4Mzg6MTM6?=
- =?utf-8?B?IGVycm9yOiDigJhzY3hfaW5pdF90YXNrX2VuYWJsZWTigJk=?= undeclar...
-Message-ID: <2026091727-sterilize-hurler-7868@gregkh>
-References: <178965354733.144182.3599012631280321500@kernelci.org>
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="JIHeV+9/"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CB9D31F416;
+	Fri, 18 Sep 2026 10:04:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1789725851;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3+gDfmq7h3XDTeTaV1GQcAeaaLYfq4gZqiyPpz3v3UQ=;
+	b=JIHeV+9/N02rYia1t1EvGJLRUi0ZbHU4t5xlCuq92pB5vEbVOXOKzzOTqjHeOwgEkIAFzb
+	pzZemjNFBUtvvTcNgcqlAW2mOP+mF8bdY3N+t/KlUlBK2msbtyL3J68+uQz76x0TU5ZQb0
+	SsAEB7RZc0HqLqxp0J3aXcxXEu8b8DTlCs+uMvjkD8TIl6+CyV4UFl9B2eZiDpr8sH9SiR
+	3bSitj0RwBrHeqiS1cIYxH583+qXmwtUph7ETUyEl7jNcTSwmNwLdJqxznngb+LthOgT7H
+	TpvQxFxtgYI3CdhdOOMkgcRSKtQ1CuxiYuNOAa/tB2RAxupOeOPcz4i2BAuFRA==
+Message-ID: <03e8513a-3480-42a5-9d1b-fad6c36ed07a@gtucker.io>
+Date: Fri, 18 Sep 2026 12:04:09 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178965354733.144182.3599012631280321500@kernelci.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] scripts: add TOML config to container tool
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>
+Cc: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-doc@vger.kernel.org,
+ workflows@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, kernelci@lists.linux.dev,
+ automated-testing@lists.yoctoproject.org
+References: <68b14a76a4cb2e6437c869bab948983a98acffbd.1788779245.git.gtucker@gtucker.io>
+Content-Language: en-GB
+From: Guillaume Tucker <gtucker@gtucker.io>
+Organization: gtucker.io
+In-Reply-To: <68b14a76a4cb2e6437c869bab948983a98acffbd.1788779245.git.gtucker@gtucker.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
+X-GND-Score: -100
+X-GND-Cause: dmFkZTFxUUHp53EL18Bb9M/JQza76+h26K4mGaSDc5K9XDme86qqMnFHH+rvynti1TbPuqrrc9xboTwjPdi2J4SEX38+db+SG75sK8c0TN5ScJZdIEvWoliaOA6h+tXUsq6PuPZUTut0MpLdmT94mvohnuNIeUeqE9wphUH5ZXd2szVUawzg1njiRkG8qir4EZeQlk7z1QcBzQ+30iYBH/C8NsuUotOoHF7iiC/2UQ/J0o0ofVsvYMZKf24ygtJVS3l+fLrX4UM1AM1QDtFBGi36R2qgWziM4q5xodfyHG2jeoHE+Zt3X+iutDD1qMe8xrm5y+znxfhDaAF1ioC9Dt5ZamwKDM48/ZW/e22b1PmbGReFQ9/YuLqjPmy06OwntVGS8G0ysfcgFlE2m3qHEcdkOI/MGu2V7VgawQG9WZ+4uw6QcoPrr0y2uqXLT4QP578jK0Z7v6i97udmAXuRAGSKkzxJlKtDqNKqQljfiIKiran5vR2waJgxNl99K5tVlb4VWGAQ2qd4aK7Wa4IYki278qTrGgGY3fe7eg6hd6FKVmwS9OyWfhuCy0W1DM8YS9boqZO5VPIEFyK1GGyBp5mUJCPYpJjpE5oD3Su/cZPbf6oKxm0Y9P+QGcXClTdiO3Y1wU+8Ofiwe5UQQX6v745qVzGRPHM/U0rQ2rzMCgALytE5Cw
+X-GND-State: clean
 
-On Thu, Sep 17, 2026 at 01:59:07PM -0000, KernelCI bot wrote:
-> New build issue found on stable-rc/linux-6.12.y:
+Hello,
+
+On 07/09/2026 13:10, Guillaume Tucker wrote:
+> Add support for a TOML configuration file to the scripts/container
+> tool.  This improves user experience by not having to keep passing the
+> same command line options all the time or overly relying on built-in
+> default values.  Include the concept of 'profiles' with different
+> named sections in the file to cover various use cases.
 > 
+> Command line options take precedence over the config file, and values
+> defined in profile sections take precedence over the default one.
+> 
+> Add a -c option to override the location of the .container.toml config
+> file which should otherwise be located in the current working
+> directory.  If not found, the file is silently ignored as it is not
+> strictly required unless the -c option is used.
+> 
+> Add a -p option to choose a particular profile section in the config
+> file rather than the default.
+> 
+> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
+> Acked-by: Nicolas Schier <n.schier@fritz.com>
 > ---
-> kernel/sched/ext.c:3838:13: error: ‘scx_init_task_enabled’ undeclared (first use in this function); did you mean ‘scx_ops_init_task_enabled’? in kernel/sched/build_policy.o (kernel/sched/build_policy.c) [logspec:kbuild,kbuild.compiler.error]
-> ---
 > 
-> Log excerpt:
-> =====================================================
-> In file included from kernel/sched/build_policy.c:63:
-> kernel/sched/ext.c: In function ‘scx_cancel_fork’:
-> kernel/sched/ext.c:3838:13: error: ‘scx_init_task_enabled’ undeclared (first use in this function); did you mean ‘scx_ops_init_task_enabled’?
->  3838 |         if (scx_init_task_enabled) {
->       |             ^~~~~~~~~~~~~~~~~~~~~
->       |             scx_ops_init_task_enabled
-> kernel/sched/ext.c:3838:13: note: each undeclared identifier is reported only once for each function it appears in
->   CC      io_uring/poll.o
+> Notes:
+>     Changes in v2:
+>     - fix uid / gid handling when set to 0 (root)
+>     
+>     Changes in v3:
+>     - fix logic when loading config profiles using None
+>     - fix typo with missing whitespace in help message
+>     - clarify how UID gets used as default value for GID
+>     
+>     Changes in v4:
+>     - drop registry option from TOML config
 > 
-> =====================================================
-> 
-> When fixing this issue, please attribute this report according to the
-> patch submission rules:
-> 
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> 
-> For complete logs and details about the environment used, see the issue
-> on the KernelCI dashboard:
-> 
-> - dashboard: https://d.kernelci.org/i/maestro:bea4dd538099462d8c92badd44596b9958bf40cc
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> - commit HEAD:  09da4c7d441294e4264cc4804d8bc76433d5e0c1
-> 
-> # Builds where the incident occurred:
-> 
-> ## defconfig+netdev+nfs-root-boot+kselftest on (arm64):
-> - compiler: gcc-14
-> - config: https://files.kernelci.org/kbuild-gcc-14-arm64-nfsboot-6aabeb25fc1857a999df12dc/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6aabeb25fc1857a999df12dc
-> 
-> #kernelci issue maestro:bea4dd538099462d8c92badd44596b9958bf40cc
-> 
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
-> 
-> Made with love by the KernelCI team - https://kernelci.org
-> 
+>  scripts/container | 86 ++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 74 insertions(+), 12 deletions(-)
+Thanks for the reviews so far.
 
-Now fixed, thanks.
+Do you guys need anything else regarding this series?
 
-greg k-h
+There's no rush of course and we're all busy, just making sure I
+didn't miss anything.
+
+Thanks,
+Guillaume
+
