@@ -1,113 +1,125 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FE230CD81;
-	Mon, 28 Sep 2026 05:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790572571; cv=none; b=OUcvvIXhOh7aaUHYic/twq6hXoVif+geA7xjpsXCQ4Wr1kORpLGnNzOVYCytI8/GJf+I1Fpuw7CZ0d29w5LZa1KOFcO9spFh7yIrkzT9kYYwmCQJg+BKMBOldXA7F9Onqe6mVcVMntMIvfWJSkFocpfmsoGgK+Z7HbftBWYxlBQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790572571; c=relaxed/simple;
-	bh=Joyd9RLxBp7pIIGPGXfU/wZVMyjWdm6zfGvV+tF9WfA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hjol6+lvCvbYy78fjkqkxujAjHWqBSlN8tuBr9tBu7WBwqvLROhSxZ4ZydXB8C+P/tPDqxlOrsgZJAGTVnTTu4IV50tjTdfGY1nBWtwNIqht7yAkUyOglg3qLmYESS6JUVYgOYWuBElI1ApmgzIO1judDnFFiFtDl3tSQUiqpyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=TdDcSioU; arc=none smtp.client-ip=188.68.61.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA0F4E4C51
+	for <kernelci@lists.linux.dev>; Mon, 28 Sep 2026 17:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790618317; cv=pass; b=gH1ayHGAnxuZus+rKBLxlj4HnUg2FZet9mQWGt75Dlf6jAP3A4KYXvv0N5/glJpKDrag7vH98BePHEj6aKsyxMLwNK6u95V4Wvrd1QuZzbK2GjN/NTFxYDRT8CI7XOyjG2jQ9Ylg/URVRKhYZnhcXBZJ3m8VJ3aSYFVqUyooxFU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790618317; c=relaxed/simple;
+	bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=XA/wJdTnehYhmYOzi+Ypd49Iuj3OT1h2Fu4pWYNjb3hdbxHVXREXrX3Ioz9o0Y4ieUHYUjEi8jbeuLzmAhTzE7S8BgsS1X1xUWL7m1wZk74Rbzfp6k5s8pexEL/Fy5vfC58ynWTkvRQJtKhf8mUFBIARS30qfHfBC7MALCCcjpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b=QaH7C/5q; arc=pass smtp.client-ip=74.125.228.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="TdDcSioU"
-Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4htTy92rsFz86XR;
-	Mon, 28 Sep 2026 07:14:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1790572481;
-	bh=Joyd9RLxBp7pIIGPGXfU/wZVMyjWdm6zfGvV+tF9WfA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TdDcSioUaUJnIhoRLbxvN529Pi1e2thjtx5IQM1MTHfCywXnsY85Rl1IQznIN1h2f
-	 F0/C1CFkgKcwMliEN6B5dOatLTE0qApSdhm+bgwMKdKxnrIFhqv8xYiAtzzr1kLAeA
-	 ah3d/sHnqiM6tlqym/Z1eH15q/LjuDB2OBtcYoDiiG+xqlGL/0aNsZd6ElEGWu8WSM
-	 oWusj9WdR8XYlpobyekfh32+SygeBqK8jru1u3BTXZY1ScEQ+alBQEUT8DzNlfrRxe
-	 qZmHLE4oBXJHJXna8rH8WJnHx874TBRwugJnWkG7ivw6JJI+uL3KXZRla2Wk52x3pr
-	 oqj5yFN6wqzIw==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4htTy92827z86Wx;
-	Mon, 28 Sep 2026 07:14:41 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.898
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4htTy70cgZz8tgX;
-	Mon, 28 Sep 2026 07:14:38 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id C92865F9B7;
-	Mon, 28 Sep 2026 07:14:29 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <cdd46214-2373-41a2-bb27-62c76a7aaaf6@leemhuis.info>
-Date: Mon, 28 Sep 2026 07:14:29 +0200
+	dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b="QaH7C/5q"
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2da4eea067so265409666b.3
+        for <kernelci@lists.linux.dev>; Mon, 28 Sep 2026 10:58:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790618314; cv=none;
+        d=google.com; s=arc-20260327;
+        b=p4wsGEbgdIho6sJpIO/EhTHy6yeEuEGwIIESL2XAjAzw0tgfjrGAPlnw5+VzJbLBYF
+         z6lTB+igXHIknSoQDyOPDn527fKLnV2z0rLuI81cy6HoPDw1FH+bamF5vT5CtLjlIHZL
+         2Up/n+2OmOpm7CiNNv5+XWYG/baPm2tNUVY1VPhECKFlBtjjDsQvUJEh4Dpxw8NfBPrE
+         xItRjh9ikKuc9HLSqsIhxIKFZSoiujDoxNeAASxCdFH3g5R8iOWztYqio6u1QLoN4TuD
+         ePebDvYUYGUrBCAiuVgbMqeB4Vm50c1hiSeyvbOmsgV0TMnJ+OXLEounF3rW7l8GUJGd
+         HrOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
+        fh=rmq/YLFzDAglBwji5AmBmtb7cJxq3EZCkg46fu2xnLc=;
+        b=V24QALOu1l1sdRCFcPs+F7i9XlFcNGfjdHXO0cxLjZf+IsQYHL+ffzPGj3crDLrBAQ
+         vNGyaSMdo/IWFNDQIGoGa70NZDxCErLaz+LdEYex3PdMat2+Zp6/9MjiDp7OfIbSTLEc
+         DZ9/Y8DC+s3+6C7hsuZ1uVLKy97n4zFejEX+mQ9cFhYGY5XcXAYE3ugacq+80f/OPQlk
+         XiplucVgf4NeGzFnvNaKi9Np8paq0lY1PYcBULZDagG2UsYhJyW39N5mCOE3uJNERCpn
+         otq5ZYjFuR15Z1FsPGFgJnwBR2TXQomBjN9j3okrkHzTRAH+Waq63204n/a4SAezhy/L
+         3CkA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profusion-mobi.20251104.gappssmtp.com; s=20251104; t=1790618314; x=1791223114; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
+        b=QaH7C/5q67CYOwfgulo7KD+GuyxcYnDOoPJGRkPbgyfJiTcKto52lTRtHM77JIqmrW
+         uFseyuKp1FTw+I2zmLmnnwMN6yPSEnLw2FvZ7T4K7CIj/q5ZccBBkrMPFTU+WIEe7091
+         zutKwEm162SyqpmS+kOEgyLNspQVndnWbRMYFocMGgBCM/KBbx4z07xhBp/NGDEXt4jX
+         +cm+Qb4CB+1v/3uTvdZKhhQxL5YHbQKZObPZfP1ZsBWWXB4qOcP8ysT2gsIlb1EDDkZF
+         19lfhRDwve77v5TMTf1rVq5lLv6V+cDWYvKiV0jNEuHjPxxVhxxyVATmtKxVs4wlgQ0F
+         x4Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790618314; x=1791223114;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
+        b=RgajE9Q7GVQkIJNME0u0Maa1e26UJqWTplRwlz2qREMZXN3ee5U9f/dcpkTN9Z1cHJ
+         gVUSP9fWc3BX8wKBzO1g1peVtJZKVqDSeRpoUfqLsD1JZYdLkwXb/3a9cRDeLmPdmi+v
+         KKpMX6n8+tfMMZG8ONCfjen1Tt0JwsAwFarvFJT2CqUwM1yUlKC17+AcuqUAkXsxIQj1
+         GEAGGp6e/9Rz4kMHNbcsP2tFS+hU6TWApGPefGtp+VQy6ilXUpggus+RU2p2h5hKWKHt
+         zzA2eNJQrkl1LAjroYPxBWJA4JQ05hI1S48haBzVp84az/CjtlynXHPH01/WP5DgdKJ1
+         7K9Q==
+X-Gm-Message-State: AFuF++nI2hDOlI47W9CctDsbtf1/TG2sZahwert5rih5CGjpMuiIP/ru
+	ieJVov1HO4FMZhI5Zrnz+bms0extj+tPBksfRcUBf7XlKB2cWWKuXZDd2VHr70e2rqA1Rw0jbIv
+	fyPNRwVi83MkZEpRuKFY9BU6LkrZNrpnNz4KDX/kX1QSZr+sar8RTEzk=
+X-Gm-Gg: AYBFou1jQvl939RsZN1Ue4f6AK9PlyA0RgEsRRAII2gDUg8gO2qVaRoPog2Xv6O8SfH
+	ZHYIoja8kQch71mbkc2tPWWkGgqc3m4TY4Ohkidlb6aCFH7tSvIAm47UH5L52c4OiN8AtkUXqbg
+	LtT9IXRXYjGoexaCw8Oy9egD4W/DlA65K32+gkgQVn0kQhAIgfWeRqhqN34Dzxe7kn37navj7kd
+	MefTcfLiqbf5XffFZNAVqMU8/bphiNEhLY/TQ1aLfrAj6F7jhDFgNFon8m7vvpMFkDoMrAAvEEg
+	7Qvp1rUrvsCy6Gq32Wptp/ghSvF6c6gR/z+PAfln30pZvqlL5tWzzKBK7ZGvzFAF7ocXmJucuQP
+	A+jolq58gpDAC
+X-Received: by 2002:a17:907:970f:b0:c29:d31f:7d7a with SMTP id
+ a640c23a62f3a-c2ac52c828cmr1108564666b.21.1790618313755; Mon, 28 Sep 2026
+ 10:58:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] mainline/master: (build)stack frame size (3096)
- exceeds limit (3072) in 'dml_core_mode_prog...
-To: Alex Deucher <alexdeucher@gmail.com>,
- "Leo (Sunpeng) Li" <Sunpeng.Li@amd.com>, Alex Hung <alex.hung@amd.com>
-Cc: kernelci@lists.linux.dev, kernelci-results@groups.io,
- regressions@lists.linux.dev, broonie@kernel.org,
- Alex Deucher <alexander.deucher@amd.com>,
- DRI <dri-devel@lists.freedesktop.org>,
- "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-References: <179039514312.597384.1659548947123427650@kernelci.org>
- <8ad00f0f-d924-4b19-986c-8c17dcdade86@leemhuis.info>
- <CADnq5_O7R096UP9mF5RvGSzT+c2p2v2Dm8M243CLxXa=VZvRwQ@mail.gmail.com>
- <CADnq5_Mg-0CjN1hVm58N=jVhFO_abjNU6mAPY3MpfsajsGfUMw@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: 
- <CADnq5_Mg-0CjN1hVm58N=jVhFO_abjNU6mAPY3MpfsajsGfUMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <179057247031.3039874.5180145718934966469@mxe9fb.netcup.net>
-X-NC-CID: BerssdD3xCyEb8hW7Y0qO5/qL1P8pFU2HXTcOFJPqUB/wqFc92Y=
+From: Felipe Bergamin <felipebergamin@profusion.mobi>
+Date: Mon, 28 Sep 2026 14:58:22 -0300
+X-Gm-Features: AclHuK88dszSZq5_1jbz3lfmVqNDbhrHnjAFtc_WkuL88ZAXiRLFG9invTRn3d0
+Message-ID: <CACcoU0HDd76vJqTW2vvSDOZh7vVtetpewZCuv-QPgu2AiwJB=g@mail.gmail.com>
+Subject: KernelCI Dashboard release
+To: kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/27/26 21:33, Alex Deucher wrote:
-> On Sun, Sep 27, 2026 at 9:29 AM Alex Deucher <alexdeucher@gmail.com> wrote:
->> On Sat, Sep 26, 2026 at 6:37 AM Thorsten Leemhuis
->> <regressions@leemhuis.info> wrote:
->>> On 9/26/26 05:59, KernelCI bot wrote:
->>>> New build issue found on mainline/master:
->>>>>>>> =====================================================
->>>> /tmp/kci/linux/drivers/gpu/drm/amd/amdgpu/../display/dc/dml2_0/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:10513:13: error: stack frame size (3096) exceeds limit (3072) in 'dml_core_mode_programming' [-Werror,-Wframe-larger-than]
->>>>  10513 | static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex *in_out_params)
->>>>        |             ^
->>>> 1 error generated.
->>>
->>> Hmmm, there are known "stack frame size [...] exceeds limit" problems in
->>> -next that should soon be fixed there, see:
->>> https://lore.kernel.org/all/CADnq5_MFMriR-b3eX0mTZShPDgUBgwoObgumEjJ9cJqdmDM6xQ@mail.gmail.com/
->>>
->>> But this error is new -- and happens in mainline. Wondering if this is
->>> caused by a fix for those problems.
->>
->> Looks like some combination of compiler and/or config options explodes
->> the stack even further than the recent changes handled.
-> 
-> Should be fixed with this patch:
-> https://patchwork.freedesktop.org/patch/756590/?series=175063&rev=1
+Hi everyone,
 
-Great, many thx.
+We have just deployed a new version of the KernelCI Dashboard. Here
+are the main changes:
 
-#regzbot fix: drm/amd/display: Fix sanitizer check for the DML frame
-size limit
+- A/B comparison: clicking a build or test row now opens a
+side-by-side details view, where you can inspect and compare logs from
+both revisions. You can also navigate between the currently filtered
+or searched results directly from the details view.
 
-Ciao, THorsten
+- Status filters: build, boot, and test tables now support selecting
+multiple statuses at once, making it easier to narrow down results to
+the combinations you are interested in.
+
+- Log viewer: failure and error highlighting has been refined to
+reduce false positives.
+
+- Hardware pages: Hardware Details URLs no longer require explicit
+start/end timestamps. The Dashboard now derives a consistent time
+window automatically, which also makes these URLs simpler to share.
+
+- kci-dev commands: the Dashboard's kci-dev command generator has been
+updated, making it easier to reproduce or investigate results using
+the CLI. (Thanks to @aliceinwire for this contribution)
+
+Several smaller fixes and improvements were also made to the backend
+and development process.
+
+Feedback is very welcome. If you run into any issues or have
+suggestions for how the Dashboard could better support your workflow,
+please let us know.
+
+https://dashboard.kernelci.org/
+
+Best regards,
+Felipe Bergamin
+ProFUSION - KernelCI Dashboard Team
