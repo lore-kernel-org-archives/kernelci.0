@@ -1,125 +1,125 @@
-Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA0F4E4C51
-	for <kernelci@lists.linux.dev>; Mon, 28 Sep 2026 17:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790618317; cv=pass; b=gH1ayHGAnxuZus+rKBLxlj4HnUg2FZet9mQWGt75Dlf6jAP3A4KYXvv0N5/glJpKDrag7vH98BePHEj6aKsyxMLwNK6u95V4Wvrd1QuZzbK2GjN/NTFxYDRT8CI7XOyjG2jQ9Ylg/URVRKhYZnhcXBZJ3m8VJ3aSYFVqUyooxFU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790618317; c=relaxed/simple;
-	bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=XA/wJdTnehYhmYOzi+Ypd49Iuj3OT1h2Fu4pWYNjb3hdbxHVXREXrX3Ioz9o0Y4ieUHYUjEi8jbeuLzmAhTzE7S8BgsS1X1xUWL7m1wZk74Rbzfp6k5s8pexEL/Fy5vfC58ynWTkvRQJtKhf8mUFBIARS30qfHfBC7MALCCcjpI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b=QaH7C/5q; arc=pass smtp.client-ip=74.125.228.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7563F390CAB
+	for <kernelci@lists.linux.dev>; Tue, 29 Sep 2026 07:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790665748; cv=none; b=aS+6sA3m3Y9X/DTaOm5NqTWqb15AqkWWgjWJ6kjEY5ALms3umaRKCDVVA/Z5bgZCzGo5MRxKI5pNw26yCJEzvWbkZ19GoGhvpOIoEYIEIRBbMuOsBf3xY+8X6u1AJ8QRp+weoZhhoor4XrjWYDBZCvYuTIBvEeetl48vKhUVFnw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790665748; c=relaxed/simple;
+	bh=opN0ophgBAoWkcRmCvvxHECSx0MgTmTQLigDgTZpwWM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fVHKmZF/u+LxJ+4pg7KF/U8RDM/P85M8dRVHtvMeCAdBxyoaIym8q8lKJsvLRq60ZC4Z38mXZlpG1FmFHkVv4LEvIlNnvs9UZRHLG43TtpwFzmOGXZCoxi8IvaL2An+sYgRR8Uti3ZaDRPWspXVeGLziE0iYi5EjjzdnpoDXrY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=iO7DkInj; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b="QaH7C/5q"
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2da4eea067so265409666b.3
-        for <kernelci@lists.linux.dev>; Mon, 28 Sep 2026 10:58:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790618314; cv=none;
-        d=google.com; s=arc-20260327;
-        b=p4wsGEbgdIho6sJpIO/EhTHy6yeEuEGwIIESL2XAjAzw0tgfjrGAPlnw5+VzJbLBYF
-         z6lTB+igXHIknSoQDyOPDn527fKLnV2z0rLuI81cy6HoPDw1FH+bamF5vT5CtLjlIHZL
-         2Up/n+2OmOpm7CiNNv5+XWYG/baPm2tNUVY1VPhECKFlBtjjDsQvUJEh4Dpxw8NfBPrE
-         xItRjh9ikKuc9HLSqsIhxIKFZSoiujDoxNeAASxCdFH3g5R8iOWztYqio6u1QLoN4TuD
-         ePebDvYUYGUrBCAiuVgbMqeB4Vm50c1hiSeyvbOmsgV0TMnJ+OXLEounF3rW7l8GUJGd
-         HrOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
-        fh=rmq/YLFzDAglBwji5AmBmtb7cJxq3EZCkg46fu2xnLc=;
-        b=V24QALOu1l1sdRCFcPs+F7i9XlFcNGfjdHXO0cxLjZf+IsQYHL+ffzPGj3crDLrBAQ
-         vNGyaSMdo/IWFNDQIGoGa70NZDxCErLaz+LdEYex3PdMat2+Zp6/9MjiDp7OfIbSTLEc
-         DZ9/Y8DC+s3+6C7hsuZ1uVLKy97n4zFejEX+mQ9cFhYGY5XcXAYE3ugacq+80f/OPQlk
-         XiplucVgf4NeGzFnvNaKi9Np8paq0lY1PYcBULZDagG2UsYhJyW39N5mCOE3uJNERCpn
-         otq5ZYjFuR15Z1FsPGFgJnwBR2TXQomBjN9j3okrkHzTRAH+Waq63204n/a4SAezhy/L
-         3CkA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=profusion-mobi.20251104.gappssmtp.com; s=20251104; t=1790618314; x=1791223114; darn=lists.linux.dev;
-        h=content-type:to:subject:message-id:date:from:mime-version:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
-        b=QaH7C/5q67CYOwfgulo7KD+GuyxcYnDOoPJGRkPbgyfJiTcKto52lTRtHM77JIqmrW
-         uFseyuKp1FTw+I2zmLmnnwMN6yPSEnLw2FvZ7T4K7CIj/q5ZccBBkrMPFTU+WIEe7091
-         zutKwEm162SyqpmS+kOEgyLNspQVndnWbRMYFocMGgBCM/KBbx4z07xhBp/NGDEXt4jX
-         +cm+Qb4CB+1v/3uTvdZKhhQxL5YHbQKZObPZfP1ZsBWWXB4qOcP8ysT2gsIlb1EDDkZF
-         19lfhRDwve77v5TMTf1rVq5lLv6V+cDWYvKiV0jNEuHjPxxVhxxyVATmtKxVs4wlgQ0F
-         x4Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790618314; x=1791223114;
-        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ffqDkQI3xrQxfyHfeBZ1jqK0ThvwDLQ7qKnNR0CR8MU=;
-        b=RgajE9Q7GVQkIJNME0u0Maa1e26UJqWTplRwlz2qREMZXN3ee5U9f/dcpkTN9Z1cHJ
-         gVUSP9fWc3BX8wKBzO1g1peVtJZKVqDSeRpoUfqLsD1JZYdLkwXb/3a9cRDeLmPdmi+v
-         KKpMX6n8+tfMMZG8ONCfjen1Tt0JwsAwFarvFJT2CqUwM1yUlKC17+AcuqUAkXsxIQj1
-         GEAGGp6e/9Rz4kMHNbcsP2tFS+hU6TWApGPefGtp+VQy6ilXUpggus+RU2p2h5hKWKHt
-         zzA2eNJQrkl1LAjroYPxBWJA4JQ05hI1S48haBzVp84az/CjtlynXHPH01/WP5DgdKJ1
-         7K9Q==
-X-Gm-Message-State: AFuF++nI2hDOlI47W9CctDsbtf1/TG2sZahwert5rih5CGjpMuiIP/ru
-	ieJVov1HO4FMZhI5Zrnz+bms0extj+tPBksfRcUBf7XlKB2cWWKuXZDd2VHr70e2rqA1Rw0jbIv
-	fyPNRwVi83MkZEpRuKFY9BU6LkrZNrpnNz4KDX/kX1QSZr+sar8RTEzk=
-X-Gm-Gg: AYBFou1jQvl939RsZN1Ue4f6AK9PlyA0RgEsRRAII2gDUg8gO2qVaRoPog2Xv6O8SfH
-	ZHYIoja8kQch71mbkc2tPWWkGgqc3m4TY4Ohkidlb6aCFH7tSvIAm47UH5L52c4OiN8AtkUXqbg
-	LtT9IXRXYjGoexaCw8Oy9egD4W/DlA65K32+gkgQVn0kQhAIgfWeRqhqN34Dzxe7kn37navj7kd
-	MefTcfLiqbf5XffFZNAVqMU8/bphiNEhLY/TQ1aLfrAj6F7jhDFgNFon8m7vvpMFkDoMrAAvEEg
-	7Qvp1rUrvsCy6Gq32Wptp/ghSvF6c6gR/z+PAfln30pZvqlL5tWzzKBK7ZGvzFAF7ocXmJucuQP
-	A+jolq58gpDAC
-X-Received: by 2002:a17:907:970f:b0:c29:d31f:7d7a with SMTP id
- a640c23a62f3a-c2ac52c828cmr1108564666b.21.1790618313755; Mon, 28 Sep 2026
- 10:58:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="iO7DkInj"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 616053ED03;
+	Tue, 29 Sep 2026 07:09:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1790665744;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=w9D2kUR7R279hz9z6RiS1dtj9gZjtDtF0tTMRuWfTyk=;
+	b=iO7DkInjaUo2llNTS9reSVo6dbxpIc0X6qLzRs9G4epQNB8Sjk18yz+OWdKKyiaGsOg5RJ
+	cj3KtRmYYefl2DubL0511BRAqLskrI9mdpFksWXBAmTREjveix48qkqQoLXvAVRCbXMW0n
+	tdeYQQ7Y+qP5M4gr9stxopqlUyEck6icZ8jly15eTggFP9s1VaNcCbFe0mG0wwbsERztQ3
+	RqeLxYRApvaysuIiJs/wlmepw48kXgUQPM2TScrt5o4TnhqgibT4obDxahBJE5ltZlDgz2
+	l7uFxi1/dg/JoyBq5OdbdQz6wVw1p7BDRG+kX+jgRAhj9AdXJI+Rmf3T8FujZQ==
+Message-ID: <72690a8d-40b6-4109-8211-32e1dcdb8a39@gtucker.io>
+Date: Tue, 29 Sep 2026 09:09:01 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Felipe Bergamin <felipebergamin@profusion.mobi>
-Date: Mon, 28 Sep 2026 14:58:22 -0300
-X-Gm-Features: AclHuK88dszSZq5_1jbz3lfmVqNDbhrHnjAFtc_WkuL88ZAXiRLFG9invTRn3d0
-Message-ID: <CACcoU0HDd76vJqTW2vvSDOZh7vVtetpewZCuv-QPgu2AiwJB=g@mail.gmail.com>
-Subject: KernelCI Dashboard release
-To: kernelci@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] scripts: add TOML config to container tool
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nsc@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-doc@vger.kernel.org, workflows@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ kernelci@lists.linux.dev, automated-testing@lists.yoctoproject.org
+References: <68b14a76a4cb2e6437c869bab948983a98acffbd.1788779245.git.gtucker@gtucker.io>
+ <03e8513a-3480-42a5-9d1b-fad6c36ed07a@gtucker.io>
+ <20260918214804.GA1849926@ax162>
+Content-Language: en-US
+From: Guillaume Tucker <gtucker@gtucker.io>
+In-Reply-To: <20260918214804.GA1849926@ax162>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
+X-GND-Cause: dmFkZTFenxi55h2HBRShrkenX+7C3lnxqudytjtg3MfMLMOvzVQksYNZDyiz06KgEyx/pFrpwWWrCdcxrYqmCYdyzMLl4Mhahq0XMT37B0AYGHfNy6TT1dsdE93geegPHS58w2IdjuPf3RhlHtJiGrTalRzyveMs0c35rKwcEY9+mzchD9kzOikL8J629xh0Szp6bhqvwWMSnP9RYXS67YaJCOs6UlcPvGoCUVJET/zanBS0DiEgPh22+YQn/yP/ql/46RNRD7bMTCZydJ40Esu5MoiUAt6yO+qtqQSAbMkTwLhJ1+umiafwjTbo3thmLsb6MzVozx5F1W/QFpUNZA1u11/dgZc2g2SiUOnGqiVDezAUcu9to6nkoflz40Vh/tNsjW7SV9LQgfgkgtcsLXDjUZAybO/8t37QZznPIG1d7w1p2z8e8Mc9+EhaoenLnKhPyTYPElAifxkGCjtlrlrDHzRqP3xF2/j4TVMLfK95WFKhm4JYteKSdnNmg0M7Mz0YCDb/CuMliTn+ZkBdb1jSh56IHpUvOGaPaE8zlu5N7Sp1NH8NQrnhj0fhdon4E85UfqkEuZB9qj4/9PBzp874fvYxO8f3USY0UTx62SXfxnuky+JKO4O0v11jIg5hSLJLSK66s+FxT064EG9Ba83Yd9ld6BKUPFQLT2H27Pfgd2VRRw
+X-GND-State: clean
+X-GND-Score: -100
 
-Hi everyone,
+Hi Nathan,
 
-We have just deployed a new version of the KernelCI Dashboard. Here
-are the main changes:
+On 18/09/2026 11:48 pm, Nathan Chancellor wrote:
+> Hi Guillaume,
+> 
+> On Fri, Sep 18, 2026 at 12:04:09PM +0200, Guillaume Tucker wrote:
+>> On 07/09/2026 13:10, Guillaume Tucker wrote:
+>>> Add support for a TOML configuration file to the scripts/container
+>>> tool.  This improves user experience by not having to keep passing the
+>>> same command line options all the time or overly relying on built-in
+>>> default values.  Include the concept of 'profiles' with different
+>>> named sections in the file to cover various use cases.
+>>>
+>>> Command line options take precedence over the config file, and values
+>>> defined in profile sections take precedence over the default one.
+>>>
+>>> Add a -c option to override the location of the .container.toml config
+>>> file which should otherwise be located in the current working
+>>> directory.  If not found, the file is silently ignored as it is not
+>>> strictly required unless the -c option is used.
+>>>
+>>> Add a -p option to choose a particular profile section in the config
+>>> file rather than the default.
+>>>
+>>> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
+>>> Acked-by: Nicolas Schier <n.schier@fritz.com>
+>>> ---
+>>>
+>>> Notes:
+>>>      Changes in v2:
+>>>      - fix uid / gid handling when set to 0 (root)
+>>>      
+>>>      Changes in v3:
+>>>      - fix logic when loading config profiles using None
+>>>      - fix typo with missing whitespace in help message
+>>>      - clarify how UID gets used as default value for GID
+>>>      
+>>>      Changes in v4:
+>>>      - drop registry option from TOML config
+>>>
+>>>   scripts/container | 86 ++++++++++++++++++++++++++++++++++++++++-------
+>>>   1 file changed, 74 insertions(+), 12 deletions(-)
+>> Thanks for the reviews so far.
+>>
+>> Do you guys need anything else regarding this series?
+>>
+>> There's no rush of course and we're all busy, just making sure I
+>> didn't miss anything.
+> 
+> No, my apologies for not responding to this sooner. I plan to take a
+> look soon, I just keep getting preeempted by other stuff.
+> 
 
-- A/B comparison: clicking a build or test row now opens a
-side-by-side details view, where you can inspect and compare logs from
-both revisions. You can also navigate between the currently filtered
-or searched results directly from the details view.
+Sure, no worries.  On a related topic, I also just started a new
+thread about hosting container images[1].  And I'll be at Plumbers
+next week so we may also catch up there and discuss next steps etc.
 
-- Status filters: build, boot, and test tables now support selecting
-multiple statuses at once, making it easier to narrow down results to
-the combinations you are interested in.
+Best wishes,
+Guillaume
 
-- Log viewer: failure and error highlighting has been refined to
-reduce false positives.
+[1] 
+https://lore.kernel.org/all/01a87de4-8de5-4ff0-941b-2e5932a3a19c@gtucker.io/
 
-- Hardware pages: Hardware Details URLs no longer require explicit
-start/end timestamps. The Dashboard now derives a consistent time
-window automatically, which also makes these URLs simpler to share.
-
-- kci-dev commands: the Dashboard's kci-dev command generator has been
-updated, making it easier to reproduce or investigate results using
-the CLI. (Thanks to @aliceinwire for this contribution)
-
-Several smaller fixes and improvements were also made to the backend
-and development process.
-
-Feedback is very welcome. If you run into any issues or have
-suggestions for how the Dashboard could better support your workflow,
-please let us know.
-
-https://dashboard.kernelci.org/
-
-Best regards,
-Felipe Bergamin
-ProFUSION - KernelCI Dashboard Team
