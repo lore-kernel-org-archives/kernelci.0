@@ -1,131 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A76C3EEACB;
-	Wed, 30 Sep 2026 22:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B534562A0
+	for <kernelci@lists.linux.dev>; Thu,  1 Oct 2026 14:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790806961; cv=none; b=FC9TASCWZQTqKILR2e2wSbOVamsLVz9vHDiw4pbEYzZ5l6wePzFWppY/YePcceD0pTQwlUtDjmviacIIfoviCHsHX3FjQuxSmR9LzdckiFnorNr6GETYtyoUqHh6sBx5tphcHZbyR5yuLcTMG/yAN79n6FHQnYSa5hmSxunjVYw=
+	t=1790864313; cv=none; b=SJFlL34tF74sEm9K/HpTSoo8UIEbT2IX5+jTZGtvvVeiqJ2KReeiFJS03Rwkx0C2pzjQSGwxNKEoEdQvdE2vveJLz5XipG+Q6pn8cbDOSK+K4Q27lHpjih53liN/390XibqbfNsFGyV2y91h58UQF7Ec90lx0rQCjPEGX6R3NKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790806961; c=relaxed/simple;
-	bh=FsePE8o1CpvhwfkdewLFmrzEslvIEel6351uGkQRDdk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=d1cS2RbuiEfJJ/OjLzCV8Eja3T/1P2q/tVizxweQml859lWxUN2BZRgSvsTQPEDJMxokNndVs7p9MmkNMx6EfnqFHTze44uUBqVFI/dSUtd3kn+syY6ZQm89FcogDxSbgEjCINCBbvOi3WWh1B1Q7lDG477FDlKorCfiFrEoJIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2e3Rga+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790864313; c=relaxed/simple;
+	bh=bF0Zo2SuQraBYIJ5v1w10yzUFUX4eqnYQL41CyZG1Gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=s9z7nNXBvDY/LmTGTgmwLo9k+NfMS0wu+3uWTGuYOM0KrI4EXbjmxBYlFdUdyqgtfo/27OPlR/NkfH6Gula+4HbOQ4iI2XlN5fbx/Ljiyk40AKA+O2QRTmqgadLuhbAQatOqpe3UklY7Mie5r/DljCD6Cmgq5z78FLLSBbelZ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=FPORlZOK; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2e3Rga+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9B91F000FF;
-	Wed, 30 Sep 2026 22:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790806960;
-	bh=QjF6ktPdd3TPb+i2trkMCyjZSnSMNg0vgV3g7TbLMfQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=S2e3Rga+wn5uQ0EPWIhh3f+g8DxP0uL6tlDwEIfv8BGZhJLC0VyHEdHspp/ymLBvK
-	 dOfzQOb7L2H+v2wpNWxlq6TQXiXsQp0GU9t8H9OAlxX8ZGFY55m0snPmOuQFKfdIsm
-	 QBnxut4dp1H/5CUzqi2gBiz9Hs8ByIDYGMDTj4jSYnThWBqwYJH3HMof0AfS7KrmCF
-	 BZhQbwqNy0I7vPo2o2EXFq+IoeHwYjWmXoM0eViYNMrVGsBx23k18RTUfmpcQsBiR1
-	 lNwx4T1O0orBLq09FSAePQmj9NTUyoHzQ7lLNp2i/qQK051T8dftfL6j3iGXAI63Fq
-	 YM97mrB+NfHmw==
-Date: Wed, 30 Sep 2026 17:22:38 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io, linux-pci@vger.kernel.org,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Hans Zhang <18255117159@163.com>
-Subject: Re: [REGRESSION] =?utf-8?Q?linux-pci=2Fnex?=
- =?utf-8?B?dDogKGJ1aWxkKeKAmFBDSUVfUE9SVF9MQU5FX1NLRVc=?= =?utf-8?B?4oCZ?=
- undeclared (first use in this function); did ...
-Message-ID: <20260930222238.GA2651781@bhelgaas>
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="FPORlZOK"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 93FA13ED89;
+	Thu,  1 Oct 2026 14:18:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1790864303;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FyO6LOCavfvkW41vMTq8mkPPmIkVy5QIh9FpKo5+d/c=;
+	b=FPORlZOKOOCn6UfuHeGxvuzKbSHzu72g4+MNVdCGTGYG5JaMPBnIcJ2Bw6BSjvuJnvUlcg
+	kjaBso3iRTzCP+CMGzcxuemSW8m+BD11GnmS0qKxz8vHbdc0zIt6spOS0QrXYhsfh+0lyN
+	052OvTq5KYnE2ZpQRamqzSBNOMSMWEcu2v1vMpwlyFzPxFF3zw3Y6S/ChV9v8I25xkZvys
+	thkGcIAcxce3iaIbvMkX6aF8t6VfHK4eADXyaJ4rvoGJTFuonnwfpd40Qb7jBFF5pkDbTo
+	otAshxGwOc97MSQnb+AwED9p38i/MJ/Ap9tUv8YgrG8wasHMET4YxTAX+OVerw==
+Message-ID: <c5ceb79f-3548-41ba-b1e1-96e5d2f32860@gtucker.io>
+Date: Thu, 1 Oct 2026 16:18:22 +0200
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179080559722.116660.12892772212991345354@kernelci.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [ANNOUNCE/CFP] Kernel Testing & Dependability Micro-conference at
+ LPC 2026 CFP
+To: Arisu Tachibana <arisu.tachibana@miraclelinux.com>,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shuah@kernel.org, sashal@kernel.org, kernelci@lists.linux.dev,
+ automated-testing@lists.yoctoproject.org
+References: <CANgtXuMMvU7TQq8hv-T5NQbA6yfzcAMsFq5sdxXq-VzF+oHYxA@mail.gmail.com>
+Content-Language: en-GB
+From: Guillaume Tucker <gtucker@gtucker.io>
+Organization: gtucker.io
+In-Reply-To: <CANgtXuMMvU7TQq8hv-T5NQbA6yfzcAMsFq5sdxXq-VzF+oHYxA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
+X-GND-Score: -100
+X-GND-Cause: dmFkZTFTO7wUx0kPeaHeDSVqPMOTzvvZeMAw/PRd7pwuxCYtT9BbgaDo4q4D8MHWLYo7HpTk0s1iRRF36KXutJ2FAe2fCBurdztavBLW8fsIwlkzlgLpXHQKwJgdKiFwyHdnpaBdBu+APvj79A+jrfVZ+b4doXGq+wdiag+XtElik36RpFK73hJvQbs1YXOYJbWM6OWUWHH3jgxGuFPcn6B9OIPpVn4C/LayACMRVpGD72YKxowqpea0Qya9tV6xIILQRBKrQaeCkBLSNjb+z8tSvsXufUuRS/e01hA+Iuz8TN8pwRhQAUTj3v3SE0V4eBhFCjBobp4Q4OJx4KB6tMY893wRX9Vn19r94R0LF2wrROGX6bnpAKGyzq6rm6MD2K6gOmH/KdXynAF1ssPouLJqGEJGZiQ1VvI/EDtNRYPuOlchU99JFWE9y2kNHcqg6lthcVphIBnLsJ5OA7kt63tOAeQpdMILT1YAyZge3h1Aw8OziBmk05nk0deFLfRViby1hEyN7Q9cOnfMLdFX30LmCh0FGhTE/N6U7qUM+0SI2IX6yza81b5yJczXnEfoB0EXOde1u61Cexs0QTiccRBYZVUv0E+dDpy5O196zXngaoQDnjphEDPuZoG7qoAFPegTox+SxlqGFxGm2ZJghSWeGZowuRbFhZoeD71W+PidrQCtSw
+X-GND-State: clean
 
-[+cc Marek, Hans, just FYI, no action needed]
+On 17/07/2026 05:04, Arisu Tachibana wrote:
+> Hello everyone,
+> 
+> We are pleased to announce that the Kernel Testing & Dependability
+> Micro-Conference has been accepted for Linux Plumbers 2026!
+> You can read more about our track here:
+> https://lpc.events/event/20/contributions/2328/
+> 
+> Our Call for Proposals (CFP) is currently open.
+> This is a quick reminder to please get your submissions in by 11:59 PM
+> UTC on Saturday, August 7, 2026.
+> 
+> We highly encourage you to send your submissions as soon as possible
+> to ensure you have a chance to get into preregistration!
+> 
+> You can submit your proposals here: https://lpc.events/event/20/abstracts/
 
-On Wed, Sep 30, 2026 at 10:00:24PM -0000, KernelCI bot wrote:
-> New build issue found on linux-pci/next:
-> 
-> ---
-> ‘PCIE_PORT_LANE_SKEW’ undeclared (first use in this function); did you mean ‘PORT_LANE_SKEW’? in drivers/pci/controller/dwc/pcie-rcar-gen4.o (drivers/pci/controller/dwc/pcie-rcar-gen4.c) [logspec:kbuild,kbuild.compiler.error]
-> ---
-> 
-> Log excerpt:
-> =====================================================
-> drivers/pci/controller/dwc/pcie-rcar-gen4.c:307:37: error: ‘PCIE_PORT_LANE_SKEW’ undeclared (first use in this function); did you mean ‘PORT_LANE_SKEW’?
->   307 |         val = dw_pcie_readl_dbi(dw, PCIE_PORT_LANE_SKEW);
->       |                                     ^~~~~~~~~~~~~~~~~~~
->       |                                     PORT_LANE_SKEW
-> drivers/pci/controller/dwc/pcie-rcar-gen4.c:307:37: note: each undeclared identifier is reported only once for each function it appears in
-> drivers/pci/controller/dwc/pcie-rcar-gen4.c: In function ‘rcar_gen5_pcie_init’:
-> drivers/pci/controller/dwc/pcie-rcar-gen4.c:338:37: error: ‘PCIE_PORT_LANE_SKEW’ undeclared (first use in this function); did you mean ‘PORT_LANE_SKEW’?
->   338 |         val = dw_pcie_readl_dbi(dw, PCIE_PORT_LANE_SKEW);
->       |                                     ^~~~~~~~~~~~~~~~~~~
->       |                                     PORT_LANE_SKEW
->   CC [M]  sound/soc/codecs/da7219.o
-> 
-> =====================================================
+Thanks to everyone who sent a proposal.  Plumbers is next week!
 
-Conflict between pci/controller/dwc, which renamed PCIE_PORT_LANE_SKEW
-to PORT_LANE_SKEW, and pci/controller/dwc-rcar-gen4, which added uses
-of PCIE_PORT_LANE_SKEW in rcar_gen5_pcie_init().
+The Testing MC is on the Tuesday afternoon, here's the full
+schedule with a wide variety of topics this year:
 
-Fixed the merge conflict locally.
+  https://lpc.events/event/20/sessions/259/
 
-> When fixing this issue, please attribute this report according to the
-> patch submission rules:
+See you in Prague.
+
+Best wishes,
+Guillaume
+
+> Thanks,
+> Arisu, Guillaume, Shuah, and Sasha
 > 
-> Reported-by: kernelci.org bot <bot@kernelci.org>
-> 
-> For complete logs and details about the environment used, see the issue
-> on the KernelCI dashboard:
-> 
-> - dashboard: https://d.kernelci.org/i/maestro:9c96bb06403e0f385b3d6d522f160cd82ba4b932
-> - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
-> - commit HEAD:  bc80f6c85a8e97bdb69604f82af37179fcb01c38
-> 
-> # Builds where the incident occurred:
-> 
-> ## defconfig+arm64-chromebook+kcidebug+kcidebug-arm64+lab-setup on (arm64):
-> - compiler: gcc-14
-> - config: None
-> - dashboard: https://d.kernelci.org/build/maestro:6abd7df914cd2ca558e86834
-> 
-> ## defconfig+lab-setup on (arm64):
-> - compiler: gcc-15
-> - config: None
-> - dashboard: https://d.kernelci.org/build/maestro:6abd7de014cd2ca558e8681d
-> 
-> ## defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on (arm64):
-> - compiler: gcc-14
-> - config: https://files.kernelci.org/kbuild-gcc-14-arm64-chromebook-6abd7db714cd2ca558e86606/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6abd7db714cd2ca558e86606
-> 
-> ## defconfig+netdev+nfs-root-boot+kselftest on (arm64):
-> - compiler: gcc-14
-> - config: https://files.kernelci.org/kbuild-gcc-14-arm64-nfsboot-6abd7de614cd2ca558e86820/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6abd7de614cd2ca558e86820
-> 
-> ## defconfig+netdev+nfs-root-boot+kselftest on (arm64):
-> - compiler: gcc-15
-> - config: https://files.kernelci.org/kbuild-gcc-15-arm64-nfsboot-6abd7dea14cd2ca558e86823/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6abd7dea14cd2ca558e86823
-> 
-> ## defconfig+netdev+nfs-root-boot+ltp on (arm64):
-> - compiler: gcc-15
-> - config: https://files.kernelci.org/kbuild-gcc-15-arm64-nfsboot-ltp-6abd7def14cd2ca558e8682d/.config
-> - dashboard: https://d.kernelci.org/build/maestro:6abd7def14cd2ca558e8682d
-> 
-> #kernelci issue maestro:9c96bb06403e0f385b3d6d522f160cd82ba4b932
-> 
-> --
-> This is an experimental report format. Please send feedback in!
-> Talk to us at kernelci@lists.linux.dev
-> 
-> Made with love by the KernelCI team - https://kernelci.org
+
