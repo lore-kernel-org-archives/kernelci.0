@@ -1,146 +1,174 @@
-Received: from mail-dy2-f25.google.com (mail-dy2-f25.google.com [74.125.229.25])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5FC2F6586
-	for <kernelci@lists.linux.dev>; Sat,  3 Oct 2026 00:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.25
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790985638; cv=none; b=QRkgQ1EHHtnXmLPZAXTJyelFbLLpf9hxE5unGvAXQeqF4khDestIvEUn9crpqA8jxIk71Yqwpy3968KXfMo+zNX2wQj6zniBVgUch5JXIrDKQrvYWYdc25FagF5M6PH7SYj5dLO7+6kvHc0RwG5WM8V1x6cS99J9rEfRYokruso=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790985638; c=relaxed/simple;
-	bh=uUuV+t/LWcfE59s7uOXxw+2dE56piMP2stLvQSkgAgU=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=l3NMZyrQ7QIFgo8EJe+9zknnhoeKxBQeQ8/OOwQ67tVY9gto1cG4Q/SPj6nkUO5jk+CMGye1OTXbgeCfpeP+v6wOqnEKo7s05bgZ62iLeUTmNonNIAAdzOx1y5JTvLTj5VoW4IpLoxrF22Q7BEab/xQq48FINuK/uWxdjwQvNzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=FdV8ZLxf; arc=none smtp.client-ip=74.125.229.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5376A20D4FC
+	for <kernelci@lists.linux.dev>; Wed,  7 Oct 2026 20:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791405182; cv=pass; b=Iz6NIzQaPBEe9Axz7j/UGIBeE2R0GAR0XeCHWuHYKgSgOwthXr/Sp0ijiiqDXJzaP0c/fNqPdzy1GojFQzFN4CB2fMLDJQ1ayqDl1ELkB/v/aUXR2DwMHj/pChaiuR3NQkDXiRVgAHv5y0QAqZR66BooPdJ5bRH4FUXwiPhmKZI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791405182; c=relaxed/simple;
+	bh=BjAy+qTW2P7zLlraadp7vFxhR13oDPht1OQi+cpdS1c=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Ln+8tCQguQkkePZ2oq3XA2WcjbV7fKMhXk135VymTWPzJ4uUaiJXHlj8abZ4+7JF8pkWXcZNeaLW4plwUs7mEkTTpAN1NnOBnH885Ptu+7/TBsLhgfEmDZxJc6aOwZ2BOwBvbOUlA5U1yUe8BZFDWzJCWGAt+JoLV2Buu9nKmJU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com; spf=pass smtp.mailfrom=tenstorrent.com; dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b=LFxnsMPJ; arc=pass smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tenstorrent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="FdV8ZLxf"
-Received: by mail-dy2-f25.google.com with SMTP id 5a478bee46e88-346c612c7a8so61657eec.1
-        for <kernelci@lists.linux.dev>; Fri, 02 Oct 2026 17:00:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b="LFxnsMPJ"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-677cc343120so4540446d50.0
+        for <kernelci@lists.linux.dev>; Wed, 07 Oct 2026 13:33:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791405179; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PNkuTq82UZV5T95Cy82ftrnUobF5oKS7hBfWiPRk2Tq4Gbn2iBAVlv7jQg36ous2s2
+         sGHZQWsux1NPEfcHx0mmsLHK+eARQJNgvRkIpW3kFAwXvERM0UOGlDIWsEbaEd0tGCx5
+         Et5ABHKMR+MZypN3F1imdnqSa7rm+/pwuXWUvAs/IvWUZ27eZE4ppg1crp8f3AEiukqV
+         w2VdVSTW3BfXnXiOAM8srl6xzW6yVl9h/9+OUtccwGTFYkmo3SofOPwnbhJSdCjRyO93
+         SIXSasuYV9XIUWuuWaQDHKR0MDPNbiNR3uCUcbghZAzjVv4BOQDQouU+IwuCMMiqLhKL
+         BM5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=ivTJVfjUBIc9wBwqrJfBdaCwNcPxo6RneZIv1F1z4qM=;
+        fh=Nm+AAbC6PLo4N9N7C1Oo3FYh8a6PcyKuNTA/z4mDvuY=;
+        b=ZbmkR1ZzbCzs+4wS1d9u6BNxWwGNIdrgNhH2Rovek7eA6rr97tFl1jeIBCPaNh5zcz
+         hWGrA0maGALiwL2jH7pb30QDEIn+HhKmHuTH1AETIYvO0LT4AWcIRaHxDRRfXqmH04bW
+         ZW2jZooLeKmBqNsTcRY0+jKAJXrH6OJ+hS2ANTNFqE4q9cNUWNpH4/oToBW7JXkwBKwn
+         GYm7tED8Gd7s5AfQvMKMgZXqwmJRAkfQ0CKfI+gSawffCUni2XQEymBXMZGiqkMZAtNW
+         aFbxbl7XoWbY5MlOcLWuH+EHezzHULOOiaELfUKy68VT1ZI17Rp9pUZ+TxZWbREIVhs/
+         Xs/w==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1790985636; x=1791590436; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=qw1MDMsJQjPYZFJm+6Z1EANEQeM2EKrApDOdv6gI/UE=;
-        b=FdV8ZLxfq8q7/Q8kHIsHPrlGq06E3TFZYqsCB2FAMAJP6ORhp+2PblJRjMPbYYytR8
-         nGtnO5QAU2ygxLO5rAad26rj14iMXb4xoesjWEDFzFYb+WhC3BsRRgWBaEB8rhB3fFgZ
-         /HAnM2x9PmTaFhMtIyTQVOrsP5HTIJLJxyOTnQmn/ldrvgBK5egAVLhXunohJcpuwI04
-         YAUfzD2n2zeN0042KFaZjMb/HZz3YjiiUt4gBqfuRF6BsVYuGmGKrs3KbTBez3DxH8g1
-         3NNe6JcBeb9OLbh3DaS9X7Lp5nfqAnia1d/pHMlchHyvGnJ2UPnRTy76kyc3Q3v+VdPY
-         zyhg==
+        d=tenstorrent.com; s=google; t=1791405179; x=1792009979; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ivTJVfjUBIc9wBwqrJfBdaCwNcPxo6RneZIv1F1z4qM=;
+        b=LFxnsMPJCdxU6zJy5pDrETX/s0dKTu5vipe8MUZFANCrupCkWyWGNlgXXIK2men4Jd
+         SwSQA/SzTT9foqQ9qLdCimQLD8YhOP2nUuO8b5JtVlsZgdE8j6FhsU3rPkiChFCU5FSN
+         l1J/rXtEMu3z9okcySrgs7H4UBAvpu9t9h2dAwMzAySfDIazMq57BKrJ9bq5/KaHp1Bz
+         xfsy9uIIdM6w6fnOEtNvVNT5Y4HIcLskfE9dRIBgaWin7yiPOPdEtMEv8JLJHVT2daZZ
+         8kiplNkJ3rvsPrrkiN1MqBD304bKMGeEOTup5VVkordr0wsldVuaJs0qfx0cjreGFpri
+         DlIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790985636; x=1791590436;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qw1MDMsJQjPYZFJm+6Z1EANEQeM2EKrApDOdv6gI/UE=;
-        b=ybl3t5dd4EPqXmyKdzTFTr0+5VyVjlYUf2qC/LRC+z0jS6dbYK1AQmcmGa9vEx9sLu
-         EhUAOxMsPGcUtOisZQ8ifjFlzWQAiSQoB6/u3tP+t6AiqY3JSVM5iFJs8aAib1U/P7ZO
-         3APIEd/aUYO+LZGMRAjcPq0b3v1JrBr0c32PUBruxYriE7KUIS2BmKCESLKi/ALGSTf0
-         jZfAliqIzhM7Oc5mcu5EVHMlWDD7s6ioJKIWFeLtACvBcw2QWIt5PKobzfI7saavgziC
-         2zEhA3FJh7i7TybgzUA7xVxru0Dh7qJ7aBP0UqvOTV36e90zEO3BRYMM2sgjpaEVVAN+
-         UcEQ==
-X-Gm-Message-State: AFuF++kfL34FS3hWC/JVHjvjlM8qEkoVEhpp3r+3JKhyMEM5HnJBxYUH
-	gzrzsN29dULnVk4XT6PSmlenW6V2VpVQuCFRkdvUe5YpC4O/b+oBPNn3j+CZj/7V4E1f93H6cB1
-	0TOp7
-X-Gm-Gg: AYBFou12bDj2tf998ln/i+cEfA7ucvIdU4z9+wVi7xzkZIpqEgVnQl92Js5XbDSI9Ug
-	ZQpuS0lirHPbEEhL65JjWI1CrNnCzog1cUXqHVLmVYN3Qb0KpiiUswuZlUvy2beRHp/5iGVk4kz
-	WdBrjFTNWBot1AXux8E3b9xBbKWi986zduUttQO9CWfsH5U5NDBHWkXeuRbwNnqqYA54kembq+I
-	vAAXmW+RCgdjYjvQd+5qSXabOpulSEiMpAEKLdNrdWZRIrAolEBKKZifcfiLzA8nnh1ekNHyiak
-	7Oe5gIUyacyE55OvqTTY5TV/EgCibaLbNwQBtCOITuM7sSf9UUruSpGKh1wVxubcTW9tMXFz0Sq
-	5zmAPaBWut9jXiHPk4yCLYpkA6HZaxZlye7l46ZpEM0/DxNYBIDEXetG98GXqjpsLvklvuKBp3P
-	VgsgopMIlKeP3bcN7yQZAz8gnHgPKCCAkfvpmT64wgQ6p7IlSHaafupbc2p5y3dMs=
-X-Received: by 2002:a05:7022:f90c:b0:14d:3c0c:79e9 with SMTP id a92af1059eb24-14f5b9fd40fmr4638183c88.11.1790985635414;
-        Fri, 02 Oct 2026 17:00:35 -0700 (PDT)
-Received: from 5a6d9a2c18a2 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-151fce9a619sm748596c88.14.2026.10.02.17.00.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 17:00:34 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20260707; t=1791405179; x=1792009979;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ivTJVfjUBIc9wBwqrJfBdaCwNcPxo6RneZIv1F1z4qM=;
+        b=18Ypg4GQLdn5yTyEnDA36d4ss5l0Gp0ocTLdwTv1rSIRe7z/TUajodwAXJQnU/Tcae
+         W9ZHX9ulFgiQnNNt63s/ExFiiKOO0GnIwJk1Ew+Syuu5NquSYkCEIF5VIRJmfPcw2Wre
+         JqWT0FbWbY+ZgMapwLfQ1ERBg2Fd2CukChPyKLM2TDZDDNNEu1PQiG4JqtLsibJKyaPq
+         /21fkHX7iJvl5Kw90faXPZ1WppY0sroEhmUy4HSkDTTyiuVtr7GfHIC41Pejq/bQI+c/
+         QgJLQW24NnICUFPCPresDLsoln3bzBJf4VrauZ87G0M/IKKvlHUwo9Js5Y/1aI0TyQeZ
+         cnfw==
+X-Forwarded-Encrypted: i=1; AKwUvBypMplsjgy9Nmtm9J9CzFQlO0jQDRJ1imGeH4SuUjrUub+DeRNT47Bh5veose71S32sxZSPnSQGAw==@lists.linux.dev
+X-Gm-Message-State: AFq9FYKe/RTZWW2PllZTDhfNwg98qXzRgVKhnphJ5fmY1tAUj8YkJEML
+	6G0bNIstelfdvKePsefwnYp/XM9RCcUd0sF2W2OEtCyPnmjjOpKVBP0nD/ya9mRjKoQZL8RFXo+
+	KTgcFKQfBI/KzfassSeQZ9+fRa69r3bVJFCyU7d7404Wd6eeTJgRLMDjcCg==
+X-Gm-Gg: AYBFou3btyUPu1oJkZCXXLLlZk9iDNVqqIThJawjJc7vMTIh+sWny10l361izr4hID8
+	SBXN4X4Vso7+AIUqamkfMPg2P665aIpKVPUhdsvrdo7s+1uPH57Bwoh8P8TL/PJK0QSVcqjv/dJ
+	3Tb+8Aq8LM7KXWQQMF/XTQcIbWHDB74yKx2ifHsebO1x3+31G1el8pNPPr8FS+ELBId9g4YY0e7
+	daG72hpel1nuzPxCn4oi3i6eJtx1QINQTWFOYSZugknPCw+o8fS92Dz6mezX4yovAjc69zGfGol
+	sIreyacrhlvcPdfamv+hw+sTuZ1n2iBmM1ajfGjZ4223LDlWEB+e4Ox5uqrAnCmXqwjBTVtHBbd
+	76MG5l0UycsM=
+X-Received: by 2002:a05:690e:d86:b0:66f:c1be:a65d with SMTP id
+ 956f58d0204a3-6790a4c52f2mr2150347d50.79.1791405179114; Wed, 07 Oct 2026
+ 13:32:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-10-03 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 03 Oct 2026 00:00:34 -0000
-Message-ID: <179098563391.226120.12204142334841423376@5a6d9a2c18a2>
+From: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
+Date: Wed, 7 Oct 2026 15:32:47 -0500
+X-Gm-Features: AclHuK8P1OmqSjxw1Q8TP15n8s49AfcTPTrHW89OlIGcXgdQz488ItjpqK1Zalo
+Message-ID: <CAEev2e-6GVv45RWRLEF6LULovbiwrGE1-PxTzqKkD-zr4K=4KQ@mail.gmail.com>
+Subject: run_kselftest.sh timeouts don't work properly
+To: linux-kselftest@vger.kernel.org, kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-KernelCI Metrics Summary
-========================
-Period: 2026-09-26 00:00 UTC to 2026-10-02 23:59 UTC
+Hi,
 
+I noticed some hangs while running perf_events kselftests on some
+RISC-V boards with potentially broken PMU overflow interrupts. It
+looked like the timeouts worked properly and killed the first 3 jobs,
+but the 4th one would just hang and never timeout.
 
-  COVERAGE
-  --------
-                   This week  Last week           Change
-                   ─────────  ─────────  ───────────────
-  Trees monitored         35         30               +5
-  Checkouts            3,292      4,051      -759 (-19%)
-  Builds              14,476      9,954    +4,522 (+45%)
-  Tests            3,306,902  2,771,625  +535,277 (+19%)
+# timeout set to 120
+# selftests: perf_events: remove_on_exec
+# TAP version 13
+# 1..4
+# # Starting 4 tests from 1 test cases.
+# #  RUN           remove_on_exec.fork_only ...
+# # fork_only: Test terminated by timeout
+# #          FAIL  remove_on_exec.fork_only
+# not ok 1 remove_on_exec.fork_only
+# #  RUN           remove_on_exec.fork_exec_then_enable ...
+# # fork_exec_then_enable: Test terminated by timeout
+# #          FAIL  remove_on_exec.fork_exec_then_enable
+# not ok 2 remove_on_exec.fork_exec_then_enable
+# #  RUN           remove_on_exec.enable_then_fork_exec ...
+# *# enable_then_fork_exec: Test terminated by timeout
+# #          FAIL  remove_on_exec.enable_then_fork_exec
+# not ok 3 remove_on_exec.enable_then_fork_exec
+# #  RUN           remove_on_exec.exec_stress ...
 
+This hang can be simulated on any host by adding an infinite loop at
+the beginning of these 4 tests.
 
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is defined as a reported problem affecting 0 or multiple builds.
+diff --git a/tools/testing/selftests/perf_events/remove_on_exec.c
+b/tools/testing/selftests/perf_events/remove_on_exec.c
+index 89e7b06835df..d9a76351efa6 100644
+--- a/tools/testing/selftests/perf_events/remove_on_exec.c
++++ b/tools/testing/selftests/perf_events/remove_on_exec.c
+@@ -99,6 +99,7 @@ FIXTURE_TEARDOWN(remove_on_exec)
+ /* Verify event propagates to fork'd child. */
+ TEST_F(remove_on_exec, fork_only)
+ {
++       while(true);
+        int status;
+        pid_t pid = fork();
 
-  Origin           Regressions        Affected  Affected builds by top issues
-                 (known + new)  Builds (total)         #1        #2        #3
-  ───────────────────────────────────────────────────────────────────────────
-  maestro     21 +  15 =    36           1,001        135       108        92
-  ───────────────────────────────────────────────────────────────────────────
-  Total       21 +  15 =    36           1,001
+@@ -120,6 +121,7 @@ TEST_F(remove_on_exec, fork_only)
+  */
+ TEST_F(remove_on_exec, fork_exec_then_enable)
+ {
++       while(true);
+        pid_t pid_exec, pid_only_fork;
+        int pipefd[2];
+        int tmp;
+@@ -171,6 +173,7 @@ TEST_F(remove_on_exec, fork_exec_then_enable)
+  */
+ TEST_F(remove_on_exec, enable_then_fork_exec)
+ {
++       while(true);
+        pid_t pid_exec;
+        int tmp;
 
+@@ -197,6 +200,7 @@ TEST_F(remove_on_exec, enable_then_fork_exec)
 
-  TOP REGRESSIONS PER ORIGIN
-  --------------------------
-  maestro:
-    #1 (135 occurrences) - Error in defconfig (/tmp/kci/linux/scripts/kconfig/Makefile:95) [lo...
-      Dashboard: https://d.kernelci.org/issue/maestro:f2c3a9af64a352cb6c8e900e9cd6c2255f242f24?iv=1
-    #2 (108 occurrences) -  in vmlinux.unstripped (scripts/Makefile.vmlinux:72) [logspec:kbuil...
-      Dashboard: https://d.kernelci.org/issue/maestro:b5ed9b51212f5174ccbd9d812fc43e26fcc5361e?iv=1
-    #3 (92 occurrences) - unused variable ‘rev’ [-Werror=unused-variable] in drivers/pci/prob...
-      Dashboard: https://d.kernelci.org/issue/maestro:30c0b8077faf4586fdca5fe55e6ebb4b2feeb707?iv=1
-  
+ TEST_F(remove_on_exec, exec_stress)
+ {
++       while(true);
+        pid_t pids[30];
+        int i, tmp;
 
-  TEST LABS ACTIVITY
-  ------------------
-  18 labs reported results this week (1 more than last week).
+Then run like this
+./run_kselftest.sh --test perf_events:remove_on_exec
 
-  Labs marked with an asterisk (*) are new.
+Some digging around showed that there are 2 sets of timeouts, one is a
+120s timeout imposed by the runner script (run_kselftest.sh) and
+another is a 30s timer for each test process by the kselftest harness
+(kselftest_harness.h). The harness's 30s timer causes the first 3
+fails (at 30s, 60s, 90s), but neither of the timers seem to cause the
+4th job to fail when we hit 120s.
 
-  Lab                    Covered builds   Boots       Tests     Change (tests)
-  ────────────────────────────────────────────────────────────────────────────
-  aspeed                             43      43           0                  0
-  broonie                           934       0       3,056        -735 (-19%)
-  lava-broonie                      469   1,412     421,588   +277,120 (+192%)
-  lava-cip                          567   1,727          99                +99
-  lava-clabbe                        23     168           0                  0
-  lava-collabora                    848   2,968     225,681       -6,362 (-3%)
-  lava-foundriesio                  154     154           0                  0
-  lava-kci-qualcomm                  89     230     177,097    -190,405 (-52%)
-  lava-kontron                      311     614           0                  0
-  lava-pengutronix                  373     963           0                  0
-  lava-renesas *                     24     316           0                  0
-  maestro                         6,095       0   2,372,518    +419,855 (+22%)
-  microsoft                          40     217       9,188      -2,654 (-22%)
-  opentest-ti                        53   1,226         416          -26 (-6%)
-  pull-labs-aws-ec2                  46      45          45         -27 (-38%)
-  pull-labs-demo                    840   1,243      60,525     +29,755 (+97%)
-  sasha-lab                          60     131      25,137      +3,941 (+19%)
-  syzbot                             71       0          95         -19 (-17%)
-  ────────────────────────────────────────────────────────────────────────────
-  Total                          11,040  11,457   3,295,445    +530,542 (+19%)
+It appears that the harness launches each test within its own process
+group using setpgrp(), which might prevent the kill signal from the
+runner at 120s from propagating to the test process.
 
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
+This bug can affect other tests that timeout too. I'm not sure what
+the best solution is here, and was hoping someone else could chime in.
 
-Made with love by the KernelCI team - https://kernelci.org
+Regards
+Anirudh Srinivasan
