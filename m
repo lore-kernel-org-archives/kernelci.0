@@ -1,174 +1,127 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5376A20D4FC
-	for <kernelci@lists.linux.dev>; Wed,  7 Oct 2026 20:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC2834D3B9
+	for <kernelci@lists.linux.dev>; Thu,  8 Oct 2026 18:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791405182; cv=pass; b=Iz6NIzQaPBEe9Axz7j/UGIBeE2R0GAR0XeCHWuHYKgSgOwthXr/Sp0ijiiqDXJzaP0c/fNqPdzy1GojFQzFN4CB2fMLDJQ1ayqDl1ELkB/v/aUXR2DwMHj/pChaiuR3NQkDXiRVgAHv5y0QAqZR66BooPdJ5bRH4FUXwiPhmKZI=
+	t=1791483192; cv=pass; b=pSwiuH1fYX/5KtW0XC4xStCIAyGldFNSsU6RpCP4eKqAVYrBjjXfSiUf+xa2M1R1x+uuFgjHy4puzpbYwPq8n5uENWc8rpGkTL+AYGB87b5+Aa3GcfEU72qGx+/SbBNr1WM2yH4jEWxHPMHFpBUzDq4CaWlUpBoS1Swas+NEvrk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791405182; c=relaxed/simple;
-	bh=BjAy+qTW2P7zLlraadp7vFxhR13oDPht1OQi+cpdS1c=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Ln+8tCQguQkkePZ2oq3XA2WcjbV7fKMhXk135VymTWPzJ4uUaiJXHlj8abZ4+7JF8pkWXcZNeaLW4plwUs7mEkTTpAN1NnOBnH885Ptu+7/TBsLhgfEmDZxJc6aOwZ2BOwBvbOUlA5U1yUe8BZFDWzJCWGAt+JoLV2Buu9nKmJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com; spf=pass smtp.mailfrom=tenstorrent.com; dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b=LFxnsMPJ; arc=pass smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tenstorrent.com
+	s=arc-20240116; t=1791483192; c=relaxed/simple;
+	bh=4gsfQXgZKIg1gdl/bXfpudjrIZr9Fjm4vM10+or/kew=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=AGxkdeQHOdiPndvEzfcEkIKkgyPUeZ2fe1MLVUPfE47RueJaxxGp4ZeaCuKPa28R5tFz1N17uJq3znahqqQusf0oN6IAJawbHckjNArLlZrofhOVTHh8l0gL8x/4MItCmGP6OY9+1lBv6F+wrndEo9nfdOAm2EmYf5izrmWKayQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi; spf=pass smtp.mailfrom=profusion.mobi; dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b=Nw3y3+yT; arc=pass smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b="LFxnsMPJ"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-677cc343120so4540446d50.0
-        for <kernelci@lists.linux.dev>; Wed, 07 Oct 2026 13:33:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791405179; cv=none;
+	dkim=pass (2048-bit key) header.d=profusion-mobi.20251104.gappssmtp.com header.i=@profusion-mobi.20251104.gappssmtp.com header.b="Nw3y3+yT"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-3518cbe59b0so630756eec.0
+        for <kernelci@lists.linux.dev>; Thu, 08 Oct 2026 11:13:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791483190; cv=none;
         d=google.com; s=arc-20260327;
-        b=PNkuTq82UZV5T95Cy82ftrnUobF5oKS7hBfWiPRk2Tq4Gbn2iBAVlv7jQg36ous2s2
-         sGHZQWsux1NPEfcHx0mmsLHK+eARQJNgvRkIpW3kFAwXvERM0UOGlDIWsEbaEd0tGCx5
-         Et5ABHKMR+MZypN3F1imdnqSa7rm+/pwuXWUvAs/IvWUZ27eZE4ppg1crp8f3AEiukqV
-         w2VdVSTW3BfXnXiOAM8srl6xzW6yVl9h/9+OUtccwGTFYkmo3SofOPwnbhJSdCjRyO93
-         SIXSasuYV9XIUWuuWaQDHKR0MDPNbiNR3uCUcbghZAzjVv4BOQDQouU+IwuCMMiqLhKL
-         BM5A==
+        b=dtcvbQGdCxZOU2oC+5EmtlcBBnF2+DYKAWliSdrWOvYUNWrYRR98ySZIhEoJNzmbMY
+         1nW5EXNDyAN1gjdGvsj3NVmM3MN4YZr2FZCZ4Bd7Fc7C+endfEIBJhS6Jykilj2rcW9F
+         GQVaVx5+VDKrLpucveHSZiUeB71vZoL+VYdDe3lVcSMvg5ECtR7jndk5baPqYz9IYzeI
+         UohRoztFwMUBRh6xru7AVFWb6DNaGK4mgvp7uJtaXvjHOExkNXM5+0jHnLtYz+vFuQuT
+         4c7OGypZ3QRg0EeQbd8ZuJj9vHzVkd+LDUFIaHaJyZfELMxKsaHgfUSlMcELDhc78GJA
+         4rIQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=ivTJVfjUBIc9wBwqrJfBdaCwNcPxo6RneZIv1F1z4qM=;
-        fh=Nm+AAbC6PLo4N9N7C1Oo3FYh8a6PcyKuNTA/z4mDvuY=;
-        b=ZbmkR1ZzbCzs+4wS1d9u6BNxWwGNIdrgNhH2Rovek7eA6rr97tFl1jeIBCPaNh5zcz
-         hWGrA0maGALiwL2jH7pb30QDEIn+HhKmHuTH1AETIYvO0LT4AWcIRaHxDRRfXqmH04bW
-         ZW2jZooLeKmBqNsTcRY0+jKAJXrH6OJ+hS2ANTNFqE4q9cNUWNpH4/oToBW7JXkwBKwn
-         GYm7tED8Gd7s5AfQvMKMgZXqwmJRAkfQ0CKfI+gSawffCUni2XQEymBXMZGiqkMZAtNW
-         aFbxbl7XoWbY5MlOcLWuH+EHezzHULOOiaELfUKy68VT1ZI17Rp9pUZ+TxZWbREIVhs/
-         Xs/w==;
+        bh=MmHCgJYi+AO3R4WExg9rTN/WkF/dfEbh5xQPQnITPaU=;
+        fh=BEvjPE5PGt5L9Ssiz9KEfLo9aM8ELw+VbImiGaU5pyg=;
+        b=YpgtdeecpU9zDRCLZKLWVqYVbcx8cNTJJNff4SV/yB6oseKtOthC/50BpsvS/6bURi
+         IwiYJooRIeqnhXssmUMuPHGV35bEnGwzugRTZQx3N7+FPvh9AKyA1BZBtRpmPEX40DeO
+         WFQtR/4jVBeDB3VChOFsrd6DsvKxfrftCgTcZ6KyS/7B/cIwpcQX4jkWkI3/hI4YVJz/
+         4hMtnOe/cqp0RffWpVMARY6xjBhaU19uT3wq8UkwjWeGSVPcPN5ReiAeQDSQS/WtZAof
+         Ra9CYKNKDYLu/1kBeCv/sxR7Ti0JpoWIuStzP3zO7maOeiTw9cOFJFRgCN1VBCJQe1Nr
+         +zfA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tenstorrent.com; s=google; t=1791405179; x=1792009979; darn=lists.linux.dev;
+        d=profusion-mobi.20251104.gappssmtp.com; s=20251104; t=1791483190; x=1792087990; darn=lists.linux.dev;
         h=content-type:to:subject:message-id:date:from:mime-version:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=ivTJVfjUBIc9wBwqrJfBdaCwNcPxo6RneZIv1F1z4qM=;
-        b=LFxnsMPJCdxU6zJy5pDrETX/s0dKTu5vipe8MUZFANCrupCkWyWGNlgXXIK2men4Jd
-         SwSQA/SzTT9foqQ9qLdCimQLD8YhOP2nUuO8b5JtVlsZgdE8j6FhsU3rPkiChFCU5FSN
-         l1J/rXtEMu3z9okcySrgs7H4UBAvpu9t9h2dAwMzAySfDIazMq57BKrJ9bq5/KaHp1Bz
-         xfsy9uIIdM6w6fnOEtNvVNT5Y4HIcLskfE9dRIBgaWin7yiPOPdEtMEv8JLJHVT2daZZ
-         8kiplNkJ3rvsPrrkiN1MqBD304bKMGeEOTup5VVkordr0wsldVuaJs0qfx0cjreGFpri
-         DlIQ==
+        bh=MmHCgJYi+AO3R4WExg9rTN/WkF/dfEbh5xQPQnITPaU=;
+        b=Nw3y3+yTxNIGVpsyRDfvwyxlFJr1Z0fA1U4eB3ouIGAeq9TzYsQrEkG8HjRN2XszsY
+         oG8F2sfoVqJPr64m8rGWFvfvpoOEUb1+/7aHS1oR4yVMXyxbBkD+VcJ79lRr/Rcaall4
+         TbvLGdIoR1e5wK0IE5GWMQ9rqHcxDrSy9J5/wrI9aQfYyOYZszsAQSinLsbeplCUJR2p
+         xVwyZfo9pp66BDZBuLvs05YHAwtymZ3SM0Mfn5n3h8NzHRKJLRWqcvmGTSZywPFFjUOo
+         xVM2VyUKwTugJzK7uOJn6vayzDax8sA8xMRDkUjdK9B+HsjCq548nFZngrGHIJKj6a+z
+         EeZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791405179; x=1792009979;
+        d=1e100.net; s=20260707; t=1791483190; x=1792087990;
         h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ivTJVfjUBIc9wBwqrJfBdaCwNcPxo6RneZIv1F1z4qM=;
-        b=18Ypg4GQLdn5yTyEnDA36d4ss5l0Gp0ocTLdwTv1rSIRe7z/TUajodwAXJQnU/Tcae
-         W9ZHX9ulFgiQnNNt63s/ExFiiKOO0GnIwJk1Ew+Syuu5NquSYkCEIF5VIRJmfPcw2Wre
-         JqWT0FbWbY+ZgMapwLfQ1ERBg2Fd2CukChPyKLM2TDZDDNNEu1PQiG4JqtLsibJKyaPq
-         /21fkHX7iJvl5Kw90faXPZ1WppY0sroEhmUy4HSkDTTyiuVtr7GfHIC41Pejq/bQI+c/
-         QgJLQW24NnICUFPCPresDLsoln3bzBJf4VrauZ87G0M/IKKvlHUwo9Js5Y/1aI0TyQeZ
-         cnfw==
-X-Forwarded-Encrypted: i=1; AKwUvBypMplsjgy9Nmtm9J9CzFQlO0jQDRJ1imGeH4SuUjrUub+DeRNT47Bh5veose71S32sxZSPnSQGAw==@lists.linux.dev
-X-Gm-Message-State: AFq9FYKe/RTZWW2PllZTDhfNwg98qXzRgVKhnphJ5fmY1tAUj8YkJEML
-	6G0bNIstelfdvKePsefwnYp/XM9RCcUd0sF2W2OEtCyPnmjjOpKVBP0nD/ya9mRjKoQZL8RFXo+
-	KTgcFKQfBI/KzfassSeQZ9+fRa69r3bVJFCyU7d7404Wd6eeTJgRLMDjcCg==
-X-Gm-Gg: AYBFou3btyUPu1oJkZCXXLLlZk9iDNVqqIThJawjJc7vMTIh+sWny10l361izr4hID8
-	SBXN4X4Vso7+AIUqamkfMPg2P665aIpKVPUhdsvrdo7s+1uPH57Bwoh8P8TL/PJK0QSVcqjv/dJ
-	3Tb+8Aq8LM7KXWQQMF/XTQcIbWHDB74yKx2ifHsebO1x3+31G1el8pNPPr8FS+ELBId9g4YY0e7
-	daG72hpel1nuzPxCn4oi3i6eJtx1QINQTWFOYSZugknPCw+o8fS92Dz6mezX4yovAjc69zGfGol
-	sIreyacrhlvcPdfamv+hw+sTuZ1n2iBmM1ajfGjZ4223LDlWEB+e4Ox5uqrAnCmXqwjBTVtHBbd
-	76MG5l0UycsM=
-X-Received: by 2002:a05:690e:d86:b0:66f:c1be:a65d with SMTP id
- 956f58d0204a3-6790a4c52f2mr2150347d50.79.1791405179114; Wed, 07 Oct 2026
- 13:32:59 -0700 (PDT)
+        bh=MmHCgJYi+AO3R4WExg9rTN/WkF/dfEbh5xQPQnITPaU=;
+        b=ci8EdEnLhZMHHLs6jJ/SzYQhwJ79caKimZBGGkM1KPvuBpvNUKmRJvxyFpUG4fWiGR
+         JF0G1BlpHdidNAaQoxh47ujgPjzqY4rsFLK00scqVNRbxQ+sIgV//hihRb4niqBu9KGp
+         jar5m0flTHgxiIAEd3ITAjbFTBnZYeaFFv0+eFJBQwyCtc9oa7tPuuaFw87y4TtK0RmF
+         lv4fyv7oNuMAoXfozNOIayPK+zU671uSCSpqelu5H1tZUiggjo766sp20ZQZQ9c4W1On
+         hKk/HNWL6uzLWIISEjYSQpOLNmFuRNeAUIUaPJJkIFPEcKGrAsuetAjwg49sVvTfbGAa
+         M60Q==
+X-Gm-Message-State: AFq9FYJ8jTJXqLSBsBFzKB0NSAQ4BvFgYow36Ct311/zYoQTq14lro85
+	nmQYdgqz/wEMyVBjSGidaGAbAE11RuyRloTLMVFYr1P/luGcaoJqdi05rbG29AHJRlKwI2Na7qU
+	FWxu834XAqp05PtVudbVkTsf5UYfHkQzne/cWdof4L5xncnxXFJIUrcU=
+X-Gm-Gg: AYBFou3oqcvvhyRBqs649Hf0c0dInecxnMRYT/y3u1XxZYb52ChiisAaMcj0VRmECzv
+	q7p6Bohz0A25Mx9prSPeon4B1Q4y/TyBCtZGUx+obtjDZPqRxtpI2NqWjxbL5memh43el0V7g69
+	MPFuizFW132zHiBiBWp5HdNGF9f/LXMGVjFokLWBcekRQxFSdGh0fMIAeqG/3tWE32xEMotJ6r/
+	C510V9fb3ubZy8UQo8xIui335vrIzoUHj28Pj80jsJNCSO9IpZl7aCVN6SUNH4tjQQmQTxhqJz5
+	t0L5XyYswzf35RoTnVRFoZMd7P+Nlgk/cJN4qjvGNsV5Xop1Yvtwbd4V5b36Ih5b0JVO40N9q3G
+	wt4gdS9UEovU=
+X-Received: by 2002:a05:7300:42c5:b0:351:7848:85ca with SMTP id
+ 5a478bee46e88-3536c4bed2bmr141544eec.7.1791483189368; Thu, 08 Oct 2026
+ 11:13:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
-Date: Wed, 7 Oct 2026 15:32:47 -0500
-X-Gm-Features: AclHuK8P1OmqSjxw1Q8TP15n8s49AfcTPTrHW89OlIGcXgdQz488ItjpqK1Zalo
-Message-ID: <CAEev2e-6GVv45RWRLEF6LULovbiwrGE1-PxTzqKkD-zr4K=4KQ@mail.gmail.com>
-Subject: run_kselftest.sh timeouts don't work properly
-To: linux-kselftest@vger.kernel.org, kernelci@lists.linux.dev
+From: Alan Zanoni Peixinho <alan.peixinho@profusion.mobi>
+Date: Thu, 8 Oct 2026 15:12:58 -0300
+X-Gm-Features: AclHuK8_F4TcTb8SbCPvGDPSGkM_oVR6lesbONw4dKiayMGKas9wWn50anROLw0
+Message-ID: <CAKKBm2v+eoWqh2ojVKYNYcij8g19dLNdaXCHozh6V1y4QqKQ6g@mail.gmail.com>
+Subject: KCI Dashboard Updates
+To: kernelci <kernelci@lists.linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hello KernelCI community,
 
-I noticed some hangs while running perf_events kselftests on some
-RISC-V boards with potentially broken PMU overflow interrupts. It
-looked like the timeouts worked properly and killed the first 3 jobs,
-but the 4th one would just hang and never timeout.
+We have deployed a few updates and fixes to the dashboard. You can
+check out the live site here: https://dashboard.kernelci.org.
 
-# timeout set to 120
-# selftests: perf_events: remove_on_exec
-# TAP version 13
-# 1..4
-# # Starting 4 tests from 1 test cases.
-# #  RUN           remove_on_exec.fork_only ...
-# # fork_only: Test terminated by timeout
-# #          FAIL  remove_on_exec.fork_only
-# not ok 1 remove_on_exec.fork_only
-# #  RUN           remove_on_exec.fork_exec_then_enable ...
-# # fork_exec_then_enable: Test terminated by timeout
-# #          FAIL  remove_on_exec.fork_exec_then_enable
-# not ok 2 remove_on_exec.fork_exec_then_enable
-# #  RUN           remove_on_exec.enable_then_fork_exec ...
-# *# enable_then_fork_exec: Test terminated by timeout
-# #          FAIL  remove_on_exec.enable_then_fork_exec
-# not ok 3 remove_on_exec.enable_then_fork_exec
-# #  RUN           remove_on_exec.exec_stress ...
+UX
+* Tree compare now calls the two revisions Base and Compare
+(range=<base>..<compare>). Base is the older one, so a failure that
+starts on Compare is a regression. The Tests tab groups rows by path
+and config: a group expands, and a test row opens the detail drawer.
+The boots table has a config column. Previous-commit and branch-head
+buttons are labeled, and the tooltip shows the short hash, name, tags,
+and date.
+* A duration of zero, or a blank duration, is no longer applied as a
+filter. A bugfix that could cause parsing build duration incorrectly
+is fixed.
+* The Labs filter now also applies to boots, on tree details, hardware
+details, and commit history. It still applies to tests, and not to
+builds.
 
-This hang can be simulated on any host by adding an infinite loop at
-the beginning of these 4 tests.
+BACKEND
+* filter_boot.lab, filter_test.lab, and filter_build.lab each filter
+that tab on tree details, hardware details, commit history, and tree
+compare. A hardware POST filter body can set those lab keys
+    separately.
+* GET /api/metrics/ returns per-lab status counts for builds, boots,
+and tests, plus covered_builds. The Metrics page still shows one total
+per column.
 
-diff --git a/tools/testing/selftests/perf_events/remove_on_exec.c
-b/tools/testing/selftests/perf_events/remove_on_exec.c
-index 89e7b06835df..d9a76351efa6 100644
---- a/tools/testing/selftests/perf_events/remove_on_exec.c
-+++ b/tools/testing/selftests/perf_events/remove_on_exec.c
-@@ -99,6 +99,7 @@ FIXTURE_TEARDOWN(remove_on_exec)
- /* Verify event propagates to fork'd child. */
- TEST_F(remove_on_exec, fork_only)
- {
-+       while(true);
-        int status;
-        pid_t pid = fork();
+ANALYTICS
+* /api/ traffic is labeled dashboard, kci-dev, script (curl, wget, and
+python-requests), bot, or unknown. Unknown clients are not counted as
+dashboard traffic, and kci-dev is also counted by release version.
+* Latency is recorded by endpoint, method, and client. A daily job
+publishes how many visitors fell into request-count bands.
 
-@@ -120,6 +121,7 @@ TEST_F(remove_on_exec, fork_only)
-  */
- TEST_F(remove_on_exec, fork_exec_then_enable)
- {
-+       while(true);
-        pid_t pid_exec, pid_only_fork;
-        int pipefd[2];
-        int tmp;
-@@ -171,6 +173,7 @@ TEST_F(remove_on_exec, fork_exec_then_enable)
-  */
- TEST_F(remove_on_exec, enable_then_fork_exec)
- {
-+       while(true);
-        pid_t pid_exec;
-        int tmp;
-
-@@ -197,6 +200,7 @@ TEST_F(remove_on_exec, enable_then_fork_exec)
-
- TEST_F(remove_on_exec, exec_stress)
- {
-+       while(true);
-        pid_t pids[30];
-        int i, tmp;
-
-Then run like this
-./run_kselftest.sh --test perf_events:remove_on_exec
-
-Some digging around showed that there are 2 sets of timeouts, one is a
-120s timeout imposed by the runner script (run_kselftest.sh) and
-another is a 30s timer for each test process by the kselftest harness
-(kselftest_harness.h). The harness's 30s timer causes the first 3
-fails (at 30s, 60s, 90s), but neither of the timers seem to cause the
-4th job to fail when we hit 120s.
-
-It appears that the harness launches each test within its own process
-group using setpgrp(), which might prevent the kill signal from the
-runner at 120s from propagating to the test process.
-
-This bug can affect other tests that timeout too. I'm not sure what
-the best solution is here, and was hoping someone else could chime in.
-
-Regards
-Anirudh Srinivasan
+Best,
+Alan Peixinho
+KCI Dashboard Team
