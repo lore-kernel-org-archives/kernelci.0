@@ -1,148 +1,121 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3488D10F1
-	for <kernelci@lists.linux.dev>; Sat, 10 Oct 2026 00:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E02377558
+	for <kernelci@lists.linux.dev>; Fri, 16 Oct 2026 10:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791590435; cv=none; b=TIwkA6QJqLlpCGH9H1MuvkmbjWtlaQYo0XVttax30xGk2OWQzvZMKE200iFsJA2QeZH/iF8ol76l+30cBF3N/ADqdLyc7tjbclWc61GgzSoFVK/lVlSnaKZCPTfKdYYpAfmwuyUl0k/2uQfHtIPIE8xgvGKkpEkl5PNLG41FNAw=
+	t=1792146297; cv=none; b=YXjXBXE66u8uUBtNiyqwdovwpgiUkT+xB36eo53VBn957m6YG0SZRKgs/dmIndpxsoYS4ZBxSBEhUT8MvPqxmA8nZUsQy7q1PEkfc6iZcT199e2l512LBjyUif/YYE3V4ftWNmBItuk+t+r2Y/xrLBW5mi5DgS9syWWdDqtBy2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791590435; c=relaxed/simple;
-	bh=1exABp/ClR43SDsG/gTMHYLBaihgXWvhUsROxbrbp0Q=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=VqY42Ld3AXgVfcmVQjWJhwYacDRKCQAbC2E7Aoy1VQZKzpRP3LIQjoRxjPSpLL7CbZS9OBfBh8db+iZPR89X/IXcIrUiAyNi197ykjYy9POsqjMubq0SoUB3Pf5HEtDpaVG1XjWGsPx5icaGan2U5USRJa1xRjZY3hAK5qMm0mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=L1+UTz+S; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+	s=arc-20240116; t=1792146297; c=relaxed/simple;
+	bh=S/k17to24m3f4U/CnP95YbL3DMhdokU2RlUdFOUbF0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t/IBV0+yHhtXuJqvariDpaIR6edGEstX+pzwhRuVMKyn1GVCGs4dm7AXrKYlkAMqqH4ei+ppc5rRx9MbcarWujL78oIkfUGQ5vAGwiRq1iwigZOjCzN83i9C9kGXoBh0DIbRbMVHaxwGA6gXP3Rj/DWvnyIlk50sndd4oMMFbQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=gNnXCVZr; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="L1+UTz+S"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-353804b591eso375831eec.0
-        for <kernelci@lists.linux.dev>; Fri, 09 Oct 2026 17:00:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1791590433; x=1792195233; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=25anFo8Rr16bvqcJcXqaysKlEnBQCBS/F5qQylKvxxA=;
-        b=L1+UTz+SCmItK+Q+QWJg23nwwPLO0ciXslE2biVYNcYrVuaYRFRHODvFSmx3SR+7F9
-         cYBJwcUJoZB0tF9M2KUybKYxvvLiOnfrj7rEJH3wJrY8QBqy1fWor6vkEuWlek2jj2cX
-         tOodiQ/7KrVQgL/olzKr6+SsvGtNAOeO3SlZXhNvcTtdhCNoB1cxER3zdUrFfU474SYF
-         DtWspLSCJGawbBGT5d2ybGyy6BYH6ewkCrDQSRLfz3t2ELobzEA0T7DRD3YvhU9l0o+5
-         4FZRPhtjo6gvixBEsrXI/vNFU/u0Go7JcXaL/bgFss4v7EsYLAm+FybOIohs4Ep1XWTD
-         Mbnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791590433; x=1792195233;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=25anFo8Rr16bvqcJcXqaysKlEnBQCBS/F5qQylKvxxA=;
-        b=isa0YL2NZYiSh6TDPTB0em/JUmYW212YZBbM1MYONB4k3bkaTxgfveZwk6zmrpJb7H
-         McHVTYq+/QzLghvnNMk81lvVTU7UOQtEBFWIKGRa/7hfu8zIq/QmxJJyIi9R5DmZKOan
-         pD55YX7vYDVAEdN5sA8Bqtkz/tTq3fZPFeiKZPQrcHrGcyBllmnKWHcF6NdFeFaHZ71a
-         57KTYAhQXIU2nCFVXkdIgPeLkD0GnWnh1Lk/r3+tsGJfbR2akSX8uDl5RoJ4QuJy2CtD
-         kou6ofbFuz9kPbQmQFSLE8LeQlZ2FxyUQZzmelsxXdBwxX/EXGqqKGX6wdJlE1cEkDXo
-         QQ1A==
-X-Gm-Message-State: AFq9FYLMwekQQ322sOcqFd3HzCVRYLGZhQzUz9m+VypujN14y4pazWhO
-	MvFBrlkZeacDezcIQOUhL3xKPwFSiDTlnoHV+ZnZATyazhYm4eCXCQZe9lgOvsulgO88MUQHG1o
-	6dme4
-X-Gm-Gg: AYBFou3TSlt9vf2F5fsbaa0BfM0pkf2Beag4ZGAYVsLy2cZEOvQHXWBtqrLPm3J79/i
-	TSXQRqFkggDUTp6EF6vCjfsnQY6oT0RYz8ZsvWpCq8p87h90aFQv7bxcBTlzsiAXikgCfrWB7FG
-	VjNhbSzP4UXAKdi0Gzq898a7lqvxlG1YTb8JT3ZBRPadKbG5mbiqJ/OAo1pZBOf7Eexc9WYXhvj
-	cgR+QVYHXkdjMD09XbyiVGeFATQVc/UsiLnbIZOon02yNmTWC+8sWZnQnCOXBWfM0jCtAItAdZE
-	ezbN1zhIgmnrgs2PsicXwWNnkyH8HP8E6TqtLxh1p/edezV1Gq8eoqJ1aXKueJJFD0gkADid3OV
-	xYQs23HLd29xucnRot1onggmItPir8sKczEZBNDFvZ4aZC4gamkbKHPEpHYn6Qjpb6mn0andMUU
-	p+ARCy+C2a3RwfleFyRHX4dnJzK5dYnv6hTezVEvICKe6WeeZoSZNF9h7d4qVXsLA=
-X-Received: by 2002:a05:7300:b106:b0:34e:f948:d7da with SMTP id 5a478bee46e88-3537e0ce190mr7107673eec.21.1791590432755;
-        Fri, 09 Oct 2026 17:00:32 -0700 (PDT)
-Received: from 244668f92ec4 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537c61eaa0sm11692283eec.0.2026.10.09.17.00.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 17:00:32 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="gNnXCVZr"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0574B105AAE;
+	Fri, 16 Oct 2026 12:24:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1792146288;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=k5kED7laQbG4WoaeLyc9pOdikfsqAiW9BaHO+9/oBI4=;
+	b=gNnXCVZrEi/cJAJVsf/piDFqSsU5W+4dLrQVoMxfI+K8RhL3lw9QgzypDityL7jmFoBd6M
+	jXTa4JVFkLSWuxl/AEA5NmtWIl53KNLaDWCxE7oG/RbbXRQM6HG/YsGZBB5XHShR5ymhiY
+	HpkadyCpPa8GTcR5NdI9GPAKtcfdaW+cmgiQSStSLHgpoWa5oTxuFAkhOpKVrOI76/Xr/I
+	VSX6MkU+RStpoz7Rsi++H+6H8yrVPiH1STV1Bejkh8NeKpWWgti/h20pABYaR9ptbxWOw1
+	7uiTa/04eTrJhm1T4tdmQ6vUfku1uO/9Mje+5BoMh07jad7kR7Uw1qo/jzh4EA==
+Date: Fri, 16 Oct 2026 12:24:45 +0200
+From: Pavel Machek <pavel@nabladev.com>
+To: bot@kernelci.org, Chris.Paterson2@renesas.com, kernelci@lists.linux.dev
+Cc: kernelci-results@groups.io, cip-dev@lists.cip-project.org
+Subject: kernel ci results on the mailing lists was Re: [cip-dev] [STATUS]
+ cip/linux-6.1.y-cip-rt - 407b1406d2fad2b7ac279f28757bbd06e1d541dd
+Message-ID: <atH7baHpQxrGTH_F@duo.ucw.cz>
+References: <179211780515.391248.13476473435623274437@244668f92ec4>
 Precedence: bulk
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Subscribe: <mailto:kernelci+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-10-10 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 10 Oct 2026 00:00:31 -0000
-Message-ID: <179159043156.68410.1452923017571768116@244668f92ec4>
-
-KernelCI Metrics Summary
-========================
-Period: 2026-10-03 00:00 UTC to 2026-10-09 23:59 UTC
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="LkHHvo/9xAoKpmpK"
+Content-Disposition: inline
+In-Reply-To: <179211780515.391248.13476473435623274437@244668f92ec4>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
-  COVERAGE
-  --------
-                   This week  Last week         Change
-                   ─────────  ─────────  ─────────────
-  Trees monitored         30         35             -5
-  Checkouts            3,839      3,285    +554 (+17%)
-  Builds              11,806     14,393  -2,587 (-18%)
-  Tests            3,279,594  3,303,158  -23,564 (-1%)
+--LkHHvo/9xAoKpmpK
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi!
 
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is defined as a reported problem affecting 0 or multiple builds.
+Please drop automated mails from the mailing lists. Bots on the lists
+are simply not okay, humans are trying to use this for communication.
 
-  Origin           Regressions        Affected  Affected builds by top issues
-                 (known + new)  Builds (total)         #1        #2        #3
-  ───────────────────────────────────────────────────────────────────────────
-  maestro     22 +   5 =    27             741        150       116        67
-  ───────────────────────────────────────────────────────────────────────────
-  Total       22 +   5 =    27             741
+Plus,=20
 
+> https://d.kernelci.org/c/cip/linux-6.1.y-cip-rt/407b1406d2fad2b7ac279f287=
+57bbd06e1d541dd/
+>=20
+> giturl: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git
+> branch: linux-6.1.y-cip-rt
+> commit hash: 407b1406d2fad2b7ac279f28757bbd06e1d541dd
+> origin: maestro
+> test start time: 2026-10-15 11:08:26.524000+00:00
 
-  TOP REGRESSIONS PER ORIGIN
-  --------------------------
-  maestro:
-    #1 (150 occurrences) - Error in defconfig (/tmp/kci/linux/scripts/kconfig/Makefile:95) [lo...
-      Dashboard: https://d.kernelci.org/issue/maestro:f2c3a9af64a352cb6c8e900e9cd6c2255f242f24?iv=1
-    #2 (116 occurrences) - suggest parentheses around arithmetic in operand of ‘|’ [-Werror=pa...
-      Dashboard: https://d.kernelci.org/issue/maestro:26a4fc4f55534d981efb86a089cc89832d270b24?iv=1
-    #3 (67 occurrences) -  in vmlinux.unstripped (scripts/Makefile.vmlinux:72) [logspec:kbuil...
-      Dashboard: https://d.kernelci.org/issue/maestro:b5ed9b51212f5174ccbd9d812fc43e26fcc5361e?iv=1
-  
+Okay, so now we have test start time down to microsecond. Useful, I
+guess? But what we wanted to know is if the tests are finished, and
+this does not tell us:
 
-  TEST LABS ACTIVITY
-  ------------------
-  20 labs reported results this week (1 more than last week).
+> Sent every day if there were changes in the past 24 hours.
+> Legend: =E2=9C=85 PASS   =E2=9D=8C FAIL  =E2=9A=A0=EF=B8=8F INCONCLUSIVE
 
-  Labs marked with an asterisk (*) are new.
+> Builds:	    6 =E2=9C=85    0 =E2=9D=8C    0 =E2=9A=A0=EF=B8=8F
+> Boots: 	    9 =E2=9C=85    0 =E2=9D=8C    0 =E2=9A=A0=EF=B8=8F
+> Tests: 	   19 =E2=9C=85    1 =E2=9D=8C    3 =E2=9A=A0=EF=B8=8F
 
-  Lab                    Covered builds   Boots       Tests      Change (tests)
-  ─────────────────────────────────────────────────────────────────────────────
-  aspeed                             49      49           0                   0
-  broonie                         1,126       0       4,454       +1,398 (+46%)
-  lava-broonie                      442   1,010     162,217     -259,371 (-62%)
-  lava-cip                          472   1,463           0         -99 (-100%)
-  lava-clabbe                        26     183           0                   0
-  lava-collabora                    740   2,966     324,234      +98,701 (+44%)
-  lava-foundriesio                  146     146           0                   0
-  lava-kci-qualcomm                  79     121     167,445        -9,652 (-5%)
-  lava-kontron                      276     545           0                   0
-  lava-pengutronix                  336     872           0                   0
-  lava-renesas                       87   1,307           0                   0
-  linaro_pull_labs                    0       0           0                   0
-  maestro                         5,130       0   2,024,808     -347,710 (-15%)
-  microsoft                          62     342      16,360       +7,172 (+78%)
-  opentest-ti                        74   1,688         593         +177 (+43%)
-  pull-labs-aws-ec2                  74      74          74          +29 (+64%)
-  pull-labs-demo                    560     956     191,986    +131,461 (+217%)
-  riscv *                             1       0       1,413              +1,413
-  sasha-lab                         158     362     373,827   +352,286 (+1635%)
-  syzbot                             58       0          99            +4 (+4%)
-  ─────────────────────────────────────────────────────────────────────────────
-  Total                           9,896  12,084   3,267,510       -24,191 (-1%)
+If we want to do testing before release, we need to know if the tests
+were finished. We can take a look at the web page, no need to spam the
+list. (But it would not be bad if -cip page contained results from
+-cip-rt, so that ...well, results are on single page).
 
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
+https://dashboard.kernelci.org/tree?i=3D60&ts=3D-cip
+https://dashboard.kernelci.org/tree?i=3D60&ts=3D-cip-rt
 
-Made with love by the KernelCI team - https://kernelci.org
+[What kind of unicode trickery is these? Do we have to communicate in
+pictures now?]
+
+Anyway, proposed solution is to add another field to the
+https://dashboard.kernelci.org/tree?i=3D60&ts=3D-cip-rt page, right of
+"Test status", call it "Finished", and it should show true when tests
+are done, and false if tests are still running.
+
+That way we can pause the release until the tests are done.
+
+Now,
+https://dashboard.kernelci.org/tree/cip/linux-6.1.y-cip-rt/407b1406d2fad2b7=
+ac279f28757bbd06e1d541dd?df%7Cts%7CFAIL=3Dtrue&i=3D60&p=3Dt
+contains failing test. If someone familiar with kernelci could tell me
+if they consider this to be kernel failure, that would be great. On a
+related note, ability to display logs without downloading them would
+be welcome.
+
+Thanks,
+								Pavel
+--LkHHvo/9xAoKpmpK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCatH7bQAKCRAw5/Bqldv6
+8rPHAKCVHGRAJqDxH8C4kMPn3dbMS2sBkACgpIvqy7pJmd0iYMyVNavRETlL9o8=
+=p5JQ
+-----END PGP SIGNATURE-----
+
+--LkHHvo/9xAoKpmpK--
