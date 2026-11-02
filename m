@@ -1,84 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.68.63.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793404895;
-	b=tuGK1emgmNESeuxx/vU8PEsfZEOOLTqqzdrYs1UlsjCMPp+uPMpRFGCks/oc/qymRpya
-	 2aYpFqtFLjbsSThrreBOFX1zn66tC6Ns0FRPFjpEZBn5A21Du2rRebRLnv5keWMfD2EtG
-	 g6TUVbi1C/1ikGmWzlTeLWq99SwPPF20Xd28seMzf2F8z6rb2fASWwiweV4MNbOCk5M/3
-	 zkED0ZQeAPPQT3IcYDffh2USRbUzuwzjZGZnDqvKb7mRJwJVDa3sgaYxU75CiuS+IrEEh
-	 RARI3v1Zzg6NdmQStBocmf0gZuF67GCjZ6yaC0yQp0vseDiAPR8Me87JUXIfDJWcnbA==
+	t=1793615317;
+	b=vTAV0wjvVB8Mrs9PrXM3RXSVhnGNzFYCn7xdTexEvtgKif8OLwMJaWQ+FDDSwBkdVGbI
+	 J4cD64C7GJCMMCxBYWMAzTR+q5ZqUdM/VLpomx7pQ/asKP2qCzONAQCPqC3VmdSoxhRf2
+	 84GOmqFkbD6mmQHZTgul0OXt84q4Fa3FuP+oWWq36wKEhn7j5K37nOPRMjW1Pys3fmdVP
+	 a1hccO472yLpbSo+5c5KCNmp9o8jgtmkP0OplR2lcrpAWjRZvfqjUYcgZTDl+ffM8jPCh
+	 WU1CvGCiWG8XsHvh+QxLMkz9o3f0efK/Y7Z14ZYWx4rUyAIwE7yijIkU2ai9qw9GWEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793404895;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Content-Type:
-	 MIME-Version:Content-Transfer-Encoding:Subject:From:To:Cc:Date:
-	 Message-ID;
-	bh=8QL6Ps4dNqo7dwCvbYgK2hjGL168tEYtNT99xNOWLKw=;
-	b=JAdp/+S3saCA+ZeQu5PqQEWMNpQmVNRZIiV6794big4z0CGQMcpJHVZ1lCyFeQtTtfek
-	 lBU4UdqyrZtAKfD4qkY6cHxGhbBwCuuxt0UljVD2rsQwCPE9GQjw+S755gb/dhCSnvP24
-	 QRaPSIZu2Ga1MZJn1SSnwYVWzrUPfh7nlx1ZCtjZCWMF/p6laT9ZXg+/eJpRJg1SjKkSe
-	 i4yXtDfPShtRRAwdQtdeqvDS+/Ywe+e5QWLWyk6RBaq9nIDeDLBbY10WbhjiQlM/rT/Dp
-	 E59KvtVswHa7tjGZ9YqgNq2I3KsGENhksPKnXVCWYFiIeW7Lh+jwaZdSDvflrwZZUbg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793615317;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:X-Virus-Scanned:
+	 X-Spam-Flag:X-Spam-Score:X-Spam-Level:X-Spam-Status:Received:Received:
+	 Received-SPF:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 References:From:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-PPP-Message-ID:X-Rspamd-Server:
+	 X-Rspamd-Queue-Id:X-NC-CID;
+	bh=xvCJBPZenVfqXsBZx5KRJCX0pfhC+BYCMbiy0O2sKDo=;
+	b=E9+onz2T6KZnz3glsGDLfU77Wx6W+/2RXIklme3k+blWdtammeouNpb7VtLPKms9h18T
+	 DsNoObkNLNZdVtp+bfSRQD8RFdZoDqHyxdHPajxDraXkISv7ERq0XM2sTsLDg9qMICLwd
+	 LOy6r3RkgDIw9XwVO19eEfFX84S5p+kfLjK6mz8Cf3IMLm5pxQO2tHLAjvqlsV1424rbu
+	 4bXu4FzKmwk4dLgTLjkv/C3dqeeQveX67LfLncyJcLkQDvbI25df0oTx8WJHscOP0wnmN
+	 fixktGLwrBd789GQ6XUC4ly0RZLDaPRDKjOp9LRIqoZKJbjblBBzUUpvy3pipqF+r6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kernelci.org;
-	spf=pass smtp.mailfrom=kernelci.org;
-	dkim=pass header.d=kernelci.org header.i=@kernelci.org header.a=rsa-sha256 header.s=google header.b=Q4H7wDxS;
-	arc=none smtp.remote-ip=74.125.82.182
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=leemhuis.info;
+	spf=pass smtp.mailfrom=leemhuis.info;
+	dkim=pass header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=XEqkdwmO;
+	arc=none smtp.remote-ip=188.68.63.98
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC0E606A31A
-	for <kernelci@lists.linux.dev>; Sat, 31 Oct 2026 00:01:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AC0E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D79A606A326;
+	Mon,  2 Nov 2026 10:28:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D79A606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernelci.org header.i=@kernelci.org header.a=rsa-sha256 header.s=google header.b=Q4H7wDxS
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-369f33df08eso2581057eec.0
-        for <kernelci@lists.linux.dev>; Fri, 30 Oct 2026 17:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1793404893; x=1794009693; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8QL6Ps4dNqo7dwCvbYgK2hjGL168tEYtNT99xNOWLKw=;
-        b=Q4H7wDxSTNQ76B16PH4m7/SgldFSjHYgyNMnSXYvlgBDxz9XS8W2rCw3BJJmpBNX7g
-         B9fgLsQfiH1HDrCOFHbWAUYCWGPnwgNfKjMzNirist/SJrGHcf5rODqWEwMAtGZnyoPw
-         dLfXdIDQeOVOuYVna7jljRgq4wsDbcpN5eqIbENMR1CM6mKYaJCHOdFERQBAOTRkBHSe
-         icS/yiSNaqQXKW8kcbOgsL8lFEUFrM5YqOFFYXX+zM4LZrctigLY/oN0G77nl4ZN6cEg
-         9JCdgaLcQGRvhetmkkMp0zcD1FJyYl3Fszf5TfOBR4WBWWqvgLmsqJ7Ggn3vA5HIsw9Z
-         GmbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793404893; x=1794009693;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=8QL6Ps4dNqo7dwCvbYgK2hjGL168tEYtNT99xNOWLKw=;
-        b=DRa/UATe7kKgkbRawdyasSKOXArlBIYbG6thNEKtk5lHZvZInIlk6o/RC42kdriT+X
-         5ut2QaaomolXyjzZzyUD3J/xwfDQmFVjd2C/XGAbFGR3ZrZksWeM2i4XTd+e66Z+1H0o
-         /tFvLegwzqqdm3RrI1ZPANGcnJw53IDmAyCyJ+ygmhxCHvbM9Gt/Rf0AG8WjldjRNZFH
-         UtsHacSD1nkCQU0x9x7BKWOpS7aQL07otNeEPsKKzrLzQMiTpAMdw/XQKbvCACpZbVwH
-         jeHeD7xxSF0cwzOH5gdeMoq6xLSdJPB98tPUtG7WsNmFkcLZlh0DiHAQOFlz48+hnOFE
-         3XfA==
-X-Gm-Message-State: AFq9FYKnLViTxPsC0b6DhLqLXuSkyKgLQyeBfkjg7XVvVKcaVgyg8EEl
-	py6OPcG1nKozNjZkXiRUOqnG4TgX8Tn62bRQgKDNa3VppWfEKfSYETYMuFkKGZIjUNPzeRHbpxP
-	VmYlX
-X-Gm-Gg: AYBFou246+E0yu9ayjxQCHK3q/UYZiMr2Te3M0/PlgybE5OpM1kr1I3e3KEz/dbGGdl
-	TBRb0y3DgJsfcL245a8hJNV0hMDr0PQ7wekqmpWVUcYV4eeU+9OoC+XHjGr4n2SvRPRs+pEU7oz
-	iOC3rK8f29r+TiEnkvVsgKBO2skUQIpKcndSyxhB+joZmCYIStfdxpUNqIEh5cPm+9cAZ8cJ31o
-	HWvlaItm2rXM2uwYe2WM3+8Bk3VOovsrYIhZZvT/EYc+2AQVFFeCm/CU8su++CZhFOWZuK1g+8+
-	7exKlQciypwEy90xPg+H3fFiZ/QT8uW/SkzxOVMciSrKT4uis36+s0DuXgzogbphMeasF/Fs8RZ
-	Hd1LgEdL6rf0xmIVrSdzBjoqQHbslHND1ENGt6SgCQxtc2/vDpAB+pfEKJrz7h6Nk3zbGujP/Ne
-	F7u74SkIykr8+1J1KP+GSugA9xpFsF5XgCe71LV4idyT3RoAk17OJNgsVLJEfg0O+Lmq7zy7pmi
-	bsWUnfBAJLJrkRMCnz920jnId10GHkdi6+q1UsAhe7/UeZcWNRBeZakLMLCjTPl52yvucary5wm
-	gsS4mV+skK2qER4zhXEyNA==
-X-Received: by 2002:a05:7301:b10:b0:368:a825:bf7f with SMTP id 5a478bee46e88-36a42368932mr5002237eec.13.1793404892800;
-        Fri, 30 Oct 2026 17:01:32 -0700 (PDT)
-Received: from 34406640b1f4 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42a5fb97sm12175091eec.23.2026.10.30.17.01.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 17:01:32 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=key2 header.b=XEqkdwmO
+Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4jJ7G50zB5z6Kwn;
+	Mon,  2 Nov 2026 11:28:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1793615309;
+	bh=PBSoHz1TmN2IHfZWj0YkK0WlPPGEyTe8zg+zoWvVA/w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XEqkdwmOBP6JbrktFcz42jYphPtaMIJRhD1sc0mF6MI2eUkeXyXK3xaivp6OeXqHf
+	 mOCQSpOEWP/faq8K9kGypvywUnIOkXQ2jL9c1kqFL3VZdeHgn72aconGmhG1ujcum4
+	 gGip71iqPjxqpTVfFCZke/2uC8jrmjShPFkyCm+xXtatAjw9ryhe95KbKYQJlUopLE
+	 0KbqjfMsDZSpGcA0BbWk2l2db5/ulRd6xnRArQ6Lf8HsflULQxaGKi0s+I/s7B3WsT
+	 wGWWldYbySA6mW+lVdpfkxtIobFZNhQ4miJVUidzifb7BmJ9buCtu7HG0uqiyOynxE
+	 Kbbo1O5ZHtQcA==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4jJ7G50GVRz4ykr;
+	Mon,  2 Nov 2026 11:28:29 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.898
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4jJ7G42MJMz8v20;
+	Mon,  2 Nov 2026 11:28:28 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 43F7C5FA02;
+	Mon,  2 Nov 2026 11:28:23 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <7825d8a1-83cb-47b1-9df6-96892d25c4ae@leemhuis.info>
+Date: Mon, 2 Nov 2026 11:28:22 +0100
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Post: <mailto:kernelci@lists.linux.dev>
@@ -88,91 +79,48 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:kernelci+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-10-31 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 31 Oct 2026 00:01:31 -0000
-Message-ID: <179340489134.65000.885510787901465629@34406640b1f4>
-
-KernelCI Metrics Summary
-========================
-Period: 2026-10-24 00:00 UTC to 2026-10-30 23:59 UTC
-
-
-  COVERAGE
-  --------
-                   This week  Last week           Change
-                   ─────────  ─────────  ───────────────
-  Trees monitored         21         29               -8
-  Checkouts            1,869      1,503      +366 (+24%)
-  Builds              12,635     13,470       -835 (-6%)
-  Tests            3,056,633  3,652,159  -595,526 (-16%)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] next/master: (build)arch/riscv/kvm/kvm.ko: symbol
+ 'kvm_arch_pre_fault_allowed' undefine...
+To: kernelci@lists.linux.dev, kernelci-results@groups.io
+Cc: regressions@lists.linux.dev, linux-next@vger.kernel.org
+References: <179267754360.302120.2153520610797426540@kernelci.org>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <179267754360.302120.2153520610797426540@kernelci.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: 
+ <179361530358.1131926.12318118078042161870@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: 43F7C5FA02
+X-NC-CID: kwUt/bvY6Bh5KxvUQwDN/axRzzuu0c5/DvWLbdu+P1ZjcZ+dyRg=
 
 
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is defined as a reported problem affecting 0 or multiple builds.
 
-  Origin           Regressions        Affected  Affected builds by top issues
-                 (known + new)  Builds (total)         #1        #2        #3
-  ───────────────────────────────────────────────────────────────────────────
-  maestro     17 +  20 =    37             646        148        65        58
-  microsoft    0 +   1 =     1               2          2
-  ───────────────────────────────────────────────────────────────────────────
-  Total       17 +  21 =    38             648
+On 10/22/26 15:59, KernelCI bot wrote:
+> New build issue found on next/master:
+> 
+> ---
+> arch/riscv/kvm/kvm.ko: symbol 'kvm_arch_pre_fault_allowed' undefined! in Module.symvers (/tmp/kci/linux/scripts/Makefile.modpost:147) [logspec:kbuild,kbuild.modpost]
+> ---
+> 
+> Log excerpt:
+> =====================================================
+> ERROR: modpost: arch/riscv/kvm/kvm.ko: symbol 'kvm_arch_pre_fault_allowed' undefined!
+> 
+> =====================================================
+> 
+> When fixing this issue, please attribute this report according to the
+> patch submission rules:
+> 
+> Reported-by: kernelci.org bot <bot@kernelci.org>
+> Link: https://lore.kernel.org/
+> all/179267754360.302120.2153520610797426540@kernelci.org/
+> 
+> For complete logs and details about the environment used, see the issue
+> on the KernelCI dashboard:
+> 
+> - dashboard: https://d.kernelci.org/i/maestro:9c12526508454935ec55c5be5b9699f5296ee63b
 
 
-  TOP REGRESSIONS PER ORIGIN
-  --------------------------
-  maestro:
-    #1 (148 occurrences) - suggest parentheses around arithmetic in operand of ‘|’ [-Werror=pa...
-      Dashboard: https://d.kernelci.org/issue/maestro:0ac4ca056d408ff08354d1eb5412f842ecb10c06?iv=1
-    #2 (65 occurrences) -  shift count is negative [-Werror,-Wshift-count-negative] in driver...
-      Dashboard: https://d.kernelci.org/issue/maestro:ce5ec46ecf72462fff1bede413010b22a34a9494?iv=1
-    #3 (58 occurrences) -  'HMAC_Update' is deprecated [-Wdeprecated-declarations] in crypto/...
-      Dashboard: https://d.kernelci.org/issue/maestro:cfb7db7bad026f784ab5093df91515e27c634b34?iv=1
-  
-  microsoft:
-    #1 (2 occurrences) -  in expansion of macro ‘guard’
-
- in kernel/pid_namespace.o (kernel/...
-      Dashboard: https://d.kernelci.org/issue/microsoft:a809b5da947dd631b012d49eed40f6a9314ced31?iv=1
-  
-
-  TEST LABS ACTIVITY
-  ------------------
-  19 labs reported results this week (unchanged from last week).
-
-  Labs marked with an asterisk (*) are new.
-
-  Lab                    Covered builds   Boots       Tests    Change (tests)
-  ───────────────────────────────────────────────────────────────────────────
-  aspeed                             57      57           0                 0
-  broonie                           517       0       2,339        +116 (+5%)
-  lava-broonie                      302     571     186,844   -295,303 (-61%)
-  lava-cip                          455   1,468         157      +112 (+249%)
-  lava-clabbe                        32     213           0                 0
-  lava-collabora                    855   3,291     372,595      -6,341 (-2%)
-  lava-foundriesio                  113     113           0                 0
-  lava-kci-qualcomm                  11      56      64,838    -79,152 (-55%)
-  lava-kontron                      204     304           0                 0
-  lava-pengutronix                  267     657           0                 0
-  lava-renesas                       98   1,532           0                 0
-  linaro_pull_labs                    0       0           0                 0
-  maestro                         6,042       0   1,728,775   -193,427 (-10%)
-  microsoft                          82     446      19,266     +1,819 (+10%)
-  opentest-ti                        91   2,649       1,318       +557 (+73%)
-  pull-labs-aws-ec2                  91      91          89         +9 (+11%)
-  pull-labs-demo                    759   1,982     267,747    -46,758 (-15%)
-  sasha-lab                         124     588     398,551     +23,807 (+6%)
-  syzbot                             63       0          96          -9 (-9%)
-  ───────────────────────────────────────────────────────────────────────────
-  Total                          10,163  14,018   3,042,615   -594,570 (-16%)
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
