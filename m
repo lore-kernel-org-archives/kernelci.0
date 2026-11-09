@@ -1,84 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794009742;
-	b=Bp1ZX+onlIy5+kbpV90eoB1WtgH0QnhvJJyr5crUofFHepb0bJbrwJk+UDqRjZN/41Pr
-	 LrOpZhTSZjytfNamOHLq1KYdHq2uT5LFVQYKaX2XOYnKdyxqMvZFqrKrERAHPLW/C+MTj
-	 odXeIKSSxFbc/K6kOqRAhgmoisZLh1PCv7MEpERPeFARQbNfK3r5X6qSALPMPf7sTzsht
-	 yG/qab09qSmFIRrH3dawo5Tk3iEvAoeBFNsPhYTc/zRRgnn6CzzjDCfNqNbDKhIgys2O7
-	 vT2kqTD3qNqPJiGTkix+jAQjwLSVcD37ZmzTS1WPr8urcQ1ck0cQ1aGFGKgTbtj+SSA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794009742;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794256217;
+	b=45bFfQNp+klmNdgEaxqsVT7qkeV3JsgAzdovBoqfUDFQmrnAitaWmekiPtGNApeTo/iw
+	 UrdoRJEwKF5qbYj4OpIN3lwoKOQvQXuxlAc4JE/R7tTpaN7/Vk4Lh0rkoSM+oGPevV8VM
+	 3VE2vVIrwzvakw68yZ0MXnwjFo1A2h2CnUO2Z7hn/YASblAK7lenLYQtDHmCR7Cy9m4C7
+	 OiEUixKF1I821N2z7DOnddiTldfhfFgHMh0nrFzryBN35lcREx0yWIPOuEW8wDihT8mtP
+	 V3EVf0TWvp0JU46Q3kHNNjEz4XJPLekPb1bmDDr2bxiFQyYgNkUBf3glZf6QIEZsBrQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794256217;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Content-Type:
-	 MIME-Version:Content-Transfer-Encoding:Subject:From:To:Cc:Date:
-	 Message-ID;
-	bh=YCZ9eqZ/3SbmdvFWiGmXakjj0il90fz0B+HqgC98Z4w=;
-	b=fXwUCPQ4YccvSjlKCNzlpTwlIyPB24kT8FEth3v9/kSV43uPE24OYp+a8b1Sc0jrXjP9
-	 jfzaH7cSX/aPVWC1ZH8SrtXoVcNbHcCKNSLN3YpdbP1sRM/fnOF9+ggrqGk/PVLt6/bnu
-	 mv2wjTa9bz7Dj4RLp/xHA8vSVP8yC4fbps2TRF4n1YU/pe9SWOGjrbD/2IRbeBlA6g1eC
-	 f1zBuaM8cczIo9O9y7chvE+OW7+aU3rSzJ6Q+0AQFRAsMSqv47EOdZAHvWE2UrAh9NFbd
-	 bD/GA0j+fzBID3jjLg9y4dbA58ygWWeQNyunE1At1cLBPn4AIHMJB7syllrwDoj5cQg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kernelci.org;
-	spf=pass smtp.mailfrom=kernelci.org;
-	dkim=pass header.d=kernelci.org header.i=@kernelci.org header.a=rsa-sha256 header.s=google header.b=KevwdaTh;
-	arc=none smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Content-Type;
+	bh=jxoL1vkksv6+PpaP3p3y3nKcoLpOHEtWRnV5Y2aKg+A=;
+	b=wDYIYLFOpO+/eO+67FwV02LUkcJjhnRe4HOpvp7aPQjiqHS8GqHCY9i/uEGO2I+T9qWh
+	 NsU1bFfu4HreoBsGxiuZn1MEwv1DOIIQh/Nqdp27DPbXkCVzN2s5ePqIrPDWT3ududOc+
+	 amQub5Jbf3V2iX1eZwqqWwLbsQR6c1nM35x1Cf2A5fxAU0M+Aut+xwD/LLdE68WX8gXhG
+	 +KrgPC08DotwcPxTpSRS6HvkBct3Wlrs6d9+LlVAOk94vwgnmcduceoBwlLm4aYMkA3JG
+	 LH8iJtmuap7jhR2M3RnTEWLEYcLk3OeNkmmWbvQYl0RHIPxdhtLzUo5aypzt+wLwlCQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=profusion.mobi;
+	spf=pass smtp.mailfrom=profusion.mobi;
+	dkim=pass header.d=profusion-mobi.20260707.gappssmtp.com header.i=@profusion-mobi.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=YqEUQUJe;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9E3606A326
-	for <kernelci@lists.linux.dev>; Sat,  7 Nov 2026 00:02:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D9E3606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2209A606A331
+	for <kernelci@lists.linux.dev>; Mon,  9 Nov 2026 20:30:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2209A606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=profusion.mobi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=profusion.mobi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernelci.org header.i=@kernelci.org header.a=rsa-sha256 header.s=google header.b=KevwdaTh
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36cad25b8b0so1912568eec.1
-        for <kernelci@lists.linux.dev>; Fri, 06 Nov 2026 16:02:21 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=profusion-mobi.20260707.gappssmtp.com header.i=@profusion-mobi.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=YqEUQUJe
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso186484366b.3
+        for <kernelci@lists.linux.dev>; Mon, 09 Nov 2026 12:30:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794256215; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GC9X8RHymf9t/ly7OBu8x/LFlVLGV+8scGFHEYTru+FhsRKDSy+IIEQsh0aBHh/aM8
+         nRyJXD60kKswTkjnJMCTWdZcaHoibwn4Li1ofYbCAj5SIecQnhytqFy0HJjcm7hD7i0N
+         YsnOVirL7f849bZ1vlp0ON0cIMS/RngdND0SNC6iMy09HXPecXbRNaqpf4+MKSm2Wx78
+         oCFecJjCC3YdiZ2y9NaejyM0cVjJkFpXuTGPFrr7YtvhYRn8tOlc7yOWeTWz86x47hRl
+         OuuZ3cl/vu61yGaETCk8uQ6ih58DzKiMAOru1vCT+TLWGeNW4hw5sqIlHPC3xZtaAEHi
+         fpDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=jxoL1vkksv6+PpaP3p3y3nKcoLpOHEtWRnV5Y2aKg+A=;
+        fh=rmq/YLFzDAglBwji5AmBmtb7cJxq3EZCkg46fu2xnLc=;
+        b=DgjKnWM9nbPDqmmQ4qYBsH5DA9GPTaGV4ZdFe0Tvu8EX9KmylV3ubdOssI16LPAlfU
+         ++cEK3rNGHQFWlT8dvGqN/PdAo1qOVMFVKzxG50yr8pyRV+Vlja3vEFY3wbb5FGBTfob
+         S/HXq9KapSOjD44S/PaG9NdjHJqTny9qSTwVaRA8MBD721E18gdt8W86YsXdP5A0BM25
+         AejI6zrYvYeDs5KChtEsBlVOfGy9y1/2S6TF/Y8c9kMx3aD0W3f1P971bYbEPw3sgqUq
+         OVkxOaMfvwnGn5ZdScjaRiSpZdX5OWTmP++pYiURl94byOB+1EhziFvKjc3WW6ljQBS3
+         CHhQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1794009740; x=1794614540; darn=lists.linux.dev;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=YCZ9eqZ/3SbmdvFWiGmXakjj0il90fz0B+HqgC98Z4w=;
-        b=KevwdaThAQEaStfRTj53fmArdJsP7LZ4MDDLgSbpeBkqJ79Z7kDBA9RZJMBadXMV8+
-         pVvn1SMnKHgUqjP8CcQg/n5kl10j5avLCJGj9kz11g1avsNxLcX1Yvb8aNQtHOfTphKt
-         jBRMeM8nb0vsGR21AcAESLNDNjQ4Klhm0iHRtIkXO7evV4WaEJ8qvUCskMy0I57d5ex/
-         sLHdoacsfd/nGTp3jp731AgQnpUZ959J92zo/IKX8wYd8S9K538TUV7S1xCu31bUp5Tm
-         xbDfG1/1Tr9USQXO08YA/Gg0/l3GeW1rgx5irKE4+hPn2NcrdGaFaoIao/RGQUhD7Zer
-         C4+Q==
+        d=profusion-mobi.20260707.gappssmtp.com; s=20260707; t=1794256215; x=1794861015; darn=lists.linux.dev;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=jxoL1vkksv6+PpaP3p3y3nKcoLpOHEtWRnV5Y2aKg+A=;
+        b=YqEUQUJe7S2VRy83A0joxakUU61gaJa0cR6G6cDThPHkFnDXH5Vd/aLDisDubzoaPy
+         j5nnUeKmTxodxZ14cLt7ZCW54ldmC+AGOK866c9aElpMt2UE6pNFybj32Z3dtgRtnIdF
+         cnq0TVEVDyfcq78at0WQO4+zP6gpYFTJMpacz3tzzW63tQoePo2O1TU5S25u1MJWU6dr
+         rFUV2MeskAAW3gmeCwURtpCa9FfA1B8fbxblnsipxO6VcCD/GqLeqb2VNHPJ8UZrk7cr
+         0Q28b3jRbPenQN9gQbfwde7VA7L2VzI9mZMF9oL2lPk5kk6K7SwtCjTi+/IPSK7o+esw
+         TNMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794009740; x=1794614540;
-        h=message-id:date:cc:to:from:subject:content-transfer-encoding
-         :mime-version:content-type:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=YCZ9eqZ/3SbmdvFWiGmXakjj0il90fz0B+HqgC98Z4w=;
-        b=Gg4ahBOu6Vwlx9n4JwoBl/PUXua0HEzwOOtbVH/xwA6wgHE6I+rNYkf2Q11OkHEON/
-         v+eqLpL/swS5JRUlseHgxSuhUClZUskBuEteXHef6fv1r0neJZJkE2594/sFV2Yh9LHC
-         3HFEIeZNFIlBNCgq8cb+ztQgvFNSg4c/KMAlQ5yHciKWvYLvruOKV6DpwTnKi7R17n4F
-         aY4UhOZriIdM7OZRIT7e+TF6ntwzXgULD+vU0/SEczlqDT5CYtzBxxLKhVBXCIj1p+XO
-         r9Q2bYHd5QMQjTdhQT4S5NWQOgtAUZFtQpH3VQvZtMZ4w3rByIWrD4yZljaHzqmNZbKi
-         30EA==
-X-Gm-Message-State: APuU4Z+P966hM01OzVCqCMYy8NLBWLw21AO403/G1PhI6caO/in+MC0z
-	xEA51zbb+Rda/SLFKOK+Afwts6e8VroATmapJmimQMKzaAKrBWsZreAyculo8Hwg37+/eHnHe6g
-	8tdQ1
-X-Gm-Gg: AYBFou1VF13XDLlgc1EllljT8Bwb71Iid9eFQAACDkSCrAKMaxzNgTq4AHYeuMjJ1m4
-	2vRV+/OnsVb9s63DV30zYMzhpStYLPSA8FnVYki/NAFe36nQg1wBIbgz7fSC17/f7ov1YGuYVYQ
-	8/9n2IGvv/WXOGWZyR+XNwkLFc/9IbSYbgvjODFU1gBiPt17+9trDEK6qlX6eSQI1LCnaVg3myr
-	8b18+dIKbMFn8teRmJqXSH/eEddXZQIzOcqEgi+//NMrLZXYQQPTvlVPjGoulm/mkSYqBbZr2d3
-	WWMZrnPwVOzXBsrAK//+OmPzf+0EKv3ggeozz++nBSsO4D9aXvxhKj94+VsoXETcjzxwJg7fa2x
-	zytaGbvJ8A6nhWad8Ss2uI6slD7wayEeL+BDFuFJhe4SqCxSHZeyTLRpTwJLQSalufAvhQAUwfS
-	Q71Pqyu84mQzUzwlHNSRcMa2hENRsucIbwk3Fe7jT+EonogMsA6e6DpCBgZZ/ISTWjghQzBp8p6
-	S9iW2Lhk6jSNaVMfR9OoRMJs+AIkQe0ZQcHTsctaZG0yStDwomxDhOO+TsXqiPNy2JVIPvEs8mm
-	VaGAL4f4wyPi68vsBCS3iQ==
-X-Received: by 2002:a05:7301:4716:b0:36c:9fa4:dc5b with SMTP id 5a478bee46e88-36f7671a449mr4788896eec.23.1794009740043;
-        Fri, 06 Nov 2026 16:02:20 -0800 (PST)
-Received: from 34406640b1f4 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa651e6b1sm21970517eec.3.2026.11.06.16.02.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 16:02:19 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20260707; t=1794256215; x=1794861015;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jxoL1vkksv6+PpaP3p3y3nKcoLpOHEtWRnV5Y2aKg+A=;
+        b=uCkVCZytqongFINfawgoDMTKlUOBrp2ZQDUItX80JpzXqTHoWtLyLZSS1ir1OWQwmk
+         NTu+encww9Pc64FH1fvd0+vd/d0pNQxqXPaFDnGdlz5UmPEq1xOrBTLYfrJ6FZGJdkGT
+         6HnnmCENTlK2BiDloNZRWFr3zHBS+clm2zlkERDMxALG7G/u//QhMoysVVWUsRauAISk
+         xQLMbbZGscmFnjYPYT0Z82CDNmaI4cDz4ZsZztnVy5JNlcyTLccfdXug/fT/N6n4QRST
+         tj+LXTpZS+9DfstvyCOeThw2JuQEAq4F7tNvTfVuLN/QHT7NWNURM+NF0Oy7dt6+fjsJ
+         JPNg==
+X-Gm-Message-State: APuU4Z+/znX62OBu9hv3wPpyYhs7n5F33f4+G7zRWccnMUL85FHa0GCU
+	W7tfihM3OcxliE09cowcIdcIHE5DEvmU6xredgRKAP2QHTX7iFsA+WP4UYxbmhMiFjoSKpDdEzK
+	6FzmitrZG1yCr+yf5jezvQyDHAtiMVz0VzDtr2WO1DxvhT1jTMN3NPoM/4A==
+X-Gm-Gg: AYBFou18G2ipm8MjCo4s9+4rBDRO6u+ee4KJJzs2Dy/MaVA59Ced3HiPl/nC2hpIhrM
+	sLKxhYpyIolHOKYkMomYYaIlcgCEeU5QFvgLCYurczVa9KByCg5agZO/5RiDAyMjC8L2z9+mDeO
+	bX9wgKUl9VlSIGVe5kiYn3Z3+k8QkP9b+dXnjIKMw0gt8akGBzEz+bfl66fbFleYQrs9DmFBdZE
+	WifeitGI9s2xPap3kqY0Ali3bVTuUMd16HSgdifYARz/qMJymzXFWgBHxFX3bPBeUkIaUhhgUP/
+	LDwJXXKnxeWADodBM+ZrfzGi7twDDBgMaUY0mVWcVTUH17ZfQyTk7eI47DMcGaLAqyapMX5tj5z
+	WkDkdx8zHDRwpVRDxp4lJ3KH22uYBVIjb5SlaU42YNs7I5ehHqlOJa18Ma/jTiOmsUmf8iL/98C
+	O1XDgsmZ90OSsdBWI=
+X-Received: by 2002:a17:907:3e0c:b0:c4d:2f6b:435 with SMTP id
+ a640c23a62f3a-c50494e6ceamr40852066b.18.1794256215329; Mon, 09 Nov 2026
+ 12:30:15 -0800 (PST)
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Post: <mailto:kernelci@lists.linux.dev>
@@ -88,84 +100,56 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:kernelci+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: KernelCI Metrics Report - 2026-11-07 00:00 UTC
-From: KernelCI bot <bot@kernelci.org>
+From: Felipe Bergamin <felipebergamin@profusion.mobi>
+Date: Mon, 9 Nov 2026 17:30:04 -0300
+X-Gm-Features: AclHuK--Kahjq1sFVJDqb-2qEWjnSONOZhAbfSJToJvgT0iBLaGf9VJV2K7bvzw
+Message-ID: <CACcoU0GJzBxc2n_c9_WGc+CmC_nYC8LhuQZk8VyRSV5+O1E8Gw@mail.gmail.com>
+Subject: KernelCI Dashboard release
 To: kernelci@lists.linux.dev
-Cc: kernelci-results@groups.io
-Date: Sat, 07 Nov 2026 00:02:19 -0000
-Message-ID: <179400973863.443869.16922252032850804804@34406640b1f4>
+Content-Type: text/plain; charset="UTF-8"
 
-KernelCI Metrics Summary
-========================
-Period: 2026-10-31 00:00 UTC to 2026-11-06 23:59 UTC
+Hi all,
 
+We have just deployed KernelCI Dashboard release/20261109.0 with the
+following changes:
 
-  COVERAGE
-  --------
-                   This week  Last week             Change
-                   ─────────  ─────────  ─────────────────
-  Trees monitored         31         20                +11
-  Checkouts            7,191      1,860     +5,331 (+287%)
-  Builds              18,891     12,607      +6,284 (+50%)
-  Tests            4,369,803  3,056,633  +1,313,170 (+43%)
+Hardware filtering
 
+- Added separate filters for checkout, build, and test origins, plus
+build and test labs.
+- Hardware details retain the filters selected on the listing page.
+Existing origin bookmarks map to the test-origin filter.
 
-  BUILD REGRESSIONS
-  -----------------
-  A "regression" is defined as a reported problem affecting 0 or multiple builds.
+Labs
 
-  Origin           Regressions        Affected  Affected builds by top issues
-                 (known + new)  Builds (total)         #1        #2        #3
-  ───────────────────────────────────────────────────────────────────────────
-  maestro     20 +  10 =    30             886        292       130        99
-  ───────────────────────────────────────────────────────────────────────────
-  Total       20 +  10 =    30             886
+- Added lab details API endpoints to support the upcoming lab details page.
+- Applied lab filtering to tree, hardware, and issue result queries.
+- Improved the labs listing page performance.
 
+Email reports
 
-  TOP REGRESSIONS PER ORIGIN
-  --------------------------
-  maestro:
-    #1 (292 occurrences) - suggest parentheses around arithmetic in operand of ‘|’ [-Werror=pa...
-      Dashboard: https://d.kernelci.org/issue/maestro:0ac4ca056d408ff08354d1eb5412f842ecb10c06?iv=1
-    #2 (130 occurrences) -  shift count is negative [-Werror,-Wshift-count-negative] in driver...
-      Dashboard: https://d.kernelci.org/issue/maestro:ce5ec46ecf72462fff1bede413010b22a34a9494?iv=1
-    #3 (99 occurrences) - in expansion of macro ‘EXPORT_TRACEPOINT_SYMBOL_GPL’ in kernel/trac...
-      Dashboard: https://d.kernelci.org/issue/maestro:2611a38632fab248333ad61cbc967845957aed62?iv=1
-  
+- Added configurable regression recipients scoped by branch and, for
+build issues, architecture, kernel configuration, and compiler.
+- Added optional copies of the new-issues summary filtered by tree or
+hardware, issue type, branch, origin, and platform.
+- Added optional metrics reports scoped by lab and origin, with a
+configurable reporting period. Headline totals remain project-wide.
+- Existing community summaries continue. Subscription configuration is
+documented in docs/notifications.md
 
-  TEST LABS ACTIVITY
-  ------------------
-  19 labs reported results this week (unchanged from last week).
+Performance and reliability
 
-  Labs marked with an asterisk (*) are new.
+- Improved performance for tree details endpoints (builds, boots and tests).
+- Improved performance in hardware history and tree commit-history.
+Optimized commit-tag lookups and issue history queries.
 
-  Lab                    Covered builds   Boots       Tests      Change (tests)
-  ─────────────────────────────────────────────────────────────────────────────
-  aspeed                             45      45           0                   0
-  broonie                         2,038       0       6,344      +4,005 (+171%)
-  lava-broonie                      510     977     190,087        +3,243 (+2%)
-  lava-cip                          594   1,882          39         -118 (-75%)
-  lava-clabbe                        20     120           0                   0
-  lava-collabora                    947   3,828     278,104      -94,491 (-25%)
-  lava-foundriesio                  162     162           0                   0
-  lava-kci-qualcomm                  54     328     302,109    +237,271 (+366%)
-  lava-kontron                      309     456           0                   0
-  lava-pengutronix                  376     970           0                   0
-  lava-renesas                       58     960           0                   0
-  linaro_pull_labs                    0       0           0                   0
-  maestro                         6,790       0   2,992,512   +1,263,737 (+73%)
-  microsoft                          45     247      11,752       -7,514 (-39%)
-  opentest-ti                        53   1,560         687         -631 (-48%)
-  pull-labs-aws-ec2                  54      54          52          -37 (-42%)
-  pull-labs-demo                  1,081   1,787     323,753      +56,006 (+21%)
-  sasha-lab                          66     324     250,573     -147,978 (-37%)
-  syzbot                             71       0          91            -5 (-5%)
-  ─────────────────────────────────────────────────────────────────────────────
-  Total                          13,273  13,700   4,356,103   +1,313,488 (+43%)
+Security and testing
 
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
+- Updated frontend and backend dependencies to address security alerts.
+- Added kci-dev integration checks against the seeded API, including
+results, compare, and gate commands.
 
-Made with love by the KernelCI team - https://kernelci.org
+Thank you!
+
+Felipe Bergamin
+ProFUSION - KernelCI Dashboard Team
