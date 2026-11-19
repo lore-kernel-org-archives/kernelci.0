@@ -1,61 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794828532;
-	b=5oMF+g7PyrFMxcUocOyj0gn2T9ACzbiwS1bcEgMcKDpegs7GyW4Nk4vZ++lqrmTcmy7W
-	 zIJndWLvTg2NGTzi2rEmE+JIpkL4ysRe3C/kQpLfRNkLS1PpM9ZyD/tFE44zzGCp3ihD0
-	 2GllR2YiLFXZL0LO9wWrmvU1/fe9N25ZuqBQc6XdU4JVNiQBfZEel1o1m4ZgpEjZKG3AT
-	 2D1+QIcpgnpxqo9No4TLvWeZgg41r+ODm92kxA0YVGvvwF6njqCl1aD0Qf/MypS+eVTWA
-	 u0Sq6xs8BSlsgo2E7zlAromwkUq7zbwlXmUPgBLddxwDz10d4OycBIYs0FYtdOt4Wag==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794828532;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Message-ID:
-	 In-Reply-To:References:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Importance:User-Agent:X-Mailer;
-	bh=VK35ntZATLdDOEIJ/ItRLCLCHUCKfTg8VKJTut8Xmpw=;
-	b=oWDlMv/mf2eq6jyvX13sKg6mqyvVmpWeF6s5gNM6wAABbEsNmD2TEhLY3A6rs9vbAcfo
-	 YceA/cUfCoFIf15DIww3PS7CGZya+K6fW6Wc5upuVhNRw5BC5qVX7ngZWvHvQSnGIc5GP
-	 4/jNpP7T9A1XSq/cHY3eyDD8LveKEQyGzxzSO1aMTIaHG/u1qD3TlfF6eZWvtH6M2M1xD
-	 8NZnKKuSr7CqwSVjbEW99FcnDz57fj2RpZisJqPy0pOGr1oGiwwUMgdEMq29hTxtmMtwN
-	 l4pt6Ae44IE7zd0JCPalYRtja5e/bbOTluE6EvUfpbpgFQkMaS/orqevS+Hszny8FhA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b="D/Gj7OyN";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795075755;
+	b=CGjHixz4k7qM52pcKFQaF4i83LMqk8mbX+oyVBT30GGlJLtV4yXyE+xvZvp5O5d5Px/W
+	 skVsWWpMrVa2yh4kIvAi4Rt8uclMv+KyqtPgemHkBdAg3VhnrokQduv60+PJlRHP3zTS7
+	 Rw0AuxoY1yThfe0OjPdWYLw4Jh558TiZIjRxvgsDNhJYlAhtaUVsp7LAf5FutZ2kTnB6k
+	 qQ6mu8/ehRGUEJkL5tWrWBMYum5QEtvYfPNzMa63ZTvhH/9B4m9iT4iJo+PqKzoXhdiP9
+	 cyrgYdmWtFcj5eJV0WxBjVKooM0/3S9/1Z1HS5pY08FZtmieOp/NFIohNYfYNg2x24g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795075755;
+	h=DMARC-Filter:Date:DKIM-Signature:DKIM-Signature:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=kM7yUQauU1WNq3u2MKY4OTkdXYSl5XmAGjgTxEm/19g=;
+	b=Xdu95xmiNY5gioQwv3dTndd+9wu7sRT6D6W6HyS/Sicyy2OFXUpDFJjA8GRxDZtqQzSp
+	 ECEl/w3iF1WPcevNjOdFm7YdvqjGqMA8uk33+pEwMAATkBdO0xe0of2jvdQZPEVLaTEQC
+	 8Ek11GL6QI7xWz9LM7O7g5RWLheTVTpcElGnlnUdJXVwa3rUXS4zs6EAR2QuvIqdqXbfP
+	 IzbjHa4oMpDwmOV7fRXoRJQs/2w0drzDqIO7D8m1y+PUmydW4Q622FKDrua/bxzonFlwv
+	 zTzYQmLwhIpwyB5TrF4JZt9LuAqX4zn0fOnoVFTiKbnl3W3bNVDnNi9Q9yi6SF2GxrA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linutronix.de;
+	spf=pass smtp.mailfrom=linutronix.de;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gIWCl8fU;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8ox3SLij;
+	arc=none smtp.remote-ip=193.142.43.55
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47A3606A337
-	for <kernelci@lists.linux.dev>; Mon, 16 Nov 2026 11:28:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B47A3606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4BB606A320
+	for <kernelci@lists.linux.dev>; Thu, 19 Nov 2026 08:09:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E4BB606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=D/Gj7OyN
-ARC-Seal: i=1; a=rsa-sha256; t=1794828508; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Ij5jzSDYGKYswotjaiqxs+ZK0RgmIsUT6+e53z7zo/aZvXvACUqGhvAXwQLk6uAEoOAg0mfWDFKqdd4d2iz3/8w3vM542IQEJB3yqCpCOnOUr81v0BchF335jrvwT1o6dujEd3qZIvAUHiIpNiec1T9uxgLYwmRmeYuLP663qDM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1794828508; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=VK35ntZATLdDOEIJ/ItRLCLCHUCKfTg8VKJTut8Xmpw=; 
-	b=HJl1V4NvlI9WkxaTWw8M1uNz6lNeqFKaFob+75hC/T4TL4jVpX0HGkFlMFAtzdQBt1Fl9Gz8e4dXNij0nX3verF1/2J/so1XqVbq3QKl+eds8RIk0HYSgWXiauZLIeg/5pdEAqumRNWjTPnkuclRFS7fVHBfDYrnhFlW2mJnoyk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=denys.f@collabora.com;
-	dmarc=pass header.from=<denys.f@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=D/Gj7OyN5O6gUPuJYszl0qwQxwXId0US35+LbIze/dk44DyWCJxQOZAWewyi4XLRRN8hQ8Cy9oDk9drvO/pVvaEaTET/CloCfmPQGaL+sAflvFiLTtdOkQgqILPAprG5NqeWWhpyyT3WmdeRCQZ76Ad/7Y4ewwWHqK8eX5m59dg=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=VK35ntZATLdDOEIJ/ItRLCLCHUCKfTg8VKJTut8Xmpw=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1794828506821915.3498840423285; Mon, 16 Nov 2026 03:28:26 -0800 (PST)
-Date: Mon, 16 Nov 2026 13:28:26 +0200
-From: Denys Fedoryshchenko <denys.f@collabora.com>
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: "kernelci" <kernelci@lists.linux.dev>,
-	"John Ogness" <john.ogness@linutronix.de>
-Message-ID: <1a1e41d96b1.3e56ef281896928.385630952830763087@collabora.com>
-In-Reply-To: <20261116111135.Fsypfl7Z@linutronix.de>
-References: <20261116111135.Fsypfl7Z@linutronix.de>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=gIWCl8fU;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8ox3SLij
+Date: Thu, 19 Nov 2026 09:09:10 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1795075752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kM7yUQauU1WNq3u2MKY4OTkdXYSl5XmAGjgTxEm/19g=;
+	b=gIWCl8fUdlBF5P/poRGTwk+nSTqqrq+k9jk2Wp3WQxzxgSSU/rw8aP8mxlQr1Y7e60BVh/
+	orjnjP1vSAvsqI8JHK3hvlcSHnLLjZpPAjZuU/pDCU0w4a8Ee3UFFPjx5WBHfUY1SAgrNO
+	0zy8+ShB7KWLgTPFONEtEAbzZ1QAyLBYEzz9lJJnLLm4aED7ju8KHfHbvpX5O3zeELzj6Y
+	rp28JGPbF+o9YqcH17GcrMp8hcWlll1KWW+9S0bcPYwyBxs8mRmhohcOx0ndgEMpQ+0cWQ
+	JcelbumPwYlngTj8p1mI0FKrHkIwN7CSGkVdIqe0xXZ2yEV6JqJr7a8Ax+ozhw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1795075752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kM7yUQauU1WNq3u2MKY4OTkdXYSl5XmAGjgTxEm/19g=;
+	b=8ox3SLijlR6+N26C0vI01BWVqHrED2nyhHDu9CfwEv8h3Al1l4Zv7O0qrbvAPEUGTLIlHM
+	LL04A+jM8g2PvjBw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Denys Fedoryshchenko <denys.f@collabora.com>
+Cc: kernelci <kernelci@lists.linux.dev>,
+	John Ogness <john.ogness@linutronix.de>
 Subject: Re: Debugging PREEMPT_RT spikes on kernelci
+Message-ID: <20261119080910.RIjU3Vyp@linutronix.de>
+References: <20261116111135.Fsypfl7Z@linutronix.de>
+ <1a1e41d96b1.3e56ef281896928.385630952830763087@collabora.com>
 X-Mailing-List: kernelci@lists.linux.dev
 List-Id: <kernelci.lists.linux.dev>
 List-Post: <mailto:kernelci@lists.linux.dev>
@@ -65,45 +72,29 @@ List-Unsubscribe: <mailto:kernelci+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:kernelci+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1a1e41d96b1.3e56ef281896928.385630952830763087@collabora.com>
 
-Hello,
+On 2026-11-16 13:28:26 [+0200], Denys Fedoryshchenko wrote:
+> Hello,
+Hi,
 
-I will do deploy production right now.
-Usually changes are deployed weekly, unless there is breaking changes that might need more needing.
+> I will do deploy production right now.
+Thank you.
 
+> Usually changes are deployed weekly, unless there is breaking changes
+> that might need more needing.
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "kernelci"<kernelci@lists.linux.dev>
-Cc: "John Ogness"<john.ogness@linutronix.de>
-Date: Mon, 16 Nov 2026 13:11:35 +0200
-Subject: Debugging PREEMPT_RT spikes on kernelci
+I see. Thank you for the information.
+Judging from yesterday's run
+	https://dashboard.kernelci.org/test/maestro%3A6afe07fc99c74e1a99855381
 
- > Hi,
- > 
- > I have been looking at the results of meson-g12b-a311d-khadas-vim3 on
- > defconfig+preempt_rt. The run for v7.4-rc3 is available at
- >     https://dashboard.kernelci.org/test/maestro%3A6afa52b25b429d354e5ef864
- > 
- > which run about 10h ago. The reported cyclictest results were
- > | T: 0 (  482) P:98 I:1000 C: 441036 Min:      0 Act: 1258 Avg:  274 Max:    9556
- > | T: 1 (  489) P:98 I:1500 C: 360000 Min:      5 Act:    9 Avg:   17 Max:      85
- > 
- > and are a bit high. I opened a PR against kernelci-pipeline to change a
- > few config settings and hoped for the best. This PR was merged FRI 6th
- > NOV and according to the artifacts of this run, it is still the "old"
- > config.
- > I checked a few other trees and boards and none of them is using the
- > newer config. So either I did something wrong or the git repo was not
- > yet updated.
- > What would be the delay one can expect until the git tree is updated?
- > 
- > Sebastian
- > 
- > 
+the config bits are merged and cyclictest reports
 
+| T: 0 (  484) P:98 I:1000 C: 540000 Min:      4 Act:    4 Avg:   13 Max:      98
+| T: 1 (  491) P:98 I:1500 C: 360000 Min:      4 Act:    7 Avg:   14 Max:      92
 
+which looks good.
+
+Sebastian
